@@ -1,0 +1,18 @@
+<pager:NAVIGATOR id="pager" items="15">
+
+Shown: from <b>{$BeginItemNumber}</b> to <b>{$EndItemNumber}</b>
+
+<pager:FIRST><a href="{$href}">|--</a></pager:FIRST>
+
+<pager:LIST>
+
+<pager:CURRENT><b><a href="{$href}">{$number}</a></b></pager:CURRENT>
+<pager:NUMBER><a href="{$href}">{$number}</a></pager:NUMBER>
+
+</pager:LIST>
+
+<pager:LAST><a href="{$href}">--|</a></pager:LAST>
+
+Total: <b>{$TotalItems}</b>
+</pager:NAVIGATOR>
+

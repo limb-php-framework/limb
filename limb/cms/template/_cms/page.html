@@ -1,0 +1,57 @@
+<!-- Powered by LIMB | http://www.limb-project.com/ -->
+<!-- Designed by BIT | http://www.bit-creative.com/ -->
+<html>
+<head>
+  <title><core:include file='_cms/title_crumbs.html'/></title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+
+  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/yui/reset-min.css" />
+  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/yui/tabs.css"/>
+  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/yui/layout.css"/>
+  <link rel=stylesheet type="text/css" href="/shared/cms/styles/cp.css" />
+
+  <core:include file='_cms/js.html'/>
+  <script type="text/javascript">
+  cpLayout = function(){
+          return {
+              init : function(){
+                 var layout = new YAHOO.ext.BorderLayout(document.body, {
+                      west: { split:true, initialSize: 200, titlebar: true, collapsible: true, minSize: 100, maxSize: 400},
+                      north:{ split:false, initialSize: 40, collapsible:false, titlebar: false},
+                      center: { autoScroll: true, titlebar: false }
+                  });
+                  layout.beginUpdate();
+                  layout.add('west', new YAHOO.ext.ContentPanel('left', {title: 'Navigation', fitToFrame:true, closable:false}));
+                  layout.add('center', new YAHOO.ext.ContentPanel('center'));
+                  layout.add('north', new YAHOO.ext.ContentPanel('top'));
+                  layout.endUpdate();
+                  layout.restoreState();
+                  document.body.className = 'ytheme-gray';
+             }
+       }
+
+  }();
+
+  YAHOO.ext.state.Manager.setProvider(new YAHOO.ext.state.CookieProvider());
+  YAHOO.ext.EventManager.onDocumentReady(cpLayout.init, cpLayout, true);
+  </script>
+</head>
+<body>
+
+<!--BEGIN: header-->
+<div id='top'>
+  <div id='logo'></div>
+</div>
+<!--END: header-->
+<!--BEGIN:[ body ]-->
+<div id='center'>
+  <core:include file='_cms/notify_zone.html'/>
+  <core:placeholder id='content_zone'/>
+</div>
+<!--END:[ body ]-->
+<div id='left'>
+  <core:include file='_cms/menu.html'/>
+</div>
+</body>
+</html>
+

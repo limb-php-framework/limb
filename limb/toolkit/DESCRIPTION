@@ -1,0 +1,2 @@
+This package implements kind of dynamic service locator design pattern,
+a flavour of dependency injection

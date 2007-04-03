@@ -1,0 +1,21 @@
+0.2.1-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- lmbFileAliasTools :: getFileLocator(..) adds $path to cached locators
+-- all "alias format" junk removed from lmbFileLocator
+-- lmbLocator interface removed
+-- other minor cleanups and refactorings
+
+
+0.2.0-alpha - 16 February 2007 (r5034)
+==================================================
+
+-- lmbCachingFileLocator uses unserialize(..) instead of var_export(..). This method is much faster.
+-- lmbCachingFileLocator :: locate($alias, $params = array()) encodes $params into cache hash only if $params are not empty
+-- lmbFileAliasTools extracted from lmbWebAppTools with findFileAlias(..) and getFileLocator(..) methods
+-- tests are more isolated
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+- Initial release of this package.

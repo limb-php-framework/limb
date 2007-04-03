@@ -1,0 +1,2 @@
+This package conveniently wraps PHP's session with OO interface. It also
+provides support for transparent session objects persistence.

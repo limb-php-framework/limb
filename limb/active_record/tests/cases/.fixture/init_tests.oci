@@ -1,0 +1,202 @@
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE test_one_table_object_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE test_one_table_object_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE test_one_table_object'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE test_one_table_object (
+  id number NOT NULL,
+  annotation clob,
+  content clob,
+  news_date varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER test_one_table_object_trigger
+BEFORE INSERT ON test_one_table_object REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT test_one_table_object_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE test_one_table_typed_objec_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE test_one_table_typed_objec_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE test_one_table_typed_object'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE test_one_table_typed_object (
+  id number NOT NULL,
+  title clob,
+  kind varchar(255) NOT NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER test_one_table_typed_trigger
+BEFORE INSERT ON test_one_table_typed_object REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT test_one_table_typed_objec_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE course_for_typed_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE course_for_typed_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE course_for_typed_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE course_for_typed_test (
+  id number NOT NULL,
+  title varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER course_for_typed_test_trigger
+BEFORE INSERT ON course_for_typed_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT course_for_typed_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE lecture_for_typed_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE lecture_for_typed_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE lecture_for_typed_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE lecture_for_typed_test (
+  id number NOT NULL,
+  title varchar(255) default NULL,
+  course_id number default NULL,
+  kind varchar(255) NOT NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER lecture_for_typed_test_trigger
+BEFORE INSERT ON lecture_for_typed_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT lecture_for_typed_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE social_security_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE social_security_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE social_security_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE social_security_for_test (
+  id number NOT NULL,
+  code varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER social_security_for_trigger
+BEFORE INSERT ON social_security_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT social_security_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE person_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE person_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE person_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE person_for_test (
+  id number NOT NULL,
+  name varchar(255) default NULL,
+  ss_id number default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER person_for_test_trigger
+BEFORE INSERT ON person_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT person_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE course_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE course_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE course_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE course_for_test (
+  id number NOT NULL,
+  title varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER course_for_test_trigger
+BEFORE INSERT ON course_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT course_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE lecture_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE lecture_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE lecture_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE lecture_for_test (
+  id number NOT NULL,
+  title varchar(255) default NULL,
+  course_id number default NULL,
+  alt_course_id number default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER lecture_for_test_trigger
+BEFORE INSERT ON lecture_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT lecture_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE lesson_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE lesson_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE lesson_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE lesson_for_test (
+  id number NOT NULL,
+  date_start number default NULL,
+  date_end number default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER lesson_for_test_trigger
+BEFORE INSERT ON lesson_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT lesson_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE group_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE group_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE group_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE group_for_test (
+  id number NOT NULL,
+  title varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER group_for_test_trigger
+BEFORE INSERT ON group_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE user_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE user_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE user_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE user_for_test (
+  id number NOT NULL,
+  first_name varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER user_for_test_trigger
+BEFORE INSERT ON user_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT user_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE user2group_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE user2group_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE user2group_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE user2group_for_test (
+  id number NOT NULL,
+  user_id number default NULL,
+  group_id number default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER user2group_for_test_trigger
+BEFORE INSERT ON user2group_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT user2group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/

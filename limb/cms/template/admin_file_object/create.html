@@ -1,0 +1,18 @@
+<core:wrap file="_cms/popup.html" in="content_zone">
+
+<form id='file_object_form' name='file_object_form' method='post' runat='server' enctype="multipart/form-data">
+    <h1>Create file</h1>
+
+    <core:include file='admin_file_object/form_fields.html'/>
+
+    <p/>
+    <div class="field" >
+    <label for="new_file" runat="server">Browse file</label>
+    <input id="new_file" name="new_file" type="file" size="60"/>
+    </div>
+    <p/>
+
+    <core:include file='_cms/create_common_elements.html'/>
+</form>
+
+</core:wrap>

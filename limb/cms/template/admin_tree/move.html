@@ -1,0 +1,34 @@
+<core:wrap file="_cms/popup.html" in="content_zone">
+
+<h1>Переместить элементы сайта</h1>
+
+<form id='tree_form' name='tree_form' method='post' runat='server'>
+
+  <core:include file='_cms/parent_select.html'/>
+
+  <active_record:fetch class_path='src/model/Node' target="items_to_move">
+    <fetch:param record_ids="{$#request.ids}">
+  </active_record:fetch>
+
+  <list:list id='items_to_move'>
+  <table width="100%" border=0 cellspacing=0 cellpadding=0 class=table>
+  <tr class=header>
+    <th>Выбор</th>
+    <th>Заголовок</th>
+  </tr>
+  <tbody>
+    <list:ITEM>
+    <tr>
+      <td><input type='checkbox' name='ids[]' value='{$id}' class='input'/></td>
+      <td>{$title}</td>
+    </tr>
+    </list:ITEM>
+  </tbody>
+  </table>
+  </list:LIST>
+
+  <core:include file='_cms/move_common_elements.html'/>
+
+</form>
+
+</core:wrap>

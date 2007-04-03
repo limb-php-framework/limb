@@ -1,0 +1,36 @@
+0.2.2-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- changes due to global Limb3 functions renamings
+-- getDefaultDbConnection() moved from WEB_APP tools to lmbDBTools
+-- LIMB_DB_DSN constant is not used anymore.
+-- DBAL depends on CONFIG package now
+-- other minor improvements
+
+
+0.2.1-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- proper escaping of order fields added
+-- quoteIdentifier returns empty string if not identifier specified now (to fix error raised when used rand() sortings)
+-- lmbDbRecordSet interface now extends from lmbPagedDataset interface
+-- updated driver classes to satisfy new lmbDbRecordSet interface
+
+
+0.2.0-alpha - 16 February 2007 (r5032)
+==================================================
+
+-- escaping db table in query classes(DBAL-7)
+-- better error message in lmbMysqlConnection
+-- lmbMysqlConnection :: _raiseError() throws correct exception if connection was failed
+-- tests are more isolated
+-- minor optimizations in lmbDbTableInfo.class.php
+-- lmbDbTools :: createTableGateway() added. This can help improve performance.
+-- lmbDbTableInfo :: getColumnList() returns array there key is equal to value
+
+
+0.1.0-alpha - 14 December 2006 (r4537)
+==================================================
+
+-- Initial release of this package.

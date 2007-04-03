@@ -1,0 +1,54 @@
+<div class='field'>
+  <label for='image'>Image</label>
+  <div><img id='image_preview' src="/shared/cms/images/1x1.gif"/></div>
+  <div>
+    <span id='image_path'></span>
+    <input type='hidden' name='image_id' id='image_id' />
+    <input type='button' value='...' onclick='return onButtonClick();' runat='client' style="width:20px"/>
+    <input type='button' value='Reset' onclick='return onResetClick();' runat='client'/>
+  </div>
+</div>
+
+<script type="text/javascript">
+function onButtonClick()
+{
+  new Limb.Window('/admin_media/browse?Type=Image', 'image_select');
+  return false;
+}
+
+function onResetClick()
+{
+  var image = document.getElementById('image_preview');
+  if(!image) return;
+  image.src = "/shared/cms/images/1x1.gif";
+
+  var image_id = document.getElementById('image_id');
+  if(!image_id) return;
+  image_id.value = '';
+}
+
+function SetUrl(url, id)
+{
+  var image = document.getElementById('image_preview');
+  if(!image) return;
+  image.src = '/admin_image/show/' + id;
+
+  var image_id = document.getElementById('image_id');
+  if(!image_id) return;
+  image_id.value = id;
+}
+
+function InitImageSelect()
+{
+  var image_id = document.getElementById('image_id');
+  if(!image_id || !image_id.value) return;
+
+  var url = '/admin_image/show/' + image_id.value;
+
+  var image = document.getElementById('image_preview');
+  if(!image) return;
+  image.src = url;
+}
+
+Limb.events.add_event(window, 'load', InitImageSelect);
+</script>

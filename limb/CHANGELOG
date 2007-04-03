@@ -1,0 +1,807 @@
+
+################### Package 'active_record' ###################
+
+0.2.2-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- lmbActiveRecord :: findOne(..) alias for findFirst(..) added
+-- lmbActiveRecord :: find(..) now supports simpler way to specify criteria with placeholders.
+   This is possible now: lmbActiveRecord :: find("Book", array('name=? and author=?', 'book', 'bob'));
+-- minor changes due to global Limb3 functions renamings
+
+
+0.2.1-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- added lmbARRelationCollection :: getLimit(), getOffset().
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- better PhpDocumentor comments
+-- lmbARRelationCollection now implements lmbPagedDataset interface instead of Iterator and Countable
+
+
+0.2.0-alpha - 16 February 2007 (r5025)
+==================================================
+
+-- lmbActiveRecord :: findBySql($class_name, $sql) added, it returns a result set of decorated with active record objects of specified $class_name
+-- lmbActiveRecord :: registerGlobal*Callback(...) static methods added, it allows to register callbacks globally
+-- new class lmbActiveRecordMetaInfo - that contains db meta info for lmbActiveRecord class. This class helps to improve performance a bit
+-- lmbActiveRecordTools added to cache MetaInfos
+-- lmbARRecordSetDecorator :: _createObject() throws an exception if no such class exists
+-- initial PhpDocumentor comments added
+
+
+0.1.1-alpha - 14 December 2006 (r4578)
+==================================================
+
+-- fixed: better checks for relation property dirtiness in one-to-one and one-to-many relations
+
+0.1.0-alpha - 14 December 2006 (r4537)
+==================================================
+
+-- initial release of this package.
+
+################### Package 'cache' ###################
+
+0.1.0-alpha - 16 February 2007 (r4985)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'classkit' ###################
+
+0.1.3-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- minor changes due to global Limb3 functions renamings
+
+
+0.1.2-alpha - 13 March 2007 (r5216)
+==================================================
+-- improved phpdoc
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- lmbObject :: get(...) maps 'is_*' property to 'is*' method if such one exists, e.g. 'is_ok' => isOk(). For BC purposes getIs* methods have higher priority over is* methods! E.g. 'is_ok' would trigger getIsOk() not isOk() if both exist
+
+0.1.1-alpha - 16 February 2007 (r5062)
+==================================================
+
+-- tests are more isolated
+-- other minor fixes
+-- initial PhpDocs
+
+0.1.0-alpha - 13 December 2006 (r4537)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'cli' ###################
+
+0.2.0-alpha - 2 April 2008 (r5476)
+==================================================
+
+-- added general Limb3 CLI scripts runner using single entry point - "limb" script shipped with CORE or CLI package (LMBF-4)
+-- lmbCliInput now can be constructed using short options description format, e.g: 
+$cli = new lmbCliInput('i|input=;b;foo=;c='); 
+is equal to:
+$cli = new lmbCliInput(new lmbCliOption('i', 'input', lmbCliOption :: VALUE_REQ),
+-- other changes and refactorings
+
+0.1.1-alpha - 14 December 2006 (r5027)
+==================================================
+
+-- tests are more isolated
+-- initial PhpDocs added
+
+
+0.1.0alpha - 14 December 2006
+==================================================
+
+- Initial release of this package.
+
+################### Package 'config' ###################
+
+0.3.0-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- lmbConfTools :: getConf($name) is now a single gateway for getting all sorts of conf objects in Limb3. The type of config object is determined by $name extension, if extension is omitted '.conf.php' is assumed
+-- lmbConfTools :: setConf($name, $conf) added, this one is useful for testing
+-- lmbFakeIni added, this is one is used for testing. It accepts all settings passed with string in constructor.
+-- lmbConfTools :: getIni(), createIni(), setTestingIni(), clearTestingIni() removed
+
+0.2.0-alpha - 16 February 2007 (r5028)
+==================================================
+
+-- lmbCachedIni uses serialize(..) instead of var_export(..) for cached data. This method is much faster.
+-- lmbConf now supports files overriding, i.e "foo.conf.php" is overridden with "foo.conf.override.php"
+-- $conf in lmbConf is filled with empty array by default
+-- lmbConfTools added(moved from lmbWebAppTools)
+-- lmbConfTools :: setTestingIni(..), :: clearTestingIni(..) added (tests/common.inc.php will be removed soon)
+-- tests are more isolated
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'core' ###################
+
+0.1.3-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- lmb_find_limb_packages() removed as it was never used
+-- toStudlyCaps() is now deprecated, use lmb_camel_case() instead
+-- to_under_scores() is now deprecated, use lmb_under_scores() instead
+-- makeStudlyCapsReadable() is now deprecated, use lmb_humanize() instead
+-- other minor fixes
+
+
+0.1.1-alpha - 16 February 2007 (r5029)
+==================================================
+
+-- moving all contents of util.inc.php into common.inc.php
+-- tests are more isolated
+
+
+0.1.0-alpha - 13 December 2006 (r4537)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'datasource' ###################
+
+0.1.3-alpha - 1 April 2007 (r5454)
+==================================================
+-- minor changes due to global Limb3 functions renamings
+
+
+0.1.2-alpha - 13 March 2007 (r5228)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- fixed: lmbEmptyPagedArrayDataset contains one empty element so count() returns wrong result.
+-- fixed: lmbPagedDatasetDecorator method countPaginated() calls invalid decorated -- new lmbDataset interface added
+-- new lmbPagedArrayDataset interface added
+-- lmbIteratorBase now implements lmbDataset interface
+-- lmbPagedArrayDataset and lmbPagedDatasetDecorator now implement lmbPagedDataset interface
+
+0.1.1-alpha - 16 February 2007 (r5030)
+==================================================
+
+-- tests are more isolated
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+- Initial release of this package.
+
+################### Package 'datetime' ###################
+
+0.1.1-alpha - 16 February 2007 (r5031)
+==================================================
+
+-- lmbDate :: toTimestamp() internally uses getStamp()
+-- lmbDate :: getISODate() added, lmbDate :: toString() uses it internally
+-- tests are more isolated
+
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'dbal' ###################
+
+0.2.2-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- changes due to global Limb3 functions renamings
+-- getDefaultDbConnection() moved from WEB_APP tools to lmbDBTools
+-- LIMB_DB_DSN constant is not used anymore.
+-- DBAL depends on CONFIG package now
+-- other minor improvements
+
+
+0.2.1-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- proper escaping of order fields added
+-- quoteIdentifier returns empty string if not identifier specified now (to fix error raised when used rand() sortings)
+-- lmbDbRecordSet interface now extends from lmbPagedDataset interface
+-- updated driver classes to satisfy new lmbDbRecordSet interface
+
+
+0.2.0-alpha - 16 February 2007 (r5032)
+==================================================
+
+-- escaping db table in query classes(DBAL-7)
+-- better error message in lmbMysqlConnection
+-- lmbMysqlConnection :: _raiseError() throws correct exception if connection was failed
+-- tests are more isolated
+-- minor optimizations in lmbDbTableInfo.class.php
+-- lmbDbTools :: createTableGateway() added. This can help improve performance.
+-- lmbDbTableInfo :: getColumnList() returns array there key is equal to value
+
+
+0.1.0-alpha - 14 December 2006 (r4537)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'error' ###################
+
+0.1.2-alpha - 2 April 2007 (r5402)
+==================================================
+-- removing obsolete junk
+-- LIMB_ENABLE_DEBUG => LIMB_DEBUG_ENABLE
+
+0.1.1-alpha - 16 February 2007
+==================================================
+
+-- tests are more isolated
+-- initial PhpDocs
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'file_schema' ###################
+
+0.2.1-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- lmbFileAliasTools :: getFileLocator(..) adds $path to cached locators
+-- all "alias format" junk removed from lmbFileLocator
+-- lmbLocator interface removed
+-- other minor cleanups and refactorings
+
+
+0.2.0-alpha - 16 February 2007 (r5034)
+==================================================
+
+-- lmbCachingFileLocator uses unserialize(..) instead of var_export(..). This method is much faster.
+-- lmbCachingFileLocator :: locate($alias, $params = array()) encodes $params into cache hash only if $params are not empty
+-- lmbFileAliasTools extracted from lmbWebAppTools with findFileAlias(..) and getFileLocator(..) methods
+-- tests are more isolated
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+- Initial release of this package.
+
+################### Package 'filter_chain' ###################
+
+0.1.3-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- lmbFilterChain implements lmbInterceptingFilter interface. This allows to use complete filter chains as filters
+
+0.1.2-alpha - 16 February 2007 (r5068)
+==================================================
+
+-- tests are more isolated
+-- initial PhpDocs
+
+0.1.1-alpha - 16 December 2006 (r4582)
+==================================================
+
+-- cyclic package dependency removed.
+
+0.1.0-alpha - 13 December 2006 (r4537)
+==================================================
+
+-- initial release of this package.
+
+################### Package 'i18n' ###################
+
+0.2.0-alpha - 2 April 2007 (r5454)
+==================================================
+!! Major BC break
+
+-- translation schema reworked and now multiple backends are supported, while we have only one for Qt dictionaries for now.
+   Old complicated and never used in practice stuff removed.
+-- Qt translations are stored in i18n/translations/$domain.$locale.ts(e.g default.en_US.ts)
+-- global functions pollution cleanup:
+  * all _*() multibyte aware function are deprecated now, the same set of lmb_*() functions added
+  * installStringsDriver => lmb_use_charset_driver
+  * getStringsDriver() => lmb_get_charset_driver
+  * utf8_to_win1251 => lmb_utf8_to_win1251
+  * win1251_to_utf8 => lmb_win1251_to_utf8
+  * tr() function renamed to limb_i18n()
+-- more RFC-compliant locale ini-files: en.ini => en_US.ini, ru.ini => ru_RU.ini
+-- unverified locale ini-files removed for now
+-- lmbLocale :: __construct() now accepts path to ini file
+-- lmbLocaleDate almost all static functions renamed to better/shorter names
+-- lmbLocaleDateRule now accepts locale object rather locale code
+-- lpsync.php removed, new cli/I18nCliCmd.class.php added instead
+-- lmbI18NTools :: setDictionary($locale, $domain, $dict) added
+-- lmbI18NTools :: setLocaleObject($obj) => :: addLocaleObject($obj, $code = null), now it's possible to have multiple locale objects
+-- lmbI18NTools :: getLocaleObject($locale = null) fetches default locale object if $locale is not specified
+-- I18N related tags and filters moved here from WEB_APP package
+-- I18N package now optionally depends on VIEW package
+-- validation translations moved to VALIDATION package
+-- better source code layout
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- many other changes and refactorings
+
+
+0.1.2-alpha - 16 February 2007 (r5036)
+==================================================
+
+-- tests are more isolated
+-- initial PhpDocs
+
+
+0.1.1-alpha - 15 December 2006 (r4537)
+==================================================
+
+-- old and obsolete translation.ts files are replaced with the new ones
+
+
+0.1.0-alpha - 14 December 2006 (r4537)
+==================================================
+
+-- initial release of this package.
+
+################### Package 'js' ###################
+
+0.1.0-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- initial release of this package
+
+################### Package 'mail' ###################
+
+0.1.1-alpha - 16 February 2007 (r5037)
+==================================================
+
+-- added method lmbMailer::addAttachment for attaching files to mail
+-- initial PhpDocs
+
+0.1.0-alpha - 15 December 2006 (r4577)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'net' ###################
+
+0.1.3-alpha - 2 April 2007 (r5454)
+==================================================
+-- lmbUploadedFile :: getMimeType() alias for getType() added
+-- lmbUploadedFile :: isValid() added, it checks if there were no errors during upload
+-- lmbHttpResponse :: getMimeType() alias of getContentType() added
+-- lmbHttpResponse :: readFile() doesn't call exit() anymore
+-- lmbHttpResponse :: getContentType() support delimetered with ; strings
+-- lmbUri :: addUrlQueryItems($url, $items=array()) added, moved from util.inc.php
+-- src/util.inc.php removed
+
+
+0.1.2-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- added class lmbCurlRequest which wraps basic functionality of curl library
+-- added lmbUri :: getPathFromLevel($level) method which returns part of uri path from given level
+-- lmbFakeHttpResponse added, it works just like lmbHttpResponse except the fact it doesn't make any system calls like header, cookie, etc
+-- lmbUploadedFile added - simple wrapper around $_FILES entry
+-- lmbUploadedFilesParser :: objectify($files) method added, it normalizes $_FILES array and returns array of lmbUploadedFile instances
+-- lmbHttpRequest :: getFile($name) added, it returns lmbUploadedFile instance for simple forms(no nested arrays) or null
+-- ***ATTENTION*** possible BC break: lmbHttpRequest wraps all file entries with lmbUploadedFile but the probability should be minimal since lmbUploadedFile implements ArrayAccess interface
+
+
+0.1.1-alpha - 16 February 2007 (r5038)
+==================================================
+
+-- lmbHttpResponse :: reset() doesn't clear output buffers anymore
+-- lmbUri :: reset() now optionally accepts $uri
+-- lmbUri :: parse() is considered obsolete
+-- initial PhpDocs
+
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'session' ###################
+
+0.3.0-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- lmbSession :: start($storage = null) is now an instance method and it optionally accepts $storage in order to install it
+-- lmbSessionStorage :: storageInstall() => install()
+-- initial version of lmbFakeSession added, for now it simply doesn't call PHP's builtin session_start() function and doesn't install storage
+
+0.2.0-alpha - 16 February 2007 (r5070)
+==================================================
+
+-- tests are more isolated
+-- lmbSession does not accept session storage driver in constructor anymore.
+-- lmbSessionDbStorage accepts db connection and session max life time in constructor now.
+-- all these refactorings allowed to refactor lmbSessionStartupFilter in WEB_APP package
+-- static lmbSession :: start() added, it simply calls session_start()
+-- initial PhpDocs
+
+
+0.1.0-alpha - 14 December 2006 (r4537)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'tests_runner' ###################
+
+0.5.0-alpha - 2 April 2007 (r5466)
+==================================================
+
+-- Console_Getopt dependency removed(TR-6)
+-- obsolete lmbTestTreeShellUI removed
+-- lmbTestTreeDirNode :: getDirItems() now applies files filter
+-- path to configuration file can now also be specified via LIMB_TESTS_RUNNER_CONFIG environment variable, please note that config is included in the following order:
+		1) --config option 
+		2) env. variable if --config option is not present
+-- lmbTestShellUI :: runEmbedded() added, it allows the shell UI to be run from new limb CLI runner
+-- experimental UnitCliCmd.class.php added allowing the tests runner be run as "limb unit ..." with new limb CLI runner
+-- minor fix in lmbTestTreeShellUI - will output usage info if receive wrong options
+
+0.4.0-alpha - 27 February 2007 (r5157)
+==================================================
+
+-- updated version of SimpleTest to CVS 26/02/2007 version
+-- using TestSuite :: addTestFileOnce(...) in lmbTestTreeFileNode instead of addTestFile(..)
+-- SimpleTest initialization in limb_unit.php is postponed until user settings are included, this allows to override SIMPLE_TEST constant.
+
+0.3.1-alpha - 19 February 2007 (r5136)
+==================================================
+
+-- fixing windows limb_unit.bat installation issue
+-- better null node protection during directory bootstrap
+
+0.3.0-alpha - 13 February 2007 (r5058)
+==================================================
+
+-- introducing new CLI interface: limb_unit which allows to run tests directly from file system. This interface also takes into account nested fixtures, init scripts, etc.
+-- lmbTestShellUI => lmbTreeTestShellUI
+-- lmbTestShellUI now allows to execute tests located in file system
+-- limb_unit.php script should be used for running tests within file system all other bin/* scripts removed
+-- limb_unit and limb_unit.bat are deployed into @php_dir@ during PEAR package deployment
+-- fixing compatibility issues with PHP-5.2
+
+0.2.0-alpha - 13 December 2006 (r4538)
+==================================================
+
+-- conditional ignoring of directories added: if dir contains .ignore.php script inclusion of which returns true the directory is considered to be ignored
+-- lmbTestTreeDirNode includes .init.php if it finds it in the tests directory, this allows to have some initialization logic before tests execution, this feature shouldn't be used for fixtures!!!
+-- lmbTestShellUI :: browse(), :: perform() are now public
+-- test files filter and class format can be setup with new constants LIMB_TEST_RUNNER_FILE_FILTER and LIMB_TEST_RUNNER_CLASS_FORMAT respectively
+-- *.test.php filter added
+-- abstract lmbTestTreeNode :: createTestGroupWithoutChildren() added, it's used for wrapping child test case with parent cases when we don't need children
+-- lmbTestTreeNode refactored, template method _createTestGroupForWrapping added, this allowed to remove code duplication in wrapWithParentTestGroups in lmbTestTreeDirNode
+-- lmbTestTreeNode :: wrapWithParentTestGroups fixed: parent check happens right before calling $parent->wrapWithParentTestGroups, not in the beginning of a method
+-- experimental lmbTestTreeGlobNode added, it can collect a number of testing directories using glob patterns
+-- lmbTestShellUI,lmbTestWebUI accept optional $argv argument in constructor
+-- lmbTestWebUI :: perform(..), browse(..) are now public methods just like in lmbTestShellUI
+-- minimal improvement in web tests runner: making nice looking table with test groups/cases;
+
+0.1.0-alpha - 19 April 2006
+==================================================
+
+-- initial release of this package.
+
+################### Package 'toolkit' ###################
+
+0.2.0-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- lmbToolkit now returns the same instance object from all static methods like save(), setup(), instance(), restore() etc.
+-- lmbAbstractTools now holds an instance of lmbToolkit.
+-- lmbToolkit now supports set/get interface. lmbToolkit now acts like a regular Registry allowing developer to store any variables in it. lmbToolkit :: save() and :: restore() works for stored variables the same way as for tools.
+-- lmbToolkit :: setRaw() and getRaw() methods added. Tools must this methods if they want to save they variables in toolkit.
+-- lmbToolkit can forvard generic getters like get('var') to specific getters in tools like getVar() if they exist.
+
+
+0.1.1-alpha - 16 February 2007 (r5042)
+==================================================
+
+-- obsolete lmbToolkit :: autoload(...) removed
+-- .init.php including limb/core package support added
+-- initial PhpDocs
+
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+- Initial release of this package.
+
+################### Package 'tree' ###################
+
+0.1.0-alpha - 16 February 2007 (r5015)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'util' ###################
+
+0.1.2-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- *nix tests fixes
+
+0.1.1-alpha - 16 February 2007 (r5044)
+==================================================
+
+-- tests are more isolated
+-- lmbFs :: recursiveFind() => findRecursive()
+-- initial PhpDocs
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'validation' ###################
+
+0.3.0-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- changes due to recent I18N package refactorings
+-- qt translations move to this package from I18N package
+-- VALIDATION package now depends on I18N package
+
+
+0.2.0-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- better PhpDocs
+-- ***ATTENTION*** possible BC break: lmbErrorMessage is now a regular ArrayObject. All 'message' field processing staff moved to lmbErrorList class. BC is kept for 'message', 'error', 'ErrorMessage' fields. If you used other variable names in your templates - please rename to 'message'.
+
+
+0.1.1-alpha - 16 February 2007
+==================================================
+
+-- tests are more isolated
+-- initial PhpDocs
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'view' ###################
+
+0.1.0-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- initial release of this package (extracted from WEB_APP package)
+
+################### Package 'wact' ###################
+
+0.3.2-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- examples folder removed from WACT since we have a separate project for WACT examples
+-- new version of <core:include> tag that sets variables like <core:set> tag and can set variables both in current datasource or can create a new datasource to set data in. Use "in_datasource" attribute to include file with <core:include> tag in new datasource.
+-- new tags: <fetch>, <fetch:decorate>, <fetch:parameter>, <iterator:transfer>, <iterator:decorate>, <perform>, <perform:params>. All these tag are ported from WEB_APP package. The new versions of the tags works almost like the old ones except the new ones (<fetch>, <perform> and <xx:decorate> tags) now can accept optional "include" attribute that points to a file to be included. These is no need to use this new attribute if you used to Limb3 "1 file = 1 class" schema
+-- new WactArrayIteratorDecorator class
+-- new WactFetcher interface with single fetch() method.
+-- new WactClassPath class. This is an adaptation of lmbClassPath class. WactClassPath accepts $class_name and $include_path in constructor. If $include_path is not set, WactClassPath tries to guess include_path using $class_name in the wact lmbClassPath do. This way we keep BC with the old versions of <fetch>, <iterator> and <perform> tags.
+-- WactTemplate :: toStudlyCaps() ported from Limb3 CORE package
+-- WactTemplate :: capture() now catches WactException, flushes and cleans it and rethrows the exception.
+-- better logic for setting checked form widgets
+  * new method WactCheckableFormElement :: _isChecked() where all weird checked logic is new resides
+  * WactJSCheckboxComponent sets 'checked=true' if checked attribute is present in tag
+  * WactJSCheckboxComponent now extends WactCheckableFormElement and uses _isChecked() internally
+-- WactDefaultTemplateLocator :: _isReadable() method added since file_exists() php-function doesn't take into account include_path
+-- WactRuntimeTagComponent :: getBoolAttribute($name) added
+-- <option> tag values are enclosed with " in select.tag.php
+-- a bit better exception message formatting
+-- less fragile tests
+-- other minor improvements
+
+
+0.3.1-alpha - 14 March 2007 (r5245)
+==================================================
+
+-- WactDataBindingExpression now accepts optionally $datasource_context as third constructor parameter.
+-- WACT now allowes to access array elements by index if needed. E.g: {$data.1}
+-- WactTemplate :: createCompiler() method added
+-- minor fixes in examples.
+-- more examples added.
+-- better tests
+-- fix for WACT_STRICT_MODE (actually this constant was not working in 0.3.0)
+
+
+0.3.0-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- **IMPORTANT**! More strict WACT compiler. By default now it demands all tags to be closed and all attributes to have values.
+-- new WACT_STRICT_MODE constant that allows to switch off WACT compiler strictness. Just define WACT_STRINT_MODE as FALSE value before limb/wact/common.inc.php included.
+-- <list:separator> is now a WactRuntimeComponentTag and creates WactListSeparatorComponent
+-- <list:separator> "step" attribute alias added: "every"
+-- <list:list> tag now sends it's parent as context in DBE if "from" attribute is used. Should be no BC breaks.
+-- new <list:fill> tag that allows to output a portion of template to create a valid html layout while generating multi-column lists. See examples for more details.
+-- WactArrayIterator :: countPaginated() method added to meet lmbPagedDataset interface(actually there is no direct link to this interface since we don't want to introduce any dependency on other Limb packages)
+-- new <paginate> tag that allows to link a list with a pager rigth in WACT template. use <paginate> tag before <pager:navigator> and <list:list> tag.
+-- new tag <form:field_errors> that allows to render all validation errors for every form field using nested <list:list> tag. No need to specify "target" attribute as with old version of <form:errors> tag. <form:field_errors> supports "for" attribute that maked the tag fill nested <list:list> tag with errors that are belongs to the specified form field only.
+-- <form:errors> tag now looks for nested <list:list> tag and passes error dataset to it. Self closing notation and "target" attribute no longer required. Old "target" behaviour is still available.
+-- now you may have tag names aliases in @tag annotation separated with commas like @tag fetch:params, fetch:param
+-- WactCompileTreeNode :: findUpChild($id) method introduced
+-- WactPagerNavigatorTag now uses findUpChild($id) method while looking for original pager from mirror pager
+-- new <site_branch_selector> and <site_branch> tag that allows to output a portion of template depending of $_SERVER['REQUEST_URI'] value.
+-- DBE now allows to specify datasource id in expression. e.g. #(id1)(id2)article.title
+-- removed WactAttributeProperty since we doesn't need this class actually
+-- WactOutputExpression -> WactOutputExpressionNode
+-- many minor refactorings in WACT compiler.
+-- fixed a bug with WactCompilerArtifactDictionary. It skips search folder if one doesn't contain any single child subfolder
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+
+
+0.2.0-alpha - 16 February 2007 (r5072)
+==================================================
+
+-- some minor improvements in <core:wrap> tag that now allows to produce better error messages.
+-- added basic support for checkbox groups (adding checked attribute available with array data for now).
+-- proper work of "from" attribute for WactRuntimeDatasourceComponentTag and WactRuntimeDatasourceComponentHTMLTag like <core:datasource> and <form runat='server'>. Please note: initial data container for DBE in "from" attribute is parent tag not the tag itself. Eg.: <core:datasource from='data'> takes "data" from parent (not <core:datasource from='^data'>).
+-- <select> tag now can parse its child <option> tags and use it as default options list. You can  use <option value='some_value' selected> to set default selection as well.
+-- refactoring: WactComponentParsingState :: findComponent() renamed to WactComponentParsingState :: findTagInfo;
+-- WACT_PARSER_FORBID_PARSING constant restored that allows tags to forbid parsing their contents if needed.
+-- <list:serapator> tag now supports "literal" attribute that allows to restrict parsing tag contents.
+-- fixed /tests/run.php script. Now it works in CLI mode only.
+-- new <core:repeat> tag that allows to repeat a portion of template several times
+-- "text" filter renamed to "nl2br"
+-- better "trim" filter functionality
+-- new <form:preserve_state name='attr_name'> tag that calls WactFormComponent->preserveState() and causes to generate hidden input with "attr_name" attribute as name and value taken from WactFormComponent datasource.
+-- refactored version of pager tags. Now pager allows to use both sections and elipses (as old WACT pager).
+-- ListRowNumber property now cares about <list:list> dataset offset.
+-- <list:separator> now supports "step" attribute that allows to output separator contents every "step" rows only.
+-- WactArrayObject :: getOffset() added (mostly to support new functionality of ListRowNumber)
+-- new "constant" filter. That allows to replace constant name with its value.
+-- new "safejstext" filter that resplaces all "\r\n" with "<br/>" unlike "nl2br" that just added "<br/>" near "\r\n"
+-- new <form:errors> tag that allows to pass form validations errors list to any <list:list> tag.
+-- new <form_multiple> tag that allows to have several forms on the same page and every form field will be prefixed with form name so request processing can be more simple.
+-- new <js_checkbox> tag that generates checkbox with hidden input. This checkbox always sends it's value (0 or 1) regardless of checked flag.
+-- new <form:referer> tag that generated a hidden input tag with referer information taken from $_SERVER['HTTP_REFERER'] or $_GET['referer'] or $_POST['referer'].
+-- new <select:options_source> tag that allows to convert different types of datasources into options list for <select> tag.
+-- new <select_with_grouped_options> tag to generate <select> with grouped options list. Choice list must be set from php-script.
+-- many examples from old WACT restored. New ones added.
+-- WactArrayIterator :: paginate($offset, $limit) method added. WactArrayIterator now supports pagination.
+-- fixed a bug with <core:set> tag. Now it uses nearest parest datasource component instead of immediate parent component that could not be a datasource at all.
+-- <core:set> tag now supports "runtime" attribute. If this attribute presents the tag will generate DBE only and will skip registering constant property in parent datasource tag.
+-- WactFilterDictionary, WactTagDictionary, WactPropertyDictionary allow to register element info once only.
+-- added WACT prefixes for all non-prefixes classes in WACT packages (including FSM and Math_Rpn)
+-- now tag compiler properties are registered for tag class not just tag name. This allows to keep propety compatibility with tags that are inherit from core WACT tags.
+-- experimental version of optimized Wact compiler that generates much less code in compiled template. This allows to gain some performance improvements in complext templates. Compiled templates code now looks much cleaner too.
+-- WactRuntimeComponent :: getDataSource() and getDatasourceComponent() methods added
+-- some minor speed improvements in WactArrayObject
+
+
+0.1.0-alpha - 14 December 2006 (r4558)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'web_app' ###################
+
+0.4.0-alpha - 2 April  2007 (r5454)
+==================================================
+
+-- added ability for Limb3 based applications to work in a subfolder of DocumentRoot (the code was ported from Limb2)
+-- CRUD example removed from WEB_APP package. Now we have a copy of it at https://svn.limb-project.com/limb/3.x/examples/crud
+-- I18N tags and filters moved to I18N package
+-- Most of fetch, all iterator and all perform tags were moved to WACT package.
+-- all view stuff moved to new VIEW package
+-- changes due to global Limb3 functions renamings
+-- lmbFormCommand, lmbController :: setViewFormDatasource() is deprecated now,  setFormDatasource() added and should be used instead
+-- adding qt tranlations file web_app.en_US.ts
+-- removing junky src/util/popup.inc.php
+-- using proper translations in validation rules
+-- lmbFormCommand properly initiates default validator and error_list now.
+-- database stuff removed from lmbWebAppTools, all moved to DBAL package
+
+!!! Minor BC break
+-- lmbSessionMessageBox -> lmbFlashBox
+-- lmbSessionMessageBoxErrorsFetcher -> lmbFlashBoxErrorsFetcher
+-- lmbSessionMessageBoxMessagesFetcher -> lmbFlashBoxMessagesFetcher
+-- lmbSessionMessageBoxFetcher -> lmbFlashBoxFetcher
+-- now all flash box fetchers return dataset with "text" field in every record instead of "error", "message" and "text" in different cases
+-- new <flash_box> and <message_box> tags added. These tags are replacements for long constructions like <fetch using='limb/web_app/src/fetcher/lmbSessionMessageBoxFetcher' target='messages' />.
+-- lmbWebAppTools :: getSessionMessageBox() -> :: getFlashBox()
+
+
+0.3.0-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- removing active_record and dbal dependency from web_app package. Keeping BC, including active_record/common.inc.php and dbal/common.inc.php only if they're present
+-- <fetch:param> tag now has alias: <fetch:params>
+-- <fetch> tag now allows to use "one" attribute instead of "first"
+-- removed <limb:request_transfer> tag since we never used it
+-- <site_branch> and <site_branch_selector> tags moved to WACT
+-- lmbFetcher :: _createDataSet() now can return arrays. The result will we wrapped with lmbPagedArrayDataset automatically. If it returns scalar value then empty lmbPagedArrayDataset is returned.
+-- LIMB_USE_DB_DRIVER => LIMB_SESSION_USE_DB_DRIVER !!!
+-- lmbSessionStartupFilter refactorings due to SESSION package changes
+-- <fetch>, <fetch:transfer>, <iterator:transfer> now extends new lmbFetchingTag class.  lmbFetchingTag introduces new "to" attribute that tell where to put dataset. "to" attribute should be a valid DBE. "target" attribute is a special case of "to" attribute: "target" attribute value becomes (value) and uses as "to" attribute value after transformation.
+-- lmbWebApplicationSandbox added, this is an application container that can be used for integration testing of whole applications or controllers. It accepts user reguest and registers fake response and session instances in the toolkit before processing sandboxed application. Once the application processed it merely returns the response object. Application object is optional and if skipped lmbWebApplication is used.
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- many other small fixes
+
+
+0.2.0-alpha - 16 February 2007 (r5095)
+==================================================
+
+-- using PATH_SEPARATOR  constant for setting include_path in setup.php
+-- <fetch> tag alias for "first" attribute called "one" added. Now you can use <fetch one using='...'.../>
+-- lmbUniqueTableFieldRule :: __construct(..) allows to omit 3d argument $table_field. $field_name will be used in this case.
+-- lmbWebAppTools :: redirect() takes additional string parameter $append which appends to redirect string now
+-- a more logical layout of lmbViewRenderingFilter(thanks to Eugene444)
+-- added connection and db object to lmbWebAppTestCase
+-- lmbUncaughtExceptionHandlingFilter is registered by default in lmbWebApplication
+-- lmbUncaughtExceptionHandlingFilter clears output buffers
+-- minor fix in lmbBaseIteratorComponent
+-- <active_record:fetch> now catches lmbARNotFoundException and returns an empty dataset if record was not found;
+-- NotFoundController now writes 404 header to response;
+-- all factories removed and their code moved to lmbWebAppTools
+-- lmbSessionMessageBox added, it incapsulates session message box logic previously placed in lmbWebAppTools
+-- fixed: lmbViewRenderingFilter missing return statement
+-- lmbWebAppTools :: getDefaultDbDSN() now uses lmbConf and db.conf.php configuration file instead of common.ini
+-- lmbWebAppTools :: createConf(..) removed in favour of getConf(..)
+-- lmbWebAppTools does not create any session storate driver anymore. All this functionality moved to lmbSessionStartupFilter
+-- lmbSessionStartupFilter calls lmbSession :: start(), not simply session_start(), this way lmbSession class is present(and lmbSerializable too which is important)
+-- lmbWebAppTools :: renderView($template) added
+-- lmbWactTemplateConfig now uses wact.conf.php instead of wact.ini
+-- lmbSessionStartupFilter now works in different way. It uses native session storage driver by default. If you need to use session db storage driver please define 'LIMB_USE_DB_DRIVER' constant as 'true'
+-- lmbFetcher :: fetch(), :: fetchOne() added, these are aliases for getDataSet(), getFirstRecord() respectively, the latter ones are marked obsolete
+-- attribute USING for tag <active_record:fetch> is alias for class_path attribute for simplicity. Now you can write <active_record:fetch using='News' .../> instead of <active_record:fetch class_path='News' .../>
+-- mostly all non Limb specific tags moved to WACT package (due to #WACT-12)
+  * all form tags
+  * all core tags, filters
+  * all pager tags, props
+  * all list props, tags
+-- obsolete lmbIniDbDSN removed
+-- config stuff moved from lmbWebAppTools to config package toolkit
+-- file_schema stuff moved from lmbWebAppTools to file_schema package toolkit
+-- lmbBaseCommand :: flashError(), flashMessage(), redirect() methods added
+-- /src/generator/lmbPHPTemplate => /src/view/lmbPHPView.class.php
+-- obsolete generator stuff removed
+-- lmbController :: closePopup() echoes javascript code directly into response, no more close_popup.html dependency
+-- tests were splitted into db related ones and plain tests
+-- new WACT <perform> tag that allows you execute any method of special classes that inherit from lmbTemplateCommand. This tag can add more control over your templates if necessary.
+-- new WACT <find:params> added that allows to pass any params to lmbActiveRecord child classes custom find methods right from template.
+-- <request> tag with all properties removed since we don't need them anymore.
+-- initial PhpDocs
+-- many other minor fixes and improvements
+
+
+0.1.0-alpha - 14 December 2006
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'web_cache' ###################
+
+0.1.0-alpha - 16 February 2007 (r5013)
+==================================================
+
+-- Initial release of this package.
+
+################### Package 'wysiwyg' ###################
+
+0.1.2-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- form items manipulation widgets removed from Default toolbar
+-- using new unified lmbConfTools :: getConf() interface
+
+
+0.1.1-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- bundled fckeditor updated to version 2.4
+
+0.1.0-alpha - 16 February 2007 (r5015)
+==================================================
+
+-- Initial release of this package.

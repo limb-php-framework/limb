@@ -1,0 +1,103 @@
+0.3.2-alpha - 2 April 2007 (r5454)
+==================================================
+
+-- examples folder removed from WACT since we have a separate project for WACT examples
+-- new version of <core:include> tag that sets variables like <core:set> tag and can set variables both in current datasource or can create a new datasource to set data in. Use "in_datasource" attribute to include file with <core:include> tag in new datasource.
+-- new tags: <fetch>, <fetch:decorate>, <fetch:parameter>, <iterator:transfer>, <iterator:decorate>, <perform>, <perform:params>. All these tag are ported from WEB_APP package. The new versions of the tags works almost like the old ones except the new ones (<fetch>, <perform> and <xx:decorate> tags) now can accept optional "include" attribute that points to a file to be included. These is no need to use this new attribute if you used to Limb3 "1 file = 1 class" schema
+-- new WactArrayIteratorDecorator class
+-- new WactFetcher interface with single fetch() method.
+-- new WactClassPath class. This is an adaptation of lmbClassPath class. WactClassPath accepts $class_name and $include_path in constructor. If $include_path is not set, WactClassPath tries to guess include_path using $class_name in the wact lmbClassPath do. This way we keep BC with the old versions of <fetch>, <iterator> and <perform> tags.
+-- WactTemplate :: toStudlyCaps() ported from Limb3 CORE package
+-- WactTemplate :: capture() now catches WactException, flushes and cleans it and rethrows the exception.
+-- better logic for setting checked form widgets
+  * new method WactCheckableFormElement :: _isChecked() where all weird checked logic is new resides
+  * WactJSCheckboxComponent sets 'checked=true' if checked attribute is present in tag
+  * WactJSCheckboxComponent now extends WactCheckableFormElement and uses _isChecked() internally
+-- WactDefaultTemplateLocator :: _isReadable() method added since file_exists() php-function doesn't take into account include_path
+-- WactRuntimeTagComponent :: getBoolAttribute($name) added
+-- <option> tag values are enclosed with " in select.tag.php
+-- a bit better exception message formatting
+-- less fragile tests
+-- other minor improvements
+
+
+0.3.1-alpha - 14 March 2007 (r5245)
+==================================================
+
+-- WactDataBindingExpression now accepts optionally $datasource_context as third constructor parameter.
+-- WACT now allowes to access array elements by index if needed. E.g: {$data.1}
+-- WactTemplate :: createCompiler() method added
+-- minor fixes in examples.
+-- more examples added.
+-- better tests
+-- fix for WACT_STRICT_MODE (actually this constant was not working in 0.3.0)
+
+
+0.3.0-alpha - 13 March 2007 (r5232)
+==================================================
+
+-- **IMPORTANT**! More strict WACT compiler. By default now it demands all tags to be closed and all attributes to have values.
+-- new WACT_STRICT_MODE constant that allows to switch off WACT compiler strictness. Just define WACT_STRINT_MODE as FALSE value before limb/wact/common.inc.php included.
+-- <list:separator> is now a WactRuntimeComponentTag and creates WactListSeparatorComponent
+-- <list:separator> "step" attribute alias added: "every"
+-- <list:list> tag now sends it's parent as context in DBE if "from" attribute is used. Should be no BC breaks.
+-- new <list:fill> tag that allows to output a portion of template to create a valid html layout while generating multi-column lists. See examples for more details.
+-- WactArrayIterator :: countPaginated() method added to meet lmbPagedDataset interface(actually there is no direct link to this interface since we don't want to introduce any dependency on other Limb packages)
+-- new <paginate> tag that allows to link a list with a pager rigth in WACT template. use <paginate> tag before <pager:navigator> and <list:list> tag.
+-- new tag <form:field_errors> that allows to render all validation errors for every form field using nested <list:list> tag. No need to specify "target" attribute as with old version of <form:errors> tag. <form:field_errors> supports "for" attribute that maked the tag fill nested <list:list> tag with errors that are belongs to the specified form field only.
+-- <form:errors> tag now looks for nested <list:list> tag and passes error dataset to it. Self closing notation and "target" attribute no longer required. Old "target" behaviour is still available.
+-- now you may have tag names aliases in @tag annotation separated with commas like @tag fetch:params, fetch:param
+-- WactCompileTreeNode :: findUpChild($id) method introduced
+-- WactPagerNavigatorTag now uses findUpChild($id) method while looking for original pager from mirror pager
+-- new <site_branch_selector> and <site_branch> tag that allows to output a portion of template depending of $_SERVER['REQUEST_URI'] value.
+-- DBE now allows to specify datasource id in expression. e.g. #(id1)(id2)article.title
+-- removed WactAttributeProperty since we doesn't need this class actually
+-- WactOutputExpression -> WactOutputExpressionNode
+-- many minor refactorings in WACT compiler.
+-- fixed a bug with WactCompilerArtifactDictionary. It skips search folder if one doesn't contain any single child subfolder
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+
+
+0.2.0-alpha - 16 February 2007 (r5072)
+==================================================
+
+-- some minor improvements in <core:wrap> tag that now allows to produce better error messages.
+-- added basic support for checkbox groups (adding checked attribute available with array data for now).
+-- proper work of "from" attribute for WactRuntimeDatasourceComponentTag and WactRuntimeDatasourceComponentHTMLTag like <core:datasource> and <form runat='server'>. Please note: initial data container for DBE in "from" attribute is parent tag not the tag itself. Eg.: <core:datasource from='data'> takes "data" from parent (not <core:datasource from='^data'>).
+-- <select> tag now can parse its child <option> tags and use it as default options list. You can  use <option value='some_value' selected> to set default selection as well.
+-- refactoring: WactComponentParsingState :: findComponent() renamed to WactComponentParsingState :: findTagInfo;
+-- WACT_PARSER_FORBID_PARSING constant restored that allows tags to forbid parsing their contents if needed.
+-- <list:serapator> tag now supports "literal" attribute that allows to restrict parsing tag contents.
+-- fixed /tests/run.php script. Now it works in CLI mode only.
+-- new <core:repeat> tag that allows to repeat a portion of template several times
+-- "text" filter renamed to "nl2br"
+-- better "trim" filter functionality
+-- new <form:preserve_state name='attr_name'> tag that calls WactFormComponent->preserveState() and causes to generate hidden input with "attr_name" attribute as name and value taken from WactFormComponent datasource.
+-- refactored version of pager tags. Now pager allows to use both sections and elipses (as old WACT pager).
+-- ListRowNumber property now cares about <list:list> dataset offset.
+-- <list:separator> now supports "step" attribute that allows to output separator contents every "step" rows only.
+-- WactArrayObject :: getOffset() added (mostly to support new functionality of ListRowNumber)
+-- new "constant" filter. That allows to replace constant name with its value.
+-- new "safejstext" filter that resplaces all "\r\n" with "<br/>" unlike "nl2br" that just added "<br/>" near "\r\n"
+-- new <form:errors> tag that allows to pass form validations errors list to any <list:list> tag.
+-- new <form_multiple> tag that allows to have several forms on the same page and every form field will be prefixed with form name so request processing can be more simple.
+-- new <js_checkbox> tag that generates checkbox with hidden input. This checkbox always sends it's value (0 or 1) regardless of checked flag.
+-- new <form:referer> tag that generated a hidden input tag with referer information taken from $_SERVER['HTTP_REFERER'] or $_GET['referer'] or $_POST['referer'].
+-- new <select:options_source> tag that allows to convert different types of datasources into options list for <select> tag.
+-- new <select_with_grouped_options> tag to generate <select> with grouped options list. Choice list must be set from php-script.
+-- many examples from old WACT restored. New ones added.
+-- WactArrayIterator :: paginate($offset, $limit) method added. WactArrayIterator now supports pagination.
+-- fixed a bug with <core:set> tag. Now it uses nearest parest datasource component instead of immediate parent component that could not be a datasource at all.
+-- <core:set> tag now supports "runtime" attribute. If this attribute presents the tag will generate DBE only and will skip registering constant property in parent datasource tag.
+-- WactFilterDictionary, WactTagDictionary, WactPropertyDictionary allow to register element info once only.
+-- added WACT prefixes for all non-prefixes classes in WACT packages (including FSM and Math_Rpn)
+-- now tag compiler properties are registered for tag class not just tag name. This allows to keep propety compatibility with tags that are inherit from core WACT tags.
+-- experimental version of optimized Wact compiler that generates much less code in compiled template. This allows to gain some performance improvements in complext templates. Compiled templates code now looks much cleaner too.
+-- WactRuntimeComponent :: getDataSource() and getDatasourceComponent() methods added
+-- some minor speed improvements in WactArrayObject
+
+
+0.1.0-alpha - 14 December 2006 (r4558)
+==================================================
+
+-- Initial release of this package.

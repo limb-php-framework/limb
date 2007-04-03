@@ -1,0 +1,44 @@
+<table width='100%' border='0' cellspacing='0' cellpadding='0' style="padding: 0 0 8px 0;">
+<tr>
+  <td width=120>
+    <label>Родительский элемент</label><br/>
+    <div id='parent_name' style='font-weight: bold'><core:optional for='parent'> {$parent.title} ( {$parent.url_path} )</core:optional></div>
+  </td>
+  <td align=left>
+    <input type='hidden' name='parent_id' id='parent' />
+    <input type='button' value='...' onclick='return onButtonClick();' runat='client' style="width:20px"/>
+    <input type='button' value='Сбросить' onclick='return onResetClick();' runat='client'/>
+  </td>
+</tr>
+</table>
+
+<script type="text/javascript">
+function onButtonClick()
+{
+  new Limb.Window('/admin/tree/browse', 'parent_select');
+  return false;
+}
+
+function onResetClick()
+{
+  var parent_name_input = document.getElementById('parent_name');
+  if(!parent_name_input) return;
+  parent_name_input.innerHTML = '';
+
+  var parent_id = document.getElementById('parent');
+  if(!parent_id) return;
+  parent_id.value = '';
+}
+
+function SetUrl(url, id, parent_name)
+{
+  var parent_name_input = document.getElementById('parent_name');
+  if(!parent_name_input) return;
+  parent_name_input.innerHTML = parent_name + '(' + url + ')';
+
+  var parent_id = document.getElementById('parent');
+  if(!parent_id) return;
+  parent_id.value = id;
+}
+
+</script>

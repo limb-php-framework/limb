@@ -1,0 +1,12 @@
+<fetch using='limb/web_app/src/fetcher/lmbSessionMessageBoxFetcher' target='session_messages' />
+<list:list id='session_messages'>
+<div id='notify_zone' class='notify_zone' onclick='Effect.Fade("notify_zone")'>
+  <list:ITEM >
+  <core:OPTIONAL for='is_error'><div class='error'>{$text}</div></core:OPTIONAL>
+  <core:OPTIONAL for='is_message'><div class='message'>{$text}</div></core:OPTIONAL>
+  <script>
+    setTimeout('Effect.Fade("notify_zone")', 10000);
+  </script>
+  </list:ITEM>
+</div>
+</list:list>

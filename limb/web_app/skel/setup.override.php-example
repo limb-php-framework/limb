@@ -1,0 +1,10 @@
+<?php
+set_time_limit(0);
+restore_include_path();
+set_include_path(dirname(__FILE__) . '/' . PATH_SEPARATOR .
+                 'd:/var/dev/limb/3.x/' . PATH_SEPARATOR .
+                 get_include_path());
+
+@define('LIMB_CACHE_DB_META_IN_FILE', false);
+
+?>

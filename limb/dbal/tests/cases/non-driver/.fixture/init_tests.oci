@@ -1,0 +1,53 @@
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE test_one_table_object_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE test_one_table_object_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE test_one_table_object'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE test_one_table_object (
+  id number NOT NULL,
+  annotation clob,
+  content clob,
+  news_date varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER test_one_table_object_trigger
+BEFORE INSERT ON test_one_table_object REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT test_one_table_object_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE test_db_table_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE test_db_table_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE test_db_table'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE test_db_table (
+  id number NOT NULL,
+  description VARCHAR2(255),
+  title VARCHAR2(255),
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER test_db_table_trigger
+BEFORE INSERT ON test_db_table REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT test_db_table_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE all_types_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE all_types_test (
+ field_int number default NULL,
+ field_varchar varchar(255) default NULL,
+ field_char char(11) default NULL,
+ field_date date default NULL,
+ field_datetime date default NULL,
+ field_time date default NULL,
+ field_text clob,
+ field_smallint number default NULL,
+ field_bigint number default NULL,
+ field_blob blob,
+ field_float number(10,1) default NULL,
+ field_decimal number(10,1) default NULL,
+ field_tinyint number default NULL
+);
+/

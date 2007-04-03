@@ -1,0 +1,46 @@
+/*===== CSS theme file for CalendarXP 6.0 (Totally configurable) =====*/
+
+.cal-days-names{font:bold 8pt Tahoma; color:#DB0008; background-color:#ffffff}
+.cal-days{font:8pt Verdana;padding:3px 0 3px 0; background-color:#DEDEDE}
+.cal-days tr{background-color:#ffffff}
+.cal-weekend{background-color:#B3CBF6}
+.cal-today{border:solid 2px #d00000}
+.cal-other{color:#888888;}
+
+/* Calendar Head - the cells showing "Sunday", "Monday" .... */
+.CalHead {cursor:default; text-align:center; font:bold 8pt Tahoma; color:#DB0008; background-color:#ffffff}
+/* Day Cell - the container cell of each day */
+.CalCell {cursor:hand; text-align:center;}
+/* Day Number */
+.CellAnchor {text-decoration:none; font:9pt Trebuchet MS, Arial;}
+
+/* WeekNo Head - the top cell in the week number column */
+.WeekHead {cursor:default; text-align:center; font:bold 10pt arial; color:cyan;}
+/* WeekNo Column Cell - the cells of the week number column */
+.WeekCol {cursor:default; text-align:center; font:bold 9pt arial; background:cyan;}
+
+/* Month navigators - the "<" or ">" used to move to previous or next month */
+.MonthNav {vertical-align:middle; height:22; width:18; font:10pt Fixedsys; color:black;
+border:solid 1px #5C6699; background-color:#E6EBFF;font:10pt Arial;
+			filter:progid:DXImageTransform.Microsoft.Shadow(color=#3F719F, Direction=135, Strength=4) }
+
+A.MonthNav:hover {background-color:#FFD3D3}
+A.MonthNav:active {color:#FFD3D3}
+
+/* styles for the 3 calendar portions (actually 3 table TDs) */
+.CalTop {text-align:center;}
+.CalMiddle {}
+.CalBottom {text-align:center;text-color:#000000}
+
+/* Calendar title - showing year and month */
+.CalTitle {vertical-align:middle; font:10pt arial; color:black;}
+
+/* The style of internal floating div/layer tags */
+.FreeDiv {}
+
+/*===== Above CSS are commonly used in the script engine =====*/
+
+/*====== Following are additional per-theme styles ======*/
+.Today {text-decoration:none; font: 10pt Verdana, sans; color:gray;}
+A.Today:hover {text-decoration:underline}
+A.Today:active {color:red;}

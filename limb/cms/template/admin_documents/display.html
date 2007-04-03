@@ -1,0 +1,103 @@
+<core:wrap file="_cms/page.html" in="content_zone">
+
+<fetch one using='limb/cms/src/fetcher/lmbCmsNodeFetcher' target='node'/>
+
+<core:datasource id='node'>
+
+<core:optional for='title'>
+<h1>Document "{$title}"</h1>
+</core:optional>
+<core:default for='title'>
+<h1>Documents list</h1>
+</core:default>
+
+<div class='breadcrumbs'>
+  <core:optional for='id'>
+    <iterator:transfer from='parents' target='breadcrumbs' />
+    You are here:<route_url params='controller:admin_documents'>Documents</route_url>&gt;&gt;
+    <list:list id='breadcrumbs'>
+      <list:item><route_url params='id:{$id}'>{$title}</route_url>&gt;&gt;</list:item>
+    </list:list>
+    <span>{$title}</span>
+  </core:optional>
+</div>
+
+<div class='actions'>
+<span>
+<core:optional for='object_id'>
+  <route_url params="action:edit,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'>
+    <img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='edit'/>
+  </route_url>
+</core:optional>
+</span>
+</div>
+
+<h2>Child documents</h2>
+
+<div class='actions'>
+<span>
+<route_url params="action:create" extra='?popup=1&parent={$id}' onclick='return Limb.Http.click(this.href)'>
+ <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='create new document here'/>
+</route_url>
+</span>
+</div>
+
+<active_record:fetch using='limb/cms/src/model/lmbCmsDocument' target='kids' navigator='pager' find='kids_for_parent'>
+  <find:params parent_id='{$id}'/>
+  <fetch:params order='node.priority=DESC'/>
+</active_record:fetch>
+
+<core:include file='_cms/pager.html'/>
+
+<form name='list_form' method='post'>
+<list:list id='kids'>
+<table class='list'>
+
+  <thead>
+    <tr>
+      <th><input type='checkbox' onclick='MarkAll(checked);' name='mark_all' /></th>
+      <th>Order</th>
+      <th>Document</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <list:item>
+    <tr>
+      <td><input type='checkbox' name='ids[]' value='{$node.id}' class='input'/></td>
+      <td><input type='text' name='priority[{$node.id}]' value='{$node.priority}' class='input' size='3'/></td>
+      <td>
+        <ul>
+          <li><route_url params="id:{$node.id}">{$node.title}</route_url></li>
+          <core:optional for='is_published'><li class='published'>Published</li></core:optional>
+          <core:default for='is_published'><li class='unpublished'>Unpublished</li></core:default>
+        <li>Path (URL): <a href='{$node.url_path}' target='_blank'>{$node.url_path}</a></li>
+      </ul>
+      </td>
+      <td>
+        <route_url params="action:edit,id:{$node.id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='edit'/></route_url>
+        <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24'  alt='delete'/></route_url>
+      </td>
+    </tr>
+  </list:item>
+</table>
+
+  <div class='list_actions'>
+    <route_url_set field='delete_url' params="action:delete" />
+    <input type='submit' value='Delete' onclick='Limb.Form.submit(this.form, "{$delete_url}?popup=1");return false;'/>
+
+    <route_url_set field='publish_url' params="action:publish" />
+    <input type='submit' value='Publish' onclick='Limb.Form.submit(this.form, "{$publish_url}?popup=1");return false;'/>
+
+    <route_url_set field='unpublish_url' params="action:unpublish" />
+    <input type='submit' value='Unpublish' onclick='Limb.Form.submit(this.form, "{$unpublish_url}?popup=1");return false;'/>
+
+    <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" />
+    <input type='submit' value='Save order' onclick='Limb.Form.submit(this.form, "{$save_order_url}?popup=1");return false;'/>
+  </div>
+</list:list>
+
+</form>
+
+</core:datasource>
+
+</core:wrap>

@@ -1,0 +1,10 @@
+0.1.1-alpha - 16 February 2007 (r5037)
+==================================================
+
+-- added method lmbMailer::addAttachment for attaching files to mail
+-- initial PhpDocs
+
+0.1.0-alpha - 15 December 2006 (r4577)
+==================================================
+
+-- Initial release of this package.

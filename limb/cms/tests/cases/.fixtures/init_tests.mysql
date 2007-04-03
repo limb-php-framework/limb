@@ -1,0 +1,161 @@
+DROP TABLE IF EXISTS `node`;
+CREATE TABLE `node` (
+  `id` int(11) NOT NULL auto_increment,
+  `root_id` int(11) NOT NULL default '0',
+  `parent_id` int(11) NOT NULL default '0',
+  `priority` int(11) NOT NULL default '0',
+  `level` int(11) NOT NULL default '0',
+  `identifier` varchar(128) NOT NULL default '',
+  `path` varchar(255) NOT NULL default '',
+  `children` int(11) NOT NULL default '0',
+  `title` varchar(255) NOT NULL default '',
+  `controller_id` int(11) NOT NULL default '0',
+  `object_class_id` int(11) NULL default '0',
+  `object_id` int(11) NULL default '0',
+  `kind` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `root_id` (`root_id`),
+  KEY `level` (`level`),
+  KEY `rlr` (`root_id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `id` (`id`,`parent_id`),
+  KEY `object_id` (`object_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `news_item`;
+CREATE TABLE `news_item` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `annotation` text,
+ `content` longtext,
+ `news_date` int(11) default NULL,
+ `date_start` int(11) default NULL,
+ `date_end` int(11) default NULL,
+ `is_featured` tinyint(1) default NULL,
+ `modify_date` int(11) default NULL,
+ `is_published` tinyint(1) default NULL,
+  `node_id` bigint(20) NOT NULL,
+  `image_id` bigint(20),
+ PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `poll`;
+CREATE TABLE `poll` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `date_start` int(11) default NULL,
+  `date_end` int(11) default NULL,
+  `question` varchar(255) NOT NULL default '',
+  `is_published` tinyint(1) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `poll_answer`;
+CREATE TABLE `poll_answer` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `count` int(11) NOT NULL default '0',
+ `title` varchar(50) NOT NULL default '',
+ `poll_id` bigint(20) NOT NULL,
+ PRIMARY KEY  (`id`),
+ KEY `poll_id` (`poll_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `poll_ip`;
+CREATE TABLE `poll_ip` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `poll_id` bigint(20) default NULL,
+ `ip` varchar(15) default NULL,
+ PRIMARY KEY  (`id`),
+ KEY `poll_id` (`poll_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `testing_node_object`;
+CREATE TABLE `testing_node_object` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `content` varchar(255) NOT NULL default '',
+  `node_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `class_name`;
+CREATE TABLE `class_name` (
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `guestbook`;
+CREATE TABLE `guestbook` (
+ `id` int(11) NOT NULL auto_increment,
+ `sender` varchar(255) NOT NULL default '',
+ `sender_email` varchar(255) NOT NULL default '',
+ `message` text NOT NULL,
+ `comment` text,
+ `comment_author` varchar(255) default NULL,
+ `comment_author_email` varchar(255) default NULL,
+ `subject` varchar(255) default NULL,
+ `is_published` tinyint(1) default NULL,
+ `date_created` int(11) default NULL,
+ `date_modified` int(11) default NULL,
+ `sender_ip` varchar(15) default NULL,
+ PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `file_object`;
+CREATE TABLE `file_object` (
+ `id` int(11) NOT NULL auto_increment,
+ `file_name` varchar(255) default NULL,
+ `mime_type` varchar(100) NOT NULL default '',
+ `size` int(10) unsigned default NULL,
+ `etag` varchar(32) default NULL,
+ `uid` varchar(32) default NULL,
+ `node_id` bigint(20) default NULL,
+ PRIMARY KEY  (`id`),
+ KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE `image` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `original_id` bigint(20) default NULL,
+  `thumbnail_id` bigint(20) default NULL,
+  `icon_id` bigint(20) default NULL,
+  `node_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `node_id` (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `pump_data`;
+CREATE TABLE `pump_data` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `old_node_id` bigint(20) NOT NULL,
+  `new_node_id` bigint(20) NOT NULL,
+  `old_object_id` bigint(20) NOT NULL,
+  `new_object_id` bigint(20) NOT NULL,
+  `info_name` varchar(100) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `new_node_id` (`new_node_id`),
+  KEY `old_object_id` (`old_object_id`),
+  KEY `old_node_id` (`old_node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `document`;
+CREATE TABLE `document` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `annotation` text,
+  `content` longtext,
+  `date_start` int(11) default NULL,
+  `date_end` int(11) default NULL,
+  `modify_date` int(11) default NULL,
+  `date` int(11) default NULL,
+  `use_annotation_as_intro` tinyint(1) default NULL,
+  `show_content` tinyint(1) default NULL,
+  `show_child_annotations` tinyint(1) default NULL,
+  `show_child_images` tinyint(1) default NULL,
+  `show_child_dates` tinyint(1) default NULL,
+  `is_published` tinyint(1) default '0',
+  `node_id` bigint(20) default NULL,
+  `image_id` bigint(20) default NULL,
+  `locale` varchar(2) default 'ru',
+  PRIMARY KEY  (`id`),
+  KEY `node_id` (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

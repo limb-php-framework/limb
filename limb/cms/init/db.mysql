@@ -1,0 +1,74 @@
+DROP TABLE IF EXISTS `class_name`;
+CREATE TABLE `class_name` (
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255) character set utf8 collate utf8_bin default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `document`;
+CREATE TABLE `document` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `annotation` text,
+  `content` longtext,
+  `is_published` tinyint(1) default '0',
+  `node_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `node_id` (`node_id`),
+  KEY `actual_docs` (`is_published`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `file_object`;
+CREATE TABLE `file_object` (
+  `id` int(11) NOT NULL auto_increment,
+  `file_name` varchar(255) default NULL,
+  `mime_type` varchar(100) NOT NULL default '',
+  `size` int(10) unsigned default NULL,
+  `etag` varchar(32) default NULL,
+  `uid` varchar(32) default NULL,
+  `node_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE `image` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `original_id` bigint(20) default NULL,
+  `thumbnail_id` bigint(20) default NULL,
+  `icon_id` bigint(20) default NULL,
+  `node_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `node_id` (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `news_item`;
+CREATE TABLE `news_item` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `annotation` text,
+  `content` longtext,
+  `image_id` bigint(20) default NULL,
+  `news_date` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `node`;
+CREATE TABLE `node` (
+  `id` int(11) NOT NULL auto_increment,
+  `root_id` int(11) NOT NULL default '0',
+  `parent_id` int(11) NOT NULL default '0',
+  `priority` int(11) NOT NULL default '0',
+  `level` int(11) NOT NULL default '0',
+  `identifier` varchar(128) NOT NULL default '',
+  `path` varchar(255) NOT NULL default '',
+  `children` int(11) NOT NULL default '0',
+  `title` varchar(255) NOT NULL default '',
+  `controller_id` int(11) NOT NULL default '0',
+  `object_class_id` int(11) default NULL,
+  `object_id` bigint(20) default NULL,
+  `kind` varchar(255) default NULL,
+  `ultra_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `root_id` (`root_id`),
+  KEY `level` (`level`),
+  KEY `rlr` (`root_id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `id` (`id`,`parent_id`),
+  KEY `object_id` (`object_id`),
+  KEY `identifier` (`identifier`,`level`),
+  KEY `ultra_id` (`ultra_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

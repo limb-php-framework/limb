@@ -1,0 +1,95 @@
+
+DROP TABLE IF EXISTS `test_one_table_object`;
+CREATE TABLE `test_one_table_object` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `annotation` text,
+  `content` text,
+  `news_date` date default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `test_one_table_typed_object`;
+CREATE TABLE `test_one_table_typed_object` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  `kind` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `course_for_typed_test`;
+CREATE TABLE `course_for_typed_test` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `title` varchar(255) default NULL,
+ PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `lecture_for_typed_test`;
+CREATE TABLE `lecture_for_typed_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  `course_id` bigint(20) default NULL,
+  `kind` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `social_security_for_test`;
+CREATE TABLE `social_security_for_test` (
+`id` bigint(20) NOT NULL auto_increment,
+`code` varchar(255) default NULL,
+PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `person_for_test`;
+CREATE TABLE `person_for_test` (
+`id` bigint(20) NOT NULL auto_increment,
+`name` varchar(255) default NULL,
+`ss_id` bigint(20) default NULL,
+PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `course_for_test`;
+CREATE TABLE `course_for_test` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `title` varchar(255) default NULL,
+ PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `lecture_for_test`;
+CREATE TABLE `lecture_for_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  `course_id` bigint(20) default NULL,
+  `alt_course_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `lesson_for_test`;
+CREATE TABLE `lesson_for_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `date_start` bigint(20) default NULL,
+  `date_end` bigint(20) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `group_for_test`;
+CREATE TABLE `group_for_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user_for_test`;
+CREATE TABLE `user_for_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `first_name` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user2group_for_test`;
+CREATE TABLE `user2group_for_test` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `user_id` bigint(20) default NULL,
+ `group_id` bigint(20) default NULL,
+ PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

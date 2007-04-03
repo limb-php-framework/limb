@@ -1,0 +1,91 @@
+
+
+***********************************************************************
+Fatal NI connect error 12541, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=xe)(CID=(PROGRAM=d:\tools\PHP\PHP-5.1.4\php.exe)(HOST=KURLUKA)(USER=user)))(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))
+
+  VERSION INFORMATION:
+  TNS for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Time: 11-NOV-2006 15:17:15
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12541
+    TNS-12541: Message 12541 not found; No message file for product=NETWORK, facility=TNS
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: Message 511 not found; No message file for product=NETWORK, facility=TNS
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12514, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=xe)(CID=(PROGRAM=d:\tools\PHP\PHP-5.1.4\php.exe)(HOST=KURLUKA)(USER=user)))(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))
+
+  VERSION INFORMATION:
+  TNS for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Time: 11-NOV-2006 15:18:32
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    TNS-12564: Message 12564 not found; No message file for product=NETWORK, facility=TNS
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12514, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=xe)(CID=(PROGRAM=d:\tools\PHP\PHP-5.1.4\php.exe)(HOST=KURLUKA)(USER=user)))(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))
+
+  VERSION INFORMATION:
+  TNS for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Time: 13-NOV-2006 11:17:48
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    TNS-12564: Message 12564 not found; No message file for product=NETWORK, facility=TNS
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12514, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=xe)(CID=(PROGRAM=d:\tools\PHP\PHP-5.1.4\php.exe)(HOST=KURLUKA)(USER=user)))(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))
+
+  VERSION INFORMATION:
+  TNS for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Time: 13-NOV-2006 11:17:53
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    TNS-12564: Message 12564 not found; No message file for product=NETWORK, facility=TNS
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12514, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=xe)(CID=(PROGRAM=d:\tools\PHP\PHP-5.1.4\php.exe)(HOST=KURLUKA)(USER=user)))(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))
+
+  VERSION INFORMATION:
+  TNS for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.2.0 - Production
+  Time: 13-NOV-2006 11:17:57
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    TNS-12564: Message 12564 not found; No message file for product=NETWORK, facility=TNS
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0

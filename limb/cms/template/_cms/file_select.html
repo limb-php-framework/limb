@@ -1,0 +1,46 @@
+<div class='field'>
+<table width='100%' border='0' cellspacing='0' cellpadding='0' style="padding: 0 0 8px 0;">
+<tr>
+  <td width=120>
+    <label>Файл</label><br/>
+    <div id='file_name' style='font-weight: bold'><core:optional for='file'>{$file.node.title} ({$file.file_name})</core:optional></div>
+  </td>
+  <td align=left>
+    <input type='hidden' name='file_id' id='file' />
+    <input type='button' value='...' onclick='return onButtonClick();' runat='client' style="width:20px"/>
+    <input type='button' value='Сбросить' onclick='return onResetClick();' runat='client'/>
+  </td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript">
+function onButtonClick()
+{
+  new Limb.Window('/admin/media/browse?Type=File', 'file_select');
+  return false;
+}
+
+function onResetClick()
+{
+  var file_name_input = document.getElementById('file_name');
+  if(!file_name_input) return;
+  file_name_input.innerHTML = '';
+
+  var file_id = document.getElementById('file');
+  if(!file_id) return;
+  file_id.value = '';
+}
+
+function SetUrl(url, id, file_name)
+{
+  var file_name_input = document.getElementById('file_name');
+  if(!file_name_input) return;
+  file_name_input.innerHTML = file_name;
+
+  var file_id = document.getElementById('file');
+  if(!file_id) return;
+  file_id.value = id;
+}
+
+</script>

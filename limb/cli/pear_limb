@@ -1,0 +1,4 @@
+#!@PHP-BIN@
+<?php
+require 'limb/cli/bin/limb';
+?>

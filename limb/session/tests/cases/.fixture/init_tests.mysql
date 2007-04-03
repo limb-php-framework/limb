@@ -1,0 +1,11 @@
+
+DROP TABLE IF EXISTS `sys_session`;
+CREATE TABLE `sys_session` (
+  `session_id` varchar(50) NOT NULL default '',
+  `session_data` blob NOT NULL,
+  `last_activity_time` bigint(11) unsigned default NULL,
+  `user_id` bigint(20) default NULL,
+  PRIMARY KEY  (`session_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+

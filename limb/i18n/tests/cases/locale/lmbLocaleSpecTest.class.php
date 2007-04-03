@@ -1,0 +1,65 @@
+<?php
+/**
+ * Limb Web Application Framework
+ *
+ * @link http://limb_project.com
+ *
+ * @copyright  Copyright &copy; 2004_2007 BIT
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
+ * @version    $Id: lmbLocaleSpecTest.class.php 5357 2007-03-27 16:39:30Z pachanga $
+ * @package    i18n
+ */
+lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
+
+class lmbLocaleSpecTest extends UnitTestCase
+{
+  function testParseOnlyLanguage()
+  {
+    $spec = new lmbLocaleSpec('ru');
+
+    $this->assertEqual($spec->getLocaleString(), 'ru');
+    $this->assertEqual($spec->getLanguage(), 'ru');
+    $this->assertFalse($spec->getCountry());
+    $this->assertFalse($spec->getCountryVariation());
+    $this->assertFalse($spec->getCharset());
+    $this->assertEqual($spec->getLocale(), 'ru');
+  }
+
+  function testParseLanguageAndCountry()
+  {
+    $spec = new lmbLocaleSpec('ru_RU');
+
+    $this->assertEqual($spec->getLocaleString(), 'ru_RU');
+    $this->assertEqual($spec->getLanguage(), 'ru');
+    $this->assertEqual($spec->getCountry(), 'RU');
+    $this->assertFalse($spec->getCountryVariation());
+    $this->assertFalse($spec->getCharset());
+    $this->assertEqual($spec->getLocale(), 'ru_RU');
+  }
+
+  function testParseLanguageAndCountryAndVariation()
+  {
+    $spec = new lmbLocaleSpec('eng_GB@euro');
+
+    $this->assertEqual($spec->getLocaleString(), 'eng_GB@euro');
+    $this->assertEqual($spec->getLanguage(), 'eng');
+    $this->assertEqual($spec->getCountry(), 'GB');
+    $this->assertEqual($spec->getCountryVariation(), 'euro');
+    $this->assertFalse($spec->getCharset());
+    $this->assertEqual($spec->getLocale(), 'eng_GB');
+  }
+
+  function testParseLanguageAndCountryAndVariationAndCharset()
+  {
+    $spec = new lmbLocaleSpec('eng_GB.utf8@euro');
+
+    $this->assertEqual($spec->getLocaleString(), 'eng_GB.utf8@euro');
+    $this->assertEqual($spec->getLanguage(), 'eng');
+    $this->assertEqual($spec->getCountry(), 'GB');
+    $this->assertEqual($spec->getCountryVariation(), 'euro');
+    $this->assertEqual($spec->getCharset(), 'utf8');
+    $this->assertEqual($spec->getLocale(), 'eng_GB');
+  }
+}
+
+?>

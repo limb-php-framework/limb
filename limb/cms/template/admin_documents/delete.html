@@ -1,0 +1,34 @@
+<core:wrap file="_cms/popup.html" in="content_zone">
+
+<h1>Delete documents</h1>
+
+<form id='delete_form' name='delete_form' method='post' runat='server'>
+
+  <active_record:fetch class_path='limb/cms/src/model/lmbCmsNode' target="items_to_delete">
+    <fetch:param record_ids="{$#request.ids}">
+  </active_record:fetch>
+
+  <list:list id='items_to_delete'>
+  <table class='list'>
+  <thead>
+  <tr>
+    <th>Select</th>
+    <th>Document</th>
+  </tr>
+  </thead>
+  <tbody>
+    <list:ITEM>
+    <tr>
+      <td><input type='checkbox' name='ids[]' value='{$id}' class='input'/></td>
+      <td>{$title}</td>
+    </tr>
+    </list:ITEM>
+  </tbody>
+  </table>
+  </list:LIST>
+
+  <core:include file='_cms/delete_common_elements.html'/>
+
+</form>
+
+</core:wrap>

@@ -1,0 +1,23 @@
+0.1.3-alpha - 1 April 2007 (r5454)
+==================================================
+
+-- minor changes due to global Limb3 functions renamings
+
+
+0.1.2-alpha - 13 March 2007 (r5216)
+==================================================
+-- improved phpdoc
+-- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
+-- lmbObject :: get(...) maps 'is_*' property to 'is*' method if such one exists, e.g. 'is_ok' => isOk(). For BC purposes getIs* methods have higher priority over is* methods! E.g. 'is_ok' would trigger getIsOk() not isOk() if both exist
+
+0.1.1-alpha - 16 February 2007 (r5062)
+==================================================
+
+-- tests are more isolated
+-- other minor fixes
+-- initial PhpDocs
+
+0.1.0-alpha - 13 December 2006 (r4537)
+==================================================
+
+-- Initial release of this package.
