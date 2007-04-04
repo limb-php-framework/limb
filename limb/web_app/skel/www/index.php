@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: index.php 5012 2007-02-08 15:38:06Z pachanga $
+ * @version    $Id: index.php 5525 2007-04-04 08:03:50Z pachanga $
  * @package    web_app
  */
 
 require_once(dirname(__FILE__) . '/../setup.php');
-require_once('limb/web_app/src/lmbWebApplication.class.php');
+require_once('src/LimbApplication.class.php');
 
-$application = new lmbWebApplication();
+$application = new LimbApplication();
 $application->process();
 
 ?>

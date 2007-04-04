@@ -35,8 +35,15 @@ class WebAppCliCmd extends lmbCliBaseCmd
       return 1;
     }
 
-    echo "Copying skeleton application to '$dst_dir'...";
+    echo "Copying skeleton Limb3 WEB_APP application to '$dst_dir'...\n";
+
     lmbFs :: cp(dirname(__FILE__) . '/../skel', $dst_dir, '~^\.svn~');
+
+    echo "Generating code from templates...\n";
+
+    $this->_resolveTemplate("$dst_dir/setup.override.php.tpl",
+                            array('%LIMB_PARENT_DIR%' => realpath(dirname(__FILE__) . '/../../../')));
+
     echo "done!";
   }
 
@@ -50,6 +57,13 @@ Usage:
 
 EOD;
     echo $txt;
+  }
+
+  protected function _resolveTemplate($template, $vars = array())
+  {
+    $file = substr($template, 0, strrpos($template, '.'));
+    file_put_contents($file, strtr(file_get_contents($template), $vars));
+    unlink($template);
   }
 }
 

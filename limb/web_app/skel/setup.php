@@ -6,13 +6,15 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: setup.php 5163 2007-02-28 08:38:30Z pachanga $
+ * @version    $Id: setup.php 5525 2007-04-04 08:03:50Z pachanga $
  * @package    web_app
  */
+
+set_include_path(dirname(__FILE__) . PATH_SEPARATOR .
+                 dirname(__FILE__) . '/lib/' . PATH_SEPARATOR);
+
 if(file_exists(dirname(__FILE__) . '/setup.override.php'))
   require_once(dirname(__FILE__) . '/setup.override.php');
-
-set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 
 @define('LIMB_VAR_DIR', dirname(__FILE__) . '/var/');
 
