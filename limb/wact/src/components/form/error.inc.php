@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: error.inc.php 5168 2007-02-28 16:05:08Z serega $
+ * @version    $Id: error.inc.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    wact
  */
 
@@ -56,18 +56,32 @@ class WactFormErrorList extends ArrayIterator
     $this->field_name_dictionary = $dict;
   }
 
+  function getFieldName($field)
+  {
+    if(is_object($this->field_name_dictionary))
+      return $this->field_name_dictionary->getFieldName($field);
+    else
+      return $field;
+  }
+
+  function bindToForm($form)
+  {
+    $this->setFieldNameDictionary(new WactFormFieldNameDictionary($form));
+    $form->setErrors($this);
+  }
+
   function current()
   {
     $error = parent :: current();
 
     $text = $error['message'];
-    foreach($error->getFieldsList() as $key => $fieldName)
+    foreach($error->getFields() as $key => $fieldName)
     {
-      $replacement = $this->field_name_dictionary->getFieldName($fieldName);
+      $replacement = $this->getFieldName($fieldName);
       $text = str_replace('{' . $key . '}', $replacement, $text);
     }
 
-    foreach($error->getValuesList() as $key => $replacement)
+    foreach($error->getValues() as $key => $replacement)
       $text = str_replace('{' . $key . '}', $replacement, $text);
 
     $error['message'] = $text;
@@ -88,12 +102,12 @@ class WactFormError extends ArrayObject
     $this->values = $values;
   }
 
-  function getFieldsList()
+  function getFields()
   {
     return $this->fields_list;
   }
 
-  function getValuesList()
+  function getValues()
   {
     return $this->values;
   }

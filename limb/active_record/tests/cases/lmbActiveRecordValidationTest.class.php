@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordValidationTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbActiveRecordValidationTest.class.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -14,7 +14,6 @@ lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
 
 Mock :: generate('lmbValidator', 'MockValidator');
-Mock :: generate('lmbErrorList', 'MockFieldsErrorList');
 
 class lmbActiveRecordValidationStub extends lmbActiveRecord
 {
@@ -75,7 +74,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
   function testValidateNew()
   {
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
     $insert_validator = new MockValidator();
     $update_validator = new MockValidator();
 
@@ -97,7 +96,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
   function testGetErrorListReturnLastErrorListUsed()
   {
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
     $insert_validator = new MockValidator();
     $object = $this->_createActiveRecord();
     $object->setInsertValidator($insert_validator);
@@ -109,7 +108,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
   function testValidateNewFailed()
   {
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
     $insert_validator = new MockValidator();
 
     $object = $this->_createActiveRecord();
@@ -123,7 +122,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
   function testValidateExisting()
   {
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
     $insert_validator = new MockValidator();
     $update_validator = new MockValidator();
 
@@ -143,7 +142,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
   function testValidateExistingFailed()
   {
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
     $update_validator = new MockValidator();
 
     $object = $this->_createActiveRecordWithDataAndSave();
@@ -159,7 +158,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
   {
     $object = $this->_createActiveRecord();
 
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
 
     $validator = new MockValidator();
 
@@ -180,7 +179,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     }
     catch(lmbValidationException $e)
     {
-      $this->assertReference($e->getErrorList(), $error_list);
+      $this->assertEqual($e->getErrorList()->export(), $error_list->getReadable()->export());
     }
 
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
@@ -190,7 +189,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
   {
     $object = $this->_createActiveRecord();
 
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
 
     $validator = new MockValidator();
     $object->setInsertValidator($validator);
@@ -213,7 +212,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object = $this->_createActiveRecordWithDataAndSave();
     $old_annotation = $object->get('annotation');
 
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
 
     $validator = new MockValidator();
     $object->setUpdateValidator($validator);
@@ -231,7 +230,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     }
     catch(lmbValidationException $e)
     {
-      $this->assertReference($e->getErrorList(), $error_list);
+      $this->assertEqual($e->getErrorList()->export(), $error_list->getReadable()->export());
     }
 
     $record = $this->db->getFirstRecordFrom('test_one_table_object');
@@ -242,7 +241,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
   {
     $object = $this->_createActiveRecordWithDataAndSave();
 
-    $error_list = new MockFieldsErrorList();
+    $error_list = new lmbErrorList();
 
     $validator = new MockValidator();
     $object->setUpdateValidator($validator);

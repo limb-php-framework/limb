@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFormComponent.class.php 5243 2007-03-14 14:21:40Z pachanga $
+ * @version    $Id: WactFormComponent.class.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    wact
  */
 
@@ -100,30 +100,26 @@ class WactFormComponent extends WactRuntimeTagComponent
   */
   function setErrors($ErrorList)
   {
-    // Sets the human readable dictionary corresponding to form fields.
-    // Entries in the dictionary defined by displayname attribute of tag
-    $ErrorList->setFieldNameDictionary(new WactFormFieldNameDictionary($this));
+    foreach($ErrorList as $Error)
+    {
+      $this->is_valid = FALSE;
 
-    for ($ErrorList->rewind(); $ErrorList->valid(); $ErrorList->next()) {
-        $this->is_valid = FALSE;
-        $Error = $ErrorList->current();
-
-        // Find the component(s) that the error applies to and tell
-        // them there was an error (using their setError() method)
-        // as well as notifying related label components if found
-        foreach ($Error->getFieldsList() as $fieldName)
+      // Find the component(s) that the error applies to and tell
+      // them there was an error (using their setError() method)
+      // as well as notifying related label components if found
+      foreach ($Error->getFields() as $fieldName)
+      {
+        $Field = $this->findChild($fieldName);
+        if (is_object($Field))
         {
-          $Field = $this->findChild($fieldName);
-          if (is_object($Field))
+          $Field->setError();
+          if ($Field->hasAttribute('id'))
           {
-            $Field->setError();
-            if ($Field->hasAttribute('id'))
-            {
-              $Label = $this->findLabel($Field->getAttribute('id'), $this);
-              if ($Label)
-                $Label->setError();
-            }
+            $Label = $this->findLabel($Field->getAttribute('id'), $this);
+            if ($Label)
+              $Label->setError();
           }
+        }
         }
     }
 
@@ -167,7 +163,7 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   protected function _appendErrorsForEachField(&$result, $error)
   {
-    $fields = $error->getFieldsList();
+    $fields = $error->getFields();
     foreach($fields as $alias => $field)
     {
       $field_error = clone($error);
@@ -178,7 +174,7 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   protected function _appendErrorForField(&$result, $error, $field)
   {
-    if(!in_array($field, $error->getFieldsList()))
+    if(!in_array($field, $error->getFields()))
       return;
 
     $field_error = clone($error);

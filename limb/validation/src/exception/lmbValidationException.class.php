@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidationException.class.php 5222 2007-03-13 13:26:27Z serega $
+ * @version    $Id: lmbValidationException.class.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    validation
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
@@ -32,11 +32,11 @@ class lmbValidationException extends lmbException
   */
   function __construct($message, $error_list, $params = array(), $code = 0)
   {
-    $this->error_list = $error_list;
+    $this->error_list = $error_list->getReadable();
 
     $errors = array();
     foreach($this->error_list as $error)
-      $errors[] .= $error->get('message');
+      $errors[] .= $error->getMessage();
 
     $error_text = implode(', ', $errors);
 

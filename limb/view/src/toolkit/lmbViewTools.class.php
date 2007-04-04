@@ -23,9 +23,6 @@ class lmbViewTools extends lmbAbstractTools
     if(is_object($this->wact_locator))
       return $this->wact_locator;
 
-    if(!defined('LIMB_TEMPLATES_INCLUDE_PATH'))
-       throw new lmbException('LIMB_TEMPLATES_INCLUDE_PATH constant is not defined!');
-
     lmb_require('limb/view/src/wact/lmbWactTemplateLocator.class.php');
 
     $locator = $this->toolkit->getFileLocator(LIMB_TEMPLATES_INCLUDE_PATH, 'template');

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5382 2007-03-28 12:54:38Z pachanga $
+ * @version    $Id: lmbController.class.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
@@ -63,8 +63,12 @@ class lmbController extends lmbAbstractController
 
       $method = $this->_mapCurrentActionToMethod($this->_mapCurrentActionToMethod());
       $res = $this->$method();
+
       if(is_string($res))
         $this->response->write($res);
+      elseif($this->response->isEmpty() && !$this->view->getTemplate())
+        $this->response->write('Default empty output for controller "' . get_class($this) . '" action "' . $this->current_action . '"');
+
       return;
     }
     elseif($template_path = $this->_findTemplateForAction($this->current_action))

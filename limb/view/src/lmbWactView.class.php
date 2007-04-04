@@ -20,9 +20,11 @@ class lmbWactView extends lmbView
 
   function render()
   {
-    $this->_initWactTemplate();
-    $this->_fillWactTemplate();
-    return $this->wact_template->capture();
+    if($tpl = $this->_getWactTemplate())
+    {
+      $this->_fillWactTemplate($tpl);
+      return $tpl->capture();
+    }
   }
 
   function reset()
@@ -35,8 +37,7 @@ class lmbWactView extends lmbView
 
   function getWactTemplate()
   {
-    $this->_initWactTemplate();
-    return $this->wact_template;
+    return $this->_getWactTemplate();
   }
 
   function setFormDatasource($form_name, $datasource)
@@ -64,37 +65,42 @@ class lmbWactView extends lmbView
 
   function findChild($id)
   {
-    $this->_initWactTemplate();
-    return $this->wact_template->findChild($id);
+    if($tpl = $this->_getWactTemplate())
+      return $tpl->findChild($id);
   }
 
-  protected function _initWactTemplate()
+  protected function _getWactTemplate()
   {
     if($this->wact_template)
-      return;
+      return $this->wact_template;
 
     if(!$path = $this->getTemplate())
-      throw new lmbException("Could not init WACT template '{$this->template_name}'");
+      return null;
 
     $this->wact_template = new lmbWactTemplate($path);
+    return $this->wact_template;
   }
 
-  protected function _fillWactTemplate()
+  protected function _fillWactTemplate($template)
   {
     foreach($this->getVariables() as $variable_name => $value)
-      $this->wact_template->set($variable_name, $value);
+      $template->set($variable_name, $value);
 
     foreach($this->forms_datasources as $form_id => $datasource)
     {
-      $form_component = $this->wact_template->getChild($form_id);
+      $form_component = $template->getChild($form_id);
       $form_component->registerDataSource($datasource);
     }
 
     foreach($this->forms_errors as $form_id => $error_list)
     {
-      $form_component = $this->wact_template->getChild($form_id);
+      $form_component = $template->getChild($form_id);
       if(!$error_list->isValid())
-        $form_component->setErrors($error_list);
+      {
+        lmb_require('limb/wact/src/components/form/error.inc.php');
+        $error_list->setFieldNameDictionary(new WactFormFieldNameDictionary($form_component));
+        $form_component->setErrors($error_list->getReadable());
+      }
     }
   }
 }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbErrorListTest.class.php 5222 2007-03-13 13:26:27Z serega $
+ * @version    $Id: lmbErrorListTest.class.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/lmbErrorList.class.php');
@@ -25,9 +25,9 @@ class lmbErrorListTest extends UnitTestCase
 
     $errors = $list->export();
     $this->assertEqual(sizeof($errors), 1);
-    $this->assertEqual($errors[0]->get('message'), $message);
-    $this->assertEqual($errors[0]->getFieldsList(), array('foo'));
-    $this->assertEqual($errors[0]->getValuesList(), array('FOO'));
+    $this->assertEqual($errors[0]->getMessage(), $message);
+    $this->assertEqual($errors[0]->getFields(), array('foo'));
+    $this->assertEqual($errors[0]->getValues(), array('FOO'));
   }
 }
 ?>

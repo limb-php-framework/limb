@@ -38,7 +38,7 @@ class lmbWactViewTest extends lmbWactTestCase
   function testRenderForms()
   {
     $template = '{$hello}'.
-                '<form id="form1" name="form1" runat="server"></form>'.
+                '<form id="form1" name="form1" runat="server"><input type="text" name="title" title="Title" /></form>'.
                 '<form id="form2" name="form2" runat="server"></form>';
 
     $this->registerTestingTemplate($path = '/limb/form_view.html', $template);
@@ -48,7 +48,7 @@ class lmbWactViewTest extends lmbWactTestCase
     $view->set('hello', 'Hello world!');
 
     $error_list1 = new lmbErrorList();
-    $error_list1->addError('An error');
+    $error_list1->addError('An error in {Field} with {Value}', array('Field' => 'title'), array('Value' => 'value'));
     $form1->error_list = $error_list1;
     $view->setFormDatasource('form1', $form1 = new lmbDataspace());
     $view->setFormErrors('form1', $error_list1);
@@ -57,13 +57,15 @@ class lmbWactViewTest extends lmbWactTestCase
 
     $this->assertEqual($view->render(),
                        'Hello world!'.
-                       '<form id="form1" name="form1"></form>'.
+                       '<form id="form1" name="form1"><input type="text" name="title" title="Title" value="" /></form>'.
                        '<form id="form2" name="form2"></form>');
 
     $template = $view->getWACTTemplate();
     $form1_component = $template->findChild('form1');
     $this->assertEqual($form1_component->getDatasource(), $form1);
-    $this->assertEqual($form1_component->getErrorsDataSet(), $error_list1);
+    $this->assertEqual($form1_component->getErrorsDataSet()->export(), $error_list1->getReadable()->export());
+    $this->assertEqual($form1_component->getErrorsDataSet()->at(0)->getMessage(),
+                       'An error in Title with value');
 
     $form2_component = $template->findChild('form2');
     $this->assertEqual($form2_component->getDatasource(), $form2);

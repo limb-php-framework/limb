@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWebAppTools.class.php 5431 2007-03-29 15:33:42Z serega $
+ * @version    $Id: lmbWebAppTools.class.php 5528 2007-04-04 15:08:50Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -133,9 +133,6 @@ class lmbWebAppTools extends lmbAbstractTools
 
   function createController($controller_name)
   {
-    if(!defined('LIMB_CONTROLLERS_INCLUDE_PATH'))
-       throw new lmbException('LIMB_CONTROLLERS_INCLUDE_PATH constant is not defined!');
-
     $class_name = lmb_camel_case($controller_name) . 'Controller';
     $file = $this->toolkit->findFileAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
     lmb_require($file);
