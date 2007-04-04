@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRelationCollection.class.php 5383 2007-03-28 12:55:03Z pachanga $
+ * @version    $Id: lmbARRelationCollection.class.php 5527 2007-04-04 11:20:17Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/datasource/src/lmbPagedDataset.interface.php');
@@ -77,6 +77,9 @@ abstract class lmbARRelationCollection implements lmbPagedDataset, ArrayAccess
     $object = new $class();
 
     $criteria = clone $this->criteria;
+
+    $object->addClassCriteria($criteria);
+
     $sort_params = array();
 
     if(is_string($magic_params) || is_object($magic_params))

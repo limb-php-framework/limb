@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordSubclassingTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbActiveRecordSubclassingTest.class.php 5527 2007-04-04 11:20:17Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -39,7 +39,9 @@ class CourseForTestForTypedLecture extends lmbActiveRecord
 {
   protected $_db_table_name = 'course_for_typed_test';
   protected $_has_many = array('lectures' => array('field' => 'course_id',
-                                                   'class' => 'TypedLectureForTest'));
+                                                   'class' => 'TypedLectureForTest'),
+                               'bar_lectures' => array('field' => 'course_id',
+                                                       'class' => 'BarLectureForTest'));
 }
 
 class lmbActiveRecordSubclassingTest extends UnitTestCase
@@ -205,6 +207,34 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
     $bar_lectures = $course2->getLectures()->find(array('class' => 'BarLectureForTest'));
     $this->assertEqual($bar_lectures->count(), 1);
     $this->assertIsA($bar_lectures->at(0), 'BarLectureForTest');
+  }
+
+  function testFilterTypedRelation()
+  {
+    $course = new CourseForTestForTypedLecture();
+    $course->setTitle('Source1');
+    $course->save();
+
+    $lecture1 = new FooLectureForTest();
+    $lecture1->setTitle('Some title');
+    $lecture1->setCourse($course);
+    $lecture1->save();
+
+    $lecture2 = new BarLectureForTest();
+    $lecture2->setTitle('Some other title');
+    $lecture2->setCourse($course);
+    $lecture2->save();
+
+    $course->getLectures()->add($lecture1);
+    $course->getBarLectures()->add($lecture2);
+
+    $course2 = new CourseForTestForTypedLecture($course->getId());
+
+    $this->assertEqual($course2->getLectures()->count(), 2);
+    $this->assertEqual($course2->getBarLectures()->count(), 1);
+    $this->assertIsA($course2->getBarLectures()->at(0), 'BarLectureForTest');
+    $this->assertIsA($course2->getLectures()->at(0), 'FooLectureForTest');
+    $this->assertIsA($course2->getLectures()->at(1), 'BarLectureForTest');
   }
 }
 
