@@ -1,3 +1,11 @@
+0.5.1-alpha - 5 April 2007 (r5543)
+==================================================
+-- lmbTestShellUI internally refactored:
+  * lmbTestShellUI :: __construct() now accepts magic params it can be: a) cli argv array b) test path
+  * lmbTestShellUI :: exitAfterRun($flag) added, it controls whether run() should call exit or simply return result
+  * lmbTestShellUI :: setPosixMode($flag) added, it controls whether argv contains script name or not
+-- examples fixed
+
 0.5.0-alpha - 2 April 2007 (r5466)
 ==================================================
 
@@ -5,7 +13,7 @@
 -- obsolete lmbTestTreeShellUI removed
 -- lmbTestTreeDirNode :: getDirItems() now applies files filter
 -- path to configuration file can now also be specified via LIMB_TESTS_RUNNER_CONFIG environment variable, please note that config is included in the following order:
-		1) --config option 
+		1) --config option
 		2) env. variable if --config option is not present
 -- lmbTestShellUI :: runEmbedded() added, it allows the shell UI to be run from new limb CLI runner
 -- experimental UnitCliCmd.class.php added allowing the tests runner be run as "limb unit ..." with new limb CLI runner
