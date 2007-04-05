@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordSubclassingTest.class.php 5527 2007-04-04 11:20:17Z pachanga $
+ * @version    $Id: lmbActiveRecordSubclassingTest.class.php 5529 2007-04-05 08:24:21Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -18,12 +18,7 @@ class TestOneTableTypedObject extends lmbActiveRecord
 }
 
 class FooOneTableTestObject extends TestOneTableTypedObject{}
-class BarOneTableTestObject extends TestOneTableTypedObject{}
-
-class BaseOneTableTestObject extends TestOneTableTypedObject
-{
-  protected $_base_class = __CLASS__;
-}
+class BarFooOneTableTestObject extends FooOneTableTestObject{}
 
 class TypedLectureForTest extends lmbActiveRecord
 {
@@ -33,15 +28,15 @@ class TypedLectureForTest extends lmbActiveRecord
 }
 
 class FooLectureForTest extends TypedLectureForTest{}
-class BarLectureForTest extends TypedLectureForTest{}
+class BarFooLectureForTest extends FooLectureForTest{}
 
 class CourseForTestForTypedLecture extends lmbActiveRecord
 {
   protected $_db_table_name = 'course_for_typed_test';
   protected $_has_many = array('lectures' => array('field' => 'course_id',
                                                    'class' => 'TypedLectureForTest'),
-                               'bar_lectures' => array('field' => 'course_id',
-                                                       'class' => 'BarLectureForTest'));
+                               'foo_lectures' => array('field' => 'course_id',
+                                                       'class' => 'FooLectureForTest'));
 }
 
 class lmbActiveRecordSubclassingTest extends UnitTestCase
@@ -61,9 +56,9 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
 
   function _dbCleanUp()
   {
-    lmbActiveRecord :: delete('TestOneTableTypedObject');
-    lmbActiveRecord :: delete('CourseForTestForTypedLecture');
-    lmbActiveRecord :: delete('TypedLectureForTest');
+    $this->db->delete('lecture_for_typed_test');
+    $this->db->delete('course_for_typed_test');
+    $this->db->delete('test_one_table_typed_object');
   }
 
   function testCreate()
@@ -73,26 +68,28 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
     $object1->save();
 
     $object2 = new FooOneTableTestObject($object1->getId());
-    $this->assertEqual($object2->title, $object1->title);
+    $this->assertEqual($object2->getTitle(), $object1->getTitle());
 
-    //parents are supertypes
+    //parents are supertypes..
     $object3 = new TestOneTableTypedObject($object1->getId());
+    $this->assertEqual($object3->getTitle(), $object1->getTitle());
 
     try
     {
-      new BarOneTableTestObject($object1->getId());
+      //..while deeper subclasses are not
+      new BarFooOneTableTestObject($object1->getId());
       $this->assertTrue(false);
     }
     catch(lmbARException $e){}
   }
 
-  function testParentDelete()
+  function testSupertypeDelete()
   {
     $foo = new FooOneTableTestObject();
     $foo->setTitle('Some title');
     $foo->save();
 
-    $bar = new BarOneTableTestObject();
+    $bar = new BarFooOneTableTestObject();
     $bar->setTitle('Another title');
     $bar->save();
 
@@ -101,7 +98,7 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
     $rs = lmbActiveRecord :: find('FooOneTableTestObject');
     $this->assertEqual($rs->count(), 0);
 
-    $rs = lmbActiveRecord :: find('BarOneTableTestObject');
+    $rs = lmbActiveRecord :: find('BarFooOneTableTestObject');
     $this->assertEqual($rs->count(), 0);
   }
 
@@ -111,68 +108,42 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
     $foo->setTitle('Some title');
     $foo->save();
 
-    $bar = new BarOneTableTestObject();
+    $bar = new BarFooOneTableTestObject();
     $bar->setTitle('Another title');
     $bar->save();
 
-    lmbActiveRecord :: delete('FooOneTableTestObject');
+    lmbActiveRecord :: delete('BarFooOneTableTestObject');//removing subclass
+
+    $rs = lmbActiveRecord :: find('BarFooOneTableTestObject');
+    $this->assertEqual($rs->count(), 0);
+
+    $rs = lmbActiveRecord :: find('FooOneTableTestObject');//supertype stays
+    $this->assertEqual($rs->count(), 1);
+
+    lmbActiveRecord :: delete('FooOneTableTestObject');//removing supertype
 
     $rs = lmbActiveRecord :: find('FooOneTableTestObject');
     $this->assertEqual($rs->count(), 0);
-
-    $rs = lmbActiveRecord :: find('BarOneTableTestObject');
-    $this->assertEqual($rs->count(), 1);
   }
 
-  function testParentFind()
+  function testFind()
   {
     $object1 = new FooOneTableTestObject();
     $object1->setTitle('Some title');
     $object1->save();
 
-    $object2 = new BarOneTableTestObject();
+    $object2 = new BarFooOneTableTestObject();
     $object2->setTitle('Some other title');
     $object2->save();
 
-    $rs = lmbActiveRecord :: find('TestOneTableTypedObject');
+    $rs = lmbActiveRecord :: find('FooOneTableTestObject');//supertype
     $this->assertEqual($rs->count(), 2);
     $this->assertIsA($rs->at(0), 'FooOneTableTestObject');
-    $this->assertIsA($rs->at(1), 'BarOneTableTestObject');
-  }
+    $this->assertIsA($rs->at(1), 'BarFooOneTableTestObject');
 
-  function testOverrideBaseClass()
-  {
-    $object1 = new FooOneTableTestObject();
-    $object1->setTitle('Some title');
-    $object1->save();
-
-    $object2 = new BarOneTableTestObject();
-    $object2->setTitle('Some other title');
-    $object2->save();
-
-    $rs = lmbActiveRecord :: find('BaseOneTableTestObject');
-    $this->assertEqual($rs->count(), 2);
-    $this->assertIsA($rs->at(0), 'FooOneTableTestObject');
-    $this->assertIsA($rs->at(1), 'BarOneTableTestObject');
-  }
-
-  function testTypedFind()
-  {
-    $object1 = new FooOneTableTestObject();
-    $object1->setTitle('Some title');
-    $object1->save();
-
-    $object2 = new BarOneTableTestObject();
-    $object2->setTitle('Some other title');
-    $object2->save();
-
-    $rs = lmbActiveRecord :: find('FooOneTableTestObject');
+    $rs = lmbActiveRecord :: find('BarFooOneTableTestObject');//subclass
     $this->assertEqual($rs->count(), 1);
-    $this->assertIsA($rs->at(0), 'FooOneTableTestObject');
-
-    $rs = lmbActiveRecord :: find('BarOneTableTestObject');
-    $this->assertEqual($rs->count(), 1);
-    $this->assertIsA($rs->at(0), 'BarOneTableTestObject');
+    $this->assertIsA($rs->at(0), 'BarFooOneTableTestObject');
   }
 
   function testTypedRelationFind()
@@ -186,7 +157,7 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
     $lecture1->setCourse($course);
     $lecture1->save();
 
-    $lecture2 = new BarLectureForTest();
+    $lecture2 = new BarFooLectureForTest();
     $lecture2->setTitle('Some other title');
     $lecture2->setCourse($course);
     $lecture2->save();
@@ -196,45 +167,21 @@ class lmbActiveRecordSubclassingTest extends UnitTestCase
 
     $course2 = new CourseForTestForTypedLecture($course->getId());
 
-    $this->assertEqual($course2->getLectures()->count(), 2);
+    $this->assertEqual($course2->getLectures()->count(), 2);//supertype by default
     $this->assertIsA($course2->getLectures()->at(0), 'FooLectureForTest');
-    $this->assertIsA($course2->getLectures()->at(1), 'BarLectureForTest');
+    $this->assertIsA($course2->getLectures()->at(1), 'BarFooLectureForTest');
 
-    $foo_lectures = $course2->getLectures()->find(array('class' => 'FooLectureForTest'));
-    $this->assertEqual($foo_lectures->count(), 1);
-    $this->assertIsA($foo_lectures->at(0), 'FooLectureForTest');
+    //narrowing selection but again its supertype for BarFooLectureForTest
+    $lectures = $course2->getLectures()->find(array('class' => 'FooLectureForTest'));
 
-    $bar_lectures = $course2->getLectures()->find(array('class' => 'BarLectureForTest'));
-    $this->assertEqual($bar_lectures->count(), 1);
-    $this->assertIsA($bar_lectures->at(0), 'BarLectureForTest');
-  }
+    $this->assertEqual($lectures->count(), 2);
+    $this->assertIsA($lectures->at(0), 'FooLectureForTest');
+    $this->assertIsA($lectures->at(1), 'BarFooLectureForTest');
 
-  function testFilterTypedRelation()
-  {
-    $course = new CourseForTestForTypedLecture();
-    $course->setTitle('Source1');
-    $course->save();
-
-    $lecture1 = new FooLectureForTest();
-    $lecture1->setTitle('Some title');
-    $lecture1->setCourse($course);
-    $lecture1->save();
-
-    $lecture2 = new BarLectureForTest();
-    $lecture2->setTitle('Some other title');
-    $lecture2->setCourse($course);
-    $lecture2->save();
-
-    $course->getLectures()->add($lecture1);
-    $course->getBarLectures()->add($lecture2);
-
-    $course2 = new CourseForTestForTypedLecture($course->getId());
-
-    $this->assertEqual($course2->getLectures()->count(), 2);
-    $this->assertEqual($course2->getBarLectures()->count(), 1);
-    $this->assertIsA($course2->getBarLectures()->at(0), 'BarLectureForTest');
-    $this->assertIsA($course2->getLectures()->at(0), 'FooLectureForTest');
-    $this->assertIsA($course2->getLectures()->at(1), 'BarLectureForTest');
+    //narrowing more
+    $lectures = $course2->getLectures()->find(array('class' => 'BarFooLectureForTest'));
+    $this->assertEqual($lectures->count(), 1);
+    $this->assertIsA($lectures->at(0), 'BarFooLectureForTest');
   }
 }
 

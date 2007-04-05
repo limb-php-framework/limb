@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5383 2007-03-28 12:55:03Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5529 2007-04-05 08:24:21Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5383 2007-03-28 12:55:03Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5529 2007-04-05 08:24:21Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -43,10 +43,6 @@ class lmbActiveRecord extends lmbObject
    * @var object lmbTableGateway instance used to access underlying db table
    */
   protected $_db_table;
-  /**
-   * @var string name of class which should be considered as a base one in single table inheritance relations
-   */
-  protected $_base_class;
   /**
    * @var string name of class database table to store instance fields, if not set lmbActiveRecord tries to guess it
    */
@@ -801,7 +797,7 @@ class lmbActiveRecord extends lmbObject
     $fields = $this->export();
 
     if($this->isNew() && $this->_isInheritable())
-      $fields[self :: $_inheritance_field] = get_class($this);
+      $fields[self :: $_inheritance_field] = $this->_getInheritancePath();
 
     foreach($this->_composed_of as $property => $info)
     {
@@ -1186,17 +1182,33 @@ class lmbActiveRecord extends lmbObject
    */
   function addClassCriteria($criteria)
   {
-    if(!$this->_isBaseClass() && $this->_isInheritable())
-      return lmbSQLCriteria :: objectify($criteria)->addAnd(array(self :: $_inheritance_field . ' = ?', get_class($this)));
+    if($this->_isInheritable())
+      return lmbSQLCriteria :: objectify($criteria)->addAnd(array(self :: $_inheritance_field .
+                                                                  ' LIKE "' . $this->_getInheritancePath() . '%"'));
 
     return $criteria;
   }
 
-  protected function _isBaseClass()
+  protected function _getInheritancePath()
   {
-    return ($this->_base_class && get_class($this) == $this->_base_class) ||
-           (get_parent_class($this) == __CLASS__);
+    $class = get_class($this);
+    $path = "$class|";
+    while($class = get_parent_class($class))
+    {
+      if($class == __CLASS__)
+        break;
+      $path = "$class|$path";
+    }
+    return $path;
   }
+
+  static function decodeInheritancePath($path)
+  {
+    $items = explode('|', $path);
+    array_pop($items);//removing last empty item
+    return $items;
+  }
+
   /**
    *  Loads current object with data from database, overwrites any previous data, marks object dirty and unsets new status
    *  @param integer object id

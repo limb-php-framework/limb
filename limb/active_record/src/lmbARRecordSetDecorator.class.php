@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRecordSetDecorator.class.php 5238 2007-03-14 11:09:08Z pachanga $
+ * @version    $Id: lmbARRecordSetDecorator.class.php 5529 2007-04-05 08:24:21Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/datasource/src/lmbPagedDatasetDecorator.class.php');
@@ -48,8 +48,9 @@ class lmbARRecordSetDecorator extends lmbPagedDatasetDecorator
 
   protected function _createObject($record)
   {
-    if($class = $record->get(lmbActiveRecord :: getInheritanceField()))
+    if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
     {
+      $class = end(lmbActiveRecord :: decodeInheritancePath($path));
       if(!class_exists($class))
         throw new lmbException("Class '$class' not found");
       return new $class;
