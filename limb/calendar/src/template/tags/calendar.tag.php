@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: calendar.tag.php 4986 2007-02-08 15:35:09Z pachanga $
+ * @version    $Id: calendar.tag.php 5536 2007-04-05 11:42:44Z pachanga $
  * @package    calendar
  */
 require_once('limb/wact/src/tags/form/input.tag.php');
@@ -25,7 +25,16 @@ class lmbCalendarTag extends WactInputTag
   function prepare()
   {
     $this->setAttribute('type', 'hidden');
+
+    $this->_ensureIdAttribute();
+
     parent :: prepare();
+  }
+
+  protected function _ensureIdAttribute()
+  {
+    if(!$this->hasAttribute('id'))
+      $this->setAttribute('id', $this->getServerId());
   }
 
   function preGenerate($code)
@@ -47,7 +56,7 @@ class lmbCalendarTag extends WactInputTag
   protected function _createIframe($code)
   {
     $date_iframe_id = $this->_getFrameId();
-    $id = $this->getClientId();
+    $id = $this->getServerId();
 
     $code->writeHtml('<iframe tabindex="-1000" width=168 height=190 name="' . $date_iframe_id . '" id="' . $date_iframe_id . '"
           src="' . LIMB_HTTP_SHARED_PATH . 'calendar/ipopeng.htm" scrolling="no"
@@ -75,7 +84,7 @@ class lmbCalendarTag extends WactInputTag
       $this->removeAttribute('theme');
     }
     else
-      $params[1] = lmbToolkit :: instance()->getLocale()->getLocaleString();
+      $params[1] = lmbToolkit :: instance()->getLocale();
 
     if($this->getAttribute('agenda'))
     {
@@ -107,14 +116,14 @@ class lmbCalendarTag extends WactInputTag
     if($id = $this->getAttribute('calendar_id'))
       return $id;
 
-    return '_' . $this->getAttribute('id');
+    return '_' . $this->getServerId();
   }
 
   protected function _createButton($code)
   {
     $parent = $this->findParentByClass('WactFormTag');
-    $id = $this->getClientId();
-    $form_id = $parent->getClientId();
+    $id = $this->getServerId();
+    $form_id = $parent->getServerId();
     $calendar_id = $this->_getCalendarId();
 
     if(!$function = $this->getAttribute('function'))
@@ -133,7 +142,7 @@ class lmbCalendarTag extends WactInputTag
 
   function _createUIField($code)
   {
-    $id = $this->getClientId();
+    $id = $this->getServerId();
     $calendar_id = $this->_getCalendarId();
     $attributes = '';
     foreach($this->getAttributesAsArray() as $key => $value)

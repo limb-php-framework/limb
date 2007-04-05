@@ -6,6 +6,7 @@
 // WARNING: Do NOT make any modification to this file, nor should you use this file in any commercial website or product.
 // Using it without a proper license will be prosecuted by law.
 var gd=new Date(), gToday=[gd.getFullYear(),gd.getMonth()+1,gd.getDate()];
+var _separator_datetime=" ";
 var ua=navigator.userAgent.toLowerCase();
 var KO=ua.match(/konqueror\/(\d+)/),KO3=KO&&KO[1]==3,SA=ua.match(/safari\/(\d+)/),SA1=SA&&SA[1]<86; KO=!!KO; SA=!!SA;
 var MAC=/mac/.test(ua),OP=!!self.opera,WEBTV=/webtv/.test(ua),IE=/msie/.test(ua)&&!OP&&!WEBTV&&!SA&&!KO,GK=/gecko/.test(ua),OP8=/opera 8/.test(ua)&&OP;
