@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5537 2007-04-05 12:43:56Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -32,7 +32,12 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
   */
   function __construct()
   {
-    $this->field_names = func_get_args();
+    $args = func_get_args();
+
+    if(is_array($args[0]))
+      $this->field_names = $args[0];
+    else
+      $this->field_names = $args;
   }
 
   /**

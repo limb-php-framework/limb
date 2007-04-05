@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5537 2007-04-05 12:43:56Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -44,6 +44,17 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
     $dataspace = new lmbDataspace(array('field3' => 'whatever'));
 
     $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2', 'field3');
+
+    $this->error_list->expectNever('addError');
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testValidWithConstructorAcceptingArrayOfFields()
+  {
+    $dataspace = new lmbDataspace(array('field3' => 'whatever'));
+
+    $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2', 'field3'));
 
     $this->error_list->expectNever('addError');
 

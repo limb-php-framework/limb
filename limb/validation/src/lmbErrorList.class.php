@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbErrorList.class.php 5533 2007-04-05 10:32:40Z pachanga $
+ * @version    $Id: lmbErrorList.class.php 5537 2007-04-05 12:43:56Z pachanga $
  * @package    validation
  */
 lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
@@ -103,7 +103,7 @@ class lmbErrorList extends lmbArrayDataset
 
       foreach($error->getFields() as $key => $fieldName)
       {
-        $replacement = $this->getFieldName($fieldName);
+        $replacement = '"' . $this->getFieldName($fieldName) . '"';
         $text = str_replace('{' . $key . '}', $replacement, $text);
       }
 

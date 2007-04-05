@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidator.class.php 5106 2007-02-18 09:23:45Z serega $
+ * @version    $Id: lmbValidator.class.php 5537 2007-04-05 12:43:56Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/lmbErrorList.class.php');
@@ -77,6 +77,12 @@ class lmbValidator
   {
     $this->addRule(new lmbHandle('limb/validation/src/rule/lmbRequiredRule',
                                  array($field)));
+  }
+
+  function addAtLeastOneRequiredRule($fields)
+  {
+    $this->addRule(new lmbHandle('limb/validation/src/rule/lmbAtleastOneFieldRequiredRule',
+                                 array($fields)));
   }
 
   /**
