@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 4993 2007-02-08 15:35:44Z pachanga $
+ * @version    $Id: lmbDate.class.php 5539 2007-04-05 12:49:05Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -60,7 +60,7 @@ class lmbDate extends lmbObject
     if(!$this->isValid())
     {
       $args = func_get_args();
-      throw new lmbException('could not create date', array($args));
+      throw new lmbException("Could not create date using args '$args'");
     }
   }
 
@@ -100,7 +100,7 @@ class lmbDate extends lmbObject
   protected function _setByString($string)
   {
     if(!preg_match(self :: DATE_STRING_REGEX, trim($string), $regs))
-      throw new lmbException('could not setup date using string', array('string' => $string));
+      throw new lmbException("Could not setup date using string '$string'");
 
     if(isset($regs[1]))
     {
@@ -121,7 +121,7 @@ class lmbDate extends lmbObject
   protected function _setByStamp($time)
   {
     if($time < 0 || !$arr = @getdate($time))
-      throw new lmbException('could not setup date using stamp', array('stamp' => $time));
+      throw new lmbException("Could not setup date using stamp'$time'");
 
     $this->year   = $arr['year'];
     $this->month  = $arr['mon'];
