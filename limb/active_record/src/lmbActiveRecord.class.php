@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5529 2007-04-05 08:24:21Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5538 2007-04-05 12:48:29Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5529 2007-04-05 08:24:21Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5538 2007-04-05 12:48:29Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -736,6 +736,8 @@ class lmbActiveRecord extends lmbObject
         throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
                                          $this->getErrorList());
 
+      $this->_onSave();
+
       $this->_onUpdate();
 
       $this->_invokeListeners(self :: ON_UPDATE);
@@ -755,6 +757,8 @@ class lmbActiveRecord extends lmbObject
       if($need_validation && !$this->_validateInsert())
         throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
                                          $this->getErrorList());
+
+      $this->_onSave();
 
       $this->_onCreate();
 
@@ -909,6 +913,8 @@ class lmbActiveRecord extends lmbObject
   protected function _onUpdate(){}
 
   protected function _onCreate(){}
+
+  protected function _onSave(){}
 
   protected function _onAfterUpdate(){}
 

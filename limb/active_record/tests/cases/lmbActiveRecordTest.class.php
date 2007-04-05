@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5238 2007-03-14 11:09:08Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5538 2007-04-05 12:48:29Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -39,6 +39,11 @@ class TestOneTableObjectWithHooks extends TestOneTableObject
   protected function _onAfterSave()
   {
     echo '|on_after_save|';
+  }
+
+  protected function _onSave()
+  {
+    echo '|on_save|';
   }
 
   protected function _onUpdate()
@@ -192,7 +197,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($record->get('id'), $object->getId());
   }
 
-  function testProperOrderOfCreateUpdateHooksCalls()
+  function testProperOrderOfCreateHooksCalls()
   {
     $object = new TestOneTableObjectWithHooks();
     $object->setContent('whatever');
@@ -201,7 +206,24 @@ class lmbActiveRecordTest extends UnitTestCase
     $object->save();
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, '|on_before_save||on_before_create||on_create||on_after_create||on_after_save|');
+    $this->assertEqual($str, '|on_before_save||on_before_create||on_save||on_create||on_after_create||on_after_save|');
+  }
+
+  function testProperOrderOfUpdateHooksCalls()
+  {
+    $object = new TestOneTableObjectWithHooks();
+    $object->setContent('whatever');
+    ob_start();
+    $object->save();
+    ob_end_clean();
+
+    $object->setContent('other content');
+
+    ob_start();
+    $object->save();
+    $str = ob_get_contents();
+    ob_end_clean();
+    $this->assertEqual($str, '|on_before_save||on_before_update||on_save||on_update||on_after_update||on_after_save|');
   }
 
   function testProperOrderOfDestroyHooksCalls()

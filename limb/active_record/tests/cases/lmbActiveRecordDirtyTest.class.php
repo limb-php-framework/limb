@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordDirtyTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbActiveRecordDirtyTest.class.php 5538 2007-04-05 12:48:29Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -99,7 +99,7 @@ class lmbActiveRecordDirtyTest extends UnitTestCase
     $object->save();
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, '|on_before_save||on_before_create||on_create||on_after_create||on_after_save|');
+    $this->assertEqual($str, '|on_before_save||on_before_create||on_save||on_create||on_after_create||on_after_save|');
 
     ob_start();
     $object->save();
