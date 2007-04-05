@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWebAppTools.class.php 5528 2007-04-04 15:08:50Z pachanga $
+ * @version    $Id: lmbWebAppTools.class.php 5532 2007-04-05 10:31:47Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -19,7 +19,6 @@ class lmbWebAppTools extends lmbAbstractTools
   protected $view;
   protected $dispatched_controller;
   protected $routes;
-  protected $message_box;
   protected $flash_box;
 
   function getSession()
@@ -97,17 +96,6 @@ class lmbWebAppTools extends lmbAbstractTools
   function setRoutes($routes)
   {
     $this->routes = $routes;
-  }
-
-  function getMessageBox()
-  {
-    if(!is_object($this->message_box))
-    {
-      lmb_require('limb/web_app/src/util/lmbMessageBox.class.php');
-      $this->message_box = new lmbMessageBox();
-    }
-
-    return $this->message_box;
   }
 
   function getFlashBox()

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFlashBoxErrorsFetcher.class.php 5431 2007-03-29 15:33:42Z serega $
+ * @version    $Id: lmbFlashBoxErrorsFetcher.class.php 5532 2007-04-05 10:31:47Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
@@ -20,7 +20,9 @@ class lmbFlashBoxErrorsFetcher extends lmbFetcher
 
     $flash_box = lmbToolkit :: instance()->getFlashBox();
     foreach($flash_box->getErrors() as $error)
-      $result[] = array('text' => $error);
+      $result[] = array('message' => $error,
+                        'text' => $error // for BC
+                        );
 
     $flash_box->resetErrors();
 

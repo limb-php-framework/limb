@@ -22,7 +22,7 @@ class lmbFlashBoxTagTest extends lmbWactTestCase
   {
     $template = '<flash_box target="flash_box"/>'.
                  '<list:list id="flash_box"><list:ITEM>'.
-                 '{$text}|'.
+                 '{$message}|'.
                  '</list:ITEM></list:list>';
 
     $this->toolkit->flashError('Error1');
@@ -39,7 +39,7 @@ class lmbFlashBoxTagTest extends lmbWactTestCase
   {
     $template = '<flash_box target="flash_box" errors="true"/>'.
                  '<list:list id="flash_box"><list:ITEM>'.
-                 '{$text}|'.
+                 '{$message}|'.
                  '</list:ITEM></list:list>';
 
     $this->toolkit->flashError('Error1');
@@ -58,7 +58,7 @@ class lmbFlashBoxTagTest extends lmbWactTestCase
   {
     $template = '<flash_box target="flash_box" messages="true"/>'.
                  '<list:list id="flash_box"><list:ITEM>'.
-                 '{$text}|'.
+                 '{$message}|'.
                  '</list:ITEM></list:list>';
 
     $this->toolkit->flashError('Error1');

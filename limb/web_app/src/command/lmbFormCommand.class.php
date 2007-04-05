@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFormCommand.class.php 5421 2007-03-29 12:49:10Z serega $
+ * @version    $Id: lmbFormCommand.class.php 5532 2007-04-05 10:31:47Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
-lmb_require('limb/web_app/src/validation/lmbWebAppErrorList.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
+lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/core/src/exception/lmbDelegateHaltException.class.php');
 lmb_require('limb/classkit/src/lmbDelegate.class.php');
 
@@ -40,7 +40,7 @@ class lmbFormCommand extends lmbActionCommand
     else
       $this->form_id = $this->_guessFormId();
 
-    $this->error_list = new lmbWebAppErrorList();
+    $this->error_list = new lmbErrorList();
     $this->validator = $validator ? $validator : new lmbValidator($this->error_list);
   }
 

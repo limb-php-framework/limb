@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFlashBoxErrorsFetcherTest.class.php 5434 2007-03-29 19:15:04Z serega $
+ * @version    $Id: lmbFlashBoxErrorsFetcherTest.class.php 5532 2007-04-05 10:31:47Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/fetcher/lmbFlashBoxErrorsFetcher.class.php');
@@ -40,9 +40,9 @@ class lmbFlashBoxErrorsFetcherTest extends lmbWebAppTestCase
     $rs = $fetcher->fetch();
 
     $rs->rewind();
-    $this->assertEqual($rs->current()->get('text'), 'Error1');
+    $this->assertEqual($rs->current()->get('message'), 'Error1');
     $rs->next();
-    $this->assertEqual($rs->current()->get('text'), 'Error2');
+    $this->assertEqual($rs->current()->get('message'), 'Error2');
   }
 
   function testFetcherResetsErrorsList()

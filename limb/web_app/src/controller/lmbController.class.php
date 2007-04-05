@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5528 2007-04-04 15:08:50Z pachanga $
+ * @version    $Id: lmbController.class.php 5532 2007-04-05 10:31:47Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
-lmb_require('limb/web_app/src/validation/lmbWebAppErrorList.class.php');
+lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 
 class lmbController extends lmbAbstractController
@@ -33,7 +33,7 @@ class lmbController extends lmbAbstractController
     $this->response = $this->toolkit->getResponse();
     $this->session = $this->toolkit->getSession();
     $this->view = $this->toolkit->getView();
-    $this->error_list = new lmbWebAppErrorList();
+    $this->error_list = new lmbErrorList();
     $this->validator = new lmbValidator($this->error_list);
   }
 
