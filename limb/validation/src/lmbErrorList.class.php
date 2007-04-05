@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbErrorList.class.php 5528 2007-04-04 15:08:50Z pachanga $
+ * @version    $Id: lmbErrorList.class.php 5533 2007-04-05 10:32:40Z pachanga $
  * @package    validation
  */
 lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
@@ -56,8 +56,8 @@ class lmbErrorList extends lmbArrayDataset
   */
   function addError($message, $fields = array(), $values = array())
   {
-    $error = new lmbObject(array('error' => $message,
-                                 'message' => $message,//duplicating for BC
+    $error = new lmbObject(array('message' => $message,
+                                 'error' => $message, // for BC
                                  'fields' => $fields,
                                  'values' => $values));
     $this->add($error);
