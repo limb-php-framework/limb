@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordImportTest.class.php 5540 2007-04-05 13:27:34Z pachanga $
+ * @version    $Id: lmbActiveRecordImportTest.class.php 5541 2007-04-05 13:31:01Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -75,6 +75,19 @@ class lmbActiveRecordImportTest extends UnitTestCase
 
     $object2 = new TestOneTableObject();
     $object2->import($object1);
+    $this->assertEqual($object2->getId(), $object1->getId());
+    $this->assertEqual($object2->getAnnotation(), $annotation);
+    $this->assertFalse($object2->isNew());
+    $this->assertTrue($object2->isDirty());
+  }
+
+  function testPassingActiveRecordToConstructorCallsImport()
+  {
+    $object1 = new TestOneTableObject();
+    $object1->setAnnotation($annotation = 'Some annotation');
+    $object1->save();
+
+    $object2 = new TestOneTableObject($object1);
     $this->assertEqual($object2->getId(), $object1->getId());
     $this->assertEqual($object2->getAnnotation(), $annotation);
     $this->assertFalse($object2->isNew());

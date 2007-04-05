@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5540 2007-04-05 13:27:34Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5541 2007-04-05 13:31:01Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5540 2007-04-05 13:27:34Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5541 2007-04-05 13:31:01Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -162,7 +162,7 @@ class lmbActiveRecord extends lmbObject
 
     if(is_int($magic_params))
       $this->loadById($magic_params);
-    elseif(is_array($magic_params))
+    elseif(is_array($magic_params) || is_object($magic_params))
       $this->import($magic_params);
   }
 
