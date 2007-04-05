@@ -6,12 +6,9 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: runtests.php 5530 2007-04-05 09:43:06Z pachanga $
+ * @version    $Id: runtests.php 5531 2007-04-05 09:55:30Z pachanga $
  * @package    tests_runner
  */
-
-//temporary files folder
-define('LIMB_VAR_DIR', dirname(__FILE__) . '/var');
 
 require_once(dirname(__FILE__) . '/../common.inc.php');
 require_once(dirname(__FILE__) . '/../src/lmbTestShellUI.class.php');
