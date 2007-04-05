@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5538 2007-04-05 12:48:29Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5540 2007-04-05 13:27:34Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5538 2007-04-05 12:48:29Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5540 2007-04-05 13:27:34Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -686,8 +686,13 @@ class lmbActiveRecord extends lmbObject
 
   protected function _loadValueObject($property)
   {
-    return @$this->_createValueObject($this->_composed_of[$property]['class'],
-                                     $this->raw_value_objects[$this->_composed_of[$property]['field']]);
+    if(!isset($this->raw_value_objects[$this->_composed_of[$property]['field']]))
+      return null;
+
+    $value = $this->raw_value_objects[$this->_composed_of[$property]['field']];
+
+    return $this->_createValueObject($this->_composed_of[$property]['class'],
+                                     $value);
   }
 
   protected function _createValueObject($class, $value)
@@ -704,7 +709,7 @@ class lmbActiveRecord extends lmbObject
   protected function _getValueObject($property)
   {
     $value = $this->_getRaw($property);
-    if(!$this->isNew() && !is_object($value))
+    if(!is_object($value))
     {
       $object = $this->_loadValueObject($property);
       $this->_setRaw($property, $object);
