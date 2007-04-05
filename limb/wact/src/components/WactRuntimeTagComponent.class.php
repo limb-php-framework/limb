@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeTagComponent.class.php 5340 2007-03-23 14:29:54Z pachanga $
+ * @version    $Id: WactRuntimeTagComponent.class.php 5535 2007-04-05 10:53:04Z pachanga $
  * @package    wact
  */
 
@@ -37,15 +37,15 @@ class WactRuntimeTagComponent extends WactRuntimeComponent
 
   function getBoolAttribute($attrib, $default = FALSE)
   {
-    if (!isset($this->attributeNodes[strtolower($attrib)]))
+    if (!isset($this->attributes[strtolower($attrib)]))
       return $default;
 
-    return self :: getBooleanValue($this->attributeNodes[strtolower($attrib)]->getValue());
+    return self :: getBooleanValue($this->attributes[strtolower($attrib)]);
   }
 
   static function getBooleanValue($value)
   {
-    switch (strtoupper($value))
+    switch(strtoupper($value))
     {
       case 'FALSE':
       case 'N':

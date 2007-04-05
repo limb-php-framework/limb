@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeTagComponentTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactRuntimeTagComponentTest.class.php 5535 2007-04-05 10:53:04Z pachanga $
  * @package    wact
  */
 
@@ -24,7 +24,39 @@ class WactRuntimeTagComponentTest extends WactRuntimeComponentTest
   {
     $this->component->setAttribute('foo', 'bar');
     $this->assertEqual($this->component->getAttribute('foo'), 'bar');
-    $this->assertEqual($this->component->getAttribute('FOO'), 'bar');
+    $this->assertEqual($this->component->getAttribute('FOO'), 'bar');//case insensitive
+  }
+
+  function testGetBoolAttributeFalse()
+  {
+    $this->assertFalse($this->component->getBoolAttribute('foo'));//by default
+
+    $this->component->setAttribute('foo', 'false');
+    $this->assertFalse($this->component->getBoolAttribute('foo'));
+
+    $this->component->setAttribute('foo', '0');
+    $this->assertFalse($this->component->getBoolAttribute('foo'));
+
+    $this->component->setAttribute('foo', 'no');
+    $this->assertFalse($this->component->getBoolAttribute('foo'));
+
+    $this->component->setAttribute('foo', 'none');
+    $this->assertFalse($this->component->getBoolAttribute('foo'));
+  }
+
+  function testGetBoolAttributeTrue()
+  {
+    $this->component->setAttribute('foo', 'true');
+    $this->assertTrue($this->component->getBoolAttribute('foo'));
+
+    $this->component->setAttribute('foo', '1');
+    $this->assertTrue($this->component->getBoolAttribute('foo'));
+  }
+
+  function testGetBoolAttributeCaseInsensitive()
+  {
+    $this->component->setAttribute('foo', 'true');
+    $this->assertTrue($this->component->getBoolAttribute('FOO'));
   }
 
   function testGetUnsetAttribute()
