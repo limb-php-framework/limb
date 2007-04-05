@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsNode.class.php 5543 2007-04-05 15:05:23Z pachanga $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -17,7 +17,6 @@ lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 class lmbCmsNode extends lmbActiveRecord
 {
   protected $_db_table_name = 'node';
-  protected $_base_class = __CLASS__;
   protected $_default_sort_params = array('priority' => 'ASC');
   protected $_is_being_destroyed = false;
 
