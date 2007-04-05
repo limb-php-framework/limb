@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5537 2007-04-05 12:43:56Z pachanga $
+ * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5542 2007-04-05 15:04:49Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -52,8 +52,10 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
   protected function _findAtleastOneField($datasource)
   {
     foreach($this->field_names as $field_name)
-      if(($value = $datasource->get($field_name)) !== null)
+    {
+      if($value = $datasource->get($field_name))
         return true;
+    }
 
     return false;
   }
