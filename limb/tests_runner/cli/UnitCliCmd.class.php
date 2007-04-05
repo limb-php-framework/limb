@@ -19,7 +19,8 @@ class UnitCliCmd extends lmbCliBaseCmd
     error_reporting(E_ALL);
 
     $ui = new lmbTestShellUI($argv);
-    return $ui->runEmbedded();
+    $ui->setPosixMode(false);
+    return ($ui->runEmbedded() ? 0 : 1);
   }
 
   function help($argv)

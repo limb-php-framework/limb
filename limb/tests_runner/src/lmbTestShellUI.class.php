@@ -6,27 +6,46 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5457 2007-04-02 08:07:35Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5530 2007-04-05 09:43:06Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
 
 class lmbTestShellUI
 {
-  protected $tree;
+  protected $test_path;
   protected $argv;
+  protected $posix_opts = true;
+  protected $call_exit = true;
 
-  function __construct($argv = null)
+  function __construct($magic_args = null)
   {
-    try
+    if(is_string($magic_args))
     {
-      $this->argv = is_null($argv) ? lmbTestGetopt::readPHPArgv() : $argv;
+      $this->test_path = $magic_args;
     }
-    catch(Exception $e)
+    else
     {
-      echo('Fatal Error: ' . $e->getMessage() . "\n");
-      exit(1);
+      try
+      {
+        $this->argv = is_array($magic_args) ? $magic_args : lmbTestGetopt::readPHPArgv();
+      }
+      catch(Exception $e)
+      {
+        echo('Fatal Error: ' . $e->getMessage() . "\n");
+        exit(1);
+      }
     }
+  }
+
+  function setPosixMode($flag = true)
+  {
+    $this->posix_opts = $flag;
+  }
+
+  function exitAfterRun($flag = true)
+  {
+    $this->call_exit = $flag;
   }
 
   function help($script = '')
@@ -66,25 +85,37 @@ EOD;
   function run()
   {
     $res = $this->_doRun();
-    exit($res ? 0 : 1);
+
+    if($this->call_exit)
+      exit($res ? 0 : 1);
+    else
+      return $res;
   }
 
   function runEmbedded()
   {
-    return $this->_doRun(false);
+    return $this->_doRun();
   }
 
-  protected function _doRun($posix_opts = true)
+  protected function _doRun()
+  {
+    if($this->test_path)
+      return $this->_runForTestPath($this->test_path);
+    else
+      return  $this->_runForArgv($this->argv);
+  }
+
+  protected function _runForArgv($argv)
   {
     $short_opts = self :: getShortOpts();
     $long_opts = self :: getLongOpts();
 
     try
     {
-      if($posix_opts)
-        $options = lmbTestGetopt::getopt($this->argv, $short_opts, $long_opts);
+      if($this->posix_opts)
+        $options = lmbTestGetopt::getopt($argv, $short_opts, $long_opts);
       else
-        $options = lmbTestGetopt::getopt2($this->argv, $short_opts, $long_opts);
+        $options = lmbTestGetopt::getopt2($argv, $short_opts, $long_opts);
     }
     catch(Exception $e)
     {
@@ -118,16 +149,7 @@ EOD;
     if(!isset($options[1][0]))
       $this->_help(1);
 
-    include_once(dirname(__FILE__) . '/../simpletest.inc.php');
-
-    foreach(glob($this->_normalizePath($options[1][0])) as $file)
-    {
-      $found = true;
-      $root_dir = $this->_getRootDir($file);
-      $node = $this->_mapFileToNode($root_dir, $file);
-      $tree = $this->_initTree($root_dir);
-      $res = $res & $tree->perform($node, $this->_getReporter());
-    }
+    $res = $this->_runForTestPath($options[1][0], $found);
 
     if(!$found)
       $this->_help(1);
@@ -135,12 +157,28 @@ EOD;
     return $res;
   }
 
+  protected function _runForTestPath($path, &$found = false)
+  {
+    include_once(dirname(__FILE__) . '/../simpletest.inc.php');
+
+    $res = true;
+    foreach(glob($this->_normalizePath($path)) as $file)
+    {
+      $found = true;
+      $root_dir = $this->_getRootDir($file);
+      $node = $this->_mapFileToNode($root_dir, $file);
+      $tree = $this->_initTree($root_dir);
+      $res = $res & $tree->perform($node, $this->_getReporter());
+    }
+    return $res;
+  }
+
   protected function _normalizePath($path)
   {
     if($this->_isAbsolutePath($path))
-      return $path;
+      return rtrim($path, '\\/');
     else
-      return $this->_getcwd() . DIRECTORY_SEPARATOR . $path;
+      return rtrim($this->_getcwd() . DIRECTORY_SEPARATOR . $path, '\\/');
   }
 
   /**
