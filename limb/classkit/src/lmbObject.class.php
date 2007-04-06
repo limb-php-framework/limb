@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbObject.class.php 5563 2007-04-06 13:10:02Z pachanga $
+ * @version    $Id: lmbObject.class.php 5567 2007-04-06 14:37:24Z serega $
  * @package    classkit
  */
 lmb_require('limb/datasource/src/lmbDatasource.interface.php');
@@ -69,7 +69,7 @@ lmb_require('limb/datasource/src/lmbDatasource.interface.php');
  * echo $obj->getByPath('foo.bar');
  * </code>
  *
- * @version $Id: lmbObject.class.php 5563 2007-04-06 13:10:02Z pachanga $
+ * @version $Id: lmbObject.class.php 5567 2007-04-06 14:37:24Z serega $
  */
 class lmbObject implements lmbDatasource
 {
@@ -173,28 +173,6 @@ class lmbObject implements lmbDatasource
 
     if(!$this->_isGuarded($name))
       return $this->_getRaw($name);
-  }
-  /**
-   * Returns nested property value
-   * @param string dotted path to property
-   * @return mixed|null
-   */
-  function getByPath($name)
-  {
-    if(strpos($name, '.') === false)
-      return $this->get($name);
-
-    $pieces = explode('.', $name);
-    $current = $this;
-
-    foreach($pieces as $piece)
-    {
-      if(is_scalar($current) || (is_array($current) && !isset($current[$piece])))
-        return null;
-
-      $current = $current[$piece];
-    }
-    return $current;
   }
   /**
    * Removes specified property

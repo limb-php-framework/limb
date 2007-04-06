@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbObjectTest.class.php 5145 2007-02-21 12:13:37Z pachanga $
+ * @version    $Id: lmbObjectTest.class.php 5567 2007-04-06 14:37:24Z serega $
  * @package    classkit
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -235,30 +235,6 @@ class lmbObjectTest extends UnitTestCase
 
     $o2 = new ObjectTestVersion($this);
     $this->assertEqual($o2->getClass(), 'ObjectTestVersion');
-  }
-
-  function testGetByPathWithArrays()
-  {
-    $o = new lmbObject(array('foo' => array('bar' => array('zoo' => 2))));
-    $this->assertEqual($o->getByPath('foo.bar.zoo'), 2);
-  }
-
-  function testGetByPathWithObjects()
-  {
-    $o = new lmbObject(array('foo' => new lmbObject(array('bar' => new lmbObject(array('zoo' => 2))))));
-    $this->assertEqual($o->getByPath('foo.bar.zoo'), 2);
-  }
-
-  function testGetByPathForNonExistingItemWithArrays()
-  {
-    $o = new lmbObject(array('foo' => array('bar' => array('zoo' => 2))));
-    $this->assertNull($o->getByPath('foo.such.prop'));
-  }
-
-  function testGetByPathForNonExistingItemWithObjects()
-  {
-    $o = new lmbObject(array('foo' => new lmbObject(array('bar' => new lmbObject(array('zoo' => 2))))));
-    $this->assertNull($o->getByPath('foo.such.prop'));
   }
 
   function testImplementsArrayAccessInterface()
