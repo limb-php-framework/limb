@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NTools.class.php 5415 2007-03-29 10:14:35Z pachanga $
+ * @version    $Id: lmbI18NTools.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -54,7 +54,7 @@ class lmbI18NTools extends lmbAbstractTools
       $locale = $this->getLocale();
 
     if(!isset($this->locale_objects[$locale]))
-      $this->locale_objects[$locale] = lmbLocale :: create($locale);
+      $this->locale_objects[$locale] = $this->createLocaleObject($locale);
 
     return $this->locale_objects[$locale];
   }
@@ -69,7 +69,12 @@ class lmbI18NTools extends lmbAbstractTools
 
   function createLocaleObject($locale)
   {
-    return lmbLocale :: create($locale);
+    $file = $this->toolkit->findFileAlias($locale . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n');
+
+    if(defined('LIMB_VAR_DIR'))
+      return new lmbLocale($locale, new lmbCachedIni($file, LIMB_VAR_DIR . '/locale/'));
+    else
+      return new lmbLocale($locale, new lmbIni($file));
   }
 
   function getDictionary($locale, $domain)

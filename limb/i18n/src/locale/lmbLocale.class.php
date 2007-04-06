@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocale.class.php 5373 2007-03-28 11:10:40Z pachanga $
+ * @version    $Id: lmbLocale.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    i18n
  */
-lmb_require('limb/config/src/lmbCachedIni.class.php');
+lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
 
 @define('LIMB_LOCALE_INCLUDE_PATH', 'i18n/locale;limb/i18n/i18n/locale');
@@ -80,33 +80,22 @@ class lmbLocale
   public $intl_language_name = ''; // internationalized name of the language
   public $language_direction = 'ltr';
 
-  protected $locale_code;
+  protected $locale_spec;
 
-  function __construct($file = null, $code = null)
+  function __construct($name, $config = null)
   {
-    if(!$code)
-    {
-      list($code,) = explode('.', basename($file));
-      $this->locale_code = new lmbLocaleSpec($code);
-    }
-    else
-      $this->locale_code = new lmbLocaleSpec($code);
-
-
-    if($file)
-    {
-      $ini = new lmbCachedIni($file);
-      $this->initLocaleSettings($ini);
-    }
+    $this->locale_spec = new lmbLocaleSpec($name);
+    if($config)
+      $this->initLocaleSettings($config);
   }
 
-  function initLocaleSettings($locale_ini)
+  function initLocaleSettings($config)
   {
-    if(!is_a($locale_ini, 'lmbIni'))
-      throw new lmbInvalidArgumentException('argument must be an lmbIni instance');
+    if(!is_a($config, 'lmbIni'))
+      throw new lmbInvalidArgumentException('Container must be an lmbIni instance');
 
-    $this->_initCountrySettings($locale_ini);
-    $this->_initLanguageSettings($locale_ini);
+    $this->_initCountrySettings($config);
+    $this->_initLanguageSettings($config);
   }
 
   function isValid()
@@ -114,57 +103,57 @@ class lmbLocale
     return $this->is_valid;
   }
 
-  protected function _initCountrySettings($country_ini)
+  protected function _initCountrySettings($config)
   {
-    $country_ini->assignOption($this->time_format, 'time_format', 'date_time');
-    $country_ini->assignOption($this->short_time_format, 'short_time_format', 'date_time');
-    $country_ini->assignOption($this->date_format, 'date_format', 'date_time');
-    $country_ini->assignOption($this->short_date_format, 'short_date_format', 'date_time');
-    $country_ini->assignOption($this->date_time_format, 'date_time_format', 'date_time');
-    $country_ini->assignOption($this->short_date_time_format, 'short_date_time_format', 'date_time');
-    $country_ini->assignOption($this->short_date_short_time_format, 'short_date_short_time_format', 'date_time');
+    $config->assignOption($this->time_format, 'time_format', 'date_time');
+    $config->assignOption($this->short_time_format, 'short_time_format', 'date_time');
+    $config->assignOption($this->date_format, 'date_format', 'date_time');
+    $config->assignOption($this->short_date_format, 'short_date_format', 'date_time');
+    $config->assignOption($this->date_time_format, 'date_time_format', 'date_time');
+    $config->assignOption($this->short_date_time_format, 'short_date_time_format', 'date_time');
+    $config->assignOption($this->short_date_short_time_format, 'short_date_short_time_format', 'date_time');
 
-    if($country_ini->hasOption('is_monday_first', 'date_time'))
-      $this->is_monday_first = strtolower($country_ini->getOption('is_monday_first', 'date_time')) == 'yes';
+    if($config->hasOption('is_monday_first', 'date_time'))
+      $this->is_monday_first = strtolower($config->getOption('is_monday_first', 'date_time')) == 'yes';
 
     if($this->is_monday_first)
       $this->week_days = array(1, 2, 3, 4, 5, 6, 0);
     else
       $this->week_days = array(0, 1, 2, 3, 4, 5, 6);
 
-    $country_ini->assignOption($this->country, 'country', 'regional_settings');
-    $country_ini->assignOption($this->country_comment, 'country_comment', 'regional_settings');
+    $config->assignOption($this->country, 'country', 'regional_settings');
+    $config->assignOption($this->country_comment, 'country_comment', 'regional_settings');
 
-    $country_ini->assignOption($this->decimal_symbol, 'decimal_symbol', 'numbers');
-    $country_ini->assignOption($this->thousand_separator, 'thousands_separator', 'numbers');
-    $country_ini->assignOption($this->fract_digits, 'fract_digits', 'numbers');
-    $country_ini->assignOption($this->negative_symbol, 'negative_symbol', 'numbers');
-    $country_ini->assignOption($this->positive_symbol, 'positive_symbol', 'numbers');
+    $config->assignOption($this->decimal_symbol, 'decimal_symbol', 'numbers');
+    $config->assignOption($this->thousand_separator, 'thousands_separator', 'numbers');
+    $config->assignOption($this->fract_digits, 'fract_digits', 'numbers');
+    $config->assignOption($this->negative_symbol, 'negative_symbol', 'numbers');
+    $config->assignOption($this->positive_symbol, 'positive_symbol', 'numbers');
 
-    $country_ini->assignOption($this->currency_decimal_symbol, 'decimal_symbol', 'currency');
-    $country_ini->assignOption($this->currency_name, 'name', 'currency');
-    $country_ini->assignOption($this->currency_short_name, 'short_name', 'currency');
-    $country_ini->assignOption($this->currency_thousand_separator, 'thousands_separator', 'currency');
-    $country_ini->assignOption($this->currency_fract_digits, 'fract_digits', 'currency');
-    $country_ini->assignOption($this->currency_negative_symbol, 'negative_symbol', 'currency');
-    $country_ini->assignOption($this->currency_positive_symbol, 'positive_symbol', 'currency');
-    $country_ini->assignOption($this->currency_symbol, 'symbol', 'currency');
-    $country_ini->assignOption($this->currency_positive_format, 'positive_format', 'currency');
-    $country_ini->assignOption($this->currency_negative_format, 'negative_format', 'currency');
+    $config->assignOption($this->currency_decimal_symbol, 'decimal_symbol', 'currency');
+    $config->assignOption($this->currency_name, 'name', 'currency');
+    $config->assignOption($this->currency_short_name, 'short_name', 'currency');
+    $config->assignOption($this->currency_thousand_separator, 'thousands_separator', 'currency');
+    $config->assignOption($this->currency_fract_digits, 'fract_digits', 'currency');
+    $config->assignOption($this->currency_negative_symbol, 'negative_symbol', 'currency');
+    $config->assignOption($this->currency_positive_symbol, 'positive_symbol', 'currency');
+    $config->assignOption($this->currency_symbol, 'symbol', 'currency');
+    $config->assignOption($this->currency_positive_format, 'positive_format', 'currency');
+    $config->assignOption($this->currency_negative_format, 'negative_format', 'currency');
   }
 
-  protected function _initLanguageSettings($language_ini)
+  protected function _initLanguageSettings($config)
   {
-    $language_ini->assignOption($this->language_name, 'language_name', 'regional_settings');
-    $language_ini->assignOption($this->intl_language_name, 'international_language_name', 'regional_settings');
-    $language_ini->assignOption($this->language_comment, 'language_comment', 'regional_settings');
-    $language_ini->assignOption($this->language_direction, 'language_direction', 'regional_settings');
-    $language_ini->assignOption($this->LC_ALL, 'LC_ALL', 'regional_settings');
+    $config->assignOption($this->language_name, 'language_name', 'regional_settings');
+    $config->assignOption($this->intl_language_name, 'international_language_name', 'regional_settings');
+    $config->assignOption($this->language_comment, 'language_comment', 'regional_settings');
+    $config->assignOption($this->language_direction, 'language_direction', 'regional_settings');
+    $config->assignOption($this->LC_ALL, 'LC_ALL', 'regional_settings');
 
     $charset = false;
-    if($language_ini->hasOption('preferred', 'charset'))
+    if($config->hasOption('preferred', 'charset'))
     {
-      $charset = $language_ini->getOption('preferred', 'charset');
+      $charset = $config->getOption('preferred', 'charset');
       if($charset != '')
         $this->charset = $charset;
     }
@@ -176,10 +165,10 @@ class lmbLocale
 
     foreach ($this->week_days as $day)
     {
-      if($language_ini->hasOption($day, 'short_day_names'))
-        $this->short_day_names[$day] = $language_ini->getOption($day, 'short_day_names');
-      if($language_ini->hasOption($day, 'long_day_names'))
-        $this->long_day_names[$day] = $language_ini->getOption($day, 'long_day_names');
+      if($config->hasOption($day, 'short_day_names'))
+        $this->short_day_names[$day] = $config->getOption($day, 'short_day_names');
+      if($config->hasOption($day, 'long_day_names'))
+        $this->long_day_names[$day] = $config->getOption($day, 'long_day_names');
     }
 
     if(!is_array($this->short_month_names))
@@ -189,10 +178,10 @@ class lmbLocale
 
     foreach ($this->months as $month)
     {
-      if($language_ini->hasOption($month, 'short_month_names'))
-        $this->short_month_names[$month] = $language_ini->getOption($month, 'short_month_names');
-      if($language_ini->hasOption($month, 'long_month_names'))
-        $this->long_month_names[$month] = $language_ini->getOption($month, 'long_month_names');
+      if($config->hasOption($month, 'short_month_names'))
+        $this->short_month_names[$month] = $config->getOption($month, 'short_month_names');
+      if($config->hasOption($month, 'long_month_names'))
+        $this->long_month_names[$month] = $config->getOption($month, 'long_month_names');
     }
 
     if(!is_array($this->short_day_names))
@@ -202,26 +191,26 @@ class lmbLocale
 
     foreach($this->week_days as $wday)
     {
-      if($language_ini->hasOption($wday, 'short_day_names'))
-        $this->short_day_names[$wday] = $language_ini->getOption($wday, 'short_day_names');
-      if($language_ini->hasOption($wday, 'long_day_names'))
-        $this->long_day_names[$wday] = $language_ini->getOption($wday, 'long_day_names');
+      if($config->hasOption($wday, 'short_day_names'))
+        $this->short_day_names[$wday] = $config->getOption($wday, 'short_day_names');
+      if($config->hasOption($wday, 'long_day_names'))
+        $this->long_day_names[$wday] = $config->getOption($wday, 'long_day_names');
     }
   }
 
   function getLocaleSpec()
   {
-    return $this->locale_code;
+    return $this->locale_spec;
   }
 
   function getLocaleString()
   {
-    return $this->locale_code->getLocaleString();
+    return $this->locale_spec->getLocaleString();
   }
 
   function getLanguage()
   {
-    return $this->locale_code->getLanguage();
+    return $this->locale_spec->getLanguage();
   }
 
   function setPHPLocale()
@@ -380,12 +369,6 @@ class lmbLocale
       return $this->short_month_names[$num];
     else
       return $this->long_month_names[$num];
-  }
-
-  static function create($locale_id)
-  {
-    $file = lmbToolkit :: instance()->findFileAlias($locale_id . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n');
-    return new lmbLocale($file);
   }
 }
 ?>

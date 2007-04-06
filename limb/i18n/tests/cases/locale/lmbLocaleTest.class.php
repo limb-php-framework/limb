@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleTest.class.php 5373 2007-03-28 11:10:40Z pachanga $
+ * @version    $Id: lmbLocaleTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -17,13 +17,13 @@ class lmbLocaleTest extends UnitTestCase
 {
   function testGetLocaleSpec()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
     $this->assertEqual($locale->getLocaleSpec(), new lmbLocaleSpec('en'));
   }
 
   function testGetMonthName()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getMonthName(0), 'January');
     $this->assertEqual($locale->getMonthName(11), 'December');
@@ -32,7 +32,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetDayName()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getDayName(0, $short = false), 'Monday');
     $this->assertEqual($locale->getDayName(0, $short = true), 'Mon');
@@ -42,7 +42,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetOtherOptions()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getCharset(), 'utf-8');
     $this->assertEqual($locale->getLanguageDirection(), 'ltr');
@@ -50,7 +50,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetCountryOptions()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getCountryName(), 'USA');
     $this->assertEqual($locale->getCountryComment(), '');
@@ -58,7 +58,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetLanguageOptions()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getLanguageName(), 'English (American)');
     $this->assertEqual($locale->getIntlLanguageName(), 'English (American)');
@@ -66,7 +66,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetCurrencyOptions()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getCurrencySymbol(), '$');
     $this->assertEqual($locale->getCurrencyName(), 'US Dollar');
@@ -75,7 +75,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetDateTimeFormatOptions()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertEqual($locale->getTimeFormat(), '%H:%M:%S %p');
     $this->assertEqual($locale->getShortTimeFormat(), '%H:%M %p');
@@ -87,7 +87,7 @@ class lmbLocaleTest extends UnitTestCase
 
   function testGetWeekDaysOptions()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $this->assertFalse($locale->isMondayFirst());
     $this->assertEqual($locale->getWeekDays(), array(0, 1, 2, 3, 4, 5, 6));

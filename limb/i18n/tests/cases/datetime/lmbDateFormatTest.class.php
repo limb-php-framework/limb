@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateFormatTest.class.php 5353 2007-03-27 16:20:49Z pachanga $
+ * @version    $Id: lmbDateFormatTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -28,7 +28,7 @@ class lmbDateFormatTest extends UnitTestCase
   {
     $date = new lmbDate('2005-01-20 10:15:30');
 
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
     $printer = new lmbDateFormat();
 
     $toStringed_date = $printer->toString($date, $locale->getDateFormat(), $locale);

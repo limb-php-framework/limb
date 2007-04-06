@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NNumberFilterTest.class.php 5373 2007-03-28 11:10:40Z pachanga $
+ * @version    $Id: lmbI18NNumberFilterTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/i18n/src/toolkit/lmbI18NTools.class.php');
@@ -19,7 +19,7 @@ class lmbI18NNumberFilterTest extends lmbWactTestCase
   {
     parent :: setUp();
 
-    $this->locale = new lmbLocale(null, 'en');
+    $this->locale = new lmbLocale('en');
     $this->locale->fract_digits = 2;
     $this->locale->decimal_symbol = '.';
     $this->locale->thousand_separator = ',';

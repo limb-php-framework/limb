@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NDateFilterTest.class.php 5373 2007-03-28 11:10:40Z pachanga $
+ * @version    $Id: lmbI18NDateFilterTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -16,7 +16,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
   function setUp()
   {
     parent :: setUp();
-    $this->toolkit->addLocaleObject(new lmbLocale(dirname(__FILE__) . '/../../../en.ini'));
+    $this->toolkit->addLocaleObject(new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../../../en.ini')));
   }
 
   function testSetDateByString()
@@ -83,7 +83,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
   function testUseRussianAsCurrentLocale()
   {
     $toolkit = lmbToolkit :: save();
-    $toolkit->addLocaleObject(new lmbLocale(dirname(__FILE__) . '/../../../ru.ini'));
+    $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../../../ru.ini')));
 
     $date = new lmbDate('2004-12-20 10:15:30');
 
@@ -159,7 +159,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
   function testDBEUseRussianAsCurrentLocale()
   {
     $toolkit = lmbToolkit :: save();
-    $toolkit->addLocaleObject(new lmbLocale(dirname(__FILE__) . '/../../../ru.ini'));
+    $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../../../ru.ini')));
 
     $date = new lmbDate('2005-01-20 10:15:30');
 

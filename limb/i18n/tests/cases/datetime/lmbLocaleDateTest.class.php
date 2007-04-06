@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDateTest.class.php 5353 2007-03-27 16:20:49Z pachanga $
+ * @version    $Id: lmbLocaleDateTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
@@ -15,7 +15,7 @@ class lmbLocaleDateTest extends UnitTestCase
 {
   function testCreateByLocaleString()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $date = lmbLocaleDate :: localStringToDate($locale, 'Thursday 20 January 2005', '%A %d %B %Y');
 
@@ -26,7 +26,7 @@ class lmbLocaleDateTest extends UnitTestCase
 
   function testCreateByAnotherLocaleString()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     $date = lmbLocaleDate :: localStringToDate($locale, 'Thu 20 Jan 2005', '%a %d %b %Y');
 
@@ -37,7 +37,7 @@ class lmbLocaleDateTest extends UnitTestCase
 
   function testCreateByWrongStringThrowsException()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../en.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
     try
     {
@@ -49,7 +49,7 @@ class lmbLocaleDateTest extends UnitTestCase
 
   function testLocalizedDateStringToISODateString()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../ru.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../ru.ini'));
 
     $date_string = '24.10.2005';
     $this->assertEqual(lmbLocaleDate :: localStringToISO($locale, $date_string), '2005-10-24 00:00:00');
@@ -57,7 +57,7 @@ class lmbLocaleDateTest extends UnitTestCase
 
   function testIsoDateStringToLocalStringizedDateString()
   {
-    $locale = new lmbLocale(dirname(__FILE__) . '/../ru.ini');
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../ru.ini'));
 
     $iso_date_string = '2005-10-24 00:00:00';
     $this->assertEqual(lmbLocaleDate :: ISOToLocalString($locale, $iso_date_string), '24.10.2005');
