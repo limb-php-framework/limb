@@ -10,7 +10,7 @@
  * @package    datasource
  */
 
-interface lmbDataset extends Iterator, Countable
+interface lmbDataset extends Iterator, Countable, ArrayAccess
 {
   function sort($params);
   function getArray();

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPagedDatasetDecorator.class.php 5227 2007-03-13 14:13:56Z serega $
+ * @version    $Id: lmbPagedDatasetDecorator.class.php 5558 2007-04-06 13:02:07Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
@@ -39,11 +39,6 @@ class lmbPagedDatasetDecorator extends lmbIteratorDecorator implements lmbPagedD
   function countPaginated()
   {
     return $this->iterator->countPaginated();
-  }
-
-  function count()
-  {
-    return $this->iterator->count();
   }
 }
 ?>

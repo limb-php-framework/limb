@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDataspace.class.php 4992 2007-02-08 15:35:40Z pachanga $
+ * @version    $Id: lmbDataspace.class.php 5558 2007-04-06 13:02:07Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbDatasource.interface.php');
 
-class lmbDataspace implements ArrayAccess, lmbDatasource
+class lmbDataspace implements lmbDatasource
 {
   protected $properties = array();
 
@@ -45,50 +45,6 @@ class lmbDataspace implements ArrayAccess, lmbDatasource
       return array();
 
     return $value;
-  }
-
-  function getByPath($path)
-  {
-    if(($pos = strpos($path, '.')) === FALSE)
-      return $this->get($path);
-
-    $var =& $this->_getPathReference($pos, $path); // can modify $path
-    if(is_object($var))
-    {
-       if(method_exists($var, 'isDatasource'))
-         return $var->getByPath($path);
-       else
-         return $var->$path;
-    }
-    elseif(is_array($var))
-      if(isset($var[$path]))
-        return $var[$path];
-      else
-        return null;
-  }
-
-  function setByPath($path, $value)
-  {
-    if(($pos = strpos($path, '.')) === FALSE)
-      return $this->set($path, $value);
-
-    $var =& $this->_getPathReference($pos, $path, TRUE); // can modify $path
-    if(is_object($var))
-    {
-       if(method_exists($var, 'isDatasource'))
-         $var->setByPath($path, $value);
-       else
-         $var->$path = $value;
-    }
-    else if(is_array($var))
-    {
-      $var[$path] = $value;
-    }
-    else
-    {
-      $var = array();
-      $var[$path] = $value;
-    }
   }
 
   function set($name, $value)
@@ -131,12 +87,7 @@ class lmbDataspace implements ArrayAccess, lmbDatasource
     return $this->properties;
   }
 
-  function isDatasource()
-  {
-    return true;
-  }
-
-  function hasProperty($name)
+  function has($name)
   {
     return isset($this->properties[$name]);
   }
@@ -154,7 +105,7 @@ class lmbDataspace implements ArrayAccess, lmbDatasource
   //ArrayAccess interface
   function offsetExists($offset)
   {
-    return $this->hasProperty($offset);
+    return $this->has($offset);
   }
 
   function offsetGet($offset)
@@ -170,33 +121,6 @@ class lmbDataspace implements ArrayAccess, lmbDatasource
   function offsetUnset($offset)
   {
     $this->remove($offset);
-  }
-
-  function &_getPathReference($pos, &$path)
-  {
-    $var =& $this->properties;
-    do
-    {
-      $key = substr($path, 0, $pos);
-      if(is_object($var))
-      {
-        if(method_exists($var, 'isDatasource'))
-          return $var;
-        else
-          $var =& $var->$key;
-      }
-      else
-      {
-        if(is_array($var) && isset($var[$key]))
-          $var =& $var[$key];
-        else
-          $var = NULL;
-      }
-      $path = substr($path, $pos + 1);
-      $pos = strpos($path, '.');
-    } while ($pos !== FALSE);
-
-    return $var;
   }
 }
 

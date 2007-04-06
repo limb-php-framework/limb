@@ -6,13 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIteratorDecorator.class.php 4992 2007-02-08 15:35:40Z pachanga $
+ * @version    $Id: lmbIteratorDecorator.class.php 5558 2007-04-06 13:02:07Z pachanga $
  * @package    datasource
  */
+lmb_require('limb/datasource/src/lmbDataset.interface.php');
 
-class lmbIteratorDecorator implements Iterator
+class lmbIteratorDecorator implements lmbDataset
 {
-  var $iterator;
+  protected $iterator;
 
   function __construct($iterator)
   {
@@ -58,5 +59,34 @@ class lmbIteratorDecorator implements Iterator
   {
     return $this->iterator->at($pos);
   }
+
+  //Countable interface
+  function count()
+  {
+    return $this->iterator->count();
+  }
+  //end
+
+  //ArrayAccess interface
+  function offsetExists($offset)
+  {
+    return $this->iterator->offsetExists($offset);
+  }
+
+  function offsetGet($offset)
+  {
+    return $this->iterator->offsetGet($offset);
+  }
+
+  function offsetSet($offset, $value)
+  {
+    return $this->iterator->offsetSet($offset, $value);
+  }
+
+  function offsetUnset($offset)
+  {
+    return $this->iterator->offsetUnset($offset);
+  }
+  //end
 }
 ?>

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDataspaceTest.class.php 4992 2007-02-08 15:35:40Z pachanga $
+ * @version    $Id: lmbDataspaceTest.class.php 5558 2007-04-06 13:02:07Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbDataspace.class.php');
@@ -28,7 +28,7 @@ class lmbDataspaceTest extends UnitTestCase
   {
     $ds = new lmbDataspace();
     $ds->set('test', 'value');
-    $this->assertTrue($ds->hasProperty('test'));
+    $this->assertTrue($ds->has('test'));
     $this->assertEqual($ds->get('test'), 'value');
   }
 
@@ -89,7 +89,7 @@ class lmbDataspaceTest extends UnitTestCase
   {
     $ds = new lmbDataspace(array('test' => 'value'));
     $this->assertEqual($ds->getPropertyList(), array('test'));
-    $ds->removeAll();
+    $ds->reset();
     $this->assertEqual($ds->getPropertyList(), array());
   }
 
@@ -100,102 +100,6 @@ class lmbDataspaceTest extends UnitTestCase
     $this->assertEqual($ds->getPropertyList(), array('test', 'foo'));
     $this->assertEqual($ds->get('test'), 'value');
     $this->assertEqual($ds->get('foo'), 'bar');
-  }
-
-  function testGetByPathFromEmptyDataspace()
-  {
-    $ds = new lmbDataspace();
-    $this->assertNull($ds->getByPath('foo'));
-    $this->assertNull($ds->getByPath('foo.var'));
-  }
-
-  function testGetByPath()
-  {
-    $ds = new lmbDataspace();
-    $ds->set('foo', array('x' => 'a', 'y' => 'b'));
-    $this->assertEqual($ds->getByPath('foo'), array('x' => 'a', 'y' => 'b'));
-    $this->assertEqual($ds->getByPath('foo.x'), 'a');
-    $this->assertEqual($ds->getByPath('foo.y'), 'b');
-    $this->assertNull($ds->getByPath('foo.z'));
-    $this->assertNull($ds->getByPath('zoo.aaa'));
-  }
-
-  function testSetPath()
-  {
-    $ds = new lmbDataspace();
-    $ds->set('foo', array('x' => 'a', 'y' => 'b'));
-    $this->assertEqual($ds->getByPath('foo.x'), 'a');
-    $ds->setByPath('foo.x', 'c');
-    $this->assertEqual($ds->getByPath('foo.x'), 'c');
-  }
-
-  function testSetPathNestedObjects()
-  {
-    $value = new lmbDataspaceTestObject();
-    $nested = new lmbDataspaceTestObject();
-
-    $ds = new lmbDataspace();
-    $ds->set('foo', $nested);
-
-    $get_obj = $ds->setByPath('foo.var', $value);
-    $this->assertIdentical($nested->var, $value);
-  }
-
-  function testGetPathDataspaceObject()
-  {
-    $value = new lmbDataspace(array('x' => 'a'));
-
-    $ds = new lmbDataspace();
-    $ds->set('foo', array('var' => $value));
-
-    $get_obj = $ds->getByPath('foo.var');
-    $this->assertTrue(is_object($get_obj));
-    $this->assertEqual($get_obj, $value);
-
-    $this->assertEqual($ds->getByPath('foo.var.x'), 'a');
-  }
-
-  function testGetPathNestedObject()
-  {
-    $value = new lmbDataspaceTestObject();
-    $nested = new lmbDataspaceTestObject();
-    $nested->var = $value;
-
-    $ds = new lmbDataspace();
-    $ds->set('foo', $nested);
-
-    $get_obj = $ds->getByPath('foo.var');
-    $this->assertTrue(is_object($get_obj));
-    $this->assertIsA($get_obj, 'lmbDataspaceTestObject');
-    $this->assertIdentical($get_obj, $value);
-  }
-
-  function testGetPathNestedObjectAndDataspaceObject()
-  {
-    $value = new lmbDataspace(array('x' => 'a'));
-    $nested = new lmbDataspaceTestObject();
-    $nested->var = $value;
-
-    $ds = new lmbDataspace();
-    $ds->set('foo', $nested);
-
-    $this->assertEqual($ds->getByPath('foo'), $nested);
-    $this->assertEqual($ds->getByPath('foo.var'), $value);
-    $this->assertEqual($ds->getByPath('foo.var.x'), 'a');
-  }
-
-  function testGetPathNestedDataspaceObjects()
-  {
-    $value = new lmbDataspace(array('x' => 'a'));
-    $nested = new lmbDataspace(array('y' => $value));
-    $nested->var = $value;
-
-    $ds = new lmbDataspace();
-    $ds->set('foo', $nested);
-
-    $this->assertEqual($ds->getByPath('foo'), $nested);
-    $this->assertEqual($ds->getByPath('foo.y'), $value);
-    $this->assertEqual($ds->getByPath('foo.y.x'), 'a');
   }
 
   function testImplementsArrayAccessInterface()
