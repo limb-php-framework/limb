@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5541 2007-04-05 13:31:01Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5560 2007-04-06 13:07:10Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 lmb_require('limb/validation/src/exception/lmbValidationException.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
-lmb_require('limb/datasource/src/lmbEmptyIterator.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 lmb_require('limb/active_record/src/lmbARException.class.php');
 lmb_require('limb/active_record/src/lmbARNotFoundException.class.php');
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5541 2007-04-05 13:31:01Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5560 2007-04-06 13:07:10Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1058,7 +1058,7 @@ class lmbActiveRecord extends lmbObject
   protected function _findByIds($ids, $params = array())
   {
     if(!is_array($ids) || !sizeof($ids))
-      return new lmbEmptyIterator();
+      return new lmbIterator();
     else
     {
       $params['criteria'] = new lmbSQLFieldCriteria('id', $ids, lmbSQLFieldCriteria :: IN);

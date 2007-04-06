@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRelationCollection.class.php 5529 2007-04-05 08:24:21Z pachanga $
+ * @version    $Id: lmbARRelationCollection.class.php 5560 2007-04-06 13:07:10Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/datasource/src/lmbPagedDataset.interface.php');
 lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
-abstract class lmbARRelationCollection implements lmbPagedDataset, ArrayAccess
+abstract class lmbARRelationCollection implements lmbPagedDataset
 {
   protected $relation_info;
   protected $owner;
@@ -222,6 +222,7 @@ abstract class lmbARRelationCollection implements lmbPagedDataset, ArrayAccess
   }
 
   function offsetUnset($offset){}
+  //end
 
   //Countable interface
   function count()
@@ -229,6 +230,7 @@ abstract class lmbARRelationCollection implements lmbPagedDataset, ArrayAccess
     $this->_ensureDataset();
     return $this->dataset->count();
   }
+  //end
 
   function at($pos)
   {
