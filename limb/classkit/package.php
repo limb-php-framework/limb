@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: package.php 5455 2007-04-01 19:27:12Z serega $
+ * @version    $Id: package.php 5563 2007-04-06 13:10:02Z pachanga $
  * @package    classkit
  */
 
@@ -74,6 +74,7 @@ $package->setPhpDep('5.1.4');
 $package->setPearinstallerDep('1.4.99');
 
 $package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', '0.1.3');
+$package->addPackageDepWithChannel('required', 'datasource', 'pear.limb-project.com', '0.2.0');
 
 $package->generateContents();
 

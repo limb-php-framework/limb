@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbObject.class.php 5385 2007-03-28 12:55:53Z pachanga $
+ * @version    $Id: lmbObject.class.php 5563 2007-04-06 13:10:02Z pachanga $
  * @package    classkit
  */
-
+lmb_require('limb/datasource/src/lmbDatasource.interface.php');
 /**
  * Generic container for data with magic accessors.
  *
@@ -69,9 +69,9 @@
  * echo $obj->getByPath('foo.bar');
  * </code>
  *
- * @version $Id: lmbObject.class.php 5385 2007-03-28 12:55:53Z pachanga $
+ * @version $Id: lmbObject.class.php 5563 2007-04-06 13:10:02Z pachanga $
  */
-class lmbObject implements ArrayAccess
+class lmbObject implements lmbDatasource
 {
   /**
    * Constructor.
@@ -134,9 +134,17 @@ class lmbObject implements ArrayAccess
    * Checks if such attribute exists
    * @return bool returns true even if attribute is null
    */
-  function hasAttribute($name)
+  function has($name)
   {
     return in_array($name, $this->getAttributesNames());
+  }
+  /**
+   * @deprecated
+   * @see has()
+   */
+  function hasAttribute($name)
+  {
+    return $this->has($name);
   }
   /**
    * Returns array filled with attribute names
@@ -198,9 +206,17 @@ class lmbObject implements ArrayAccess
       unset($this->$name);
   }
   /**
-   * Removes all object properties
+   * @deprecated
+   * @see reset()
    */
   function removeAll()
+  {
+    $this->reset();
+  }
+  /**
+   * Removes all object properties
+   */
+  function reset()
   {
     foreach($this->_getObjectVars() as $name => $var)
       $this->remove($name);
