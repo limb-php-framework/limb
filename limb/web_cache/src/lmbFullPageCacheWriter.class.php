@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheWriter.class.php 5013 2007-02-08 15:38:13Z pachanga $
+ * @version    $Id: lmbFullPageCacheWriter.class.php 5554 2007-04-06 10:07:48Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/util/src/system/lmbFs.class.php');
@@ -16,10 +16,9 @@ class lmbFullPageCacheWriter
   protected $storage_dir;
   protected $cache_file = 'cache.html';
 
-  function __construct($dir = null)
+  function __construct($dir)
   {
-    if(!$dir)
-      $this->storage_dir = LIMB_VAR_DIR . '/fpcache';
+    $this->storage_dir = $dir;
   }
 
   function setStorageDirectory($dir)

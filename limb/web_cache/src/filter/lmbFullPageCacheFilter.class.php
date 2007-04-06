@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheFilter.class.php 5013 2007-02-08 15:38:13Z pachanga $
+ * @version    $Id: lmbFullPageCacheFilter.class.php 5554 2007-04-06 10:07:48Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -76,8 +76,7 @@ class lmbFullPageCacheFilter implements lmbInterceptingFilter
 
   protected function _createCacheWriter()
   {
-    $writer = new lmbFullPageCacheWriter();
-    $writer->setStorageDirectory(self :: getCacheDir());
+    $writer = new lmbFullPageCacheWriter(self :: getCacheDir());
     return $writer;
   }
 }

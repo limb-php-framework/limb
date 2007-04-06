@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheWriterTest.class.php 5013 2007-02-08 15:38:13Z pachanga $
+ * @version    $Id: lmbFullPageCacheWriterTest.class.php 5554 2007-04-06 10:07:48Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/web_cache/src/lmbFullPageCacheWriter.class.php');
@@ -22,8 +22,7 @@ class lmbFullPageCacheWriterTest extends UnitTestCase
   {
     $this->cache_dir = LIMB_VAR_DIR . '/fpcache/';
     lmbFs :: mkdir($this->cache_dir);
-    $this->writer = new lmbFullPageCacheWriter();
-    $this->writer->setStorageDirectory($this->cache_dir);
+    $this->writer = new lmbFullPageCacheWriter($this->cache_dir);
   }
 
   function tearDown()
