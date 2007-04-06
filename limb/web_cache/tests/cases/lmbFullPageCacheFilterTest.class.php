@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheFilterTest.class.php 5424 2007-03-29 13:10:47Z pachanga $
+ * @version    $Id: lmbFullPageCacheFilterTest.class.php 5555 2007-04-06 10:34:40Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -24,10 +24,12 @@ class lmbFullPageCacheFilterTest extends UnitTestCase
   protected $filter2;
   protected $toolkit;
   protected $user;
+  protected $cache_dir;
 
   function setUp()
   {
-    lmbFs :: rm(lmbFullPageCacheFilter :: getCacheDir());
+    $this->cache_dir = LIMB_VAR_DIR . '/fpcache/';
+    lmbFs :: rm($this->cache_dir);
     $this->filter2 = new MockInterceptingFilter();
     $this->user = new lmbFullPageCacheUser();
     $this->toolkit = lmbToolkit :: save();
@@ -40,7 +42,7 @@ class lmbFullPageCacheFilterTest extends UnitTestCase
 
   function testRunOkFullCircle()
   {
-    $filter = new lmbFullPageCacheFilter($this->user);
+    $filter = new lmbFullPageCacheFilter('cache.ini', $this->cache_dir, $this->user);
 
     $fc = new lmbFilterChain();
     $fc->registerFilter($filter);
@@ -51,7 +53,7 @@ class lmbFullPageCacheFilterTest extends UnitTestCase
      path_regex = ~^.*$~
      policy = allow
     ';
-    $this->toolkit->setConf(lmbFullPageCacheFilter :: getRulesIni(), new lmbFakeIni($rules));
+    $this->toolkit->setConf('cache.ini', new lmbFakeIni($rules));
 
     $this->filter2->expectOnce('run');
 

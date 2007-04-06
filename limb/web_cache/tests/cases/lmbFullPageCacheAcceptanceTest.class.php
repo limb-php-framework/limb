@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheAcceptanceTest.class.php 5554 2007-04-06 10:07:48Z pachanga $
+ * @version    $Id: lmbFullPageCacheAcceptanceTest.class.php 5555 2007-04-06 10:34:40Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/net/src/lmbUri.class.php');
@@ -30,7 +30,7 @@ class lmbFullPageCacheAcceptanceTest extends UnitTestCase
   {
     $this->toolkit = lmbToolkit :: save();
 
-    $this->cache_writer = new lmbFullPageCacheWriter(dirname(__FILE__) . '/../var/pages');
+    $this->cache_writer = new lmbFullPageCacheWriter(LIMB_VAR_DIR . '/pages');
     $this->cache_writer->flushAll();
   }
 

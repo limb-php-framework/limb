@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheFilter.class.php 5554 2007-04-06 10:07:48Z pachanga $
+ * @version    $Id: lmbFullPageCacheFilter.class.php 5555 2007-04-06 10:34:40Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -21,23 +21,22 @@ class lmbFullPageCacheFilter implements lmbInterceptingFilter
 {
   protected $user;
   protected $cache;
+  protected $cache_dir;
+  protected $rules_ini;
 
-  function __construct($user = null)
+  function __construct($rules_ini = 'full_page_cache.ini', $cache_dir = null, $user = null)
   {
-    if(is_null($user))
+    $this->rules_ini = $rules_ini;
+
+    if(!$cache_dir)
+      $this->cache_dir = LIMB_VAR_DIR . '/fpcache/';
+    else
+      $this->cache_dir = $cache_dir;
+
+    if(!is_object($user))
       $this->user = new lmbFullPageCacheUser();
     else
       $this->user = $user;
-  }
-
-  static function getCacheDir()
-  {
-    return LIMB_VAR_DIR . '/fpcache/';
-  }
-
-  static function getRulesIni()
-  {
-    return 'full_page_cache.ini';
   }
 
   function run($filter_chain)
@@ -70,13 +69,13 @@ class lmbFullPageCacheFilter implements lmbInterceptingFilter
 
   protected function _createCachePolicy()
   {
-    $loader = new lmbFullPageCacheIniPolicyLoader(self :: getRulesIni());
+    $loader = new lmbFullPageCacheIniPolicyLoader($this->rules_ini);
     return $loader->load();
   }
 
   protected function _createCacheWriter()
   {
-    $writer = new lmbFullPageCacheWriter(self :: getCacheDir());
+    $writer = new lmbFullPageCacheWriter($this->cache_dir);
     return $writer;
   }
 }
