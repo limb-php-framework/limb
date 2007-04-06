@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingFileLocatorTest.class.php 4996 2007-02-08 15:36:18Z pachanga $
+ * @version    $Id: lmbCachingFileLocatorTest.class.php 5548 2007-04-06 07:39:14Z pachanga $
  * @package    file_schema
  */
 lmb_require('limb/file_schema/src/lmbFileLocator.class.php');
@@ -23,7 +23,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
   {
     $this->wrapped_locator = new MockFileLocator();
 
-    $this->locator = new lmbCachingFileLocator($this->wrapped_locator);
+    $this->locator = new lmbCachingFileLocator($this->wrapped_locator, LIMB_VAR_DIR);
     $this->locator->flushCache();
 
     $this->cache_file = $this->locator->getCacheFile();
@@ -84,7 +84,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
 
     $this->assertTrue(file_exists($this->cache_file));
 
-    $locator = new lmbCachingFileLocator($this->wrapped_locator);
+    $locator = new lmbCachingFileLocator($this->wrapped_locator, LIMB_VAR_DIR);
 
     unlink($this->cache_file);
 
@@ -112,7 +112,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
 
     $this->wrapped_locator->expectNever('locate');
 
-    $local_locator = new lmbCachingFileLocator($this->wrapped_locator);
+    $local_locator = new lmbCachingFileLocator($this->wrapped_locator, LIMB_VAR_DIR);
 
     $this->assertEqual($local_locator->locate('path-to-file'), 'located-path-to-file');
 

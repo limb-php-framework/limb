@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingFileLocator.class.php 4996 2007-02-08 15:36:18Z pachanga $
+ * @version    $Id: lmbCachingFileLocator.class.php 5548 2007-04-06 07:39:14Z pachanga $
  * @package    file_schema
  */
 lmb_require('limb/file_schema/src/lmbFileLocatorDecorator.class.php');
@@ -18,9 +18,10 @@ class lmbCachingFileLocator extends lmbFileLocatorDecorator
   protected $_changed = false;
   protected $_cache_name;
 
-  function __construct($locator, $_cache_name = 'generic')
+  function __construct($locator, $cache_dir, $cache_name = 'default')
   {
-    $this->_cache_name = $_cache_name;
+    $this->_cache_name = $cache_name;
+    $this->_cache_dir = $cache_dir;
 
     parent :: __construct($locator);
 
@@ -34,9 +35,8 @@ class lmbCachingFileLocator extends lmbFileLocatorDecorator
 
   function getCacheFile()
   {
-    $cache_file = LIMB_VAR_DIR . '/locators/' . $this->_cache_name  . '_locator.cache';
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/locators/');
-
+    lmbFs :: mkdir($this->_cache_dir);
+    $cache_file = $this->_cache_dir . '/' . $this->_cache_name  . '_locator.cache';
     return $cache_file;
   }
 
@@ -49,7 +49,7 @@ class lmbCachingFileLocator extends lmbFileLocatorDecorator
       unlink($cache_file);
   }
 
-  protected function _loadCache()
+  function _loadCache()
   {
     $cache_file = $this->getCacheFile();
     if(!file_exists($cache_file))
