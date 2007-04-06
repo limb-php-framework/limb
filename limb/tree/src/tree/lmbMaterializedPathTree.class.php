@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5008 2007-02-08 15:37:24Z pachanga $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5561 2007-04-06 13:07:43Z pachanga $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
-lmb_require('limb/datasource/src/lmbEmptyPagedArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
 lmb_require('limb/tree/src/tree/lmbTree.interface.php');
 
 class lmbMaterializedPathTree implements lmbTree
@@ -295,7 +295,7 @@ class lmbMaterializedPathTree implements lmbTree
   function getNodesByIds($ids)
   {
     if(!$ids)
-      return new lmbEmptyPagedArrayDataset();
+      return new lmbPagedArrayDataset();
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingTreeTest.class.php 5552 2007-04-06 08:56:27Z pachanga $
+ * @version    $Id: lmbCachingTreeTest.class.php 5561 2007-04-06 13:07:43Z pachanga $
  * @package    tree
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
@@ -328,8 +328,8 @@ class lmbCachingTreeTest extends UnitTestCase
 
     if(is_object($result)) //ugly hack
     {
-      $this->assertEqual($result->iterator, $expected);
-      $this->assertEqual($this->cache->put->iterator, $expected);
+      $this->assertEqual($result->getArray(), $expected->getArray());
+      $this->assertEqual($this->cache->put->getArray(), $expected->getArray());
     }
     else
       $this->assertEqual($result, $expected);
