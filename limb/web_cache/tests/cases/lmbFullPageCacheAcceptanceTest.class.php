@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheAcceptanceTest.class.php 5555 2007-04-06 10:34:40Z pachanga $
+ * @version    $Id: lmbFullPageCacheAcceptanceTest.class.php 5556 2007-04-06 11:34:03Z wiliam $
  * @package    web_cache
  */
 lmb_require('limb/net/src/lmbUri.class.php');
@@ -72,6 +72,41 @@ class lmbFullPageCacheAcceptanceTest extends UnitTestCase
     $invalid_request = new lmbFullPageCacheRequest($http_request, $user);
 
     $this->assertFalse($cache->openSession($invalid_request));
+  }
+
+  function testRuleNameMakeSenseInOrdering()
+  {
+    $this->_registerRules('[30-matching-rule]
+                           path_regex = ~path~
+                           request[id1] = *
+                           request[id2] = *
+
+                           [20-another-matching-rule]
+                           path_regex = ~path-more-detailed~
+                           type=deny'
+                           );
+
+    $user = new lmbFullPageCacheUser();
+    $cache = new lmbFullPageCache($this->cache_writer, $this->policy);
+
+    //cache deny, because rule should go first
+    $http_request = new lmbHttpRequest('http://dot.com/path-more-detailed?id1=test1&id2=test2', array(), array());
+    $not_cached_request = new lmbFullPageCacheRequest($http_request, $user);
+    $this->assertFalse($cache->openSession($not_cached_request));
+
+    //valid
+    $http_request = new lmbHttpRequest('http://dot.com/path?id1=test1&id2=test2', array(), array());
+    $cached_request = new lmbFullPageCacheRequest($http_request, $user);
+
+    //first time reading
+    $this->assertTrue($cache->openSession($cached_request));
+    $this->assertFalse($cache->get());
+    $cache->save($content = 'this is cached one');
+
+    //repeated reading
+    $this->assertTrue($cache->openSession($cached_request));
+    $this->assertTrue($cache->get());
+    $this->assertEqual($cache->get(), $content);
   }
 
   function _registerRules($content)

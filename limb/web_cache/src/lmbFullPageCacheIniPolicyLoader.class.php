@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheIniPolicyLoader.class.php 5424 2007-03-29 13:10:47Z pachanga $
+ * @version    $Id: lmbFullPageCacheIniPolicyLoader.class.php 5556 2007-04-06 11:34:03Z wiliam $
  * @package    web_cache
  */
 lmb_require('limb/web_cache/src/lmbFullPageCachePolicy.class.php');
@@ -29,6 +29,7 @@ class lmbFullPageCacheIniPolicyLoader
   {
     $policy = new lmbFullPageCachePolicy();
     $groups = $this->ini->getAll();
+    ksort($groups);
 
     foreach($groups as $rule_name => $options)
     {
