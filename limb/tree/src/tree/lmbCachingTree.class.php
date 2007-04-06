@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingTree.class.php 5008 2007-02-08 15:37:24Z pachanga $
+ * @version    $Id: lmbCachingTree.class.php 5552 2007-04-06 08:56:27Z pachanga $
  * @package    tree
  */
 lmb_require('limb/cache/src/lmbCacheMemoryPersister.class.php');
@@ -24,17 +24,17 @@ class lmbCachingTree extends lmbTreeDecorator
   protected $current_key;
   protected $current_group;
 
-  function __construct($tree)
+  function __construct($tree, $cache_dir)
   {
     parent :: __construct($tree);
-    $this->cache = $this->_createCache();
+    $this->cache = $this->_createCache($cache_dir);
   }
 
-  function _createCache()
+  function _createCache($cache_dir)
   {
     $persister = new lmbCacheCompositePersister();
     $persister->registerPersister(new lmbCacheMemoryPersister());
-    $persister->registerPersister(new lmbCacheFilePersister('tree'));
+    $persister->registerPersister(new lmbCacheFilePersister($cache_dir));
 
     return new lmbCachePersisterKeyDecorator($persister);
   }

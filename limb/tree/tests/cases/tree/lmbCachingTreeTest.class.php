@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingTreeTest.class.php 5008 2007-02-08 15:37:24Z pachanga $
+ * @version    $Id: lmbCachingTreeTest.class.php 5552 2007-04-06 08:56:27Z pachanga $
  * @package    tree
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
@@ -42,7 +42,7 @@ class lmbCachingTreeTest extends UnitTestCase
 
     $this->decorator = new CachingTreeSpecialVersion($this);
     $this->decorator->setReturnReference('_createCache', $this->cache);
-    $this->decorator->__construct($this->tree);
+    $this->decorator->__construct($this->tree, LIMB_VAR_DIR . '/tree');
   }
 
   function testGetNodeCacheHit()
