@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactComponentParsingState.class.php 5244 2007-03-14 14:35:20Z serega $
+ * @version    $Id: WactComponentParsingState.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -159,11 +159,6 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
   function characters($text)
   {
     $this->node_builder->addContent($text);
-  }
-
-  function cdata($text)
-  {
-    $this->node_builder->addContent('<![CDATA[' . $text . ']]>');
   }
 
   function processingInstruction($target, $instruction)

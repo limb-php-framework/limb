@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactLiteralParsingState.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactLiteralParsingState.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -53,11 +53,6 @@ class WactLiteralParsingState extends WactBaseParsingState  implements WactParse
   function characters($text)
   {
     $this->tree_builder->addWactTextNode($text);
-  }
-
-  function cdata($text)
-  {
-    $this->tree_builder->addWactTextNode('<![CDATA[' . $text . ']]>');
   }
 
   function processingInstruction($target, $instruction)

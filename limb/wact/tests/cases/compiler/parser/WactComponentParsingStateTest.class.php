@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactComponentParsingStateTest.class.php 5334 2007-03-23 11:48:20Z pachanga $
+ * @version    $Id: WactComponentParsingStateTest.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -315,13 +315,6 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
     $text = 'test';
     $this->node_builder->expectOnce('addContent', array($text));
     $this->state->characters($text);
-  }
-
-  function testCdata()
-  {
-    $text = 'test';
-    $this->node_builder->expectOnce('addContent', array('<![CDATA[' . $text . ']]>'));
-    $this->state->cdata($text);
   }
 
   function testProcessingInstruction()

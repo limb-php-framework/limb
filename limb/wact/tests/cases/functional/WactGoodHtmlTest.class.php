@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactGoodHtmlTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactGoodHtmlTest.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -124,6 +124,21 @@ TEMPLATE;
     $page->set('var', 'test');
     $output = $page->capture();
     $this->assertEqual($output, $extected);
+  }
+
+  function testWactTagsWithinCDATA()
+  {
+    $template = '<script type="text/javascript">//<![CDATA['.
+                '<list:list id="items"><list:item>{$title}|</list:item></list:list>'.
+                '//]]></script>';
+
+    $this->registerTestingTemplate('/goodhtml/javascript_with_wact_tags_in_cdata.html', $template);
+
+    $page = $this->initTemplate('/goodhtml/javascript_with_wact_tags_in_cdata.html');
+    $page->setChildDataset('items', array(array('title' => 'first'),
+                                          array('title' => 'second')));
+    $expected = '<script type="text/javascript">//<![CDATA[first|second|//]]></script>';
+    $this->assertEqual($page->capture(), $expected);
   }
 
   function testJavaScriptComplexCommentEmbed()

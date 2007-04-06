@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactParserListener.interface.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactParserListener.interface.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -16,7 +16,6 @@ interface WactParserListener
   function endElement($tag_name);
   function emptyElement($tag_name, $attrs);
   function characters($data);
-  function cdata($data);
   function processingInstruction($type, $data);
   function escape($data);
   function comment($data);

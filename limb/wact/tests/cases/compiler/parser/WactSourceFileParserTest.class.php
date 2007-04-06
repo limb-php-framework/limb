@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactSourceFileParserTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactSourceFileParserTest.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -134,13 +134,6 @@ class WactSourceFileParserTest extends UnitTestCase
     $data = 'test';
     $this->component_parsing_state->expectOnce('characters', array($data));
     $this->parser->characters($data);
-  }
-
-  function testCdata()
-  {
-    $data = 'test';
-    $this->component_parsing_state->expectOnce('cdata', array($data));
-    $this->parser->cdata($data);
   }
 
   function testProcessingInstruction()

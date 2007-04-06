@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactSourceFileParser.class.php 5513 2007-04-03 07:37:51Z pachanga $
+ * @version    $Id: WactSourceFileParser.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -161,11 +161,6 @@ class WactSourceFileParser implements WactParserListener
   function characters($text)
   {
     $this->active_parsing_state->characters($text);
-  }
-
-  function cdata($text)
-  {
-    $this->active_parsing_state->cdata($text);
   }
 
   function processingInstruction($target, $instruction)

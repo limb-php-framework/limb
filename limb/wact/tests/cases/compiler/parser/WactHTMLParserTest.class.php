@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5071 2007-02-16 09:09:35Z serega $
+ * @version    $Id: WactHTMLParserTest.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -237,9 +237,10 @@ class WactHTMLParserTest extends UnitTestCase
     $this->parser->parse('a<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">b');
   }
 
-  function testEscapeCData()
+  function testProcessCData()
   {
-    $this->listener->expectOnce('cdata', array('string = \'A CDATA block\';'));
+    $this->listener->expectArgumentsAt(0, 'characters', array('<![CDATA['));
+    $this->listener->expectArgumentsAt(1, 'characters', array('string = \'A CDATA block\';]]>'));
     $this->parser->parse('<![CDATA[string = \'A CDATA block\';]]>');
   }
 

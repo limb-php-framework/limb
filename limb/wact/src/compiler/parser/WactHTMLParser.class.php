@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParser.class.php 5223 2007-03-13 13:31:39Z serega $
+ * @version    $Id: WactHTMLParser.class.php 5553 2007-04-06 09:05:17Z serega $
  * @package    wact
  */
 
@@ -204,14 +204,9 @@ class WactHTMLParser
                         substr($this->rawtext, $start, $this->position - $start));
                     $this->position += 1;
                 } else if (substr($this->rawtext, $start, 7) == '[CDATA[') {
-                    $this->position = strpos($this->rawtext, ']]>', $start + 7);
-                    if ($this->position === FALSE) {
-                        $this->Observer->unexpectedEOF(substr($this->rawtext, $element_pos - 1));
-                        return;
-                    }
-                    $this->Observer->cdata(
-                        substr($this->rawtext, $start + 7 , $this->position - $start - 7));
-                    $this->position += 3;
+                    $this->Observer->characters(substr($this->rawtext, $start - 2, 9));
+                    $this->position += 7;
+                    break;
                 } else {
                     while ($this->position < $this->length && $this->rawtext{$this->position} != '>') {
                         $this->position++;
@@ -353,24 +348,6 @@ class WactHTMLParser
                     $this->Observer->startElement($tag, $Attributes);
                 }
                 $this->position += 1;
-
-                /*
-                removed due to bug #1000806
-                see http://www.w3.org/TR/REC-html40/appendix/notes.html#notes-specifying-data
-                if (strcasecmp($tag, 'script') == 0 || strcasecmp($tag, 'style') == 0) {
-                    $start = $this->position;
-                    $this->position = strpos($this->rawtext, '</', $start);
-                    if ($this->position == FALSE) {
-                        $this->Observer->unexpectedEOF(
-                            substr($this->rawtext, $start));
-                        return;
-                    }
-
-                    $this->Observer->characters(
-                        substr($this->rawtext, $start, $this->position - $start));
-
-                }
-                */
 
                 break;
             }
