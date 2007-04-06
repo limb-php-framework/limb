@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5027 2007-02-12 13:50:06Z pachanga $
+ * @version    $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5564 2007-04-06 13:10:44Z pachanga $
  * @package    cms
  */
 
@@ -20,7 +20,7 @@ class lmbCmsNodeBreadcrumbsFetcher extends lmbFetcher
     $path = lmbToolkit :: instance()->getRequest()->getUri()->getPath();
 
     if(!$node = lmbCmsNode :: findByPath('lmbCmsNode', $path))
-      return new lmbEmptyIterator();
+      return new lmbIterator();
 
     $parents = $node->getParents();
 
