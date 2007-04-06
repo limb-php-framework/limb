@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRecordSetDecoratorTest.class.php 5560 2007-04-06 13:07:10Z pachanga $
+ * @version    $Id: lmbARRecordSetDecoratorTest.class.php 5566 2007-04-06 13:33:35Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
@@ -66,6 +66,23 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
     $iterator->next();
     $lecture2 = $iterator->current();
     $this->assertEqual($lecture2->getCourse()->getTitle(), $course->getTitle());
+  }
+
+  function testGetOffsetIsDecorated()
+  {
+    $course = $this->_createCourseWithTwoLectures();
+
+    $db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
+    $decorated = $db->select('lecture_for_test');
+
+    $iterator = new lmbARRecordSetDecorator($decorated);
+    $iterator->setClassPath('LectureForTest');
+
+    $this->assertEqual($iterator->at(0)->getCourse()->getTitle(), $course->getTitle());
+    $this->assertEqual($iterator[0]->getCourse()->getTitle(), $course->getTitle());
+
+    $this->assertEqual($iterator->at(1)->getCourse()->getTitle(), $course->getTitle());
+    $this->assertEqual($iterator[1]->getCourse()->getTitle(), $course->getTitle());
   }
 
   function testThrowExceptionIfClassPathIsNotDefined()
