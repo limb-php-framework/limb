@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedIniCachingTest.class.php 5423 2007-03-29 13:09:55Z pachanga $
+ * @version    $Id: lmbCachedIniCachingTest.class.php 5549 2007-04-06 07:59:52Z pachanga $
  * @package    config
  */
 lmb_require('limb/config/src/lmbCachedIni.class.php');
@@ -51,7 +51,7 @@ class lmbCachedIniCachingTest extends UnitTestCase
     touch($file, time() - 10);           //but making it look older than it is
     clearstatcache();
 
-    $ini2 = new lmbCachedIni($file);
+    $ini2 = new lmbCachedIni($file, $this->cache_dir);
     $this->assertEqual($ini2->get('test'), 1);
   }
 
@@ -66,7 +66,7 @@ class lmbCachedIniCachingTest extends UnitTestCase
     touch($file, time() + 10);
     clearstatcache();
 
-    $ini2 = new lmbCachedIni($file);
+    $ini2 = new lmbCachedIni($file, $this->cache_dir);
     $this->assertEqual($ini2->get('test'), 2);
   }
 
@@ -80,7 +80,7 @@ class lmbCachedIniCachingTest extends UnitTestCase
     file_put_contents($override_file, 'test = 2');
     touch($override_file, time() + 10);
 
-    $ini2 = new lmbCachedIni($file);
+    $ini2 = new lmbCachedIni($file, $this->cache_dir);
     $this->assertEqual($ini2->get('test'), 2);
   }
 }

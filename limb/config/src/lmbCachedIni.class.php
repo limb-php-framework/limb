@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedIni.class.php 5423 2007-03-29 13:09:55Z pachanga $
+ * @version    $Id: lmbCachedIni.class.php 5549 2007-04-06 07:59:52Z pachanga $
  * @package    config
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -14,16 +14,12 @@ lmb_require('limb/util/src/system/lmbFs.class.php');
 
 class lmbCachedIni extends lmbIni
 {
-  protected $cache_dir = '';
+  protected $cache_dir;
 
-  function __construct($file, $cache_dir = null)
+  function __construct($file, $cache_dir)
   {
     $this->file_path = $file;
-
-    if(is_null($cache_dir))
-      $this->cache_dir = LIMB_VAR_DIR . '/ini/';
-    else
-      $this->cache_dir = $cache_dir;
+    $this->cache_dir = $cache_dir;
 
     if(!$this->_loadCache())
     {

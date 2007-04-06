@@ -6,10 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbConfTools.class.php 5423 2007-03-29 13:09:55Z pachanga $
+ * @version    $Id: lmbConfTools.class.php 5549 2007-04-06 07:59:52Z pachanga $
  * @package    config
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
+lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/config/src/lmbCachedIni.class.php');
 lmb_require('limb/config/src/lmbConf.class.php');
 
@@ -18,8 +19,6 @@ lmb_require('limb/config/src/lmbConf.class.php');
 class lmbConfTools extends lmbAbstractTools
 {
   protected $confs = array();
-  protected $map = array('.ini' => 'lmbCachedIni',
-                         '.conf.php' => 'lmbConf');
 
   function setConf($name, $conf)
   {
@@ -35,13 +34,27 @@ class lmbConfTools extends lmbAbstractTools
 
     $ext = substr($name, strpos($name, '.'));
 
-    if(!isset($this->map[$ext]))
+    if($ext == '.ini')
+    {
+      $file = $this->_locateFile($name);
+      if(defined('LIMB_VAR_DIR'))
+        $this->confs[$name] = new lmbCachedIni($file, LIMB_VAR_DIR . '/ini/');
+      else
+        $this->confs[$name] = new lmbIni($file);
+    }
+    elseif($ext == '.conf.php')
+    {
+      $this->confs[$name] = new lmbConf($this->_locateFile($name));
+    }
+    else
       throw new lmbException("'$ext' type configuration is not supported!");
 
-    $file = $this->toolkit->findFileAlias($name, LIMB_CONF_INCLUDE_PATH, 'config');
-    $this->confs[$name] = new $this->map[$ext]($file);
-
     return $this->confs[$name];
+  }
+
+  protected function _locateFile($name)
+  {
+    return $this->toolkit->findFileAlias($name, LIMB_CONF_INCLUDE_PATH, 'config');
   }
 
   protected function _normalizeConfName($name)
