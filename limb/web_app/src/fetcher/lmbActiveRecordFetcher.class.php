@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordFetcher.class.php 5382 2007-03-28 12:54:38Z pachanga $
+ * @version    $Id: lmbActiveRecordFetcher.class.php 5562 2007-04-06 13:08:43Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/classkit/src/lmbClassPath.class.php');
-lmb_require('limb/datasource/src/lmbEmptyIterator.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 
@@ -101,7 +101,7 @@ class lmbActiveRecordFetcher extends lmbFetcher
       return lmbActiveRecord :: findByIds($class_name, $this->record_ids);
     }
 
-    return new lmbEmptyIterator();
+    return new lmbIterator();
   }
 
   protected function _singleItemCollection($ar)
