@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: package.php 5460 2007-04-02 10:30:32Z serega $
+ * @version    $Id: package.php 5559 2007-04-06 13:05:29Z pachanga $
  * @package    dbal
  */
 
@@ -77,7 +77,7 @@ $package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', 
 $package->addPackageDepWithChannel('required', 'toolkit', 'pear.limb-project.com', '0.2.0');
 $package->addPackageDepWithChannel('required', 'net', 'pear.limb-project.com', '0.1.3');
 $package->addPackageDepWithChannel('required', 'classkit', 'pear.limb-project.com', '0.1.3');
-$package->addPackageDepWithChannel('required', 'datasource', 'pear.limb-project.com', '0.1.3');
+$package->addPackageDepWithChannel('required', 'datasource', 'pear.limb-project.com', '0.2.0');
 $package->addPackageDepWithChannel('required', 'util', 'pear.limb-project.com', '0.1.0');
 $package->addPackageDepWithChannel('required', 'config', 'pear.limb-project.com', '0.3.0');
 $package->addPackageDepWithChannel('optional', 'filter_chain', 'pear.limb-project.com', '0.1.0');

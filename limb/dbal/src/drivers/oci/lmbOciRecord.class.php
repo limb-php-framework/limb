@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbOciRecord.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbOciRecord.class.php 5559 2007-04-06 13:05:29Z pachanga $
  * @package    dbal
  */
-lmb_require('limb/dbal/src/drivers/lmbDbRecord.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
-class lmbOciRecord implements lmbDbRecord
+class lmbOciRecord extends lmbDbBaseRecord
 {
   protected $properties = array();
 
@@ -30,7 +30,28 @@ class lmbOciRecord implements lmbDbRecord
       return $this->properties[$name];
   }
 
-  function set($name, $value) //do we really need set here?
+  function remove($name)
+  {
+    $upname = strtoupper($name);
+    if(isset($this->properties[$upname]))
+      unset($this->properties[$upname]);
+    elseif(isset($this->properties[$name]))
+      unset($this->properties[$name]);
+  }
+
+  function has($name)
+  {
+    $upname = strtoupper($name);
+    return isset($this->properties[$upname]) ||
+           isset($this->properties[$name]);
+  }
+
+  function reset()
+  {
+    $this->properties = array();
+  }
+
+  function set($name, $value)
   {
     $this->properties[$name] = $value;
   }
@@ -54,12 +75,6 @@ class lmbOciRecord implements lmbDbRecord
       else
         $this->properties[$key] = $value;
     }
-  }
-
-  function merge($values)
-  {
-    if(is_array($values) && sizeof($values))
-      $this->properties = array_merge($this->properties, $values);
   }
 
   function getInteger($name)
@@ -117,20 +132,6 @@ class lmbOciRecord implements lmbDbRecord
     $value = $this->get($name);
     return is_null($value) ?  null : (string) $value;
   }
-
-  //ArrayAccess interface
-  function offsetExists($offset)
-  {
-    return !is_null($this->get($offset));
-  }
-
-  function offsetGet($offset)
-  {
-    return $this->get($offset);
-  }
-
-  function offsetSet($offset, $value){}
-  function offsetUnset($offset){}
 }
 
 ?>

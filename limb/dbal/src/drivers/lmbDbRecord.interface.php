@@ -6,17 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbRecord.interface.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbDbRecord.interface.php 5559 2007-04-06 13:05:29Z pachanga $
  * @package    dbal
  */
 
-interface lmbDbRecord extends ArrayAccess
+lmb_require('limb/datasource/src/lmbDatasource.interface.php');
+
+interface lmbDbRecord extends lmbDatasource
 {
-  function get($name);
-  function set($name, $value);//???
-  function export();
-  function import($values);
-  function merge($values);
   function getInteger($name);
   function getFloat($name);
   function getString($name);

@@ -6,13 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPgsqlRecord.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbPgsqlRecord.class.php 5559 2007-04-06 13:05:29Z pachanga $
  * @package    dbal
  */
+lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
-lmb_require('limb/dbal/src/drivers/lmbDbRecord.interface.php');
-
-class lmbPgsqlRecord implements lmbDbRecord
+class lmbPgsqlRecord extends lmbDbBaseRecord
 {
   protected $properties = array();
 
@@ -42,10 +41,20 @@ class lmbPgsqlRecord implements lmbDbRecord
     $this->properties = $values;
   }
 
-  function merge($values)
+  function remove($name)
   {
-    if(is_array($values) && sizeof($values))
-      $this->properties = array_merge($this->properties, $values);
+    if(isset($this->properties[$name]))
+      unset($this->properties[$name]);
+  }
+
+  function has($name)
+  {
+    return isset($this->properties[$name]);
+  }
+
+  function reset()
+  {
+    $this->properties = array();
   }
 
   function getInteger($name)
@@ -135,21 +144,6 @@ class lmbPgsqlRecord implements lmbDbRecord
   {
     return $this->get($name);
   }
-
-  //ArrayAccess interface
-  function offsetExists($offset)
-  {
-    return !is_null($this->get($offset));
-  }
-
-  function offsetGet($offset)
-  {
-    return $this->get($offset);
-  }
-
-  function offsetSet($offset, $value){}
-  function offsetUnset($offset){}
-
 }
 
 ?>

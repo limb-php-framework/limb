@@ -6,22 +6,18 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPgsqlRecordSet.class.php 5557 2007-04-06 11:35:08Z pachanga $
+ * @version    $Id: lmbPgsqlRecordSet.class.php 5559 2007-04-06 13:05:29Z pachanga $
  * @package    dbal
  */
 
-lmb_require('limb/dbal/src/drivers/lmbDbRecordSet.interface.php');
-lmb_require(dirname(__FILE__) . '/lmbPgsqlRecord.class.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
+lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlRecord.class.php');
 
-class lmbPgsqlRecordSet implements lmbDbRecordSet
+class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 {
   protected $queryId;
   protected $query;
   protected $connection;
-
-  protected $offset;
-  protected $limit;
-  protected $sort_params;
 
   protected $current;
   protected $valid;
@@ -31,29 +27,6 @@ class lmbPgsqlRecordSet implements lmbDbRecordSet
   {
     $this->connection = $connection;
     $this->query = $queryString;
-  }
-
-  function paginate($offset, $limit)
-  {
-    $this->offset = $offset;
-    $this->limit = $limit;
-    return $this;
-  }
-
-  function getOffset()
-  {
-    return $this->offset;
-  }
-
-  function getLimit()
-  {
-    return $this->limit;
-  }
-
-  function sort($params)
-  {
-    $this->sort_params = $params;
-    return $this;
   }
 
   function freeQuery()
@@ -121,14 +94,6 @@ class lmbPgsqlRecordSet implements lmbDbRecordSet
   function key()
   {
     return $this->key;
-  }
-
-  function getArray()
-  {
-    $array = array();
-    foreach($this as $record)
-      $array[] = $record->export();
-    return $array;
   }
 
   function at($pos)

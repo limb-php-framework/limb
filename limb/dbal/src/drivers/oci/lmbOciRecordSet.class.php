@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbOciRecordSet.class.php 5158 2007-02-27 08:00:25Z tony $
+ * @version    $Id: lmbOciRecordSet.class.php 5559 2007-04-06 13:05:29Z pachanga $
  * @package    dbal
  */
-lmb_require('limb/dbal/src/drivers/lmbDbRecordSet.interface.php');
-lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
+lmb_require('limb/dbal/src/drivers/oci/lmbOciRecord.class.php');
 
-class lmbOciRecordSet implements lmbDbRecordSet
+class lmbOciRecordSet extends lmbDbBaseRecordSet
 {
   protected $queryId;
   protected $query;
@@ -20,10 +20,7 @@ class lmbOciRecordSet implements lmbDbRecordSet
   protected $stmt;
   protected $connection;
 
-  protected $offset;
-  protected $limit;
   protected $need_pager = false;
-  protected $sort_params;
 
   protected $current;
   protected $valid;
@@ -42,22 +39,6 @@ class lmbOciRecordSet implements lmbDbRecordSet
     $this->offset = $offset;
     $this->limit = $limit;
     $this->need_pager = true;
-    return $this;
-  }
-
-  function getOffset()
-  {
-    return $this->offset;
-  }
-
-  function getLimit()
-  {
-    return $this->limit;
-  }
-
-  function sort($params)
-  {
-    $this->sort_params = $params;
     return $this;
   }
 
@@ -124,14 +105,6 @@ class lmbOciRecordSet implements lmbDbRecordSet
   function key()
   {
     return $this->key;
-  }
-
-  function getArray()
-  {
-    $array = array();
-    foreach($this as $record)
-      $array[] = $record->export();
-    return $array;
   }
 
   function at($pos)
