@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIteratorDecorator.class.php 5558 2007-04-06 13:02:07Z pachanga $
+ * @version    $Id: lmbIteratorDecorator.class.php 5565 2007-04-06 13:32:26Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbDataset.interface.php');
@@ -70,12 +70,12 @@ class lmbIteratorDecorator implements lmbDataset
   //ArrayAccess interface
   function offsetExists($offset)
   {
-    return $this->iterator->offsetExists($offset);
+    return !is_null($this->at($offset));
   }
 
   function offsetGet($offset)
   {
-    return $this->iterator->offsetGet($offset);
+    return $this->at($offset);
   }
 
   function offsetSet($offset, $value)
