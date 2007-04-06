@@ -65,7 +65,7 @@ class lmbWactViewTest extends lmbWactTestCase
     $this->assertEqual($form1_component->getDatasource(), $form1);
     $this->assertEqual($form1_component->getErrorsDataSet()->export(), $error_list1->getReadable()->export());
     $this->assertEqual($form1_component->getErrorsDataSet()->at(0)->getMessage(),
-                       'An error in Title with value');
+                       'An error in "Title" with value');
 
     $form2_component = $template->findChild('form2');
     $this->assertEqual($form2_component->getDatasource(), $form2);
