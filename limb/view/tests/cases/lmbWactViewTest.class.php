@@ -47,11 +47,11 @@ class lmbWactViewTest extends lmbWactTestCase
     $view->setTemplate($path);
     $view->set('hello', 'Hello world!');
 
-    $error_list1 = new lmbErrorList();
-    $error_list1->addError('An error in {Field} with {Value}', array('Field' => 'title'), array('Value' => 'value'));
-    $form1->error_list = $error_list1;
+    $error_list = new lmbErrorList();
+    $error_list->addError('An error in {Field} with {Value}', array('Field' => 'title'), array('Value' => 'value'));
+
     $view->setFormDatasource('form1', $form1 = new lmbDataspace());
-    $view->setFormErrors('form1', $error_list1);
+    $view->setFormErrors('form1', $error_list);
 
     $view->setFormDatasource('form2', $form2 = new lmbDataspace());
 
@@ -63,7 +63,7 @@ class lmbWactViewTest extends lmbWactTestCase
     $template = $view->getWACTTemplate();
     $form1_component = $template->findChild('form1');
     $this->assertEqual($form1_component->getDatasource(), $form1);
-    $this->assertEqual($form1_component->getErrorsDataSet()->export(), $error_list1->getReadable()->export());
+    $this->assertEqual($form1_component->getErrorsDataSet()->export(), $error_list->getReadable()->export());
     $this->assertEqual($form1_component->getErrorsDataSet()->at(0)->getMessage(),
                        'An error in "Title" with value');
 
