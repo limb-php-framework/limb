@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPgsqlRecordSet.class.php 5158 2007-02-27 08:00:25Z tony $
+ * @version    $Id: lmbPgsqlRecordSet.class.php 5557 2007-04-06 11:35:08Z pachanga $
  * @package    dbal
  */
 
@@ -139,7 +139,7 @@ class lmbPgsqlRecordSet implements lmbDbRecordSet
     {
       $query .= ' ORDER BY ';
       foreach($this->sort_params as $field => $order)
-        $query .= "$field $order,";
+        $query .= $this->connection->quoteIdentifier($field) . " $order,";
       $query = rtrim($query, ',');
     }
 
