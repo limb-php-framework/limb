@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCacheFilePersisterTest.class.php 4985 2007-02-08 15:35:06Z pachanga $
+ * @version    $Id: lmbCacheFilePersisterTest.class.php 5551 2007-04-06 08:51:11Z pachanga $
  * @package    cache
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -20,26 +20,24 @@ class lmbCacheFilePersisterTest extends lmbCacheTestBase
 
   function _createPersisterImp()
   {
-    return new lmbCacheFilePersister();
+    $this->cache_dir = LIMB_VAR_DIR . '/cache/whatever';
+    return new lmbCacheFilePersister($this->cache_dir);
   }
 
   function testCachedDiskFiles()
   {
-    $cache = new lmbCacheFilePersister('whatever');
-    $cache_dir = $cache->getCacheDir();
-
-    $items = lmbFs :: ls($cache_dir);
+    $items = lmbFs :: ls($this->cache_dir);
     $this->assertEqual(sizeof($items), 0);
 
-    $cache->put(1, $cache_value = 'value');
+    $this->cache->put(1, $cache_value = 'value');
 
-    $items = lmbFs :: ls($cache_dir);
+    $items = lmbFs :: ls($this->cache_dir);
     $this->assertEqual(sizeof($items), 1);
 
-    $this->assertEqual($cache->get(1), $cache_value);
+    $this->assertEqual($this->cache->get(1), $cache_value);
 
-    $cache->flushAll();
-    rmdir($cache_dir);
+    $this->cache->flushAll();
+    rmdir($this->cache_dir);
   }
 
   function testProperSerializing()

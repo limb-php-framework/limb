@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCacheFilePersister.class.php 4985 2007-02-08 15:35:06Z pachanga $
+ * @version    $Id: lmbCacheFilePersister.class.php 5551 2007-04-06 08:51:11Z pachanga $
  * @package    cache
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
@@ -20,11 +20,10 @@ class lmbCacheFilePersister implements lmbCachePersister
   protected $cache_dir;
   protected $id;
 
-  function __construct($id = 'cache')
+  function __construct($cache_dir, $id = 'cache')
   {
+    $this->cache_dir = $cache_dir;
     $this->id = $id;
-    $this->cache_dir = LIMB_VAR_DIR . '/' . $id;
-
     lmbFs :: mkdir($this->cache_dir);
   }
 
