@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestTreeDirNode.class.php 5417 2007-03-29 11:39:33Z pachanga $
+ * @version    $Id: lmbTestTreeDirNode.class.php 5569 2007-04-09 08:39:30Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
@@ -64,8 +64,7 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
 
     $this->test_group = $this->createTestGroupWithoutChildren();
 
-    //actually a quick fix for a much deeper problem, right?
-    if(!$this->_shouldIgnoreDir())
+    if($this->bootstrap())
       $this->_addChildrenTestCases($this->test_group);
 
     return $this->test_group;
@@ -73,14 +72,18 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
 
   function bootstrap()
   {
+    if($this->_shouldIgnoreDir())
+      return false;
+
     if(file_exists($this->dir . '/.init.php'))
-      require_once($this->dir . '/.init.php');
+      include_once($this->dir . '/.init.php');
+
+    return true;
   }
 
   function createTestGroupWithoutChildren()
   {
-    //...the same story
-    if($this->_shouldIgnoreDir())
+    if(!$this->bootstrap())
       return new lmbTestGroup();
 
     $label = $this->_getDirectoryLabel();
@@ -123,7 +126,7 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     if(!is_null($this->loaded) && $this->loaded)
       return;
 
-    if(!$this->_shouldIgnoreDir())
+    if($this->bootstrap())
     {
       $dir_items = $this->getDirItems();
 
@@ -159,14 +162,10 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     if(!is_null($this->ignored))
       return $this->ignored;
 
-    $this->bootstrap();
-
-    $dir_items = scandir($this->dir);
-
-    if(in_array('.ignore', $dir_items))
+    if(file_exists($this->dir . '/.ignore'))
       $this->ignored = true;
-    elseif(in_array('.ignore.php', $dir_items))
-      $this->ignored = include($this->dir . "/.ignore.php");
+    elseif(file_exists($this->dir . '/.ignore.php'))
+      $this->ignored = include($this->dir . '/.ignore.php');
     else
       $this->ignored = false;
 

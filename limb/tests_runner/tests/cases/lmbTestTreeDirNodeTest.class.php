@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestTreeDirNodeTest.class.php 5157 2007-02-26 13:59:16Z pachanga $
+ * @version    $Id: lmbTestTreeDirNodeTest.class.php 5569 2007-04-09 08:39:30Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
@@ -460,6 +460,30 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     $str = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($str, '');
+  }
+
+  function testBootstrappingDoesntHappenIfDirIsIgnored()
+  {
+    mkdir($this->var_dir . '/a');
+    mkdir($this->var_dir . '/a/b');
+
+    $test1 = new GeneratedTestClass();
+    $test2 = new GeneratedTestClass();
+
+    file_put_contents($this->var_dir . '/a/bar_test.php', $test1->generate());
+    file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
+
+    file_put_contents($this->var_dir . '/a/b/.init.php', '<?php echo "wow" ?>');
+    file_put_contents($this->var_dir . '/a/b/.ignore.php', '<?php return true; ?>');
+
+    $root_node = new lmbTestTreeDirNode($this->var_dir);
+    $group = $root_node->createTestGroup();
+
+    ob_start();
+    $group->run(new SimpleReporter());
+    $str = ob_get_contents();
+    ob_end_clean();
+    $this->assertEqual($str, $test1->getClass());
   }
 }
 
