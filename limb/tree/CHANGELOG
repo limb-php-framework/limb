@@ -1,4 +1,11 @@
+0.2.0-alpha - 9 April 2007 (r5575)
+==================================================
+-- changes due to datasource package cleanup and unification(DS-1)
+-- removing LIMB_VAR_DIR dependency, passing cache_dir explicitly(LMBF-6)
+-- lmbTreeRsProcessor keeps processed iterator record intact and returns lmbPagedArrayDataset instead of lmbArrayDataset
+-- fixing phpdoc
+-- fixing tests
+
 0.1.0-alpha - 16 February 2007 (r5015)
 ==================================================
-
 -- Initial release of this package.
