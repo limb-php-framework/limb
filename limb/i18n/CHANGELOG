@@ -1,6 +1,15 @@
+0.3.0-alpha - 9 April 2007 (r5577)
+==================================================
+-- lmbLocale :: __construct() reverted back to lmbLocale :: __construct($code, $container = null)
+-- lmbLocale :: create() moved into lmbI18NTools :: createLocaleObject()
+-- lmbI18NTools :: createLocaleObject() uses lmbCachedIni only if LIMB_VAR_DIR is defined(LMBF-6)
+-- changes due to CLI package improvements:
+  * update-translations now recognizes option -t|--test for dryrun
+  * test-update-translations removed
+
 0.2.0-alpha - 2 April 2007 (r5454)
 ==================================================
-!! Major BC break
+!! Major BC break !!
 
 -- translation schema reworked and now multiple backends are supported, while we have only one for Qt dictionaries for now.
    Old complicated and never used in practice stuff removed.
@@ -28,21 +37,16 @@
 -- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
 -- many other changes and refactorings
 
-
 0.1.2-alpha - 16 February 2007 (r5036)
 ==================================================
-
 -- tests are more isolated
 -- initial PhpDocs
 
-
 0.1.1-alpha - 15 December 2006 (r4537)
 ==================================================
-
 -- old and obsolete translation.ts files are replaced with the new ones
-
 
 0.1.0-alpha - 14 December 2006 (r4537)
 ==================================================
-
 -- initial release of this package.
+
