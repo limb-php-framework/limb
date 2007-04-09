@@ -1,4 +1,10 @@
+0.2.0-alpha - 9 April 2007 (r5585)
+==================================================
+-- lmbWactView sets explicitly WactFormFieldNameDictionary into error list
+-- lmbWactView doesn't throw exception on render(), empty string returned
+-- _initWactTemplate() throws exception if template not found
+-- FILTER_CHAIN dependency removed
+
 0.1.0-alpha - 1 April 2007 (r5454)
 ==================================================
-
 -- initial release of this package (extracted from WEB_APP package)
