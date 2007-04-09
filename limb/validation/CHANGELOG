@@ -1,26 +1,34 @@
+0.4.0-alpha - 9 April 2007 (r5586)
+==================================================
+-- all validation rules now accepts optional $custom_error message as the last constructor parameter. This $custom_error will be used instead of default messages in all error cases (VLD-2)
+-- more relaxed check in lmbAtleastOneFieldRequiredRule
+-- initial lmbDateRule added
+-- lmbErrorList pretty printing added for field names
+-- lmbValidator :: addAtLeastOneRequiredRule() added
+-- lmbAtleastOneFieldRequiredRule accepts fields array in constructor as well
+-- error list formatting rewritten:
+ * lmbErrorList doesn't format errors on iteration, instead it returns new formatted error list with new getReadable() method
+ * lmbErrorMessage removed, lmbObject used instead
+ * lmbDefaultFieldNameDictionary removed, its behaviour is incapsulated in lmbErrorList
+-- initial russian translation added
+
 0.3.0-alpha - 2 April 2007 (r5454)
 ==================================================
-
 -- changes due to recent I18N package refactorings
--- qt translations move to this package from I18N package
+-- Qt translations moved to this package from I18N package
 -- VALIDATION package now depends on I18N package
-
 
 0.2.0-alpha - 13 March 2007 (r5232)
 ==================================================
-
 -- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
 -- better PhpDocs
 -- ***ATTENTION*** possible BC break: lmbErrorMessage is now a regular ArrayObject. All 'message' field processing staff moved to lmbErrorList class. BC is kept for 'message', 'error', 'ErrorMessage' fields. If you used other variable names in your templates - please rename to 'message'.
 
-
 0.1.1-alpha - 16 February 2007
 ==================================================
-
 -- tests are more isolated
 -- initial PhpDocs
 
 0.1.0-alpha - 14 December 2006
 ==================================================
-
 -- Initial release of this package.
