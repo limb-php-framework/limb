@@ -20,6 +20,9 @@ foreach($files as $file)
   {
     foreach(array_unique($matches[2]) as $index => $name)
     {
+      if($pkg == $name)
+        continue;
+
       $deps[$name] = 1;
 
       if($name == $dep)
@@ -30,13 +33,11 @@ foreach($files as $file)
 
 if($dep_files)
 {
-  asort($dep_files);
   foreach($dep_files as $file => $dep)
     echo "$file => $dep\n";
 }
 else
 {
-  asort($deps);
   foreach(array_keys($deps) as $name)
     echo "$name\n";
 }
