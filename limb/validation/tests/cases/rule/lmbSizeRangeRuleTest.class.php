@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSizeRangeRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbSizeRangeRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -89,6 +89,36 @@ class lmbSizeRangeRuleTest extends lmbValidationRuleTestCase
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} must be greater than {min} characters.', 'validation'),
+                                        array('Field'=>'testfield'),
+                                        array('min'=>30)));
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testSizeRangeRuleTooBigWithCustomErrorMessage()
+  {
+    $rule = new lmbSizeRangeRule('testfield', 5, 10, 'Error_custom');
+
+    $dataspace = new lmbDataspace();
+    $dataspace->set('testfield', '12345678901234567890');
+
+    $this->error_list->expectOnce('addError',
+                                  array('Error_custom',
+                                        array('Field'=>'testfield'),
+                                        array('max'=>10)));
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testSizeRangeRuleTooSmallWithCustomErrorMessage()
+  {
+    $rule = new lmbSizeRangeRule('testfield', 30, 100, 'Error_custom');
+
+    $dataspace = new lmbDataspace();
+    $dataspace->set('testfield', '12345678901234567890');
+
+    $this->error_list->expectOnce('addError',
+                                  array('Error_custom',
                                         array('Field'=>'testfield'),
                                         array('min'=>30)));
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbNumericPrecisionRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbNumericPrecisionRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -37,9 +37,9 @@ class lmbNumericPrecisionRule extends lmbSingleFieldRule
   * @param int Number of whole digits allowed
   * @param int Number of decimal digits allowed
   */
-  function __construct($field_name, $whole_digits, $decimal_digits = 0)
+  function __construct($field_name, $whole_digits, $decimal_digits = 0, $custom_error = '')
   {
-    parent :: __construct($field_name);
+    parent :: __construct($field_name, $custom_error);
 
     $this->whole_digits = $whole_digits;
     $this->decimal_digits = $decimal_digits;
@@ -49,20 +49,23 @@ class lmbNumericPrecisionRule extends lmbSingleFieldRule
   {
     if (preg_match('/^[+-]?(\d*)\.?(\d*)$/', $value, $match))
     {
-      if (strlen($match[1]) > $this->whole_digits) {
-          $this->error(lmb_i18n('You have entered too many whole digits ({digits}) in {Field} (max {maxdigits}).', 'validation'),
-              array('maxdigits' => $this->whole_digits,
-                  'digits' => strlen($match[1])));
+      if (strlen($match[1]) > $this->whole_digits)
+      {
+        $this->error('You have entered too many whole digits ({digits}) in {Field} (max {maxdigits}).',
+                      array('maxdigits' => $this->whole_digits,
+                            'digits' => strlen($match[1])));
       }
-      if (strlen($match[2]) > $this->decimal_digits) {
-          $this->error(lmb_i18n('You have entered too many decimal digits ({digits}) in {Field} (max {maxdigits}).', 'validation'),
-              array('maxdigits' => $this->decimal_digits,
-                  'digits' => strlen($match[2])));
+
+      if (strlen($match[2]) > $this->decimal_digits)
+      {
+        $this->error('You have entered too many decimal digits ({digits}) in {Field} (max {maxdigits}).',
+                    array('maxdigits' => $this->decimal_digits,
+                          'digits' => strlen($match[2])));
       }
     }
     else
     {
-      $this->error(lmb_i18n('{Field} must be a valid number.', 'validation'));
+      $this->error('{Field} must be a valid number.');
     }
   }
 }

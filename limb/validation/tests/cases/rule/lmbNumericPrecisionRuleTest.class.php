@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbNumericPrecisionRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbNumericPrecisionRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -91,6 +91,21 @@ class lmbNumericPrecisionRuleTest extends lmbValidationRuleTestCase
                                   array(lmb_i18n('You have entered too many decimal digits ({digits}) in {Field} (max {maxdigits}).', 'validation'),
                                         array('Field' => 'testfield'),
                                         array('maxdigits' => 2, 'digits' => 3)));
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testNumericRuleFailureWithCustomError()
+  {
+    $rule = new lmbNumericPrecisionRule('testfield', 3, 2, 'Custom_Error');
+
+    $dataspace = new lmbDataspace();
+    $dataspace->set('testfield', 'not a number');
+
+    $this->error_list->expectOnce('addError',
+                                  array('Custom_Error',
+                                        array('Field'=>'testfield'),
+                                        array()));
 
     $rule->validate($dataspace, $this->error_list);
   }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPatternRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbPatternRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -23,11 +23,14 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 class lmbPatternRule extends lmbSingleFieldRule
 {
+  /**
+   * @var string Pattern to match with
+   */
   protected $pattern;
 
-  function __construct($field_name, $pattern)
+  function __construct($field_name, $pattern, $custom_error = '')
   {
-    parent :: __construct($field_name);
+    parent :: __construct($field_name, $custom_error);
 
     $this->pattern = $pattern;
   }
@@ -35,14 +38,7 @@ class lmbPatternRule extends lmbSingleFieldRule
   function check($value)
   {
     if (!preg_match($this->pattern, $value))
-    {
-      $this->error($this->_getMessage());
-    }
-  }
-
-  protected function _getMessage()
-  {
-    return lmb_i18n('{Field} value is wrong', 'validation');
+      $this->error('{Field} value is wrong');
   }
 }
 ?>

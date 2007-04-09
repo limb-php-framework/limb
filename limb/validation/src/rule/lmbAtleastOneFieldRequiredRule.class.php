@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5542 2007-04-05 15:04:49Z pachanga $
+ * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -25,6 +25,10 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
   * @var array List of fields
   */
   protected $field_names;
+  /**
+  * @var string Custom error message
+  */
+  protected $custom_error;
 
   /**
   * Constructor
@@ -35,7 +39,10 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
     $args = func_get_args();
 
     if(is_array($args[0]))
+    {
       $this->field_names = $args[0];
+      $this->custom_error = isset($args[1]) ? $args[1] : '';
+    }
     else
       $this->field_names = $args;
   }
@@ -46,7 +53,10 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
   function validate($datasource, $error_list)
   {
     if(!$this->_findAtleastOneField($datasource))
-      $this->_generateErrorMessage($error_list);
+    {
+      $error = $this->custom_error ? $this->custom_error : $this->_generateErrorMessage();
+      $error_list->addError($error, $this->field_names, array());
+    }
   }
 
   protected function _findAtleastOneField($datasource)
@@ -60,13 +70,14 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
     return false;
   }
 
-  protected function _generateErrorMessage($error_list)
+  protected function _generateErrorMessage()
   {
     for($i = 0; $i < count($this->field_names); $i++)
       $fields[] = '{' . $i . '}';
-    $error_list->addError(lmb_i18n('Atleast one field required among: {fields}',
-                             array('{fields}' => implode(', ', $fields)),
-                             'validation'), $this->field_names, array());
+
+    return lmb_i18n('Atleast one field required among: {fields}',
+                     array('{fields}' => implode(', ', $fields)),
+                    'validation');
   }
 }
 ?>

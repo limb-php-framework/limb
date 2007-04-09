@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSizeRangeRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbSizeRangeRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -47,9 +47,9 @@ class lmbSizeRangeRule extends lmbSingleFieldRule
   * @param int Minumum or maximum length
   * @param int Maximum length (optional)
   */
-  function __construct($field_name, $min_or_max_length, $max_length = NULL)
+  function __construct($field_name, $min_or_max_length, $max_length = NULL, $custom_error = '')
   {
-    parent :: __construct($field_name);
+    parent :: __construct($field_name, $custom_error);
 
     if (is_null($max_length))
     {
@@ -67,13 +67,11 @@ class lmbSizeRangeRule extends lmbSingleFieldRule
   {
     if (!is_null($this->min_length) && (strlen($value) < $this->min_length))
     {
-      $this->error(lmb_i18n('{Field} must be greater than {min} characters.', 'validation'),
-                   array('min' => $this->min_length));
+      $this->error('{Field} must be greater than {min} characters.', array('min' => $this->min_length));
     }
     elseif (strlen($value) > $this->max_length)
     {
-      $this->error(lmb_i18n('{Field} must be less than {max} characters.', 'validation'),
-                   array('max' => $this->max_length));
+      $this->error('{Field} must be less than {max} characters.', array('max' => $this->max_length));
     }
   }
 }

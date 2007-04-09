@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFileUploadRequiredRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbFileUploadRequiredRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -14,10 +14,15 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 class lmbFileUploadRequiredRule implements lmbValidationRule
 {
   protected $field_name;
+  /**
+  * @var string Custom error message
+  */
+  protected $custom_error;
 
-  function __construct($field_name)
+  function __construct($field_name, $custom_error = '')
   {
     $this->field_name = $field_name;
+    $this->custom_error = $custom_error;
   }
 
   function validate($datasource, $error_list)
@@ -26,12 +31,11 @@ class lmbFileUploadRequiredRule implements lmbValidationRule
 
     if (empty($value['name']))
     {
-      $error_list->addError(lmb_i18n('{Field} is required.', 'validation'),
-                                 array('Field' => $this->field_name));
-
-      return FALSE;
+      $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} is required.', 'validation');
+      $error_list->addError($error, array('Field' => $this->field_name));
+      return false;
     }
-    return TRUE;
+    return true;
   }
 }
 ?>

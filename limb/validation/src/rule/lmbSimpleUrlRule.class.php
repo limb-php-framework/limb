@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSimpleUrlRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbSimpleUrlRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -48,7 +48,7 @@ class lmbSimpleUrlRule extends lmbSingleFieldRule
 
     if (!preg_match("~{$regex}~x", $value))
     {
-      $this->error(lmb_i18n('{Field} must be valid URL', 'validation'), array());
+      $this->error('{Field} must be valid URL', 'validation');
     }
   }
 }

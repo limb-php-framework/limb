@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidator.class.php 5537 2007-04-05 12:43:56Z pachanga $
+ * @version    $Id: lmbValidator.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/lmbErrorList.class.php');
@@ -73,36 +73,36 @@ class lmbValidator
   * Alias for adding lmbRequiredRule to validator
   * @return void
   */
-  function addRequiredRule($field)
+  function addRequiredRule($field, $custom_error = '')
   {
     $this->addRule(new lmbHandle('limb/validation/src/rule/lmbRequiredRule',
-                                 array($field)));
+                                 array($field, $custom_error)));
   }
 
-  function addAtLeastOneRequiredRule($fields)
+  function addAtLeastOneRequiredRule($fields, $custom_error = '')
   {
     $this->addRule(new lmbHandle('limb/validation/src/rule/lmbAtleastOneFieldRequiredRule',
-                                 array($fields)));
+                                 array($fields, $custom_error)));
   }
 
   /**
   * Alias for adding lmbRequiredObjectRule to validator
   * @return void
   */
-  function addRequiredObjectRule($field, $class = null)
+  function addRequiredObjectRule($field, $class = null, $custom_error = '')
   {
     $this->addRule(new lmbHandle('limb/validation/src/rule/lmbRequiredObjectRule',
-                                 array($field, $class)));
+                                 array($field, $class, $custom_error)));
   }
 
   /**
   * Alias for adding lmbSizeRangeRule to validator
   * @return void
   */
-  function addSizeRangeRule($field, $min_or_max_length, $max_length = NULL)
+  function addSizeRangeRule($field, $min_or_max_length, $max_length = NULL, $custom_error = '')
   {
     $this->addRule(new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule',
-                                 array($field, $min_or_max_length, $max_length)));
+                                 array($field, $min_or_max_length, $max_length, $custom_error)));
   }
 
   /**

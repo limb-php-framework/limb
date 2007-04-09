@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5537 2007-04-05 12:43:56Z pachanga $
+ * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -70,6 +70,20 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('Atleast one field required among: {fields}', array('{fields}' => '{0}, {1}, {2}'), 'validation'),
                                         array('field1', 'field2', 'field3'),
+                                        array()));
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testInvalidSinceFieldIsNotPresentWithCustomError()
+  {
+    $dataspace = new lmbDataspace();
+
+    $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2'), 'Custom_Error');
+
+    $this->error_list->expectOnce('addError',
+                                  array('Custom_Error',
+                                        array('field1', 'field2'),
                                         array()));
 
     $rule->validate($dataspace, $this->error_list);

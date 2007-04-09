@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSingleFieldRule.class.php 5400 2007-03-29 07:10:15Z pachanga $
+ * @version    $Id: lmbSingleFieldRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -25,13 +25,18 @@ abstract class lmbSingleFieldRule implements lmbValidationRule
   * @var lmbErrorList List of errors.
   */
   protected $error_list;
+  /**
+  * @var string Custom error message
+  */
+  protected $custom_error;
 
   /**
   * @param string Field name
   */
-  function __construct($field_name)
+  function __construct($field_name, $custom_error = '')
   {
     $this->field_name = $field_name;
+    $this->custom_error = $custom_error;
   }
 
   /**
@@ -45,15 +50,17 @@ abstract class lmbSingleFieldRule implements lmbValidationRule
   /**
   * Alias for adding single field error to error list
   * Fills field array with array('Field' => $this->field_name) that is ok for single field rules
-  *
+  * If $custom_error attribute is set will use $custom_error regardless of $message
+  * If $custom_error attribute is not set will apply lmb_i18n function to $message
   * @param string Error message
   * @param array Array of values
   * @see lmbErrorList :: addError()
   * @return void
   */
-  function error($message, $values = array())
+  function error($message, $values = array(), $i18n_params = array())
   {
-    $this->error_list->addError($message, array('Field' => $this->field_name), $values);
+    $error = $this->custom_error ? $this->custom_error : lmb_i18n($message, $i18n_params, 'validation');
+    $this->error_list->addError($error, array('Field' => $this->field_name), $values);
   }
 
   /**

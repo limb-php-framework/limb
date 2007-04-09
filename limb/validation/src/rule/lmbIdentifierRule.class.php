@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIdentifierRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbIdentifierRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -21,7 +21,7 @@ class lmbIdentifierRule extends lmbSingleFieldRule
     $value = "$value";
 
     if (!preg_match("/^[a-zA-Z0-9.-]+$/i", $value))
-        $this->error(lmb_i18n('{Field} must contain only letters and numbers', 'validation'));
+        $this->error('{Field} must contain only letters and numbers');
   }
 }
 ?>

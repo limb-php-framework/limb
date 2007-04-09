@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbInvalidValueRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbInvalidValueRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -24,9 +24,9 @@ class lmbInvalidValueRule extends lmbSingleFieldRule
 {
   protected $invalid_value;
 
-  function __construct($field_name, $invalid_value)
+  function __construct($field_name, $invalid_value, $custom_error = '')
   {
-    parent :: __construct($field_name);
+    parent :: __construct($field_name, $custom_error);
 
     $this->invalid_value = $invalid_value;
   }
@@ -39,7 +39,7 @@ class lmbInvalidValueRule extends lmbSingleFieldRule
 
     if ($value == $invalid_value)
     {
-      $this->error(lmb_i18n('{Field} value is wrong', 'validation'));
+      $this->error('{Field} value is wrong');
     }
   }
 }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRequiredObjectRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbRequiredObjectRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -32,15 +32,20 @@ class lmbRequiredObjectRule implements lmbValidationRule
   * @var string Required class name
   */
   protected $class;
+  /**
+  * @var string Custom error message
+  */
+  protected $custom_error;
 
   /**
   * @param string Field name
   * @param string Required class name
   */
-  function __construct($field_name, $class = null)
+  function __construct($field_name, $class = null, $custom_error = '')
   {
     $this->field_name = $field_name;
     $this->class = $class;
+    $this->custom_error = $custom_error;
   }
 
   /**
@@ -52,8 +57,8 @@ class lmbRequiredObjectRule implements lmbValidationRule
 
     if(!is_object($value) || ($this->class && get_class($value) != $this->class))
     {
-      $message = lmb_i18n('Object {Field} is required', 'validation');
-      $error_list->addError($message, array('Field' => $this->field_name));
+      $error = $this->custom_error ? $this->custom_error : lmb_i18n('Object {Field} is required', 'validation');
+      $error_list->addError($error, array('Field' => $this->field_name));
       return;
     }
   }

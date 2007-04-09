@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRequiredRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbRequiredRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 
@@ -31,14 +31,19 @@ class lmbRequiredRule implements lmbValidationRule
   * @var string Field name
   */
   protected $field_name;
+  /**
+  * @var string Custom error message
+  */
+  protected $custom_error;
 
   /**
   * Constructor
   * @param string Field name
   */
-  function __construct($field_name)
+  function __construct($field_name, $custom_error = '')
   {
     $this->field_name = $field_name;
+    $this->custom_error = $custom_error;
   }
 
   /**
@@ -49,8 +54,8 @@ class lmbRequiredRule implements lmbValidationRule
     $value = $datasource->get($this->field_name);
     if(is_null($value) || $value === '')
     {
-      $message = lmb_i18n('{Field} is required', 'validation');
-      $error_list->addError($message, array('Field' => $this->field_name));
+      $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} is required', 'validation');
+      $error_list->addError($error, array('Field' => $this->field_name));
       return;
     }
   }

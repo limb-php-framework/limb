@@ -21,9 +21,10 @@ class lmbDateRule extends lmbSingleFieldRule
 
   protected $type;
 
-  function __construct($name, $type = lmbDateRule :: TYPE_ISO)
+  function __construct($field_name, $type = lmbDateRule :: TYPE_ISO, $custom_error = '')
   {
-    parent :: __construct($name);
+    parent :: __construct($field_name, $custom_error);
+
     $this->type = $type;
   }
 
@@ -37,20 +38,9 @@ class lmbDateRule extends lmbSingleFieldRule
       }
       catch(lmbException $e)
       {
-        $this->error(lmb_i18n('{Field} is not valid ISO format date(YYYY-MM-DD HH:MM).', 'validation'));
+        $this->error('{Field} is not valid ISO format date(YYYY-MM-DD HH:MM).');
       }
     }
-  }
-
-  protected function _checkUser($value)
-  {
-    if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9]+)*$/i', $value))
-        $this->error(lmb_i18n('Invalid user in {Field}.', 'validation'));
-  }
-
-  protected function _checkDomain($value)
-  {
-    parent :: check($value);
   }
 }
 ?>

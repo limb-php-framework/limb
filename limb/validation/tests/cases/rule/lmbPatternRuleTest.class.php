@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPatternRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbPatternRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -35,6 +35,21 @@ class lmbPatternRuleTest extends lmbValidationRuleTestCase
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} value is wrong', 'validation'),
+                                        array('Field'=>'testfield'),
+                                        array()));
+
+    $rule->validate($data, $this->error_list);
+  }
+
+  function testPatternRuleFailedWithCustomError()
+  {
+    $rule = new lmbPatternRule('testfield', '/^\w+$/', 'Custom_Error');
+
+    $data = new lmbDataspace();
+    $data->set('testfield', 'Simpletest is Cool!');
+
+    $this->error_list->expectOnce('addError',
+                                  array('Custom_Error',
                                         array('Field'=>'testfield'),
                                         array()));
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbNumericValueRangeRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbNumericValueRangeRule.class.php 5584 2007-04-09 10:43:58Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -36,9 +36,9 @@ class lmbNumericValueRangeRule extends lmbSingleFieldRule
   * @param float Min value
   * @param float Max value
   */
-  function __construct($field_name, $min_value, $max_value)
+  function __construct($field_name, $min_value, $max_value, $custom_error = '')
   {
-    parent :: __construct($field_name);
+    parent :: __construct($field_name, $custom_error);
 
     $this->min_value = $min_value;
     $this->max_value = $max_value;
@@ -47,13 +47,15 @@ class lmbNumericValueRangeRule extends lmbSingleFieldRule
   function check($value)
   {
     if (!preg_match('/^[+-]?(\d*)$/', $value, $match))
-      $this->error(lmb_i18n('{Field} must be a valid number.', 'validation'));
+      $this->error('{Field} must be a valid number.');
 
     if($value < $this->min_value)
-      $this->error(lmb_i18n('{Field} must be not less than {value}.', 'validation'), array('value' => $this->min_value));
+      $this->error('{Field} must be not less than {value}.', array('value' => $this->min_value));
 
     if($value > $this->max_value)
-      $this->error(lmb_i18n('{Field} must be not greater than {value}.', 'validation'), array('value' => $this->max_value));
+    {
+      $this->error('{Field} must be not greater than {value}.', array('value' => $this->max_value));
+    }
   }
 }
 ?>
