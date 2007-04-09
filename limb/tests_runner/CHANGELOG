@@ -1,3 +1,9 @@
+0.6.0-alpha - 9 April 2007 (r5576)
+==================================================
+-- lmbTestTreeDirNode :: bootstrap() now checks if directory is ignored and returns false which means that bootstraping process failed and this directory should be ignored. It means that .ignore.php now is called *before* .init.php
+-- lmbTestTreeDirNode :: _shouldIgnoreDir() doesn't call bootstrap()
+-- test/cases/.ignore.php added, it ignores tests execution with another TESTS_RUNNER package installation
+
 0.5.1-alpha - 5 April 2007 (r5543)
 ==================================================
 -- lmbTestShellUI internally refactored:
