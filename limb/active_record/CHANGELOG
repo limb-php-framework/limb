@@ -1,3 +1,14 @@
+0.3.0-alpha - 9 April 2007 (r5569)
+==================================================
+
+-- much more robust single table inheritance support - lmbActiveRecord encodes inheritance path in 'kind' field and uses LIKE query in order to retrieve subclasses
+-- changes due to datasource package cleanup unification(DS-1)
+-- passing lmbActiveRecord object in constructor calls import
+-- lmbActiveRecord :: _getValueObject() loads value object if it's not set, not only if it's not set *and* active record is new
+-- slow @ operation removed during value object loading
+-- new event added - lmbActiveRecord :: _onSave(), it's called both in case of creating and updating
+-- lmbActiveRecord :: decodeInheritancePath($path) added, it explodes inheritance path and returns an array of classes
+
 0.2.2-alpha - 1 April 2007 (r5454)
 ==================================================
 
@@ -6,7 +17,6 @@
    This is possible now: lmbActiveRecord :: find("Book", array('name=? and author=?', 'book', 'bob'));
 -- minor changes due to global Limb3 functions renamings
 
-
 0.2.1-alpha - 13 March 2007 (r5232)
 ==================================================
 
@@ -14,7 +24,6 @@
 -- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
 -- better PhpDocumentor comments
 -- lmbARRelationCollection now implements lmbPagedDataset interface instead of Iterator and Countable
-
 
 0.2.0-alpha - 16 February 2007 (r5025)
 ==================================================
@@ -25,7 +34,6 @@
 -- lmbActiveRecordTools added to cache MetaInfos
 -- lmbARRecordSetDecorator :: _createObject() throws an exception if no such class exists
 -- initial PhpDocumentor comments added
-
 
 0.1.1-alpha - 14 December 2006 (r4578)
 ==================================================
