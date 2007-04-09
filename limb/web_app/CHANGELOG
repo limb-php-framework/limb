@@ -1,6 +1,16 @@
+0.5.0-alpha - 9 April 2007 (r5578)
+==================================================
+-- changes due to datasource package cleanup and unification(DS-1)
+-- message box obsolete stuff removed, use flash box facility instead
+-- lmbWebAppErrorList removed
+-- flash box fills 'message' property, 'text' property is still here for BC
+-- lmbWactView doesn't throw exception on render(), empty string returned
+-- lmbController fills response with default output message if there were no response at all(this way developer sees some message rather than an unfriendly blank screen)
+-- initial cli/WebAppCliCmd added, currently only 'limb web_app create' command is supported
+-- moving examples/empty_app => skel
+
 0.4.0-alpha - 2 April  2007 (r5454)
 ==================================================
-
 -- added ability for Limb3 based applications to work in a subfolder of DocumentRoot (the code was ported from Limb2)
 -- CRUD example removed from WEB_APP package. Now we have a copy of it at https://svn.limb-project.com/limb/3.x/examples/crud
 -- I18N tags and filters moved to I18N package
@@ -14,7 +24,7 @@
 -- lmbFormCommand properly initiates default validator and error_list now.
 -- database stuff removed from lmbWebAppTools, all moved to DBAL package
 
-!!! Minor BC break
+!! Minor BC break !!
 -- lmbSessionMessageBox -> lmbFlashBox
 -- lmbSessionMessageBoxErrorsFetcher -> lmbFlashBoxErrorsFetcher
 -- lmbSessionMessageBoxMessagesFetcher -> lmbFlashBoxMessagesFetcher
@@ -23,10 +33,8 @@
 -- new <flash_box> and <message_box> tags added. These tags are replacements for long constructions like <fetch using='limb/web_app/src/fetcher/lmbSessionMessageBoxFetcher' target='messages' />.
 -- lmbWebAppTools :: getSessionMessageBox() -> :: getFlashBox()
 
-
 0.3.0-alpha - 13 March 2007 (r5232)
 ==================================================
-
 -- removing active_record and dbal dependency from web_app package. Keeping BC, including active_record/common.inc.php and dbal/common.inc.php only if they're present
 -- <fetch:param> tag now has alias: <fetch:params>
 -- <fetch> tag now allows to use "one" attribute instead of "first"
@@ -40,10 +48,8 @@
 -- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
 -- many other small fixes
 
-
 0.2.0-alpha - 16 February 2007 (r5095)
 ==================================================
-
 -- using PATH_SEPARATOR  constant for setting include_path in setup.php
 -- <fetch> tag alias for "first" attribute called "one" added. Now you can use <fetch one using='...'.../>
 -- lmbUniqueTableFieldRule :: __construct(..) allows to omit 3d argument $table_field. $field_name will be used in this case.
@@ -86,8 +92,6 @@
 -- initial PhpDocs
 -- many other minor fixes and improvements
 
-
 0.1.0-alpha - 14 December 2006
 ==================================================
-
 -- Initial release of this package.
