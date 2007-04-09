@@ -20,7 +20,7 @@ if(!preg_match('~\(r(\d+)\)~', $line, $m))
 }
 $last_changelog_rev = $m[1];
 
-if($logs = get_svn_logs($dir, 'HEAD', $last_changelog_rev))
+if($logs = get_svn_logs($dir, 'HEAD', $last_changelog_rev + 1))
 {
   $date = date("j F Y");
   $next_rev = get_svn_revision($dir);

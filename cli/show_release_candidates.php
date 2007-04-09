@@ -30,7 +30,7 @@ foreach($dirs as $dir)
     //get_svn_logs($uri, $m[1], 'HEAD');
 
     $is_candidate = false;
-    $logs = get_svn_logs($dir, 'HEAD', $last_changelog_rev);
+    $logs = get_svn_logs($dir, 'HEAD', $last_changelog_rev + 1);
     $log_string = '';
     foreach($logs as $item)
     {
