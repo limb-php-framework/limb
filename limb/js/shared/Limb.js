@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: Limb.js 5444 2007-03-30 11:28:01Z tony $
+ * @version    $Id: Limb.js 5568 2007-04-09 08:17:15Z wiliam $
  * @package    js
  */
 
@@ -46,7 +46,7 @@ Limb.namespace = function(name)
 
 Limb.require = function(package_name)
 {
-  document.write('<script type="text/javascript" src="' + package_name + '"></script>');
+  //no working function for now. It needs to be written from the scratch or may be ported from 2.x
 }
 
 Limb.isset = function(variable)
