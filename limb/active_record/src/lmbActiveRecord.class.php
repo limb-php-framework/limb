@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5560 2007-04-06 13:07:10Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5592 2007-04-10 07:50:37Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5560 2007-04-06 13:07:10Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5592 2007-04-10 07:50:37Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -172,7 +172,7 @@ class lmbActiveRecord extends lmbObject
    */
   static function setDefaultDSN($dsn)
   {
-    require_once('limb/dbal/toolkit.inc.php');
+    lmb_require('limb/dbal/toolkit.inc.php');
     lmbToolkit :: instance()->setDefaultDbDSN($dsn);
   }
   /**
