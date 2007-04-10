@@ -17,6 +17,17 @@ class lmbWactView extends lmbView
   protected $wact_template;
   protected $forms_datasources = array();
   protected $forms_errors = array();
+  protected $cache_dir;
+
+  function __construct($dir)
+  {
+    $this->cache_dir = $dir;
+  }
+
+  function setCacheDir($dir)
+  {
+    $this->cache_dir = $dir;
+  }
 
   function render()
   {
@@ -77,7 +88,7 @@ class lmbWactView extends lmbView
     if(!$path = $this->getTemplate())
       return null;
 
-    $this->wact_template = new lmbWactTemplate($path);
+    $this->wact_template = new lmbWactTemplate($path, $this->cache_dir);
     return $this->wact_template;
   }
 

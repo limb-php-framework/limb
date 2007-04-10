@@ -13,9 +13,14 @@ lmb_require('limb/wact/src/WactTemplateConfig.interface.php');
 
 class lmbWactTemplateConfig implements WactTemplateConfig
 {
+  function __construct($cache_dir)
+  {
+    $this->cache_dir = $cache_dir;
+  }
+
   function getCacheDir()
   {
-    return LIMB_VAR_DIR . '/compiled/';
+    return $this->cache_dir;
   }
 
   function isForceScan()

@@ -25,7 +25,7 @@ class lmbWactViewTest extends lmbWactTestCase
 
     $this->registerTestingTemplate($path = '/limb/simple_view.html', $template);
 
-    $view = new lmbWactView();
+    $view = new lmbWactView(LIMB_VAR_DIR . '/compiled');
     $view->setTemplate($path);
     $view->set('hello', 'Hello message!');
     $view->set('again', 'Hello again!');
@@ -43,7 +43,7 @@ class lmbWactViewTest extends lmbWactTestCase
 
     $this->registerTestingTemplate($path = '/limb/form_view.html', $template);
 
-    $view = new lmbWactView();
+    $view = new lmbWactView(LIMB_VAR_DIR . '/compiled');
     $view->setTemplate($path);
     $view->set('hello', 'Hello world!');
 

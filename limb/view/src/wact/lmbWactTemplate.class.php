@@ -15,9 +15,9 @@ lmb_require('limb/wact/src/WactTemplate.class.php');
 
 class lmbWactTemplate extends WactTemplate
 {
-  function __construct($template_path)
+  function __construct($template_path, $cache_dir)
   {
-    $config = new lmbWactTemplateConfig();
+    $config = new lmbWactTemplateConfig($cache_dir);
     $locator = lmbToolkit :: instance()->getWactLocator();
     parent :: __construct($template_path, $config, $locator);
   }

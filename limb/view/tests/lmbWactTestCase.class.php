@@ -10,14 +10,17 @@ class lmbWactTestCase extends UnitTestCase
 {
   protected $toolkit;
   protected $locator;
+  protected $config;
 
   function setUp()
   {
     $this->toolkit = lmbToolkit :: save();
-    $this->config = new lmbWactTemplateConfig();
+
+    $this->compiled_dir = LIMB_VAR_DIR . '/compiled';
+    $this->config = new lmbWactTemplateConfig($this->compiled_dir);
     $this->locator = new WactTestTemplateLocator($this->config);
 
-    $this->initWactDictionaries();
+    $this->initWactDictionaries($this->config);
   }
 
   function initTemplate($template_file)
@@ -28,7 +31,6 @@ class lmbWactTestCase extends UnitTestCase
   function tearDown()
   {
     $this->locator->clearTestingTemplates();
-
     lmbToolkit :: restore();
   }
 
@@ -37,9 +39,9 @@ class lmbWactTestCase extends UnitTestCase
     $this->locator->registerTestingTemplate($file, $template);
   }
 
-  function initWactDictionaries()
+  function initWactDictionaries($config)
   {
-    WactDictionaryHolder :: initialize(new lmbWactTemplateConfig());
+    WactDictionaryHolder :: initialize($config);
   }
 }
 
