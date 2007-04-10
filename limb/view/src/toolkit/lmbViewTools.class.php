@@ -26,7 +26,7 @@ class lmbViewTools extends lmbAbstractTools
     lmb_require('limb/view/src/wact/lmbWactTemplateLocator.class.php');
 
     $locator = $this->toolkit->getFileLocator(LIMB_TEMPLATES_INCLUDE_PATH, 'template');
-    $this->wact_locator = new lmbWactTemplateLocator($locator);
+    $this->wact_locator = new lmbWactTemplateLocator($locator, LIMB_VAR_DIR . '/compiled/');
 
     return $this->wact_locator;
   }

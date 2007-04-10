@@ -14,10 +14,12 @@ require_once('limb/wact/src/locator/WactTemplateLocator.interface.php');
 class lmbWactTemplateLocator implements WactTemplateLocator
 {
   protected $locator;
+  protected $cache_dir;
 
-  function __construct($locator)
+  function __construct($locator, $cache_dir)
   {
     $this->locator = $locator;
+    $this->cache_dir = $cache_dir;
   }
 
   function setFileLocator($file_locator)
@@ -44,7 +46,7 @@ class lmbWactTemplateLocator implements WactTemplateLocator
   {
     $params = $this->_collectParams();
     $full_path = $this->locateSourceTemplate($file);
-    return LIMB_VAR_DIR . '/compiled/' . md5($full_path . serialize($params)) . '.php';
+    return $this->cache_dir . '/' . md5($full_path . serialize($params)) . '.php';
   }
 
   protected function _collectParams()
