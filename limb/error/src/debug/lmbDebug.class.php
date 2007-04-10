@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDebug.class.php 5200 2007-03-07 07:59:35Z pachanga $
+ * @version    $Id: lmbDebug.class.php 5602 2007-04-10 10:04:28Z pachanga $
  * @package    error
  */
 @define('LIMB_DEBUG_LOG', true);
 @define('LIMB_DEBUG_SHOW', false);
 
-require_once(dirname(__FILE__) . '/lmbDebugInfo.class.php');//need constants now
+lmb_require(dirname(__FILE__) . '/lmbDebugInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbBacktrace.class.php');
 lmb_require(dirname(__FILE__) . '/lmbStopwatch.class.php');
 
@@ -27,10 +27,10 @@ class lmbDebug
   function __construct()
   {
     $this->allowed_levels = array(
-      LIMB_DEBUG_LEVEL_NOTICE => true,
-      LIMB_DEBUG_LEVEL_WARNING => true,
-      LIMB_DEBUG_LEVEL_ERROR => true,
-      LIMB_DEBUG_LEVEL_INFO => true
+      lmbDebugInfo :: NOTICE => true,
+      lmbDebugInfo :: WARNING => true,
+      lmbDebugInfo :: ERROR => true,
+      lmbDebugInfo :: INFO => true
     );
   }
 
@@ -44,22 +44,22 @@ class lmbDebug
 
   function skipNotice()
   {
-    $this->_skipErrorLevel(LIMB_DEBUG_LEVEL_NOTICE);
+    $this->_skipErrorLevel(lmbDebugInfo :: NOTICE);
   }
 
   function skipWarning()
   {
-    $this->_skipErrorLevel(LIMB_DEBUG_LEVEL_WARNING);
+    $this->_skipErrorLevel(lmbDebugInfo :: WARNING);
   }
 
   function skipError()
   {
-    $this->_skipErrorLevel(LIMB_DEBUG_LEVEL_ERROR);
+    $this->_skipErrorLevel(lmbDebugInfo :: ERROR);
   }
 
   function skipInfo()
   {
-    $this->_skipErrorLevel(LIMB_DEBUG_LEVEL_INFO);
+    $this->_skipErrorLevel(lmbDebugInfo :: INFO);
   }
 
   function _skipErrorLevel($level)
@@ -92,7 +92,7 @@ class lmbDebug
     if(!$backtrace)
       $backtrace = new lmbBacktrace(null, 3);
 
-    self :: instance()->register(LIMB_DEBUG_LEVEL_NOTICE, $message, $params, $backtrace);
+    self :: instance()->register(lmbDebugInfo :: NOTICE, $message, $params, $backtrace);
   }
 
   function warning($message, $params = array(), $backtrace = null)
@@ -100,7 +100,7 @@ class lmbDebug
     if(!$backtrace)
       $backtrace = new lmbBacktrace(null, 3);
 
-    self :: instance()->register(LIMB_DEBUG_LEVEL_WARNING, $message, $params, $backtrace);
+    self :: instance()->register(lmbDebugInfo :: WARNING, $message, $params, $backtrace);
   }
 
   function error($message, $params = array(), $backtrace = null)
@@ -108,7 +108,7 @@ class lmbDebug
     if(!$backtrace)
       $backtrace = new lmbBacktrace(null, 5);
 
-    self :: instance()->register(LIMB_DEBUG_LEVEL_ERROR, $message, $params, $backtrace);
+    self :: instance()->register(lmbDebugInfo :: ERROR, $message, $params, $backtrace);
   }
 
   function exception($e)
@@ -124,7 +124,7 @@ class lmbDebug
     if(!$backtrace)
       $backtrace = new backtrace(3);
 
-    self :: instance()->register(LIMB_DEBUG_LEVEL_INFO, $message, $params, $backtrace);
+    self :: instance()->register(lmbDebugInfo :: INFO, $message, $params, $backtrace);
   }
 
   //shouldn't be called directly
@@ -179,17 +179,17 @@ class lmbDebug
 
   function expectNotice($message, $params = array())
   {
-    self :: instance()->expectRegister(LIMB_DEBUG_LEVEL_NOTICE, $message, $params);
+    self :: instance()->expectRegister(lmbDebugInfo :: NOTICE, $message, $params);
   }
 
   function expectWarning($message, $params = array())
   {
-    self :: instance()->expectRegister(LIMB_DEBUG_LEVEL_WARNING, $message, $params);
+    self :: instance()->expectRegister(lmbDebugInfo :: WARNING, $message, $params);
   }
 
   function expectError($message, $params = array())
   {
-    self :: instance()->expectRegister(LIMB_DEBUG_LEVEL_ERROR, $message, $params);
+    self :: instance()->expectRegister(lmbDebugInfo :: ERROR, $message, $params);
   }
 
   function expectRegister($verbosity_level, $message, $params)
@@ -237,7 +237,7 @@ if(LIMB_DEBUG_SHOW)
 if(LIMB_DEBUG_LOG)
 {
   lmb_require(dirname(__FILE__) . '/lmbDebugLogDispatcher.class.php');
-  lmbDebug :: registerDispatcher(new lmbDebugLogDispatcher());
+  lmbDebug :: registerDispatcher(new lmbDebugLogDispatcher(LIMB_VAR_DIR . '/log'));
 }
 
 ?>

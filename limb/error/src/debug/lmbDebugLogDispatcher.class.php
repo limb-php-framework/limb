@@ -6,21 +6,22 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDebugLogDispatcher.class.php 4995 2007-02-08 15:36:14Z pachanga $
+ * @version    $Id: lmbDebugLogDispatcher.class.php 5602 2007-04-10 10:04:28Z pachanga $
  * @package    error
  */
+lmb_require(dirname(__FILE__) . '/lmbDebugInfo.class.php');
 
 class lmbDebugLogDispatcher
 {
   protected $log_files;
 
-  function __construct()
+  function __construct($log_dir)
   {
     $this->log_files = array(
-      LIMB_DEBUG_LEVEL_NOTICE => array(LIMB_VAR_DIR . '/log/notice.log', true),
-      LIMB_DEBUG_LEVEL_WARNING => array(LIMB_VAR_DIR . '/log/warning.log', true),
-      LIMB_DEBUG_LEVEL_ERROR => array(LIMB_VAR_DIR . '/log/error.log', true),
-      LIMB_DEBUG_LEVEL_INFO => array(LIMB_VAR_DIR . '/log/debug.log', true)
+      lmbDebugInfo :: NOTICE => array($log_dir . '/notice.log', true),
+      lmbDebugInfo :: WARNING => array($log_dir . '/warning.log', true),
+      lmbDebugInfo :: ERROR => array($log_dir . '/error.log', true),
+      lmbDebugInfo :: INFO => array($log_dir . '/debug.log', true)
     );
   }
 

@@ -6,16 +6,17 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDebugInfo.class.php 4995 2007-02-08 15:36:14Z pachanga $
+ * @version    $Id: lmbDebugInfo.class.php 5602 2007-04-10 10:04:28Z pachanga $
  * @package    error
  */
-define('LIMB_DEBUG_LEVEL_NOTICE',   1);
-define('LIMB_DEBUG_LEVEL_WARNING',  2);
-define('LIMB_DEBUG_LEVEL_ERROR',    3);
-define('LIMB_DEBUG_LEVEL_INFO',     4);
 
 class lmbDebugInfo
 {
+  const NOTICE  = 1;
+  const WARNING = 2;
+  const ERROR   = 3;
+  const INFO    = 4;
+
   protected $level;
   protected $time;
   protected $message;
@@ -52,19 +53,19 @@ class lmbDebugInfo
 
     switch($this->level)
     {
-      case LIMB_DEBUG_LEVEL_NOTICE:
+      case lmbDebugInfo :: NOTICE:
         $level = 'notice';
       break;
 
-      case LIMB_DEBUG_LEVEL_WARNING:
+      case lmbDebugInfo :: WARNING:
         $level = 'warning';
       break;
 
-      case LIMB_DEBUG_LEVEL_ERROR:
+      case lmbDebugInfo :: ERROR:
         $level = 'error';
       break;
 
-      case LIMB_DEBUG_LEVEL_INFO:
+      case lmbDebugInfo :: INFO:
         $level = 'info';
       break;
     }
