@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsImageFileObject.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsImageFileObject.class.php 5599 2007-04-10 09:40:13Z pachanga $
  * @package    cms
  */
 lmb_require('limb/util/src/system/lmbFs.class.php');
@@ -21,7 +21,7 @@ class lmbCmsImageFileObject extends lmbCmsFileObject
   function resize($max_size)
   {
     $input_file = $this->getFilePath();
-    $output_file = lmbFs :: generateTempFile();
+    $output_file = lmbFs :: generateTmpFile();
 
     try
     {
