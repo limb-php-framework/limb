@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFs.class.php 5518 2007-04-03 11:32:03Z pachanga $
+ * @version    $Id: lmbFs.class.php 5598 2007-04-10 09:39:32Z pachanga $
  * @package    util
  */
 lmb_require(dirname(__FILE__) . '/lmbSys.class.php');
@@ -23,7 +23,7 @@ class lmbFs
   {
     self :: mkdir(dirname($file));
 
-    $tmp = tempnam(LIMB_VAR_DIR, '_');
+    $tmp = self :: generateTmpFile('_');
     $fh = fopen($tmp, 'w');
 
     if($fh === false)
@@ -52,9 +52,32 @@ class lmbFs
       @unlink($tmp);
   }
 
-  static function generateTempFile()
+  static function getTmpDir()
   {
-    return tempnam(LIMB_VAR_DIR, 'p');
+    if(defined('LIMB_VAR_DIR'))
+      return LIMB_VAR_DIR;
+
+    if($path = session_save_path())
+    {
+      if(($pos = strpos($path, ';')) !== false)
+        $path = substr($path, $pos+1);
+      return $path;
+    }
+    //gracefull falback?
+    return '/tmp';
+  }
+
+  static function generateTmpFile($prefix = 'p')
+  {
+    return tempnam(self :: getTmpDir(), $prefix);
+  }
+
+  /**
+   * @deprecated
+   */
+  static function generateTempFile($prefix = 'p')
+  {
+    return self :: generateTmpFile($prefix);
   }
 
   static function dirpath($path)
