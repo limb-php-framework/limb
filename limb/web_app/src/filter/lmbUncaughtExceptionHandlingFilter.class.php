@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUncaughtExceptionHandlingFilter.class.php 5335 2007-03-23 11:49:01Z pachanga $
+ * @version    $Id: lmbUncaughtExceptionHandlingFilter.class.php 5607 2007-04-10 16:45:17Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -26,10 +26,9 @@ class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
       if(function_exists('debugBreak'))
         debugBreak();
 
-      lmbToolkit :: instance()->getResponse()->reset();
-
-      lmb_require('limb/error/src/debug/lmbDebug.class.php');
-      lmbDebug :: exception($e);
+      $toolkit = lmbToolkit :: instance();
+      $toolkit->getLog()->exception($e);
+      $toolkit->getResponse()->reset();
 
       $error = htmlspecialchars($e->getMessage());
       $trace = htmlspecialchars($e->getTraceAsString());
