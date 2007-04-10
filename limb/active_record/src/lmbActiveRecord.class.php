@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5604 2007-04-10 13:42:56Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5605 2007-04-10 14:39:32Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/classkit/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/classkit/src/lmbDelegate.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5604 2007-04-10 13:42:56Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5605 2007-04-10 14:39:32Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1087,6 +1087,30 @@ class lmbActiveRecord extends lmbObject
     $stmt = $conn->newStatement($sql);
     return lmbActiveRecord :: decorateRecordSet($stmt->getRecordSet(), $class_name);
   }
+  /**
+   *  Finds first object in database using raw SQL
+   *  @param string class name of the object
+   *  @param string SQL
+   *  @return object
+   */
+  static function findFirstBySql($class_name, $sql)
+  {
+    $rs = self :: findBySql($class_name, $sql);
+    $rs->paginate(0, 1);
+    $rs->rewind();
+    if($rs->valid())
+      return $rs->current();
+  }
+  /**
+   *  Alias for findFirstBySql
+   *  @see findFirstBySql()
+   *  @return object
+   */
+  static function findOneBySql($class_name, $sql)
+  {
+    return self :: findFirstBySql($class_name, $sql);
+  }
+
   /**
    *  Generic objects finder.
    *  Using misc magic params it's possible to pass different search parameters.
