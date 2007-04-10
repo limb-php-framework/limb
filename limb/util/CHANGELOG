@@ -1,17 +1,20 @@
+0.2.0-alpha - 9 April 2007 (r5579)
+==================================================
+-- new lmbFs :: cp(..) signature:
+  lmbFs :: cp($src, $dest, $exclude_regex = '', $include_regex = '', $as_child = false, $include_hidden = true)
+  (shouldn't be any BC issues since this method was not used anywhere)
+
 0.1.2-alpha - 13 March 2007 (r5232)
 ==================================================
-
 -- calling htmlspecialchars for proper encoding of html symbols in changelog, description and summary during package creation
 -- *nix tests fixes
 
 0.1.1-alpha - 16 February 2007 (r5044)
 ==================================================
-
 -- tests are more isolated
 -- lmbFs :: recursiveFind() => findRecursive()
 -- initial PhpDocs
 
 0.1.0-alpha - 14 December 2006
 ==================================================
-
 -- Initial release of this package.
