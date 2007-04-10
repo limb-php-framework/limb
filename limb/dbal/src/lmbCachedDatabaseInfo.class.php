@@ -6,34 +6,29 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedDatabaseInfo.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbCachedDatabaseInfo.class.php 5591 2007-04-10 07:49:54Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/classkit/src/lmbSerializable.class.php');
 lmb_require('limb/classkit/src/lmbProxy.class.php');
 lmb_require('limb/util/src/system/lmbFs.class.php');
 
-@define('LIMB_VAR_DIR', '/tmp');
-
 class lmbCachedDatabaseInfo extends lmbProxy
 {
-  static protected $cached_db_info = array();
-
   protected $conn;
+  protected $db_info;
   protected $cache_file;
 
-  function __construct($conn)
+  function __construct($conn, $cache_dir = null)
   {
     $this->conn = $conn;
-    $this->cache_file = LIMB_VAR_DIR . '/db_info.' . $conn->getHash() . '.cache';
+    if($cache_dir)
+      $this->cache_file = $cache_dir . '/db_info.' . $conn->getHash() . '.cache';
   }
 
   function flushCache()
   {
-    if(isset(self :: $cached_db_info[$this->conn->getHash()]))
-      unset(self :: $cached_db_info[$this->conn->getHash()]);
-
-    if(file_exists($this->cache_file))
+    if($this->cache_file && file_exists($this->cache_file))
       unlink($this->cache_file);
   }
 
@@ -66,8 +61,8 @@ class lmbCachedDatabaseInfo extends lmbProxy
 
   protected function _readFromMemCache()
   {
-    if(isset(self :: $cached_db_info[$this->conn->getHash()]))
-      return self :: $cached_db_info[$this->conn->getHash()];
+    if(isset($this->db_info))
+      return $this->db_info;
   }
 
   protected function _readFromFileCache()
@@ -88,7 +83,7 @@ class lmbCachedDatabaseInfo extends lmbProxy
 
   protected function _writeToMemCache($db_info)
   {
-    self :: $cached_db_info[$this->conn->getHash()] = $db_info;
+    $this->db_info = $db_info;
   }
 
   protected function _writeToFileCache($db_info)
@@ -99,7 +94,8 @@ class lmbCachedDatabaseInfo extends lmbProxy
 
   protected function _isFileCachingEnabled()
   {
-    return (!defined('LIMB_CACHE_DB_META_IN_FILE') || constant('LIMB_CACHE_DB_META_IN_FILE'));
+    return ($this->cache_file &&
+            (!defined('LIMB_CACHE_DB_META_IN_FILE') || constant('LIMB_CACHE_DB_META_IN_FILE')));
   }
 }
 

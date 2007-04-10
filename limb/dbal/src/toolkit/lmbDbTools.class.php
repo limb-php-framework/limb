@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbTools.class.php 5427 2007-03-29 14:54:01Z pachanga $
+ * @version    $Id: lmbDbTools.class.php 5591 2007-04-10 07:49:54Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -17,6 +17,8 @@ class lmbDbTools extends lmbAbstractTools
 {
   protected $default_connection;
   protected $default_db_config;
+  protected $cache_db_info = true;
+  protected $db_info = array();
   protected $db_tables = array();
 
   function setDefaultDbDSN($conf)
@@ -45,6 +47,27 @@ class lmbDbTools extends lmbAbstractTools
 
     $this->default_connection = lmbDBAL :: newConnection($dsn);
     return $this->default_connection;
+  }
+
+  function cacheDbInfo($flag = true)
+  {
+    $this->cache_db_info = $flag;
+  }
+
+  function getDbInfo($conn)
+  {
+    $id = $conn->getHash();
+
+    if(isset($this->db_info[$id]))
+      return $this->db_info[$id];
+
+    if($this->cache_db_info && defined('LIMB_VAR_DIR'))
+      $db_info = new lmbCachedDatabaseInfo($conn, LIMB_VAR_DIR);
+    else
+      $db_info = $conn->getDatabaseInfo();
+
+    $this->db_info[$id] = $db_info;
+    return $this->db_info[$id];
   }
 
   function setDefaultDbConnection($conn)

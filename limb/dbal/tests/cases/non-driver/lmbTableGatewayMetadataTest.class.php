@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTableGatewayMetadataTest.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbTableGatewayMetadataTest.class.php 5591 2007-04-10 07:49:54Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -20,9 +20,8 @@ class lmbTableGatewayMetadataTest extends UnitTestCase
   function setUp()
   {
     $toolkit = lmbToolkit :: save();
+    $toolkit->cacheDbInfo(false);
     $this->conn = $toolkit->getDefaultDbConnection();
-    $cache = new lmbCachedDatabaseInfo($this->conn);
-    $cache->flushCache();
   }
 
   function tearDown()

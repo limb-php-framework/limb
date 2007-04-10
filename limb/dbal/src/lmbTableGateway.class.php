@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTableGateway.class.php 5384 2007-03-28 12:55:35Z pachanga $
+ * @version    $Id: lmbTableGateway.class.php 5591 2007-04-10 07:49:54Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
@@ -14,8 +14,8 @@ lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
-lmb_require('limb/dbal/src/lmbCachedDatabaseInfo.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
+lmb_require('limb/dbal/src/lmbCachedDatabaseInfo.class.php');
 
 class lmbTableGateway
 {
@@ -25,13 +25,16 @@ class lmbTableGateway
   protected $_constraints = array();
   protected $_conn;
   protected $_stmt;
+  protected $_toolkit;
 
   function __construct($table_name = null, $conn = null)
   {
-    if(is_null($conn))
-      $this->_conn = lmbToolkit :: instance()->getDefaultDbConnection();
-    else
+    $this->_toolkit = lmbToolkit :: instance();
+
+    if(is_object($conn))
       $this->_conn = $conn;
+    else
+      $this->_conn = $this->_toolkit->getDefaultDbConnection();
 
     if($table_name)
       $this->_db_table_name = $table_name;
@@ -55,7 +58,7 @@ class lmbTableGateway
 
   protected function _loadTableInfo()
   {
-    $db_info = new lmbCachedDatabaseInfo($this->_conn);
+    $db_info = $this->_toolkit->getDbInfo($this->_conn);
     return $db_info->getTable($this->_db_table_name);
   }
 
