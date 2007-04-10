@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreSetTagTest.class.php 5189 2007-03-06 08:06:16Z serega $
+ * @version    $Id: WactCoreSetTagTest.class.php 5603 2007-04-10 12:45:45Z pachanga $
  * @package    wact
  */
 
@@ -176,16 +176,28 @@ class WactCoreSetTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), '<div>5</div>');
   }
 
-  function testOnlyGenerateRuntimeExpression()
+  function testGenerateRuntimeExpressionOnlyByDefault()
   {
-    $template = '<core:optional for="item1"><core:SET color="yellow" runtime="true"/></core:optional>'.
-                '<core:optional for="item2"><core:SET color="green" runtime="true"/></core:optional>'.
+    $template = '<core:optional for="item1"><core:SET color="yellow"/></core:optional>'.
+                '<core:optional for="item2"><core:SET color="green"/></core:optional>'.
                 '{$color}';
     $this->registerTestingTemplate('/tags/core/set_value_in_runtime_only.html', $template);
 
     $page = $this->initTemplate('/tags/core/set_value_in_runtime_only.html');
     $page->set('item1', true);
     $this->assertEqual($page->capture(), 'yellow');
+  }
+
+  function testNotGenerateRuntimeExpressionIfSuchAttribute()
+  {
+    $template = '<core:optional for="item1"><core:SET color="yellow" runtime="false"/></core:optional>'.
+                '<core:optional for="item2"><core:SET color="green" runtime="false"/></core:optional>'.
+                '{$color}';
+    $this->registerTestingTemplate('/tags/core/force_set_value_in_compiletime.html', $template);
+
+    $page = $this->initTemplate('/tags/core/force_set_value_in_compiletime.html');
+    $page->set('item1', true);
+    $this->assertEqual($page->capture(), 'green');
   }
 }
 ?>

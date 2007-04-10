@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFormMultipleTagTest.class.php 5189 2007-03-06 08:06:16Z serega $
+ * @version    $Id: WactFormMultipleTagTest.class.php 5603 2007-04-10 12:45:45Z pachanga $
  * @package    wact
  */
 
@@ -49,7 +49,7 @@ class WactFormMultipleTagTest extends WactTemplateTestCase
 
   function testChildFormElementsNamesWrappingDBE()
   {
-    $template = '<core:SET name="testinput"/>
+    $template = '<core:SET name="testinput" runtime="false"/>
                 <form_multiple id="testForm" name="testForm">
                     <input id="testInput" name="{$^name|uppercase}" type="text"/>
                 </form_multiple>';

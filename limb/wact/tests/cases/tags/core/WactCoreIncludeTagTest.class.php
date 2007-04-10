@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreIncludeTagTest.class.php 5342 2007-03-25 16:36:43Z serega $
+ * @version    $Id: WactCoreIncludeTagTest.class.php 5603 2007-04-10 12:45:45Z pachanga $
  * @package    wact
  */
 
@@ -74,7 +74,7 @@ class WactCoreIncludeTagTest extends WactTemplateTestCase
 
   function testIncludeFileAttributeVariable()
   {
-    $template = '<core:SET FILENAME="terminal.html"/><core:include file="{$FILENAME}"/>';
+    $template = '<core:SET FILENAME="terminal.html" runtime="false"/><core:include file="{$FILENAME}"/>';
     $this->registerTestingTemplate('/tags/core/include/file_attribute_variable.html', $template);
 
     $page = $this->initTemplate('/tags/core/include/file_attribute_variable.html');

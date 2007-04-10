@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: elements.inc.php 5340 2007-03-23 14:29:54Z pachanga $
+ * @version    $Id: elements.inc.php 5603 2007-04-10 12:45:45Z pachanga $
  * @package    wact
  */
 
@@ -254,7 +254,7 @@ class WactCheckableFormElement extends WactFormElement
       return true;
     elseif($value && !$this->getAttribute('value'))
       return true;
-    elseif($this->getBoolAttribute('checked') && is_null($value) && !$this->getAttribute('value'))
+    elseif($this->getBoolAttribute('checked') && is_null($value))
       return true;
     elseif($value && $value != $this->getAttribute('value'))
       return false;

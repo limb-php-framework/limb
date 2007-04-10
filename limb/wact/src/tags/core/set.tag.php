@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: set.tag.php 5169 2007-02-28 17:29:36Z serega $
+ * @version    $Id: set.tag.php 5603 2007-04-10 12:45:45Z pachanga $
  * @package    wact
  */
 
@@ -22,17 +22,18 @@ class WactCoreSetTag extends WactCompilerTag
 {
   function preParse()
   {
-    if($this->hasAttribute('runtime'))
-      return;
-    $DataSource = $this->getDataSource();
-    foreach(array_keys($this->attributeNodes) as $key)
+    if($this->hasAttribute('runtime') && !$this->getBoolAttribute('runtime'))
     {
-      if(!$this->attributeNodes[$key]->isConstant())
-        continue;
+      $DataSource = $this->getDataSource();
+      foreach(array_keys($this->attributeNodes) as $key)
+      {
+        if(!$this->attributeNodes[$key]->isConstant())
+          continue;
 
-      $name = $this->attributeNodes[$key]->getName();
-      $property = new WactConstantProperty($this->attributeNodes[$key]->getValue());
-      $DataSource->registerProperty($name, $property);
+        $name = $this->attributeNodes[$key]->getName();
+        $property = new WactConstantProperty($this->attributeNodes[$key]->getValue());
+        $DataSource->registerProperty($name, $property);
+      }
     }
   }
 
