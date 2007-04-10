@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompiler.class.php 5513 2007-04-03 07:37:51Z pachanga $
+ * @version    $Id: WactCompiler.class.php 5594 2007-04-10 09:00:02Z pachanga $
  * @package    wact
  */
 
@@ -67,7 +67,7 @@ class WactCompiler
     $source_file_path = $this->template_locator->locateSourceTemplate($file_name);
 
     if(empty($source_file_path))
-        throw new WactException('Template source file not found', array('file_name' => $file_name));
+     throw new WactException('Template source file not found', array('file_name' => $file_name));
 
     $root_node = new WactCompileTreeRootNode(new WactSourceLocation($source_file_path, ''));
 
@@ -76,9 +76,7 @@ class WactCompiler
     $root_node->prepare();
 
     $compiled_file_path = $this->template_locator->locateCompiledTemplate($file_name);
-
     $generated_code = $this->_generateTemplateCode(md5($compiled_file_path), $root_node);
-
     self :: writeFile($compiled_file_path, $generated_code);
   }
 
@@ -178,7 +176,7 @@ class WactCompiler
     $index = self :: _getFirstExistingPathIndex($path_elements);
 
     if($index === false)
-      throw new lmbIOException('cant find first existent path', array('dir' => $dir));
+      throw new WactException("Can not find first existent path '$dir'");
 
     $offset_path = '';
     for($i=0; $i < $index; $i++)
@@ -200,7 +198,7 @@ class WactCompiler
     if(!mkdir($dir, $perm))
     {
       umask($oldumask);
-      throw new lmbIOException('failed to create directory', array('dir' => $dir));
+      throw new WactException("Failed to create directory '$dir'");
     }
 
     umask($oldumask);

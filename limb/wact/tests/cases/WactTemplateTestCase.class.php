@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTemplateTestCase.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactTemplateTestCase.class.php 5594 2007-04-10 09:00:02Z pachanga $
  * @package    wact
  */
 
@@ -23,10 +23,10 @@ class WactTemplateTestCase extends UnitTestCase
   function setUp()
   {
     $this->default_config = new WactTestTemplateConfig(array('scan_directories' => array('limb/wact/src/tags/'),
-                                                     'cache_dir' => WACT_CACHE_DIR,
-                                                     'force_scan' => 1,
-                                                      'force_compile' => 1,
-                                                      'sax_filters' => array()));
+                                                             'cache_dir' => WACT_CACHE_DIR,
+                                                             'force_scan' => 1,
+                                                             'force_compile' => 1,
+                                                             'sax_filters' => array()));
 
     $this->default_locator = new WactTestTemplateLocator($this->default_config);
     $this->initWactDictionaries();

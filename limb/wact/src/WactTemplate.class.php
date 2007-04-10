@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTemplate.class.php 5420 2007-03-29 12:45:34Z serega $
+ * @version    $Id: WactTemplate.class.php 5594 2007-04-10 09:00:02Z pachanga $
  * @package    wact
  */
 
@@ -47,9 +47,9 @@ class WactTemplate extends WactDatasourceRuntimeComponent
 
     $compiled_template_path = $this->locator->locateCompiledTemplate($this->template_path);
 
-    if (!isset($GLOBALS['TemplateRender'][$compiled_template_path]))
+    if(!isset($GLOBALS['TemplateRender'][$compiled_template_path]))
     {
-      if (($this->config->isForceCompile()) || !file_exists($compiled_template_path))
+      if(($this->config->isForceCompile()) || !file_exists($compiled_template_path))
       {
         $compiler = $this->createCompiler();
         $compiler->compile($this->template_path);

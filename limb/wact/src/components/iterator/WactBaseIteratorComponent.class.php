@@ -108,7 +108,7 @@ abstract class WactBaseIteratorComponent extends WactRuntimeComponent
     if($dataset->valid())
       $record = $dataset->current();
     else
-      $record = new lmbDataspace();;
+      $record = new WactArrayObject();
 
     $this->_passRecordToBuffer($record);
   }
