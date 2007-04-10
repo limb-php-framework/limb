@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbDebugLogDispatcher.class.php 5602 2007-04-10 10:04:28Z pachanga $
- * @package    error
+ * @package    log
  */
 
 class lmbLogFileWriter

@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbConfTools.class.php 5549 2007-04-06 07:59:52Z pachanga $
- * @package    config
+ * @package    log
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/log/src/lmbLog.class.php');
