@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFs.class.php 5598 2007-04-10 09:39:32Z pachanga $
+ * @version    $Id: lmbFs.class.php 5601 2007-04-10 09:50:58Z pachanga $
  * @package    util
  */
 lmb_require(dirname(__FILE__) . '/lmbSys.class.php');
@@ -63,6 +63,10 @@ class lmbFs
         $path = substr($path, $pos+1);
       return $path;
     }
+
+    if($tmp = getenv('TMP') || $tmp = getenv('TEMP') || $tmp = getenv('TMPDIR'))
+      return $tmp;
+
     //gracefull falback?
     return '/tmp';
   }
