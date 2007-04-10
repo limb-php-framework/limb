@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUITest.class.php 5006 2007-02-08 15:37:13Z pachanga $
+ * @version    $Id: lmbTestShellUITest.class.php 5589 2007-04-10 06:35:50Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
@@ -19,7 +19,7 @@ class lmbTestShellUITest extends lmbTestsUtilitiesBase
     $this->_rmdir(LIMB_VAR_DIR);
     mkdir(LIMB_VAR_DIR);
     mkdir(LIMB_VAR_DIR . '/cases');
-    $this->_createRunScript(LIMB_VAR_DIR . '/cases');
+    $this->_createRunScript();
   }
 
   function tearDown()
@@ -83,7 +83,7 @@ class lmbTestShellUITest extends lmbTestsUtilitiesBase
     $this->assertNoPattern('~Error~i', $screen);
   }
 
-  function _createRunScript($tests_dir)
+  function _createRunScript()
   {
     $dir = dirname(__FILE__);
     $simpletest = SIMPLE_TEST;
@@ -99,17 +99,17 @@ require_once('$dir/../../src/lmbTestShellUI.class.php');
 \$ui->run();
 ?>
 EOD;
-    file_put_contents($this->_runScript(), $script);
+    file_put_contents($this->_runScriptName(), $script);
   }
 
-  function _runScript()
+  function _runScriptName()
   {
-    return LIMB_VAR_DIR . '/runtests.php ';
+    return LIMB_VAR_DIR . '/runtests.php';
   }
 
-  function _execScript($extra, &$screen)
+  function _execScript($args, &$screen)
   {
-    exec('php ' . $this->_runScript() . ' ' . $extra, $out, $ret);
+    exec('php ' . $this->_runScriptName() . ' ' . $args, $out, $ret);
     $screen = implode("\n", $out);
     return $ret;
   }
