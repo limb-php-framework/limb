@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: ip.filter.php 5012 2007-02-08 15:38:06Z pachanga $
+ * @version    $Id: ip.filter.php 5610 2007-04-10 16:51:04Z pachanga $
  * @package    web_app
  */
 /**
@@ -25,7 +25,7 @@ class lmbIpFilter extends WactCompilerFilter
 
   function generateExpression($code)
   {
-    $code->registerInclude('http/lmbIp.class.php');
+    $code->registerInclude('limb/net/src/lmbIp.class.php');
 
     $code->writePHP('lmbIp :: decode(');
     $this->base->generateExpression($code);
