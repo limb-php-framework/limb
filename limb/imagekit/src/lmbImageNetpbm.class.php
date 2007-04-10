@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbImageNetpbm.class.php 4999 2007-02-08 15:36:37Z pachanga $
+ * @version    $Id: lmbImageNetpbm.class.php 5600 2007-04-10 09:46:47Z pachanga $
  * @package    imagekit
  */
 lmb_require('limb/imagekit/src/lmbImageLibrary.class.php');
-
+lmb_require('limb/util/src/system/lmbFs.class.php');
 
 // Read utilities
 define('JPEGTOPNM', 'jpegtopnm');
@@ -68,13 +68,13 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function _determineOptions()
   {
-    if (lmbSys :: osType() == "win32")
+    if(lmbSys :: osType() == "win32")
       $this->ext = '.exe';
 
     $this->_determineReadTypes();
     $this->_determineWriteTypes();
 
-    if (sizeof($this->read_types) == 0)
+    if(sizeof($this->read_types) == 0)
       $this->library_installed = false;
     else
       $this->library_installed = true;
@@ -82,37 +82,37 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function _determineReadTypes()
   {
-    if (file_exists($this->lib_dir . JPEGTOPNM . $this->ext))
+    if(file_exists($this->lib_dir . JPEGTOPNM . $this->ext))
       $this->read_types[] = 'JPEG';
 
-    if (file_exists($this->lib_dir . GIFTOPNM . $this->ext))
+    if(file_exists($this->lib_dir . GIFTOPNM . $this->ext))
       $this->read_types[] = 'GIF';
 
-    if (file_exists($this->lib_dir . PNGTOPNM . $this->ext))
+    if(file_exists($this->lib_dir . PNGTOPNM . $this->ext))
       $this->read_types[] = 'PNG';
 
-    if (file_exists($this->lib_dir . BMPTOPNM . $this->ext))
+    if(file_exists($this->lib_dir . BMPTOPNM . $this->ext))
       $this->read_types[] = 'BMP';
 
-    if (file_exists($this->lib_dir . TIFFTOPNM . $this->ext))
+    if(file_exists($this->lib_dir . TIFFTOPNM . $this->ext))
       $this->read_types[] = 'TIFF';
   }
 
   function _determineWriteTypes()
   {
-    if (file_exists($this->lib_dir . PNMTOJPEG . $this->ext))
+    if(file_exists($this->lib_dir . PNMTOJPEG . $this->ext))
       $this->create_types[] = 'JPEG';
 
-    if (file_exists($this->lib_dir . PNMTOGIF . $this->ext))
+    if(file_exists($this->lib_dir . PNMTOGIF . $this->ext))
       $this->create_types[] = 'GIF';
 
-    if (file_exists($this->lib_dir . PNMTOPNG . $this->ext))
+    if(file_exists($this->lib_dir . PNMTOPNG . $this->ext))
       $this->create_types[] = 'PNG';
 
-    if (file_exists($this->lib_dir . PNMTOBMP . $this->ext))
+    if(file_exists($this->lib_dir . PNMTOBMP . $this->ext))
       $this->create_types[] = 'BMP';
 
-    if (file_exists($this->lib_dir . PNMTOTIFF . $this->ext))
+    if(file_exists($this->lib_dir . PNMTOTIFF . $this->ext))
       $this->create_types[] = 'TIFF';
   }
 
@@ -142,7 +142,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function commit()
   {
-    if (!$this->library_installed)
+    if(!$this->library_installed)
       return false;
 
     array_unshift($this->cmd_array, $this->_toPnm());
@@ -153,7 +153,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
     $this->reset();
 
-    if (is_file($this->current_output_file))
+    if(is_file($this->current_output_file))
       unlink($this->current_output_file);
 
     $this->current_output_file = '';
@@ -166,7 +166,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function resize($params)
   {
-    if (!$this->library_installed)
+    if(!$this->library_installed)
       return false;
 
     $info = getimagesize($this->input_file);
@@ -180,7 +180,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function rotate($angle, $bg_color = '')
   {
-    if (!$this->library_installed)
+    if(!$this->library_installed)
       return false;
 
     $this->cmd_array[] = PNMROTATE . " {$angle}";
@@ -188,13 +188,13 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function flip($params)
   {
-    if (!$this->library_installed)
+    if(!$this->library_installed)
       return false;
 
-    if ($params == FLIP_HORIZONTAL)
+    if($params == FLIP_HORIZONTAL)
       $args = '-leftright';
 
-    if ($params == FLIP_VERTICAL)
+    if($params == FLIP_VERTICAL)
       $args = '-topbottom';
 
     $this->cmd_array[] = PNMFLIP . " {$args}";
@@ -202,7 +202,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function _toPnm()
   {
-    if (!empty($this->current_input_file))
+    if(!empty($this->current_input_file))
     {
       $file_name = $this->current_input_file;
       $type = $this->current_input_file_type;
@@ -218,7 +218,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function _fromPnm()
   {
-    if (!empty($this->current_output_file))
+    if(!empty($this->current_output_file))
     {
       $file_name = $this->current_output_file;
       $type = $this->current_output_file_type;
@@ -242,14 +242,14 @@ class lmbImageNetpbm extends lmbImageLibrary
 
   function cut($x, $y, $w, $h, $bg_color = '')
   {
-    if (!$this->library_installed)
+    if(!$this->library_installed)
       return false;
 
-    $tmp_file = tempnam(LIMB_VAR_DIR, 'netpbm');
+    $tmp_file = lmbFs :: generateTmpFile('netpbm');
     $this->current_output_file = $tmp_file;
     $this->current_output_file_type = 'BMP';
 
-    if (sizeof($this->cmd_array) > 0)
+    if(sizeof($this->cmd_array) > 0)
     {
       array_unshift($this->cmd_array, $this->_toPnm());
       array_push($this->cmd_array, $this->_fromPnm());
@@ -271,7 +271,7 @@ class lmbImageNetpbm extends lmbImageLibrary
 
     $info = getimagesize($file_name);
 
-    if ($x < 0)
+    if($x < 0)
     {
       $cx = 0;
       $cw = $w + $x;
@@ -282,7 +282,7 @@ class lmbImageNetpbm extends lmbImageLibrary
       $cw = $w;
     }
 
-    if ($y < 0)
+    if($y < 0)
     {
       $cy = 0;
       $ch = $h + $y;
@@ -293,13 +293,13 @@ class lmbImageNetpbm extends lmbImageLibrary
       $ch = $h;
     }
 
-    if ($cx + $cw > $info[0])
+    if($cx + $cw > $info[0])
       $cw = $info[0] - $cx;
 
-    if ($cy + $ch > $info[1])
+    if($cy + $ch > $info[1])
       $ch = $info[1] - $cy;
 
-    $tmp_file = tempnam(LIMB_VAR_DIR, 'netpbm');
+    $tmp_file = lmbFs :: generateTmpFile('netpbm');
 
     $cmd = $this->_toPnm() . ' | ' . PNMCUT . " $cx $cy $cw $ch > {$tmp_file}";
 
