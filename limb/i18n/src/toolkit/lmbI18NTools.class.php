@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NTools.class.php 5550 2007-04-06 08:27:14Z pachanga $
+ * @version    $Id: lmbI18NTools.class.php 5593 2007-04-10 08:02:00Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -25,6 +25,11 @@ class lmbI18NTools extends lmbAbstractTools
     if(!is_object($this->dict_backend))
     {
       $this->dict_backend = new lmbQtDictionaryBackend();
+      if(defined('LIMB_VAR_DIR'))
+      {
+        $this->dict_backend->setCacheDir(LIMB_VAR_DIR);
+        $this->dict_backend->useCache();
+      }
     }
 
     return $this->dict_backend;

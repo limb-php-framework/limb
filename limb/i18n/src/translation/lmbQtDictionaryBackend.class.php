@@ -17,10 +17,21 @@ lmb_require('limb/util/src/exception/lmbFileNotFoundException.class.php');
 class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 {
   protected $use_cache = false;
+  protected $cache_dir;
 
   function __construct()
   {
     $this->search_path = LIMB_TRANSLATIONS_INCLUDE_PATH;
+  }
+
+  function setCacheDir($dir)
+  {
+    $this->cache_dir = $dir;
+  }
+
+  function useCache($flag = true)
+  {
+    $this->use_cache = $flag;
   }
 
   function setSearchPath($path)
@@ -64,11 +75,6 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
   function mapToFile($locale, $domain)
   {
     return lmbToolkit :: instance()->findFileAlias($domain . '.' . $locale . '.ts', $this->search_path, 'i18n');
-  }
-
-  function useCache($flag = true)
-  {
-    $this->use_cache = $flag;
   }
 
   function getDOMDocument($dictionary)
@@ -159,9 +165,14 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
     $this->getDOMDocument($dictionary)->save($file);
   }
 
+  protected function _isFileCachingOn()
+  {
+    return $this->use_cache && $this->cache_dir;
+  }
+
   protected function _loadFromCache($dictionary, $file)
   {
-    if(!$this->use_cache)
+    if(!$this->_isFileCachingOn())
       return false;
 
     if(!file_exists($cache = $this->_getCacheFile($file)))
@@ -173,7 +184,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
   protected function _saveToCache($dictionary, $file)
   {
-    if(!$this->use_cache)
+    if(!$this->_isFileCachingOn())
       return;
 
     $cache = $this->_getCacheFile($file);
@@ -184,7 +195,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
   protected function _getCacheFile($file)
   {
-    return LIMB_VAR_DIR . '/i18n-qt/' . md5(realpath($file));
+    return $this->cache_dir . '/i18n-qt/' . md5(realpath($file));
   }
 }
 
