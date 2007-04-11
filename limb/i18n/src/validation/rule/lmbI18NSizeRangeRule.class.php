@@ -6,17 +6,23 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NSizeRangeRule.class.php 5411 2007-03-29 10:07:12Z pachanga $
+ * @version    $Id: lmbI18NSizeRangeRule.class.php 5620 2007-04-11 09:04:24Z maximgb $
  * @package    i18n
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 class lmbI18NSizeRangeRule extends lmbSingleFieldRule
 {
+  /**
+   * @var integer	min field value length in glyphs
+   */
   protected $min_length;
+  /**
+   * @var integer max field value length in glyphs
+   */
   protected $max_length;
 
-  function __construct($field_name, $min_length, $max_length = NULL)
+  function __construct($field_name, $min_length, $max_length = NULL, $custom_error = '')
   {
     if (is_null($max_length))
     {
@@ -29,7 +35,7 @@ class lmbI18NSizeRangeRule extends lmbSingleFieldRule
         $this->max_length = $max_length;
     }
 
-    parent :: __construct($field_name);
+    parent :: __construct($field_name, $custom_error);
   }
 
   function check($value)
