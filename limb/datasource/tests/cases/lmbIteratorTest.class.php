@@ -6,16 +6,24 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbArrayDatasetTest.class.php 4992 2007-02-08 15:35:40Z pachanga $
+ * @version    $Id: lmbIteratorTest.class.php 5626 2007-04-11 11:50:45Z pachanga $
  * @package    datasource
  */
-lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 
-class lmbArrayDatasetTest extends UnitTestCase
+class lmbIteratorTest extends UnitTestCase
 {
-  function testEmptyDataset()
+  function testEmptyIterator()
   {
-    $iterator = new lmbArrayDataset(array());
+    $iterator = new lmbIterator(array());
+    $iterator->rewind();
+    $this->assertFalse($iterator->valid());
+  }
+
+  function testIterateArrayWithFalseValue()
+  {
+    $iterator = new lmbIterator(array(false));
     $iterator->rewind();
     $this->assertFalse($iterator->valid());
   }
@@ -26,7 +34,7 @@ class lmbArrayDatasetTest extends UnitTestCase
                    array('x' => 3,'y' => 4),
                    array('x' => 5,'y' => 6));
 
-    $iterator = new lmbArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->rewind();
     $this->assertTrue($iterator->valid());
 
@@ -42,7 +50,7 @@ class lmbArrayDatasetTest extends UnitTestCase
   {
     $data = array (array('x' => 1,'y' => 2),
                    array('x' => 3,'y' => 4));
-    $iterator = new lmbArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->rewind();
     $iterator->next();
     $iterator->next();
@@ -57,7 +65,7 @@ class lmbArrayDatasetTest extends UnitTestCase
                    array('x' => '2'),
                    array('x' => '3'));
 
-    $iterator = new lmbArrayDataset($data);
+    $iterator = new lmbIterator($data);
 
     $str = '';
     foreach($iterator as $record)
@@ -66,13 +74,13 @@ class lmbArrayDatasetTest extends UnitTestCase
     $this->assertEqual($str, '123');
   }
 
-  function testWorksOkWithArrayOfDataspaces()
+  function testWorksOkWithArrayOfSets()
   {
-    $data = array(new lmbDataspace(array('x' => '1')),
-                  new lmbDataspace(array('x' => '2')),
-                  new lmbDataspace(array('x' => '3')));
+    $data = array(new lmbSet(array('x' => '1')),
+                  new lmbSet(array('x' => '2')),
+                  new lmbSet(array('x' => '3')));
 
-    $iterator = new lmbArrayDataset($data);
+    $iterator = new lmbIterator($data);
 
     $str = '';
     foreach($iterator as $record)
@@ -83,10 +91,10 @@ class lmbArrayDatasetTest extends UnitTestCase
 
   function testAdd()
   {
-    $item1 = new lmbDataspace(array('x' => 1,'y' => 2));
-    $item2 = new lmbDataspace(array('x' => 3,'y' => 4));
+    $item1 = new lmbSet(array('x' => 1,'y' => 2));
+    $item2 = new lmbSet(array('x' => 3,'y' => 4));
 
-    $iterator = new lmbArrayDataset();
+    $iterator = new lmbIterator();
     $this->assertTrue($iterator->isEmpty());
     $iterator->add($item1);
     $this->assertFalse($iterator->isEmpty());
@@ -106,7 +114,7 @@ class lmbArrayDatasetTest extends UnitTestCase
                    array('x' => 'A'),
                    array('x' => 'B'));
 
-    $iterator = new lmbArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->sort(array('x' => 'DESC'));
     $arr = $iterator->getArray();
     $this->assertEqual($arr[0]['x'], 'C');
@@ -114,13 +122,13 @@ class lmbArrayDatasetTest extends UnitTestCase
     $this->assertEqual($arr[2]['x'], 'A');
   }
 
-  function testSortWorksOkWithDataspacesToo()
+  function testSortWorksOkWithSetsToo()
   {
-    $item1 = new lmbDataspace(array('x' => 'C'));
-    $item2 = new lmbDataspace(array('x' => 'A'));
-    $item3 = new lmbDataspace(array('x' => 'B'));
+    $item1 = new lmbSet(array('x' => 'C'));
+    $item2 = new lmbSet(array('x' => 'A'));
+    $item3 = new lmbSet(array('x' => 'B'));
 
-    $iterator = new lmbArrayDataset(array($item1, $item2, $item3));
+    $iterator = new lmbIterator(array($item1, $item2, $item3));
     $iterator->sort(array('x' => 'DESC'));
     $arr = $iterator->getArray();
     $this->assertEqual($arr[0]->get('x'), 'C');

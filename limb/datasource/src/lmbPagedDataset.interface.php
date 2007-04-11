@@ -9,14 +9,10 @@
  * @version    $Id$
  * @package    datasource
  */
-lmb_require('limb/datasource/src/lmbDataset.interface.php');
-
-interface lmbPagedDataset extends lmbDataset
-{
-  function paginate($offset, $limit);
-  function getOffset();
-  function getLimit();
-  function countPaginated();
-}
+lmb_require('limb/datasource/src/lmbIteratorInterface.interface.php');
+/**
+ * @deprecated
+ */
+interface lmbPagedDataset extends lmbIteratorInterface{}
 
 ?>

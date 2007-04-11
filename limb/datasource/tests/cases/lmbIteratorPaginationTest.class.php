@@ -6,42 +6,17 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPagedArrayDatasetTest.class.php 4992 2007-02-08 15:35:40Z pachanga $
+ * @version    $Id: lmbIteratorPaginationTest.class.php 5626 2007-04-11 11:50:45Z pachanga $
  * @package    datasource
  */
-lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 
-class lmbPagedArrayDatasetTest extends UnitTestCase
+class lmbIteratorPaginationTest extends UnitTestCase
 {
-  function testEmpty()
-  {
-    $iterator = new lmbPagedArrayDataset(array());
-    $iterator->rewind();
-    $this->assertFalse($iterator->valid());
-  }
-
-  function testIterateWithoutPagination()
-  {
-    $data = array (array('x' => 1,'y' => 2),
-                   array('x' => 3,'y' => 4),
-                   array('x' => 5,'y' => 6));
-
-    $iterator = new lmbPagedArrayDataset($data);
-    $iterator->rewind();
-    $this->assertTrue($iterator->valid());
-
-    $dataspace1 = $iterator->current();
-    $this->assertEqual($dataspace1->export(), array('x' => 1,'y' => 2));
-
-    $iterator->next();
-    $dataspace2 = $iterator->current();
-    $this->assertEqual($dataspace2->export(), array('x' => 3,'y' => 4));
-  }
-
   function testIterateWithPagination()
   {
     $data = array(array('x' => 'a'), array('x' => 'b'), array('x' => 'c'), array('x' => 'd'), array('x' => 'e'));
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = 0, $limit = 2);
     $this->assertEqual($iterator->count(), 5);
     $this->assertEqual($iterator->countPaginated(), $limit);
@@ -57,7 +32,7 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
   function testIterateWithPaginationNonZeroOffset()
   {
     $data = array(array('x' => 'a'), array('x' => 'b'), array('x' => 'c'), array('x' => 'd'), array('x' => 'e'));
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = 2, $limit = 2);
 
     $iterator->rewind();
@@ -71,7 +46,7 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
   function testPaginateWithOutOfBounds()
   {
     $data = array(array('x' => 'a'), array('x' => 'b'), array('x' => 'c'), array('x' => 'd'), array('x' => 'e'));
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = 5, $limit = 2);
 
     $this->assertEqual($iterator->count(), 5);
@@ -84,7 +59,7 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
   function testPaginateWithOffsetLessThanZero()
   {
     $data = array(array('x' => 'a'), array('x' => 'b'), array('x' => 'c'), array('x' => 'd'), array('x' => 'e'));
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = -1, $limit = 2);
 
     $this->assertEqual($iterator->count(), 5);
@@ -94,13 +69,13 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
     $this->assertFalse($iterator->valid());
   }
 
-  function testWorksOkWithArrayOfDataspaces()
+  function testWorksOkWithArrayOfSets()
   {
-    $data = array(new lmbDataspace(array('x' => '1')),
-                  new lmbDataspace(array('x' => '2')),
-                  new lmbDataspace(array('x' => '3')));
+    $data = array(new lmbSet(array('x' => '1')),
+                  new lmbSet(array('x' => '2')),
+                  new lmbSet(array('x' => '3')));
 
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = 1, $limit = 2);
 
     $str = '';
@@ -112,11 +87,11 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
 
   function testResetInternalIteratorIfPrimaryDatasetChanged()
   {
-    $data = array(new lmbDataspace(array('x' => '1')),
-                  new lmbDataspace(array('x' => '2')),
-                  new lmbDataspace(array('x' => '3')));
+    $data = array(new lmbSet(array('x' => '1')),
+                  new lmbSet(array('x' => '2')),
+                  new lmbSet(array('x' => '3')));
 
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = 1, $limit = 3);
 
     $str = '';
@@ -125,7 +100,7 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
 
     $this->assertEqual($str, '23');
 
-    $iterator->add(new lmbDataspace(array('x' => '4')));
+    $iterator->add(new lmbSet(array('x' => '4')));
 
     $str = '';
     foreach($iterator as $record)
@@ -136,11 +111,11 @@ class lmbPagedArrayDatasetTest extends UnitTestCase
 
   function testResetInternalIteratorOnSortToo()
   {
-    $data = array(new lmbDataspace(array('x' => 'C')),
-                  new lmbDataspace(array('x' => 'A')),
-                  new lmbDataspace(array('x' => 'B')));
+    $data = array(new lmbSet(array('x' => 'C')),
+                  new lmbSet(array('x' => 'A')),
+                  new lmbSet(array('x' => 'B')));
 
-    $iterator = new lmbPagedArrayDataset($data);
+    $iterator = new lmbIterator($data);
     $iterator->paginate($offset = 1, $limit = 2);
 
     $str = '';

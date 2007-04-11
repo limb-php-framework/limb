@@ -9,12 +9,10 @@
  * @version    $Id$
  * @package    datasource
  */
-
-interface lmbDataset extends Iterator, Countable, ArrayAccess
-{
-  function sort($params);
-  function getArray();
-  function at($pos);
-}
+lmb_require('limb/datasource/src/lmbIteratorInterface.interface.php');
+/**
+ * @deprecated
+ */
+interface lmbDataset extends lmbIteratorInterface{}
 
 ?>

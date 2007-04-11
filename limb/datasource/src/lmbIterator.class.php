@@ -6,29 +6,95 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIterator.class.php 5558 2007-04-06 13:02:07Z pachanga $
+ * @version    $Id: lmbIterator.class.php 5626 2007-04-11 11:50:45Z pachanga $
  * @package    datasource
  */
-lmb_require('limb/datasource/src/lmbDataset.interface.php');
+lmb_require('limb/datasource/src/lmbIteratorInterface.interface.php');
+lmb_require('limb/datasource/src/lmbComplexArray.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 
-class lmbIterator implements lmbDataset
+class lmbIterator implements lmbIteratorInterface
 {
+  protected $dataset;
+  protected $iteratedDataset;
+  protected $offset = 0;
+  protected $limit = 0;
   protected $current;
   protected $valid = false;
 
-  function valid()
+  function __construct($array = array())
   {
-    return $this->valid;
+    $this->dataset = $array;
   }
 
   function getArray()
   {
-    return array();
+    return $this->dataset;
+  }
+
+  function export()
+  {
+    return $this->dataset;
   }
 
   function sort($params)
   {
+    $this->dataset = lmbComplexArray :: sortArray($this->dataset, $params, false);
+    $this->iteratedDataset = null;
     return $this;
+  }
+
+  function at($pos)
+  {
+    if(isset($this->dataset[$pos]))
+      return $this->dataset[$pos];
+  }
+
+  function rewind()
+  {
+    $this->_setupIteratedDataset();
+
+    $values = reset($this->iteratedDataset);
+    $this->current = $this->_getCurrent($values);
+    $this->key = key($this->iteratedDataset);
+    $this->valid = $this->_isValid($values);
+  }
+
+  function next()
+  {
+    $values = next($this->iteratedDataset);
+    $this->current = $this->_getCurrent($values);
+    $this->key = key($this->iteratedDataset);
+    $this->valid = $this->_isValid($values);
+  }
+
+  function _setupIteratedDataset()
+  {
+    if(!is_null($this->iteratedDataset))
+      return;
+
+    if(!$this->limit)
+    {
+      $this->iteratedDataset = $this->dataset;
+      return;
+    }
+
+    if($this->offset < 0 || $this->offset >= count($this->dataset))
+    {
+      $this->iteratedDataset = array();
+      return;
+    }
+
+    $to_splice_array = $this->dataset;
+    $this->iteratedDataset = array_splice($to_splice_array, $this->offset, $this->limit);
+
+    if(!$this->iteratedDataset)
+      $this->iteratedDataset = array();
+  }
+
+  function valid()
+  {
+    return $this->valid;
   }
 
   function current()
@@ -36,34 +102,65 @@ class lmbIterator implements lmbDataset
     return $this->current;
   }
 
-  function next()
-  {
-  }
-
-  function rewind()
-  {
-  }
-
   function key()
   {
-    return null;
+    return $this->key;
   }
 
-  function at($pos)
+  function paginate($offset, $limit)
   {
-    return null;
+    $this->iteratedDataset = null;
+    $this->offset = $offset;
+    $this->limit = $limit;
+    return $this;
+  }
+
+  function getOffset()
+  {
+    return $this->offset;
+  }
+
+  function getLimit()
+  {
+    return $this->limit;
+  }
+
+  protected function _getCurrent($values)
+  {
+    if(is_object($values))
+      return $values;
+    else
+      return new lmbSet($values);
+  }
+
+  protected function _isValid($values)
+  {
+    return (is_array($values) || is_object($values));
   }
 
   function add($item)
   {
+    $this->dataset[] = $item;
+    $this->iteratedDataset = null;
+  }
+
+  function isEmpty()
+  {
+    return sizeof($this->dataset) == 0;
   }
 
   //Countable interface
   function count()
   {
-    return 0;
+    return sizeof($this->dataset);
   }
-  //end
+  //
+
+  function countPaginated()
+  {
+    $this->_setupIteratedDataset();
+    return count($this->iteratedDataset);
+  }
 
   //ArrayAccess interface
   function offsetExists($offset)
@@ -85,6 +182,5 @@ class lmbIterator implements lmbDataset
 
   function offsetUnset($offset){}
   //end
-
 }
 ?>

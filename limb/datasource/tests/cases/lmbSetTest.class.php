@@ -6,27 +6,27 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDataspaceTest.class.php 5616 2007-04-11 08:10:36Z pachanga $
+ * @version    $Id: lmbSetTest.class.php 5626 2007-04-11 11:50:45Z pachanga $
  * @package    datasource
  */
-lmb_require('limb/datasource/src/lmbDataspace.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 
-class lmbDataSpaceTestObject
+class lmbSetTestObject
 {
   public $var;
 }
 
-class lmbDataspaceTest extends UnitTestCase
+class lmbSetTest extends UnitTestCase
 {
-  function testGetFromEmptyDataspace()
+  function testGetFromEmptySet()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $this->assertNull($ds->get('test'));
   }
 
   function testSetAndGet()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->set('test', 'value');
     $this->assertTrue($ds->has('test'));
     $this->assertEqual($ds->get('test'), 'value');
@@ -34,35 +34,35 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testGetInteger()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->set('test', '10b');
     $this->assertIdentical($ds->getInteger('test'), 10);
   }
 
   function testGetNumeric()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->set('test', '10.1');
     $this->assertIdentical($ds->getNumeric('test'), 10.1);
   }
 
   function testGetArrayForScalars()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->set('test', 'foo');
     $this->assertIdentical($ds->getArray('test'), array());
   }
 
   function testGetArray()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->set('test', array('foo'));
     $this->assertIdentical($ds->getArray('test'), array('foo'));
   }
 
   function testGetPropertyList()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->set('test', 'value');
     $this->assertEqual(count($ds->getPropertyList()), 1);
     $this->assertEqual($ds->getPropertyList(), array('test'));
@@ -70,14 +70,14 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testImportExport()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
     $ds->import($value = array('test' => 'value'));
     $this->assertEqual($ds->export(), $value);
   }
 
   function testRemove()
   {
-    $ds = new lmbDataspace(array('test' => 'value'));
+    $ds = new lmbSet(array('test' => 'value'));
     $this->assertEqual($ds->get('test'), 'value');
     $ds->remove('test');
     $this->assertNull($ds->get('test'));
@@ -87,7 +87,7 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testReset()
   {
-    $ds = new lmbDataspace(array('test' => 'value'));
+    $ds = new lmbSet(array('test' => 'value'));
     $this->assertEqual($ds->getPropertyList(), array('test'));
     $ds->reset();
     $this->assertEqual($ds->getPropertyList(), array());
@@ -95,7 +95,7 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testMerge()
   {
-    $ds = new lmbDataspace(array('test' => 'value'));
+    $ds = new lmbSet(array('test' => 'value'));
     $ds->merge(array('foo' => 'bar'));
     $this->assertEqual($ds->getPropertyList(), array('test', 'foo'));
     $this->assertEqual($ds->get('test'), 'value');
@@ -104,7 +104,7 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testImplementsArrayAccessInterface()
   {
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
 
     $ds->set('foo', 'Bar');
     $this->assertEqual($ds['foo'], 'Bar');
@@ -122,7 +122,7 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testImplementsIterator()
   {
-    $ds = new lmbDataspace($array = array('test1' => 'foo',
+    $ds = new lmbSet($array = array('test1' => 'foo',
                                           'test2' => 'bar'));
 
     $result = array();

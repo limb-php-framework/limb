@@ -6,19 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDatasource.interface.php 5558 2007-04-06 13:02:07Z pachanga $
+ * @version    $Id: lmbDatasource.interface.php 5626 2007-04-11 11:50:45Z pachanga $
  * @package    datasource
  */
+/**
+ * @deprecated
+ */
+lmb_require('limb/datasource/src/lmbSetInterface.interface.php');
 
-interface lmbDatasource extends ArrayAccess
-{
-  function get($name);
-  function set($name, $value);
-  function remove($name);
-  function reset();
-  function export();
-  function import($values);
-  function has($name);
-}
+interface lmbDatasource extends lmbSetInterface{}
 
 ?>
