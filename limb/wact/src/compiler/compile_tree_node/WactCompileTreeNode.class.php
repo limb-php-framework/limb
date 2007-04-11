@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompileTreeNode.class.php 5254 2007-03-15 16:13:14Z serega $
+ * @version    $Id: WactCompileTreeNode.class.php 5625 2007-04-11 11:12:26Z serega $
  * @package    wact
  */
 
@@ -182,6 +182,19 @@ class WactCompileTreeNode
     }
     $false = FALSE;
     return $false;
+  }
+
+  function findImmediateChildrenByClass($class)
+  {
+    $result = array();
+
+    foreach(array_keys($this->children) as $key)
+    {
+      if (is_a($this->children[$key], $class))
+        $result[] = $this->children[$key];
+    }
+
+    return $result;
   }
 
   function registerProperty($name, $property)

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactListTagsTest.class.php 5178 2007-03-04 21:49:36Z serega $
+ * @version    $Id: WactListTagsTest.class.php 5625 2007-04-11 11:12:26Z serega $
  * @package    wact
  */
 
@@ -459,6 +459,39 @@ class WactListTagsTest extends WactTemplateTestCase
     $list->registerDataSet(array(array('name' => 'John'), array('name' => 'Pavel')));
 
     $this->assertEqual($page->capture(), 'John:Pavel');
+  }
+
+  function testListSeparatorInNestedList()
+  {
+    $template = '<list:LIST id="base">'.
+                '<list:ITEM>{$name}:'.
+                  '<list:list from="kids" id="nested">'.
+                    '<list:item>{$name}'.
+                      '<list:SEPARATOR every="2">++</list:SEPARATOR>'.
+                    '</list:item>'.
+                    '<list:FILL upto="2" var="count">{$count}</list:FILL>'.
+                  '</list:list>'.
+                '</list:item>'.
+                '</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_separator_in_nested_list.html', $template);
+
+    $page = $this->initTemplate('/tags/list/list_separator_in_nested_list.html');
+
+    $data = array(array('name' => 'John',
+                        'kids' => array(array('name' => 'Serega'),
+                                        array('name' => 'Pavel'),
+                                        array('name' => 'Ilia'))),
+                  array('name' => 'Mike',
+                        'kids' => array(array('name' => 'Roman'),
+                                        array('name' => 'Denis'),
+                                        array('name' => 'Alex'))),
+                  );
+
+    $list = $page->getChild('base');
+    $list->registerDataSet($data);
+
+    $this->assertEqual($page->capture(), 'John:SeregaPavel++Ilia1Mike:RomanDenis++Alex1');
   }
 }
 ?>

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: separator.tag.php 5176 2007-03-02 15:33:37Z serega $
+ * @version    $Id: separator.tag.php 5625 2007-04-11 11:12:26Z serega $
  * @package    wact
  */
 
@@ -43,8 +43,6 @@ class WactListSeparatorTag extends WactRuntimeComponentTag
   function preGenerate($code)
   {
     $code->writePhp($this->getComponentRefCode($code) . '->setStep(' . $this->step .');' . "\n");
-
-    $code->writePhp($this->getComponentRefCode($code) . '->prepare();' . "\n");
 
     parent::preGenerate($code);
 

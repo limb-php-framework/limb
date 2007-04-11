@@ -48,15 +48,17 @@ class WactListSeparatorComponent extends WactRuntimeComponent
 
   function prepare()
   {
-    if($this->total)
-      return;
+    $this->step_counter = 0;
+    $this->total_counter = 0;
 
-    $this->list_component = $this->findParentByClass('WactListComponent');
     if(!$this->list_component)
-      throw new WactException('Parent List Component not found');
+    {
+      $this->list_component = $this->findParentByClass('WactListComponent');
+      if(!$this->list_component)
+        throw new WactException('Parent List Component not found');
+    }
 
     $this->total = $this->list_component->countPaginated();
-    $this->total_counter = 0;
   }
 
   function shouldDisplay()
