@@ -6,11 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTreeTest.class.php 5008 2007-02-08 15:37:24Z pachanga $
+ * @version    $Id: lmbMaterializedPathTreeTest.class.php 5631 2007-04-11 13:03:43Z pachanga $
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-lmb_require('limb/datasource/src/lmbDatasetHelper.class.php');
 lmb_require('limb/tree/src/tree/lmbMaterializedPathTree.class.php');
 
 class MaterializedPathTreeTestVersion extends lmbMaterializedPathTree
@@ -424,8 +423,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $sub_node_id1 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
     $sub_node_id2 = $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test2'));
 
-    $rs = new lmbDatasetHelper($this->imp->getParents($sub_node_id2));
-
+    $rs = $this->imp->getParents($sub_node_id2);
     $this->assertEqual($rs->count(), 2);
 
     $nodes = $rs->getArray('id');
@@ -443,8 +441,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->assertEqual($row['id'], $sub_node_id1, '%s, invalid parameter: id');
     $this->assertEqual($row['identifier'], 'test1', '%s, invalid parameter: identifier');
 
-    $rs = new lmbDatasetHelper($this->imp->getParents($sub_node_id1));
-
+    $rs = $this->imp->getParents($sub_node_id1);
     $nodes = $rs->getArray('id');
 
     $this->assertEqual($rs->count(), 1);
@@ -465,8 +462,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $sub_node_id2 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test2'));
     $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test0'));
 
-    $rs = new lmbDatasetHelper($this->imp->getChildren($parent_node_id)->sort(array('id' => 'ASC')));
-
+    $rs = $this->imp->getChildren($parent_node_id)->sort(array('id' => 'ASC'));
     $nodes = $rs->getArray('id');
 
     $this->assertEqual(sizeof($nodes), 2);
@@ -510,8 +506,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $sub_node_id2 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test2'));
     $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test0'));
 
-    $rs = new lmbDatasetHelper($this->imp->getSiblings($sub_node_id2)->sort(array('id' => 'ASC')));
-
+    $rs = $this->imp->getSiblings($sub_node_id2)->sort(array('id' => 'ASC'));
     $nodes = $rs->getArray('id');
 
     $this->assertEqual(sizeof($nodes), 2);
@@ -677,7 +672,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test'));
 
     //getting all
-    $rs = new lmbDatasetHelper($this->imp->getSubBranch($sub_node_id_1));
+    $rs = $this->imp->getSubBranch($sub_node_id_1);
     $branch = $rs->getArray('id');
     $this->assertEqual(3, sizeof($branch));
     $this->_checkResultNodesArray($branch);
@@ -687,21 +682,21 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->assertEqual($node['id'], $sub_node_id_1_1, '%s, invalid parameter: id');
 
     //getting at unlimited depth, including node
-    $rs = new lmbDatasetHelper($this->imp->getSubBranch($sub_node_id_1, -1, true));
+    $rs = $this->imp->getSubBranch($sub_node_id_1, -1, true);
     $branch = $rs->getArray('id');
     $this->assertEqual(4, sizeof($branch));
     $this->_checkResultNodesArray($branch);
     $this->_checkProperNesting($branch);
 
     //getting at depth = 1
-    $rs = new lmbDatasetHelper($this->imp->getSubBranch($sub_node_id_1, 1));
+    $rs = $this->imp->getSubBranch($sub_node_id_1, 1);
     $branch = $rs->getArray('id');
     $this->assertEqual(1, sizeof($branch));
     $this->_checkResultNodesArray($branch,  __LINE__);
     $this->_checkProperNesting($branch);
 
     //getting at depth = 1, including node
-    $rs = new lmbDatasetHelper($this->imp->getSubBranch($sub_node_id_1, 1, true));
+    $rs = $this->imp->getSubBranch($sub_node_id_1, 1, true);
     $branch = $rs->getArray('id');
     $this->assertEqual(2, sizeof($branch));
     $this->_checkResultNodesArray($branch,  __LINE__);
@@ -785,7 +780,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test1'));
     $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test2'));
 
-    $rs = new lmbDatasetHelper($this->imp->getNodesByIds(
+    $rs = $this->imp->getNodesByIds(
       array(
         $root_id,
         $sub_node_id_1,
@@ -794,30 +789,28 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
         $sub_node_id_1_1_1,
         -1
       )
-    )->sort(array('id' => 'ASC')));
+    )->sort(array('id' => 'ASC'));
 
     $nodes = $rs->getArray('id');
 
     $this->assertEqual(sizeof($nodes), 5);
     $this->_checkResultNodesArray($nodes,  __LINE__);
 
-    $rs = new lmbDatasetHelper($this->imp->getNodesByIds(
+    $rs = $this->imp->getNodesByIds(
       array(
         $sub_node_id_1,
         $sub_node_id_1_1,
         $sub_node_id_1_1_1,
         -1
       )
-    )->sort(array('id' => 'ASC')));
+    )->sort(array('id' => 'ASC'));
 
     $nodes = $rs->getArray('id');
 
     $this->assertEqual(sizeof($nodes), 3);
     $this->_checkResultNodesArray($nodes,  __LINE__);
 
-    $rs = new lmbDatasetHelper($this->imp->getNodesByIds(
-      array()
-    ));
+    $rs = $this->imp->getNodesByIds(array());
 
     $nodes = $rs->getArray();
 
@@ -829,8 +822,8 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     if(isset($nodes['id']))//check for array
       $this->assertEqual($this->imp->getNode($nodes['id']), $nodes);
     else
-      foreach($nodes as $id => $node)
-        $this->assertEqual($this->imp->getNode($id), $node);
+      foreach($nodes as $node)
+        $this->assertEqual($this->imp->getNode($node['id']), $node);
   }
 
   function _checkProperNesting($nodes, $line='')
