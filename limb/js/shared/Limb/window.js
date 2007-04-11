@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: window.js 5615 2007-04-11 07:39:46Z serega $
+ * @version    $Id: window.js 5641 2007-04-11 14:31:43Z serega $
  * @package    js
  */
 
@@ -120,7 +120,6 @@ Limb.Class('Limb.Window',
 
     this.window.moveTo(rect.getX(), rect.getY());
     this.window.resizeTo(rect.getWidth(), rect.getHeight());
-    this.window.scrollbars = 'yes';
 
     return true;
   },
