@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIteratorDecorator.class.php 5626 2007-04-11 11:50:45Z pachanga $
+ * @version    $Id: lmbIteratorDecorator.class.php 5637 2007-04-11 14:18:35Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbIteratorInterface.interface.php');
@@ -53,7 +53,10 @@ class lmbIteratorDecorator implements lmbIteratorInterface
 
   function getArray()
   {
-    return $this->iterator->getArray();
+    $result = array();
+    foreach($this as $object)
+      $result[] = $object;
+    return $result;
   }
 
   function at($pos)
