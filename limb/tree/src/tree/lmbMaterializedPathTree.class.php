@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5644 2007-04-11 15:45:56Z serega $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -216,7 +216,7 @@ class lmbMaterializedPathTree implements lmbTree
     $stmt->setInteger('id', $id);
 
     if($r = $stmt->getOneRecord())
-      return $r->export();
+      return $r;
 
     return null;
   }
@@ -254,7 +254,7 @@ class lmbMaterializedPathTree implements lmbTree
     for($rs->rewind();$rs->valid();$rs->next())
     {
       $record = $rs->current();
-      $node = $record->export();
+      $node = $record;
 
       if ($node['level'] < $curr_level)
         continue;

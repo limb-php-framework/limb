@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTreeTest.class.php 5631 2007-04-11 13:03:43Z pachanga $
+ * @version    $Id: lmbMaterializedPathTreeTest.class.php 5644 2007-04-11 15:45:56Z serega $
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -70,7 +70,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
     $this->db->insert('test_materialized_path_tree', $node);
 
-    $this->assertEqual($node, $this->imp->getNode(10));
+    $this->assertEqual($node, $this->imp->getNode(10)->export());
   }
 
   function testGetParentFailed()
@@ -105,7 +105,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
     $this->db->insert('test_materialized_path_tree', $node);
 
-    $this->assertEqual($root_node, $this->imp->getParent(10));
+    $this->assertEqual($root_node, $this->imp->getParent(10)->export());
     $this->assertNull($this->imp->getParent(1));
   }
 
@@ -426,7 +426,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $rs = $this->imp->getParents($sub_node_id2);
     $this->assertEqual($rs->count(), 2);
 
-    $nodes = $rs->getArray('id');
+    $nodes = $rs->getArray();
 
     $this->_checkProperNesting($nodes);
     $this->_checkResultNodesArray($nodes);
@@ -547,7 +547,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $updated_node = $this->imp->getNode($node_id);
 
     $this->assertEqual($updated_node['identifier'], 'test', '%s, invalid parameter: identifier');
-    $this->assertNotEqual($updated_node, $node, 'invalid update');
+    $this->assertNotEqual($updated_node->export(), $node, 'invalid update');
 
     $root_node = $this->imp->getNode($parent_node_id);
     $this->assertEqual($root_node['identifier'], 'root');
@@ -820,10 +820,10 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
   function _checkResultNodesArray($nodes, $line='')
   {
     if(isset($nodes['id']))//check for array
-      $this->assertEqual($this->imp->getNode($nodes['id']), $nodes);
+      $this->assertEqual($this->imp->getNode($nodes['id'])->export(), $nodes->export());
     else
       foreach($nodes as $node)
-        $this->assertEqual($this->imp->getNode($node['id']), $node);
+        $this->assertEqual($this->imp->getNode($node['id'])->export(), $node->export());
   }
 
   function _checkProperNesting($nodes, $line='')
