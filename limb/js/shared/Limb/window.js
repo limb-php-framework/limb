@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: window.js 5436 2007-03-30 07:30:57Z tony $
+ * @version    $Id: window.js 5615 2007-04-11 07:39:46Z serega $
  * @package    js
  */
 
@@ -65,6 +65,7 @@ Limb.Class('Limb.Window',
     var newWindowRect = this._getRectInParentCenter(width, height);
 
     var params = new Limb.Window.Params();
+
     params.addParameter('left', newWindowRect.getX());
     params.addParameter('top', newWindowRect.getY());
     params.addParameter('width', width);
@@ -93,7 +94,7 @@ Limb.Class('Limb.Window',
     if(!Limb.isset(createParams))
       createParams = this._getDefaultParams();
 
-    var win = window.open(href, this.windowName, createParams.toString());
+    var win = window.open(href, this.windowName, createParams.asString());
 
     return win;
   },
@@ -119,6 +120,7 @@ Limb.Class('Limb.Window',
 
     this.window.moveTo(rect.getX(), rect.getY());
     this.window.resizeTo(rect.getWidth(), rect.getHeight());
+    this.window.scrollbars = 'yes';
 
     return true;
   },
@@ -207,12 +209,17 @@ Limb.Class('Limb.Window.Params',
      return params[name];
   },
 
-  toString: function()
+  asString: function()
   {
     var result = '';
 
     for(var name in this.params)
+    {
+      if(Limb.is_function(this.params[name]))
+        continue;
+
       result += name + '=' + this.params[name] + ',';
+    }
 
     return result.slice(0, -1);
   },
