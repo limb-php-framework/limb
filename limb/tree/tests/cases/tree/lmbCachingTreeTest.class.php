@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingTreeTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbCachingTreeTest.class.php 5634 2007-04-11 13:15:06Z pachanga $
  * @package    tree
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
@@ -320,7 +320,7 @@ class lmbCachingTreeTest extends UnitTestCase
     $this->tree->setReturnValue($callback[0], $expected, isset($callback[1]) ? $callback[1] : false);
 
     if(is_object($expected))
-      $this->cache->expectOnce('put', array($key, new IsAExpectation('lmbCachedPagedIterator'), $group));
+      $this->cache->expectOnce('put', array($key, new IsAExpectation('lmbCachedIterator'), $group));
     else
       $this->cache->expectOnce('put', array($key, $expected, $group));
 

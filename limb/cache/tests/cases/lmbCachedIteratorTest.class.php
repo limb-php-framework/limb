@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedPagedIteratorTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbCachedIteratorTest.class.php 5634 2007-04-11 13:15:06Z pachanga $
  * @package    cache
  */
-lmb_require('limb/cache/src/lmbCachedPagedIterator.class.php');
+lmb_require('limb/cache/src/lmbCachedIterator.class.php');
 lmb_require('limb/cache/src/lmbCachePersisterKeyDecorator.class.php');
 lmb_require('limb/datasource/src/lmbIterator.class.php');
 
@@ -45,7 +45,7 @@ class ArrayDataSetCacheStub extends lmbIterator
   }
 }
 
-class lmbCachedPagedIteratorTest extends UnitTestCase
+class lmbCachedIteratorTest extends UnitTestCase
 {
   var $cache;
 
@@ -67,7 +67,7 @@ class lmbCachedPagedIteratorTest extends UnitTestCase
                  array('wow'));
 
     $stub = new ArrayDataSetCacheStub($arr);
-    $rs = new lmbCachedPagedIterator($stub, $this->cache);
+    $rs = new lmbCachedIterator($stub, $this->cache);
 
     $clean_stub = $stub;
 
@@ -92,7 +92,7 @@ class lmbCachedPagedIteratorTest extends UnitTestCase
 
     $this->cache->put($stub, new lmbIterator($arr), LIMB_RS_CACHE_COMMON_GROUP);
 
-    $rs = new lmbCachedPagedIterator($stub, $this->cache);
+    $rs = new lmbCachedIterator($stub, $this->cache);
 
     $this->_verifyIteratorMatchesArray($rs, $arr);
     $this->_verifyIteratorMatchesArray($rs, $arr);
@@ -113,7 +113,7 @@ class lmbCachedPagedIteratorTest extends UnitTestCase
                             array('wow'));
 
     $stub = new ArrayDataSetCacheStub($arr);
-    $rs = new lmbCachedPagedIterator($stub, $this->cache);
+    $rs = new lmbCachedIterator($stub, $this->cache);
 
     $this->_verifyIteratorMatchesArray($rs, $arr);
     $this->_verifyIteratorMatchesArray($rs, $arr);
@@ -136,7 +136,7 @@ class lmbCachedPagedIteratorTest extends UnitTestCase
                  array('wow'));
 
     $stub = new ArrayDataSetCacheStub($arr);
-    $rs = new lmbCachedPagedIterator($stub, $this->cache);
+    $rs = new lmbCachedIterator($stub, $this->cache);
 
     $this->assertEqual($rs->count(), 3);
     $this->assertEqual($rs->count(), 3);
@@ -153,7 +153,7 @@ class lmbCachedPagedIteratorTest extends UnitTestCase
     $arr_for_pager = array(array('bar'));
 
     $stub = new ArrayDataSetCacheStub($arr);
-    $rs = new lmbCachedPagedIterator($stub, $this->cache);
+    $rs = new lmbCachedIterator($stub, $this->cache);
 
     $this->assertEqual($rs->count(), 3);
 

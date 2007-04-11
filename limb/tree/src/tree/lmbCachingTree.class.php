@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingTree.class.php 5552 2007-04-06 08:56:27Z pachanga $
+ * @version    $Id: lmbCachingTree.class.php 5634 2007-04-11 13:15:06Z pachanga $
  * @package    tree
  */
 lmb_require('limb/cache/src/lmbCacheMemoryPersister.class.php');
-lmb_require('limb/cache/src/lmbCachedPagedIterator.class.php');
+lmb_require('limb/cache/src/lmbCachedIterator.class.php');
 lmb_require('limb/cache/src/lmbCacheCompositePersister.class.php');
 lmb_require('limb/cache/src/lmbCachePersisterKeyDecorator.class.php');
 lmb_require('limb/tree/src/tree/lmbTreeDecorator.class.php');
@@ -202,7 +202,7 @@ class lmbCachingTree extends lmbTreeDecorator
 
     if(is_object($result))//assuming it's an iterator object
     {
-      $cached_result = new lmbCachedPagedIterator($result, $this->cache);
+      $cached_result = new lmbCachedIterator($result, $this->cache);
       $this->cache->put($key, $cached_result, $group);
       return $cached_result;
     }

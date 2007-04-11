@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedPagedIterator.class.php 5633 2007-04-11 13:09:26Z pachanga $
+ * @version    $Id: lmbCachedIterator.class.php 5634 2007-04-11 13:15:06Z pachanga $
  * @package    cache
  */
 lmb_require('limb/datasource/src/lmbIterator.class.php');
@@ -18,7 +18,7 @@ define('LIMB_RS_TOTAL_CACHE_COMMON_GROUP', 'rs_total');
 //Note that the code is alpha, we rely on PHP serialize skip resource type variables
 //feature. It would be much more efficient if $iterators implemented getHash() somehow
 
-class lmbCachedPagedIterator extends lmbIteratorDecorator
+class lmbCachedIterator extends lmbIteratorDecorator
 {
   protected $cached_rs;
   protected $cached_total_row_count;
