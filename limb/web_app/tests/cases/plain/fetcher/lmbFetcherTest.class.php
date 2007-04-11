@@ -6,15 +6,15 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFetcherTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbFetcherTest.class.php 5633 2007-04-11 13:09:26Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/datasource/src/lmbIterator.class.php');
-lmb_require('limb/datasource/src/lmbPagedDatasetDecorator.class.php');
+lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
 lmb_require('limb/classkit/src/lmbClassPath.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
-class TestingDatasetDecorator extends lmbPagedDatasetDecorator
+class TestingDatasetDecorator extends lmbIteratorDecorator
 {
   var $prefix1;
   var $prefix2;

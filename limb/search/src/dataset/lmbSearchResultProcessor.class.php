@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSearchResultProcessor.class.php 5381 2007-03-28 12:16:54Z pachanga $
+ * @version    $Id: lmbSearchResultProcessor.class.php 5633 2007-04-11 13:09:26Z pachanga $
  * @package    search
  */
-lmb_require('limb/datasource/src/lmbPagedDatasetDecorator.class.php');
+lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
 
-class lmbSearchResultProcessor extends lmbPagedDatasetDecorator
+class lmbSearchResultProcessor extends lmbIteratorDecorator
 {
   protected $radius = 0;
   protected $gaps_pattern = '';

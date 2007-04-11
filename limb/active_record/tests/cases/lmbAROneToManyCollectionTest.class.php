@@ -6,17 +6,17 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAROneToManyCollectionTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbAROneToManyCollectionTest.class.php 5633 2007-04-11 13:09:26Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
-lmb_require('limb/datasource/src/lmbPagedDatasetDecorator.class.php');
+lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordOneToManyRelationsTest.class.php');
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 
-class lmbARTestingDSDecorator extends lmbPagedDatasetDecorator
+class lmbARTestingDSDecorator extends lmbIteratorDecorator
 {
   protected $value;
 
