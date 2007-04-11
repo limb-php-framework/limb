@@ -6,15 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIni.class.php 5423 2007-03-29 13:09:55Z pachanga $
+ * @version    $Id: lmbIni.class.php 5617 2007-04-11 08:11:40Z pachanga $
  * @package    config
  */
-lmb_require('limb/util/src/util/lmbComplexArray.class.php');
 lmb_require('limb/util/src/exception/lmbFileNotFoundException.class.php');
+lmb_require('limb/datasource/src/lmbDataspace.class.php');
 
-class lmbIni
+class lmbIni extends lmbDataspace
 {
-  protected $group_values;
   protected $file_path;
 
   function __construct($file)
@@ -65,7 +64,7 @@ class lmbIni
     if($lines === false)
       throw new lmbException('lmbIni file is not found or could not be loaded', array('path' => $this->file_path));
 
-    $current_group = 'default';
+    $current_group = null;
 
     if(count($lines) == 0)
       return false;
@@ -82,9 +81,6 @@ class lmbIni
       {
         $new_group_name = trim($new_group_name_array[1]);
         $current_group = $this->_parseConstants($new_group_name);
-
-        if(!isset($this->group_values[$current_group]))
-          $this->group_values[$current_group] = array();
         continue;
       }
       // check for variable
@@ -101,30 +97,64 @@ class lmbIni
 
         if($value_array[2])//check for array []
         {
-          if($value_array[3]) //check for hashed array ['test']
+          if($value_array[3]) //check for hashed array, e.g ['test']
           {
             $key_name = $value_array[3];
-
-            if(isset($this->group_values[$current_group][$var_name]) &&
-                is_array($this->group_values[$current_group][$var_name]))
-              $this->group_values[$current_group][$var_name][$key_name] = $var_value;
-            else
-              $this->group_values[$current_group][$var_name] = array($key_name => $var_value);
+            $this->_addArrayIniValue($var_name, $var_value, $key_name, $current_group);
           }
           else
-          {
-            if(isset($this->group_values[$current_group][$var_name]) &&
-                is_array($this->group_values[$current_group][$var_name]))
-              $this->group_values[$current_group][$var_name][] = $var_value;
-            else
-              $this->group_values[$current_group][$var_name] = array($var_value);
-          }
+            $this->_addArrayIniValue($var_name, $var_value, null, $current_group);
         }
         else
-        {
-          $this->group_values[$current_group][$var_name] = $var_value;
-        }
+          $this->_addIniValue($var_name, $var_value, $current_group);
       }
+    }
+  }
+
+  protected function _addIniValue($name, $value, $group = null)
+  {
+    if($group)
+    {
+      if(!$this->has($group))
+        $this->set($group, array());
+
+      $group_array = $this->get($group);
+      $group_array[$name] = $value;
+      $this->set($group, $group_array);
+    }
+    else
+      $this->set($name, $value);
+  }
+
+  protected function _addArrayIniValue($name, $value, $index = null, $group = null)
+  {
+    if($group)
+    {
+      if(!$this->has($group))
+        $this->set($group, array());
+
+      $group_array = $this->get($group);
+
+      if($index)
+        $group_array[$name][$index] = $value;
+      else
+        $group_array[$name][] = $value;
+
+      $this->set($group, $group_array);
+    }
+    else
+    {
+      if(!$this->has($name))
+        $this->set($name, array());
+
+      $array = $this->get($name);
+
+       if($index)
+         $array[$index] = $value;
+       else
+         $array[] = $value;
+
+      $this->set($name, $array);
     }
   }
 
@@ -133,23 +163,21 @@ class lmbIni
     return preg_replace('~\{([^\}]+)\}~e', "constant('\\1')", $value);
   }
 
-  function get($name)
+  function getOption($var_name, $group_name = null)
   {
-    return $this->getOption($name);
+    if($group_name)
+    {
+      if($group = $this->get($group_name))
+      {
+        if(is_array($group) && isset($group[$var_name]))
+          return $group[$var_name];
+      }
+    }
+    else
+      return $this->get($var_name);
   }
 
-  function getOption($var_name, $group_name = 'default')
-  {
-    if(!isset($this->group_values[$group_name]))
-      return;
-
-    if(isset($this->group_values[$group_name][$var_name]))
-      return $this->group_values[$group_name][$var_name];
-
-    return;
-  }
-
-  function assignOption(&$variable, $var_name, $group_name = 'default')
+  function assignOption(&$variable, $var_name, $group_name = null)
   {
     if(!$this->hasOption($var_name, $group_name))
       return false;
@@ -158,31 +186,38 @@ class lmbIni
     return true;
   }
 
-  function hasOption($var_name, $group_name = 'default')
+  function hasOption($var_name, $group_name = null)
   {
-    return isset($this->group_values[$group_name][$var_name]);
+    if($group_name)
+    {
+      if($group = $this->get($group_name))
+        return is_array($group) && array_key_exists($var_name, $group);
+      else
+        return false;
+    }
+    else
+      return $this->has($var_name);
   }
 
   function hasGroup($group_name)
   {
-    return isset($this->group_values[$group_name]);
+    return is_array($this->get($group_name));
   }
 
   function getGroup($group_name)
   {
-    if(isset($this->group_values[$group_name]))
-      return $this->group_values[$group_name];
+    return $this->get($group_name);
   }
 
   function getAll()
   {
-    return $this->group_values;
+    return $this->export();
   }
 
   function mergeWith($ini)
   {
     $clone = clone($this);
-    $clone->group_values = lmbComplexArray :: arrayMerge($clone->group_values, $ini->getAll());
+    $clone->merge($ini->export());
     return $clone;
   }
 }

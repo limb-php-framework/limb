@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedIni.class.php 5549 2007-04-06 07:59:52Z pachanga $
+ * @version    $Id: lmbCachedIni.class.php 5617 2007-04-11 08:11:40Z pachanga $
  * @package    config
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -23,7 +23,7 @@ class lmbCachedIni extends lmbIni
 
     if(!$this->_loadCache())
     {
-      $this->group_values = $this->_createIni($file)->getAll();
+      $this->import($this->_createIni($file)->export());
       $this->_saveCache();
     }
   }
@@ -58,9 +58,7 @@ class lmbCachedIni extends lmbIni
     if(!$this->_isCacheValid($cache_file))
       return false;
 
-    $group_values = array();
-
-    $this->group_values = unserialize(file_get_contents($cache_file));
+    $this->import(unserialize(file_get_contents($cache_file)));
 
     return true;
   }
@@ -86,11 +84,8 @@ class lmbCachedIni extends lmbIni
 
   protected function _saveCache()
   {
-    if(!is_array($this->group_values))
-      return;
-
     lmbFs :: safeWrite($this->getCacheFile(),
-                       serialize($this->group_values));
+                       serialize($this->export()));
   }
 
   function removeCache()

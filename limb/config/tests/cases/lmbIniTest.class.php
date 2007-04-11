@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIniTest.class.php 5423 2007-03-29 13:09:55Z pachanga $
+ * @version    $Id: lmbIniTest.class.php 5617 2007-04-11 08:11:40Z pachanga $
  * @package    config
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -47,7 +47,7 @@ class lmbIniTest extends UnitTestCase
     $this->assertEqual($ini->get('b'), 'bar');
   }
 
-  function testTrimmingFileContents()
+  function testTrimFileContents()
   {
     $ini = $this->_createIni(
       '
@@ -58,7 +58,7 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array(
         'group1' => array('value' => 'test1'),
         'group2' => array('value' => 'test2'),
@@ -66,7 +66,7 @@ class lmbIniTest extends UnitTestCase
     );
   }
 
-  function testProperComments()
+  function testParseComments()
   {
     $ini = $this->_createIni(
       '
@@ -79,7 +79,7 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array(
         'group1' => array(
           'value1' => 'test1',
@@ -89,7 +89,7 @@ class lmbIniTest extends UnitTestCase
     );
   }
 
-  function testStringsWithSpaces()
+  function testParseStringsWithSpaces()
   {
     $ini = $this->_createIni(
       '
@@ -99,7 +99,7 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array(
         'group1' => array(
           'value1' => 'this is a string with spaces            indeed',
@@ -109,7 +109,7 @@ class lmbIniTest extends UnitTestCase
     );
   }
 
-  function testProperQuotes()
+  function testParseProperQuotes()
   {
     $ini = $this->_createIni(
       '
@@ -120,7 +120,7 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array(
         'group1' => array(
           'value1' => '  this is a quoted string  ',
@@ -131,19 +131,7 @@ class lmbIniTest extends UnitTestCase
     );
   }
 
-  function testDefaultGroupExistsOnlyIfGlobalValues()
-  {
-    $ini = $this->_createIni(
-      '
-      [group1]
-       value = test
-      '
-    );
-
-    $this->assertFalse($ini->hasGroup('default'));
-  }
-
-  function testGlobalValuesInDefaultGroup()
+  function testParseGlobalValues()
   {
     $ini = $this->_createIni(
       '
@@ -153,17 +141,15 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array(
-        'default' => array('value' => 'global_test'),
+        'value' => 'global_test',
         'group1' => array('value' => 'test'),
       )
     );
-
-    $this->assertTrue($ini->hasGroup('default'));
   }
 
-  function testNullElements()
+  function testParseNullElements()
   {
     $ini = $this->_createIni(
       '
@@ -172,14 +158,14 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array('group1' => array('value' => null))
     );
 
     $this->assertFalse($ini->hasOption('group1', 'value'));
   }
 
-  function testArrayElements()
+  function testParseArrayElements()
   {
     $ini = $this->_createIni(
       '
@@ -191,12 +177,12 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array('group1' => array('value' => array(null, 1, null, 2)))
     );
   }
 
-  function testHashedArrayElements()
+  function testParseHashedArrayElements()
   {
     $ini = $this->_createIni(
       '
@@ -209,18 +195,36 @@ class lmbIniTest extends UnitTestCase
       '
     );
 
-    $this->assertEqual($ini->getAll(),
+    $this->assertEqual($ini->export(),
       array('group1' => array('value' =>
-        array('apple' => null, 'banana' => 1, 'fruit' => null)))
+                 array('apple' => null, 'banana' => 1, 'fruit' => null)))
     );
   }
 
-  function testCheckers()
+  function testParseMixedArrays()
+  {
+    $ini = $this->_createIni(
+      '
+      [group1]
+
+       foo[apple] = 1
+       bar[] = 1
+       foo[banana] = 2
+       bar[] = 2
+      '
+    );
+
+    $this->assertEqual($ini->export(),
+      array('group1' => array('foo' => array('apple' => 1, 'banana' => 2),
+                              'bar' => array(1, 2))));
+  }
+
+  function testHasChecks()
   {
     $ini = $this->_createIni(
       '
         unassigned =
-        test = 1
+        junk = 1
 
         [test]
         test = 1
@@ -233,7 +237,6 @@ class lmbIniTest extends UnitTestCase
     );
 
     $this->assertFalse($ini->hasGroup(''));
-    $this->assertTrue($ini->hasGroup('default'));
     $this->assertTrue($ini->hasGroup('test'));
     $this->assertTrue($ini->hasGroup('test2'));
     $this->assertTrue($ini->hasGroup('empty_group'));
@@ -243,8 +246,8 @@ class lmbIniTest extends UnitTestCase
     $this->assertFalse($ini->hasOption('', 'no_such_block'));
     $this->assertTrue($ini->hasOption('test', 'test'));
     $this->assertFalse($ini->hasOption('no_such_variable', 'test3'));
-    $this->assertTrue($ini->hasOption('unassigned', 'default'));
-    $this->assertTrue($ini->hasOption('test', 'default'));
+    $this->assertTrue($ini->hasOption('unassigned'));
+    $this->assertTrue($ini->hasOption('junk'));
   }
 
   function testGetOption()
@@ -252,7 +255,7 @@ class lmbIniTest extends UnitTestCase
     $ini = $this->_createIni(
       '
         unassigned =
-        test = 1
+        junk = 1
 
         [test]
         test = 1
@@ -267,7 +270,7 @@ class lmbIniTest extends UnitTestCase
     );
 
     $this->assertEqual($ini->getOption('unassigned'), '');
-    $this->assertEqual($ini->getOption('test'), 1);
+    $this->assertEqual($ini->getOption('junk'), 1);
 
     $this->assertEqual($ini->getOption('no_such_option'), '');
 
@@ -299,16 +302,14 @@ class lmbIniTest extends UnitTestCase
     $ini = $this->_createIni(
       '
         unassigned =
-        test = 1
+        junk = 1
 
         [test]
         test = 1
       '
     );
 
-    $this->assertEqual($ini->getGroup('default'), array('unassigned' => '', 'test' => 1));
     $this->assertEqual($ini->getGroup('test'), array('test' => 1));
-
     $this->assertNull($ini->getGroup('no_such_group'));
   }
 
@@ -317,7 +318,7 @@ class lmbIniTest extends UnitTestCase
     $ini = $this->_createIni(
       '
         unassigned =
-        test = 1
+        junk = 1
 
         [test]
         test = 2
@@ -327,16 +328,17 @@ class lmbIniTest extends UnitTestCase
     $this->assertTrue($ini->assignOption($test, 'unassigned'));
     $this->assertEqual($test, '');
 
-    $this->assertTrue($ini->assignOption($test, 'test'));
+    $this->assertTrue($ini->assignOption($test, 'junk'));
     $this->assertEqual($test, 1);
 
     $this->assertTrue($ini->assignOption($test, 'test', 'test'));
     $this->assertEqual($test, 2);
+
     $this->assertFalse($ini->assignOption($test, 'no_such_option', 'test'));
     $this->assertEqual($test, 2);
   }
 
-  function testMerge()
+  function testMergeWith()
   {
     $a = $this->_createIni(
       'test = 1
@@ -363,16 +365,13 @@ class lmbIniTest extends UnitTestCase
     );
 
     $c = $a->mergeWith($b);
-    $this->assertEqual($c->getAll(), array('default' => array('test' => 2,
-                                                              'foo' => 1,
+    $this->assertEqual($c->export(), array('test' => 2,
+                                           'foo' => 1,
+                                           'bar' => 2,
+                                           'val' => array(2),
+                                           'group-b' => array('a' => 1,
                                                               'bar' => 2,
-                                                              'val' => array(2)
-                                                              ),
-                                            'group-b' => array('a' => 1,
-                                                               'foo' => 1,
-                                                               'bar' => 2,
-                                                               'arr' => array(1 => 'a',
-                                                                              2 => 'b')
+                                                              'arr' => array(2 => 'b')
                                                                )
                                             )
                           );

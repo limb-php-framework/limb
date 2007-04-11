@@ -6,16 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbConf.class.php 5429 2007-03-29 14:55:34Z pachanga $
+ * @version    $Id: lmbConf.class.php 5617 2007-04-11 08:11:40Z pachanga $
  * @package    config
  */
 lmb_require('limb/datasource/src/lmbDataspace.class.php');
 
-class lmbConf extends lmbDataspace implements Iterator
+class lmbConf extends lmbDataspace
 {
-  protected $current;
-  protected $valid = false;
-
   function __construct($file)
   {
     $conf = array();
@@ -41,33 +38,6 @@ class lmbConf extends lmbDataspace implements Iterator
       return $override_file_name;
     else
       return false;
-  }
-
-  function valid()
-  {
-    return $this->valid;
-  }
-
-  function current()
-  {
-    return $this->current;
-  }
-
-  function next()
-  {
-    $this->current = next($this->properties);
-    $this->valid = $this->current !== false;
-  }
-
-  function rewind()
-  {
-    $this->current = reset($this->properties);
-    $this->valid = $this->current !== false;
-  }
-
-  function key()
-  {
-    return key($this->properties);
   }
 }
 ?>
