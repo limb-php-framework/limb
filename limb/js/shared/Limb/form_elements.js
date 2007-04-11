@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form_elements.js 5436 2007-03-30 07:30:57Z tony $
+ * @version    $Id: form_elements.js 5618 2007-04-11 08:17:10Z momental $
  * @package    js
  */
 
@@ -208,6 +208,7 @@ Limb.DoubleSelect.prototype =
     this.addButtons(container.childNodes[1]);
     this.dstSelect = this.addSelector(container.childNodes[2])
     this.makeupSelector(this.dstSelect, this.select)
+   
   },
 
   makeupSelector: function(src, example)
@@ -229,49 +230,50 @@ Limb.DoubleSelect.prototype =
   addSelector: function(parent)
   {
     parent.innerHTML = "<select multiple></select>"
-    return parent.firstChild;
+    return parent.childNodes[0];
   },
 
   addButtons: function(parent)
   {
-    button = this.addElement('input', parent);
-    button.type = 'button';
+    button  = this.addButton(parent);
     button.value = '>>';
-    button.style.display = 'inline';
     button.onclick = this.selectAll;
-    button.selector_obj = this;
-
+    
     this.addElement('br', parent);
     this.addElement('br', parent);
-    button = this.addElement('input', parent);
-    button.type = 'button';
+    
+    button  = this.addButton(parent);
     button.value = ' > ';
-    button.style.display = 'inline';
     button.onclick = this.selectItems;
-    button.selector_obj = this;
 
     this.addElement('br', parent);
     this.addElement('br', parent);
-    button = this.addElement('input', parent);
-    button.type = 'button';
+    
+    button  = this.addButton(parent);
     button.value = ' < ';
-    button.style.display = 'inline';
     button.onclick = this.deselectItems;
-    button.selector_obj = this;
-
+    
     this.addElement('br', parent);
     this.addElement('br', parent);
-    button = this.addElement('input', parent);
-    button.type = 'button';
+    
+    button  = this.addButton(parent);
     button.value = '<<';
-    button.style.display = 'inline';
     button.onclick = this.deselectAll;
-    button.selector_obj = this;
   },
 
   addElement: function(type, parent)
   {
     element = document.createElement(type);
+    parent.appendChild(element);
+    return element;
+  },
+  
+  addButton: function(parent)
+  {
+    element = document.createElement('input');
+    element.type = 'button';
+    element.style.display = 'inline';
+    element.selector_obj = this;
     parent.appendChild(element);
     return element;
   },
