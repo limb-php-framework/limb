@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRecordSetDecorator.class.php 5627 2007-04-11 11:51:34Z pachanga $
+ * @version    $Id: lmbARRecordSetDecorator.class.php 5638 2007-04-11 14:19:36Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
@@ -65,14 +65,6 @@ class lmbARRecordSetDecorator extends lmbIteratorDecorator
       return null;
 
     return $this->_createObjectFromRecord($record);
-  }
-
-  function getArray()
-  {
-    $result = array();
-    foreach($this as $object)
-      $result[] = $object;
-    return $result;
   }
 }
 
