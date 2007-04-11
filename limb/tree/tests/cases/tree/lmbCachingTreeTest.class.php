@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingTreeTest.class.php 5561 2007-04-06 13:07:43Z pachanga $
+ * @version    $Id: lmbCachingTreeTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    tree
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
@@ -64,7 +64,7 @@ class lmbCachingTreeTest extends UnitTestCase
   function testGetParentsCacheHit()
   {
     $this->_testCacheHit(array('getParents', array($node_id = 100)),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key = array('parents', $node_id),
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }
@@ -72,7 +72,7 @@ class lmbCachingTreeTest extends UnitTestCase
   function testGetParentsCacheMiss()
   {
     $this->_testCacheMiss(array('getParents', array($node_id = 100)),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key = array('parents', $node_id),
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }
@@ -88,7 +88,7 @@ class lmbCachingTreeTest extends UnitTestCase
   function testGetChildrenCacheMiss()
   {
     $this->_testCacheMiss(array('getChildren', array($node_id = 100)),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key = array('children', $node_id),
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }
@@ -122,7 +122,7 @@ class lmbCachingTreeTest extends UnitTestCase
   {
     //sorting ids
     $this->_testCacheMiss(array('getNodesByIds', array(array(1, 3, 2))),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key = array('ids', array(1, 2, 3)),
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }
@@ -184,7 +184,7 @@ class lmbCachingTreeTest extends UnitTestCase
                  'check_expanded_parents' => false);
 
     $this->_testCacheMiss(array('getSubBranch', array($node_id, $depth, false, false)),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key,
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }
@@ -228,7 +228,7 @@ class lmbCachingTreeTest extends UnitTestCase
                  'check_expanded_parents' => false);
 
     $this->_testCacheMiss(array('getSubBranchByPath', array('path/', $depth, false, false)),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key,
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }
@@ -244,7 +244,7 @@ class lmbCachingTreeTest extends UnitTestCase
   function testGetRootNodesCacheMiss()
   {
     $this->_testCacheMiss(array('getRootNodes'),
-                           new lmbArrayDataset(array('whatever')),
+                           new lmbIterator(array('whatever')),
                            $key = array('root_nodes'),
                            LIMB_CACHING_TREE_COMMON_GROUP);
   }

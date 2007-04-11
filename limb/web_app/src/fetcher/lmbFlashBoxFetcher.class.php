@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFlashBoxFetcher.class.php 5532 2007-04-05 10:31:47Z pachanga $
+ * @version    $Id: lmbFlashBoxFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    web_app
  */
-lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
 class lmbFlashBoxFetcher extends lmbFetcher
@@ -32,7 +32,7 @@ class lmbFlashBoxFetcher extends lmbFetcher
 
     $flash_box->reset();
 
-    return new lmbArrayDataset($result);
+    return new lmbIterator($result);
   }
 }
 ?>

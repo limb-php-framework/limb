@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMakerTest.class.php 5008 2007-02-08 15:37:24Z pachanga $
+ * @version    $Id: lmbTreeItemsNestingMakerTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    tree
  */
-lmb_require('limb/datasource/src/lmbArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 lmb_require('limb/datasource/src/lmbDatasetHelper.class.php');
 lmb_require('limb/tree/src/dataset/lmbTreeItemsNestingMaker.class.php');
 
@@ -25,7 +25,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
       array('id' => 1, 'parent_id' => 0),
       );
 
-    $raw = new lmbArrayDataset($raw_tree_array);
+    $raw = new lmbIterator($raw_tree_array);
     $nested = new lmbDatasetHelper(new lmbTreeItemsNestingMaker($raw));
     $arr = $nested->getArray();
 
@@ -55,7 +55,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
       array('id' => 4, 'parent_id' => 100)
       );
 
-    $raw = new lmbArrayDataset($raw_tree_array);
+    $raw = new lmbIterator($raw_tree_array);
     $nested = new lmbDatasetHelper(new lmbTreeItemsNestingMaker($raw));
     $arr = $nested->getArray();
 
@@ -100,7 +100,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
       array('id' => 8, 'parent_id' => 200),
     );
 
-    $raw = new lmbArrayDataset($raw_tree_array);
+    $raw = new lmbIterator($raw_tree_array);
     $nested = new lmbDatasetHelper(new lmbTreeItemsNestingMaker($raw));
     $arr = $nested->getArray();
 

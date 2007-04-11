@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordFetchTagTest.class.php 5372 2007-03-28 09:06:30Z pachanga $
+ * @version    $Id: lmbActiveRecordFetchTagTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -17,7 +17,7 @@ class TestObjectTagVersion extends lmbActiveRecord
 
   static function findCustom()
   {
-    return new lmbArrayDataset(array(array('method' => 'Custom')));
+    return new lmbIterator(array(array('method' => 'Custom')));
   }
 
   static function findByTitle($title)

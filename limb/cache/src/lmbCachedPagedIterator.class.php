@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedPagedIterator.class.php 4985 2007-02-08 15:35:06Z pachanga $
+ * @version    $Id: lmbCachedPagedIterator.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    cache
  */
-lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 lmb_require('limb/datasource/src/lmbPagedDatasetDecorator.class.php');
 
 define('LIMB_RS_CACHE_COMMON_GROUP', 'rs');
@@ -60,7 +60,7 @@ class lmbCachedPagedIterator extends lmbPagedDatasetDecorator
       $tmp_cache[] = $record->export();
 
     $this->is_cached_rs = true;
-    $this->cached_rs = new lmbPagedArrayDataset($tmp_cache);
+    $this->cached_rs = new lmbIterator($tmp_cache);
     $clean_cached_rs = $this->cached_rs;
 
     $this->cache->put($clean_iterator, $clean_cached_rs, LIMB_RS_CACHE_COMMON_GROUP);

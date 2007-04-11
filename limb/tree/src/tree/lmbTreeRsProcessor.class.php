@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeRsProcessor.class.php 5517 2007-04-03 10:20:44Z serega $
+ * @version    $Id: lmbTreeRsProcessor.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    tree
  */
-lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 
 class lmbTreeRsProcessor
 {
@@ -24,7 +24,7 @@ class lmbTreeRsProcessor
 
     self :: _doSort($tree_array, $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash);
 
-    return new lmbPagedArrayDataset($sorted_tree_array);
+    return new lmbIterator($sorted_tree_array);
   }
 
   function _convertRs2Array($rs)

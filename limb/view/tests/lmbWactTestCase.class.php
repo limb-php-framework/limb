@@ -1,7 +1,7 @@
 <?php
 require_once('limb/view/src/wact/lmbWactTemplateConfig.class.php');
 require_once('limb/wact/tests/cases/WactTestTemplateLocator.class.php');
-require_once('limb/datasource/src/lmbArrayDataset.class.php');
+require_once('limb/datasource/src/lmbIterator.class.php');
 require_once('limb/wact/src/WactTemplate.class.php');
 require_once('limb/wact/src/compiler/WactDictionaryHolder.class.php');
 require_once('limb/validation/src/lmbErrorList.class.php');

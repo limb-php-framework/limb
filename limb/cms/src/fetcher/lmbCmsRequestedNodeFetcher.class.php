@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsRequestedNodeFetcher.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsRequestedNodeFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    cms
  */
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
@@ -18,7 +18,7 @@ class lmbCmsRequestedNodeFetcher extends lmbFetcher
   function _createDataSet()
   {
     $path = lmbToolkit :: instance()->getRequest()->getUriPath();
-    return new lmbArrayDataset(array(lmbCmsNode :: findByPath('lmbCmsNode', $path)));
+    return new lmbIterator(array(lmbCmsNode :: findByPath('lmbCmsNode', $path)));
   }
 }
 ?>

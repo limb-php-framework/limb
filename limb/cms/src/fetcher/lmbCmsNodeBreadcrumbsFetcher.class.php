@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5564 2007-04-06 13:10:44Z pachanga $
+ * @version    $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    cms
  */
 
@@ -38,7 +38,7 @@ class lmbCmsNodeBreadcrumbsFetcher extends lmbFetcher
     $node->setIsLast(true);
     $result[] = $node;
 
-    return new lmbArrayDataset($result);
+    return new lmbIterator($result);
   }
 
 }

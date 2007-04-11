@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFetcher.class.php 5382 2007-03-28 12:54:38Z pachanga $
+ * @version    $Id: lmbFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/dbal/src/modifier/lmbOrderQueryModifier.class.php');
-lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 
 abstract class lmbFetcher
 {
@@ -79,11 +79,11 @@ abstract class lmbFetcher
     $res = $this->_createDataSet();
 
     if(is_array($res))
-      $dataset = new lmbPagedArrayDataset($res);
+      $dataset = new lmbIterator($res);
     elseif(is_object($res))
       $dataset = $res;
     else
-      $dataset = new lmbPagedArrayDataset();
+      $dataset = new lmbIterator();
 
     $dataset = $this->_applyDecorators($dataset);
     if(is_array($this->order_params) && count($this->order_params))

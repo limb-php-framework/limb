@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMaker.class.php 5561 2007-04-06 13:07:43Z pachanga $
+ * @version    $Id: lmbTreeItemsNestingMaker.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    tree
  */
 class lmbTreeItemsNestingMaker extends lmbIteratorDecorator
@@ -32,7 +32,7 @@ class lmbTreeItemsNestingMaker extends lmbIteratorDecorator
     {
       $nested_array = array();
       self :: _doMakeNested($this->iterator, $nested_array);
-      $iterator = new lmbArrayDataset($nested_array);
+      $iterator = new lmbIterator($nested_array);
     }
     else
       $iterator = new lmbIterator();

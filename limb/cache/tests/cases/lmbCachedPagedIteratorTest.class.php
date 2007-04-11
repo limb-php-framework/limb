@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachedPagedIteratorTest.class.php 4985 2007-02-08 15:35:06Z pachanga $
+ * @version    $Id: lmbCachedPagedIteratorTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
  * @package    cache
  */
 lmb_require('limb/cache/src/lmbCachedPagedIterator.class.php');
 lmb_require('limb/cache/src/lmbCachePersisterKeyDecorator.class.php');
-lmb_require('limb/datasource/src/lmbPagedArrayDataset.class.php');
+lmb_require('limb/datasource/src/lmbIterator.class.php');
 
-class ArrayDataSetCacheStub extends lmbPagedArrayDataset
+class ArrayDataSetCacheStub extends lmbIterator
 {
   var $calls = array('rewind' => 0,
                      'next' => 0,
@@ -90,7 +90,7 @@ class lmbCachedPagedIteratorTest extends UnitTestCase
 
     $stub = new ArrayDataSetCacheStub($arr);
 
-    $this->cache->put($stub, new lmbPagedArrayDataset($arr), LIMB_RS_CACHE_COMMON_GROUP);
+    $this->cache->put($stub, new lmbIterator($arr), LIMB_RS_CACHE_COMMON_GROUP);
 
     $rs = new lmbCachedPagedIterator($stub, $this->cache);
 
