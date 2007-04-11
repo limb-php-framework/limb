@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPHPDictionaryExtractor.class.php 5411 2007-03-29 10:07:12Z pachanga $
+ * @version    $Id: lmbPHPDictionaryExtractor.class.php 5623 2007-04-11 09:52:47Z pachanga $
  * @package    i18n
  */
-lmb_require('limb/util/src/util/lmbPHPTokenizer.class.php');
+lmb_require('limb/util/src/lmbPHPTokenizer.class.php');
 lmb_require('limb/i18n/src/translation/lmbSourceDictionaryExtractor.class.php');
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 
