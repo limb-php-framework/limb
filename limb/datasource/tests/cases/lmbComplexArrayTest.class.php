@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbComplexArrayTest.class.php 5009 2007-02-08 15:37:31Z pachanga $
+ * @version    $Id: lmbComplexArrayTest.class.php 5621 2007-04-11 09:36:16Z pachanga $
  * @package    util
  */
-lmb_require('limb/util/src/util/lmbComplexArray.class.php');
+lmb_require('limb/datasource/src/lmbComplexArray.class.php');
 
 class lmbComplexArrayTest extends UnitTestCase
 {

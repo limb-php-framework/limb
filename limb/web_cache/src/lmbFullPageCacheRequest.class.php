@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheRequest.class.php 5013 2007-02-08 15:38:13Z pachanga $
+ * @version    $Id: lmbFullPageCacheRequest.class.php 5621 2007-04-11 09:36:16Z pachanga $
  * @package    web_cache
  */
-lmb_require('limb/util/src/util/lmbComplexArray.class.php');
+lmb_require('limb/datasource/src/lmbComplexArray.class.php');
 
 class lmbFullPageCacheRequest
 {

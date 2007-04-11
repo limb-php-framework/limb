@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUri.class.php 5403 2007-03-29 07:32:31Z pachanga $
+ * @version    $Id: lmbUri.class.php 5621 2007-04-11 09:36:16Z pachanga $
  * @package    net
  */
-lmb_require('limb/util/src/util/lmbComplexArray.class.php');
+lmb_require('limb/datasource/src/lmbComplexArray.class.php');
 
 class lmbUri
 {
