@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRecordSetDecoratorTest.class.php 5566 2007-04-06 13:33:35Z pachanga $
+ * @version    $Id: lmbARRecordSetDecoratorTest.class.php 5627 2007-04-11 11:51:34Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
@@ -107,7 +107,7 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
     $iterator = new lmbARRecordSetDecorator(new lmbIterator());
     $iterator->setClassPath('LectureForTest');
     $iterator->rewind();
-    $this->assertNull($iterator->current());
+    $this->assertFalse($iterator->valid());
   }
 
   function _createCourseWithTwoLectures()
