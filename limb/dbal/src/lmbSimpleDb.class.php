@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSimpleDb.class.php 5628 2007-04-11 12:09:20Z pachanga $
+ * @version    $Id: lmbSimpleDb.class.php 5632 2007-04-11 13:04:24Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
@@ -14,7 +14,6 @@ lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
-lmb_require('limb/datasource/src/lmbDatasetHelper.class.php');
 
 class lmbSimpleDb
 {
@@ -40,7 +39,7 @@ class lmbSimpleDb
     if($order)
       $query->addOrder($order);
 
-    return new lmbDatasetHelper($query->getRecordSet($this->conn));
+    return $query->getRecordSet($this->conn);
   }
 
   function selectAsArray($table, $criteria = null, $order = '', $key_field = '')

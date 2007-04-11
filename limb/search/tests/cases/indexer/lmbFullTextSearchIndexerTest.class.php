@@ -6,12 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullTextSearchIndexerTest.class.php 5003 2007-02-08 15:36:51Z pachanga $
+ * @version    $Id: lmbFullTextSearchIndexerTest.class.php 5632 2007-04-11 13:04:24Z pachanga $
  * @package    search
  */
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-lmb_require('limb/datasource/src/lmbDatasetHelper.class.php');
 lmb_require('limb/search/src/indexer/lmbFullTextSearchIndexer.class.php');
 lmb_require('limb/search/src/indexer/lmbSearchTextNormalizer.class.php');
 
@@ -53,7 +52,7 @@ class lmbFullTextSearchIndexerTest extends UnitTestCase
 
     $indexer->index($uri, $content);
 
-    $rs = new lmbDatasetHelper($this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE));
+    $rs = $this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE);
     $arr = $rs->getArray();
 
     $this->assertEqual($arr[0]['content'], $processed_content);
@@ -120,7 +119,7 @@ class lmbFullTextSearchIndexerTest extends UnitTestCase
     $indexer = new lmbFullTextSearchIndexer(new lmbSearchTextNormalizer());
     $indexer->index($uri, $content);
 
-    $rs = new lmbDatasetHelper($this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE));
+    $rs = $this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE);
     $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -137,7 +136,7 @@ class lmbFullTextSearchIndexerTest extends UnitTestCase
     $indexer = new lmbFullTextSearchIndexer(new lmbSearchTextNormalizer());
     $indexer->index($uri, $content);
 
-    $rs = new lmbDatasetHelper($this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE));
+    $rs = $this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE);
     $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -156,7 +155,7 @@ class lmbFullTextSearchIndexerTest extends UnitTestCase
     $indexer->useNOINDEX();
     $indexer->index($uri, $content);
 
-    $rs = new lmbDatasetHelper($this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE));
+    $rs = $this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE);
     $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
@@ -181,7 +180,7 @@ class lmbFullTextSearchIndexerTest extends UnitTestCase
     $indexer = new lmbFullTextSearchIndexer(new lmbSearchTextNormalizer());
     $indexer->index($uri, $new_content);
 
-    $rs = new lmbDatasetHelper($this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE));
+    $rs = $this->db->select(FULL_TEXT_SEARCH_INDEXER_TABLE);
     $arr = $rs->getArray();
 
     $this->assertEqual(sizeof($arr), 1);
