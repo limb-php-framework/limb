@@ -6,12 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NTools.class.php 5593 2007-04-10 08:02:00Z pachanga $
+ * @version    $Id: lmbI18NTools.class.php 5635 2007-04-11 13:26:57Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/i18n/src/locale/lmbLocale.class.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
+
+@define('LIMB_LOCALE_INCLUDE_PATH', 'i18n/locale;limb/i18n/i18n/locale');
 
 class lmbI18NTools extends lmbAbstractTools
 {

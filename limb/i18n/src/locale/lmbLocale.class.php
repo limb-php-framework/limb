@@ -6,13 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocale.class.php 5550 2007-04-06 08:27:14Z pachanga $
+ * @version    $Id: lmbLocale.class.php 5635 2007-04-11 13:26:57Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
-
-@define('LIMB_LOCALE_INCLUDE_PATH', 'i18n/locale;limb/i18n/i18n/locale');
 
 /**
  * Handles locale information and can format time, date, numbers and currency
