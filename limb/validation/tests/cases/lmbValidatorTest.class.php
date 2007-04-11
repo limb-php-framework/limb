@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidatorTest.class.php 5010 2007-02-08 15:37:40Z pachanga $
+ * @version    $Id: lmbValidatorTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/lmbValidator.class.php');
@@ -31,7 +31,7 @@ class lmbValidatorTest extends UnitTestCase
   function testValidateEmpty()
   {
     $validator = new lmbValidator();
-    $this->assertTrue($validator->validate(new lmbDataspace()));
+    $this->assertTrue($validator->validate(new lmbSet()));
   }
 
   function testIsValid()
@@ -46,7 +46,7 @@ class lmbValidatorTest extends UnitTestCase
 
   function testAddRulesAndValidate()
   {
-    $ds = new lmbDataspace(array('foo'));
+    $ds = new lmbSet(array('foo'));
 
     $r1 = new MockValidationRule();
     $r2 = new MockValidationRule();

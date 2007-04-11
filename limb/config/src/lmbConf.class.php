@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbConf.class.php 5617 2007-04-11 08:11:40Z pachanga $
+ * @version    $Id: lmbConf.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    config
  */
-lmb_require('limb/datasource/src/lmbDataspace.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 
-class lmbConf extends lmbDataspace
+class lmbConf extends lmbSet
 {
   function __construct($file)
   {

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUniqueTableFieldRuleTest.class.php 5414 2007-03-29 10:08:19Z pachanga $
+ * @version    $Id: lmbUniqueTableFieldRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/validation/tests/cases/rule/lmbValidationRuleTestCase.class.php');
@@ -37,7 +37,7 @@ class lmbUniqueTableFieldRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbUniqueTableFieldRule('test', 'test_table', 'field1');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', -10000);
 
     $this->error_list->expectNever('addError');
@@ -49,7 +49,7 @@ class lmbUniqueTableFieldRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbUniqueTableFieldRule('test', 'test_table', 'field2');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', 'wow');
 
     $this->error_list->expectOnce('addError',
@@ -65,7 +65,7 @@ class lmbUniqueTableFieldRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbUniqueTableFieldRule('test', 'test_table', 'field1');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', "001");
 
     $this->error_list->expectOnce('addError',
@@ -81,7 +81,7 @@ class lmbUniqueTableFieldRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbUniqueTableFieldRule('test', 'test_table', 'field2', $message = "ERROR_DUPLICATE_WOW");
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', 'wow');
 
     $this->error_list->expectOnce('addError',

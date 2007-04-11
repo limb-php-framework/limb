@@ -18,7 +18,7 @@ class lmbDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDateRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', '2007-01-12 12:30');
 
     $this->error_list->expectNever('addError');
@@ -30,7 +30,7 @@ class lmbDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDateRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'blah 12:30');
 
     $this->error_list->expectOnce('addError');

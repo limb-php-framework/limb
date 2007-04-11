@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSimpleDb.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbSimpleDb.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
@@ -56,7 +56,7 @@ class lmbSimpleDb
     if($rs->valid())
       return $rs->current();
     else
-      return new lmbDataspace();
+      return new lmbSet();
   }
 
   function count($table_name, $criteria = null)

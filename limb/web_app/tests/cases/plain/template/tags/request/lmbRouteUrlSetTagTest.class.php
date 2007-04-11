@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRouteUrlSetTagTest.class.php 5287 2007-03-20 08:39:30Z serega $
+ * @version    $Id: lmbRouteUrlSetTagTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/request/lmbRoutes.class.php');
@@ -65,7 +65,7 @@ class lmbRouteUrlSetTagTest extends lmbWactTestCase
 
     $page = $this->initTemplate('/limb/routes_tag_dynamic_proper_dbe.html');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('controller', $controller = 'news');
     $dataspace->set('action', $action = 'archive');
     $page->set('request', $dataspace);

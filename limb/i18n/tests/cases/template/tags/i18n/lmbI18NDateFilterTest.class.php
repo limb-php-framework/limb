@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NDateFilterTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
+ * @version    $Id: lmbI18NDateFilterTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -186,7 +186,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
     $page = $this->initTemplate('/limb/locale_date_filter_path_based_dbe_defined_format.html');
 
-    $my_dataspace = new lmbDataspace(array('var' => $date->getStamp()));
+    $my_dataspace = new lmbSet(array('var' => $date->getStamp()));
     $page->set('my', $my_dataspace);
 
     $this->assertEqual($page->capture(), '2005 01 20');

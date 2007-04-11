@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -16,7 +16,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
 {
   function testValidSinceFieldIsPresent()
   {
-    $dataspace = new lmbDataspace(array('field1' => 'whatever'));
+    $dataspace = new lmbSet(array('field1' => 'whatever'));
 
     $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2');
 
@@ -27,7 +27,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
 
   function testInvalidSinceFieldIsNotPresent()
   {
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
 
     $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2');
 
@@ -41,7 +41,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
 
   function testValidAndMoreFields()
   {
-    $dataspace = new lmbDataspace(array('field3' => 'whatever'));
+    $dataspace = new lmbSet(array('field3' => 'whatever'));
 
     $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2', 'field3');
 
@@ -52,7 +52,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
 
   function testValidWithConstructorAcceptingArrayOfFields()
   {
-    $dataspace = new lmbDataspace(array('field3' => 'whatever'));
+    $dataspace = new lmbSet(array('field3' => 'whatever'));
 
     $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2', 'field3'));
 
@@ -63,7 +63,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
 
   function testInvalidAndMoreFields()
   {
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
 
     $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2', 'field3');
 
@@ -77,7 +77,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
 
   function testInvalidSinceFieldIsNotPresentWithCustomError()
   {
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
 
     $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2'), 'Custom_Error');
 

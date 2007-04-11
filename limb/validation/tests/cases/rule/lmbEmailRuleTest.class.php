@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbEmailRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbEmailRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbEmailRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'billgates@microsoft.com');
 
     $this->error_list->expectNever('addError');
@@ -30,7 +30,7 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbEmailRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'billgatesmicrosoft.com');
 
     $this->error_list->expectOnce('addError',
@@ -45,7 +45,7 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbEmailRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'bill(y!)gates@microsoft.com');
 
     $this->error_list->expectOnce('addError',
@@ -60,7 +60,7 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbEmailRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'billgates@micro$oft.com');
 
     $this->error_list->expectOnce('addError',
@@ -75,7 +75,7 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbEmailRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'BillGates@Microsoft.com');
 
     $this->error_list->expectNever('addError');
@@ -87,7 +87,7 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbEmailRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'bill_gates.the-boss@microsoft.com');
 
     $this->error_list->expectNever('addError');

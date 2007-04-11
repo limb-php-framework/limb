@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFormCommandTest.class.php 5346 2007-03-26 08:00:06Z pachanga $
+ * @version    $Id: lmbFormCommandTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/command/lmbFormCommand.class.php');
@@ -132,7 +132,7 @@ class lmbFormCommandTest extends UnitTestCase
   {
     $validator = new MockValidator();
     $command = new lmbFormCommand('some_template', 'form_id', $validator);
-    $ds = new lmbDataspace('whatever');
+    $ds = new lmbSet('whatever');
     $command->setFormDatasource($ds);
 
     $this->assertReference($this->toolkit->getView()->getFormDatasource('form_id'), $ds);

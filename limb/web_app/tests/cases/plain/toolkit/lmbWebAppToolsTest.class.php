@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWebAppToolsTest.class.php 5287 2007-03-20 08:39:30Z serega $
+ * @version    $Id: lmbWebAppToolsTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/request/lmbRoutes.class.php');
 lmb_require('limb/toolkit/src/lmbMockToolsWrapper.class.php');
-lmb_require('limb/datasource/src/lmbDataspace.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 
 class lmbWebAppToolsTest extends UnitTestCase
 {
@@ -27,7 +27,7 @@ class lmbWebAppToolsTest extends UnitTestCase
 
   function testToRouteUrl()
   {
-    $routes_dataspace = new lmbDataspace();
+    $routes_dataspace = new lmbSet();
     $config_array = array(array('path' => '/:controller/:action',
                                 'defaults' => array('action' => 'display')));
     $routes = new lmbRoutes($config_array);

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbNumericValueRangeRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbNumericValueRangeRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbNumericValueRangeRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbNumericValueRangeRule('testfield', 0, 5);
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 1);
 
     $this->error_list->expectNever('addError');
@@ -30,7 +30,7 @@ class lmbNumericValueRangeRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbNumericValueRangeRule('testfield', 1, 5);
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', -10);
 
     $this->error_list->expectOnce('addError',
@@ -45,7 +45,7 @@ class lmbNumericValueRangeRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbNumericValueRangeRule('testfield', 1, 5);
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 10);
 
     $this->error_list->expectOnce('addError',
@@ -60,7 +60,7 @@ class lmbNumericValueRangeRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbNumericValueRangeRule('testfield', 1, 4);
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', '4fdfasd');
 
     $this->error_list->expectOnce('addError',
@@ -75,7 +75,7 @@ class lmbNumericValueRangeRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbNumericValueRangeRule('testfield', 1, 5, 'Custom_Error');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', -10);
 
     $this->error_list->expectOnce('addError',

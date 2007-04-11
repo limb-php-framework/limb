@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbInvalidValueRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbInvalidValueRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbInvalidValueRule('testfield', 0);
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 1);
 
     $this->error_list->expectNever('addError');
@@ -30,7 +30,7 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbInvalidValueRule('testfield', 0);
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 'whatever');
 
     $this->error_list->expectNever('addError');
@@ -42,7 +42,7 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbInvalidValueRule('testfield', null);
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 'null');
 
     $this->error_list->expectNever('addError');
@@ -55,7 +55,7 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbInvalidValueRule('testfield', false);
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 'false');
 
     $this->error_list->expectNever('addError');
@@ -68,7 +68,7 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbInvalidValueRule('testfield', 1);
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 1);
 
     $this->error_list->expectOnce('addError',
@@ -83,7 +83,7 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbInvalidValueRule('testfield', 1);
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', '1');
 
     $this->error_list->expectOnce('addError',

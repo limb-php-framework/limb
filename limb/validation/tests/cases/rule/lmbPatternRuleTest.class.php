@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPatternRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbPatternRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbPatternRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbPatternRule('testfield', '/^\w+$/');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 'SimpletestisCool');
 
     $this->error_list->expectNever('addError');
@@ -30,7 +30,7 @@ class lmbPatternRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbPatternRule('testfield', '/^\w+$/');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 'Simpletest is Cool!');
 
     $this->error_list->expectOnce('addError',
@@ -45,7 +45,7 @@ class lmbPatternRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbPatternRule('testfield', '/^\w+$/', 'Custom_Error');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('testfield', 'Simpletest is Cool!');
 
     $this->error_list->expectOnce('addError',

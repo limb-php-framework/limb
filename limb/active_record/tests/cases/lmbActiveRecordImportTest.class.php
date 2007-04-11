@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordImportTest.class.php 5541 2007-04-05 13:31:01Z pachanga $
+ * @version    $Id: lmbActiveRecordImportTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-lmb_require('limb/datasource/src/lmbDataspace.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordOneToManyRelationsTest.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordOneToOneRelationsTest.class.php');
@@ -49,7 +49,7 @@ class lmbActiveRecordImportTest extends UnitTestCase
   function testImportingObjectCallsItsExportMethod()
   {
     $object = new TestOneTableObject();
-    $object->import(new lmbDataspace(array('annotation' => 'Some annotation')));
+    $object->import(new lmbSet(array('annotation' => 'Some annotation')));
     $this->assertEqual($object->getAnnotation(), 'Some annotation');
   }
 

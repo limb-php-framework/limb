@@ -6,15 +6,15 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequest.class.php 5621 2007-04-11 09:36:16Z pachanga $
+ * @version    $Id: lmbHttpRequest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    net
  */
-lmb_require('limb/datasource/src/lmbDataspace.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 lmb_require('limb/datasource/src/lmbComplexArray.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
 
-class lmbHttpRequest extends lmbDataspace
+class lmbHttpRequest extends lmbSet
 {
   protected $uri;
   protected $request = array();

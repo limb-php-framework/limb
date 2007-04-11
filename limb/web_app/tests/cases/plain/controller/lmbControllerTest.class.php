@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbControllerTest.class.php 5372 2007-03-28 09:06:30Z pachanga $
+ * @version    $Id: lmbControllerTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
@@ -133,7 +133,7 @@ class lmbControllerTest extends UnitTestCase
     $controller = new TestingController();
     $error_list = $controller->getErrorList();
 
-    $ds = new lmbDataspace();
+    $ds = new lmbSet();
 
     $r1 = new MockValidationRule();
     $r1->expectOnce('validate', array($ds, $error_list));
@@ -153,7 +153,7 @@ class lmbControllerTest extends UnitTestCase
     $error_list = $controller->getErrorList();
     $error_list->addError('blah!');
 
-    $this->assertFalse($controller->validate(new lmbDataspace()));
+    $this->assertFalse($controller->validate(new lmbSet()));
   }
 }
 

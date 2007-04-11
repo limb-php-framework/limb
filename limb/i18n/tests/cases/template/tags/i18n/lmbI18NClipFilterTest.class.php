@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NClipFilterTest.class.php 5380 2007-03-28 12:16:15Z pachanga $
+ * @version    $Id: lmbI18NClipFilterTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    web_app
  */
 require_once('limb/i18n/utf8.inc.php');
@@ -139,7 +139,7 @@ class lmbI18NClipFilterTest extends lmbWactTestCase
 
     $page = $this->initTemplate('/limb/clip_path_based_dbe_with_limit.html');
 
-    $my_dataspace = new lmbDataspace(array('var' => 'что-то'));
+    $my_dataspace = new lmbSet(array('var' => 'что-то'));
     $page->set('my', $my_dataspace);
 
     $this->assertEqual($page->capture(), 'что');

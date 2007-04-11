@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDateRuleTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
+ * @version    $Id: lmbLocaleDateRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/src/validation/rule/lmbLocaleDateRule.class.php');
@@ -18,7 +18,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini')));
 
-    $data = new lmbDataspace(array('test' => '02/28/2003'));
+    $data = new lmbSet(array('test' => '02/28/2003'));
 
     $this->error_list->expectNever('addError');
 
@@ -29,7 +29,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini')));
 
-    $data = new lmbDataspace(array('test' => '02/29/2003'));
+    $data = new lmbSet(array('test' => '02/29/2003'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} must have a valid date format', 'validation'),
@@ -42,7 +42,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini')));
 
-    $data = new lmbDataspace(array('test' => '28/12/2003'));
+    $data = new lmbSet(array('test' => '28/12/2003'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} must have a valid date format', 'validation'),
@@ -55,7 +55,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini')));
 
-    $data = new lmbDataspace(array('test' => '02-29-2003'));
+    $data = new lmbSet(array('test' => '02-29-2003'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} must have a valid date format', 'validation'),
@@ -68,7 +68,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini')));
 
-    $data = new lmbDataspace(array('test' => '02jjklklak/sdsdskj34-sdsdsjkjkj78'));
+    $data = new lmbSet(array('test' => '02jjklklak/sdsdskj34-sdsdsjkjkj78'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} must have a valid date format', 'validation'),

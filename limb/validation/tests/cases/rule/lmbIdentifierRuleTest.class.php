@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIdentifierRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbIdentifierRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 lmb_require(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbIdentifierRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbIdentifierRule('test');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', 'test');
 
     $this->error_list->expectNever('addError');
@@ -31,7 +31,7 @@ class lmbIdentifierRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbIdentifierRule('test');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', 'test456');
 
     $this->error_list->expectNever('addError');
@@ -44,7 +44,7 @@ class lmbIdentifierRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbIdentifierRule('test');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', 'test test');
 
     $this->error_list->expectOnce('addError',
@@ -59,7 +59,7 @@ class lmbIdentifierRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbIdentifierRule('test');
 
-    $data = new lmbDataspace();
+    $data = new lmbSet();
     $data->set('test', 'test/test');
 
     $this->error_list->expectOnce('addError',

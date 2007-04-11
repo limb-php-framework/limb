@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMatchRuleTest.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbMatchRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbMatchRule('testfield', 'testmatch');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'peaches');
     $dataspace->set('testmatch', 'peaches');
 
@@ -31,7 +31,7 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbMatchRule('testfield', 'testmatch');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
 
     $this->error_list->expectNever('addError');
 
@@ -42,7 +42,7 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbMatchRule('testfield', 'testmatch');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'peaches');
 
     $this->error_list->expectNever('addError');
@@ -54,7 +54,7 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbMatchRule('testfield', 'testmatch');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testmatch', 'peaches');
 
     $this->error_list->expectNever('addError');
@@ -66,7 +66,7 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbMatchRule('testfield', 'testmatch');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'peaches');
     $dataspace->set('testmatch', 'cream');
 
@@ -81,7 +81,7 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbMatchRule('testfield', 'testmatch', 'Custom_Error');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'peaches');
     $dataspace->set('testmatch', 'cream');
 

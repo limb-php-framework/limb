@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidationRuleTestCase.class.php 5400 2007-03-29 07:10:15Z pachanga $
+ * @version    $Id: lmbValidationRuleTestCase.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/lmbErrorList.class.php');
-lmb_require('limb/datasource/src/lmbDataspace.class.php');
+lmb_require('limb/datasource/src/lmbSet.class.php');
 
 Mock::generate('lmbErrorList', 'MockErrorList');
 

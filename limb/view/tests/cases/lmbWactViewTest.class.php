@@ -50,10 +50,10 @@ class lmbWactViewTest extends lmbWactTestCase
     $error_list = new lmbErrorList();
     $error_list->addError('An error in {Field} with {Value}', array('Field' => 'title'), array('Value' => 'value'));
 
-    $view->setFormDatasource('form1', $form1 = new lmbDataspace());
+    $view->setFormDatasource('form1', $form1 = new lmbSet());
     $view->setFormErrors('form1', $error_list);
 
-    $view->setFormDatasource('form2', $form2 = new lmbDataspace());
+    $view->setFormDatasource('form2', $form2 = new lmbSet());
 
     $this->assertEqual($view->render(),
                        'Hello world!'.

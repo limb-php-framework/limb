@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDomainRuleTest.class.php 5413 2007-03-29 10:08:00Z pachanga $
+ * @version    $Id: lmbDomainRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
  * @package    validation
  */
 lmb_require(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace(array('testfield' => 'sourceforge.net'));
+    $dataspace = new lmbSet(array('testfield' => 'sourceforge.net'));
 
     $this->error_list->expectNever('addError');
 
@@ -29,7 +29,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace(array('testfield' => ''));
+    $dataspace = new lmbSet(array('testfield' => ''));
 
     $this->error_list->expectNever('addError');
 
@@ -40,7 +40,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace(array('testfield' => 'source#&%forge.net'));
+    $dataspace = new lmbSet(array('testfield' => 'source#&%forge.net'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} must contain only letters, numbers, hyphens, and periods.', 'validation'),
@@ -54,7 +54,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace(array('testfield' => 'source--forge.net'));
+    $dataspace = new lmbSet(array('testfield' => 'source--forge.net'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} may not contain double hyphens (--).', 'validation'),
@@ -70,7 +70,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
 
     $segment = "abcdefg-hijklmnop-qrs-tuv-wx-yz-ABCDEFG-HIJKLMNOP-QRS-TUV-WX-YZ-0123456789";
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', $segment . '.net');
 
     $this->error_list->expectOnce('addError',
@@ -87,7 +87,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
 
     $segment = "-sourceforge";
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', $segment . '.net');
 
     $this->error_list->expectOnce('addError',
@@ -104,7 +104,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
 
     $segment = "sourceforge-";
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', $segment . '.net');
 
     $this->error_list->expectOnce('addError',
@@ -119,7 +119,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', '.n..aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.');
 
     $this->error_list->expectCallCount('addError', 4);
@@ -155,7 +155,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'microsoft.co.uk');
 
     $this->error_list->expectNever('addError');
@@ -167,7 +167,7 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
   {
     $rule = new lmbDomainRule('testfield');
 
-    $dataspace = new lmbDataspace();
+    $dataspace = new lmbSet();
     $dataspace->set('testfield', 'localhost');
 
     $this->error_list->expectNever('addError');
