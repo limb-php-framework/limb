@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMaker.class.php 5631 2007-04-11 13:03:43Z pachanga $
+ * @version    $Id: lmbTreeItemsNestingMaker.class.php 5640 2007-04-11 14:21:15Z pachanga $
  * @package    tree
  */
 lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
@@ -24,12 +24,6 @@ class lmbTreeItemsNestingMaker extends lmbIteratorDecorator
   function setParentField($name)
   {
     $this->parent_field = $name;
-  }
-
-  function getArray()//quick fix
-  {
-    $this->rewind();
-    return parent :: getArray();
   }
 
   function rewind()

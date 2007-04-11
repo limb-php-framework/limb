@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMakerTest.class.php 5631 2007-04-11 13:03:43Z pachanga $
+ * @version    $Id: lmbTreeItemsNestingMakerTest.class.php 5640 2007-04-11 14:21:15Z pachanga $
  * @package    tree
  */
 lmb_require('limb/datasource/src/lmbIterator.class.php');
@@ -26,7 +26,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
 
     $raw = new lmbIterator($raw_tree_array);
     $nested = new lmbTreeItemsNestingMaker($raw);
-    $arr = $nested->getArray();
+    $arr = $this->toArray($nested);
 
     $this->assertEqual($arr, $expected_tree_array);
   }
@@ -56,7 +56,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
 
     $raw = new lmbIterator($raw_tree_array);
     $nested = new lmbTreeItemsNestingMaker($raw);
-    $arr = $nested->getArray();
+    $arr = $this->toArray($nested);
 
     $this->assertEqual($arr, $expected_tree_array);
   }
@@ -101,9 +101,17 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
 
     $raw = new lmbIterator($raw_tree_array);
     $nested = new lmbTreeItemsNestingMaker($raw);
-    $arr = $nested->getArray();
+    $arr = $this->toArray($nested);
 
     $this->assertEqual($arr, $expected_tree_array);
+  }
+
+  function toArray($iterator)
+  {
+    $result = array();
+    foreach($iterator as $record)
+      $result[] = $record->export();
+    return $result;
   }
 }
 
