@@ -44,7 +44,7 @@ abstract class lmbDbBaseRecordSet implements lmbDbRecordSet
   {
     $array = array();
     foreach($this as $record)
-      $array[] = $record->export();
+      $array[] = $record;
     return $array;
   }
 
