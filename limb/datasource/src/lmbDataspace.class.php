@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDataspace.class.php 5558 2007-04-06 13:02:07Z pachanga $
+ * @version    $Id: lmbDataspace.class.php 5616 2007-04-11 08:10:36Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbDatasource.interface.php');
 
-class lmbDataspace implements lmbDatasource
+class lmbDataspace implements lmbDatasource, Iterator
 {
   protected $properties = array();
 
@@ -75,7 +75,7 @@ class lmbDataspace implements lmbDatasource
 
   function merge($property_list)
   {
-    if(is_array($property_list) || is_a($property_list, 'datasource'))
+    if(is_array($property_list) || is_a($property_list, 'ArrayAccess'))
     {
       foreach($property_list as $name => $value)
         $this->set($name, $value);
@@ -121,6 +121,34 @@ class lmbDataspace implements lmbDatasource
   function offsetUnset($offset)
   {
     $this->remove($offset);
+  }
+
+  //Iterator interface
+  function valid()
+  {
+    return $this->valid;
+  }
+
+  function current()
+  {
+    return $this->current;
+  }
+
+  function next()
+  {
+    $this->current = next($this->properties);
+    $this->valid = $this->current !== false;
+  }
+
+  function rewind()
+  {
+    $this->current = reset($this->properties);
+    $this->valid = $this->current !== false;
+  }
+
+  function key()
+  {
+    return key($this->properties);
   }
 }
 

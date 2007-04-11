@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDataspaceTest.class.php 5558 2007-04-06 13:02:07Z pachanga $
+ * @version    $Id: lmbDataspaceTest.class.php 5616 2007-04-11 08:10:36Z pachanga $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbDataspace.class.php');
@@ -85,7 +85,7 @@ class lmbDataspaceTest extends UnitTestCase
     $ds->remove('junk');//shouldn't produce notice
   }
 
-  function testRemoveAll()
+  function testReset()
   {
     $ds = new lmbDataspace(array('test' => 'value'));
     $this->assertEqual($ds->getPropertyList(), array('test'));
@@ -104,20 +104,32 @@ class lmbDataspaceTest extends UnitTestCase
 
   function testImplementsArrayAccessInterface()
   {
-    $o = new lmbDataspace();
+    $ds = new lmbDataspace();
 
-    $o->set('foo', 'Bar');
-    $this->assertEqual($o['foo'], 'Bar');
+    $ds->set('foo', 'Bar');
+    $this->assertEqual($ds['foo'], 'Bar');
 
-    $o['foo'] = 'Zoo';
-    $this->assertEqual($o->get('foo'), 'Zoo');
+    $ds['foo'] = 'Zoo';
+    $this->assertEqual($ds->get('foo'), 'Zoo');
 
-    unset($o['foo']);
-    $this->assertNull($o->get('foo'));
+    unset($ds['foo']);
+    $this->assertNull($ds->get('foo'));
 
-    $o->set('foo', 'Bar');
-    $this->assertTrue(isset($o['foo']));
-    $this->assertFalse(isset($o['bar']));
+    $ds->set('foo', 'Bar');
+    $this->assertTrue(isset($ds['foo']));
+    $this->assertFalse(isset($ds['bar']));
+  }
+
+  function testImplementsIterator()
+  {
+    $ds = new lmbDataspace($array = array('test1' => 'foo',
+                                          'test2' => 'bar'));
+
+    $result = array();
+    foreach($ds as $key => $value)
+      $result[$key] = $value;
+
+    $this->assertEqual($array, $result);
   }
 }
 
