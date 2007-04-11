@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIterator.class.php 5626 2007-04-11 11:50:45Z pachanga $
+ * @version    $Id: lmbIterator.class.php 5642 2007-04-11 15:43:37Z serega $
  * @package    datasource
  */
 lmb_require('limb/datasource/src/lmbIteratorInterface.interface.php');
@@ -29,7 +29,23 @@ class lmbIterator implements lmbIteratorInterface
 
   function getArray()
   {
-    return $this->dataset;
+    $result = array();
+    foreach($this as $object)
+      $result[] = $object;
+    return $result;
+  }
+
+  static function toFlatArray($iterator)
+  {
+    $result = array();
+    foreach($iterator as $record)
+    {
+      if(is_object($record) && method_exists($record, 'export'))
+        $result[] = $record->export();
+      else
+        $result[] = $record;
+    }
+    return $result;
   }
 
   function export()
