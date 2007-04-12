@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5406 2007-03-29 08:27:59Z pachanga $
+ * @version    $Id: common.inc.php 5648 2007-04-12 08:54:01Z pachanga $
  * @package    core
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
@@ -119,6 +119,27 @@ function lmb_var_dump($obj)
 }
 
 /**
+ * Generates an unique object id using object class path and internal php object id
+ */
+function lmb_php_object_id($obj)
+{
+  if(!is_object($obj))
+    throw new lmbException('Object expected but "' . $obj. '" is given');
+
+  lmb_require('limb/core/src/lmbProxyResolver.class.php');
+  $obj = lmbProxyResolver :: resolve($obj);
+
+  $objId = (int)substr(strrchr("$obj", "#"), 1);
+
+  if($objId <= 0)
+    throw new lmbException('Could not generate id for object "' . $obj . '"');
+
+  $class = (method_exists('getClass', $obj) ? $obj->getClass() : get_class($obj));
+  return $class . $objId;
+}
+
+
+/**
  * @see lmb_camel_case
  * @deprecated
  */
@@ -164,7 +185,7 @@ function lmb_humanize($str)
   return str_replace('_', ' ', lmb_uder_scores($str));
 }
 
-lmb_require(dirname(__FILE__) . '/exception/lmbException.class.php');
+lmb_require('limb/core/src/exception/lmbException.class.php');
 
 spl_autoload_register('lmb_autoload');
 

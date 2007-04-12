@@ -9,7 +9,7 @@
  * @version    $Id: getObjectPhpTest.class.php 4987 2007-02-08 15:35:15Z pachanga $
  * @package    core
  */
-lmb_require('limb/core/src/util.inc.php');
+lmb_require('limb/core/common.inc.php');
 lmb_require('limb/core/src/lmbObject.class.php');
 
 class getObjectPhpTest extends UnitTestCase
@@ -39,7 +39,7 @@ class getObjectPhpTest extends UnitTestCase
       lmb_php_object_id($str);
       $this->assertTrue(false);
     }
-    catch(lmbInvalidArgumentException $e){}
+    catch(lmbException $e){}
   }
 }
 ?>
