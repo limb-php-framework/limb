@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select_date.inc.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: select_date.inc.php 5646 2007-04-12 08:38:15Z pachanga $
  * @package    wact
  */
 
@@ -83,7 +83,7 @@ class WactSelectMonth extends WactSelectSingleComponent
 /**
  * Runtime form:selectdate API
  * @todo EXPERIMENTAL
- * @package wact
+ * @package    wact
  */
 class WactFormSelectDateComponent extends WactFormComponent
 {

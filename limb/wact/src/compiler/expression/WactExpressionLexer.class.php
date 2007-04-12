@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionLexer.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactExpressionLexer.class.php 5646 2007-04-12 08:38:15Z pachanga $
  * @package    wact
  */
 
@@ -26,7 +26,7 @@ define("EXPRESSION_LEXER_SPECIAL", 5);
  *    content is only scanned by the PHP regex
  *    parser once. Lexer modes must not start
  *    with leading underscores.
- *    @package wact
+ *    @package    wact
  */
 class WactExpressionLexer {
   var $_regexes;

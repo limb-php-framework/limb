@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbCollectionTest.class.php 5626 2007-04-11 11:50:45Z pachanga $
- * @package    datasource
+ * @package    core
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');

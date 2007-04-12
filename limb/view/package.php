@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: package.php 5231 2007-03-13 16:09:12Z serega $
- * @package    web_app
+ * @package    view
  */
 
 require_once 'PEAR/PackageFileManager2.php';

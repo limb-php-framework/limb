@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbObjectTest.class.php 5567 2007-04-06 14:37:24Z serega $
- * @package    classkit
+ * @package    core
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 

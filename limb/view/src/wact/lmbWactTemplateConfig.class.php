@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbWactTemplateConfig.class.php 5012 2007-02-08 15:38:06Z pachanga $
- * @package    web_app
+ * @package    view
  */
 lmb_require('limb/wact/src/WactTemplateConfig.interface.php');
 

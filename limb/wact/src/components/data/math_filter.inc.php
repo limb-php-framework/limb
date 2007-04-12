@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: math_filter.inc.php 5066 2007-02-14 12:58:38Z pachanga $
+ * @version    $Id: math_filter.inc.php 5646 2007-04-12 08:38:15Z pachanga $
  * @package    wact
  */
 
@@ -57,7 +57,7 @@ function math_filter($value, $exp, $file, $line) {
  *
  * @author   Maciej Szczytowski <admin@e-rower.pl>
  * @version  1.1
- * @package  wact
+ * @package    wact
  * @access   public
  */
 class WactMathRpn

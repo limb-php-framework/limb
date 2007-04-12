@@ -6,8 +6,8 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NNumberFilterTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbI18NNumberFilterTest.class.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @package    i18n
  */
 lmb_require('limb/i18n/src/toolkit/lmbI18NTools.class.php');
 

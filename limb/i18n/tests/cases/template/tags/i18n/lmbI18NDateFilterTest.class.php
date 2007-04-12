@@ -6,8 +6,8 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NDateFilterTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbI18NDateFilterTest.class.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @package    i18n
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
 

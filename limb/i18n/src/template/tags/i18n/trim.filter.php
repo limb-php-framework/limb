@@ -6,8 +6,8 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: trim.filter.php 5171 2007-03-01 11:47:40Z serega $
- * @package    web_app
+ * @version    $Id: trim.filter.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @package    i18n
  */
 /**
 * @filter i18n_trim

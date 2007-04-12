@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.inc.php 5203 2007-03-07 08:58:21Z serega $
+ * @version    $Id: select.inc.php 5646 2007-04-12 08:38:15Z pachanga $
  * @package    wact
  */
 
@@ -146,7 +146,7 @@ class WactSelectMultipleComponent extends WactFormElement
 * Deals with rendering option elements for HTML select tags
 * Simple renderer for OPTIONs.  Does not support disabled
 * and label attributes. Does not support OPTGROUP tags.
-* @package wact
+* @package    wact
 */
 class WactOptionRenderer {
 
@@ -182,7 +182,7 @@ class WactOptionRenderer {
 /**
 * Represents an HTML select tag where only a single option can
 * be selected
-* @package wact
+* @package    wact
 */
 class WactSelectSingleComponent extends WactFormElement
 {

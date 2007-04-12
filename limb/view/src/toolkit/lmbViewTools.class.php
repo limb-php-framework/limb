@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbWebAppTools.class.php 5286 2007-03-20 08:31:30Z serega $
- * @package    web_app
+ * @package    view
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 

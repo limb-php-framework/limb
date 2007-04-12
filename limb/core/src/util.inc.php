@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: util.inc.php 5143 2007-02-20 21:40:01Z serega $
- * @package    classkit
+ * @package    core
  */
 //we put here useful stuff which hasn't been refactored and placed somewhere else...
 lmb_require('limb/core/src/exception/lmbInvalidArgumentException.class.php');

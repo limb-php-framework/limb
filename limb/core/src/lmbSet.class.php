@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbDataspace.class.php 5616 2007-04-11 08:10:36Z pachanga $
- * @package    datasource
+ * @package    core
  */
 lmb_require('limb/core/src/lmbSetInterface.interface.php');
 

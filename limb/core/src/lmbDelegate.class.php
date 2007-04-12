@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbDelegate.class.php 5143 2007-02-20 21:40:01Z serega $
- * @package    classkit
+ * @package    core
  */
 lmb_require('limb/core/src/lmbBaseDelegate.interface.php');
 lmb_require('limb/core/src/lmbDelegateList.class.php');

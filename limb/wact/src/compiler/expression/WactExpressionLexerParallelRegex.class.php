@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionLexerParallelRegex.class.php 5168 2007-02-28 16:05:08Z serega $
+ * @version    $Id: WactExpressionLexerParallelRegex.class.php 5646 2007-04-12 08:38:15Z pachanga $
  * @package    wact
  */
 
@@ -14,7 +14,7 @@
  *    Compounded regular expression. Any of
  *    the contained patterns could match and
  *    when one does it's label is returned.
- *    @package wact
+ *    @package    wact
  */
 class WactExpressionLexerParallelRegex {
   protected $_patterns;

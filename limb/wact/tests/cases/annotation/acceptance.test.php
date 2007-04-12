@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: acceptance.test.php 5071 2007-02-16 09:09:35Z serega $
+ * @version    $Id: acceptance.test.php 5646 2007-04-12 08:38:15Z pachanga $
  * @package    wact
  */
 
@@ -23,7 +23,7 @@ class AcceptanceTestOfWactClassAnnotationParser extends UnitTestCase {
 // Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 //--------------------------------------------------------------------------------
 /**
- * @package WACT_ORM
+ * @package    wact
  */
 //-------------------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ EOD;
         $tokenizer->process($listener, $fileContent);
 
         $this->assertEqual($listener->history,
-                           array(array('annotation', 'package', 'WACT_ORM'),
+                           array(array('annotation', 'package', 'wact'),
                                  array('annotation', 'object', 'Article'),
                                  array('annotation', 'see', 'Article.html'),
                                  array('annotation', 'access', 'protected'),

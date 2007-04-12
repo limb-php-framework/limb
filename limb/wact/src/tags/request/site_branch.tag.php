@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id$
- * @package    web_app
+ * @package    wact
  */
 /**
 * @tag site_branch

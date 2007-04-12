@@ -6,8 +6,8 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NLowercaseFilterTest.class.php 5380 2007-03-28 12:16:15Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbI18NLowercaseFilterTest.class.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @package    i18n
  */
 require_once('limb/i18n/utf8.inc.php');
 

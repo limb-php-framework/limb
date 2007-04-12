@@ -6,8 +6,8 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NStringFilterTest.class.php 5373 2007-03-28 11:10:40Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbI18NStringFilterTest.class.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @package    i18n
  */
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 
