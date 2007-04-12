@@ -6,12 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbTools.class.php 5591 2007-04-10 07:49:54Z pachanga $
+ * @version    $Id: lmbDbTools.class.php 5649 2007-04-12 09:53:55Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/dbal/src/lmbDBAL.class.php');
 lmb_require('limb/dbal/src/lmbDbDSN.class.php');
+lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
 
 class lmbDbTools extends lmbAbstractTools
 {
@@ -62,7 +63,7 @@ class lmbDbTools extends lmbAbstractTools
       return $this->db_info[$id];
 
     if($this->cache_db_info && defined('LIMB_VAR_DIR'))
-      $db_info = new lmbCachedDatabaseInfo($conn, LIMB_VAR_DIR);
+      $db_info = new lmbDbCachedInfo($conn, LIMB_VAR_DIR);
     else
       $db_info = $conn->getDatabaseInfo();
 

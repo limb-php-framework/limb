@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTableGateway.class.php 5591 2007-04-10 07:49:54Z pachanga $
+ * @version    $Id: lmbTableGateway.class.php 5649 2007-04-12 09:53:55Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
-lmb_require('limb/dbal/src/lmbCachedDatabaseInfo.class.php');
+lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
 
 class lmbTableGateway
 {
