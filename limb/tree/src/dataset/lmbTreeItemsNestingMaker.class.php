@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMaker.class.php 5640 2007-04-11 14:21:15Z pachanga $
+ * @version    $Id: lmbTreeItemsNestingMaker.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    tree
  */
-lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
+lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 
-class lmbTreeItemsNestingMaker extends lmbIteratorDecorator
+class lmbTreeItemsNestingMaker extends lmbCollectionDecorator
 {
   protected $node_field = 'id';
   protected $parent_field = 'parent_id';
@@ -34,10 +34,10 @@ class lmbTreeItemsNestingMaker extends lmbIteratorDecorator
     {
       $nested_array = array();
       self :: _doMakeNested($this->iterator, $nested_array);
-      $iterator = new lmbIterator($nested_array);
+      $iterator = new lmbCollection($nested_array);
     }
     else
-      $iterator = new lmbIterator();
+      $iterator = new lmbCollection();
 
     $this->iterator = $iterator;
 

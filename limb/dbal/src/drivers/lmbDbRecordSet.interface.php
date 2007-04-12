@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbRecordSet.interface.php 5229 2007-03-13 14:15:40Z serega $
+ * @version    $Id: lmbDbRecordSet.interface.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    dbal
  */
-lmb_require('limb/datasource/src/lmbPagedDataset.interface.php');
+lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 
-interface lmbDbRecordSet extends lmbPagedDataset
+interface lmbDbRecordSet extends lmbCollectionInterface
 {
   function freeQuery();
 }

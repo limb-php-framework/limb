@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRecordSetDecoratorTest.class.php 5627 2007-04-11 11:51:34Z pachanga $
+ * @version    $Id: lmbARRecordSetDecoratorTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
-lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordOneToManyRelationsTest.class.php');
 
 class lmbARRecordSetDecoratorTest extends UnitTestCase
@@ -104,7 +104,7 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
 
   function testIfRecordIsEmpty()
   {
-    $iterator = new lmbARRecordSetDecorator(new lmbIterator());
+    $iterator = new lmbARRecordSetDecorator(new lmbCollection());
     $iterator->setClassPath('LectureForTest');
     $iterator->rewind();
     $this->assertFalse($iterator->valid());

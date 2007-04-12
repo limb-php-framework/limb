@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsBreadcrumbsFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbCmsBreadcrumbsFetcher.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    cms
  */
 
-lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
 class lmbCmsBreadcrumbsFetcher extends lmbFetcher
@@ -47,7 +47,7 @@ class lmbCmsBreadcrumbsFetcher extends lmbFetcher
   function _createDataSet()
   {
     $this->_makeCrumbs();
-    return new lmbIterator(self :: $breadcrumbs);
+    return new lmbCollection(self :: $breadcrumbs);
   }
 
   function _getRoutePath($params = array(), $route = '')

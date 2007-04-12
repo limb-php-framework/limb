@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCacheFilePersisterTest.class.php 5551 2007-04-06 08:51:11Z pachanga $
+ * @version    $Id: lmbCacheFilePersisterTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    cache
  */
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/cache/src/lmbCacheFilePersister.class.php');
 lmb_require('limb/util/src/system/lmbFs.class.php');
 lmb_require(dirname(__FILE__) . '/lmbCacheTestBase.class.php');

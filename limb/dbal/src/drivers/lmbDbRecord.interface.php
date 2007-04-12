@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbRecord.interface.php 5559 2007-04-06 13:05:29Z pachanga $
+ * @version    $Id: lmbDbRecord.interface.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    dbal
  */
 
-lmb_require('limb/datasource/src/lmbDatasource.interface.php');
+lmb_require('limb/core/src/lmbSetInterface.interface.php');
 
-interface lmbDbRecord extends lmbDatasource
+interface lmbDbRecord extends lmbSetInterface
 {
   function getInteger($name);
   function getFloat($name);

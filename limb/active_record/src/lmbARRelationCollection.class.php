@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRelationCollection.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbARRelationCollection.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    active_record
  */
-lmb_require('limb/datasource/src/lmbPagedDataset.interface.php');
-lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
-abstract class lmbARRelationCollection implements lmbPagedDataset
+abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
   protected $relation_info;
   protected $owner;
@@ -48,7 +48,7 @@ abstract class lmbARRelationCollection implements lmbPagedDataset
       return;
 
     if($this->is_owner_new)
-      $this->dataset = new lmbIterator();
+      $this->dataset = new lmbCollection();
     else
       $this->dataset = $this->find();
   }
@@ -178,7 +178,7 @@ abstract class lmbARRelationCollection implements lmbPagedDataset
   {
     $this->_ensureDataset();
 
-    if(is_a($this->dataset, 'lmbIterator'))
+    if(is_a($this->dataset, 'lmbCollection'))
     {
       foreach($this->dataset as $object)
         $this->_saveObject($object);

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: route_url_set.tag.php 5012 2007-02-08 15:38:06Z pachanga $
+ * @version    $Id: route_url_set.tag.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_app
  */
 /**
@@ -29,7 +29,7 @@ class lmbRouteUrlSetTag extends WactCompilerTag
     if(isset($this->attributeNodes['params']))
     {
       $this->attributeNodes['params']->generatePreStatement($code);
-      $code->writePhp($params . ' = lmbComplexArray :: explode(",",":",');
+      $code->writePhp($params . ' = lmbArrayHelper :: explode(",",":",');
       $this->attributeNodes['params']->generateExpression($code);
       $code->writePhp(');');
       $this->attributeNodes['params']->generatePostStatement($code);

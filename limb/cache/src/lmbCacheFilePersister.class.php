@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCacheFilePersister.class.php 5551 2007-04-06 08:51:11Z pachanga $
+ * @version    $Id: lmbCacheFilePersister.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    cache
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
-lmb_require('limb/classkit/src/lmbSerializable.class.php');
+lmb_require('limb/core/src/lmbSerializable.class.php');
 lmb_require('limb/util/src/system/lmbFs.class.php', false);
 
 @define('LIMB_CACHE_FILE_PREFIX', 'cache_');

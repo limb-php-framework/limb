@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRecordSetDecorator.class.php 5638 2007-04-11 14:19:36Z pachanga $
+ * @version    $Id: lmbARRecordSetDecorator.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    active_record
  */
-lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
-lmb_require('limb/classkit/src/lmbClassPath.class.php');
+lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
+lmb_require('limb/core/src/lmbClassPath.class.php');
 
-class lmbARRecordSetDecorator extends lmbIteratorDecorator
+class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
   protected $class_path;
 

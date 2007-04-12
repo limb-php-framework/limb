@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheRulesetTest.class.php 5013 2007-02-08 15:38:13Z pachanga $
+ * @version    $Id: lmbFullPageCacheRulesetTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/web_cache/src/lmbFullPageCacheRuleset.class.php');
 lmb_require('limb/web_cache/src/lmbFullPageCacheRule.class.php');
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 Mock :: generate('lmbFullPageCacheRule', 'MockFullPageCacheRule');
 

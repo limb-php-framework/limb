@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeRsProcessor.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbTreeRsProcessor.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    tree
  */
-lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 
 class lmbTreeRsProcessor
 {
@@ -24,7 +24,7 @@ class lmbTreeRsProcessor
 
     self :: _doSort($tree_array, $sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash);
 
-    return new lmbIterator($sorted_tree_array);
+    return new lmbCollection($sorted_tree_array);
   }
 
   function _convertRs2Array($rs)
@@ -52,7 +52,7 @@ class lmbTreeRsProcessor
     if(!($count = sizeof($children)))
       return;
 
-    $children = lmbComplexArray :: sortArray($children, $sort_params);
+    $children = lmbArrayHelper :: sortArray($children, $sort_params);
 
     if(!$sorted_tree_array)
     {
@@ -60,7 +60,7 @@ class lmbTreeRsProcessor
     }
     else
     {
-      $ids = lmbComplexArray :: getColumnValues($id_hash, $sorted_tree_array);
+      $ids = lmbArrayHelper :: getColumnValues($id_hash, $sorted_tree_array);
 
       $offset = array_search($parent_id, $ids) + 1;
 

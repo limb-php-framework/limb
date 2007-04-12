@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheRequest.class.php 5621 2007-04-11 09:36:16Z pachanga $
+ * @version    $Id: lmbFullPageCacheRequest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_cache
  */
-lmb_require('limb/datasource/src/lmbComplexArray.class.php');
+lmb_require('limb/core/src/lmbArrayHelper.class.php');
 
 class lmbFullPageCacheRequest
 {
@@ -56,7 +56,7 @@ class lmbFullPageCacheRequest
       return '';
 
     $flat = array();
-    lmbComplexArray :: toFlatArray($query, $flat);
+    lmbArrayHelper :: toFlatArray($query, $flat);
     ksort($flat);
     return serialize($flat);
   }

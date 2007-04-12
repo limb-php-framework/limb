@@ -9,7 +9,7 @@
  * @version    $Id: lmbUploadedFilesParser.class.php 5001 2007-02-08 15:36:45Z pachanga $
  * @package    net
  */
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 class lmbUploadedFile extends lmbObject
 {

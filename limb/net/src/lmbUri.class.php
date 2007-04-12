@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUri.class.php 5621 2007-04-11 09:36:16Z pachanga $
+ * @version    $Id: lmbUri.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    net
  */
-lmb_require('limb/datasource/src/lmbComplexArray.class.php');
+lmb_require('limb/core/src/lmbArrayHelper.class.php');
 
 class lmbUri
 {
@@ -340,7 +340,7 @@ class lmbUri
   function addQueryItem($name, $value)
   {
     $this->_query_items[$name] = is_array($value) ?
-      lmbComplexArray :: arrayMapRecursive('urlencode', $value) :
+      lmbArrayHelper :: arrayMapRecursive('urlencode', $value) :
       urlencode($value);
   }
 
@@ -398,7 +398,7 @@ class lmbUri
     $query_items = array();
     $flat_array = array();
 
-    lmbComplexArray :: toFlatArray($this->_query_items, $flat_array);
+    lmbArrayHelper :: toFlatArray($this->_query_items, $flat_array);
     ksort($flat_array);
     foreach($flat_array as $key => $value)
     {

@@ -6,18 +6,18 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbErrorList.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbErrorList.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    validation
  */
-lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/validation/src/lmbErrorMessage.class.php');
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 /**
 * Holds a list of validation errors
 * @see lmbErrorMessage
 */
-class lmbErrorList extends lmbIterator
+class lmbErrorList extends lmbCollection
 {
   /**
   * @see lmbErrorMessage :: getErrorMessage()

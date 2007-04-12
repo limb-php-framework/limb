@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSessionTest.class.php 5004 2007-02-08 15:36:54Z pachanga $
+ * @version    $Id: lmbSessionTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    session
  */
 lmb_require('limb/session/src/lmbSession.class.php');
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 class lmbSessionTest extends UnitTestCase
 {

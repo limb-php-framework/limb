@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeRsProcessorTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbTreeRsProcessorTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    tree
  */
 lmb_require('limb/tree/src/tree/lmbTreeRsProcessor.class.php');
-lmb_require('limb/datasource/src/lmbIterator.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 
 class lmbTreeRsProcessorTest extends UnitTestCase
 {
@@ -38,7 +38,7 @@ class lmbTreeRsProcessorTest extends UnitTestCase
         array('id' => 7, 'parent_id' => 6, 'sort1' => 'tom', 'sort2' => 0),
     );
 
-    $sorted = lmbTreeRsProcessor :: sort(new lmbIterator($raw_tree_array),
+    $sorted = lmbTreeRsProcessor :: sort(new lmbCollection($raw_tree_array),
                                       array('sort1' => 'DESC', 'sort2' => 'ASC'));
 
     $to_check = array();

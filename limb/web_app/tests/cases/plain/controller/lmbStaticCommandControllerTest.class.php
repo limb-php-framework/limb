@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbStaticCommandControllerTest.class.php 5012 2007-02-08 15:38:06Z pachanga $
+ * @version    $Id: lmbStaticCommandControllerTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbStaticCommandController.class.php');
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 class TestingStaticCommandController extends lmbStaticCommandController
 {

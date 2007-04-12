@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5539 2007-04-05 12:49:05Z pachanga $
+ * @version    $Id: lmbDate.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    datetime
  */
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 class lmbDate extends lmbObject
 {

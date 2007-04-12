@@ -6,16 +6,16 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAbstractController.class.php 5382 2007-03-28 12:54:38Z pachanga $
+ * @version    $Id: lmbAbstractController.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_app
  */
 
-lmb_require('limb/classkit/src/lmbClassPath.class.php');
+lmb_require('limb/core/src/lmbClassPath.class.php');
 
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 5382 2007-03-28 12:54:38Z pachanga $
+ * @version $Id: lmbAbstractController.class.php 5645 2007-04-12 07:13:10Z pachanga $
  */
 abstract class lmbAbstractController
 {

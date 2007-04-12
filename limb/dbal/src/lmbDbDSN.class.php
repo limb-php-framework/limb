@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbDSN.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbDbDSN.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/net/src/lmbUri.class.php');
-lmb_require('limb/classkit/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 class lmbDbDSN extends lmbObject
 {

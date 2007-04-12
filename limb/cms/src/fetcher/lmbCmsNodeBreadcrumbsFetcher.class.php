@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    cms
  */
 
@@ -20,7 +20,7 @@ class lmbCmsNodeBreadcrumbsFetcher extends lmbFetcher
     $path = lmbToolkit :: instance()->getRequest()->getUri()->getPath();
 
     if(!$node = lmbCmsNode :: findByPath('lmbCmsNode', $path))
-      return new lmbIterator();
+      return new lmbCollection();
 
     $parents = $node->getParents();
 
@@ -38,7 +38,7 @@ class lmbCmsNodeBreadcrumbsFetcher extends lmbFetcher
     $node->setIsLast(true);
     $result[] = $node;
 
-    return new lmbIterator($result);
+    return new lmbCollection($result);
   }
 
 }

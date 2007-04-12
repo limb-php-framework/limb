@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequest.class.php 5628 2007-04-11 12:09:20Z pachanga $
+ * @version    $Id: lmbHttpRequest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    net
  */
-lmb_require('limb/datasource/src/lmbSet.class.php');
-lmb_require('limb/datasource/src/lmbComplexArray.class.php');
+lmb_require('limb/core/src/lmbSet.class.php');
+lmb_require('limb/core/src/lmbArrayHelper.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
 
@@ -50,12 +50,12 @@ class lmbHttpRequest extends lmbSet
       $this->cookies = $this->_stripHttpSlashes($this->cookies);
     }
 
-    $this->request = lmbComplexArray :: arrayMerge($this->get, $this->post);
+    $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post);
 
     //ugly hack, uploaded files shouldn't be attributes of request!!!
     $all = $this->request;
     if($this->files)
-      $all = lmbComplexArray :: arrayMerge($all, $this->files);
+      $all = lmbArrayHelper :: arrayMerge($all, $this->files);
 
     foreach($all as $k => $v)
       $this->set($k, $v);
@@ -199,7 +199,7 @@ class lmbHttpRequest extends lmbSet
     if(isset($exported['file']))
       unset($exported['file']);
 
-    lmbComplexArray :: toFlatArray($exported, $result);
+    lmbArrayHelper :: toFlatArray($exported, $result);
 
     foreach($result as $key => $value)
       $query .= $key . '=' . $value . '&';

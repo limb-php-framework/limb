@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsSorter.class.php 5561 2007-04-06 13:07:43Z pachanga $
+ * @version    $Id: lmbTreeItemsSorter.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    tree
  */
 lmb_require('limb/tree/src/tree/lmbTreeRsProcessor.class.php');
 
-class lmbTreeItemsSorter extends lmbIteratorDecorator
+class lmbTreeItemsSorter extends lmbCollectionDecorator
 {
   protected $node_field = 'id';
   protected $parent_field = 'parent_id';
@@ -58,7 +58,7 @@ class lmbTreeItemsSorter extends lmbIteratorDecorator
       $iterator = lmbTreeRsProcessor :: sort($this->iterator, $this->order_pairs, $this->node_field, $this->parent_field);
     }
     else
-      $iterator = new lmbIterator();
+      $iterator = new lmbCollection();
 
     $this->iterator = $iterator;
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeFetcher.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbCmsNodeFetcher.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    cms
  */
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
@@ -53,7 +53,7 @@ class lmbCmsNodeFetcher extends lmbFetcher
     else
     {
       $kids = lmbActiveRecord :: find('lmbCmsNode', "parent_id = 0");
-      $result = new lmbIterator(array(array('parent_id' => 0,
+      $result = new lmbCollection(array(array('parent_id' => 0,
                                                 'kids' => $kids)));
     }
 

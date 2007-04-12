@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDynamicCommandController.class.php 5382 2007-03-28 12:54:38Z pachanga $
+ * @version    $Id: lmbDynamicCommandController.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_app
  */
-lmb_require('limb/classkit/src/lmbHandle.class.php');
+lmb_require('limb/core/src/lmbHandle.class.php');
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
 
 class lmbDynamicCommandController extends lmbAbstractController

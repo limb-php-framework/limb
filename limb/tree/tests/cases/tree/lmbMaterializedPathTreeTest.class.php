@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTreeTest.class.php 5644 2007-04-11 15:45:56Z serega $
+ * @version    $Id: lmbMaterializedPathTreeTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -828,10 +828,10 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function _checkProperNesting($nodes, $line='')
   {
-    $this->assertEqual(lmbComplexArray :: sortArray($nodes, array('path' => 'ASC')),
+    $this->assertEqual(lmbArrayHelper :: sortArray($nodes, array('path' => 'ASC')),
                        $nodes);
 
-    $path = lmbComplexArray :: getMinColumnValue('path', $nodes, $index);
+    $path = lmbArrayHelper :: getMinColumnValue('path', $nodes, $index);
     $parent_paths[] = $this->_getParentPath($path);
 
     $counter = 0;

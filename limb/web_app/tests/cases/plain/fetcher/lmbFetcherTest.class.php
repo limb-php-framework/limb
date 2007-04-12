@@ -6,15 +6,15 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFetcherTest.class.php 5633 2007-04-11 13:09:26Z pachanga $
+ * @version    $Id: lmbFetcherTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_app
  */
-lmb_require('limb/datasource/src/lmbIterator.class.php');
-lmb_require('limb/datasource/src/lmbIteratorDecorator.class.php');
-lmb_require('limb/classkit/src/lmbClassPath.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
+lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
+lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
-class TestingDatasetDecorator extends lmbIteratorDecorator
+class TestingDatasetDecorator extends lmbCollectionDecorator
 {
   var $prefix1;
   var $prefix2;
@@ -84,7 +84,7 @@ class lmbFetcherTest extends UnitTestCase
   function testFetchCreateDatasetUsesObject()
   {
     $fetcher = new TestingFetcher();
-    $fetcher->use_dataset = new lmbIterator(array(array('name' => 'John', 'job' => 'Carpenter'),
+    $fetcher->use_dataset = new lmbCollection(array(array('name' => 'John', 'job' => 'Carpenter'),
                                                      array('name' => 'Mike', 'job' => 'Fisher')));
     $dataset = $fetcher->fetch();
 
@@ -97,7 +97,7 @@ class lmbFetcherTest extends UnitTestCase
   function testAddDecoratorWithParams()
   {
     $fetcher = new TestingFetcher();
-    $fetcher->use_dataset = new lmbIterator(array(array('name' => 'John', 'job' => 'Carpenter'),
+    $fetcher->use_dataset = new lmbCollection(array(array('name' => 'John', 'job' => 'Carpenter'),
                                                      array('name' => 'Mike', 'job' => 'Fisher')));
     $fetcher->addDecorator('TestingDatasetDecorator', array('prefix1' => 'PrefixA_',
                                                             'prefix2' => '_PrefixB'));
@@ -112,7 +112,7 @@ class lmbFetcherTest extends UnitTestCase
   function testSetOrder()
   {
     $fetcher = new TestingFetcher();
-    $fetcher->use_dataset = new lmbIterator(array(array('name' => 'John', 'job' => 'Carpenter'),
+    $fetcher->use_dataset = new lmbCollection(array(array('name' => 'John', 'job' => 'Carpenter'),
                                                      array('name' => 'Mike', 'job' => 'Fisher')));
     $fetcher->addDecorator('TestingDatasetDecorator');
     $fetcher->setOrder('title=ASC,name,last_name=DESC');

@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidator.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbValidator.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/lmbErrorList.class.php');
-lmb_require('limb/classkit/src/lmbHandle.class.php');
+lmb_require('limb/core/src/lmbHandle.class.php');
 
 /**
 * Holds the list of validation rules along with errors happened during validation.
@@ -116,7 +116,7 @@ class lmbValidator
   /**
   * Performs validation
   * Passes datasource and list of errors to every validation rule
-  * @param lmbDatasource Datasource to validate
+  * @param lmbSetInterface Datasource to validate
   * @return boolean True if valid
   */
   function validate($datasource)

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordFetcherTest.class.php 5629 2007-04-11 12:13:16Z pachanga $
+ * @version    $Id: lmbActiveRecordFetcherTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/tests/cases/lmbWebAppTestCase.class.php');
@@ -18,12 +18,12 @@ class CourseForFetcherTestVersion extends CourseForTest
 {
   static function findSpecial()
   {
-    return new lmbIterator(array(array('special' => 1)));
+    return new lmbCollection(array(array('special' => 1)));
   }
 
   static function findWithParams($param1, $param2)
   {
-    return new lmbIterator(array(array('param' => $param1),
+    return new lmbCollection(array(array('param' => $param1),
                                      array('param' => $param2)));
   }
 }
