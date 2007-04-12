@@ -73,8 +73,7 @@ foreach($maintainers as $line)
 $package->setPhpDep('5.1.4');
 $package->setPearinstallerDep('1.4.99');
 
-$package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', '0.1.0');
-$package->addPackageDepWithChannel('required', 'datasource', 'pear.limb-project.com', '0.1.0');
+$package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', '0.2.0');
 $package->addPackageDepWithChannel('required', 'util', 'pear.limb-project.com', '0.1.0');
 $package->addPackageDepWithChannel('required', 'toolkit', 'pear.limb-project.com', '0.1.0');
 
