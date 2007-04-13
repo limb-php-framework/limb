@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NSizeRangeTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
+ * @version    $Id: lmbI18NSizeRangeTest.class.php 5652 2007-04-13 10:36:39Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/src/validation/rule/lmbI18NSizeRangeRule.class.php');
@@ -43,9 +43,9 @@ class lmbI18NSizeRangeTest extends lmbValidationRuleTestCase
     $data = new lmbSet(array('testfield' => '0'));
 
     $this->error_list->expectOnce('addError',
-                                  array(lmb_i18n('{Field} must be greater than {min} characters.', 'validation'),
-                                        array('Field'=>'testfield'),
-                                        array('min' => 5)));
+                                  array(lmb_i18n('{Field} must be greater than {min} and less than {max} characters.', 'validation'),
+                                        array('Field' => 'testfield'),
+                                        array('min' => 5, 'max' => 10)));
 
     $rule->validate($data, $this->error_list);
   }
@@ -57,9 +57,9 @@ class lmbI18NSizeRangeTest extends lmbValidationRuleTestCase
     $data = new lmbSet(array('testfield' => 'тест'));
 
     $this->error_list->expectOnce('addError',
-                                  array(lmb_i18n('{Field} must be less than {max} characters.', 'validation'),
+                                  array(lmb_i18n('{Field} must be less than {max} and greater than {min} characters.', 'validation'),
                                         array('Field' => 'testfield'),
-                                        array('max' => 3)));
+                                        array('min' => null, 'max' => 3)));
 
     $rule->validate($data, $this->error_list);
   }
@@ -71,8 +71,9 @@ class lmbI18NSizeRangeTest extends lmbValidationRuleTestCase
     $data = new lmbSet(array('testfield' => 'тесты'));
 
     $this->error_list->expectOnce('addError',
-                                  array(lmb_i18n('{Field} must be less than {max} characters.', 'validation'),
-                                        array('Field'=>'testfield'), array('max'=>4)));
+                                  array(lmb_i18n('{Field} must be less than {max} and greater than {min} characters.', 'validation'),
+                                        array('Field' => 'testfield'),
+                                        array('min' => 2, 'max' => 4)));
 
     $rule->validate($data, $this->error_list);
   }
@@ -84,9 +85,9 @@ class lmbI18NSizeRangeTest extends lmbValidationRuleTestCase
     $data = new lmbSet(array('testfield' => 'тест'));
 
     $this->error_list->expectOnce('addError',
-                                  array(lmb_i18n('{Field} must be greater than {min} characters.', 'validation'),
+                                  array(lmb_i18n('{Field} must be greater than {min} and less than {max} characters.', 'validation'),
                                         array('Field'=>'testfield'),
-                                        array('min' => 30)));
+                                        array('min' => 30, 'max' => 100)));
 
     $rule->validate($data, $this->error_list);
   }
