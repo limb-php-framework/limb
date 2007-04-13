@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: package.php 5460 2007-04-02 10:30:32Z serega $
+ * @version    $Id: package.php 5654 2007-04-13 10:57:31Z pachanga $
  * @package    i18n
  */
 
@@ -77,7 +77,7 @@ $package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', 
 $package->addPackageDepWithChannel('required', 'config', 'pear.limb-project.com', '0.2.0');
 $package->addPackageDepWithChannel('required', 'datetime', 'pear.limb-project.com', '0.1.0');
 $package->addPackageDepWithChannel('required', 'toolkit', 'pear.limb-project.com', '0.2.0');
-$package->addPackageDepWithChannel('required', 'util', 'pear.limb-project.com', '0.1.0');
+$package->addPackageDepWithChannel('required', 'fs', 'pear.limb-project.com', '0.1.0');
 $package->addPackageDepWithChannel('optional', 'cli', 'pear.limb-project.com', '0.2.0');
 $package->addPackageDepWithChannel('optional', 'view', 'pear.limb-project.com', '0.1.0');
 
