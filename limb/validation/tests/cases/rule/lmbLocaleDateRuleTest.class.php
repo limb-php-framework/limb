@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbLocaleDateRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
- * @package    i18n
+ * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbLocaleDateRule.class.php');
 lmb_require('limb/validation/tests/cases/rule/lmbValidationRuleTestCase.class.php');
