@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompileTreeNode.class.php 5625 2007-04-11 11:12:26Z serega $
+ * @version    $Id: WactCompileTreeNode.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -274,6 +274,9 @@ class WactCompileTreeNode
     $result = null;
 
     $DataSource = $this->getDataSource();
+    if($DataSource && !isset($DataSource->parent))
+      return $DataSource;
+
     if (isset($DataSource->parent))
       $result = $DataSource->parent->getDataSource();
 

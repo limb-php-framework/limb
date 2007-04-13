@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpressionTest.class.php 5236 2007-03-14 10:08:27Z serega $
+ * @version    $Id: WactDataBindingExpressionTest.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -101,7 +101,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
 
     $parent->addChild($child);
 
-    $DBE = new WactDataBindingExpression('(child)', $parent);
+    $DBE = new WactDataBindingExpression('[child]', $parent);
     $DBE->prepare();
     $this->assertNull($DBE->getFieldName());
     $this->assertReference($DBE->getDatasourceContext(), $child);
@@ -279,7 +279,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode();
     $context->parent = $child1;
 
-    $DBE = new WactDataBindingExpression('#(child2)Test', $context);
+    $DBE = new WactDataBindingExpression('#[child2]Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -309,7 +309,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode();
     $context->parent = $child1;
 
-    $DBE = new WactDataBindingExpression('#(child2)(sub_child1)Test', $context);
+    $DBE = new WactDataBindingExpression('#[child2][sub_child1]Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -372,7 +372,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
 
     $context->addChild($child1);
 
-    $DBE = new WactDataBindingExpression('(child1)', $context);
+    $DBE = new WactDataBindingExpression('[child1]', $context);
     $DBE->analyzeExpression();
 
     $this->assertFalse($DBE->isConstant());

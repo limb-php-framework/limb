@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactNodeBuilder.class.php 5223 2007-03-13 13:31:39Z serega $
+ * @version    $Id: WactNodeBuilder.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -216,6 +216,7 @@ class WactNodeBuilder
                                                 $match[self :: EXPRESSION],
                                                 $tag_node,
                                                 $this->filter_dictionary);
+
       $attribute->addAttributeFragment($expression);
 
       $value = $match[self :: AFTER_CONTENT];

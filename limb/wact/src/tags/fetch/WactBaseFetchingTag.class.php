@@ -67,7 +67,7 @@ class WactBaseFetchingTag extends WactRuntimeComponentTag
 
     $to = array();
     foreach($pieces as $piece)
-     $to[] = '(' . $piece . ')';
+     $to[] = '[' . $piece . ']';
 
     $this->setAttribute('to', implode(',', $to));
   }

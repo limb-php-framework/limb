@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactExpressionTest.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -75,9 +75,8 @@ class WactExpressionTest extends UnitTestCase
   {
     WactExpressionTestingFilter :: reset();
     $this->filter_dictionary = new WactFilterDictionary();
-    $this->filter_dictionary->registerFilterInfo(new WactFilterInfo('expression_testing_filter',
-                                                                    'WactExpressionTestingFilter'),
-                                                 __FILE__);
+    $filter_info = new WactFilterInfo('expression_testing_filter', 'WactExpressionTestingFilter', 0, 3);
+    $this->filter_dictionary->registerFilterInfo($filter_info, __FILE__);
   }
 
   protected function _createExpression($expression_text, $default_filter = 'raw')
@@ -203,6 +202,13 @@ class WactExpressionTest extends UnitTestCase
     $this->assertEqual(WactExpressionTestingFilter :: $calls['prepare'], 1);
   }
 
+  function testFilterWithParams()
+  {
+    $expression = $this->_createExpression('"Test"|expression_testing_filter:"..."');
+    $expression->prepare();
+    $this->assertEqual(WactExpressionTestingFilter :: $calls['prepare'], 1);
+  }
+
   function testDontApplyDefaultFilter()
   {
     $expression = $this->_createExpression('"Test"|raw', 'expression_testing_filter');
@@ -219,16 +225,6 @@ class WactExpressionTest extends UnitTestCase
 
   function testDontApplyDefaultFilterIsTheSameFilterIsTheLastAmongExpressionFilters()
   {
-    $expression = $this->_createExpression('"Test"|expression_testing_filter', 'expression_testing_filter');
-    $expression->prepare();
-    $this->assertEqual(WactExpressionTestingFilter :: $calls['prepare'], 1);
-  }
-
-  function testFilterMinimumParamsNumber()
-  {
-    $filter_info = new WactFilterInfo('expression_testing_filter', 'WactExpressionTestingFilter');
-    $this->filter_dictionary->registerFilterInfo($filter_info, __FILE__, 0, 3);
-
     $expression = $this->_createExpression('"Test"|expression_testing_filter', 'expression_testing_filter');
     $expression->prepare();
     $this->assertEqual(WactExpressionTestingFilter :: $calls['prepare'], 1);

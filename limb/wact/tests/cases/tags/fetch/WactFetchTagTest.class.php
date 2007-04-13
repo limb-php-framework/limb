@@ -125,8 +125,8 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testSaveDatasetToVarInDatasource()
   {
-    $template = '<core:datasource id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="(data)var1"/>' .
-                '<list:LIST from="(data)var1"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
+    $template = '<core:datasource id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="[data]var1"/>' .
+                '<list:LIST from="[data]var1"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_datasource_buffer.html', $template);
 
@@ -137,7 +137,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testSaveDatasetToVarInWrongDatasourceThrowException()
   {
-    $template = '<list:list id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="(data)var1"/>' .
+    $template = '<list:list id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="[data]var1"/>' .
                 '<list:LIST from="(data)var1"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_var_in_wrong_datasource.html', $template);
@@ -151,25 +151,25 @@ class WactFetchTagTest extends WactTemplateTestCase
     catch(WactException $e)
     {
       $this->assertWantedPattern('/Wrong DBE datasource context in buffer attribute/', $e->getMessage());
-      $this->assertEqual($e->getParam('expression'), '(data)var1');
+      $this->assertEqual($e->getParam('expression'), '[data]var1');
     }
   }
 
-  function testSaveDatasetToDatasource()
+  function testSaveDatasetToListList()
   {
-    $template = '<list:list id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="(data)"/>' .
-                '<list:LIST from="(data)"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
+    $template = '<list:list id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="[data]"/>' .
+                '<list:LIST from="[data]"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
-    $this->registerTestingTemplate('/tags/fetch/save_dataset_to_datasource.html', $template);
+    $this->registerTestingTemplate('/tags/fetch/save_dataset_to_list_list.html', $template);
 
-    $page = $this->initTemplate('/tags/fetch/save_dataset_to_datasource.html');
+    $page = $this->initTemplate('/tags/fetch/save_dataset_to_list_list.html');
 
     $this->assertEqual(trim($page->capture()), 'joe|ivan|');
   }
 
   function testSaveDatasetToNonExistingTargetDatasourceThrowException()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(no_such_datasource)"/>' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[no_such_datasource]"/>' .
                 '<list:LIST from="(data)"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_none_existing_target_datasource.html', $template);
@@ -188,8 +188,8 @@ class WactFetchTagTest extends WactTemplateTestCase
   function testSaveRecordToDatasource()
   {
     $template = '<core:datasource id="data"/>'.
-                '<fetch using="TestingFetchTagsDatasetFetcher" to="(data)" first="true"/>' .
-                '<core:datasource from="(data)">{$title}</core:datasource>';
+                '<fetch using="TestingFetchTagsDatasetFetcher" to="[data]" first="true"/>' .
+                '<core:datasource from="[data]">{$title}</core:datasource>';
 
     $this->registerTestingTemplate('/tags/fetch/save_record_to_datasource.html', $template);
 
@@ -201,8 +201,8 @@ class WactFetchTagTest extends WactTemplateTestCase
   function testSaveRecordToDatasourceVar()
   {
     $template = '<core:datasource id="data"/>'.
-                '<fetch using="TestingFetchTagsDatasetFetcher" to="(data)var" first="true"/>' .
-                '<core:datasource from="(data)var">{$title}</core:datasource>';
+                '<fetch using="TestingFetchTagsDatasetFetcher" to="[data]var" first="true"/>' .
+                '<core:datasource from="[data]var">{$title}</core:datasource>';
 
     $this->registerTestingTemplate('/tags/fetch/save_record_to_datasource_var.html', $template);
 
@@ -213,7 +213,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testMultipleTargets()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget1),(testTarget2)" />' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget1],[testTarget2]" />' .
                 '<list:LIST id="testTarget1"><list:ITEM>{$title}-</list:ITEM></list:LIST>' .
                 '<list:LIST id="testTarget2"><list:ITEM>{$description}|</list:ITEM></list:LIST>';
 
@@ -226,7 +226,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testWithNavigator()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)"  navigator="pagenav" />' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]"  navigator="pagenav" />' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}|</list:ITEM></list:LIST>'.
                 '<pager:NAVIGATOR id="pagenav" items="10"></pager:NAVIGATOR>';
 
@@ -242,7 +242,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testOnlyRecord()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" first="true" />' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" first="true" />' .
                 '<core:datasource id="testTarget">{$title}</core:datasource>';
 
     $this->registerTestingTemplate('/tags/fetch/dataset_only_record.html', $template);
@@ -254,7 +254,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testApplyDecorators()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" >' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" >' .
                 '<fetch:decorate using="TestingTemplateDatasetDecorator"/>' .
                 '</fetch>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$full}|</list:ITEM></list:LIST>';
@@ -268,7 +268,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testSingleTargetWithDBEParam()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)">' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]">' .
                 '<fetch:param extra_param="{$#genger}"/>' .
                 '</fetch>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}-{$param}|</list:ITEM></list:LIST>';
@@ -283,7 +283,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testSingleTargetWithComplexDBEParam()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)">' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]">' .
                 '<fetch:param extra_param="{$#request.gender}"/>' .
                 '</fetch>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}-{$param}|</list:ITEM></list:LIST>';
@@ -299,7 +299,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testApplyDecoratorsWithExtraParams()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)">' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]">' .
                 '<fetch:decorate using="TestingTemplateDatasetDecorator" prefix1="Hi-" prefix2="-!!"/>' .
                 '</fetch>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$full}|</list:ITEM></list:LIST>';
@@ -313,7 +313,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testOrderParamIsPassedFromParamTag()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" >' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" >' .
                 '<fetch:param order="title=ASC"/>' .
                 '</fetch>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}-{$description}|</list:ITEM></list:LIST>';
@@ -335,7 +335,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testOrderParamIsPassedFromFetchTagAttribute()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" order="title"/>' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" order="title"/>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}-{$description}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/dataset_with_sort_params_by_tag_attribute.html', $template);
@@ -355,7 +355,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testOffsetAndLimitFromParamTag()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)">' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]">' .
                 '<fetch:param offset="1" limit="1"/></fetch>'.
                 '<list:LIST id="testTarget"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
@@ -368,7 +368,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testLimitNoOffsetFromParamTag()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)">' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]">' .
                 '<fetch:param limit="1"/></fetch>'.
                 '<list:LIST id="testTarget"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
@@ -381,7 +381,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testOffsetAndLimitFromFetchTagAttributes()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" offset="1" limit="1" />' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" offset="1" limit="1" />' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}|</list:ITEM></list:LIST>'.
                 '<pager:NAVIGATOR id="pagenav" items="10"></pager:NAVIGATOR>';
 
@@ -394,7 +394,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testDatasetIsCachedByDetault()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" />' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" />' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/fetched_dataset_is_cached.html', $template);
@@ -414,7 +414,7 @@ class WactFetchTagTest extends WactTemplateTestCase
 
   function testDatasetCachingCanBeDisabled()
   {
-    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="(testTarget)" cache_dataset="false"/>' .
+    $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[testTarget]" cache_dataset="false"/>' .
                 '<list:LIST id="testTarget"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/feched_dataset_caching_disabled.html', $template);

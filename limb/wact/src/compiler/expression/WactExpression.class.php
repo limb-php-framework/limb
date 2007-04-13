@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpression.class.php 5168 2007-02-28 16:05:08Z serega $
+ * @version    $Id: WactExpression.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -14,6 +14,7 @@ require_once 'limb/wact/src/compiler/expression/WactExpressionLexer.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionLexerParallelRegex.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionLexerStateStack.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
+require_once 'limb/wact/src/compiler/expression/WactNewExpressionValueParser.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionFilterFindingParser.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionFilterParser.class.php';
 
@@ -103,11 +104,8 @@ class WactExpression implements WactExpressionInterface
   */
   function createValue($expression)
   {
-    $Parser = new WactExpressionValueParser($expression);
-    if($Parser->isConstantValue())
-      return new WactConstantProperty($Parser->getValue());
-    else
-      return new WactDataBindingExpression($expression, $this->context);
+    $Parser = new WactNewExpressionValueParser($this->context);
+    return $Parser->parse($expression);
   }
 
   /**
@@ -160,7 +158,10 @@ class WactExpression implements WactExpressionInterface
         $this->context->raiseCompilerError('Too many parameters for filter', array('filter' => $name));
 
       foreach ($args as $value_expr)
-        $filter->registerParameter($this->createValue($value_expr, $this->context));
+      {
+        $parameter_expression = $this->createValue($value_expr);
+        $filter->registerParameter($parameter_expression);
+      }
     }
 
     $filter->registerBase($base);

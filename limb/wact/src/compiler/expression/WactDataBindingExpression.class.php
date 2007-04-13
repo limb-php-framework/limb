@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpression.class.php 5236 2007-03-14 10:08:27Z serega $
+ * @version    $Id: WactDataBindingExpression.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -92,9 +92,9 @@ class WactDataBindingExpression
       }
 
       // child context
-      if($modifier == '(')
+      if($modifier == '[')
       {
-        $pos = strpos($this->processed_expression, ')');
+        $pos = strpos($this->processed_expression, ']');
         $context_name = substr($this->processed_expression, 1, $pos - 1);
         $this->datasource_context = $this->datasource_context->findChild($context_name);
         if(!$this->datasource_context)

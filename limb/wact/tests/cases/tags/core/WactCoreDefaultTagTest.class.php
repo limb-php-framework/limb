@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreDefaultTagTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactCoreDefaultTagTest.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTagAttributesTest.class.php 5223 2007-03-13 13:31:39Z serega $
+ * @version    $Id: WactTagAttributesTest.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -59,6 +59,24 @@ class WactTagAttributesTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form id="test" extra="Foo">contents</form>');
   }
 
+  function testWactAttributeSummExpression()
+  {
+    $template = '<form id="test" extra="{$2 + 2}" runat="server">contents</form>';
+
+    $this->registerTestingTemplate('/attributes/wact_attribute_summ_expression.html', $template);
+    $page = $this->initTemplate('/attributes/wact_attribute_summ_expression.html');
+
+    $form = $page->getChild('test');
+
+    $data = new ArrayObject();
+    $data['Var'] = 'Foo';
+    $form->registerDataSource($data);
+
+    $output = $page->capture();
+    $this->assertEqual($output, '<form id="test" extra="4">contents</form>');
+  }
+
+
   function testWactWactCompoundAttributeVariable()
   {
     $template = '<form id="test" extra="bar{$Var}bar" extra2="{$Var}bar{$Var}" runat="server">contents</form>';
@@ -74,6 +92,36 @@ class WactTagAttributesTest extends WactTemplateTestCase
 
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test" extra="barFoobar" extra2="FoobarFoo">contents</form>');
+  }
+
+  function testWactWactCompoundAttributeExpression()
+  {
+    $template = '<form id="test" extra="bar{$3*3 + 1}bar" extra2="{$Var}bar{$Var}" runat="server">contents</form>';
+
+    $this->registerTestingTemplate('/attributes/wact_compound_attribute_expression.html', $template);
+    $page = $this->initTemplate('/attributes/wact_compound_attribute_expression.html');
+
+    $form = $page->getChild('test');
+
+    $data = new WactArrayObject();
+    $data->set('Var', 'Foo');
+    $form->registerDataSource($data);
+
+    $output = $page->capture();
+    $this->assertEqual($output, '<form id="test" extra="bar10bar" extra2="FoobarFoo">contents</form>');
+  }
+
+  function testWactWactCompoundAttributeExpressionWithDBE()
+  {
+    $template = '<form id="test" extra="bar{$3*3 + var}bar" runat="server">contents</form>';
+
+    $this->registerTestingTemplate('/attributes/wact_compound_attribute_expression_with_dbe.html', $template);
+    $page = $this->initTemplate('/attributes/wact_compound_attribute_expression_with_dbe.html');
+
+    $form = $page->getChild('test');
+
+    $output = $page->capture();
+    $this->assertEqual($output, '<form id="test" extra="bar9bar">contents</form>');
   }
 
   function testWactAttributeVariableFilter()

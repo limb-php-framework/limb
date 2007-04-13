@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTemplateFiltersTest.class.php 5189 2007-03-06 08:06:16Z serega $
+ * @version    $Id: WactTemplateFiltersTest.class.php 5660 2007-04-13 20:29:02Z serega $
  * @package    wact
  */
 
@@ -120,6 +120,31 @@ class WactTemplateFiltersTest extends WactTemplateTestCase
     $page = $this->initTemplate('/template/filter/varparameter.html');
     $page->set('Var', 'The quick brown fox jumped over the lazy dog.');
     $page->set('Size', 10);
+
+    $output = $page->capture();
+    $this->assertEqual($output, "The quick\nbrown fox\njumped\nover the\nlazy dog.");
+  }
+
+  function testFilterParameterExpression()
+  {
+    $template = '{$Var|wordwrap:5*2}';
+
+    $this->registerTestingTemplate('/template/filter/parameter_expression.html', $template);
+    $page = $this->initTemplate('/template/filter/parameter_expression.html');
+    $page->set('Var', 'The quick brown fox jumped over the lazy dog.');
+
+    $output = $page->capture();
+    $this->assertEqual($output, "The quick\nbrown fox\njumped\nover the\nlazy dog.");
+  }
+
+  function testFilterParameterComplexExpression()
+  {
+    $template = '{$Var|wordwrap:3*3 + Size}';
+
+    $this->registerTestingTemplate('/template/filter/parameter_complex_expression.html', $template);
+    $page = $this->initTemplate('/template/filter/parameter_complex_expression.html');
+    $page->set('Var', 'The quick brown fox jumped over the lazy dog.');
+    $page->set('Size', 1);
 
     $output = $page->capture();
     $this->assertEqual($output, "The quick\nbrown fox\njumped\nover the\nlazy dog.");
