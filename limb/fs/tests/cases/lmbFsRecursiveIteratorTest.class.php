@@ -9,8 +9,8 @@
  * @version    $Id: lmbFsRecursiveIteratorTest.class.php 5177 2007-03-02 16:01:30Z pachanga $
  * @package    util
  */
-lmb_require('limb/util/src/system/lmbFsRecursiveIterator.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFsRecursiveIterator.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbFsRecursiveIteratorTest extends UnitTestCase
 {

@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFullPageCacheWriterTest.class.php 5554 2007-04-06 10:07:48Z pachanga $
+ * @version    $Id: lmbFullPageCacheWriterTest.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    web_cache
  */
 lmb_require('limb/web_cache/src/lmbFullPageCacheWriter.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbFullPageCacheWriterTest extends UnitTestCase
 {

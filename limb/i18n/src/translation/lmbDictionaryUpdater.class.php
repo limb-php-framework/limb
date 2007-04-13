@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDictionaryUpdater.class.php 5405 2007-03-29 08:14:01Z pachanga $
+ * @version    $Id: lmbDictionaryUpdater.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/src/translation/lmbPHPDictionaryExtractor.class.php');
@@ -15,8 +15,8 @@ lmb_require('limb/i18n/src/translation/lmbFsDictionaryExtractor.class.php');
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
 lmb_require('limb/cli/src/lmbCliResponse.class.php');
-lmb_require('limb/util/src/system/lmbFsRecursiveIterator.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFsRecursiveIterator.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbDictionaryUpdater
 {

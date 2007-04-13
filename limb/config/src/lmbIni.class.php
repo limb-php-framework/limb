@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIni.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbIni.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    config
  */
-lmb_require('limb/util/src/exception/lmbFileNotFoundException.class.php');
+lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');
 
 class lmbIni extends lmbSet

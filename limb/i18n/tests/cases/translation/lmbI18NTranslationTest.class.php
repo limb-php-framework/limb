@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NTranslationTest.class.php 5411 2007-03-29 10:07:12Z pachanga $
+ * @version    $Id: lmbI18NTranslationTest.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/common.inc.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbI18NTranslationTest extends UnitTestCase
 {

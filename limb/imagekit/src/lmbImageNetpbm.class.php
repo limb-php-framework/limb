@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbImageNetpbm.class.php 5600 2007-04-10 09:46:47Z pachanga $
+ * @version    $Id: lmbImageNetpbm.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    imagekit
  */
 lmb_require('limb/imagekit/src/lmbImageLibrary.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 // Read utilities
 define('JPEGTOPNM', 'jpegtopnm');

@@ -9,8 +9,8 @@
  * @version    $Id: lmbFs.class.php 5601 2007-04-10 09:50:58Z pachanga $
  * @package    util
  */
-lmb_require(dirname(__FILE__) . '/lmbSys.class.php');
-lmb_require('limb/util/src/exception/lmbIOException.class.php');
+lmb_require('limb/core/src/lmbSys.class.php');
+lmb_require('limb/fs/src/exception/lmbIOException.class.php');
 
 class lmbFs
 {

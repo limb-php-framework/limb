@@ -9,8 +9,8 @@
  * @version    $Id: lmbCachingFileLocatorTest.class.php 5548 2007-04-06 07:39:14Z pachanga $
  * @package    file_schema
  */
-lmb_require('limb/file_schema/src/lmbFileLocator.class.php');
-lmb_require('limb/file_schema/src/lmbCachingFileLocator.class.php');
+lmb_require('limb/fs/src/lmbFileLocator.class.php');
+lmb_require('limb/fs/src/lmbCachingFileLocator.class.php');
 
 Mock :: generate('lmbFileLocator', 'MockFileLocator');
 

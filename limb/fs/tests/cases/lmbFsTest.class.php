@@ -9,8 +9,7 @@
  * @version    $Id: lmbFsTest.class.php 5518 2007-04-03 11:32:03Z pachanga $
  * @package    util
  */
-lmb_require('limb/util/src/system/lmbSys.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 define('TEST_DIR_ABSOLUTE_PATH', LIMB_VAR_DIR);
 define('TEST_DIR_RELATIVE_PATH', 'var');

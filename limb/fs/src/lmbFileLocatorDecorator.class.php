@@ -9,7 +9,7 @@
  * @version    $Id: lmbFileLocatorDecorator.class.php 5416 2007-03-29 10:46:58Z pachanga $
  * @package    file_schema
  */
-lmb_require('limb/file_schema/src/lmbFileLocator.class.php');
+lmb_require('limb/fs/src/lmbFileLocator.class.php');
 
 class lmbFileLocatorDecorator extends lmbFileLocator
 {

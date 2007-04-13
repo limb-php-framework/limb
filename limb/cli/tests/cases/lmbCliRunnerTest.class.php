@@ -9,7 +9,7 @@
  * @version    $Id:$
  * @package    cli
  */
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/cli/src/lmbCliResponse.class.php');
 lmb_require('limb/cli/src/lmbCliInput.class.php');
 lmb_require('limb/cli/src/lmbCliRunner.class.php');

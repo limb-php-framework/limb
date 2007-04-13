@@ -10,11 +10,11 @@
  * @package    file_schema
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
-lmb_require('limb/file_schema/src/lmbFileLocator.class.php');
-lmb_require('limb/file_schema/src/lmbCachingFileLocator.class.php');
-lmb_require('limb/file_schema/src/lmbIncludePathFileLocations.class.php');
+lmb_require('limb/fs/src/lmbFileLocator.class.php');
+lmb_require('limb/fs/src/lmbCachingFileLocator.class.php');
+lmb_require('limb/fs/src/lmbIncludePathFileLocations.class.php');
 
-class lmbFileAliasTools extends lmbAbstractTools
+class lmbFsTools extends lmbAbstractTools
 {
   protected $file_locators = array();
 

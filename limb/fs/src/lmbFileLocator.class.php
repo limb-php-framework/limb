@@ -9,8 +9,8 @@
  * @version    $Id: lmbFileLocator.class.php 5416 2007-03-29 10:46:58Z pachanga $
  * @package    file_schema
  */
-lmb_require('limb/util/src/exception/lmbFileNotFoundException.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbFileLocator
 {

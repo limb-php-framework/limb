@@ -9,7 +9,7 @@
  * @version    $Id:$
  * @package    web_app
  */
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class WebAppCliCmd extends lmbCliBaseCmd
 {

@@ -9,8 +9,8 @@
  * @version    $Id: lmbCachingFileLocator.class.php 5548 2007-04-06 07:39:14Z pachanga $
  * @package    file_schema
  */
-lmb_require('limb/file_schema/src/lmbFileLocatorDecorator.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFileLocatorDecorator.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbCachingFileLocator extends lmbFileLocatorDecorator
 {

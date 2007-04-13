@@ -10,7 +10,7 @@
  * @package    i18n
  */
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
-lmb_require('limb/util/src/exception/lmbFileNotFoundException.class.php');
+lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
 @define('LIMB_TRANSLATIONS_INCLUDE_PATH', 'i18n/translations;limb/*/i18n/translations');
 

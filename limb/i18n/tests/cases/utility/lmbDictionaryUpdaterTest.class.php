@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDictionaryUpdaterTest.class.php 5411 2007-03-29 10:07:12Z pachanga $
+ * @version    $Id: lmbDictionaryUpdaterTest.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/cli/src/lmbCliResponse.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/i18n/src/translation/lmbDictionary.class.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
 lmb_require('limb/i18n/src/translation/lmbDictionaryUpdater.class.php');

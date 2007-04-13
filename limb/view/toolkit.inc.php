@@ -9,7 +9,7 @@
  * @version    $Id: toolkit.inc.php 5161 2007-02-28 08:26:24Z pachanga $
  * @package    view
  */
-lmb_require('limb/file_schema/toolkit.inc.php');
+lmb_require('limb/fs/toolkit.inc.php');
 lmb_require('limb/config/toolkit.inc.php');
 
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');

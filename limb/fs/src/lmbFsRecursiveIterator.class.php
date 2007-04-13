@@ -9,7 +9,7 @@
  * @version    $Id: lmbFsRecursiveIterator.class.php 5009 2007-02-08 15:37:31Z pachanga $
  * @package    util
  */
-lmb_require('limb/util/src/exception/lmbIOException.class.php');
+lmb_require('limb/fs/src/exception/lmbIOException.class.php');
 
 class lmbFsRecursiveIterator
 {

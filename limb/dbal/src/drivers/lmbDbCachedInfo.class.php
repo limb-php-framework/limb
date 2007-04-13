@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbCachedInfo.class.php 5649 2007-04-12 09:53:55Z pachanga $
+ * @version    $Id: lmbDbCachedInfo.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/core/src/lmbSerializable.class.php');
 lmb_require('limb/core/src/lmbProxy.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbDbCachedInfo extends lmbProxy
 {

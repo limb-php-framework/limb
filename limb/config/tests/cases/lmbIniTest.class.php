@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbIniTest.class.php 5617 2007-04-11 08:11:40Z pachanga $
+ * @version    $Id: lmbIniTest.class.php 5651 2007-04-13 10:28:24Z pachanga $
  * @package    config
  */
 lmb_require('limb/config/src/lmbIni.class.php');
-lmb_require('limb/util/src/system/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 define('INI_TEST_UNIQUE_CONSTANT', '*constant*');
 
