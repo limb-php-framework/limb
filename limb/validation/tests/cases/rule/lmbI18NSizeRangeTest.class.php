@@ -9,7 +9,7 @@
  * @version    $Id: lmbI18NSizeRangeTest.class.php 5652 2007-04-13 10:36:39Z pachanga $
  * @package    i18n
  */
-lmb_require('limb/i18n/src/validation/rule/lmbI18NSizeRangeRule.class.php');
+lmb_require('limb/validation/src/rule/lmbI18NSizeRangeRule.class.php');
 lmb_require('limb/validation/tests/cases/rule/lmbValidationRuleTestCase.class.php');
 
 class lmbI18NSizeRangeTest extends lmbValidationRuleTestCase
