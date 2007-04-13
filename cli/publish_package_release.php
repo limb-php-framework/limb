@@ -104,8 +104,8 @@ class CURL
     $this->setOpt(CURLOPT_HEADER, 1);
     $this->setOpt(CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322;)");
     $this->setOpt(CURLOPT_FOLLOWLOCATION, 1);
-    $this->setOpt(CURLOPT_COOKIEJAR, dirname(__FILE__) . '/cookie.txt');
-    $this->setOpt(CURLOPT_COOKIEFILE, dirname(__FILE__) . '/cookie.txt');
+    $this->setOpt(CURLOPT_COOKIEJAR, dirname(__FILE__) . '/tmp/cookie.txt');
+    $this->setOpt(CURLOPT_COOKIEFILE, dirname(__FILE__) . '/tmp/cookie.txt');
     $this->setOpt(CURLOPT_SSL_VERIFYHOST, 0);
     $this->setOpt(CURLOPT_SSL_VERIFYPEER, 0);
     if($proxy = getenv('http_proxy'))
