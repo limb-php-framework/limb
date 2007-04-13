@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSizeRangeRule.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbSizeRangeRule.class.php 5659 2007-04-13 13:58:31Z serega $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
@@ -67,11 +67,14 @@ class lmbSizeRangeRule extends lmbSingleFieldRule
   {
     if (!is_null($this->min_length) && (strlen($value) < $this->min_length))
     {
-      $this->error('{Field} must be greater than {min} characters.', array('min' => $this->min_length));
+      $this->error('{Field} must be greater than {min} characters.', array('min' => $this->min_length,
+                                                                           'max' => $this->max_length,
+                                                                           ));
     }
     elseif (strlen($value) > $this->max_length)
     {
-      $this->error('{Field} must be less than {max} characters.', array('max' => $this->max_length));
+      $this->error('{Field} must be less than {max} characters.', array('max' => $this->max_length,
+                                                                        'min' => $this->min_length));
     }
   }
 }
