@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbFsTest.class.php 5518 2007-04-03 11:32:03Z pachanga $
- * @package    util
+ * @package    fs
  */
 lmb_require('limb/fs/src/lmbFs.class.php');
 

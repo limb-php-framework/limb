@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: package.php 5647 2007-04-12 08:43:31Z pachanga $
- * @package    util
+ * @package    fs
  */
 
 require_once 'PEAR/PackageFileManager2.php';

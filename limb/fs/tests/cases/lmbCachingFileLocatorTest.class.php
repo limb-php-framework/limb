@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbCachingFileLocatorTest.class.php 5548 2007-04-06 07:39:14Z pachanga $
- * @package    file_schema
+ * @package    fs
  */
 lmb_require('limb/fs/src/lmbFileLocator.class.php');
 lmb_require('limb/fs/src/lmbCachingFileLocator.class.php');

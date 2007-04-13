@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbFs.class.php 5601 2007-04-10 09:50:58Z pachanga $
- * @package    util
+ * @package    fs
  */
 lmb_require('limb/core/src/lmbSys.class.php');
 lmb_require('limb/fs/src/exception/lmbIOException.class.php');

@@ -7,7 +7,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id: lmbFsRecursiveIteratorTest.class.php 5177 2007-03-02 16:01:30Z pachanga $
- * @package    util
+ * @package    fs
  */
 lmb_require('limb/fs/src/lmbFsRecursiveIterator.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
