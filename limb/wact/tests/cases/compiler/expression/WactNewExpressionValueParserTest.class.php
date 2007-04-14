@@ -65,6 +65,12 @@ class WactNewExpressionValueParserTest extends UnitTestCase
     $this->assertIdentical($expr->getValue(), "hello");
   }
 
+  function testZeroDoubleQuotes()
+  {
+    $expr = $this->parser->parse('"0"');
+    $this->assertIdentical($expr->getValue(), "0");
+  }
+
   function testStringSingleQuotes()
   {
     $expr = $this->parser->parse("'hello'");

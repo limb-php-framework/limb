@@ -71,7 +71,8 @@ class WactNewExpressionValueParser
       }
       return new WactRootDataBindingExpressionNode($token);
     } else if ($token == '"' || $token == "'") {
-      if ($string = $this->getToken('/\G([^' . $token . ']*)' . $token . '/u')) {
+      $string = $this->getToken('/\G([^' . $token . ']*)' . $token . '/u');
+      if ($string !== FALSE) {
         return new WactConstantExpressionNode($string);
       } else {
         throw new Exception("Expecting a string literal.");
