@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordMetaInfo.class.php 5383 2007-03-28 12:55:03Z pachanga $
+ * @version    $Id: lmbARMetaInfo.class.php 5664 2007-04-16 09:52:49Z pachanga $
  * @package    active_record
  */
 
-class lmbActiveRecordMetaInfo
+class lmbARMetaInfo
 {
   protected $db_table = null;
   protected $db_column_names = array();
