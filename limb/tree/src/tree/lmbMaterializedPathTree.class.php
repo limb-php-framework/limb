@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5662 2007-04-16 08:01:52Z serega $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -206,6 +206,8 @@ class lmbMaterializedPathTree implements lmbTree
   {
     if(is_array($node))
       return $node;
+    elseif(is_object($node))
+      $id = $node->get('id');
     else
       $id = $node;
 

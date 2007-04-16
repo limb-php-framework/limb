@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTreeTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbMaterializedPathTreeTest.class.php 5662 2007-04-16 08:01:52Z serega $
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -71,6 +71,26 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->db->insert('test_materialized_path_tree', $node);
 
     $this->assertEqual($node, $this->imp->getNode(10)->export());
+  }
+
+  function testGetNodeByNode()
+  {
+    $node = array(
+      'identifier' => 'test',
+      'id' => 10,
+      'path' => '/10/',
+      'priority' => 11,
+      'root_id' => 10,
+      'level' => 2,
+      'parent_id' => 1000,
+      'children' => 0
+     );
+
+    $this->db->insert('test_materialized_path_tree', $node);
+    $node1 = $this->imp->getNode(10);
+    $node2 = $this->imp->getNode($node1);
+
+    $this->assertEqual($node1, $node2);
   }
 
   function testGetParentFailed()
