@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5530 2007-04-05 09:43:06Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5663 2007-04-16 08:56:20Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
@@ -17,6 +17,8 @@ class lmbTestShellUI
   protected $argv;
   protected $posix_opts = true;
   protected $call_exit = true;
+  protected $coverage;
+  protected $coverage_reporter;
 
   function __construct($magic_args = null)
   {
@@ -32,8 +34,7 @@ class lmbTestShellUI
       }
       catch(Exception $e)
       {
-        echo('Fatal Error: ' . $e->getMessage() . "\n");
-        exit(1);
+        $this->_error($e->getMessage() . "\n");
       }
     }
   }
@@ -56,11 +57,14 @@ class lmbTestShellUI
 
     $usage = <<<EOD
 Usage:
-  $script [-c|--config,-h|--help] <file|dir>
+  $script OPTIONS <file|dir>
   Executes SimpleTest based unit tests within filesystem
 Options:
-  -c, --config=/file.php  PHP configuration file path
-  -h, --help              displays this help and exit
+  -c, --config=/file.php        PHP configuration file path
+  -h, --help                    Displays this help and exit
+  --cover=path1;path2           Sets paths delimitered with ';' which should be analyzed for coverage
+  --cover-report=dir            Sets coverage report directory
+  --cover-exclude=path1;path2   Sets paths delimitered with ';' which should be excluded from coverage analysis
 
 EOD;
     return $usage;
@@ -72,6 +76,13 @@ EOD;
     exit($code);
   }
 
+  protected function _error($message, $code = 1)
+  {
+    echo "ERROR: $message";
+    echo $this->_help();
+    exit($code);
+  }
+
   static function getShortOpts()
   {
     return 'ht:b:c:';
@@ -79,7 +90,7 @@ EOD;
 
   static function getLongOpts()
   {
-    return array('help', 'config=');
+    return array('help', 'config=', 'cover=', 'cover-report=', 'cover-exclude=');
   }
 
   function run()
@@ -123,6 +134,9 @@ EOD;
     }
 
     $configured = false;
+    $cover_include = '';
+    $cover_exclude = '';
+    $cover_report_dir = null;
 
     foreach($options[0] as $option)
     {
@@ -137,6 +151,15 @@ EOD;
           include_once(realpath($option[1]));
           $configured = true;
           break;
+        case '--cover':
+          $cover_include = $option[1];
+          break;
+        case '--cover-report':
+          $cover_report_dir = $option[1];
+          break;
+        case '--cover-exclude':
+          $cover_exclude = $option[1];
+          break;
       }
     }
 
@@ -149,7 +172,14 @@ EOD;
     if(!isset($options[1][0]))
       $this->_help(1);
 
+    if(!$cover_report_dir && defined('LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR'))
+      $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
+
+    $this->_startCoverage($cover_include, $cover_exclude, $cover_report_dir);
+
     $res = $this->_runForTestPath($options[1][0], $found);
+
+    $this->_endCoverage();
 
     if(!$found)
       $this->_help(1);
@@ -171,6 +201,36 @@ EOD;
       $res = $res & $tree->perform($node, $this->_getReporter());
     }
     return $res;
+  }
+
+  protected function _startCoverage($cover_include, $cover_exclude='', $cover_report_dir=null)
+  {
+    if(!$cover_include)
+      return;
+
+    if(!$cover_report_dir)
+      $this->_error("Coverage report directory is required(try --cover-report option)\n");
+
+    @define('__PHPCOVERAGE_HOME', dirname(__FILE__) . '/../lib/spikephpcoverage/src/');
+    require_once(__PHPCOVERAGE_HOME . '/CoverageRecorder.php');
+    require_once(__PHPCOVERAGE_HOME . '/reporter/HtmlCoverageReporter.php');
+
+    $this->coverage_reporter = new HtmlCoverageReporter("Code Coverage Report", "", $cover_report_dir);
+
+    $include_paths = explode(';', $cover_include);
+    $exclude_paths = explode(';', $cover_exclude);
+    $this->coverage = new CoverageRecorder($include_paths, $exclude_paths, $this->coverage_reporter);
+    $this->coverage->startInstrumentation();
+  }
+
+  protected function _endCoverage()
+  {
+    if($this->coverage)
+    {
+      $this->coverage->stopInstrumentation();
+      $this->coverage->generateReport();
+      $this->coverage_reporter->printTextSummary();
+    }
   }
 
   protected function _normalizePath($path)
