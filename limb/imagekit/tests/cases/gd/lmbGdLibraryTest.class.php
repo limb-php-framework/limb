@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbGdLibraryTest.class.php 4999 2007-02-08 15:36:37Z pachanga $
+ * @version    $Id: lmbGdLibraryTest.class.php 5672 2007-04-17 11:56:37Z pachanga $
  * @package    imagekit
  */
 lmb_require('limb/imagekit/src/lmbImageGd.class.php');
-lmb_require(dirname(__FILE__) . '/lmbImageLibraryTestBase.class.php');
+lmb_require(dirname(__FILE__) . '/../lmbImageLibraryTestBase.class.php');
 
 class lmbGdLibraryTest extends lmbImageLibraryTestBase
 {
