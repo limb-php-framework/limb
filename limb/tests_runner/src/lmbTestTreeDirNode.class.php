@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestTreeDirNode.class.php 5569 2007-04-09 08:39:30Z pachanga $
+ * @version    $Id: lmbTestTreeDirNode.class.php 5671 2007-04-17 11:56:02Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
@@ -165,7 +165,7 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     if(file_exists($this->dir . '/.ignore'))
       $this->ignored = true;
     elseif(file_exists($this->dir . '/.ignore.php'))
-      $this->ignored = include($this->dir . '/.ignore.php');
+      $this->ignored = (bool)include($this->dir . '/.ignore.php');
     else
       $this->ignored = false;
 
