@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -121,8 +121,9 @@ class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
 
     $course->setLectures(array($l1, $l2));
     $lectures = $course->getLectures();
-    $this->assertEqual($lectures->at(0), $l1);
-    $this->assertEqual($lectures->at(1), $l2);
+    $this->assertEqual(sizeof($lectures), 2);
+    $this->assertEqual($lectures[0]->getTitle(), $l1->getTitle());
+    $this->assertEqual($lectures[1]->getTitle(), $l2->getTitle());
   }
 
   function testSetFlushesPreviousCollection()

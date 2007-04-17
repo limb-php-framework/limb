@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordValidationTest.class.php 5528 2007-04-04 15:08:50Z pachanga $
+ * @version    $Id: lmbActiveRecordValidationTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -85,7 +85,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->set('annotation', 'blah-blah');
 
     $insert_validator->expectOnce('setErrorList', array($error_list));
-    $insert_validator->expectOnce('validate', array($object));
+    $insert_validator->expectOnce('validate', array(new ReferenceExpectation($object)));
     $insert_validator->setReturnValue('validate', true);
 
     $update_validator->expectNever('setErrorList');
@@ -131,7 +131,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->setUpdateValidator($update_validator);
 
     $update_validator->expectOnce('setErrorList', array($error_list));
-    $update_validator->expectOnce('validate', array($object));
+    $update_validator->expectOnce('validate', array(new ReferenceExpectation($object)));
     $update_validator->setReturnValue('validate', true);
 
     $insert_validator->expectNever('setErrorList');
@@ -169,7 +169,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->set('news_date', $news_date = '2005-01-10');
 
     $validator->expectOnce('setErrorList', array($error_list));
-    $validator->expectOnce('validate', array($object));
+    $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
     $validator->setReturnValue('validate', false);
 
     try
@@ -199,7 +199,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->set('news_date', $news_date = '2005-01-10');
 
     $validator->expectOnce('setErrorList', array($error_list));
-    $validator->expectOnce('validate', array($object));
+    $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
     $validator->setReturnValue('validate', true);
 
     $object->save($error_list);
@@ -220,7 +220,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->set('annotation', $annotation = 'New annotation ' . time());
 
     $validator->expectOnce('setErrorList', array($error_list));
-    $validator->expectOnce('validate', array($object));
+    $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
     $validator->setReturnValue('validate', false);
 
     try
@@ -249,7 +249,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->set('annotation', $annotation = 'New annotation ' . time());
 
     $validator->expectOnce('setErrorList', array($error_list));
-    $validator->expectOnce('validate', array($object));
+    $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
     $validator->setReturnValue('validate', true);
 
     $object->save($error_list);

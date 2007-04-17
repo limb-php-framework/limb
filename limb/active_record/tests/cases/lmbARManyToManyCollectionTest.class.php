@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARManyToManyCollectionTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbARManyToManyCollectionTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordManyToManyRelationsTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbActiveRecordManyToManyRelationsTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -153,7 +153,10 @@ class lmbActiveRecordManyToManyRelationsTest extends UnitTestCase
     $g2->setTitle('vp2');
 
     $user->setGroups(array($g1, $g2));
-    $this->assertEqual($user->getGroups()->getArray(), array($g1, $g2));
+    $arr = $user->getGroups()->getArray();
+    $this->assertEqual(sizeof($arr), 2);
+    $this->assertEqual($arr[0]->getTitle(), $g1->getTitle());
+    $this->assertEqual($arr[1]->getTitle(), $g2->getTitle());
   }
 
   function testSetFlushesPreviousCollection()
