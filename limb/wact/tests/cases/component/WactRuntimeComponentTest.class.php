@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeComponentTest.class.php 5168 2007-02-28 16:05:08Z serega $
+ * @version    $Id: WactRuntimeComponentTest.class.php 5668 2007-04-17 09:59:00Z pachanga $
  * @package    wact
  */
 
@@ -34,7 +34,7 @@ class WactRuntimeComponentTest extends WactTemplateTestCase
   {
     $child = new WactRuntimeComponent('TestChild');
     $this->component->addChild($child);
-    $this->assertEqual($this->component->findChild('TestChild'), $child);
+    $this->assertReference($this->component->findChild('TestChild'), $child);
   }
 
   function testFindChildNotFound()
@@ -46,7 +46,7 @@ class WactRuntimeComponentTest extends WactTemplateTestCase
   {
     $child = new WactRuntimeComponent('TestChild');
     $this->component->addChild($child);
-    $this->assertEqual($this->component->findChildByClass('WactRuntimeComponent'), $child);
+    $this->assertReference($this->component->findChildByClass('WactRuntimeComponent'), $child);
   }
 
   function testFindChildByClassNotFound()
