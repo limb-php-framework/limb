@@ -30,7 +30,7 @@ class lmbHandleTest extends UnitTestCase
   function testDeclaredInSameFile()
   {
     $handle = new lmbHandle('lmbHandleDeclaredInSameFile');
-    $this->assertIsA(lmbProxyResolver :: resolve($handle), 'lmbHandleDeclaredInSameFile');
+    $this->assertIsA($handle->resolve(), 'lmbHandleDeclaredInSameFile');
   }
 
   function testPassMethodCalls()
@@ -57,13 +57,13 @@ class lmbHandleTest extends UnitTestCase
   function testShortClassPath()
   {
     $handle = new lmbHandle(dirname(__FILE__) . '/lmbTestHandleClass');
-    $this->assertIsA(lmbProxyResolver :: resolve($handle), 'lmbTestHandleClass');
+    $this->assertIsA($handle->resolve(), 'lmbTestHandleClass');
   }
 
   function testShortClassPathWithExtension()
   {
     $handle = new lmbHandle(dirname(__FILE__) . '/lmbTestHandleClass.class.php');
-    $this->assertIsA(lmbProxyResolver :: resolve($handle), 'lmbTestHandleClass');
+    $this->assertIsA($handle->resolve(), 'lmbTestHandleClass');
   }
 
   function testShortClassPathPassArguments()
@@ -75,7 +75,7 @@ class lmbHandleTest extends UnitTestCase
   function testFullClassPath()
   {
     $handle = new lmbHandle(dirname(__FILE__) . '/handle.inc.php', array(), 'lmbLoadedHandleClass');
-    $this->assertIsA(lmbProxyResolver :: resolve($handle), 'lmbLoadedHandleClass');
+    $this->assertIsA($handle->resolve(), 'lmbLoadedHandleClass');
   }
 
   function testFullClassPathPassArguments()

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5648 2007-04-12 08:54:01Z pachanga $
+ * @version    $Id: common.inc.php 5673 2007-04-17 11:57:35Z pachanga $
  * @package    core
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
@@ -126,10 +126,7 @@ function lmb_php_object_id($obj)
   if(!is_object($obj))
     throw new lmbException('Object expected but "' . $obj. '" is given');
 
-  lmb_require('limb/core/src/lmbProxyResolver.class.php');
-  $obj = lmbProxyResolver :: resolve($obj);
-
-  $objId = (int)substr(strrchr("$obj", "#"), 1);
+  $objId = (int)substr(strrchr(lmb_var_dump($obj), "#"), 1);
 
   if($objId <= 0)
     throw new lmbException('Could not generate id for object "' . $obj . '"');

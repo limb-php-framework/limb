@@ -10,7 +10,6 @@
  * @package    core
  */
 lmb_require('limb/core/src/lmbClassPath.class.php');
-lmb_require('limb/core/src/lmbProxyResolver.class.php');
 
 class TestStubForClassPathTest
 {
@@ -79,7 +78,7 @@ class lmbClassPathTest extends UnitTestCase
     $handle = $class_path->createHandle();
 
     $this->assertEqual(get_class($handle), 'lmbHandle');
-    $this->assertEqual(get_class(lmbProxyResolver :: resolve($handle)), 'TestStubForClassPathTest');
+    $this->assertEqual(get_class($handle->resolve()), 'TestStubForClassPathTest');
   }
 
   function testCreateHandlePassArgs()
