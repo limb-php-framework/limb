@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactJSCheckboxComponent.class.php 5453 2007-03-30 14:08:59Z serega $
+ * @version    $Id: WactJSCheckboxComponent.class.php 5669 2007-04-17 10:10:32Z maximgb $
  * @package    wact
  */
 
@@ -31,10 +31,12 @@ class WactJSCheckboxComponent extends WactCheckableFormElement
       $checked = '';
 
     $js = "onchange=\"this.form.elements['{$id}'].value = 1*this.checked\"";
+    
+    // title has no meaning in <input type="hidden"/> field, so it should be copied into checkbox
+    $title = $this->getAttribute('title');
+    $title = $title ? 'title=\''.$title.'\'' : '';
 
-    echo "<input type='checkbox' id='{$box_id}' {$checked} {$js}>";
-
+    echo "<input type='checkbox' id='{$box_id}' {$checked} {$js} {$title}>";
   }
-
 }
 ?>
