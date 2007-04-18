@@ -313,6 +313,24 @@ class lmbNestedSetsTreeTest extends UnitTestCase
     $children = $this->imp->countChildren($id, 2);
     $this->assertEqual(3, $children);            
   }
+  
+  function testCountChildrenDepth()
+  {
+    $this->imp->initTree(array('identifier' => 'root'));
+    $id = $this->imp->createNode(array('identifier' => 'node_1'));
+    $node_id = $this->imp->createNode(array('identifier' => 'node_1_1'), $id);
+    $child_id = $this->imp->createNode(array('identifier' => 'node_1_1_1'), $node_id);
+    $this->imp->createNode(array('identifier' => 'node_1_2'), $id);
+    
+    $children = $this->imp->countChildren($id, 1);
+    $this->assertEqual(2, $children);
+    
+    $children = $this->imp->countChildren($id, 2);
+    $this->assertEqual(3, $children);
+    
+    $children = $this->imp->countChildren($id, -1);
+    $this->assertEqual(3, $children);            
+  }
  
   function testCountChildrenAllFailed()
   {

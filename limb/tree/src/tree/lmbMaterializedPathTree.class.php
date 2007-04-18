@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5675 2007-04-18 11:36:51Z alex433 $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5677 2007-04-18 14:02:43Z alex433 $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -141,19 +141,43 @@ class lmbMaterializedPathTree implements lmbTree
   {
     if (!$parent = $this->getNode($node))
       return null;
+    if ($depth == 1)
+    {
+      $sql = "SELECT " . $this->_getSelectFields() . "
+              FROM {$this->_node_table}
+              WHERE parent_id = :parent_id:";
 
-    $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table}
-            WHERE parent_id = :parent_id:";
-
-    $stmt = $this->_conn->newStatement($sql);
-    $stmt->set('parent_id', $parent['id']);
-
+      $stmt = $this->_conn->newStatement($sql);
+      $stmt->set('parent_id', $parent['id']);
+    }
+    else
+    {
+      $sql = "SELECT " . $this->_getSelectFields() . "
+              FROM {$this->_node_table}
+              WHERE path LIKE '{$parent['path']}%'
+              AND id != {$parent['id']}";
+      if ($depth !=-1) 
+              $sql .= " AND level <= ".($parent['level']+1+$depth);
+      $stmt = $this->_conn->newStatement($sql); 
+    }
+    
     return $stmt->getRecordSet();
   }
   
   function getChildrenAll($node)
   {
+    if (!$node = $this->getNode($node))
+      return null;
+
+    $sql = "SELECT " . $this->_getSelectFields() . "
+            FROM {$this->_node_table}
+            WHERE path LIKE '{$node['path']}%'
+            AND id != {$node['id']}
+            ORDER BY path";
+
+    $stmt = $this->_conn->newStatement($sql);
+
+    return $stmt->getRecordSet();
     
   }
   function countChildren($node, $depth = 1)
@@ -161,17 +185,40 @@ class lmbMaterializedPathTree implements lmbTree
     if (!$parent = $this->getNode($node))
       return null;
 
-    $sql = "SELECT count(id) as counter FROM {$this->_node_table}
-            WHERE parent_id = :parent_id:";
+    if ($depth == 1)
+    {
+      $sql = "SELECT count(id) as counter FROM {$this->_node_table}
+              WHERE parent_id = :parent_id:";
 
-    $stmt = $this->_conn->newStatement($sql);
-    $stmt->set('parent_id', $parent['id']);
+      $stmt = $this->_conn->newStatement($sql);
+      $stmt->set('parent_id', $parent['id']);
+    }
+    else
+    {
+      $sql = "SELECT count(id) as counter
+              FROM {$this->_node_table}
+              WHERE path LIKE '{$parent['path']}%'
+              AND id != {$parent['id']}";
+      if ($depth !=-1) 
+              $sql .= " AND level <= ".($parent['level']+1+$depth);
+      $stmt = $this->_conn->newStatement($sql); 
+    }
     return $stmt->getOneValue();
   }
   
   function countChildrenAll($node)
   {
+    if (!$parent = $this->getNode($node))
+      return null;
+
+    $sql = "SELECT count(id) as counter
+            FROM {$this->_node_table}
+            WHERE path LIKE '{$parent['path']}%'
+            AND id != {$parent['id']}";
+
+    $stmt = $this->_conn->newStatement($sql);
     
+    return $stmt->getOneValue();  
   }
 
   function getSubBranch($node, $depth = -1, $include_parent = false)
