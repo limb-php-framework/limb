@@ -521,6 +521,55 @@ class lmbNestedSetsTree implements lmbTree
     
     return true;
   }
+  
+  function moveNodeUp($node)
+  {
+    return $this->_moveNodeByStep($node);
+  }
+  
+  function moveNodeDown($node)
+  {
+    return $this->_moveNodeByStep($node, 'down');
+  }
+  
+  protected function _moveNodeByStep ($node , $step = 'up')
+  {
+    if (!$node = $this->getNode($node))
+      return false;
+    
+    if (strtolower($step) == 'up')
+      $conditions = $this->right.'='.($node[$this->left]-1);
+    else
+      $conditions = $this->left.'='.($node[$this->right]+1);
+      
+    $sql = "SELECT {$this->left}, {$this->right} 
+            FROM {$this->_node_table} 
+            WHERE {$conditions} AND {$this->level}={$node[$this->level]}";
+    $stmt =  $this->_conn->newStatement($sql);
+    if (!$node2 = $stmt->getOneRecord())
+      return false;
+    
+    $delta = ($step == 'up') ? ($node[$this->left] - $node2[$this->left]) : ($node2[$this->left] - $node[$this->left]);
+    $delta2 = ($step == 'up') ? ($node[$this->right] - $node2[$this->right]) : ($node2[$this->right] - $node[$this->right]);
+    
+    $sql = "UPDATE {$this->_node_table} SET
+            {$this->right} = CASE
+                  WHEN {$this->left} BETWEEN {$node[$this->left]} AND {$node[$this->right]}
+                    THEN ".( ($step == 'up') ? $this->right.'-'.$delta : $this->right.'+'.$delta2)."
+                    ELSE ".( ($step == 'up') ? $this->right.'+'.$delta2 : $this->right.'-'.$delta)."
+                  END,
+            {$this->left} = CASE 
+                  WHEN {$this->left} BETWEEN {$node[$this->left]} AND {$node[$this->right]}
+                    THEN ".( ($step == 'up') ? $this->left.'-'.$delta : $this->left.'+'.$delta2)."
+                    ELSE ".( ($step == 'up') ? $this->left.'+'.$delta2 : $this->left.'-'.$delta)."
+                  END
+            WHERE ".(($step == 'up') ? $this->left.'>='.$node2[$this->left].' AND '.$this->right.'<='.$node[$this->right] : $this->left.'>='.$node[$this->left].' AND '.$this->right.'<='.$node2[$this->right]);
+    
+    $stmt = $this->_conn->newStatement($sql);
+    $stmt->execute();  
+    
+    return true;
+  }
 }
 
 ?>

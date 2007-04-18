@@ -526,6 +526,39 @@ class lmbNestedSetsTreeTest extends UnitTestCase
     $this->assertNull($path);
   }
   
+  function testMoveNodeUpDown()
+  {
+    $this->imp->initTree(array('identifier' => 'root'));
+    $id = $this->imp->createNode(array('identifier' => 'node_1'));
+    $node = $this->imp->createNode(array('identifier' => 'node_2'));
+    $node_id = $this->imp->createNode(array('identifier' => 'node_1_1'), $id);
+    $source_id = $this->imp->createNode(array('identifier' => 'node_1_1_1'), $node_id);
+    
+    $this->imp->moveNodeUp($node);
+    
+    $moved_node = array(
+      'identifier' => 'node_2',
+      'id' => $node,
+      'c_left' => 2,
+      'c_right' => 3,
+      'c_level' => 1,
+    );
+    
+    $this->assertEqual($this->imp->getNode($node)->export(), $moved_node);
+    
+    $this->imp->moveNodeDown($node);
+    
+    $moved_node = array(
+      'identifier' => 'node_2',
+      'id' => $node,
+      'c_left' => 8,
+      'c_right' => 9,
+      'c_level' => 1,
+    );
+    
+    $this->assertEqual($this->imp->getNode($node)->export(), $moved_node);
+  }
+  
   function _checkResultNodesArray($nodes, $line='')
   {
     if(isset($nodes['id']))//check for array
