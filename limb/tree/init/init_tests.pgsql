@@ -11,3 +11,14 @@ CREATE TABLE test_materialized_path_tree (
   "priority" int default NULL,
   PRIMARY KEY  ("id")
 ) ;
+
+DROP TABLE test_nested_sets_tree CASCADE;
+CREATE TABLE test_nested_sets_tree (
+  "id"      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  "c_left"    INT(11) UNSIGNED NOT NULL,
+  "c_right"   INT(11) UNSIGNED NOT NULL,
+  "c_level"   INT(11) UNSIGNED NOT NULL,
+  "identifier" varchar(128) NOT NULL,
+  PRIMARY KEY("id"),
+  KEY("c_left", "c_right", "c_level")
+) ;

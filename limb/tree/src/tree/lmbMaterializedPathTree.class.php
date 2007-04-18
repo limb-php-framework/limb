@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5662 2007-04-16 08:01:52Z serega $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5675 2007-04-18 11:36:51Z alex433 $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -36,11 +36,11 @@ class lmbMaterializedPathTree implements lmbTree
     $this->_params = $this->_db_table->getColumnNames();
   }
 
-  function setDumbMode($status=true)
+  function initTree($values)
   {
-    $prev_mode = $this->_dumb_mode;
-    $this->_dumb_mode = $status;
-    return $prev_mode;
+    $stmt = $this->_conn->newStatement("TRUNCATE {$this->_node_table}");
+    $stmt->execute();
+    return true;
   }
 
   function setNodeTable($table_name)
@@ -83,7 +83,7 @@ class lmbMaterializedPathTree implements lmbTree
     return $processed;
   }
 
-  function getRootNodes()
+  function getTopNodes($level = 1)
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table} WHERE parent_id=0";
@@ -137,7 +137,7 @@ class lmbMaterializedPathTree implements lmbTree
     return $this->getChildren($parent['id']);
   }
 
-  function getChildren($node)
+  function getChildren($node, $depth = 1)
   {
     if (!$parent = $this->getNode($node))
       return null;
@@ -151,8 +151,12 @@ class lmbMaterializedPathTree implements lmbTree
 
     return $stmt->getRecordSet();
   }
-
-  function countChildren($node)
+  
+  function getChildrenAll($node)
+  {
+    
+  }
+  function countChildren($node, $depth = 1)
   {
     if (!$parent = $this->getNode($node))
       return null;
@@ -163,6 +167,11 @@ class lmbMaterializedPathTree implements lmbTree
     $stmt = $this->_conn->newStatement($sql);
     $stmt->set('parent_id', $parent['id']);
     return $stmt->getOneValue();
+  }
+  
+  function countChildrenAll($node)
+  {
+    
   }
 
   function getSubBranch($node, $depth = -1, $include_parent = false)
@@ -236,7 +245,7 @@ class lmbMaterializedPathTree implements lmbTree
 
     if(!count($path_array))
       return null;
-
+                                                               
     $in_condition = $this->_dbIn('identifier', array_unique($path_array));
 
     $sql = "SELECT " . $this->_getSelectFields() . "
@@ -245,7 +254,7 @@ class lmbMaterializedPathTree implements lmbTree
             {$in_condition}
             AND level <= {$level}
             ORDER BY path";
-
+    
     $stmt = $this->_conn->newStatement($sql);
     $rs = $stmt->getRecordSet();
 
@@ -350,7 +359,7 @@ class lmbMaterializedPathTree implements lmbTree
     $node = $this->getNode($id);
 
     if (isset($values['parent_id']) && $node['parent_id'] != $values['parent_id'])
-      $this->moveTree($id, $values['parent_id']);
+      $this->moveNode($id, $values['parent_id']);
 
     $this->_db_table->updateById($id, $values);
 
@@ -501,7 +510,7 @@ class lmbMaterializedPathTree implements lmbTree
     return true;
   }
 
-  function moveTree($source_node, $target_node)
+  function moveNode($source_node, $target_node)
   {
     if ($source_node == $target_node)
       return false;

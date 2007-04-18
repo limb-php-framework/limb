@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTreeTest.class.php 5662 2007-04-16 08:01:52Z serega $
+ * @version    $Id: lmbMaterializedPathTreeTest.class.php 5675 2007-04-18 11:36:51Z alex433 $
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -140,7 +140,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
       'children' => 1000
     );
 
-    $node_id = $this->imp->createRootNode($node);
+    $node_id = $this->imp->createNode($node);
 
     $this->assertNotIdentical($node_id, false);
 
@@ -171,7 +171,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
       'children' => 1000
     );
 
-    $node_id = $this->imp->createRootNode($node);
+    $node_id = $this->imp->createNode($node);
 
     $this->assertEqual($node_id, $use_this_node_id);
 
@@ -202,8 +202,8 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
       'children' => 1000
     );
 
-    $node_id = $this->imp->createRootNode($node);
-    $this->assertFalse($this->imp->createRootNode($node));
+    $node_id = $this->imp->createNode($node);
+    $this->assertFalse($this->imp->createNode($node));
   }
 
   function testCreateRootNodeDumb()
@@ -218,9 +218,8 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
       'children' => 10000
     );
 
-    $this->imp->setDumbMode();
 
-    $node_id = $this->imp->createRootNode($node);
+    $node_id = $this->imp->createNode($node);
 
     $this->assertEqual($node_id, 1000000000);
 
@@ -233,24 +232,24 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testCreateSubNodeFailed()
   {
-    $this->assertFalse($this->imp->createSubNode(100000, array()));
+    $this->assertFalse($this->imp->createNode(array(),100000));
   }
 
   function testCreateSubNodeFailedTheresNodeWithSuchId()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
 
     $sub_node = array(
       'identifier' => 'test',
       'id' => $parent_node_id,
     );
 
-    $this->assertFalse($this->imp->createSubNode($parent_node_id, $sub_node));
+    $this->assertFalse($this->imp->createNode($sub_node, $parent_node_id));
   }
 
   function testCreateSubNodeAutoGenerateId()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
 
     $parent_node = $this->imp->getNode($parent_node_id);
 
@@ -263,7 +262,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
       'children' => 1000
     );
 
-    $sub_node_id = $this->imp->createSubNode($parent_node_id, $sub_node);
+    $sub_node_id = $this->imp->createNode($sub_node, $parent_node_id);
 
     $this->assertNotIdentical($sub_node_id, false);
 
@@ -289,7 +288,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testCreateSubNodeUseId()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
 
     $parent_node = $this->imp->getNode($parent_node_id);
 
@@ -303,7 +302,7 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
       'children' => 1000
     );
 
-    $sub_node_id = $this->imp->createSubNode($parent_node_id, $sub_node);
+    $sub_node_id = $this->imp->createNode($sub_node, $parent_node_id);
 
     $this->assertEqual($sub_node_id, $use_this_node_id);
 
@@ -327,67 +326,6 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->assertEqual($row['children'], 0, '%s, invalid parameter: children');
   }
 
-  function testCreateSubNodeDumb()
-  {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-
-    $parent_node = $this->imp->getNode($parent_node_id);
-    $this->imp->setDumbMode();
-
-    $sub_node = array(
-      'identifier' => 'test',
-      'id' => 12,
-      'path' => '/0/',
-      'root_id' => 0,
-      'level' => 23,
-      'parent_id' => 1000,
-      'children' => 1000
-    );
-
-    $sub_node_id = $this->imp->createSubNode($parent_node_id, $sub_node);
-
-    $this->assertNotIdentical($sub_node_id, false);
-    $this->assertEqual($sub_node_id, 12);
-
-    $rs = $this->db->select('test_materialized_path_tree')->sort(array('id' => 'ASC'));
-    $rs->rewind();
-    $rs->next();
-    $row = $rs->current()->export();
-
-    $this->assertEqual($row['id'], $sub_node_id, '%s, invalid parameter: id');
-  }
-
-  function testGetMaxIdentifierFailed()
-  {
-    $this->assertIdentical(false, $this->imp->getMaxChildIdentifier(1000));
-  }
-
-  function testGetMaxIdentifier()
-  {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-
-    $this->assertEqual(0, $this->imp->getMaxChildIdentifier($root_id));
-
-    $sub_node_id_1_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test1'));
-    $sub_node_id_1_2 = $this->imp->createSubNode($root_id, array('identifier' => 'test3'));
-    $sub_node_id_1_3 = $this->imp->createSubNode($root_id, array('identifier' => 'test2'));
-
-    $this->assertEqual('test3', $this->imp->getMaxChildIdentifier($root_id));
-  }
-
-  function testGetMaxIdentifierNaturalSort()
-  {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-
-    $this->assertEqual(0, $this->imp->getMaxChildIdentifier($root_id));
-
-    $sub_node_id_1_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test8'));
-    $sub_node_id_1_2 = $this->imp->createSubNode($root_id, array('identifier' => 'test9'));
-    $sub_node_id_1_3 = $this->imp->createSubNode($root_id, array('identifier' => 'test10'));
-
-    $this->assertEqual('test10', $this->imp->getMaxChildIdentifier($root_id));
-  }
-
   function testDeleteNodeFailed()
   {
     $this->imp->deleteNode(100000);
@@ -395,10 +333,10 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testDeleteNode()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id1 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
-    $sub_node_id2 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test2'));
-    $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test0'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id1 = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
+    $sub_node_id2 = $this->imp->createNode(array('identifier' => 'test2'), $parent_node_id);
+    $this->imp->createNode(array('identifier' => 'test0'), $sub_node_id1);
 
     $this->imp->deleteNode($sub_node_id1);
 
@@ -422,8 +360,8 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testIsNode()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
 
     $this->assertTrue($this->imp->isNode($sub_node_id));
     $this->assertTrue($this->imp->isNode($parent_node_id));
@@ -437,11 +375,11 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testGetParents()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $this->imp->createSubNode($parent_node_id, array('identifier' => 'test0'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $this->imp->createNode(array('identifier' => 'test0'), $parent_node_id);
 
-    $sub_node_id1 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
-    $sub_node_id2 = $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test2'));
+    $sub_node_id1 = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
+    $sub_node_id2 = $this->imp->createNode(array('identifier' => 'test2'), $sub_node_id1);
 
     $rs = $this->imp->getParents($sub_node_id2);
     $this->assertEqual($rs->count(), 2);
@@ -477,10 +415,10 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testGetChildren()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id1 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
-    $sub_node_id2 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test2'));
-    $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test0'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id1 = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
+    $sub_node_id2 = $this->imp->createNode(array('identifier' => 'test2'), $parent_node_id);
+    $this->imp->createNode(array('identifier' => 'test0'), $sub_node_id1);
 
     $rs = $this->imp->getChildren($parent_node_id)->sort(array('id' => 'ASC'));
     $nodes = $rs->getArray('id');
@@ -506,10 +444,10 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testCountChildren()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id1 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
-    $sub_node_id2 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test2'));
-    $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test0'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id1 = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
+    $sub_node_id2 = $this->imp->createNode(array('identifier' => 'test2'), $parent_node_id);
+    $this->imp->createNode(array('identifier' => 'test0'),$sub_node_id1);
 
     $this->assertEqual(2, $this->imp->countChildren($parent_node_id));
   }
@@ -521,10 +459,10 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testGetSiblings()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id1 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
-    $sub_node_id2 = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test2'));
-    $this->imp->createSubNode($sub_node_id1, array('identifier' => 'test0'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id1 = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
+    $sub_node_id2 = $this->imp->createNode(array('identifier' => 'test2'), $parent_node_id);
+    $this->imp->createNode(array('identifier' => 'test0'), $sub_node_id1);
 
     $rs = $this->imp->getSiblings($sub_node_id2)->sort(array('id' => 'ASC'));
     $nodes = $rs->getArray('id');
@@ -549,8 +487,8 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testUpdateNode()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $node_id = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $node_id = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
 
     $node = array(
       'identifier' => 'test',
@@ -575,8 +513,8 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testMoveTreeSinceOnlyJunkFieldsFailed()
   {
-    $parent_node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $node_id = $this->imp->createSubNode($parent_node_id, array('identifier' => 'test1'));
+    $parent_node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $node_id = $this->imp->createNode(array('identifier' => 'test1'), $parent_node_id);
 
     $node = array(
       'no_such_field' => 'test');
@@ -586,33 +524,33 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testMoveTreeFailed()
   {
-    $this->assertFalse($this->imp->moveTree(1, 1));
+    $this->assertFalse($this->imp->moveNode(1, 1));
 
-    $this->assertFalse($this->imp->moveTree(1, 2));
+    $this->assertFalse($this->imp->moveNode(1, 2));
 
-    $node_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id = $this->imp->createSubNode($node_id, array('identifier' => 'test'));
+    $node_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id = $this->imp->createNode(array('identifier' => 'test'), $node_id);
 
-    $this->assertFalse($this->imp->moveTree($node_id, $node_id-1));
+    $this->assertFalse($this->imp->moveNode($node_id, $node_id-1));
 
-    $this->assertFalse($this->imp->moveTree($node_id, $sub_node_id));
+    $this->assertFalse($this->imp->moveNode($node_id, $sub_node_id));
   }
 
   function testMoveTree()
   {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test'));
-    $sub_node_id_1_1 = $this->imp->createSubNode($sub_node_id_1, array('identifier' => 'test'));
-    $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test'));
-    $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test'));
+    $root_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id_1 = $this->imp->createNode(array('identifier' => 'test'), $root_id);
+    $sub_node_id_1_1 = $this->imp->createNode(array('identifier' => 'test'), $sub_node_id_1);
+    $sub_node_id_1_1_1 = $this->imp->createNode(array('identifier' => 'test'), $sub_node_id_1_1);
+    $sub_node_id_1_1_2 = $this->imp->createNode(array('identifier' => 'test'), $sub_node_id_1_1);
 
-    $root_id_2 = $this->imp->createRootNode( array('identifier' => 'test'));
-    $sub_node_id_2 = $this->imp->createSubNode($root_id_2, array('identifier' => 'test'));
+    $root_id_2 = $this->imp->createNode( array('identifier' => 'test'));
+    $sub_node_id_2 = $this->imp->createNode(array('identifier' => 'test'), $root_id_2);
 
     $root_node = $this->imp->getNode($root_id);
     $this->assertEqual($root_node['children'], 1, 'invalid parent parameter: children');
 
-    $this->assertTrue($this->imp->moveTree($sub_node_id_1, $sub_node_id_2));
+    $this->assertTrue($this->imp->moveNode($sub_node_id_1, $sub_node_id_2));
 
     $root_node = $this->imp->getNode($root_id);
     $this->assertEqual($root_node['children'], 0, 'invalid parent parameter: children');
@@ -655,9 +593,9 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testUpdateWithNewParentIdCallMoveTreeAsWell()
   {
-    $root_id1 = $this->imp->createRootNode(array('identifier' => 'root1'));
-    $root_id2 = $this->imp->createRootNode(array('identifier' => 'root2'));
-    $node_id = $this->imp->createSubNode($root_id1, array('identifier' => 'test1'));
+    $root_id1 = $this->imp->createNode(array('identifier' => 'root1'));
+    $root_id2 = $this->imp->createNode(array('identifier' => 'root2'));
+    $node_id = $this->imp->createNode(array('identifier' => 'test1'), $root_id1);
 
     $node = array(
       'identifier' => 'test2',
@@ -678,14 +616,14 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->assertEqual($root_node2['children'], 1);
   }
 
-  function testGetSubBranchFailed()
+  /*function testGetSubBranchFailed()
   {
-    $this->assertNull($this->imp->getSubBranch(1));
+    $this->assertNull($this->imp->getBranch(1));
   }
 
   function testGetSubBranch()
   {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
+    $root_id = $this->imp->createNode(array('identifier' => 'root'));
     $sub_node_id_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test'));
     $sub_node_id_1_1 = $this->imp->createSubNode($sub_node_id_1, array('identifier' => 'test'));
     $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test'));
@@ -721,18 +659,18 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->assertEqual(2, sizeof($branch));
     $this->_checkResultNodesArray($branch,  __LINE__);
     $this->_checkProperNesting($branch);
-  }
+  }*/
 
   function testGetNodeByPathFailed()
   {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id_1 = $this->imp->createSubNode($root_id, array('identifier' => '1_test'));
-    $sub_node_id_1_1 = $this->imp->createSubNode($sub_node_id_1, array('identifier' => '1_1_test'));
-    $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => '1_1_1_test'));
-    $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => '1_1_2_test'));
+    $root_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id_1 = $this->imp->createNode(array('identifier' => '1_test'), $root_id);
+    $sub_node_id_1_1 = $this->imp->createNode(array('identifier' => '1_1_test'), $sub_node_id_1);
+    $sub_node_id_1_1_1 = $this->imp->createNode(array('identifier' => '1_1_1_test'), $sub_node_id_1_1);
+    $sub_node_id_1_1_2 = $this->imp->createNode(array('identifier' => '1_1_2_test'), $sub_node_id_1_1);
 
-    $root_id2 = $this->imp->createRootNode(array('identifier' => 'root2'));
-    $sub_node_id_2 = $this->imp->createSubNode($root_id2, array('identifier' => '2_test'));
+    $root_id2 = $this->imp->createNode(array('identifier' => 'root2'));
+    $sub_node_id_2 = $this->imp->createNode(array('identifier' => '2_test'), $root_id2);
 
     $this->assertFalse($this->imp->getNodeByPath(''));
     $this->assertFalse($this->imp->getNodeByPath('/root///'));
@@ -742,11 +680,11 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testGetNodeByPath()
   {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test1'));
-    $sub_node_id_1_1 = $this->imp->createSubNode($sub_node_id_1, array('identifier' => 'test1'));
-    $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test1'));
-    $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test2'));
+    $root_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id_1 = $this->imp->createNode(array('identifier' => 'test1'), $root_id);
+    $sub_node_id_1_1 = $this->imp->createNode(array('identifier' => 'test1'), $sub_node_id_1);
+    $sub_node_id_1_1_1 = $this->imp->createNode(array('identifier' => 'test1'), $sub_node_id_1_1);
+    $sub_node_id_1_1_2 = $this->imp->createNode(array('identifier' => 'test2'), $sub_node_id_1_1);
 
     $node = $this->imp->getNodeByPath('/root/');
     $this->assertEqual($node['id'], $root_id);
@@ -767,11 +705,11 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
 
   function testGetPathToNode()
   {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test1'));
-    $sub_node_id_1_1 = $this->imp->createSubNode($sub_node_id_1, array('identifier' => 'test1'));
-    $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test1'));
-    $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test2'));
+    $root_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id_1 = $this->imp->createNode(array('identifier' => 'test1'), $root_id);
+    $sub_node_id_1_1 = $this->imp->createNode(array('identifier' => 'test1'), $sub_node_id_1);
+    $sub_node_id_1_1_1 = $this->imp->createNode(array('identifier' => 'test1'), $sub_node_id_1_1);
+    $sub_node_id_1_1_2 = $this->imp->createNode(array('identifier' => 'test2'), $sub_node_id_1_1);
 
     $path = $this->imp->getPathToNode($root_id, '|');
     $this->assertEqual($path, '|root');
@@ -787,18 +725,18 @@ class lmbMaterializedPathTreeTest extends UnitTestCase
     $this->assertNull($path);
   }
 
-  function testGetSubBranchByPathFailed()
+  /*function testGetSubBranchByPathFailed()
   {
     $this->assertFalse($this->imp->getSubBranch(1));
-  }
+  } */
 
   function testGetNodesByIds()
   {
-    $root_id = $this->imp->createRootNode(array('identifier' => 'root'));
-    $sub_node_id_1 = $this->imp->createSubNode($root_id, array('identifier' => 'test1'));
-    $sub_node_id_1_1 = $this->imp->createSubNode($sub_node_id_1, array('identifier' => 'test1'));
-    $sub_node_id_1_1_1 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test1'));
-    $sub_node_id_1_1_2 = $this->imp->createSubNode($sub_node_id_1_1, array('identifier' => 'test2'));
+    $root_id = $this->imp->createNode(array('identifier' => 'root'));
+    $sub_node_id_1 = $this->imp->createNode(array('identifier' => 'test1'), $root_id);
+    $sub_node_id_1_1 = $this->imp->createNode(array('identifier' => 'test1'), $sub_node_id_1);
+    $sub_node_id_1_1_1 = $this->imp->createNode(array('identifier' => 'test1'), $sub_node_id_1_1);
+    $sub_node_id_1_1_2 = $this->imp->createNode(array('identifier' => 'test2'), $sub_node_id_1_1);
 
     $rs = $this->imp->getNodesByIds(
       array(
