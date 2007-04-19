@@ -147,11 +147,12 @@ class lmbMPTree implements lmbTree
 
   function getSiblings($node)
   {
-    if(!($sibling = $this->getNode($node)))
+    if(!$me = $this->getNode($node))
       return null;
 
-    $parent = $this->getParent($sibling['id']);
-    return $this->getChildren($parent['id']);
+    if(!$me['parent_id'])
+      return new lmbCollection(array($me));
+    return $this->getChildren($me['parent_id']);
   }
 
   function getChildren($node, $depth = 1)

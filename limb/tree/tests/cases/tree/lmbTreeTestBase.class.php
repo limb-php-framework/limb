@@ -238,6 +238,32 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($arr[0]['id'], $root_id);
   }
 
+  function testGetSiblingsFailed()
+  {
+    $this->assertNull($this->imp->getSiblings(1000));
+  }
+
+  function testGetRootSiblings()
+  {
+    $root_id = $this->imp->initTree();
+    $arr = $this->imp->getSiblings($root_id);
+    $this->assertEqual(sizeof($arr), 1);
+    $this->assertEqual($arr[0]['id'], $root_id);
+  }
+
+  function testGetSiblings()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+
+    $arr = $this->imp->getSiblings($node_1);
+    $this->assertEqual(sizeof($arr), 2);
+    $this->assertEqual($arr[0]['id'], $node_1);
+    $this->assertEqual($arr[1]['id'], $node_2);
+  }
+
   function testCountRootChildren()
   {
     $root_id = $this->imp->initTree();
