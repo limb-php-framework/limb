@@ -147,7 +147,7 @@ class lmbNSTree implements lmbTree
 
     if (!$parent = $this->getParent($sibling['id']))
       return new lmbCollection(array($sibling));
-    
+
     return $this->getChildren($parent['id']);
   }
 
@@ -214,7 +214,7 @@ class lmbNSTree implements lmbTree
         return null;
       return $res;
     }
-    
+
     if(is_array($node) or is_object($node))
       return $node;
 
@@ -306,7 +306,6 @@ class lmbNSTree implements lmbTree
     return $stmt->getRecordSet();
   }
 
-
   function isNode($id)
   {
     return ($this->getNode($id) !== null);
@@ -377,7 +376,6 @@ class lmbNSTree implements lmbTree
 
     return $values['id'];
   }
-
 
   function updateNode($id, $values, $internal = false)
   {

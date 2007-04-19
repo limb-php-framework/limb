@@ -94,18 +94,6 @@ class lmbMPTree implements lmbTree
     return $processed;
   }
 
-  function getTopNodes()
-  {
-    $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE level=1";
-    $stmt = $this->_conn->newStatement($sql);
-
-    if($root_node = $stmt->getOneRecord())
-      return $root_node;
-
-    return false;
-  }
-
   function getParents($node)
   {
     if(!$child = $this->getNode($node))
