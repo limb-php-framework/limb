@@ -163,13 +163,44 @@ abstract class lmbTreeTestBase extends UnitTestCase
   function testGetParent()
   {
     $root_id = $this->imp->initTree();
-
     $parent_node_id = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
     $node_id = $this->imp->createNode($parent_node_id, array('identifier' => 'node_1_1'));
 
     $parent_node = $this->imp->getParent($node_id);
     $this->assertEqual($parent_node['id'], $parent_node_id);
     $this->assertEqual($parent_node['identifier'], 'node_1');
+  }
+
+  function testCountRootChildren()
+  {
+    $root_id = $this->imp->initTree();
+    $this->assertEqual($this->imp->countChildren($root_id), 0);
+  }
+
+  function testCountChildren()
+  {
+    $root_id = $this->imp->initTree();
+    $parent_node_id = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
+    $node_id = $this->imp->createNode($parent_node_id, array('identifier' => 'node_1_1'));
+
+    $this->assertEqual($this->imp->countChildren($root_id), 1);
+    $this->assertEqual($this->imp->countChildren($parent_node_id), 1);
+  }
+
+  function testCountAllRootChildren()
+  {
+    $root_id = $this->imp->initTree();
+    $this->assertEqual($this->imp->countChildrenAll($root_id), 0);
+  }
+
+  function testCountAllChildren()
+  {
+    $root_id = $this->imp->initTree();
+    $parent_node_id = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
+    $node_id = $this->imp->createNode($parent_node_id, array('identifier' => 'node_1_1'));
+
+    $this->assertEqual($this->imp->countChildrenAll($root_id), 2);
+    $this->assertEqual($this->imp->countChildrenAll($parent_node_id), 1);
   }
 
   function testDeleteNodeFailed()
