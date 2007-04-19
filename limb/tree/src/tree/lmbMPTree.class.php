@@ -327,18 +327,20 @@ class lmbMPTree implements lmbTree
     return null;
   }
 
-  function getPathToNode($node, $delimeter = '/')
+  function getPathToNode($node)
   {
     if(!$node = $this->getNode($node))
       return null;
 
-    $parents = $this->getParents($node['id']);
+    if(!$parents = $this->getParents($node['id']))
+      return '/';
 
+    $delimeter = '/';
     $path = '';
     foreach($parents as $parent)
-      $path .= $delimeter . $parent['identifier'];
+      $path .= $parent['identifier'] . $delimeter;
 
-    return $path .= $delimeter . $node['identifier'];
+    return $path .= $node['identifier'];
   }
 
   function getNodesByIds($ids)

@@ -172,6 +172,24 @@ abstract class lmbTreeTestBase extends UnitTestCase
                        $this->imp->getNode($node_id)->export());
   }
 
+  function testGetPathToRootNode()
+  {
+    $root_id = $this->imp->initTree();
+    $this->assertEqual($this->imp->getPathToNode($root_id), '/');
+  }
+
+  function testGetPathToNode()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+
+    $this->assertEqual($this->imp->getPathToNode($node_1), '/node_1');
+    $this->assertEqual($this->imp->getPathToNode($node_2), '/node_2');
+    $this->assertEqual($this->imp->getPathToNode($node_1_1), '/node_1/node_1_1');
+  }
+
   function testGetParent()
   {
     $root_id = $this->imp->initTree();
