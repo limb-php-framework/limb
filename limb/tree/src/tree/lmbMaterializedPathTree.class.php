@@ -6,15 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5694 2007-04-19 15:19:07Z pachanga $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5700 2007-04-19 15:58:23Z pachanga $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/tree/src/tree/lmbTreeOld.interface.php');
 
-class lmbMaterializedPathTree implements lmbTreeOld
+class lmbMaterializedPathTree
 {
   protected $_conn = null;
 
@@ -36,11 +35,11 @@ class lmbMaterializedPathTree implements lmbTreeOld
     $this->_params = $this->_db_table->getColumnNames();
   }
 
-  function initTree()
+  function setDumbMode($status=true)
   {
-    $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
-    $stmt->execute();
-    return true;
+    $prev_mode = $this->_dumb_mode;
+    $this->_dumb_mode = $status;
+    return $prev_mode;
   }
 
   function setNodeTable($table_name)
@@ -56,7 +55,7 @@ class lmbMaterializedPathTree implements lmbTreeOld
   function _getSelectFields()
   {
     $sql_exec_fields = array();
-    foreach($this->_params as $name)
+    foreach ($this->_params as $name)
     {
       $sql_exec_fields[] = $this->_node_table . '.' . $name . ' AS ' . $name;
     }
@@ -66,16 +65,16 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
   function _processUserValues($values)
   {
-    if($this->_dumb_mode)
+    if ($this->_dumb_mode)
       return $values;
 
     $processed = array();
     foreach($values as $field => $value)
     {
-      if(!in_array($field, $this->_params))
+      if (!in_array($field, $this->_params))
         continue;
 
-      if(in_array($field, $this->_required_params))
+      if (in_array($field, $this->_required_params))
         continue;
 
       $processed[$field] = $value;
@@ -83,10 +82,10 @@ class lmbMaterializedPathTree implements lmbTreeOld
     return $processed;
   }
 
-  function getTopNodes()
+  function getRootNodes()
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE level=1";
+            FROM {$this->_node_table} WHERE parent_id=0";
 
     $stmt = $this->_conn->newStatement($sql);
     return $stmt->getRecordSet();
@@ -119,10 +118,10 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
   function getParent($node)
   {
-    if(!$child = $this->getNode($node))
+    if (!$child = $this->getNode($node))
       return null;
 
-    if($child['id'] == $child['root_id'])
+    if ($child['id'] == $child['root_id'])
       return null;
 
     return $this->getNode($child['parent_id']);
@@ -130,105 +129,49 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
   function getSiblings($node)
   {
-    if(!($sibling = $this->getNode($node)))
+    if (!($sibling = $this->getNode($node)))
       return null;
 
     $parent = $this->getParent($sibling['id']);
     return $this->getChildren($parent['id']);
   }
 
-  function getChildren($node, $depth = 1)
+  function getChildren($node)
   {
-    if(!$parent = $this->getNode($node))
-      return null;
-    if($depth == 1)
-    {
-      $sql = "SELECT " . $this->_getSelectFields() . "
-              FROM {$this->_node_table}
-              WHERE parent_id = :parent_id:";
-
-      $stmt = $this->_conn->newStatement($sql);
-      $stmt->set('parent_id', $parent['id']);
-    }
-    else
-    {
-      $sql = "SELECT " . $this->_getSelectFields() . "
-              FROM {$this->_node_table}
-              WHERE path LIKE '{$parent['path']}%'
-              AND id != {$parent['id']}";
-      if($depth !=-1)
-              $sql .= " AND level <= ".($parent['level']+1+$depth);
-      $stmt = $this->_conn->newStatement($sql);
-    }
-
-    return $stmt->getRecordSet();
-  }
-
-  function getChildrenAll($node)
-  {
-    if(!$node = $this->getNode($node))
+    if (!$parent = $this->getNode($node))
       return null;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE path LIKE '{$node['path']}%'
-            AND id != {$node['id']}
-            ORDER BY path";
+            WHERE parent_id = :parent_id:";
 
     $stmt = $this->_conn->newStatement($sql);
+    $stmt->set('parent_id', $parent['id']);
 
     return $stmt->getRecordSet();
   }
 
-  function countChildren($node, $depth = 1)
+  function countChildren($node)
   {
-    if(!$parent = $this->getNode($node))
+    if (!$parent = $this->getNode($node))
       return null;
 
-    if($depth == 1)
-    {
-      $sql = "SELECT count(id) as counter FROM {$this->_node_table}
-              WHERE parent_id = :parent_id:";
-
-      $stmt = $this->_conn->newStatement($sql);
-      $stmt->set('parent_id', $parent['id']);
-    }
-    else
-    {
-      $sql = "SELECT count(id) as counter
-              FROM {$this->_node_table}
-              WHERE path LIKE '{$parent['path']}%'
-              AND id != {$parent['id']}";
-      if($depth !=-1)
-              $sql .= " AND level <= ".($parent['level']+1+$depth);
-      $stmt = $this->_conn->newStatement($sql);
-    }
-    return $stmt->getOneValue();
-  }
-
-  function countChildrenAll($node)
-  {
-    if(!$parent = $this->getNode($node))
-      return null;
-
-    $sql = "SELECT count(id) as counter
-            FROM {$this->_node_table}
-            WHERE path LIKE '{$parent['path']}%'
-            AND id != {$parent['id']}";
+    $sql = "SELECT count(id) as counter FROM {$this->_node_table}
+            WHERE parent_id = :parent_id:";
 
     $stmt = $this->_conn->newStatement($sql);
-
+    $stmt->set('parent_id', $parent['id']);
     return $stmt->getOneValue();
   }
 
   function getSubBranch($node, $depth = -1, $include_parent = false)
   {
-    if(!$parent_node = $this->getNode($node))
+    if (!$parent_node = $this->getNode($node))
       return null;
 
     $id = $parent_node['id'];
 
-    if($depth != -1)
+    if ($depth != -1)
       $depth_condition = " AND level <=" . ($parent_node['level'] + $depth);
     else
       $depth_condition = '';
@@ -279,9 +222,8 @@ class lmbMaterializedPathTree implements lmbTreeOld
     return null;
   }
 
-  function getNodeByPath($path)
+  function getNodeByPath($path, $delimiter='/')
   {
-    $delimiter = '/';
     $path_array = explode($delimiter, $path);
 
     array_shift($path_array);
@@ -310,9 +252,12 @@ class lmbMaterializedPathTree implements lmbTreeOld
     $parent_id = 0;
     $path_to_node = '';
 
-    foreach($rs as $node)
+    for($rs->rewind();$rs->valid();$rs->next())
     {
-      if($node['level'] < $curr_level)
+      $record = $rs->current();
+      $node = $record;
+
+      if ($node['level'] < $curr_level)
         continue;
 
       if($node['identifier'] == $path_array[$curr_level] &&
@@ -323,7 +268,7 @@ class lmbMaterializedPathTree implements lmbTreeOld
         $curr_level++;
         $path_to_node .= $delimiter . $node['identifier'];
 
-        if($curr_level == $level)
+        if ($curr_level == $level)
           return $node;
       }
     }
@@ -339,8 +284,11 @@ class lmbMaterializedPathTree implements lmbTreeOld
     $parents = $this->getParents($node['id']);
 
     $path = '';
-    foreach($parents as $parent)
-      $path .= $delimeter . $parent['identifier'];
+    for($parents->rewind();$parents->valid();$parents->next())
+    {
+      $r = $parents->current();
+      $path .= $delimeter . $r->get('identifier');
+    }
 
     return $path .= $delimeter . $node['identifier'];
   }
@@ -361,7 +309,7 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
   function getMaxChildIdentifier($node)
   {
-    if(!($parent = $this->getNode($node)))
+    if (!($parent = $this->getNode($node)))
       return false;
 
     $sql = "SELECT identifier FROM {$this->_node_table}
@@ -400,8 +348,8 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
     $node = $this->getNode($id);
 
-    if(isset($values['parent_id']) && $node['parent_id'] != $values['parent_id'])
-      $this->moveNode($id, $values['parent_id']);
+    if (isset($values['parent_id']) && $node['parent_id'] != $values['parent_id'])
+      $this->moveTree($id, $values['parent_id']);
 
     $this->_db_table->updateById($id, $values);
 
@@ -493,14 +441,14 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
   function createSubNode($node, $values)
   {
-    if(!$parent_node = $this->getNode($node))
+    if (!$parent_node = $this->getNode($node))
       return false;
 
     $parent_id = $parent_node['id'];
 
     $new_values = $this->_processUserValues($values);
 
-    if(!isset($values['id']))
+    if (!isset($values['id']))
     {
       $new_values['id'] = $this->_getNextNodeInsertId();
     }
@@ -527,7 +475,7 @@ class lmbMaterializedPathTree implements lmbTreeOld
 
   function deleteNode($node)
   {
-    if(!$node = $this->getNode($node))
+    if (!$node = $this->getNode($node))
       return false;
 
     $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}
@@ -552,18 +500,18 @@ class lmbMaterializedPathTree implements lmbTreeOld
     return true;
   }
 
-  function moveNode($source_node, $target_node)
+  function moveTree($source_node, $target_node)
   {
-    if($source_node == $target_node)
+    if ($source_node == $target_node)
       return false;
 
-    if(!$source_node = $this->getNode($source_node))
+    if (!$source_node = $this->getNode($source_node))
       return false;
 
-    if(!$target_node = $this->getNode($target_node))
+    if (!$target_node = $this->getNode($target_node))
       return false;
 
-    if(strstr($target_node['path'], $source_node['path']) !== false)
+    if (strstr($target_node['path'], $source_node['path']) !== false)
       return false;
 
     $id = $source_node['id'];
