@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUri.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbUri.class.php 5704 2007-04-19 21:11:49Z pachanga $
  * @package    net
  */
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
@@ -53,6 +53,14 @@ class lmbUri
     return $url . implode('&', $str_params_arr) . $fragment;
   }
 
+  /**
+   * @deprecated
+   */
+  function parse($uri)
+  {
+    $this->reset($uri);
+  }
+
   function reset($str = null)
   {
     $this->_user        = '';
@@ -67,8 +75,8 @@ class lmbUri
     if(!$str)
       return;
 
-    if(!($urlinfo = @parse_url($str)))
-      return;
+    if(!$urlinfo = @parse_url($str))
+      throw new lmbException("URI '$str' is not valid");
 
     foreach($urlinfo as $key => $value)
     {
@@ -191,12 +199,6 @@ class lmbUri
   function isRelative()
   {
     return !$this->isAbsolute();
-  }
-
-  //obsolete
-  function parse($uri)
-  {
-    $this->reset($uri);
   }
 
   function countPath()

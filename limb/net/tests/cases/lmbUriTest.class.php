@@ -6,416 +6,420 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUriTest.class.php 5181 2007-03-05 09:52:41Z tony $
+ * @version    $Id: lmbUriTest.class.php 5704 2007-04-19 21:11:49Z pachanga $
  * @package    net
  */
 lmb_require('limb/net/src/lmbUri.class.php');
 
 class lmbUriTest extends UnitTestCase
 {
-  var $uri;
-  function setUp()
+  function testCreate()
   {
-    $this->uri = new lmbUri();
+    $str = 'http://admin:test@localhost:81/test.php/test?foo=bar#23';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->getProtocol(), 'http');
+    $this->assertEqual($uri->getHost(), 'localhost');
+    $this->assertEqual($uri->getUser(), 'admin');
+    $this->assertEqual($uri->getPassword(), 'test');
+    $this->assertEqual($uri->getPort(), '81');
+    $this->assertEqual($uri->getAnchor(), '23');
+
+    $this->assertEqual($uri->getQueryItem('foo'), 'bar');
+    $this->assertEqual($uri->countQueryItems(), 1);
+
+    $this->assertEqual($uri->getPath(), '/test.php/test');
+    $this->assertEqual($uri->countPath(), 3);
+    $this->assertEqual($uri->getPathElements(), array('', 'test.php', 'test'));
+    $this->assertEqual($uri->getPathElement(0), '');
+    $this->assertEqual($uri->getPathElement(1), 'test.php');
+    $this->assertEqual($uri->getPathElement(2), 'test');
   }
 
-  function testParse()
+  function testInvalidUriThrowsException()
   {
-    $url = 'http://admin:test@localhost:81/test.php/test?foo=bar#23';
-
-    $this->uri->parse($url);
-
-    $this->assertEqual($this->uri->getProtocol(), 'http');
-    $this->assertEqual($this->uri->getHost(), 'localhost');
-    $this->assertEqual($this->uri->getUser(), 'admin');
-    $this->assertEqual($this->uri->getPassword(), 'test');
-    $this->assertEqual($this->uri->getPort(), '81');
-    $this->assertEqual($this->uri->getAnchor(), '23');
-
-    $this->assertEqual($this->uri->getQueryItem('foo'), 'bar');
-    $this->assertEqual($this->uri->countQueryItems(), 1);
-
-    $this->assertEqual($this->uri->getPath(), '/test.php/test');
-    $this->assertEqual($this->uri->countPath(), 3);
-    $this->assertEqual($this->uri->getPathElements(), array('', 'test.php', 'test'));
-    $this->assertEqual($this->uri->getPathElement(0), '');
-    $this->assertEqual($this->uri->getPathElement(1), 'test.php');
-    $this->assertEqual($this->uri->getPathElement(2), 'test');
+    try
+    {
+      $uri = new lmbUri('http:///');
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
   }
 
   function testToStringDefault()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertEqual($this->uri->toString(), $url);
+    $this->assertEqual($uri->toString(), $str);
   }
 
   function testToStringQueryItemsSort()
   {
-    $url = 'http://localhost/test.php?b=1&a=2&c[1]=456';
+    $str = 'http://localhost/test.php?b=1&a=2&c[1]=456';
     $expected_url = 'http://localhost/test.php?a=2&b=1&c[1]=456';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertEqual($this->uri->toString(), $expected_url);
+    $this->assertEqual($uri->toString(), $expected_url);
   }
 
   function testToStringNoProtocol()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('user', 'password', 'host', 'port', 'path', 'query', 'anchor')),
+      $uri->toString(array('user', 'password', 'host', 'port', 'path', 'query', 'anchor')),
       'admin:test@localhost:81/test.php?foo=bar#23'
     );
   }
 
   function testToStringNoUser()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('protocol', 'password', 'host', 'port', 'path', 'query', 'anchor')),
+      $uri->toString(array('protocol', 'password', 'host', 'port', 'path', 'query', 'anchor')),
       'http://localhost:81/test.php?foo=bar#23'
     );
   }
 
   function testToStringNoPassword()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('protocol', 'user', 'host', 'port', 'path', 'query', 'anchor')),
+      $uri->toString(array('protocol', 'user', 'host', 'port', 'path', 'query', 'anchor')),
       'http://admin@localhost:81/test.php?foo=bar#23'
     );
   }
 
   function testToStringNoHost()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('protocol', 'user', 'password', 'port', 'path', 'query', 'anchor')),
+      $uri->toString(array('protocol', 'user', 'password', 'port', 'path', 'query', 'anchor')),
       '/test.php?foo=bar#23'
     );
   }
 
   function testToStringNoPath()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'query', 'anchor')),
+      $uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'query', 'anchor')),
       'http://admin:test@localhost:81?foo=bar#23'
     );
   }
 
   function testToStringNoQuery()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'anchor')),
+      $uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'path', 'anchor')),
       'http://admin:test@localhost:81/test.php#23'
     );
   }
 
   function testToStringNoAnchor()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(
-      $this->uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'path')),
+      $uri->toString(array('protocol', 'user', 'password', 'host', 'port', 'path')),
       'http://admin:test@localhost:81/test.php'
     );
   }
 
   function testSetQueryString()
   {
-    $url = 'http://localhost';
+    $str = 'http://localhost';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->setQueryString('foo=bar&bar=foo');
+    $uri->setQueryString('foo=bar&bar=foo');
 
-    $this->assertEqual($this->uri->countQueryItems(), 2);
-    $this->assertEqual($this->uri->getQueryItem('foo'), 'bar');
-    $this->assertEqual($this->uri->getQueryItem('bar'), 'foo');
+    $this->assertEqual($uri->countQueryItems(), 2);
+    $this->assertEqual($uri->getQueryItem('foo'), 'bar');
+    $this->assertEqual($uri->getQueryItem('bar'), 'foo');
   }
 
   function testSetQueryString2()
   {
-    $url = 'http://localhost';
+    $str = 'http://localhost';
 
-    $this->uri->parse($url);
-    $this->uri->setQueryString('foo[i1]=1&foo[i2]=2');
+    $uri = new lmbUri($str);
+    $uri->setQueryString('foo[i1]=1&foo[i2]=2');
 
-    $this->assertEqual($this->uri->countQueryItems(), 1);
-    $this->assertEqual($this->uri->getQueryItem('foo'), array('i1' => '1', 'i2' => '2'));
+    $this->assertEqual($uri->countQueryItems(), 1);
+    $this->assertEqual($uri->getQueryItem('foo'), array('i1' => '1', 'i2' => '2'));
   }
 
   function testNormalizePath()
   {
-    $this->uri->parse('/foo/bar/../boo.php');
-    $this->uri->normalizePath();
-    $this->assertEqual($this->uri, new lmbUri('/foo/boo.php'));
+    $uri = new lmbUri('/foo/bar/../boo.php');
+    $uri->normalizePath();
+    $this->assertEqual($uri, new lmbUri('/foo/boo.php'));
 
-    $this->uri->parse('/foo/bar/../../boo.php');
-    $this->uri->normalizePath();
-    $this->assertEqual($this->uri, new lmbUri('/boo.php'));
+    $uri->reset('/foo/bar/../../boo.php');
+    $uri->normalizePath();
+    $this->assertEqual($uri, new lmbUri('/boo.php'));
 
-    $this->uri->parse('/foo/bar/../boo.php');
-    $this->uri->normalizePath();
-    $this->assertEqual($this->uri, new lmbUri('/foo/boo.php'));
+    $uri->reset('/foo/bar/../boo.php');
+    $uri->normalizePath();
+    $this->assertEqual($uri, new lmbUri('/foo/boo.php'));
 
-    $this->uri->parse('/foo//bar//boo.php');
-    $this->uri->normalizePath();
-    $this->assertEqual($this->uri, new lmbUri('/foo/bar/boo.php'));
+    $uri->reset('/foo//bar//boo.php');
+    $uri->normalizePath();
+    $this->assertEqual($uri, new lmbUri('/foo/bar/boo.php'));
 
-    $this->uri->parse('/foo//bar///boo.php');
-    $this->uri->normalizePath();
-    $this->assertEqual($this->uri, $uri = new lmbUri('/foo/bar/boo.php'));
-    $this->assertEqual($this->uri->getPath(), $uri->getPath());
+    $uri->reset('/foo//bar///boo.php');
+    $uri->normalizePath();
+    $this->assertEqual($uri, $uri = new lmbUri('/foo/bar/boo.php'));
+    $this->assertEqual($uri->getPath(), $uri->getPath());
   }
 
   function testAddQueryItem()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->addQueryItem('bar', 'foo');
-    $this->assertEqual($this->uri->getQueryString(), 'bar=foo&foo=bar');
+    $uri->addQueryItem('bar', 'foo');
+    $this->assertEqual($uri->getQueryString(), 'bar=foo&foo=bar');
   }
 
   function testAddQueryItem2()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->addQueryItem('foo', 'foo');
-    $this->assertEqual($this->uri->getQueryString(), 'foo=foo');
+    $uri->addQueryItem('foo', 'foo');
+    $this->assertEqual($uri->getQueryString(), 'foo=foo');
   }
 
   function testAddQueryItem3()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->addQueryItem('foo', array('i1' => 'bar'));
-    $this->uri->addQueryItem('bar', 1);
-    $this->assertEqual($this->uri->getQueryString(), 'bar=1&foo[i1]=bar');
+    $uri->addQueryItem('foo', array('i1' => 'bar'));
+    $uri->addQueryItem('bar', 1);
+    $this->assertEqual($uri->getQueryString(), 'bar=1&foo[i1]=bar');
   }
 
   function testAddQueryItem4()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->addQueryItem('foo', array('i1' => array('i2' => 'bar')));
-    $this->uri->addQueryItem('bar', 1);
-    $this->assertEqual($this->uri->getQueryString(), 'bar=1&foo[i1][i2]=bar');
+    $uri->addQueryItem('foo', array('i1' => array('i2' => 'bar')));
+    $uri->addQueryItem('bar', 1);
+    $this->assertEqual($uri->getQueryString(), 'bar=1&foo[i1][i2]=bar');
   }
 
   function testAddQueryItemUrlencode()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->addQueryItem('foo', ' foo ');
-    $this->assertEqual($this->uri->getQueryString(), 'foo=+foo+');
+    $uri->addQueryItem('foo', ' foo ');
+    $this->assertEqual($uri->getQueryString(), 'foo=+foo+');
   }
 
   function testAddQueryItemUrlencode2()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->addQueryItem('foo', array('i1' => ' bar '));
-    $this->assertEqual($this->uri->getQueryString(), 'foo[i1]=+bar+');
+    $uri->addQueryItem('foo', array('i1' => ' bar '));
+    $this->assertEqual($uri->getQueryString(), 'foo[i1]=+bar+');
   }
 
   function testCompareQueryEqual()
   {
-    $url = 'http://admin:test@localhost2:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost2:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->compareQuery(
+    $this->assertTrue($uri->compareQuery(
       new lmbUri('http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareQueryNotEqual()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compareQuery(
+    $this->assertFalse($uri->compareQuery(
       new lmbUri('http://admin:test@localhost:81/test.php?bar=foo&foo=bar2#23')
      ));
   }
 
   function testCompareQueryNotEqual2()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compareQuery(
+    $this->assertFalse($uri->compareQuery(
       new lmbUri('http://admin:test@localhost:81/test.php?bar=foo#23')
      ));
   }
 
   function testCompareIdentical()
   {
-    $url = 'http://admin:test@localhost:81/test.php?foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->compare(
+    $this->assertTrue($uri->compare(
       new lmbUri('http://admin:test@localhost:81/test.php?foo=bar#23')));
   }
 
   function testCompareEqual()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->compare(
+    $this->assertTrue($uri->compare(
       new lmbUri('http://admin:test@localhost:81/test.php?foo=bar&bar=foo#23')));
   }
 
   function testCompareEqual2()
   {
-    $url = 'http://admin:test@localhost:81?';
+    $str = 'http://admin:test@localhost:81?';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->compare(
+    $this->assertTrue($uri->compare(
       new lmbUri('http://admin:test@localhost:81')
      ));
   }
 
   function testCompareNotEqualSchema()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('https://admin:test@localhost:81/test.php?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareNotEqualUser()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('http://admin1:test@localhost:81/test.php?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareNotEqualPassword()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('http://admin:test1@localhost:81/test.php?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareNotEqualHost()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('http://admin:test@localhost1:81/test.php?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareNotEqualPort()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('http://admin:test@localhost/test.php?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareNotEqualPath()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('http://admin:test@localhost:81/test.php/test?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareNotEqualPath2()
   {
-    $url = 'http://admin:test@localhost:81/test.php/test?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php/test?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertFalse($this->uri->compare(
+    $this->assertFalse($uri->compare(
       new lmbUri('http://admin:test@localhost:81/test.php/test1?bar=foo&foo=bar#23')
      ));
   }
 
   function testCompareAnchorDoesntMatter()
   {
-    $url = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
+    $str = 'http://admin:test@localhost:81/test.php?bar=foo&foo=bar#23';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->compare(
+    $this->assertTrue($uri->compare(
       new lmbUri('http://admin:test@localhost:81/test.php?bar=foo&foo=bar#32')
      ));
   }
 
   function testComparePathEqual()
   {
-    $url = 'http://localhost/test.php/test';
+    $str = 'http://localhost/test.php/test';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(0,
-      $this->uri->comparePath(
+      $uri->comparePath(
         new lmbUri('http://localhost2/test.php/test')
       )
     );
@@ -423,12 +427,12 @@ class lmbUriTest extends UnitTestCase
 
   function testComparePathContains()
   {
-    $url = 'http://localhost/test.php/test';
+    $str = 'http://localhost/test.php/test';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(1,
-      $this->uri->comparePath(
+      $uri->comparePath(
         new lmbUri('http://localhost2/test.php')
       )
     );
@@ -436,12 +440,12 @@ class lmbUriTest extends UnitTestCase
 
   function testComparePathIsContained()
   {
-    $url = 'http://localhost/test.php/test';
+    $str = 'http://localhost/test.php/test';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertEqual(-1,
-      $this->uri->comparePath(
+      $uri->comparePath(
         new lmbUri('http://localhost2/test.php/test/test2')
       )
     );
@@ -449,12 +453,12 @@ class lmbUriTest extends UnitTestCase
 
   function testComparePathNotEqual()
   {
-    $url = 'http://localhost/test.php/test/test1';
+    $str = 'http://localhost/test.php/test/test1';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
     $this->assertIdentical(false,
-      $this->uri->comparePath(
+      $uri->comparePath(
         new lmbUri('http://localhost2/test.php/test/test2')
       )
     );
@@ -462,62 +466,61 @@ class lmbUriTest extends UnitTestCase
 
   function testRemoveQueryItem()
   {
-    $url = 'http://localhost/test.php?foo=bar&bar=foo';
+    $str = 'http://localhost/test.php?foo=bar&bar=foo';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->removeQueryItem('bar');
+    $uri->removeQueryItem('bar');
 
-    $this->assertEqual('foo=bar', $this->uri->getQueryString());
-    $this->assertEqual('http://localhost/test.php?foo=bar', $this->uri->toString());
+    $this->assertEqual('foo=bar', $uri->getQueryString());
+    $this->assertEqual('http://localhost/test.php?foo=bar', $uri->toString());
   }
 
   function testRemoveQueryItems()
   {
-    $url = 'http://localhost/test.php?foo=bar&bar=foo';
+    $str = 'http://localhost/test.php?foo=bar&bar=foo';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->uri->removeQueryItems();
+    $uri->removeQueryItems();
 
-    $this->assertEqual('', $this->uri->getQueryString());
-    $this->assertEqual('http://localhost/test.php', $this->uri->toString());
+    $this->assertEqual('', $uri->getQueryString());
+    $this->assertEqual('http://localhost/test.php', $uri->toString());
   }
 
   function testIsAbsolute()
   {
-    $url = '/test.php';
+    $str = '/test.php';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->isAbsolute());
+    $this->assertTrue($uri->isAbsolute());
   }
 
   function testIsAbsoluteNoPath()
   {
-    $url = 'http://somedomain.com';
+    $str = 'http://somedomain.com';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->isAbsolute());
+    $this->assertTrue($uri->isAbsolute());
   }
 
   function testIsRelative()
   {
-    $url = '../../test.php';
+    $str = '../../test.php';
 
-    $this->uri->parse($url);
+    $uri = new lmbUri($str);
 
-    $this->assertTrue($this->uri->isRelative());
+    $this->assertTrue($uri->isRelative());
   }
 
   function testSetPath()
   {
-    $this->uri->setPath('/index.html');
+    $uri1 = new lmbUri('/index.html');
+    $uri2 = new lmbUri('http://dot.com/index.html');
 
-    $uri = new lmbUri('http://dot.com/index.html');
-
-    $this->assertEqual($uri->getPathElements(), $this->uri->getPathElements());
+    $this->assertEqual($uri1->getPathElements(), $uri2->getPathElements());
   }
 
   function testGetPathToLevel()
