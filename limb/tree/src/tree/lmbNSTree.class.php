@@ -145,7 +145,9 @@ class lmbNSTree implements lmbTree
     if(!($sibling = $this->getNode($node)))
       return null;
 
-    $parent = $this->getParent($sibling['id']);
+    if (!$parent = $this->getParent($sibling['id']))
+      return new lmbCollection(array($sibling));
+    
     return $this->getChildren($parent['id']);
   }
 
@@ -204,37 +206,15 @@ class lmbNSTree implements lmbTree
     return $stmt->getOneValue();
   }
 
-/*  function getSubBranch($node, $depth = -1, $include_parent = false)
-  {
-    if(!$parent_node = $this->getNode($node))
-      return null;
-
-    $id = $parent_node['id'];
-
-    if($depth != -1)
-      $depth_condition = " AND {$this->_level} <=" . ($parent_node[$this->_level] + $depth);
-    else
-      $depth_condition = '';
-
-    if($include_parent)
-      $include_parent_condition = '';
-    else
-      $include_parent_condition = " AND id!={$id}";
-
-    $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table}
-            WHERE {$parent_node[$this->_left]} <= {$this->_left}
-            AND {$parent_node[$this->_right]} >= {$this->_right}
-            {$depth_condition}
-            {$include_parent_condition}
-            ORDER BY {$this->_left}";
-
-    $stmt = $this->_conn->newStatement($sql);
-    return $stmt->getRecordSet();
-  }*/
-
   function getNode($node)
   {
+    if(is_string($node) && !is_numeric($node))
+    {
+      if(!$res = $this->getNodeByPath($node))
+        return null;
+      return $res;
+    }
+    
     if(is_array($node) or is_object($node))
       return $node;
 
@@ -266,7 +246,15 @@ class lmbNSTree implements lmbTree
     $level = sizeof($path_array);
 
     if(!count($path_array))
-      return null;
+    {
+      $sql = "SELECT " . $this->_getSelectFields() . "
+              FROM {$this->_node_table}
+              WHERE
+              {$this->_left} = 1";
+
+      $stmt = $this->_conn->newStatement($sql);
+      return $stmt->getOneRecord();
+    }
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table} WHERE {$this->_level}=0";
@@ -307,7 +295,8 @@ class lmbNSTree implements lmbTree
     foreach($parents as $parent)
       $path .= $delimeter . $parent['identifier'];
 
-    return $path .= $delimeter . $node['identifier'];
+    $path .= $delimeter . $node['identifier'];
+    return substr($path, 1);
   }
 
   function getNodesByIds($ids)
@@ -318,7 +307,7 @@ class lmbNSTree implements lmbTree
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
             WHERE " . $this->_dbIn('id', $ids) . "
-            ORDER BY cleft";
+            ORDER BY {$this->_left}";
 
     $stmt = $this->_conn->newStatement($sql);
     return $stmt->getRecordSet();
