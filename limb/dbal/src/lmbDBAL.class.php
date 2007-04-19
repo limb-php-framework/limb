@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDBAL.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbDBAL.class.php 5705 2007-04-19 21:27:15Z pachanga $
  * @package    dbal
  */
 
@@ -22,8 +22,11 @@ class lmbDBAL
   {
     $driver = $dsn->getDriver();
     $class = 'lmb' . ucfirst($driver) . 'Connection';
+    $file = dirname(__FILE__) . '/drivers/' . $driver . '/' . $class . '.class.php';
+    if(!file_exists($file))
+      throw new lmbException("Driver '$driver' file not found for DSN '" . $dsn->toString() . "'!");
 
-    lmb_require(dirname(__FILE__) . '/drivers/' . $driver . '/' . $class . '.class.php');
+    lmb_require($file);
     return new $class($dsn);
   }
 }

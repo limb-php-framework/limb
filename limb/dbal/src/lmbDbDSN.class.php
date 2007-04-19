@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbDSN.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbDbDSN.class.php 5705 2007-04-19 21:27:15Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/net/src/lmbUri.class.php');
@@ -35,9 +35,15 @@ class lmbDbDSN extends lmbObject
 
   function _parseUri($str)
   {
-    $this->uri = new lmbUri();
+    try
+    {
+      $this->uri = new lmbUri($str);
+    }
+    catch(lmbException $e)
+    {
+      throw new lmbException("Database DSN '$str' is not valid");
+    }
 
-    $this->uri->parse($str);
     $this->driver = $this->uri->getProtocol();
     $this->host = $this->uri->getHost();
     $this->user = $this->uri->getUser();

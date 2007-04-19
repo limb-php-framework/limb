@@ -6,13 +6,23 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbDSNTest.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbDbDSNTest.class.php 5705 2007-04-19 21:27:15Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/lmbDbDSN.class.php');
 
 class lmbDbDSNTest extends UnitTestCase
 {
+  function testMalformedStringThrowsException()
+  {
+    try
+    {
+      $dsn = new lmbDbDSN('mysql:///');
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+  }
+
   function testConstructUsingString()
   {
     $dsn = new lmbDbDSN($str = 'mysql://wow:here@localhost/db');
