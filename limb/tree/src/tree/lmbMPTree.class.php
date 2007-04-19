@@ -50,10 +50,10 @@ class lmbMPTree implements lmbTree
 
     if($root_node = $stmt->getOneRecord())
       return $root_node;
-    
+
     return null;
   }
-  
+
   function setNodeTable($table_name)
   {
     $this->_node_table = $table_name;
@@ -99,10 +99,10 @@ class lmbMPTree implements lmbTree
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table} WHERE level=1";
     $stmt = $this->_conn->newStatement($sql);
-    
+
     if($root_node = $stmt->getOneRecord())
       return $root_node;
-    
+
     return false;
   }
 
@@ -110,10 +110,10 @@ class lmbMPTree implements lmbTree
   {
     if(!$child = $this->getNode($node))
       return null;
-    
+
     if($child['level'] < 1)
       return null;
-      
+
     $join_table = $this->_node_table . '2';
     $concat = $this->_dbConcat(array($this->_node_table . '.path', "'%'"));
 
@@ -138,7 +138,7 @@ class lmbMPTree implements lmbTree
   {
     if(!$child = $this->getNode($node))
       return null;
-    
+
     if($child['id'] == $child['root_id'])
       return null;
 
@@ -241,7 +241,13 @@ class lmbMPTree implements lmbTree
 
   function getNode($node)
   {
-    if(is_array($node))
+    if(is_string($node) && !is_numeric($node))
+    {
+      if(!$res = $this->getNodeByPath($node))
+        return null;
+      return $res;
+    }
+    elseif(is_array($node))
       return $node;
     elseif(is_object($node))
       $id = $node->get('id');
@@ -272,7 +278,15 @@ class lmbMPTree implements lmbTree
     $level = sizeof($path_array);
 
     if(!count($path_array))
-      return null;
+    {
+      $sql = "SELECT " . $this->_getSelectFields() . "
+              FROM {$this->_node_table}
+              WHERE
+              parent_id = 0";
+
+      $stmt = $this->_conn->newStatement($sql);
+      return $stmt->getOneRecord();
+    }
 
     $in_condition = $this->_dbIn('identifier', array_unique($path_array));
 
@@ -287,7 +301,7 @@ class lmbMPTree implements lmbTree
     $rs = $stmt->getRecordSet();
 
     $curr_level = 0;
-    $parent_id = 0;
+    $parent_id = null;
     $path_to_node = '';
 
     foreach($rs as $node)
@@ -296,7 +310,8 @@ class lmbMPTree implements lmbTree
         continue;
 
       if($node['identifier'] == $path_array[$curr_level] &&
-         $node['parent_id'] == $parent_id)
+         (!$parent_id ||
+         $node['parent_id'] == $parent_id))
       {
         $parent_id = $node['id'];
 
@@ -429,7 +444,7 @@ class lmbMPTree implements lmbTree
         throw new Exception("This database type '" . $this->_conn->getType() . "' is not supported(substr operation)");
     }
   }
-  
+
   function _dbIn($column_name, $values)
   {
     $in_ids = implode("','", $values);
