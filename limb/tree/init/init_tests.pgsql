@@ -15,6 +15,7 @@ CREATE TABLE test_materialized_path_tree (
 DROP TABLE test_nested_sets_tree CASCADE;
 CREATE TABLE test_nested_sets_tree (
   "id"      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  "parent_id" int NOT NULL default '0',
   "c_left"    INT(11) UNSIGNED NOT NULL,
   "c_right"   INT(11) UNSIGNED NOT NULL,
   "c_level"   INT(11) UNSIGNED NOT NULL,
