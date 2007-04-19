@@ -179,6 +179,11 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($node_1, $parent_node['id']);
   }
 
+  function testUpdateNodeFailed()
+  {
+    $this->assertFalse($this->imp->updateNode(1000, array('junk')));
+  }
+
   function testGetNodeByNodeReturnsSameNode()
   {
     $root_id = $this->imp->initTree();
