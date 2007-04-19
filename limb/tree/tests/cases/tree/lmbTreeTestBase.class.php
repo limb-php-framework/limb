@@ -37,13 +37,8 @@ abstract class lmbTreeTestBase extends UnitTestCase
   function testInitTree()
   {
     $id = $this->imp->initTree();
-
-    $rs = $this->db->select($this->_node_table);
-    $rs->rewind();
-    $this->assertEqual($rs->count(), 1);
-
-    $root_node = $rs->current();
-    $this->assertEqual($id, $root_node['id']);
+    $node = $this->imp->getRootNode();
+    $this->assertEqual($id, $node['id']);
   }
 
   function testGetRootNodeFailed()
@@ -542,13 +537,52 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($this->imp->countChildrenAll('/'), 2);
   }
 
-  function _checkResultNodesArray($nodes, $line='')
+  function testMoveNodeFailed()
   {
-    if(isset($nodes['id']))//check for array
-      $this->assertEqual($this->imp->getNode($nodes['id'])->export(), $nodes->export());
-    else
-      foreach($nodes as $node)
-        $this->assertEqual($this->imp->getNode($node['id'])->export(), $node->export());
+    $this->assertFalse($this->imp->moveNode(100, 1000));
+  }
+
+  function testMoveRootNodeOnItselfFailed()
+  {
+    $root_id = $this->imp->initTree();
+    $this->assertFalse($this->imp->moveNode($root_id, $root_id));
+  }
+
+  function testMoveRootNodeFailed()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+
+    $this->assertFalse($this->imp->moveNode($root_id, $node_1));
+    $this->assertFalse($this->imp->moveNode($root_id, $node_2));
+  }
+
+  function testMoveParentNodeToChildFailed()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+
+    $this->assertFalse($this->imp->moveNode($node_1, $node_1_1));
+  }
+
+  function testMoveNode()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+    $node_1_1_1 = $this->imp->createNode($node_1_1, array('identifier'=>'node_1_1_1'));
+
+    $this->imp->moveNode($node_1_1, $node_2);
+
+    $arr = $this->imp->getChildrenAll($root_id);
+    $this->assertEqual(sizeof($arr), 4);
+    $this->assertEqual($arr[0]['id'], $node_1);
+    $this->assertEqual($arr[1]['id'], $node_2);
+    $this->assertEqual($arr[2]['id'], $node_1_1);
+    $this->assertEqual($arr[3]['id'], $node_1_1_1);
   }
 }
 ?>
