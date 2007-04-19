@@ -6,114 +6,227 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionValueParser.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactExpressionValueParser.class.php 5691 2007-04-19 13:27:02Z serega $
  * @package    wact
  */
 
-/**
-* Searches expression strings for constant values
-* WARNING: this parser defaults to data binding expressions. That means if it
-* doest recognise a integer, float or string constant, what it calls a data binding
-* expression may not in fact be a data binding expression.
-* WactExpressionValueParser assumes that Expression::createvalue asks it a parse a valid value string
-*/
+require_once 'limb/wact/src/compiler/expression/node/expression.inc.php';
+require_once 'limb/wact/src/compiler/expression/node/constant.inc.php';
+require_once 'limb/wact/src/compiler/expression/node/math.inc.php';
+require_once 'limb/wact/src/compiler/expression/node/logical.inc.php';
+require_once 'limb/wact/src/compiler/expression/WactDataBindingExpression.class.php';
+
 class WactExpressionValueParser
 {
-  const DATABINDING = 0;
-  const INT = 1;
-  const FLOAT = 2;
-  const STRING = 3;
+  protected $text;
+  protected $position;
+  protected $length;
+  protected $context;
 
-  public $expression_type = self :: DATABINDING;
-
-  public $value;
-
-  public $expression;
-
-  function __construct($expression)
+  /**
+  * Construct this parser
+  */
+  function __construct($context)
   {
-    $lexer = $this->createExpressionLexer();
-    $lexer->parse($expression);
-  }
-
-  function isConstantvalue()
-  {
-    return $this->expression_type != WactExpressionValueParser :: DATABINDING;
-  }
-
-  function getExpressionType()
-  {
-    return $this->expression_type;
-  }
-
-  function getValue()
-  {
-    return $this->value;
-  }
-
-  function acceptDatabindingFromLexer($expression, $lexer_state)
-  {
-    if($lexer_state == EXPRESSION_LEXER_UNMATCHED)
-    {
-      $this->value = self :: DATABINDING;
-      $this->value = $expression;
-    }
-    return TRUE;
-  }
-
-  function acceptIntegerFromLexer($int, $lexer_state)
-  {
-    if($lexer_state == EXPRESSION_LEXER_SPECIAL)
-    {
-      $this->expression_type = self :: INT;
-      $this->value = intval($int);
-    }
-
-    return TRUE;
-  }
-
-  function acceptFloatFromLexer($float, $lexer_state)
-  {
-    if($lexer_state == EXPRESSION_LEXER_SPECIAL)
-    {
-      $this->expression_type = self :: FLOAT;
-      $this->value = floatval($float);
-    }
-    return TRUE;
-  }
-
-  function acceptStringFromLexer($string, $lexer_state)
-  {
-    if($lexer_state == EXPRESSION_LEXER_SPECIAL)
-    {
-      $this->expression_type = self :: STRING;
-      // Strip the quotes (hack but saves introducing further Lexer complexity)
-      $string = substr($string, 1, strlen($string) - 2);
-      $this->value = $string;
-    }
-    return TRUE;
+    $this->context = $context;
   }
 
   /**
-  * Creates the Lexer. Ideally this should be a static instance for
-  * performance but Lexer left in strange state after parsing if static
   */
-  function createExpressionLexer()
+  protected function getToken($pattern) {
+    if (preg_match($pattern, $this->text, $match, PREG_OFFSET_CAPTURE, $this->position)) {
+      $this->position += strlen($match[0][0]);
+      return $match[1][0];
+    } else {
+      return FALSE;
+    }
+  }
+
+  /**
+  */
+  protected function parsePrimary()
   {
-    $lexer = new WactExpressionLexer($this, 'databinding');
+    $token = $this->getToken('/\G\s*(#|\^|-|"|\'|\[|\(|[0-9]+|[A-Za-z][A-Za-z0-9_.]*)/u');
+    if ($token === FALSE) {
+      throw new Exception("expecting primary.");
+    }
 
-    $lexer->addSpecialPattern('^-?\d+$', 'databinding', 'integer');
-    $lexer->addSpecialPattern('^-?\d+\.\d+$', 'databinding', 'float');
-    $lexer->addSpecialPattern('^".*"$', 'databinding', 'doublequote');
-    $lexer->addSpecialPattern('^\'.*\'$', 'databinding', 'singlequote');
+    if ($token == '-') {
+      return new WactUnaryMInusExpressionNode($this->parsePrimary());
+    } else if ($token == '(') {
+      $expr = $this->parseExpression();
+      if ($this->getToken('/\G\s*(\))/u')) {
+        return $expr;
+      } else {
+        throw new Exception('Expecting ).');
+      }
+    } elseif($token == '^' || $token == '#' || $token == '[') {
+      if (!($token2 = $this->getToken('/\G([A-Za-z^][A-Za-z0-9_.\[\]^]*)/u'))) {
+        throw new Exception("expecting identifier.");
+      }
+      return new WactDataBindingExpression($token . $token2, $this->context);
+    } else if ($token == '#') {
+      if (!($token = $this->getToken('/\G\s*([A-Za-z][A-Za-z0-9_]*)/u'))) {
+        throw new Exception("expecting identifier.");
+      }
+      return new WactRootDataBindingExpressionNode($token);
+    } else if ($token == '"' || $token == "'") {
+      $string = $this->getToken('/\G([^' . $token . ']*)' . $token . '/u');
+      if ($string !== FALSE) {
+        return new WactConstantExpressionNode($string);
+      } else {
+        throw new Exception("Expecting a string literal.");
+      }
+    } else if (ctype_digit($token)) {
+      if ($decimalToken = $this->getToken('/\G\.(\d+)/u')) {
+        return new WactConstantExpressionNode(floatval($token . '.' . $decimalToken));
+      } else {
+        return new WactConstantExpressionNode(intval($token));
+      }
+    } else if (strcasecmp($token, 'and') == 0) {
+      throw new Exception('reserved');
+    } else if (strcasecmp($token, 'or') == 0) {
+      throw new Exception('reserved');
+    } else if (strcasecmp($token, 'not') == 0) {
+      $expr = $this->parseExpression();
+      return new WactLogicalNotExpressionNode($expr);
+    } else if (strcasecmp($token, 'null') == 0) {
+      return new WactConstantExpressionNode(NULL);
+    } else if (strcasecmp($token, 'true') == 0) {
+      return new WactConstantExpressionNode(TRUE);
+    } else if (strcasecmp($token, 'false') == 0) {
+      return new WactConstantExpressionNode(FALSE);
+    } else {
+      return new WactDataBindingExpression($token, $this->context);
+    }
+  }
 
-    $lexer->mapHandler('databinding', 'acceptDatabindingFromLexer');
-    $lexer->mapHandler('integer', 'acceptIntegerFromLexer');
-    $lexer->mapHandler('float', 'acceptFloatFromLexer');
-    $lexer->mapHandler('doublequote', 'acceptStringFromLexer');
-    $lexer->mapHandler('singlequote', 'acceptStringFromLexer');
+  /**
+  * term := primary { '*' primary | '/' primary | '%' primary }
+  */
+  protected function parseTerm() {
 
-    return $lexer;
+    $term = $this->parsePrimary();
+
+    while ($token = $this->getToken('/\G\s*(\*|\/|%)/u')) {
+      $deref = $this->parsePrimary();
+
+      if ($token == '*') {
+        $term = new WactMultiplicationExpressionNode($term, $deref);
+      } else if ($token == '/') {
+        $term = new WactDivisionExpressionNode($term, $deref);
+      } else {
+        $term = new WactModuloExpressionNode($term, $deref);
+      }
+
+    }
+
+    return $term;
+  }
+
+  /**
+  * sum := term { '+' term | '-' term | '&' term }
+  */
+  protected function parseSum() {
+
+    $sum = $this->parseTerm();
+
+    while ($token = $this->getToken('/\G\s*(\+|-|&)/u')) {
+      $term = $this->parseTerm();
+
+      if ($token == '+') {
+        $sum = new WactAdditionExpressionNode($sum, $term);
+      } else if ($token == '-') {
+        $sum = new WactSubtractionExpressionNode($sum, $term);
+      } else {
+        $sum = new WactConcatinationExpressionNode($sum, $term);
+      }
+
+    }
+
+    return $sum;
+  }
+
+  /**
+  * comparison :=
+  */
+  protected function parseComparison() {
+
+    $comparison = $this->parseSum();
+
+    while ($token = $this->getToken('/\G\s*(>=|<=|==|!=|>|<)/u')) {
+      $sum = $this->parseSum();
+
+      if ($token == '==') {
+        $comparison = new WactEqualToExpressionNode($comparison, $sum);
+      } else if ($token == '!=') {
+        $comparison = new WactNotEqualToExpressionNode($comparison, $sum);
+      } else if ($token == '<') {
+        $comparison = new WactLessThanExpressionNode($comparison, $sum);
+      } else if ($token == '>') {
+        $comparison = new WactGreaterThanExpressionNode($comparison, $sum);
+      } else if ($token == '<=') {
+        $comparison = new WactLessThanOrEqualToExpressionNode($comparison, $sum);
+      } else {
+        $comparison = new WactGreaterThanOrEqualToExpressionNode($comparison, $sum);
+      }
+
+    }
+
+    return $comparison;
+  }
+
+  /**
+  * logical := comparison { 'and' comparison | 'or' comparison }
+  */
+  protected function parseLogical() {
+
+    $logical = $this->parseComparison();
+
+    while ($token = $this->getToken('/\G\s*(or|and)/u')) {
+      $comparison = $this->parseComparison();
+
+      if (strcasecmp($token, 'and') == 0) {
+        $logical = new WactLogicalAndExpressionNode($logical, $comparison);
+      } else {
+        $logical = new WactLogicalOrExpressionNode($logical, $comparison);
+      }
+
+    }
+
+    return $logical;
+  }
+
+  /**
+  * expression := logical
+  */
+  protected function parseExpression() {
+    return $this->parseLogical();
+  }
+
+  /**
+  * Parse text for expressions and emit a stream of events for expression fragments
+  */
+  function parse($text)
+  {
+    $this->length = strlen($text);
+
+    if ($this->length == 0) {
+      return;
+    }
+
+    $this->text = $text;
+    $this->position = 0;
+
+    $expression = $this->parseExpression();
+
+    if ($this->position < $this->length &&
+      preg_match('/\G\s*$/u', $this->text, $match, PREG_OFFSET_CAPTURE, $this->position)) {
+      throw new Exception('Expection end of expression.');
+    }
+
+    return $expression;
+
   }
 }
 ?>

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTemplateFiltersTest.class.php 5684 2007-04-19 08:34:48Z serega $
+ * @version    $Id: WactTemplateFiltersTest.class.php 5691 2007-04-19 13:27:02Z serega $
  * @package    wact
  */
 
@@ -106,19 +106,6 @@ class WactTemplateFiltersTest extends WactTemplateTestCase
     $this->registerTestingTemplate('/template/filter/parameter.html', $template);
     $page = $this->initTemplate('/template/filter/parameter.html');
     $page->set('Var', 'The quick brown fox jumped over the lazy dog.');
-
-    $output = $page->capture();
-    $this->assertEqual($output, "The quick\nbrown fox\njumped\nover the\nlazy dog.");
-  }
-
-  function testFilterParameterIsOutputExpression()
-  {
-    $template = '{$Var|wordwrap:{$size} }';
-
-    $this->registerTestingTemplate('/template/filter/parameter_is_output_expression.html', $template);
-    $page = $this->initTemplate('/template/filter/parameter_is_output_expression.html');
-    $page->set('Var', 'The quick brown fox jumped over the lazy dog.');
-    $page->set('size', 10);
 
     $output = $page->capture();
     $this->assertEqual($output, "The quick\nbrown fox\njumped\nover the\nlazy dog.");

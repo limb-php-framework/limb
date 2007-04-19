@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpression.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactExpression.class.php 5691 2007-04-19 13:27:02Z serega $
  * @package    wact
  */
 
@@ -14,7 +14,7 @@ require_once 'limb/wact/src/compiler/expression/WactExpressionLexer.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionLexerParallelRegex.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionLexerStateStack.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
-require_once 'limb/wact/src/compiler/expression/WactNewExpressionValueParser.class.php';
+require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionFilterFindingParser.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionFilterParser.class.php';
 
@@ -104,7 +104,7 @@ class WactExpression implements WactExpressionInterface
   */
   function createValue($expression)
   {
-    $Parser = new WactNewExpressionValueParser($this->context);
+    $Parser = new WactExpressionValueParser($this->context);
     return $Parser->parse($expression);
   }
 
