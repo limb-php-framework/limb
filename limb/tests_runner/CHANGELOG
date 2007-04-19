@@ -1,3 +1,11 @@
+0.7.0-alpha - 19 April 2007 (r5678)
+==================================================
+-- initial SpikePHPCoverage support added into lmbTestShellUI
+-- experimental ReferenceExpectation added to SimpleTest library
+-- lmbTestTreeDirNode :: _shouldIgnoreDir() typecasts include result into boolean value
+-- Base lmbTestsRunner extracted from lmbTestShellUI(TR-7)
+-- a bit more friendly ignore message
+
 0.6.0-alpha - 9 April 2007 (r5576)
 ==================================================
 -- lmbTestTreeDirNode :: bootstrap() now checks if directory is ignored and returns false which means that bootstraping process failed and this directory should be ignored. It means that .ignore.php now is called *before* .init.php
