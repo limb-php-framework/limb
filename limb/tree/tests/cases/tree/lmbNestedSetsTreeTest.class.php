@@ -90,32 +90,19 @@ class lmbNestedSetsTreeTest extends UnitTestCase
   
   function testInitTree()
   {
+    
+    $id = $this->imp->initTree();
+    
     $root_node = array(
-      'identifier' => 'root',
-      'id' => 1,
+      'id' => $id,
       'c_left' => 1,
       'c_right' => 2,
       'c_level' => 0,
-      );
-    $id = $this->imp->initTree($root_node);
-    $this->assertEqual($root_node['id'], $id);
-    $this->assertEqual($root_node, $this->imp->getNode(1)->export());
+      'identifier' => '',
+    );
+    $this->assertEqual($root_node, $this->imp->getNode($id)->export());
   }
-  
-  function testInitTreeAutoGenerateId()
-  {
-    $root_node = array('identifier' => 'root');
-    $id = $this->imp->initTree($root_node);
-    
-    $this->assertNotIdentical($id, false);
-    
-    $root_node['id']=$id;
-    $root_node['c_left']=1;
-    $root_node['c_right']=2;
-    $root_node['c_level']=0;
-    
-    $this->assertEqual($root_node, $this->imp->getNode($id)->export());  
-  }
+
   
   function testCreateTopNode()
   {

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5682 2007-04-19 08:02:06Z pachanga $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5685 2007-04-19 09:28:36Z alex433 $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -38,7 +38,7 @@ class lmbMaterializedPathTree implements lmbTree
 
   function initTree()
   {
-    $stmt = $this->_conn->newStatement("TRUNCATE {$this->_node_table}");
+    $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
     $stmt->execute();
     return true;
   }

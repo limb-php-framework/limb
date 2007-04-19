@@ -87,7 +87,7 @@ class lmbNestedSetsTree implements lmbTree
 
   function initTree()
   {
-    $stmt = $this->_conn->newStatement("TRUNCATE {$this->_node_table}");
+    $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
     $stmt->execute();
 
     $values = array();
@@ -297,7 +297,7 @@ class lmbNestedSetsTree implements lmbTree
             AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left}+1 AND t".$i.".{$this->_right}
             AND t".$c.".{$this->_level}=t".$i.".{$this->_level}+1";
     }
-    $sql = "SELECT ".$this->_getSelectFields('t'.$c)." FROM {$this->_node_table} t0$t WHERE $w LIMIT 1";
+    $sql = "SELECT ".$this->_getSelectFields('t'.$c)." FROM {$this->_node_table} t0$t WHERE $w";
 
     $stmt = $this->_conn->newStatement($sql);
     if($r = $stmt->getOneRecord())

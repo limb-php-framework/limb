@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/tree/src/tree/lmbNSTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
-class MSTreeTestVersion extends lmbNSTree
+class NSTreeTestVersion extends lmbNSTree
 {
   function __construct()
   {
@@ -25,7 +25,7 @@ class lmbNSTreeTest extends lmbTreeTestBase
 {
   function _createTreeImp()
   {
-    return new MSTreeTestVersion();
+    return new NSTreeTestVersion();
   }
 
   function _cleanUp()

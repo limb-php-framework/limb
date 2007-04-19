@@ -86,7 +86,18 @@ class lmbNSTree implements lmbTree
 
   function initTree()
   {
-    return $this->_createRootNode();
+    $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
+    $stmt->execute();
+
+    $values = array();
+    $values['id'] = $this->_getNextNodeInsertId();
+    $values[$this->_left] = 1;
+    $values[$this->_right] = 2;
+    $values[$this->_level] = 0;
+
+    $this->_db_table->insert($values);
+
+    return $values['id'];
   }
 
   function getTopNodes()
@@ -355,15 +366,14 @@ class lmbNSTree implements lmbTree
 
   protected function _createRootNode()
   {
-    $values = array();
-    $values['identifier'] = '';
-    $values['id'] = $this->_getNextNodeInsertId();
-    $values['parent_id'] = 0;
-    $values[$this->_left] = 1;
-    $values[$this->_right] = 2;
-    $values[$this->_level] = 0;
-    $this->_db_table->insert($values);
-    return $values['id'];
+    $sql = "SELECT " . $this->_getSelectFields() . "
+            FROM {$this->_node_table} WHERE {$this->_level}=0";
+    $stmt = $this->_conn->newStatement($sql);
+
+    if($root_node = $stmt->getOneRecord())
+      return $this->_createSubNode($root_node, $values);
+
+    return flase;
   }
 
   protected function _createSubNode($node, $values)

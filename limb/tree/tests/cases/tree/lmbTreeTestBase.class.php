@@ -62,7 +62,9 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $new_node = $this->imp->getNode($node_id);
     $this->assertEqual($node['identifier'], $new_node['identifier']);
     $this->assertEqual($new_node['id'], $node_id);
-    $this->assertEqual($new_node['parent_id'], $root_id);
+    
+    $parent_node = $this->imp->getParent($new_node);
+    $this->assertEqual($parent_node['id'], $root_id);
   }
 
   /*
