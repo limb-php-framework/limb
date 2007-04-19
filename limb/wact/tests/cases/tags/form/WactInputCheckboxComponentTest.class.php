@@ -12,13 +12,14 @@
 
 require_once 'limb/wact/src/components/form/form.inc.php';
 
-class WactInputCheckboxComponentTestCase extends WactTemplateTestCase
+class WactInputCheckboxComponentTest extends WactTemplateTestCase
 {
   function testIsChecked()
   {
-    $template = '<form id="testForm" runat="server">
-                    <input type="checkbox" id="test" name="myInput" runat="server"/>
-                </form>';
+    $template = '<form id="testForm" runat="server">'.
+                '<input type="checkbox" id="test" name="myInput" runat="server"/>'.
+                '</form>';
+
     $this->registerTestingTemplate('/components/form/inputcheckbox/ischecked.html', $template);
 
     $page = $this->initTemplate('/components/form/inputcheckbox/ischecked.html');
@@ -31,17 +32,16 @@ class WactInputCheckboxComponentTestCase extends WactTemplateTestCase
 
     $input = $page->getChild('test');
     $input->setAttribute('value','foo');
-    ob_start();
-    $input->renderAttributes();
-    ob_end_clean();
-    $this->assertTrue($input->hasAttribute('checked'));
+
+    $expected = '<form id="testForm"><input type="checkbox" id="test" name="myInput" value="foo" checked="checked" /></form>';
+    $this->assertEqual($page->capture(), $expected);
   }
 
   function testIsUnChecked()
   {
-    $template = '<form id="testForm" runat="server">
-                    <input type="checkbox" id="test" name="myInput" runat="server" checked="true"/>
-                </form>';
+    $template = '<form id="testForm" runat="server">'.
+                '<input type="checkbox" id="test" name="myInput" runat="server" checked="true"/>' .
+                '</form>';
     $this->registerTestingTemplate('/components/form/inputcheckbox/isunchecked.html', $template);
 
     $page = $this->initTemplate('/components/form/inputcheckbox/isunchecked.html');
@@ -54,17 +54,16 @@ class WactInputCheckboxComponentTestCase extends WactTemplateTestCase
 
     $input = $page->getChild('test');
     $input->setAttribute('value','bar');
-    ob_start();
-    $input->renderAttributes();
-    ob_end_clean();
-    $this->assertFalse($input->hasAttribute('checked'));
+
+    $expected = '<form id="testForm"><input type="checkbox" id="test" name="myInput" value="bar" /></form>';
+    $this->assertEqual($page->capture(), $expected);
   }
 
   function testIsCheckedIfValuePresent()
   {
-    $template = '<form id="testForm" runat="server">
-                    <input type="checkbox" id="test" name="myInput" runat="server"/>
-                </form>';
+    $template = '<form id="testForm" runat="server">'.
+                '<input type="checkbox" id="test" name="myInput" runat="server"/>'.
+                '</form>';
     $this->registerTestingTemplate('/components/form/inputcheckbox/isnotchecked.html', $template);
 
     $page = $this->initTemplate('/components/form/inputcheckbox/isnotchecked.html');
@@ -75,20 +74,17 @@ class WactInputCheckboxComponentTestCase extends WactTemplateTestCase
 
     $form->registerDataSource($data);
 
-    $input = $page->getChild('test');
-    ob_start();
-    $input->renderAttributes();
-    ob_end_clean();
-    $this->assertTrue($input->hasAttribute('checked'));
+    $expected = '<form id="testForm"><input type="checkbox" id="test" name="myInput" checked="checked" /></form>';
+    $this->assertEqual($page->capture(), $expected);
   }
 
   function testIsCheckedAsArray()
   {
-    $template = '<form id="testForm" runat="server">
-                    <input type="checkbox" id="test1" name="test[]" runat="server"/>
-                    <input type="checkbox" id="test2" name="test[]" runat="server"/>
-                    <input type="checkbox" id="test3" name="test[]" runat="server"/>
-                </form>';
+    $template = '<form id="testForm" runat="server">'.
+                    '<input type="checkbox" id="test1" name="test[]" runat="server"/>'.
+                    '<input type="checkbox" id="test2" name="test[]" runat="server"/>'.
+                    '<input type="checkbox" id="test3" name="test[]" runat="server"/>'.
+                '</form>';
     $this->registerTestingTemplate('/components/form/inputcheckbox/ischeckedasarray.html', $template);
 
     $page = $this->initTemplate('/components/form/inputcheckbox/ischeckedasarray.html');
@@ -96,29 +92,23 @@ class WactInputCheckboxComponentTestCase extends WactTemplateTestCase
     $form = $page->getChild('testForm');
 
     $data = new WactArrayObject(array('test' => array('1','3')));
-
     $form->registerDataSource($data);
 
     $input1 = $page->getChild('test1');
     $input1->setAttribute('value','1');
-    ob_start();
-    $input1->renderAttributes();
-    ob_end_clean();
-    $this->assertTrue($input1->hasAttribute('checked'));
 
     $input2 = $page->getChild('test2');
     $input2->setAttribute('value','2');
-    ob_start();
-    $input2->renderAttributes();
-    ob_end_clean();
-    $this->assertFalse($input2->hasAttribute('checked'));
 
-    $input3 = $page->getChild('test1');
+    $input3 = $page->getChild('test3');
     $input3->setAttribute('value','3');
-    ob_start();
-    $input3->renderAttributes();
-    ob_end_clean();
-    $this->assertTrue($input3->hasAttribute('checked'));
+
+    $expected = '<form id="testForm">'.
+                  '<input type="checkbox" id="test1" name="test[]" value="1" checked="checked" />'.
+                  '<input type="checkbox" id="test2" name="test[]" value="2" />'.
+                  '<input type="checkbox" id="test3" name="test[]" value="3" checked="checked" />'.
+                '</form>';
+    $this->assertEqual($page->capture(), $expected);
   }
 }
 ?>

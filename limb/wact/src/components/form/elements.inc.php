@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: elements.inc.php 5603 2007-04-10 12:45:45Z pachanga $
+ * @version    $Id: elements.inc.php 5684 2007-04-19 08:34:48Z serega $
  * @package    wact
  */
 
@@ -65,6 +65,14 @@ class WactFormElement extends WactRuntimeTagComponent
       return str_replace("_", " ", $this->getAttribute('name'));
   }
 
+  function getName()
+  {
+    if($this->hasAttribute('name'))
+      return $this->getAttribute('name');
+
+    return $this->getId();
+  }
+
   /**
   * Returns true if the form element is in an error state
   * (typically this is called for you by controllers)
@@ -98,7 +106,7 @@ class WactFormElement extends WactRuntimeTagComponent
   function getValue()
   {
     $form_component = $this->findParentByClass('WactFormComponent');
-    return $form_component->getValue($this->getAttribute('name'));
+    return $form_component->getValue($this->getName());
   }
 
   /**
@@ -107,7 +115,7 @@ class WactFormElement extends WactRuntimeTagComponent
   function setValue($value)
   {
     $form_component = $this->findParentByClass('WactFormComponent');
-    return $form_component->setValue($this->getAttribute('name'),$value);
+    return $form_component->setValue($this->getName(), $value);
   }
 
   /**
@@ -263,18 +271,4 @@ class WactCheckableFormElement extends WactFormElement
   }
 }
 
-//--------------------------------------------------------------------------------
-/**
-* Represents an HTML textarea tag
-*/
-class WactTextAreaComponent extends WactFormElement
-{
-  /**
-  * Output the contents of the textarea, passing through htmlspecialchars().
-  */
-  function renderContents()
-  {
-    echo htmlspecialchars($this->getValue(), ENT_QUOTES);
-  }
-}
 ?>
