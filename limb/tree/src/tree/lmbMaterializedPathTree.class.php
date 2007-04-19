@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5692 2007-04-19 14:21:01Z alex433 $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5694 2007-04-19 15:19:07Z pachanga $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -279,8 +279,9 @@ class lmbMaterializedPathTree implements lmbTreeOld
     return null;
   }
 
-  function getNodeByPath($path, $delimiter='/')
+  function getNodeByPath($path)
   {
+    $delimiter = '/';
     $path_array = explode($delimiter, $path);
 
     array_shift($path_array);

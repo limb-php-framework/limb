@@ -266,8 +266,9 @@ class lmbMPTree implements lmbTree
     return null;
   }
 
-  function getNodeByPath($path, $delimiter='/')
+  function getNodeByPath($path)
   {
+    $delimiter = '/';
     $path_array = explode($delimiter, $path);
 
     array_shift($path_array);
@@ -498,7 +499,6 @@ class lmbMPTree implements lmbTree
 
     return $new_values['id'];
   }
-
 
   function deleteNode($node)
   {

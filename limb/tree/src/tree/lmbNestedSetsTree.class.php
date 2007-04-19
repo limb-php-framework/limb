@@ -265,8 +265,9 @@ class lmbNestedSetsTree implements lmbTreeOld
     return null;
   }
 
-  function getNodeByPath($path, $delimiter='/')
+  function getNodeByPath($path)
   {
+    $delimiter = '/';
     $path_array = explode($delimiter, $path);
 
     if(reset($path_array) == '')

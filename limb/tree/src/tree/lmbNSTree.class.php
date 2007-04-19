@@ -100,7 +100,7 @@ class lmbNSTree implements lmbTree
 
     if($root_node = $stmt->getOneRecord())
       return $root_node;
-    
+
     return null;
   }
 
@@ -252,8 +252,9 @@ class lmbNSTree implements lmbTree
     return null;
   }
 
-  function getNodeByPath($path, $delimiter='/')
+  function getNodeByPath($path)
   {
+    $delimiter = '/';
     $path_array = explode($delimiter, $path);
 
     if(reset($path_array) == '')
