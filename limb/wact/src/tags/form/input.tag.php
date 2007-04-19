@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: input.tag.php 5686 2007-04-19 10:35:03Z serega $
+ * @version    $Id: input.tag.php 5688 2007-04-19 11:15:15Z serega $
  * @package    wact
  */
 
@@ -35,35 +35,35 @@ class WactInputTag extends WactControlTag
     $type = strtolower($this->getAttribute('type'));
     switch ($type) {
       case 'text':
-        $this->runtimeComponentName = 'WactInputFormElement';
+        $this->runtimeComponentName = 'WactInputTagComponent';
         break;
       case 'password':
-        $this->runtimeComponentName = 'WactFormElement';
+        $this->runtimeComponentName = 'WactFormElementTagComponent';
         break;
       case 'checkbox':
-        $this->runtimeComponentName = 'WactCheckableFormElement';
+        $this->runtimeComponentName = 'WactCheckableInputTagComponent';
         break;
       case 'submit':
-        $this->runtimeComponentName = 'WactFormElement';
+        $this->runtimeComponentName = 'WactFormElementTagComponent';
         break;
       case 'radio':
-        $this->runtimeComponentName = 'WactCheckableFormElement';
+        $this->runtimeComponentName = 'WactCheckableInputTagComponent';
         break;
       case 'reset':
-        $this->runtimeComponentName = 'WactFormElement';
+        $this->runtimeComponentName = 'WactFormElementTagComponent';
         break;
       case 'file':
-        $this->runtimeComponentName = 'WactInputFileComponent';
-        $this->runtimeIncludeFile = 'limb/wact/src/components/form/WactInputFileComponent.class.php';
+        $this->runtimeComponentName = 'WactFileInputTagComponent';
+        $this->runtimeIncludeFile = 'limb/wact/src/components/form/WactFileInputTagComponent.class.php';
         break;
       case 'hidden':
-        $this->runtimeComponentName = 'WactInputFormElement';
+        $this->runtimeComponentName = 'WactInputTagComponent';
         break;
       case 'image':
-        $this->runtimeComponentName = 'WactInputFormElement';
+        $this->runtimeComponentName = 'WactInputTagComponent';
         break;
       case 'button':
-        $this->runtimeComponentName = 'WactInputFormElement';
+        $this->runtimeComponentName = 'WactInputTagComponent';
         break;
       default:
         $this->raiseCompilerError('Unrecognized type attribute for input tag');

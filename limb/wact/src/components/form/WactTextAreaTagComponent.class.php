@@ -10,7 +10,7 @@
  * @package    wact
  */
 
-class WactTextAreaComponent extends WactFormElement
+class WactTextAreaTagComponent extends WactFormElementTagComponent
 {
   /**
   * Output the contents of the textarea, passing through htmlspecialchars().

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: label.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: label.tag.php 5688 2007-04-19 11:15:15Z serega $
  * @package    wact
  */
 
@@ -21,9 +21,8 @@
  */
 class WactLabelTag extends WactRuntimeComponentHTMLTag
 {
-  protected $runtimeIncludeFile = 'limb/wact/src/components/form/form.inc.php';
-
-  protected $runtimeComponentName = 'WactLabelComponent';
+  protected $runtimeIncludeFile = 'limb/wact/src/components/form/WactLabelTagComponent.class.php';
+  protected $runtimeComponentName = 'WactLabelTagComponent';
 
   /**
    * @param WactCodeWriter
@@ -31,6 +30,7 @@ class WactLabelTag extends WactRuntimeComponentHTMLTag
   function generateConstructor($code_writer)
   {
     parent::generateConstructor($code_writer);
+
     if ($this->hasAttribute('errorclass'))
     {
       $code_writer->writePHP($this->getComponentRefCode() . '->errorclass = ');

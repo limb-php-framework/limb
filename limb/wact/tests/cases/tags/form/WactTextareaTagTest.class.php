@@ -23,7 +23,7 @@ class WactTextAreaTagTest extends WactTemplateTestCase
     $this->registerTestingTemplate('/tags/form/control/textarea/textarea.html', $template);
 
     $page = $this->initTemplate('/tags/form/control/textarea/textarea.html');
-    $this->assertIsA($page->findChild('test'),'WactTextAreaComponent');
+    $this->assertIsA($page->findChild('test'),'WactTextAreaTagComponent');
 
     $form = $page->getChild('my_form');
     $form->set('foo', 'other text');

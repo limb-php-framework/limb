@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactJSCheckboxComponent.class.php 5669 2007-04-17 10:10:32Z maximgb $
+ * @version    $Id: WactJSCheckboxComponent.class.php 5688 2007-04-19 11:15:15Z serega $
  * @package    wact
  */
 
-class WactJSCheckboxComponent extends WactCheckableFormElement
+class WactJSCheckboxComponent extends WactCheckableInputTagComponent
 {
   function renderAttributes()
   {
@@ -31,7 +31,7 @@ class WactJSCheckboxComponent extends WactCheckableFormElement
       $checked = '';
 
     $js = "onchange=\"this.form.elements['{$id}'].value = 1*this.checked\"";
-    
+
     // title has no meaning in <input type="hidden"/> field, so it should be copied into checkbox
     $title = $this->getAttribute('title');
     $title = $title ? 'title=\''.$title.'\'' : '';

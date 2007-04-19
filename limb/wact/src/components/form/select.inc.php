@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.inc.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @version    $Id: select.inc.php 5688 2007-04-19 11:15:15Z serega $
  * @package    wact
  */
 
@@ -16,7 +16,7 @@ require_once 'limb/wact/src/components/form/form.inc.php';
 * Represents an HTML select multiple tag where multiple options
 * can be selected
 */
-class WactSelectMultipleComponent extends WactFormElement
+class WactSelectMultipleComponent extends WactFormElementTagComponent
 {
   /**
   * A associative array of choices to build the option list with
@@ -34,7 +34,7 @@ class WactSelectMultipleComponent extends WactFormElement
   var $option_handler;
 
   /**
-  * Override WactFormElement method to deal with name attributes containing
+  * Override WactFormElementTagComponent method to deal with name attributes containing
   * PHP array syntax.
   * @return array the contents of the value
   * @access private
@@ -184,7 +184,7 @@ class WactOptionRenderer {
 * be selected
 * @package    wact
 */
-class WactSelectSingleComponent extends WactFormElement
+class WactSelectSingleComponent extends WactFormElementTagComponent
 {
   /**
   * A associative array of choices to build the option list with

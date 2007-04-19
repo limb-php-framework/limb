@@ -13,18 +13,26 @@
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');
 require_once('limb/wact/src/components/form/form.inc.php');
 
-class WactTextAreaComponentTest extends WactTemplateTestCase
+class WactTextAreaTagComponentTest extends WactTemplateTestCase
 {
+  protected $text_area;
+  protected $form;
+
+  function setUp()
+  {
+    parent :: setUp();
+
+    $this->form = new WactFormComponent('test_form');
+    $this->text_area = new WactTextAreaTagComponent('my_text_area');
+    $this->form->addChild($this->text_area);
+  }
+
   function testRenderContents()
   {
-    $form = new WactFormComponent('test_form');
-    $text_area = new WactTextAreaComponent('my_text_area');
-    $form->addChild($text_area);
-
-    $form->registerDataSource(array('my_text_area' => 'foo'));
+    $this->form->set('my_text_area', 'foo');
 
     ob_start();
-    $text_area->renderContents();
+    $this->text_area->renderContents();
     $out = ob_get_contents();
     ob_end_clean();
 
@@ -33,14 +41,10 @@ class WactTextAreaComponentTest extends WactTemplateTestCase
 
   function testRenderEscapesHtmlEntities()
   {
-    $form = new WactFormComponent('test_form');
-    $text_area = new WactTextAreaComponent('my_text_area');
-    $form->addChild($text_area);
-
-    $form->registerDataSource(array('my_text_area' => 'x < y > z & a'));
+    $this->form->set('my_text_area', 'x < y > z & a');
 
     ob_start();
-    $text_area->renderContents();
+    $this->text_area->renderContents();
     $out = ob_get_contents();
     ob_end_clean();
 
