@@ -16,8 +16,6 @@ lmb_require('limb/tree/src/tree/lmbTree.interface.php');
 
 /**
  * Base class implementing a Nested Sets approach to storing tree-like structures in database tables.
- *
- * @version $Id: lmbMaterializedPathTree.class.php 5645 2007-04-12 07:13:10Z pachanga $
  */
 class lmbNestedSetsTree implements lmbTree
 {
@@ -26,8 +24,9 @@ class lmbNestedSetsTree implements lmbTree
   protected $_params = array();
 
   protected $_required_params = array();
-
-  protected $_dumb_mode = false;
+  protected $_left;
+  protected $_right;
+  protected $_level;
 
   protected $_db_table = false;
 
@@ -37,9 +36,9 @@ class lmbNestedSetsTree implements lmbTree
 
     $this->_conn = $toolkit->getDefaultDbConnection();
     $this->_node_table = $node_table;
-    $this->left = $left;
-    $this->right = $right;
-    $this->level = $level;
+    $this->_left = $left;
+    $this->_right = $right;
+    $this->_level = $level;
     $this->_required_params = array('id', $left, $right, $level);
     $this->_db_table = new lmbTableGateway($this->_node_table);
     $this->_params = $this->_db_table->getColumnNames();
@@ -57,11 +56,11 @@ class lmbNestedSetsTree implements lmbTree
 
   function _getSelectFields($table = null)
   {
-    if ($table === null)
+    if($table === null)
       $table = $this->_node_table;
-      
+
     $sql_exec_fields = array();
-    foreach ($this->_params as $name)
+    foreach($this->_params as $name)
     {
       $sql_exec_fields[] = $table . '.' . $name . ' AS ' . $name;
     }
@@ -75,23 +74,24 @@ class lmbNestedSetsTree implements lmbTree
     $processed = array();
     foreach($values as $field => $value)
     {
-      if (!in_array($field, $this->_params))
+      if(!in_array($field, $this->_params))
         continue;
 
-      if (in_array($field, $this->_required_params))
+      if(in_array($field, $this->_required_params))
         continue;
 
       $processed[$field] = $value;
     }
     return $processed;
   }
+
   function initTree ($values)
   {
     $stmt = $this->_conn->newStatement("TRUNCATE {$this->_node_table}");
     $stmt->execute();
-    
+
     $new_values = $this->_processUserValues($values);
-    
+
     if(!isset($values['id']))
     {
       $new_values['id'] = $this->_getNextNodeInsertId();
@@ -104,21 +104,20 @@ class lmbNestedSetsTree implements lmbTree
         return false;
     }
 
-    $new_values[$this->left] = 1;
-    $new_values[$this->right] = 2;
-    $new_values[$this->level] = 0;
+    $new_values[$this->_left] = 1;
+    $new_values[$this->_right] = 2;
+    $new_values[$this->_level] = 0;
 
 
     $this->_db_table->insert($new_values);
 
     return $new_values['id'];
-    
   }
 
   function getTopNodes($level = 1)
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE {$this->level}={$level}";
+            FROM {$this->_node_table} WHERE {$this->_level}={$level}";
 
     $stmt = $this->_conn->newStatement($sql);
     return $stmt->getRecordSet();
@@ -128,40 +127,40 @@ class lmbNestedSetsTree implements lmbTree
   {
     if(!$child = $this->getNode($node))
       return null;
-    
-    if ($child[$this->level] < 1)
+
+    if($child[$this->_level] < 1)
       return null;
-    
+
    $sql =  "SELECT " . $this->_getSelectFields() . "
             FROM  {$this->_node_table}
-            WHERE {$this->left} < {$child[$this->left]} 
-            AND {$this->right} >  {$child[$this->right]} 
-            AND {$this->level}>0";
-    
-    $stmt = $this->_conn->newStatement($sql); 
+            WHERE {$this->_left} < {$child[$this->_left]}
+            AND {$this->_right} >  {$child[$this->_right]}
+            AND {$this->_level}>0";
+
+    $stmt = $this->_conn->newStatement($sql);
 
     return $stmt->getRecordSet();
   }
 
   function getParent($node)
-  { 
-    if (!$child = $this->getNode($node))
+  {
+    if(!$child = $this->getNode($node))
       return null;
-    
-    if ($child[$this->level] < 1)
+
+    if($child[$this->_level] < 1)
       return null;
      $sql =  "SELECT " . $this->_getSelectFields() . "
-            FROM  {$this->_node_table}
-            WHERE {$this->left} < {$child[$this->left]} 
-            AND {$this->right} >  {$child[$this->right]} 
-            AND {$this->level} = ".($child[$this->level]-1);
+              FROM  {$this->_node_table}
+              WHERE {$this->_left} < {$child[$this->_left]}
+              AND {$this->_right} >  {$child[$this->_right]}
+              AND {$this->_level} = ".($child[$this->_level]-1);
     /*$sql =  "SELECT " . $this->_getSelectFields() . "
-            FROM  {$this->_node_table} _{$this->_node_table}, 
+            FROM  {$this->_node_table} _{$this->_node_table},
                   {$this->_node_table}
             WHERE _{$this->_node_table}.id='{$child['id']}'
-            AND _{$this->_node_table}.{$this->left} BETWEEN {$this->_node_table}.{$this->left} AND {$this->_node_table}.{$this->right}
-            AND {$this->_node_table}.{$this->level}=_{$this->_node_table}.{$this->level}-1";*/
-    
+            AND _{$this->_node_table}.{$this->_left} BETWEEN {$this->_node_table}.{$this->_left} AND {$this->_node_table}.{$this->_right}
+            AND {$this->_node_table}.{$this->_level}=_{$this->_node_table}.{$this->_level}-1";*/
+
     $stmt = $this->_conn->newStatement($sql);
 
     return $stmt->getOneRecord();
@@ -169,7 +168,7 @@ class lmbNestedSetsTree implements lmbTree
 
   function getSiblings($node)
   {
-    if (!($sibling = $this->getNode($node)))
+    if(!($sibling = $this->getNode($node)))
       return null;
 
     $parent = $this->getParent($sibling['id']);
@@ -180,24 +179,24 @@ class lmbNestedSetsTree implements lmbTree
   {
     return $this->_getChildren($node, $depth);
   }
-  
+
   function getChildrenAll($node)
   {
-    return $this->_getChildren($node); 
+    return $this->_getChildren($node);
   }
-  
+
   protected function _getChildren($node, $depth = -1)
   {
-    if (!$parent = $this->getNode($node))
+    if(!$parent = $this->getNode($node))
       return null;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE {$parent[$this->left]} < {$this->left}
-            AND {$parent[$this->right]} > {$this->right}";
-    if ($depth!=-1)
-      $sql .= " AND {$this->level} <= ".($parent[$this->level]+$depth);
-      
+            WHERE {$parent[$this->_left]} < {$this->_left}
+            AND {$parent[$this->_right]} > {$this->_right}";
+    if($depth!=-1)
+      $sql .= " AND {$this->_level} <= ".($parent[$this->_level]+$depth);
+
     $stmt = $this->_conn->newStatement($sql);
 
     return $stmt->getRecordSet();
@@ -207,39 +206,39 @@ class lmbNestedSetsTree implements lmbTree
   {
     return $this->_countChildren($node, $depth);
   }
-  
+
   function countChildrenAll($node)
   {
     return $this->_countChildren($node);
   }
-  
+
   protected function _countChildren($node, $depth = -1)
   {
-    if (!$parent = $this->getNode($node))
+    if(!$parent = $this->getNode($node))
       return null;
 
     $sql = "SELECT count(id) as counter
             FROM {$this->_node_table}
-            WHERE {$parent[$this->left]} < {$this->left}
-            AND {$parent[$this->right]} > {$this->right}";
-    
-    if ($depth!=-1)
-      $sql .= " AND {$this->level} <= ".($parent[$this->level]+$depth);
-    
+            WHERE {$parent[$this->_left]} < {$this->_left}
+            AND {$parent[$this->_right]} > {$this->_right}";
+
+    if($depth!=-1)
+      $sql .= " AND {$this->_level} <= ".($parent[$this->_level]+$depth);
+
     $stmt = $this->_conn->newStatement($sql);
-    
+
     return $stmt->getOneValue();
   }
-             
+
 /*  function getSubBranch($node, $depth = -1, $include_parent = false)
   {
-    if (!$parent_node = $this->getNode($node))
+    if(!$parent_node = $this->getNode($node))
       return null;
 
     $id = $parent_node['id'];
 
-    if ($depth != -1)
-      $depth_condition = " AND {$this->level} <=" . ($parent_node[$this->level] + $depth);
+    if($depth != -1)
+      $depth_condition = " AND {$this->_level} <=" . ($parent_node[$this->_level] + $depth);
     else
       $depth_condition = '';
 
@@ -250,16 +249,16 @@ class lmbNestedSetsTree implements lmbTree
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE {$parent_node[$this->left]} <= {$this->left}
-            AND {$parent_node[$this->right]} >= {$this->right}
+            WHERE {$parent_node[$this->_left]} <= {$this->_left}
+            AND {$parent_node[$this->_right]} >= {$this->_right}
             {$depth_condition}
             {$include_parent_condition}
-            ORDER BY {$this->left}";
+            ORDER BY {$this->_left}";
 
     $stmt = $this->_conn->newStatement($sql);
     return $stmt->getRecordSet();
   }*/
-  
+
   function getNode($node)
   {
     if(is_array($node) or is_object($node))
@@ -293,26 +292,26 @@ class lmbNestedSetsTree implements lmbTree
 
     if(!count($path_array))
       return null;
-    
+
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE {$this->level}=0";
+            FROM {$this->_node_table} WHERE {$this->_level}=0";
     $stmt = $this->_conn->newStatement($sql);
 
     if(!$root_node = $stmt->getOneRecord())
       return null;
-        
+
     $t='';
     $w='t0.id='.$root_node['id'];
     for($i=0;$i<count($path_array);$i++)
     {
       $c=$i+1;
       $t.=",\n{$this->_node_table} t".$c;
-      $w.=" and t".$c.".identifier='".addslashes($path_array[$i])."'
-            and t".$c.".{$this->left} between t".$i.".{$this->left}+1 and t".$i.".{$this->right}
-            and t".$c.".{$this->level}=t".$i.".{$this->level}+1";
+      $w.=" AND t".$c.".identifier='".addslashes($path_array[$i])."'
+            AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left}+1 AND t".$i.".{$this->_right}
+            AND t".$c.".{$this->_level}=t".$i.".{$this->_level}+1";
     }
-    $sql = "select ".$this->_getSelectFields('t'.$c)." from {$this->_node_table} t0".$t." where ".$w." limit 1";
-    
+    $sql = "SELECT ".$this->_getSelectFields('t'.$c)." FROM {$this->_node_table} t0$t WHERE $w LIMIT 1";
+
     $stmt = $this->_conn->newStatement($sql);
     if($r = $stmt->getOneRecord())
       return $r;
@@ -324,17 +323,14 @@ class lmbNestedSetsTree implements lmbTree
   {
     if(!$node = $this->getNode($node))
       return null;
-    
+
     $path = '';
-    
-    if (!$parents = $this->getParents($node))
+
+    if(!$parents = $this->getParents($node))
       return $path .= $delimeter . $node['identifier'];
-    
-    for($parents->rewind();$parents->valid();$parents->next())
-    {
-      $r = $parents->current();
-      $path .= $delimeter . $r->get('identifier');
-    }
+
+    foreach($parents as $parent)
+      $path .= $delimeter . $parent['identifier'];
 
     return $path .= $delimeter . $node['identifier'];
   }
@@ -385,23 +381,23 @@ class lmbNestedSetsTree implements lmbTree
   protected function _createRootNode($values)
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE {$this->level}=0";
+            FROM {$this->_node_table} WHERE {$this->_level}=0";
     $stmt = $this->_conn->newStatement($sql);
 
     if($root_node = $stmt->getOneRecord())
       return $this->_createSubNode($root_node, $values);
-      
+
     return flase;
   }
-  
+
   protected function _createSubNode($node, $values)
   {
-    if (!$parent_node = $this->getNode($node))
+    if(!$parent_node = $this->getNode($node))
       return false;
 
     $new_values = $this->_processUserValues($values);
 
-    if (!isset($values['id']))
+    if(!isset($values['id']))
     {
       $new_values['id'] = $this->_getNextNodeInsertId();
     }
@@ -413,24 +409,23 @@ class lmbNestedSetsTree implements lmbTree
         return false;
     }
 
-    $new_values[$this->left] = $parent_node[$this->right];
-    $new_values[$this->right] = $parent_node[$this->right]+1;
-    $new_values[$this->level] = $parent_node[$this->level]+1;
-    
-    // creating a place for the record being inserted
-    $sql = "UPDATE {$this->_node_table} 
-            SET {$this->left}=IF( {$this->left}>{$parent_node[$this->right]}, {$this->left}+2, {$this->left}),
-                {$this->right}=IF( {$this->right}>={$parent_node[$this->right]},{$this->right}+2,{$this->right})
-            WHERE {$this->right}>={$parent_node[$this->right]}";
-    $stmt = $this->_conn->newStatement ($sql);
-    $stmt->execute();
-    
-    $this->_db_table->insert($new_values);
+    $new_values[$this->_left] = $parent_node[$this->_right];
+    $new_values[$this->_right] = $parent_node[$this->_right]+1;
+    $new_values[$this->_level] = $parent_node[$this->_level]+1;
 
+    // creating a place for the record being inserted
+    $sql = "UPDATE {$this->_node_table}
+            SET {$this->_left}=IF( {$this->_left}>{$parent_node[$this->_right]}, {$this->_left}+2, {$this->_left}),
+                {$this->_right}=IF( {$this->_right}>={$parent_node[$this->_right]},{$this->_right}+2,{$this->_right})
+            WHERE {$this->_right}>={$parent_node[$this->_right]}";
+    $stmt = $this->_conn->newStatement($sql);
+    $stmt->execute();
+
+    $this->_db_table->insert($new_values);
 
     return $new_values['id'];
   }
-  
+
   function updateNode($id, $values, $internal = false)
   {
     if(!$this->isNode($id))
@@ -451,19 +446,19 @@ class lmbNestedSetsTree implements lmbTree
 
   function deleteNode($node)
   {
-    if (!$node = $this->getNode($node))
+    if(!$node = $this->getNode($node))
       return false;
 
     $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}
                                         WHERE
-                                        {$this->left} BETWEEN  {$node[$this->left]} AND {$node[$this->right]}");
+                                        {$this->_left} BETWEEN  {$node[$this->_left]} AND {$node[$this->_right]}");
     $stmt->execute();
 
-    $delta = ($node[$this->right] - $node[$this->left])+1;
-    $sql = "UPDATE {$this->_node_table} 
-            SET {$this->left}=IF({$this->left}>{$node[$this->left]}, {$this->left}-{$delta}, {$this->left}),
-                {$this->right}=IF({$this->right}>{$node[$this->left]}, {$this->right}-{$delta}, {$this->right})
-            WHERE {$this->right}>{$node[$this->right]}";
+    $delta = ($node[$this->_right] - $node[$this->_left])+1;
+    $sql = "UPDATE {$this->_node_table}
+            SET {$this->_left}=IF({$this->_left}>{$node[$this->_left]}, {$this->_left}-{$delta}, {$this->_left}),
+                {$this->_right}=IF({$this->_right}>{$node[$this->_left]}, {$this->_right}-{$delta}, {$this->_right})
+            WHERE {$this->_right}>{$node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
 
@@ -472,102 +467,102 @@ class lmbNestedSetsTree implements lmbTree
 
   function moveNode($source_node, $target_node)
   {
-    if ($source_node == $target_node)
+    if($source_node == $target_node)
       return false;
 
-    if (!$source_node = $this->getNode($source_node))
+    if(!$source_node = $this->getNode($source_node))
       return false;
 
-    if (!$target_node = $this->getNode($target_node))
+    if(!$target_node = $this->getNode($target_node))
       return false;
 
     // whether it is being moved upwards along the path
-    if ($target_node[$this->left] < $source_node[$this->left] && $target_node[$this->right] > $source_node[$this->right] && $target_node[$this->level] < $source_node[$this->level] - 1 )
-    { 
-      $sql = "UPDATE {$this->_node_table} SET  
-              {$this->level}=IF({$this->left} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, ".$this->level.sprintf('%+d', -($source_node[$this->level]-1)+$target_node[$this->level]).", {$this->level}), 
-              {$this->right}=IF({$this->right} BETWEEN ".($source_node[$this->right]+1)." AND ".($target_node[$this->right]-1).", {$this->right}-".($source_node[$this->right]-$source_node[$this->left]+1).", 
-              IF({$this->left} BETWEEN {$source_node[$this->left]} AND ({$source_node[$this->right]}), {$this->right}+".((($target_node[$this->right]-$source_node[$this->right]-$source_node[$this->level]+$target_node[$this->level])/2)*2 + $source_node[$this->level] - $target_node[$this->level] - 1).",{$this->right})),
-              {$this->left}=IF({$this->left} BETWEEN ".($source_node[$this->right]+1)." AND ".($target_node[$this->right]-1).", {$this->left}-".($source_node[$this->right]-$source_node[$this->left]+1).", 
-              IF({$this->left} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, {$this->left}+".((($target_node[$this->right]-$source_node[$this->right]-$source_node[$this->level]+$target_node[$this->level])/2)*2 + $source_node[$this->level] - $target_node[$this->level] - 1).", {$this->left})) 
-              WHERE {$this->left} BETWEEN ".($target_node[$this->left]+1)." AND ".($target_node[$this->right]-1);
-    } 
-    elseif($target_node[$this->left] < $source_node[$this->left])
-    { 
-       $sql = "UPDATE {$this->_node_table} SET 
-              {$this->level}=IF({$this->left} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, ".$this->level.sprintf('%+d', -($source_node[$this->level]-1)+$target_node[$this->level]).', '.$this->level."),
-              {$this->left}=IF($this->left BETWEEN {$target_node[$this->right]} AND ".($source_node[$this->left]-1).", {$this->left}+".($source_node[$this->right]-$source_node[$this->left]+1).", 
-              IF({$this->left} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, {$this->left}-".($source_node[$this->left]-$target_node[$this->right]).", {$this->left})), 
-              {$this->right}=IF({$this->right} BETWEEN {$target_node[$this->right]} AND {$source_node[$this->left]}, {$this->right}+".($source_node[$this->right]-$source_node[$this->left]+1).", 
-              IF({$this->right} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, {$this->right}-".($source_node[$this->left]-$target_node[$this->right]).", {$this->right})) 
-              WHERE {$this->left} BETWEEN {$target_node[$this->left]} AND {$source_node[$this->right]}
-              OR {$this->right} BETWEEN {$target_node[$this->left]} AND {$source_node[$this->right]}";                                  
-   
-    } 
+    if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
+    {
+      $sql = "UPDATE {$this->_node_table} SET
+              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$this->_level}),
+              {$this->_right}=IF({$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND ({$source_node[$this->_right]}), {$this->_right}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).",{$this->_right})),
+              {$this->_left}=IF({$this->_left} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).", {$this->_left}))
+              WHERE {$this->_left} BETWEEN ".($target_node[$this->_left]+1)." AND ".($target_node[$this->_right]-1);
+    }
+    elseif($target_node[$this->_left] < $source_node[$this->_left])
+    {
+       $sql = "UPDATE {$this->_node_table} SET
+              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).', '.$this->_level."),
+              {$this->_left}=IF($this->_left BETWEEN {$target_node[$this->_right]} AND ".($source_node[$this->_left]-1).", {$this->_left}+".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}-".($source_node[$this->_left]-$target_node[$this->_right]).", {$this->_left})),
+              {$this->_right}=IF({$this->_right} BETWEEN {$target_node[$this->_right]} AND {$source_node[$this->_left]}, {$this->_right}+".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              IF({$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_right}-".($source_node[$this->_left]-$target_node[$this->_right]).", {$this->_right}))
+              WHERE {$this->_left} BETWEEN {$target_node[$this->_left]} AND {$source_node[$this->_right]}
+              OR {$this->_right} BETWEEN {$target_node[$this->_left]} AND {$source_node[$this->_right]}";
+
+    }
     else
-    { 
-       $sql = "UPDATE {$this->_node_table} SET 
-              {$this->level}=IF({$this->left} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, ".$this->level.sprintf('%+d', -($source_node[$this->level]-1)+$target_node[$this->level]).", {$source_node[$this->level]}), 
-              {$this->left}=IF({$this->left} BETWEEN {$source_node[$this->right]} AND {$target_node[$this->right]}, {$this->left}-".($source_node[$this->right]-$source_node[$this->left]+1).", 
-              IF({$this->left} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, {$this->left}+".($target_node[$this->right]-1-$source_node[$this->right]).", {$this->left})), 
-              {$this->right}=IF({$this->right} BETWEEN ".($source_node[$this->right]+1)." AND ".($target_node[$this->right]-1).", {$this->right}-".($source_node[$this->right]-$source_node[$this->left]+1).",
-              IF({$this->right} BETWEEN {$source_node[$this->left]} AND {$source_node[$this->right]}, {$this->right}+".($target_node[$this->right]-1-$source_node[$this->right]).", {$this->right})) 
-              WHERE {$this->left} BETWEEN {$source_node[$this->left]} AND {$target_node[$this->right]} 
-              OR {$this->right} BETWEEN {$source_node[$this->left]} AND {$target_node[$this->right]}";
+    {
+       $sql = "UPDATE {$this->_node_table} SET
+              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$source_node[$this->_level]}),
+              {$this->_left}=IF({$this->_left} BETWEEN {$source_node[$this->_right]} AND {$target_node[$this->_right]}, {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_left})),
+              {$this->_right}=IF({$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              IF({$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_right}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_right}))
+              WHERE {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}
+              OR {$this->_right} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}";
     }
 
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
-    
+
     return true;
   }
-  
+
   function moveNodeUp($node)
   {
     return $this->_moveNodeByStep($node);
   }
-  
+
   function moveNodeDown($node)
   {
     return $this->_moveNodeByStep($node, 'down');
   }
-  
+
   protected function _moveNodeByStep ($node , $step = 'up')
   {
-    if (!$node = $this->getNode($node))
+    if(!$node = $this->getNode($node))
       return false;
-    
-    if (strtolower($step) == 'up')
-      $conditions = $this->right.'='.($node[$this->left]-1);
+
+    if(strtolower($step) == 'up')
+      $conditions = $this->_right.'='.($node[$this->_left]-1);
     else
-      $conditions = $this->left.'='.($node[$this->right]+1);
-      
-    $sql = "SELECT {$this->left}, {$this->right} 
-            FROM {$this->_node_table} 
-            WHERE {$conditions} AND {$this->level}={$node[$this->level]}";
+      $conditions = $this->_left.'='.($node[$this->_right]+1);
+
+    $sql = "SELECT {$this->_left}, {$this->_right}
+            FROM {$this->_node_table}
+            WHERE {$conditions} AND {$this->_level}={$node[$this->_level]}";
     $stmt =  $this->_conn->newStatement($sql);
-    if (!$node2 = $stmt->getOneRecord())
+    if(!$node2 = $stmt->getOneRecord())
       return false;
-    
-    $delta = ($step == 'up') ? ($node[$this->left] - $node2[$this->left]) : ($node2[$this->left] - $node[$this->left]);
-    $delta2 = ($step == 'up') ? ($node[$this->right] - $node2[$this->right]) : ($node2[$this->right] - $node[$this->right]);
-    
+
+    $delta = ($step == 'up') ? ($node[$this->_left] - $node2[$this->_left]) : ($node2[$this->_left] - $node[$this->_left]);
+    $delta2 = ($step == 'up') ? ($node[$this->_right] - $node2[$this->_right]) : ($node2[$this->_right] - $node[$this->_right]);
+
     $sql = "UPDATE {$this->_node_table} SET
-            {$this->right} = CASE
-                  WHEN {$this->left} BETWEEN {$node[$this->left]} AND {$node[$this->right]}
-                    THEN ".( ($step == 'up') ? $this->right.'-'.$delta : $this->right.'+'.$delta2)."
-                    ELSE ".( ($step == 'up') ? $this->right.'+'.$delta2 : $this->right.'-'.$delta)."
+            {$this->_right} = CASE
+                  WHEN {$this->_left} BETWEEN {$node[$this->_left]} AND {$node[$this->_right]}
+                    THEN ".( ($step == 'up') ? $this->_right.'-'.$delta : $this->_right.'+'.$delta2)."
+                    ELSE ".( ($step == 'up') ? $this->_right.'+'.$delta2 : $this->_right.'-'.$delta)."
                   END,
-            {$this->left} = CASE 
-                  WHEN {$this->left} BETWEEN {$node[$this->left]} AND {$node[$this->right]}
-                    THEN ".( ($step == 'up') ? $this->left.'-'.$delta : $this->left.'+'.$delta2)."
-                    ELSE ".( ($step == 'up') ? $this->left.'+'.$delta2 : $this->left.'-'.$delta)."
+            {$this->_left} = CASE
+                  WHEN {$this->_left} BETWEEN {$node[$this->_left]} AND {$node[$this->_right]}
+                    THEN ".( ($step == 'up') ? $this->_left.'-'.$delta : $this->_left.'+'.$delta2)."
+                    ELSE ".( ($step == 'up') ? $this->_left.'+'.$delta2 : $this->_left.'-'.$delta)."
                   END
-            WHERE ".(($step == 'up') ? $this->left.'>='.$node2[$this->left].' AND '.$this->right.'<='.$node[$this->right] : $this->left.'>='.$node[$this->left].' AND '.$this->right.'<='.$node2[$this->right]);
-    
+            WHERE ".(($step == 'up') ? $this->_left.'>='.$node2[$this->_left].' AND '.$this->_right.'<='.$node[$this->_right] : $this->_left.'>='.$node[$this->_left].' AND '.$this->_right.'<='.$node2[$this->_right]);
+
     $stmt = $this->_conn->newStatement($sql);
-    $stmt->execute();  
-    
+    $stmt->execute();
+
     return true;
   }
 }
