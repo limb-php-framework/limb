@@ -56,14 +56,14 @@ class WactInputTagTest extends WactTemplateTestCase
     }
   }
 
-  function testGetValueFromForm()
+  function testGetValueFromFormRegadrlessOfValueAttribute()
   {
     $template ='<form id="testForm" runat="server">'.
-                '<input type="text" id="test" name="myInput" runat="server"/>'.
+                '<input type="text" id="test" name="myInput" value="my_value" runat="server" />'.
                '</form>';
-    $this->registerTestingTemplate('/components/form/inputelement/value_from_form.html', $template);
+    $this->registerTestingTemplate('/components/form/input_tag/value_from_form.html', $template);
 
-    $page = $this->initTemplate('/components/form/inputelement/value_from_form.html');
+    $page = $this->initTemplate('/components/form/input_tag/value_from_form.html');
 
     $form = $page->getChild('testForm');
     $form->registerDataSource(array('myInput' => 'foo'));
@@ -74,14 +74,45 @@ class WactInputTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 
+  function testUseGivenValueRegardlessOfFormValue()
+  {
+    $template ='<form id="testForm" runat="server">'.
+               '<input type="text" id="test" name="myInput" runat="server" given_value="{$#bar}" />'.
+               '</form>';
+    $this->registerTestingTemplate('/components/form/input_tag/use_given_value.html', $template);
+
+    $page = $this->initTemplate('/components/form/input_tag/use_given_value.html');
+    $page->set('bar', 'other_value');
+
+    $form = $page->getChild('testForm');
+    $form->registerDataSource(array('myInput' => 'foo'));
+
+    $expected = '<form id="testForm">'.
+                '<input type="text" id="test" name="myInput" value="other_value" />'.
+                '</form>';
+    $this->assertEqual($page->capture(), $expected);
+  }
+
+  function testUseGivenValueWithoutForm()
+  {
+    $template = '<input type="text" id="test" name="myInput" runat="server" given_value="{$#bar}" />';
+    $this->registerTestingTemplate('/components/form/input_tag/use_given_value_without_form.html', $template);
+
+    $page = $this->initTemplate('/components/form/input_tag/use_given_value_without_form.html');
+    $page->set('bar', 'other_value');
+
+    $expected = '<input type="text" id="test" name="myInput" value="other_value" />';
+    $this->assertEqual($page->capture(), $expected);
+  }
+
   function testGenerateEmptyValueIfNotValueInForm()
   {
     $template = '<form id="testForm" runat="server">'.
                  '<input type="text" id="test" name="myInput" runat="server"/>'.
                 '</form>';
-    $this->registerTestingTemplate('/components/form/inputelement/test_novalue.html', $template);
+    $this->registerTestingTemplate('/components/form/input_tag/test_novalue.html', $template);
 
-    $page = $this->initTemplate('/components/form/inputelement/test_novalue.html');
+    $page = $this->initTemplate('/components/form/input_tag/test_novalue.html');
 
     $expected = '<form id="testForm">'.
                 '<input type="text" id="test" name="myInput" value="" />'.

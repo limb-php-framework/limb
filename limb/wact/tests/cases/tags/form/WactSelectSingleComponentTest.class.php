@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: selectsingle.test.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: select_single.test.php 5021 2007-02-12 13:04:07Z pachanga $
  * @package    wact
  */
 
@@ -23,9 +23,9 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setchoiceswithindex.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setchoiceswithindex.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setchoiceswithindex.html');
+    $page = $this->initTemplate('/tags/form/select_single/setchoiceswithindex.html');
 
     $choices = array('red','green','blue');
     $Select = $page->getChild('test');
@@ -43,9 +43,9 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setchoiceswithhash.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setchoiceswithhash.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setchoiceswithhash.html');
+    $page = $this->initTemplate('/tags/form/select_single/setchoiceswithhash.html');
 
     $choices = array('a'=>'red', 'b'=>'green', 'c'=>'blue');
     $Select = $page->getChild('test');
@@ -61,9 +61,9 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setselectionwithindex.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setselectionwithindex.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setselectionwithindex.html');
+    $page = $this->initTemplate('/tags/form/select_single/setselectionwithindex.html');
 
     $choices = array('red','green','blue');
     $selectedKey = '1';
@@ -82,9 +82,9 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setselectionwithindexbyform.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setselectionwithindexbyform.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setselectionwithindexbyform.html');
+    $page = $this->initTemplate('/tags/form/select_single/setselectionwithindexbyform.html');
 
     $Form = $page->getChild('testForm');
 
@@ -103,14 +103,32 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertWantedPattern('~<option[^>]+value="1"[^>]+selected[^>]*>green</option>~ims', $output);
   }
 
-  function testSetSelectionWithHash() {
+  function testSetSelectionWithGivenValue()
+  {
+    $template = '<select id="mySelect" given_value="{$#bar}" runat="server"></select>';;
+    $this->registerTestingTemplate('/tags/form/select_single/set_selection_with_given_value.html', $template);
 
+    $page = $this->initTemplate('/tags/form/select_single/set_selection_with_given_value.html');
+
+    $choices = array('red','green','blue');
+    $Select = $page->getChild('mySelect');
+    $selectedKey = 1;
+    $page->set('bar', $selectedKey);
+    $Select->setChoices($choices);
+
+    $output = $page->capture();
+    $this->assertWantedPattern('~<select[^>]+id="mySelect"[^>]*>(\s*<option\svalue="\d+"[^>]*>[^<]*</option>)+.*</select>~ims', $output);
+    $this->assertWantedPattern('~<option[^>]+value="1"[^>]+selected[^>]*>green</option>~ims', $output);
+  }
+
+  function testSetSelectionWithHash()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setselectionwithhash.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setselectionwithhash.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setselectionwithhash.html');
+    $page = $this->initTemplate('/tags/form/select_single/setselectionwithhash.html');
 
     $choices = array('a'=>'red','b'=>'green','c'=>'blue');
     $selectedKey = 'b';
@@ -124,14 +142,14 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertWantedPattern('~<option[^>]+value="b"[^>]+selected[^>]*>green</option>~ims', $output);
   }
 
-  function testSetSelectionWithFormValueAsObject() {
-
+  function testSetSelectionWithFormValueAsObject()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/set_selection_with_form_value_as_object.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/set_selection_with_form_value_as_object.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/set_selection_with_form_value_as_object.html');
+    $page = $this->initTemplate('/tags/form/select_single/set_selection_with_form_value_as_object.html');
 
     $choices = array(1 => 'red',2 => 'green',3 => 'blue');
     $Select = $page->getChild('test');
@@ -145,14 +163,14 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertWantedPattern('~<option[^>]+value="2"[^>]+selected[^>]*>green</option>~ims', $output);
   }
 
-  function testSetSelectionWithFormValueAsObjectWithSelectField() {
-
+  function testSetSelectionWithFormValueAsObjectWithSelectField()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" select_field="my_id" ></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/set_selection_with_form_value_as_object_with_select_field.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/set_selection_with_form_value_as_object_with_select_field.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/set_selection_with_form_value_as_object_with_select_field.html');
+    $page = $this->initTemplate('/tags/form/select_single/set_selection_with_form_value_as_object_with_select_field.html');
 
     $choices = array(1 => 'red',2 => 'green',3 => 'blue');
     $Select = $page->getChild('test');
@@ -170,14 +188,14 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
    Tests below use the API as it's expected to be used
    ************************************************************/
 
-  function testSetChoicesWithKeys() {
-
+  function testSetChoicesWithKeys()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setchoiceswithkeys.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setchoiceswithkeys.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setchoiceswithkeys.html');
+    $page = $this->initTemplate('/tags/form/select_single/setchoiceswithkeys.html');
 
     $choices = array('red'=>'','green'=>'','blue'=>'');
 
@@ -206,9 +224,9 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
-    $this->registerTestingTemplate('/components/form/selectsingle/setchoiceswithkeysselection.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_single/setchoiceswithkeysselection.html', $template);
 
-    $page = $this->initTemplate('/components/form/selectsingle/setchoiceswithkeysselection.html');
+    $page = $this->initTemplate('/tags/form/select_single/setchoiceswithkeysselection.html');
 
     $choices = array('red'=>'','green'=>'','blue'=>'');
     $selected = 'green';

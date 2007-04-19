@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: control.inc.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @version    $Id: control.inc.php 5690 2007-04-19 13:03:28Z serega $
  * @package    wact
  */
 
@@ -15,8 +15,8 @@
  * @access protected
  * @package    wact
  */
-class WactControlTag extends WactRuntimeComponentHTMLTag {
-
+class WactControlTag extends WactRuntimeComponentHTMLTag
+{
   /**
    * Returns the identifying server ID. It's value it determined in the
    * following order;
@@ -28,7 +28,8 @@ class WactControlTag extends WactRuntimeComponentHTMLTag {
    * </ol>
    * @return string value identifying this component
    */
-  function getServerId() {
+  function getServerId()
+  {
     if ($this->hasAttribute('wact:id')) {
       return $this->getAttribute('wact:id');
     } else if ($this->hasAttribute('id')) {
@@ -46,7 +47,8 @@ class WactControlTag extends WactRuntimeComponentHTMLTag {
   /**
    * @return void
    */
-  function prepare() {
+  function prepare()
+  {
     if (!$this->getBoolAttribute('name')) {
       if ( $this->getBoolAttribute('wact:id') ) {
         $this->setAttribute('name', $this->getAttribute('wact:id'));
@@ -64,25 +66,49 @@ class WactControlTag extends WactRuntimeComponentHTMLTag {
    * @param WactCodeWriter
    * @return void
    */
-  function generateConstructor($code_writer) {
+  function generateConstructor($code_writer)
+  {
     parent::generateConstructor($code_writer);
-    if ($this->hasAttribute('errorclass')) {
+
+    if ($this->hasAttribute('errorclass'))
+    {
       $code_writer->writePHP($this->getComponentRefCode() . '->errorclass = ');
       $code_writer->writePHPLiteral($this->getAttribute('errorclass'));
       $code_writer->writePHP(';');
     }
-    if ($this->hasAttribute('errorstyle')) {
+
+    if ($this->hasAttribute('errorstyle'))
+    {
       $code_writer->writePHP($this->getComponentRefCode() . '->errorstyle = ');
       $code_writer->writePHPLiteral($this->getAttribute('errorstyle'));
       $code_writer->writePHP(';');
     }
-    if ($this->hasAttribute('displayname')) {
+
+    if ($this->hasAttribute('displayname'))
+    {
       $code_writer->writePHP($this->getComponentRefCode() . '->displayname = ');
       $code_writer->writePHPLiteral($this->getAttribute('displayname'));
       $code_writer->writePHP(';');
     }
   }
 
+  function preGenerate($code_writer)
+  {
+    if($this->hasAttribute('given_value'))
+    {
+      $this->attributeNodes['given_value']->generatePreStatement($code_writer);
+
+      $code_writer->writePhp($this->getComponentRefCode() .
+                      '->setGivenValue(');
+      $this->attributeNodes['given_value']->generateExpression($code_writer);
+      $code_writer->writePhp(');');
+
+      $this->attributeNodes['given_value']->generatePostStatement($code_writer);
+      unset($this->attributeNodes['given_value']);
+    }
+
+    parent :: preGenerate($code_writer);
+  }
 }
 
 ?>

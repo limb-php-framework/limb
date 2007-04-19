@@ -37,10 +37,17 @@ class WactFormElementComponentTest extends WactTemplateTestCase
     $this->assertEqual($this->element->getName(), 'custom_name');
   }
 
-  function testGetValue()
+  function testGetValueFromForm()
   {
     $this->form->set('my_element', 'whatever');
     $this->assertEqual($this->element->getValue(), 'whatever');
+  }
+
+  function testGetGivenValueOverridesFormValue()
+  {
+    $this->form->set('my_element', 'whatever');
+    $this->element->setGivenValue('other value');
+    $this->assertEqual($this->element->getValue(), 'other value');
   }
 
   function testGetDisplayName()

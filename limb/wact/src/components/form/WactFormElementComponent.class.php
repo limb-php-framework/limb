@@ -43,6 +43,20 @@ class WactFormElementComponent extends WactRuntimeTagComponent
   public $errorstyle;
 
   /**
+  * Given value overrides value from form components
+  * @see getValue()
+  * @var mixed
+  */
+  protected $given_value;
+
+  /**
+  * Flag if we should user $given_value in getValue()
+  * @see setGivenValue()
+  * @var mixed
+  */
+  protected $use_given_value = false;
+
+  /**
   * Returns a value for the name attribute. If $this->displayname is not
   * set, returns either the title, alt or name attribute (in that order
   * of preference, defined for the tag
@@ -95,13 +109,22 @@ class WactFormElementComponent extends WactRuntimeTagComponent
     }
   }
 
+  function setGivenValue($value)
+  {
+    $this->use_given_value = true;
+    $this->given_value = $value;
+  }
+
   /**
   * Returns the value of the form element  (it's value in the form DataSource)
   */
   function getValue()
   {
-    $form_component = $this->findParentByClass('WactFormComponent');
-    return $form_component->getValue($this->getName());
+    if($this->use_given_value)
+      return $this->given_value;
+
+    if($form_component = $this->findParentByClass('WactFormComponent'))
+      return $form_component->getValue($this->getName());
   }
 
   /**
@@ -109,8 +132,8 @@ class WactFormElementComponent extends WactRuntimeTagComponent
   */
   function setValue($value)
   {
-    $form_component = $this->findParentByClass('WactFormComponent');
-    return $form_component->setValue($this->getName(), $value);
+    if($form_component = $this->findParentByClass('WactFormComponent'))
+      return $form_component->setValue($this->getName(), $value);
   }
 }
 ?>

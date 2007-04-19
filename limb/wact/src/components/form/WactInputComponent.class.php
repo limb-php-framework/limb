@@ -20,7 +20,7 @@ class WactInputComponent extends WactFormElementComponent
     else
       $this->setAttribute('value', '');
 
-   parent::renderAttributes();
+   parent :: renderAttributes();
   }
 }
 ?>

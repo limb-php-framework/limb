@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactJSCheckboxComponent.class.php 5689 2007-04-19 11:23:20Z serega $
+ * @version    $Id: WactJSCheckboxComponent.class.php 5690 2007-04-19 13:03:28Z serega $
  * @package    wact
  */
 
@@ -25,7 +25,7 @@ class WactJSCheckboxComponent extends WactCheckableInputComponent
     //box_id can be used with <label> tag
     $box_id = $this->getId();
 
-    if($this->_isChecked())
+    if($this->isChecked())
       $checked = 'checked=\'on\'';
     else
       $checked = '';

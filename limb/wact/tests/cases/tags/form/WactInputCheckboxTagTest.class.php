@@ -59,5 +59,33 @@ class WactInputCheckboxTagTest extends WactTemplateTestCase
     $expected = '<form id="testForm"><input type="checkbox" id="test" name="myInput" value="bar" /></form>';
     $this->assertEqual($page->capture(), $expected);
   }
+
+  function testIsCheckedViaGivenValue()
+  {
+    $template = '<input type="checkbox" id="test" name="myInput" given_value="{$#bar}" runat="server" />';
+
+    $this->registerTestingTemplate('/components/form/inputcheckbox/is_checked_via_given_value.html', $template);
+
+    $page = $this->initTemplate('/components/form/inputcheckbox/is_checked_via_given_value.html');
+
+    $page->set('bar', '1');
+
+    $expected = '<input type="checkbox" id="test" name="myInput" checked="checked" />';
+    $this->assertEqual($page->capture(), $expected);
+  }
+
+  function testNotCheckedViaGivenValueAndValueAttribute()
+  {
+    $template = '<input type="checkbox" id="test" name="myInput" value="1" given_value="{$#bar}" checked="true" runat="server" />';
+
+    $this->registerTestingTemplate('/components/form/inputcheckbox/not_checked_via_given_value.html', $template);
+
+    $page = $this->initTemplate('/components/form/inputcheckbox/not_checked_via_given_value.html');
+
+    $page->set('bar', '2');
+
+    $expected = '<input type="checkbox" id="test" name="myInput" value="1" />';
+    $this->assertEqual($page->capture(), $expected);
+  }
 }
 ?>
