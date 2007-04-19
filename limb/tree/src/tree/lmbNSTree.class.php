@@ -234,27 +234,20 @@ class lmbNSTree implements lmbTree
 
   function getNodeByPath($path)
   {
-    $delimiter = '/';
-    $path_array = explode($delimiter, $path);
+    $path = preg_replace('~\/+~', '/', $path);
 
-    if(reset($path_array) == '')
+    if($path == '/')
+      return $this->getRootNode();
+
+    $path_array = explode('/', $path);
+
+    //if(reset($path_array) == '')
       array_shift($path_array);
-
     if(end($path_array) == '')
       array_pop($path_array);
 
-    $level = sizeof($path_array);
-
-    if(!count($path_array))
-    {
-      $sql = "SELECT " . $this->_getSelectFields() . "
-              FROM {$this->_node_table}
-              WHERE
-              {$this->_left} = 1";
-
-      $stmt = $this->_conn->newStatement($sql);
-      return $stmt->getOneRecord();
-    }
+    if(!$path_array)
+      return null;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table} WHERE {$this->_level}=0";
