@@ -172,6 +172,11 @@ abstract class lmbTreeTestBase extends UnitTestCase
                        $this->imp->getNode($node_id)->export());
   }
 
+  function testGetPathToNodeFailed()
+  {
+    $this->assertNull($this->imp->getPathToNode(1000));
+  }
+
   function testGetPathToRootNode()
   {
     $root_id = $this->imp->initTree();
@@ -199,6 +204,38 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $parent_node = $this->imp->getParent($node_id);
     $this->assertEqual($parent_node['id'], $parent_node_id);
     $this->assertEqual($parent_node['identifier'], 'node_1');
+  }
+
+  function testGetParentsFailed()
+  {
+    $this->assertNull($this->imp->getParents(1000));
+  }
+
+  function testGetRootParents()
+  {
+    $root_id = $this->imp->initTree();
+    $this->assertNull($this->imp->getParents($root_id));
+  }
+
+  function testGetParents()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+
+    $arr = $this->imp->getParents($node_1);
+    $this->assertEqual(sizeof($arr), 1);
+    $this->assertEqual($arr[0]['id'], $root_id);
+
+    $arr = $this->imp->getParents($node_1_1);
+    $this->assertEqual(sizeof($arr), 2);
+    $this->assertEqual($arr[0]['id'], $root_id);
+    $this->assertEqual($arr[1]['id'], $node_1);
+
+    $arr = $this->imp->getParents($node_2);
+    $this->assertEqual(sizeof($arr), 1);
+    $this->assertEqual($arr[0]['id'], $root_id);
   }
 
   function testCountRootChildren()
