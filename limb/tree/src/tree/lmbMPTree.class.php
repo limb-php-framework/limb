@@ -159,6 +159,7 @@ class lmbMPTree implements lmbTree
   {
     if(!$parent = $this->getNode($node))
       return null;
+
     if($depth == 1)
     {
       $sql = "SELECT " . $this->_getSelectFields() . "
@@ -175,7 +176,8 @@ class lmbMPTree implements lmbTree
               WHERE path LIKE '{$parent['path']}%'
               AND id != {$parent['id']}";
       if($depth !=-1)
-              $sql .= " AND level <= ".($parent['level']+1+$depth);
+        $sql .= " AND level < ".($parent['level']+1+$depth);
+      $sql .= " ORDER BY path";
       $stmt = $this->_conn->newStatement($sql);
     }
 
@@ -218,7 +220,7 @@ class lmbMPTree implements lmbTree
               WHERE path LIKE '{$parent['path']}%'
               AND id != {$parent['id']}";
       if($depth !=-1)
-              $sql .= " AND level <= ".($parent['level']+1+$depth);
+        $sql .= " AND level < ".($parent['level']+1+$depth);
       $stmt = $this->_conn->newStatement($sql);
     }
     return $stmt->getOneValue();
@@ -238,7 +240,6 @@ class lmbMPTree implements lmbTree
 
     return $stmt->getOneValue();
   }
-
 
   function getNode($node)
   {
@@ -269,26 +270,21 @@ class lmbMPTree implements lmbTree
 
   function getNodeByPath($path)
   {
-    $delimiter = '/';
-    $path_array = explode($delimiter, $path);
+    $path = preg_replace('~\/+~', '/', $path);
 
-    array_shift($path_array);
+    if($path == '/')
+      return $this->getRootNode();
 
-    if(end($path_array) == '')
+    $path_array = explode('/', $path);
+
+    array_shift($path_array);//skip first item
+    if(end($path_array) == '')//ending slash
       array_pop($path_array);
 
+    if(!$path_array)
+      return null;
+
     $level = sizeof($path_array);
-
-    if(!count($path_array))
-    {
-      $sql = "SELECT " . $this->_getSelectFields() . "
-              FROM {$this->_node_table}
-              WHERE
-              parent_id = 0";
-
-      $stmt = $this->_conn->newStatement($sql);
-      return $stmt->getOneRecord();
-    }
 
     $in_condition = $this->_dbIn('identifier', array_unique($path_array));
 
@@ -318,7 +314,7 @@ class lmbMPTree implements lmbTree
         $parent_id = $node['id'];
 
         $curr_level++;
-        $path_to_node .= $delimiter . $node['identifier'];
+        $path_to_node .= '/' . $node['identifier'];
 
         if($curr_level == $level)
           return $node;
@@ -336,10 +332,9 @@ class lmbMPTree implements lmbTree
     if(!$parents = $this->getParents($node['id']))
       return '/';
 
-    $delimeter = '/';
     $path = '';
     foreach($parents as $parent)
-      $path .= $parent['identifier'] . $delimeter;
+      $path .= $parent['identifier'] . '/';
 
     return $path .= $node['identifier'];
   }
