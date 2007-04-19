@@ -6,16 +6,16 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTree.interface.php 5675 2007-04-18 11:36:51Z alex433 $
+ * @version    $Id: lmbTree.interface.php 5682 2007-04-19 08:02:06Z pachanga $
  * @package    tree
  */
 
 interface lmbTree
 {
-  function initTree($values);
+  function initTree();
   function isNode($id);
   function getNode($id);
-  function getTopNodes($level = 1);
+  function getTopNodes();
   function getParent($id);
   function getParents($id);
   function getSiblings($id);

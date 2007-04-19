@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTree.class.php 5682 2007-04-19 08:02:06Z pachanga $
+ * @version    $Id: lmbMaterializedPathTree.class.php 5680 2007-04-19 07:18:38Z pachanga $
  * @package    tree
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/tree/src/tree/lmbTree.interface.php');
 
-class lmbMaterializedPathTree implements lmbTree
+class lmbMPTree implements lmbTree
 {
   protected $_conn = null;
 
@@ -38,9 +38,7 @@ class lmbMaterializedPathTree implements lmbTree
 
   function initTree()
   {
-    $stmt = $this->_conn->newStatement("TRUNCATE {$this->_node_table}");
-    $stmt->execute();
-    return true;
+    return $this->createRootNode();
   }
 
   function setNodeTable($table_name)
@@ -455,7 +453,7 @@ class lmbMaterializedPathTree implements lmbTree
     return $column_name . " IN ('" . $in_ids . "')";
   }
 
-  function createRootNode($values)
+  function createRootNode($values = array())
   {
     $new_values = $this->_processUserValues($values);
 
@@ -471,7 +469,6 @@ class lmbMaterializedPathTree implements lmbTree
         return false;
     }
 
-    $new_values['root_id'] = $new_values['id'];
     $new_values['path'] = '/' . $new_values['id'] . '/';
     $new_values['level'] = 1;
     $new_values['parent_id'] = 0;

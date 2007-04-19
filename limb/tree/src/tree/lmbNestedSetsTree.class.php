@@ -85,39 +85,26 @@ class lmbNestedSetsTree implements lmbTree
     return $processed;
   }
 
-  function initTree ($values)
+  function initTree()
   {
     $stmt = $this->_conn->newStatement("TRUNCATE {$this->_node_table}");
     $stmt->execute();
 
-    $new_values = $this->_processUserValues($values);
+    $values = array();
+    $values['id'] = $this->_getNextNodeInsertId();
+    $values[$this->_left] = 1;
+    $values[$this->_right] = 2;
+    $values[$this->_level] = 0;
 
-    if(!isset($values['id']))
-    {
-      $new_values['id'] = $this->_getNextNodeInsertId();
-    }
-    else
-    {
-      $new_values['id'] = (int)$values['id'];
+    $this->_db_table->insert($values);
 
-      if($this->isNode($new_values['id']))
-        return false;
-    }
-
-    $new_values[$this->_left] = 1;
-    $new_values[$this->_right] = 2;
-    $new_values[$this->_level] = 0;
-
-
-    $this->_db_table->insert($new_values);
-
-    return $new_values['id'];
+    return $values['id'];
   }
 
-  function getTopNodes($level = 1)
+  function getTopNodes()
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE {$this->_level}={$level}";
+            FROM {$this->_node_table} WHERE {$this->_level}=1";
 
     $stmt = $this->_conn->newStatement($sql);
     return $stmt->getRecordSet();
