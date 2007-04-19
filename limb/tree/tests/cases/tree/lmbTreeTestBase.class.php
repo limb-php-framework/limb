@@ -82,6 +82,20 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($node->export(), $sec_node->export());
   }
 
+  function testGetNodeByIdsReturnsOrderedNodes()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+
+    $arr = $this->imp->getNodesByIds(array($node_2, $node_1, $root_id, $node_1_1));
+    $this->assertEqual($arr[0]['id'], $root_id);
+    $this->assertEqual($arr[1]['id'], $node_1);
+    $this->assertEqual($arr[2]['id'], $node_1_1);
+    $this->assertEqual($arr[3]['id'], $node_2);
+  }
+
   function testIsNodeFailed()
   {
     $this->assertFalse($this->imp->isNode(10000));
@@ -116,12 +130,10 @@ abstract class lmbTreeTestBase extends UnitTestCase
   function testCreateTopNode()
   {
     $root_id = $this->imp->initTree();
-
-    $node = array('identifier' => 'node_1');
-    $node_id = $this->imp->createNode($root_id, $node);
+    $node_id = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
 
     $new_node = $this->imp->getNode($node_id);
-    $this->assertEqual($node['identifier'], $new_node['identifier']);
+    $this->assertEqual('node_1', $new_node['identifier']);
     $this->assertEqual($new_node['id'], $node_id);
 
     $parent_node = $this->imp->getParent($new_node);
