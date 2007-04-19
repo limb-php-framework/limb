@@ -20,15 +20,15 @@ class WactInputTagTest extends WactTemplateTestCase
     $tplEnd = '" runat="server"/></form>';
 
     $types = array (
-        'text' => 'WactInputTagComponent',
-        'password' => 'WactFormElementTagComponent',
-        'checkbox' => 'WactCheckableInputTagComponent',
-        'submit' => 'WactFormElementTagComponent',
-        'radio' => 'WactCheckableInputTagComponent',
-        'reset' => 'WactFormElementTagComponent',
-        'file' => 'WactFileInputTagComponent',
-        'hidden' => 'WactInputTagComponent',
-        'button' => 'WactInputTagComponent',
+        'text' => 'WactInputComponent',
+        'password' => 'WactFormElementComponent',
+        'checkbox' => 'WactCheckableInputComponent',
+        'submit' => 'WactFormElementComponent',
+        'radio' => 'WactCheckableInputComponent',
+        'reset' => 'WactFormElementComponent',
+        'file' => 'WactFileInputComponent',
+        'hidden' => 'WactInputComponent',
+        'button' => 'WactInputComponent',
     );
 
     foreach ($types as $type => $component )

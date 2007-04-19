@@ -13,7 +13,7 @@
 /**
 * Base class for concrete form elements
 */
-class WactFormElementTagComponent extends WactRuntimeTagComponent
+class WactFormElementComponent extends WactRuntimeTagComponent
 {
   /**
   * Whether the form element has validated successfully (default TRUE)

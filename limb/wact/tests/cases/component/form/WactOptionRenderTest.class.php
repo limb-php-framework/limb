@@ -10,28 +10,22 @@
  * @package    wact
  */
 
-require_once 'limb/wact/src/WactTemplate.class.php';
 require_once 'limb/wact/src/components/form/form.inc.php';
 require_once 'limb/wact/src/components/form/select.inc.php';
 
 class WactOptionRenderTest extends UnitTestCase
 {
-  var $OR;
+  protected $renderer;
 
   function setUp()
   {
-    $this->OR =  new WactOptionRenderer();
-  }
-
-  function tearDown()
-  {
-    unset($this->OR);
+    $this->renderer=  new WactOptionRenderer();
   }
 
   function testRender()
   {
     ob_start();
-    $this->OR->renderOption('foo','bar',FALSE);
+    $this->renderer->renderOption('foo','bar',FALSE);
     $out = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($out,'<option value="foo">bar</option>');
@@ -40,7 +34,7 @@ class WactOptionRenderTest extends UnitTestCase
   function testRenderNoContents()
   {
     ob_start();
-    $this->OR->renderOption('foo','',FALSE);
+    $this->renderer->renderOption('foo','',$selected = FALSE);
     $out = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($out,'<option value="foo">foo</option>');
@@ -49,7 +43,7 @@ class WactOptionRenderTest extends UnitTestCase
   function testRenderEntities()
   {
     ob_start();
-    $this->OR->renderOption('x > y','& v < z',FALSE);
+    $this->renderer->renderOption('x > y','& v < z',$selected = FALSE);
     $out = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($out,'<option value="x &gt; y">&amp; v &lt; z</option>');
@@ -58,7 +52,7 @@ class WactOptionRenderTest extends UnitTestCase
   function testRenderEntitiesNoContents()
   {
     ob_start();
-    $this->OR->renderOption('x > y',FALSE,FALSE);
+    $this->renderer->renderOption('x > y', FALSE, $selected = FALSE);
     $out = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($out,'<option value="x &gt; y">x &gt; y</option>');
@@ -67,12 +61,10 @@ class WactOptionRenderTest extends UnitTestCase
   function testSelected()
   {
     ob_start();
-    $this->OR->renderOption('foo','bar',TRUE);
+    $this->renderer->renderOption('foo','bar',TRUE);
     $out = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($out,'<option value="foo" selected="true">bar</option>');
   }
-
-
 }
 ?>

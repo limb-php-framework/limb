@@ -12,7 +12,7 @@
 
 require_once 'limb/wact/src/components/form/form.inc.php';
 
-class WactCheckableInputTagComponentTest extends WactTemplateTestCase
+class WactCheckableInputComponentTest extends WactTemplateTestCase
 {
   protected $checkbox;
   protected $form;
@@ -22,7 +22,7 @@ class WactCheckableInputTagComponentTest extends WactTemplateTestCase
     parent :: setUp();
 
     $this->form = new WactFormComponent('test_form');
-    $this->checkbox = new WactCheckableInputTagComponent('my_checkbox');
+    $this->checkbox = new WactCheckableInputComponent('my_checkbox');
     $this->form->addChild($this->checkbox);
   }
 

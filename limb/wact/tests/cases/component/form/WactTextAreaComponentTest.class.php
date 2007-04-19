@@ -13,7 +13,7 @@
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');
 require_once('limb/wact/src/components/form/form.inc.php');
 
-class WactTextAreaTagComponentTest extends WactTemplateTestCase
+class WactTextAreaComponentTest extends WactTemplateTestCase
 {
   protected $text_area;
   protected $form;
@@ -23,7 +23,7 @@ class WactTextAreaTagComponentTest extends WactTemplateTestCase
     parent :: setUp();
 
     $this->form = new WactFormComponent('test_form');
-    $this->text_area = new WactTextAreaTagComponent('my_text_area');
+    $this->text_area = new WactTextAreaComponent('my_text_area');
     $this->form->addChild($this->text_area);
   }
 

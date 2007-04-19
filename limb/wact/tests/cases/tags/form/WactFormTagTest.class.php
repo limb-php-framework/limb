@@ -267,7 +267,7 @@ class WactFormTagTest extends WactTemplateTestCase
 
     $page = $this->initTemplate('/tags/form/knownchildren.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
-    $this->assertIsA($page->findChild('submit'),'WactFormElementTagComponent');
+    $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test"><input id="submit" type="submit" name="submit" value="hey" /></form>');
   }
@@ -279,7 +279,7 @@ class WactFormTagTest extends WactTemplateTestCase
 
     $page = $this->initTemplate('/tags/form/knownchildrenchildren_reuse_runattrue.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
-    $this->assertIsA($page->findChild('submit'),'WactFormElementTagComponent');
+    $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test"><input id="submit" type="submit" name="submit" value="hey" /></form>');
   }
@@ -315,7 +315,7 @@ class WactFormTagTest extends WactTemplateTestCase
 
     $page = $this->initTemplate('/tags/form/nestedknownchildren.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
-    $this->assertIsA($page->findChild('submit'),'WactFormElementTagComponent');
+    $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test"><input id="submit" type="submit" name="submit" value="hey" /></form>');
   }
@@ -330,7 +330,7 @@ class WactFormTagTest extends WactTemplateTestCase
 
     $page = $this->initTemplate('/tags/form/includedknownchildren.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
-    $this->assertIsA($page->findChild('submit'),'WactFormElementTagComponent');
+    $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test"><input id="submit" type="submit" name="submit" value="hey" /></form>');
   }

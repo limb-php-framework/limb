@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: label.tag.php 5688 2007-04-19 11:15:15Z serega $
+ * @version    $Id: label.tag.php 5689 2007-04-19 11:23:20Z serega $
  * @package    wact
  */
 
@@ -21,8 +21,8 @@
  */
 class WactLabelTag extends WactRuntimeComponentHTMLTag
 {
-  protected $runtimeIncludeFile = 'limb/wact/src/components/form/WactLabelTagComponent.class.php';
-  protected $runtimeComponentName = 'WactLabelTagComponent';
+  protected $runtimeIncludeFile = 'limb/wact/src/components/form/WactLabelComponent.class.php';
+  protected $runtimeComponentName = 'WactLabelComponent';
 
   /**
    * @param WactCodeWriter

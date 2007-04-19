@@ -14,7 +14,7 @@
 * Represents an HTML input type="radio" tag
 * Represents an HTML input type="checkbox" tag
 */
-class WactCheckableInputTagComponent extends WactFormElementTagComponent
+class WactCheckableInputComponent extends WactFormElementComponent
 {
   function getName()
   {

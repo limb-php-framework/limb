@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactJSCheckboxComponent.class.php 5688 2007-04-19 11:15:15Z serega $
+ * @version    $Id: WactJSCheckboxComponent.class.php 5689 2007-04-19 11:23:20Z serega $
  * @package    wact
  */
 
-class WactJSCheckboxComponent extends WactCheckableInputTagComponent
+class WactJSCheckboxComponent extends WactCheckableInputComponent
 {
   function renderAttributes()
   {

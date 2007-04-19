@@ -13,7 +13,7 @@
 /**
 * Represents an HTML label tag
 */
-class WactLabelTagComponent extends WactRuntimeTagComponent
+class WactLabelComponent extends WactRuntimeTagComponent
 {
   /**
   * CSS class attribute to display on error

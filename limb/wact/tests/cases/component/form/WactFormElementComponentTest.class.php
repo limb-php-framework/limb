@@ -12,7 +12,7 @@
 
 require_once 'limb/wact/src/components/form/form.inc.php';
 
-class WactFormElementTagComponentTest extends WactTemplateTestCase
+class WactFormElementComponentTest extends WactTemplateTestCase
 {
   protected $element;
   protected $form;
@@ -22,7 +22,7 @@ class WactFormElementTagComponentTest extends WactTemplateTestCase
     parent :: setUp();
 
     $this->form = new WactFormComponent('test_form');
-    $this->element = new WactFormElementTagComponent('my_element');
+    $this->element = new WactFormElementComponent('my_element');
     $this->form->addChild($this->element);
   }
 
@@ -45,41 +45,41 @@ class WactFormElementTagComponentTest extends WactTemplateTestCase
 
   function testGetDisplayName()
   {
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $this->assertEqual($form_element->getDisplayName(),'');
 
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $form_element->displayname = 'a';
     $form_element->setAttribute('title','b');
     $form_element->setAttribute('alt','c');
     $form_element->setAttribute('name','d');
     $this->assertEqual($form_element->getDisplayName(),'a');
 
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $form_element->setAttribute('title','b');
     $form_element->setAttribute('alt','c');
     $form_element->setAttribute('name','d');
     $this->assertEqual($form_element->getDisplayName(),'b');
 
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $form_element->setAttribute('alt','c');
     $form_element->setAttribute('name','d');
     $this->assertEqual($form_element->getDisplayName(),'c');
 
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $form_element->setAttribute('name','foo_Bar');
     $this->assertEqual($form_element->getDisplayName(),'foo Bar');
   }
 
   function testHasErrorsNone()
   {
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $this->assertFalse($form_element->hasErrors());
   }
 
   function testHasErrors()
   {
-    $form_element = new WactFormElementTagComponent('my_id');
+    $form_element = new WactFormElementComponent('my_id');
     $form_element->errorclass = 'ErrorClass';
     $form_element->errorstyle = 'ErrorStyle';
 

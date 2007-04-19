@@ -10,7 +10,7 @@
  * @package    wact
  */
 
-class WactInputTagComponent extends WactFormElementTagComponent
+class WactInputComponent extends WactFormElementComponent
 {
   function renderAttributes()
   {

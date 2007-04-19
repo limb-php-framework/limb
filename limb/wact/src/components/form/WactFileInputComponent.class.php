@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFileInputTagComponent.class.php 5688 2007-04-19 11:15:15Z serega $
+ * @version    $Id: WactFileInputComponent.class.php 5689 2007-04-19 11:23:20Z serega $
  * @package    wact
  */
 
@@ -17,7 +17,7 @@
 * Maybe then they will come write some nice methods for this
 * tag).
 */
-class WactFileInputTagComponent extends WactInputTagComponent
+class WactFileInputComponent extends WactInputComponent
 {
   /**
   * We can't get a meaningful 'value' attribute for file upload controls

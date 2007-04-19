@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFormComponent.class.php 5688 2007-04-19 11:15:15Z serega $
+ * @version    $Id: WactFormComponent.class.php 5689 2007-04-19 11:23:20Z serega $
  * @package    wact
  */
 
@@ -77,7 +77,7 @@ class WactFormComponent extends WactRuntimeTagComponent
   }
 
   /**
-  * Finds the WactLabelTagComponent associated with a form field, allowing
+  * Finds the WactLabelComponent associated with a form field, allowing
   * an error message to be displayed next to the field. Called by this
   * setErrors.
   */
@@ -86,7 +86,7 @@ class WactFormComponent extends WactRuntimeTagComponent
     foreach( array_keys($component->children) as $key)
     {
       $child = $component->children[$key];
-      if (is_a($child, 'WactLabelTagComponent') && $child->getAttribute('for') == $field_id)
+      if (is_a($child, 'WactLabelComponent') && $child->getAttribute('for') == $field_id)
         return $child;
       elseif ($result = $this->findLabel($field_id, $child))
        return $result;

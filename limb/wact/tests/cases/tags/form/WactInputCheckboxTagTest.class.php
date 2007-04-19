@@ -14,7 +14,7 @@ require_once 'limb/wact/src/components/form/form.inc.php';
 
 class WactInputCheckboxTagTest extends WactTemplateTestCase
 {
-  // see also tests in WactCheckableInputTagComponentTest.class.php
+  // see also tests in WactCheckableInputComponentTest.class.php
   function testIsChecked()
   {
     $template = '<form id="testForm" runat="server">'.
