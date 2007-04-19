@@ -55,5 +55,38 @@ class WactInputTagTest extends WactTemplateTestCase
       $this->assertWantedPattern('/Unrecognized type attribute for input tag/', $e->getMessage());
     }
   }
+
+  function testGetValueFromForm()
+  {
+    $template ='<form id="testForm" runat="server">'.
+                '<input type="text" id="test" name="myInput" runat="server"/>'.
+               '</form>';
+    $this->registerTestingTemplate('/components/form/inputelement/value_from_form.html', $template);
+
+    $page = $this->initTemplate('/components/form/inputelement/value_from_form.html');
+
+    $form = $page->getChild('testForm');
+    $form->registerDataSource(array('myInput' => 'foo'));
+
+    $expected = '<form id="testForm">'.
+                '<input type="text" id="test" name="myInput" value="foo" />'.
+                '</form>';
+    $this->assertEqual($page->capture(), $expected);
+  }
+
+  function testGenerateEmptyValueIfNotValueInForm()
+  {
+    $template = '<form id="testForm" runat="server">'.
+                 '<input type="text" id="test" name="myInput" runat="server"/>'.
+                '</form>';
+    $this->registerTestingTemplate('/components/form/inputelement/test_novalue.html', $template);
+
+    $page = $this->initTemplate('/components/form/inputelement/test_novalue.html');
+
+    $expected = '<form id="testForm">'.
+                '<input type="text" id="test" name="myInput" value="" />'.
+                '</form>';
+    $this->assertEqual($page->capture(), $expected);
+  }
 }
 ?>

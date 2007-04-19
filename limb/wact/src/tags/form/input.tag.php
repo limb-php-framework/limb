@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: input.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: input.tag.php 5686 2007-04-19 10:35:03Z serega $
  * @package    wact
  */
 
@@ -22,12 +22,8 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @restrict_self_nesting
  * @suppress_attributes errorclass errorstyle displayname
  */
-class WactInputTag extends WactControlTag {
-
-  /**
-   * File to include at runtime
-   * @var string path to runtime component relative to WACT_ROOT
-   */
+class WactInputTag extends WactControlTag
+{
   protected $runtimeIncludeFile = 'limb/wact/src/components/form/form.inc.php';
 
   /**

@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactInputPasswordComponentTest.class.php 5684 2007-04-19 08:34:48Z serega $
+ * @version    $Id: WactPasswordInputTagTest.class.php 5686 2007-04-19 10:35:03Z serega $
  * @package    wact
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';
 
-class WactInputPasswordComponentTest extends WactTemplateTestCase
+class WactPasswordInputTagTest extends WactTemplateTestCase
 {
   function testNotGenerateValue()
   {

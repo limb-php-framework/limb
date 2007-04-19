@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeTagComponent.class.php 5535 2007-04-05 10:53:04Z pachanga $
+ * @version    $Id: WactRuntimeTagComponent.class.php 5686 2007-04-19 10:35:03Z serega $
  * @package    wact
  */
 
@@ -45,17 +45,25 @@ class WactRuntimeTagComponent extends WactRuntimeComponent
 
   static function getBooleanValue($value)
   {
-    switch(strtoupper($value))
+    if(is_bool($value))
+      return $value;
+
+    if(is_string($value))
     {
-      case 'FALSE':
-      case 'N':
-      case 'NO':
-      case 'NONE':
-      case 'NA':
-      case '0':
-        return false;
-      default:
-        return true;
+
+      switch(strtoupper($value))
+      {
+        case false:
+        case 'FALSE':
+        case 'N':
+        case 'NO':
+        case 'NONE':
+        case 'NA':
+        case '0':
+          return false;
+        default:
+          return true;
+      }
     }
   }
 
