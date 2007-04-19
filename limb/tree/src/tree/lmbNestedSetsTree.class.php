@@ -12,12 +12,12 @@
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/tree/src/tree/lmbTree.interface.php');
+lmb_require('limb/tree/src/tree/lmbTreeOld.interface.php');
 
 /**
  * Base class implementing a Nested Sets approach to storing tree-like structures in database tables.
  */
-class lmbNestedSetsTree implements lmbTree
+class lmbNestedSetsTree implements lmbTreeOld
 {
   protected $_conn = null;
 

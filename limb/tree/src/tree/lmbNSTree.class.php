@@ -89,24 +89,19 @@ class lmbNSTree implements lmbTree
     $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
     $stmt->execute();
 
-    $values = array();
-    $values['id'] = $this->_getNextNodeInsertId();
-    $values[$this->_left] = 1;
-    $values[$this->_right] = 2;
-    $values[$this->_level] = 0;
-
-    $this->_db_table->insert($values);
-
-    return $values['id'];
+    return $this->_createRootNode();
   }
 
-  function getTopNodes()
+  function getRootNode()
   {
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE {$this->_level}=1";
-
+            FROM {$this->_node_table} WHERE {$this->_level}=0";
     $stmt = $this->_conn->newStatement($sql);
-    return $stmt->getRecordSet();
+
+    if($root_node = $stmt->getOneRecord())
+      return $root_node;
+    
+    return null;
   }
 
   function getParents($node)
@@ -120,8 +115,7 @@ class lmbNSTree implements lmbTree
    $sql =  "SELECT " . $this->_getSelectFields() . "
             FROM  {$this->_node_table}
             WHERE {$this->_left} < {$child[$this->_left]}
-            AND {$this->_right} >  {$child[$this->_right]}
-            AND {$this->_level}>0";
+            AND {$this->_right} >  {$child[$this->_right]}";
 
     $stmt = $this->_conn->newStatement($sql);
 
@@ -140,12 +134,6 @@ class lmbNSTree implements lmbTree
               WHERE {$this->_left} < {$child[$this->_left]}
               AND {$this->_right} >  {$child[$this->_right]}
               AND {$this->_level} = ".($child[$this->_level]-1);
-    /*$sql =  "SELECT " . $this->_getSelectFields() . "
-            FROM  {$this->_node_table} _{$this->_node_table},
-                  {$this->_node_table}
-            WHERE _{$this->_node_table}.id='{$child['id']}'
-            AND _{$this->_node_table}.{$this->_left} BETWEEN {$this->_node_table}.{$this->_left} AND {$this->_node_table}.{$this->_right}
-            AND {$this->_node_table}.{$this->_level}=_{$this->_node_table}.{$this->_level}-1";*/
 
     $stmt = $this->_conn->newStatement($sql);
 
@@ -356,27 +344,7 @@ class lmbNSTree implements lmbTree
     return $column_name . " IN ('" . $in_ids . "')";
   }
 
-  function createNode($values, $parent_node = null)
-  {
-    if(!$parent_node)
-      return $this->_createRootNode($values);
-    else
-      return $this->_createSubNode($parent_node, $values);
-  }
-
-  protected function _createRootNode()
-  {
-    $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE {$this->_level}=0";
-    $stmt = $this->_conn->newStatement($sql);
-
-    if($root_node = $stmt->getOneRecord())
-      return $this->_createSubNode($root_node, $values);
-
-    return flase;
-  }
-
-  protected function _createSubNode($node, $values)
+  function createNode($node, $values)
   {
     if(!$parent_node = $this->getNode($node))
       return false;
@@ -412,6 +380,20 @@ class lmbNSTree implements lmbTree
 
     return $new_values['id'];
   }
+
+  protected function _createRootNode()
+  {
+    $values = array();
+    $values['id'] = $this->_getNextNodeInsertId();
+    $values[$this->_left] = 1;
+    $values[$this->_right] = 2;
+    $values[$this->_level] = 0;
+
+    $this->_db_table->insert($values);
+
+    return $values['id'];
+  }
+
 
   function updateNode($id, $values, $internal = false)
   {

@@ -15,22 +15,24 @@ lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
 class NSTreeTestVersion extends lmbNSTree
 {
-  function __construct()
+  function __construct($node_table)
   {
-    parent :: __construct('test_nested_sets_tree');
+    parent :: __construct($node_table);
   }
 }
 
 class lmbNSTreeTest extends lmbTreeTestBase
 {
+  protected $_node_table = 'test_nested_sets_tree';
+  
   function _createTreeImp()
   {
-    return new NSTreeTestVersion();
+    return new NSTreeTestVersion($this->_node_table);
   }
 
   function _cleanUp()
   {
-    $this->db->delete('test_nested_sets_tree');
+    $this->db->delete($this->_node_table);
   }
 }
 ?>

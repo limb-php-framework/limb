@@ -15,22 +15,24 @@ lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
 class MPTreeTestVersion extends lmbMPTree
 {
-  function __construct()
+  function __construct($node_table)
   {
-    parent :: __construct('test_materialized_path_tree');
+    parent :: __construct($node_table);
   }
 }
 
 class lmbMPTreeTest extends lmbTreeTestBase
 {
+  protected $_node_table = 'test_materialized_path_tree';
+  
   function _createTreeImp()
   {
-    return new MPTreeTestVersion();
+    return new MPTreeTestVersion($this->_node_table);
   }
 
   function _cleanUp()
   {
-    $this->db->delete('test_materialized_path_tree');
+    $this->db->delete($this->_node_table);
   }
 
   function _checkProperNesting($nodes, $line='')
