@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5543 2007-04-05 15:05:23Z pachanga $
+ * @version    $Id: lmbCmsNode.class.php 5710 2007-04-19 22:10:58Z pachanga $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -68,9 +68,10 @@ class lmbCmsNode extends lmbActiveRecord
   protected function _insertDbRecord($values)
   {
     if($this->getParent() && $parent_id = $this->getParent()->id)
-      return $this->tree->createNode($values, $parent_id);
+      return $this->tree->createNode($parent_id, $values);
     else
-      return $this->tree->createNode($values);
+      throw lmbException('FIX ME!!!');
+      //return $this->tree->createNode($values);
   }
 
   protected function _updateDbRecord($values)
@@ -156,7 +157,7 @@ class lmbCmsNode extends lmbActiveRecord
 
   function getRoots()
   {
-    return lmbActiveRecord :: decorateRecordSet($this->tree->getRootNodes(), 'lmbCmsNode');
+    return lmbActiveRecord :: decorateRecordSet($this->tree->getChildren('/'), 'lmbCmsNode');
   }
 
   function getRootNodes()
