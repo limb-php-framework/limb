@@ -371,6 +371,7 @@ class lmbNSTree implements lmbTree
     $values[$this->_left] = 1;
     $values[$this->_right] = 2;
     $values[$this->_level] = 0;
+    $values['identifier'] = '';
 
     $this->_db_table->insert($values);
 
