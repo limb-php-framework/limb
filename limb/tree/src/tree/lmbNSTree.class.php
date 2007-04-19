@@ -427,6 +427,17 @@ class lmbNSTree implements lmbTree
     if(!$target_node = $this->getNode($target_node))
       return false;
 
+    if ($source_node == $this->getRootNode())
+      return false;
+
+    if ($target_node == $this->getParent($source_node))
+      return false;
+
+    $sql = "SELECT 1 FROM {$this->_node_table} WHERE id = {$target_node['id']} AND {$this->_left} > {$source_node[$this->_left]} AND {$this->_right} < {$source_node[$this->_right]}";
+    $stmt = $this->_conn->newStatement($sql);
+    if ($stmt->getOneValue())
+      return false;
+
     // whether it is being moved upwards along the path
     if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
     {
