@@ -462,6 +462,9 @@ class lmbMPTree implements lmbTree
 
     $new_values = $this->_processUserValues($values);
 
+    if(!isset($new_values['identifier']) || $new_values['identifier'] == '')
+      throw new lmbConsistencyTreeException("Identifier property is required");
+
     $this->_ensureUniqueSiblingIdentifier($new_values['identifier'], $parent_id);
 
     $new_values['id'] = $this->_getNextNodeInsertId();
@@ -486,7 +489,6 @@ class lmbMPTree implements lmbTree
                                         path LIKE :path:");
 
     $stmt->setVarChar('path', $node['path'] . '%');
-
     $stmt->execute();
 
     $stmt = $this->_conn->newStatement("UPDATE {$this->_node_table}
@@ -502,7 +504,7 @@ class lmbMPTree implements lmbTree
   function moveNode($source_node, $target_node)
   {
     if($source_node == $target_node)
-      throw new lmbTreeException("Can not move node into itself('$source_node')");
+      throw new lmbConsistencyTreeException("Can not move node into itself('$source_node')");
 
     $source_node = $this->_ensureNode($source_node);
     $target_node = $this->_ensureNode($target_node);

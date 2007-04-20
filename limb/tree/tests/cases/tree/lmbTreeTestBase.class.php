@@ -204,7 +204,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     catch(lmbInvalidNodeTreeException $e){}
   }
 
-  function testCreateNodeThrowsConsistencyException()
+  function testCreateNodeFailsWithDuplicateIdentifier()
   {
     $root_id = $this->imp->initTree();
     $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
@@ -213,6 +213,17 @@ abstract class lmbTreeTestBase extends UnitTestCase
     try
     {
       $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
+  }
+
+  function testCreateNodeFailsWithEmptyIdentifier()
+  {
+    $root_id = $this->imp->initTree();
+    try
+    {
+      $this->imp->createNode($root_id, array('identifier'=>''));
       $this->assertTrue(false);
     }
     catch(lmbConsistencyTreeException $e){}
