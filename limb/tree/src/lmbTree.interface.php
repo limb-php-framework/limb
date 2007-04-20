@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTree.interface.php 5723 2007-04-20 10:58:23Z pachanga $
+ * @version    $Id: lmbTree.interface.php 5732 2007-04-20 20:07:28Z pachanga $
  * @package    tree
  */
 

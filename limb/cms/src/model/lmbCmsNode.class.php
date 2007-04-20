@@ -6,11 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5729 2007-04-20 12:32:19Z pachanga $
+ * @version    $Id: lmbCmsNode.class.php 5732 2007-04-20 20:07:28Z pachanga $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
-lmb_require('limb/tree/src/tree/lmbMaterializedPathTree.class.php');
 lmb_require('limb/cms/src/model/lmbCmsClassName.class.php');
 lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
 

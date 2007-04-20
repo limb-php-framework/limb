@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeDecoratorTest.class.php 5702 2007-04-19 20:47:23Z pachanga $
+ * @version    $Id: lmbTreeDecoratorTest.class.php 5732 2007-04-20 20:07:28Z pachanga $
  * @package    tree
  */
-lmb_require('limb/tree/src/tree/lmbTreeDecorator.class.php');
-lmb_require('limb/tree/src/tree/lmbMPTree.class.php');
+lmb_require('limb/tree/src/lmbTreeDecorator.class.php');
+lmb_require('limb/tree/src/lmbMPTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
 class TreeTestVersionForDecorator extends lmbMPTree

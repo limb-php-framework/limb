@@ -10,7 +10,7 @@
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-lmb_require('limb/tree/src/tree/lmbMPTree.class.php');
+lmb_require('limb/tree/src/lmbMPTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
 class MPTreeTestVersion extends lmbMPTree
@@ -24,7 +24,7 @@ class MPTreeTestVersion extends lmbMPTree
 class lmbMPTreeTest extends lmbTreeTestBase
 {
   protected $_node_table = 'test_materialized_path_tree';
-  
+
   function _createTreeImp()
   {
     return new MPTreeTestVersion($this->_node_table);

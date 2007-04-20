@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsSorter.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbTreeItemsSorter.class.php 5732 2007-04-20 20:07:28Z pachanga $
  * @package    tree
  */
-lmb_require('limb/tree/src/tree/lmbTreeRsProcessor.class.php');
+lmb_require('limb/tree/src/lmbTreeRsProcessor.class.php');
 
 class lmbTreeItemsSorter extends lmbCollectionDecorator
 {

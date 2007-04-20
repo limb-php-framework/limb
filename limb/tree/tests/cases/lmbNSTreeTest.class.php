@@ -10,7 +10,7 @@
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-lmb_require('limb/tree/src/tree/lmbNSTree.class.php');
+lmb_require('limb/tree/src/lmbNSTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
 class NSTreeTestVersion extends lmbNSTree
@@ -24,7 +24,7 @@ class NSTreeTestVersion extends lmbNSTree
 class lmbNSTreeTest extends lmbTreeTestBase
 {
   protected $_node_table = 'test_nested_sets_tree';
-  
+
   function _createTreeImp()
   {
     return new NSTreeTestVersion($this->_node_table);
