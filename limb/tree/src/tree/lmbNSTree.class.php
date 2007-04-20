@@ -30,20 +30,20 @@ class lmbNSTree implements lmbTree
 
   protected $_db_table = false;
 
-  function __construct($node_table = 'ns_tree', $id = 'id', $left = 'c_left', $right = 'c_right', $level = 'c_level', $identifier = 'identifier', $path = 'path')
+  function __construct($node_table = 'ns_tree', $id = 'id', $parent_id = 'parent_id', $left = 'c_left', $right = 'c_right', $level = 'level', $identifier = 'identifier', $path = 'path')
   {
     $toolkit = lmbToolkit :: instance();
 
     $this->_conn = $toolkit->getDefaultDbConnection();
     $this->_node_table = $node_table;
     $this ->_id = $id;
+    $this->_parent_id = $parent_id;
     $this->_left = $left;
     $this->_right = $right;
     $this->_level = $level;
     $this->_identifier = $identifier;
     $this->_path = $path;
-    //$this->_required_params = array($id, $left, $right, $level, $path);
-    $this->_system_fields = array($id, $left, $right, $level, $path);
+    $this->_system_fields = array($id, $parent_id, $left, $right, $level, $path);
     $this->_db_table = new lmbTableGateway($this->_node_table);
     $this->_fields = $this->_db_table->getColumnNames();
   }
@@ -336,7 +336,7 @@ class lmbNSTree implements lmbTree
 
     $new_values = $this->_processUserValues($values);
 
-    if(!isset($new_values['identifier']) || $new_values['identifier'] == '')
+    if(!isset($new_values[$this->_identifier]) || $new_values[$this->_identifier] == '')
       throw new lmbConsistencyTreeException("Identifier property is required");
       
     if(!isset($values[$this->_id]))
@@ -351,8 +351,9 @@ class lmbNSTree implements lmbTree
         return false;
     }
     
-    $this->_ensureUniqueSiblingIdentifier($new_values['identifier'], $parent_node);
-
+    $this->_ensureUniqueSiblingIdentifier($new_values[$this->_identifier], $parent_node);
+    
+    $new_values[$this->_parent_id] = $parent_node[$this->_parent_id];
     $new_values[$this->_left] = $parent_node[$this->_right];
     $new_values[$this->_right] = $parent_node[$this->_right]+1;
     $new_values[$this->_level] = $parent_node[$this->_level]+1;
@@ -375,6 +376,7 @@ class lmbNSTree implements lmbTree
   {
     $values = array();
     $values[$this->_id] = $this->_getNextNodeInsertId();
+    $values[$this->_parent_id] = $this->_getNextNodeInsertId();
     $values[$this->_left] = 1;
     $values[$this->_right] = 2;
     $values[$this->_level] = 0;

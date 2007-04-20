@@ -17,8 +17,11 @@ CREATE TABLE test_nested_sets_tree (
   "parent_id" int NOT NULL default '0',
   "c_left"    int NOT NULL,
   "c_right"   int NOT NULL,
-  "c_level"   int NOT NULL,
+  "level"   int NOT NULL,
   "identifier" varchar(128) NOT NULL default '',
+  `path`      varchar(255) NOT NULL
   PRIMARY KEY("id"),
-  KEY("c_left", "c_right", "c_level")
+  KEY("c_left", "c_right", "level"),
+  KEY("path")
+  
 ) ;
