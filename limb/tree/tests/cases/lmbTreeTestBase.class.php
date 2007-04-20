@@ -10,9 +10,9 @@
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-lmb_require('limb/tree/src/lmbTreeException.class.php');
-lmb_require('limb/tree/src/lmbInvalidNodeTreeException.class.php');
-lmb_require('limb/tree/src/lmbConsistencyTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbInvalidNodeTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbConsistencyTreeException.class.php');
 
 abstract class lmbTreeTestBase extends UnitTestCase
 {

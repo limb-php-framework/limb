@@ -13,9 +13,9 @@ lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/tree/src/lmbTree.interface.php');
-lmb_require('limb/tree/src/lmbTreeException.class.php');
-lmb_require('limb/tree/src/lmbInvalidNodeTreeException.class.php');
-lmb_require('limb/tree/src/lmbConsistencyTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbInvalidNodeTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbConsistencyTreeException.class.php');
 
 class lmbMPTree implements lmbTree
 {

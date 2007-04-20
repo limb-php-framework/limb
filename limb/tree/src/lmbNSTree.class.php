@@ -13,6 +13,9 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/tree/src/lmbTree.interface.php');
+lmb_require('limb/tree/src/exception/lmbTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbInvalidNodeTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbConsistencyTreeException.class.php');
 
 /**
  * Base class implementing a Nested Sets approach to storing tree-like structures in database tables.
