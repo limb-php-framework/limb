@@ -244,6 +244,24 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($node_1, $parent_node['id']);
   }
 
+  function testUpdateRootWithIdentifierFailed()
+  {
+    $root_id = $this->imp->initTree();
+
+    try
+    {
+      $this->imp->updateNode($root_id, array('identifier' => 'hey'));
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
+  }
+
+  function testUpdateRootWithEmptyIdentifier()
+  {
+    $root_id = $this->imp->initTree();
+    $this->imp->updateNode($root_id, array('identifier' => ''));
+  }
+
   function testUpdateNodeFailed()
   {
     try

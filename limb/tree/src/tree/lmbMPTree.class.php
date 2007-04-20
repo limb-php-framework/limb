@@ -360,6 +360,9 @@ class lmbMPTree implements lmbTree
 
     if(isset($values['identifier']))
     {
+      if($node['parent_id'] == 0 && $values['identifier'])//root check
+        throw new lmbConsistencyTreeException('Root node is forbidden to have an identifier');
+
       if($node['identifier'] != $values['identifier'])
         $this->_ensureUniqueSiblingIdentifier($values['identifier'], $node['parent_id']);
     }
