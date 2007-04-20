@@ -10,6 +10,20 @@
  * @package    tree
  */
 
-class lmbConsistencyTreeException extends lmbTreeException{}
+class lmbTreeInvalidNodeException extends lmbTreeException
+{
+  protected $node;
+
+  function __construct($node)
+  {
+    $this->node = $node;
+    parent :: __construct("Node '$node' is invalid");
+  }
+
+  function getNode()
+  {
+    return $this->node;
+  }
+}
 
 ?>

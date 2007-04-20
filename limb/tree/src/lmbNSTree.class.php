@@ -14,8 +14,8 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/tree/src/lmbTree.interface.php');
 lmb_require('limb/tree/src/exception/lmbTreeException.class.php');
-lmb_require('limb/tree/src/exception/lmbInvalidNodeTreeException.class.php');
-lmb_require('limb/tree/src/exception/lmbConsistencyTreeException.class.php');
+lmb_require('limb/tree/src/exception/lmbTreeInvalidNodeException.class.php');
+lmb_require('limb/tree/src/exception/lmbTreeConsistencyException.class.php');
 
 /**
  * Base class implementing a Nested Sets approach to storing tree-like structures in database tables.
@@ -340,7 +340,7 @@ class lmbNSTree implements lmbTree
     $new_values = $this->_processUserValues($values);
 
     if(!isset($new_values[$this->_identifier]) || $new_values[$this->_identifier] == '')
-      throw new lmbConsistencyTreeException("Identifier property is required");
+      throw new lmbTreeConsistencyException("Identifier property is required");
 
     if(!isset($values[$this->_id]))
     {
@@ -394,7 +394,7 @@ class lmbNSTree implements lmbTree
   protected function _ensureNode($node)
   {
     if(!$res = $this->getNode($node))
-      throw new lmbInvalidNodeTreeException($node);
+      throw new lmbTreeInvalidNodeException($node);
     return $res;
   }
 
@@ -411,7 +411,7 @@ class lmbNSTree implements lmbTree
     $stmt->setVarChar('identifier', $identifier);
 
     if($stmt->getOneRecord())
-      throw new lmbConsistencyTreeException("There's already a sibling with such an identifier '$identifier'");
+      throw new lmbTreeConsistencyException("There's already a sibling with such an identifier '$identifier'");
   }
 
   function updateNode($node, $values, $internal = false)
@@ -421,7 +421,7 @@ class lmbNSTree implements lmbTree
     if(isset($values[$this->_identifier]))
     {
       if ($node[$this->_left]==1 && $values[$this->_identifier])
-        throw new lmbConsistencyTreeException('Root node is forbidden to have an identifier');
+        throw new lmbTreeConsistencyException('Root node is forbidden to have an identifier');
 
       if($node[$this->_identifier] != $values[$this->_identifier])
         $this->_ensureUniqueSiblingIdentifier($values[$this->_identifier], $this->getParent($node));
@@ -467,13 +467,13 @@ class lmbNSTree implements lmbTree
   function moveNode($source_node, $target_node)
   {
     if($source_node == $target_node)
-      throw new lmbConsistencyTreeException("Can not move node into itself('$source_node')");
+      throw new lmbTreeConsistencyException("Can not move node into itself('$source_node')");
 
     $source_node = $this->_ensureNode($source_node);
     $target_node = $this->_ensureNode($target_node);
 
     if ($source_node == $this->getRootNode())
-      throw new lmbConsistencyTreeException("Can not move root node");
+      throw new lmbTreeConsistencyException("Can not move root node");
 
     if ($target_node == $this->getParent($source_node))
       return false;
@@ -481,7 +481,7 @@ class lmbNSTree implements lmbTree
     $sql = "SELECT 1 FROM {$this->_node_table} WHERE {$this->_id} = {$target_node[$this->_id]} AND {$this->_left} > {$source_node[$this->_left]} AND {$this->_right} < {$source_node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
     if ($stmt->getOneValue())
-      throw new lmbConsistencyTreeException("Can not move parent node('$source_node') into child node('$target_node')");
+      throw new lmbTreeConsistencyException("Can not move parent node('$source_node') into child node('$target_node')");
 
     $path = $this->_path."=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ,{$this->_path})";
     $parent_id = "{$this->_parent_id} = IF({$this->_id} = {$source_node[$this->_id]}, {$target_node[$this->_id]}, {$this->_parent_id})";
