@@ -353,7 +353,7 @@ class lmbNSTree implements lmbTree
     
     $this->_ensureUniqueSiblingIdentifier($new_values[$this->_identifier], $parent_node);
     
-    $new_values[$this->_parent_id] = $parent_node[$this->_parent_id];
+    $new_values[$this->_parent_id] = $parent_node[$this->_id];
     $new_values[$this->_left] = $parent_node[$this->_right];
     $new_values[$this->_right] = $parent_node[$this->_right]+1;
     $new_values[$this->_level] = $parent_node[$this->_level]+1;
@@ -477,7 +477,9 @@ class lmbNSTree implements lmbTree
     if ($stmt->getOneValue())
       throw new lmbConsistencyTreeException("Can not move parent node('$source_node') into child node('$target_node')");
       
-    $path = $this->_path." = ";
+    $path = $this->_path."=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ,{$this->_path})";
+    $parent_id = "{$this->_parent_id} = IF({$this->_id} = {$source_node[$this->_id]}, {$target_node[$this->_id]}, {$this->_parent_id})";
+
     // whether it is being moved upwards along the path
     if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
     {
@@ -487,6 +489,7 @@ class lmbNSTree implements lmbTree
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND ({$source_node[$this->_right]}), {$this->_right}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).",{$this->_right})),
               {$this->_left}=IF({$this->_left} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).", {$this->_left}))
+              ,{$parent_id}
               WHERE {$this->_left} BETWEEN ".($target_node[$this->_left]+1)." AND ".($target_node[$this->_right]-1);
     }
     elseif($target_node[$this->_left] < $source_node[$this->_left])
@@ -497,6 +500,7 @@ class lmbNSTree implements lmbTree
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}-".($source_node[$this->_left]-$target_node[$this->_right]).", {$this->_left})),
               {$this->_right}=IF({$this->_right} BETWEEN {$target_node[$this->_right]} AND {$source_node[$this->_left]}, {$this->_right}+".($source_node[$this->_right]-$source_node[$this->_left]+1).",
               IF({$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_right}-".($source_node[$this->_left]-$target_node[$this->_right]).", {$this->_right}))
+              ,{$parent_id}
               WHERE {$this->_left} BETWEEN {$target_node[$this->_left]} AND {$source_node[$this->_right]}
               OR {$this->_right} BETWEEN {$target_node[$this->_left]} AND {$source_node[$this->_right]}";
 
@@ -509,6 +513,7 @@ class lmbNSTree implements lmbTree
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_left})),
               {$this->_right}=IF({$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
               IF({$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_right}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_right}))
+              ,{$parent_id}
               WHERE {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}
               OR {$this->_right} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}";
     }
