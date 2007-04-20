@@ -20,20 +20,19 @@ lmb_require('limb/tree/src/tree/lmbConsistencyTreeException.class.php');
 class lmbMPTree implements lmbTree
 {
   protected $_conn = null;
-
-  protected $_fields = array();
   protected $_system_fields = array('id', 'path', 'level', 'children', 'parent_id');
-
+  protected $_select_fields = '';
   protected $_db_table = false;
 
-  function __construct($node_table = 'sys_tree')
+  function __construct($node_table = 'sys_tree', $conn = null)
   {
-    $toolkit = lmbToolkit :: instance();
+    if(!$conn)
+      $this->_conn = lmbToolkit :: instance()->getDefaultDbConnection();
+    else
+      $this->_conn = $conn;
 
-    $this->_conn = $toolkit->getDefaultDbConnection();
     $this->_node_table = $node_table;
-    $this->_db_table = new lmbTableGateway($this->_node_table);
-    $this->_fields = $this->_db_table->getColumnNames();
+    $this->_db_table = new lmbTableGateway($this->_node_table, $this->_conn);
   }
 
   function initTree()
@@ -66,13 +65,14 @@ class lmbMPTree implements lmbTree
 
   function _getSelectFields()
   {
-    $sql_exec_fields = array();
-    foreach($this->_fields as $name)
-    {
-      $sql_exec_fields[] = $this->_node_table . '.' . $name . ' AS ' . $name;
-    }
+    if($this->_select_fields)
+      return $this->_select_fields;
 
-    return implode(', ', $sql_exec_fields);
+    foreach($this->_db_table->getColumnsForSelect() as $full_name => $name)
+      $sql_exec_fields[] = $full_name . ' AS ' . $name;
+
+    $this->_select_fields = implode(', ', $sql_exec_fields);
+    return $this->_select_fields;
   }
 
   function _processUserValues($values)
@@ -80,9 +80,6 @@ class lmbMPTree implements lmbTree
     $processed = array();
     foreach($values as $field => $value)
     {
-      if(!in_array($field, $this->_fields))
-        continue;
-
       if(in_array($field, $this->_system_fields))
         continue;
 
@@ -378,10 +375,10 @@ class lmbMPTree implements lmbTree
 
   function _getNextNodeInsertId()
   {
+    //if field is autoincremented why do we need it?
     $sql = 'SELECT MAX(id) as m FROM '. $this->_node_table;
     $stmt = $this->_conn->newStatement($sql);
     $max = $stmt->getOneValue();
-
     return isset($max) ? $max + 1 : 1;
   }
 
@@ -465,18 +462,9 @@ class lmbMPTree implements lmbTree
 
     $new_values = $this->_processUserValues($values);
 
-    if(!isset($values['id']))
-    {
-      $new_values['id'] = $this->_getNextNodeInsertId();
-    }
-    else
-    {
-      $new_values['id'] = (int)$values['id'];
+    $this->_ensureUniqueSiblingIdentifier($new_values['identifier'], $parent_id);
 
-      if($this->isNode($new_values['id']))//must be fatal!!!
-        return false;
-    }
-
+    $new_values['id'] = $this->_getNextNodeInsertId();
     $new_values['level'] = $parent_node['level'] + 1;
     $new_values['parent_id'] = $parent_id;
     $new_values['path'] = $parent_node['path'] . $new_values['id'] . '/';

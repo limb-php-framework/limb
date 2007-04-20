@@ -172,7 +172,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($parent_node['identifier'], 'node_1');
   }
 
-  function testCreateNodeThrowsException()
+  function testCreateNodeThrowsInvalidNodeException()
   {
     try
     {
@@ -180,6 +180,20 @@ abstract class lmbTreeTestBase extends UnitTestCase
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
+  }
+
+  function testCreateNodeThrowsConsistencyException()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+
+    try
+    {
+      $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
   }
 
   function testCreateNode()
