@@ -35,7 +35,7 @@ class lmbNSTree implements lmbTree
   protected $_level;
   protected $_path;//???
 
-  protected $_db_table = false;
+  protected $_db_table;
 
   function __construct($node_table = 'ns_tree',
                        $conn = null,
@@ -44,28 +44,27 @@ class lmbNSTree implements lmbTree
                                            'level' => 'level', 'identifier' => 'identifier',
                                            'path' => 'path'))
   {
-    $toolkit = lmbToolkit :: instance();
+    $this->_mapColumns($column_map);
 
     if($conn)
       $this->conn = $conn;
     else
-      $this->_conn = $toolkit->getDefaultDbConnection();
+      $this->_conn = lmbToolkit :: instance()->getDefaultDbConnection();
 
     $this->_node_table = $node_table;
-    $this->_mapColumns($column_map);
     $this->_db_table = new lmbTableGateway($this->_node_table, $this->_conn);
     $this->_columns = $this->_db_table->getColumnNames();
   }
 
   protected function _mapColumns($column_map)
   {
-    $this ->_id = isset($column_map['id']) ? $column_map['id'] : 'id';
-    $this ->_parent_id = isset($column_map['parent_id']) ? $column_map['parent_id'] : 'parent_id';
-    $this ->_left = isset($column_map['left']) ? $column_map['left'] : 'c_left';
-    $this ->_right = isset($column_map['right']) ? $column_map['right'] : 'c_right';
-    $this ->_level = isset($column_map['level']) ? $column_map['level'] : 'level';
-    $this ->_identifier = isset($column_map['identifier']) ? $column_map['identifier'] : 'identifier';
-    $this ->_path = isset($column_map['path']) ? $column_map['path'] : 'path';
+    $this->_id = isset($column_map['id']) ? $column_map['id'] : 'id';
+    $this->_parent_id = isset($column_map['parent_id']) ? $column_map['parent_id'] : 'parent_id';
+    $this->_left = isset($column_map['left']) ? $column_map['left'] : 'c_left';
+    $this->_right = isset($column_map['right']) ? $column_map['right'] : 'c_right';
+    $this->_level = isset($column_map['level']) ? $column_map['level'] : 'level';
+    $this->_identifier = isset($column_map['identifier']) ? $column_map['identifier'] : 'identifier';
+    $this->_path = isset($column_map['path']) ? $column_map['path'] : 'path';
 
     $this->_system_columns = array($this->_id, $this->_parent_id, $this->_left,
                                   $this->_right, $this->_level, $this->_path);
