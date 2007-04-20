@@ -18,37 +18,57 @@ lmb_require('limb/tree/src/exception/lmbTreeInvalidNodeException.class.php');
 lmb_require('limb/tree/src/exception/lmbTreeConsistencyException.class.php');
 
 /**
- * Base class implementing a Nested Sets approach to storing tree-like structures in database tables.
+ * Base class implementing a Nested Sets approach for storing tree-like structures in database tables.
  */
 class lmbNSTree implements lmbTree
 {
   protected $_conn = null;
 
-  protected $_fields = array();
-  protected $_system_fields = array();
+  protected $_system_columns = array();
+  protected $_columns = array();
 
+  protected $_id;
+  protected $_parent_id;
   protected $_left;
   protected $_right;
+  protected $_identifier;
   protected $_level;
+  protected $_path;//???
 
   protected $_db_table = false;
 
-  function __construct($node_table = 'ns_tree', $id = 'id', $parent_id = 'parent_id', $left = 'c_left', $right = 'c_right', $level = 'level', $identifier = 'identifier', $path = 'path')
+  function __construct($node_table = 'ns_tree',
+                       $conn = null,
+                       $column_map = array('id' => 'id', 'parent_id' => 'parent_id',
+                                           'left' => 'c_left', 'right' => 'c_right',
+                                           'level' => 'level', 'identifier' => 'identifier',
+                                           'path' => 'path'))
   {
     $toolkit = lmbToolkit :: instance();
 
-    $this->_conn = $toolkit->getDefaultDbConnection();
+    if($conn)
+      $this->conn = $conn;
+    else
+      $this->_conn = $toolkit->getDefaultDbConnection();
+
     $this->_node_table = $node_table;
-    $this ->_id = $id;
-    $this->_parent_id = $parent_id;
-    $this->_left = $left;
-    $this->_right = $right;
-    $this->_level = $level;
-    $this->_identifier = $identifier;
-    $this->_path = $path;
-    $this->_system_fields = array($id, $parent_id, $left, $right, $level, $path);
-    $this->_db_table = new lmbTableGateway($this->_node_table);
-    $this->_fields = $this->_db_table->getColumnNames();
+    $this->_mapColumns($column_map);
+    $this->_db_table = new lmbTableGateway($this->_node_table, $this->_conn);
+    $this->_columns = $this->_db_table->getColumnNames();
+  }
+
+  protected function _mapColumns($column_map)
+  {
+    $this ->_id = isset($column_map['id']) ? $column_map['id'] : 'id';
+    $this ->_parent_id = isset($column_map['parent_id']) ? $column_map['parent_id'] : 'parent_id';
+    $this ->_left = isset($column_map['left']) ? $column_map['left'] : 'c_left';
+    $this ->_right = isset($column_map['right']) ? $column_map['right'] : 'c_right';
+    $this ->_level = isset($column_map['level']) ? $column_map['level'] : 'level';
+    $this ->_identifier = isset($column_map['identifier']) ? $column_map['identifier'] : 'identifier';
+    $this ->_path = isset($column_map['path']) ? $column_map['path'] : 'path';
+
+    $this->_system_columns = array($this->_id, $this->_parent_id, $this->_left,
+                                  $this->_right, $this->_level, $this->_path);
   }
 
   function setNodeTable($table_name)
@@ -66,13 +86,13 @@ class lmbNSTree implements lmbTree
     if($table === null)
       $table = $this->_node_table;
 
-    $sql_exec_fields = array();
-    foreach($this->_fields as $name)
+    $sql_exec_columns = array();
+    foreach($this->_columns as $name)
     {
-      $sql_exec_fields[] = $table . '.' . $name . ' AS ' . $name;
+      $sql_exec_columns[] = $table . '.' . $name . ' AS ' . $name;
     }
 
-    return implode(', ', $sql_exec_fields);
+    return implode(', ', $sql_exec_columns);
   }
 
   function _processUserValues($values)
@@ -80,10 +100,7 @@ class lmbNSTree implements lmbTree
     $processed = array();
     foreach($values as $field => $value)
     {
-      if(!in_array($field, $this->_fields))
-        continue;
-
-      if(in_array($field, $this->_system_fields))
+      if(in_array($field, $this->_system_columns))
         continue;
 
       $processed[$field] = $value;
