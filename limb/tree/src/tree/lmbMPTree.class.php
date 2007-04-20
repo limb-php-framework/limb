@@ -510,7 +510,7 @@ class lmbMPTree implements lmbTree
     $target_node = $this->_ensureNode($target_node);
 
     if(strstr($target_node['path'], $source_node['path']) !== false)
-      return false;
+      throw new lmbConsistencyTreeException("Can not parent node('$source_node') into child node('$target_node')");
 
     $id = $source_node['id'];
     $target_id = $target_node['id'];
@@ -556,8 +556,6 @@ class lmbMPTree implements lmbTree
 
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
-
-    return true;
   }
 }
 

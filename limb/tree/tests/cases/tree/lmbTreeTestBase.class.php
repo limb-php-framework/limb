@@ -366,7 +366,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
   {
     try
     {
-      $this->assertNull($this->imp->getPathToNode(1000));
+      $this->imp->getPathToNode(1000);
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
@@ -396,7 +396,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
   {
     try
     {
-      $this->assertNull($this->imp->getParents(1000));
+      $this->imp->getParents(1000);
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
@@ -433,7 +433,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
   {
     try
     {
-      $this->assertNull($this->imp->getSiblings(1000));
+      $this->imp->getSiblings(1000);
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
@@ -464,7 +464,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
   {
     try
     {
-      $this->assertEqual($this->imp->countChildren(1000), 0);
+      $this->imp->countChildren(1000);
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
@@ -662,7 +662,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
   {
     try
     {
-      $this->assertFalse($this->imp->deleteNode(100000));
+      $this->imp->deleteNode(100000);
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
@@ -685,7 +685,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
   {
     try
     {
-      $this->assertFalse($this->imp->moveNode(100, 1000));
+      $this->imp->moveNode(100, 1000);
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
@@ -696,7 +696,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $root_id = $this->imp->initTree();
     try
     {
-      $this->assertFalse($this->imp->moveNode($root_id, $root_id));
+      $this->imp->moveNode($root_id, $root_id);
       $this->assertTrue(false);
     }
     catch(lmbTreeException $e){}
@@ -708,8 +708,19 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
     $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
 
-    $this->assertFalse($this->imp->moveNode($root_id, $node_1));
-    $this->assertFalse($this->imp->moveNode($root_id, $node_2));
+    try
+    {
+      $this->imp->moveNode($root_id, $node_1);
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
+
+    try
+    {
+      $this->imp->moveNode($root_id, $node_2);
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
   }
 
   function testMoveParentNodeToChildFailed()
@@ -718,7 +729,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
     $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
 
-    $this->assertFalse($this->imp->moveNode($node_1, $node_1_1));
+    try
+    {
+      $this->imp->moveNode($node_1, $node_1_1);
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
   }
 
   function testMoveNode()
