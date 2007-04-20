@@ -268,7 +268,7 @@ class lmbNSTree implements lmbTree
       $c=$i+1;
       $t.=",\n{$this->_node_table} t".$c;
       $w.=" AND t".$c.".{$this->_identifier}='".addslashes($path_array[$i])."'
-            AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left} AND t".$i.".{$this->_right}
+            AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left}+1 AND t".$i.".{$this->_right}
             AND t".$c.".{$this->_level}=t".$i.".{$this->_level}+1";
     }
     $sql = "SELECT ".$this->_getSelectFields('t'.$c)." FROM {$this->_node_table} t0$t WHERE $w";
@@ -336,6 +336,9 @@ class lmbNSTree implements lmbTree
 
     $new_values = $this->_processUserValues($values);
 
+    if(!isset($new_values['identifier']) || $new_values['identifier'] == '')
+      throw new lmbConsistencyTreeException("Identifier property is required");
+      
     if(!isset($values[$this->_id]))
     {
       $new_values[$this->_id] = $this->_getNextNodeInsertId();
@@ -447,16 +450,22 @@ class lmbNSTree implements lmbTree
     return true;
   }
 
+  function deleteAll()
+  {
+    $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
+    $stmt->execute();
+  }
+
   function moveNode($source_node, $target_node)
   {
     if($source_node == $target_node)
-      throw new lmbTreeException("Can not move node into itself('$source_node')");
+      throw new lmbConsistencyTreeException("Can not move node into itself('$source_node')");
 
     $source_node = $this->_ensureNode($source_node);
     $target_node = $this->_ensureNode($target_node);
 
     if ($source_node == $this->getRootNode())
-      return false;
+      throw new lmbConsistencyTreeException("Can not move root node");
 
     if ($target_node == $this->getParent($source_node))
       return false;
@@ -464,7 +473,8 @@ class lmbNSTree implements lmbTree
     $sql = "SELECT 1 FROM {$this->_node_table} WHERE {$this->_id} = {$target_node[$this->_id]} AND {$this->_left} > {$source_node[$this->_left]} AND {$this->_right} < {$source_node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
     if ($stmt->getOneValue())
-      return false;
+      throw new lmbConsistencyTreeException("Can not move parent node('$source_node') into child node('$target_node')");
+      
     $path = $this->_path." = ";
     // whether it is being moved upwards along the path
     if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
