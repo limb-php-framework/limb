@@ -15,12 +15,13 @@ CREATE TABLE `test_materialized_path_tree` (
 
 DROP TABLE IF EXISTS `test_nested_sets_tree`;
 CREATE TABLE test_nested_sets_tree (
-  `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) NOT NULL default '0',
+  `id`        INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `c_left`    INT(11) UNSIGNED NOT NULL,
   `c_right`   INT(11) UNSIGNED NOT NULL,
   `c_level`   INT(11) UNSIGNED NOT NULL,
   `identifier` varchar(128) NOT NULL,
+  `path`      varchar(255) NOT NULL,
   PRIMARY KEY(id),
-  KEY(`c_left`, `c_right`, `c_level`)
+  KEY(`c_left`, `c_right`, `c_level`),
+  KEY (`path`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

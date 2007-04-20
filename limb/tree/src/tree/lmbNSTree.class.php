@@ -30,16 +30,20 @@ class lmbNSTree implements lmbTree
 
   protected $_db_table = false;
 
-  function __construct($node_table = 'ns_tree', $left = 'c_left', $right = 'c_right', $level = 'c_level')
+  function __construct($node_table = 'ns_tree', $id = 'id', $left = 'c_left', $right = 'c_right', $level = 'c_level', $identifier = 'identifier', $path = 'path')
   {
     $toolkit = lmbToolkit :: instance();
 
     $this->_conn = $toolkit->getDefaultDbConnection();
     $this->_node_table = $node_table;
+    $this ->_id = $id;
     $this->_left = $left;
     $this->_right = $right;
     $this->_level = $level;
-    $this->_system_fields = array('id', 'parent_id', $left, $right, $level);
+    $this->_identifier = $identifier;
+    $this->_path = $path;
+    //$this->_required_params = array($id, $left, $right, $level, $path);
+    $this->_system_fields = array($id, $left, $right, $level, $path);
     $this->_db_table = new lmbTableGateway($this->_node_table);
     $this->_fields = $this->_db_table->getColumnNames();
   }
@@ -106,8 +110,7 @@ class lmbNSTree implements lmbTree
 
   function getParents($node)
   {
-    if(!$child = $this->getNode($node))
-      return null;
+    $child = $this->_ensureNode($node);
 
     if($child[$this->_level] < 1)
       return null;
@@ -124,8 +127,7 @@ class lmbNSTree implements lmbTree
 
   function getParent($node)
   {
-    if(!$child = $this->getNode($node))
-      return null;
+    $child = $this->_ensureNode($node);
 
     if($child[$this->_level] < 1)
       return null;
@@ -142,13 +144,12 @@ class lmbNSTree implements lmbTree
 
   function getSiblings($node)
   {
-    if(!($sibling = $this->getNode($node)))
-      return null;
+    $sibling = $this->_ensureNode($node);
 
-    if (!$parent = $this->getParent($sibling['id']))
+    if (!$parent = $this->getParent($sibling[$this->_id]))
       return new lmbCollection(array($sibling));
 
-    return $this->getChildren($parent['id']);
+    return $this->getChildren($parent[$this->_id]);
   }
 
   function getChildren($node, $depth = 1)
@@ -163,8 +164,7 @@ class lmbNSTree implements lmbTree
 
   protected function _getChildren($node, $depth = -1)
   {
-    if(!$parent = $this->getNode($node))
-      return null;
+    $parent = $this->_ensureNode($node);
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
@@ -190,10 +190,9 @@ class lmbNSTree implements lmbTree
 
   protected function _countChildren($node, $depth = -1)
   {
-    if(!$parent = $this->getNode($node))
-      return null;
+    $parent = $this->_ensureNode($node);
 
-    $sql = "SELECT count(id) as counter
+    $sql = "SELECT count({$this->_id}) as counter
             FROM {$this->_node_table}
             WHERE {$parent[$this->_left]} < {$this->_left}
             AND {$parent[$this->_right]} > {$this->_right}";
@@ -216,13 +215,19 @@ class lmbNSTree implements lmbTree
     }
 
     if(is_array($node) or is_object($node))
-      return $node;
+    { 
+      if(isset($node[$this->_id]))
+        $id = $node[$this->_id];
+      else
+        return null;
+    }
 
-    $id = $node;
+    if (!isset($id))
+      $id = $node;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table} WHERE id=:id:";
-
+            FROM {$this->_node_table} WHERE {$this->_id}=:id:";
+    
     $stmt = $this->_conn->newStatement($sql);
     $stmt->setInteger('id', $id);
 
@@ -257,16 +262,16 @@ class lmbNSTree implements lmbTree
       return null;
 
     $t='';
-    $w='t0.id='.$root_node['id'];
+    $w="t0.{$this->_id}=".$root_node[$this->_id];
     for($i=0;$i<count($path_array);$i++)
     {
       $c=$i+1;
       $t.=",\n{$this->_node_table} t".$c;
-      $w.=" AND t".$c.".identifier='".addslashes($path_array[$i])."'
-            AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left}+1 AND t".$i.".{$this->_right}
+      $w.=" AND t".$c.".{$this->_identifier}='".addslashes($path_array[$i])."'
+            AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left} AND t".$i.".{$this->_right}
             AND t".$c.".{$this->_level}=t".$i.".{$this->_level}+1";
     }
-    $sql = "SELECT ".$this->_getSelectFields('t'.$c)." FROM {$this->_node_table} t0$t WHERE $w LIMIT 1";
+    $sql = "SELECT ".$this->_getSelectFields('t'.$c)." FROM {$this->_node_table} t0$t WHERE $w";
 
     $stmt = $this->_conn->newStatement($sql);
     if($r = $stmt->getOneRecord())
@@ -277,18 +282,17 @@ class lmbNSTree implements lmbTree
 
   function getPathToNode($node, $delimeter = '/')
   {
-    if(!$node = $this->getNode($node))
-      return null;
+    $node = $this->_ensureNode($node);
 
     $path = '';
 
     if(!$parents = $this->getParents($node))
-      return $path .= $delimeter . $node['identifier'];
+      return $path .= $delimeter . $node[$this->_identifier];
 
     foreach($parents as $parent)
-      $path .= $delimeter . $parent['identifier'];
+      $path .= $delimeter . $parent[$this->_identifier];
 
-    $path .= $delimeter . $node['identifier'];
+    $path .= $delimeter . $node[$this->_identifier];
     return substr($path, 1);
   }
 
@@ -299,7 +303,7 @@ class lmbNSTree implements lmbTree
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
-            WHERE " . $this->_dbIn('id', $ids) . "
+            WHERE " . $this->_dbIn($this->_id, $ids) . "
             ORDER BY {$this->_left}";
 
     $stmt = $this->_conn->newStatement($sql);
@@ -313,7 +317,7 @@ class lmbNSTree implements lmbTree
 
   function _getNextNodeInsertId()
   {
-    $sql = 'SELECT MAX(id) as m FROM '. $this->_node_table;
+    $sql = "SELECT MAX({$this->_id}) as m FROM ". $this->_node_table;
     $stmt = $this->_conn->newStatement($sql);
     $max = $stmt->getOneValue();
 
@@ -328,27 +332,28 @@ class lmbNSTree implements lmbTree
 
   function createNode($node, $values)
   {
-    if(!$parent_node = $this->getNode($node))
-      return false;
+    $parent_node = $this->_ensureNode($node);
 
     $new_values = $this->_processUserValues($values);
 
-    if(!isset($values['id']))
+    if(!isset($values[$this->_id]))
     {
-      $new_values['id'] = $this->_getNextNodeInsertId();
+      $new_values[$this->_id] = $this->_getNextNodeInsertId();
     }
     else
     {
-      $new_values['id'] = (int)$values['id'];
+      $new_values[$this->_id] = (int)$values[$this->_id];
 
-      if($this->isNode($new_values['id']))//must be fatal!!!
+      if($this->isNode($new_values[$this->_id]))//must be fatal!!!
         return false;
     }
+    
+    $this->_ensureUniqueSiblingIdentifier($new_values['identifier'], $parent_node);
 
-    $new_values['parent_id'] = $parent_node['id'];
     $new_values[$this->_left] = $parent_node[$this->_right];
     $new_values[$this->_right] = $parent_node[$this->_right]+1;
     $new_values[$this->_level] = $parent_node[$this->_level]+1;
+    $new_values[$this->_path] =$parent_node[$this->_path].$new_values[$this->_identifier].'/';
 
     // creating a place for the record being inserted
     $sql = "UPDATE {$this->_node_table}
@@ -360,35 +365,62 @@ class lmbNSTree implements lmbTree
 
     $this->_db_table->insert($new_values);
 
-    return $new_values['id'];
+    return $new_values[$this->_id];
   }
 
   protected function _createRootNode()
   {
     $values = array();
-    $values['id'] = $this->_getNextNodeInsertId();
+    $values[$this->_id] = $this->_getNextNodeInsertId();
     $values[$this->_left] = 1;
     $values[$this->_right] = 2;
     $values[$this->_level] = 0;
-    $values['identifier'] = '';
+    $values[$this->_identifier] = '';
+    $values[$this->_path] = '/';
 
     $this->_db_table->insert($values);
-
-    return $values['id'];
+    
+    return $values[$this->_id];
   }
 
-  function updateNode($id, $values, $internal = false)
+  protected function _ensureNode($node)
   {
-    if(!$this->isNode($id))
-      return false;
+    if(!$res = $this->getNode($node))
+      throw new lmbInvalidNodeTreeException($node);
+    return $res;
+  }
 
+  protected function _ensureUniqueSiblingIdentifier($identifier, $parent_node)
+  {
+    $sql = "SELECT {$this->_identifier} FROM {$this->_node_table}
+            WHERE
+            identifier=:identifier: 
+            AND {$this->_left} > {$parent_node[$this->_left]}
+            AND {$this->_right} < {$parent_node[$this->_right]}
+            AND {$this->_level} = ".($parent_node[$this->_level]+1);
+
+    $stmt = $this->_conn->newStatement($sql);
+    $stmt->setVarChar('identifier', $identifier);
+
+    if($stmt->getOneRecord())
+      throw new lmbConsistencyTreeException("There's already a sibling with such an identifier '$identifier'");
+  }
+
+  function updateNode($node, $values, $internal = false)
+  {
+    $node = $this->_ensureNode($node);
+    
+    if(isset($values[$this->_identifier]))
+    {
+      if($node[$this->_identifier] != $values[$this->_identifier])
+        $this->_ensureUniqueSiblingIdentifier($values[$this->_identifier], $this->getParent($node));
+    }
+    
     if($internal === false)
       $values = $this->_processUserValues($values);
 
     if(!$values)
       return false;
-
-    $node = $this->getNode($id);
 
     $this->_db_table->updateById($id, $values);
 
@@ -397,8 +429,7 @@ class lmbNSTree implements lmbTree
 
   function deleteNode($node)
   {
-    if(!$node = $this->getNode($node))
-      return false;
+    $node = $this->_ensureNode($node);
 
     $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}
                                         WHERE
@@ -419,25 +450,22 @@ class lmbNSTree implements lmbTree
   function moveNode($source_node, $target_node)
   {
     if($source_node == $target_node)
-      return false;
+      throw new lmbTreeException("Can not move node into itself('$source_node')");
 
-    if(!$source_node = $this->getNode($source_node))
-      return false;
-
-    if(!$target_node = $this->getNode($target_node))
-      return false;
+    $source_node = $this->_ensureNode($source_node);
+    $target_node = $this->_ensureNode($target_node);
 
     if ($source_node == $this->getRootNode())
       return false;
 
     if ($target_node == $this->getParent($source_node))
       return false;
-
-    $sql = "SELECT 1 FROM {$this->_node_table} WHERE id = {$target_node['id']} AND {$this->_left} > {$source_node[$this->_left]} AND {$this->_right} < {$source_node[$this->_right]}";
+    
+    $sql = "SELECT 1 FROM {$this->_node_table} WHERE {$this->_id} = {$target_node[$this->_id]} AND {$this->_left} > {$source_node[$this->_left]} AND {$this->_right} < {$source_node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
     if ($stmt->getOneValue())
       return false;
-
+    $path = $this->_path." = ";
     // whether it is being moved upwards along the path
     if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
     {
@@ -464,7 +492,7 @@ class lmbNSTree implements lmbTree
     else
     {
        $sql = "UPDATE {$this->_node_table} SET
-              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$source_node[$this->_level]}),
+              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$this->_level}),
               {$this->_left}=IF({$this->_left} BETWEEN {$source_node[$this->_right]} AND {$target_node[$this->_right]}, {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_left})),
               {$this->_right}=IF({$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",

@@ -704,6 +704,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($arr[1]['id'], $node_2);
     $this->assertEqual($arr[2]['id'], $node_1_1);
     $this->assertEqual($arr[3]['id'], $node_1_1_1);
+    $this->assertEqual($this->imp->getNode($node_1_1_1)->export(), $this->imp->getNodeByPath('/node_2/node_1_1/node_1_1_1/')->export());
   }
 }
 ?>
