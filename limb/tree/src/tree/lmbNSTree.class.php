@@ -21,9 +21,9 @@ class lmbNSTree implements lmbTree
 {
   protected $_conn = null;
 
-  protected $_params = array();
+  protected $_fields = array();
+  protected $_system_fields = array();
 
-  protected $_required_params = array();
   protected $_left;
   protected $_right;
   protected $_level;
@@ -39,9 +39,9 @@ class lmbNSTree implements lmbTree
     $this->_left = $left;
     $this->_right = $right;
     $this->_level = $level;
-    $this->_required_params = array('id', 'parent_id', $left, $right, $level);
+    $this->_system_fields = array('id', 'parent_id', $left, $right, $level);
     $this->_db_table = new lmbTableGateway($this->_node_table);
-    $this->_params = $this->_db_table->getColumnNames();
+    $this->_fields = $this->_db_table->getColumnNames();
   }
 
   function setNodeTable($table_name)
@@ -60,7 +60,7 @@ class lmbNSTree implements lmbTree
       $table = $this->_node_table;
 
     $sql_exec_fields = array();
-    foreach($this->_params as $name)
+    foreach($this->_fields as $name)
     {
       $sql_exec_fields[] = $table . '.' . $name . ' AS ' . $name;
     }
@@ -73,10 +73,10 @@ class lmbNSTree implements lmbTree
     $processed = array();
     foreach($values as $field => $value)
     {
-      if(!in_array($field, $this->_params))
+      if(!in_array($field, $this->_fields))
         continue;
 
-      if(in_array($field, $this->_required_params))
+      if(in_array($field, $this->_system_fields))
         continue;
 
       $processed[$field] = $value;
