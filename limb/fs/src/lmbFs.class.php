@@ -250,6 +250,11 @@ class lmbFs
   {
     if(!is_dir($src))
     {
+      if(!is_dir($dest))
+        self :: mkdir(dirname($dest));
+      else
+        $dest = $dest . '/' . basename($src);
+
       if(@copy($src, $dest) === false)
         throw new lmbIOException('failed to copy file', array('src' => $src, 'dest' => $dest));
       return;

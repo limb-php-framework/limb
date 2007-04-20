@@ -302,11 +302,12 @@ class lmbFsTest extends UnitTestCase
     $this->_removeFileSystem();
   }
 
-  function testCp()
+  function testCpDirs()
   {
     $this->_createFileSystem();
 
-    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp');
+    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow',
+                       TEST_DIR_ABSOLUTE_PATH . '/tmp/cp');
     sort($res);
 
     $this->assertEqual(
@@ -337,7 +338,8 @@ class lmbFsTest extends UnitTestCase
   {
     $this->_createFileSystem();
 
-    lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', null, null, true);
+    lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow',
+                TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', null, null, true);
 
     $this->assertEqual(
       lmbFs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/wow/'),
@@ -354,7 +356,8 @@ class lmbFsTest extends UnitTestCase
   {
     $this->_createFileSystem();
 
-    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', '/hey/');
+    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow',
+                       TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', '/hey/');
     sort($res);
 
     $this->assertEqual(
@@ -376,7 +379,8 @@ class lmbFsTest extends UnitTestCase
   {
     $this->_createFileSystem();
 
-    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', null, '/test2/');
+    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow',
+                       TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', null, '/test2/');
 
     $this->assertEqual(
       $res,
@@ -389,6 +393,48 @@ class lmbFsTest extends UnitTestCase
     );
 
     $this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/hey'));
+
+    $this->_removeFileSystem();
+  }
+
+  function testCpFileIntoNonExistingFile()
+  {
+    $this->_createFileSystem();
+
+    $this->assertFalse(file_exists(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1_1'));
+
+    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1',
+                        TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1_1');
+
+    $this->assertTrue(file_exists(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1_1'));
+
+    $this->_removeFileSystem();
+  }
+
+  function testCpFileIntoExistingDir()
+  {
+    $this->_createFileSystem();
+
+    $this->assertFalse(file_exists(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test1_1'));
+
+    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1',
+                        TEST_DIR_ABSOLUTE_PATH . '/tmp/wow');
+
+    $this->assertTrue(file_exists(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/test1_1'));
+
+    $this->_removeFileSystem();
+  }
+
+  function testCpFileIntoNonExistingDir()
+  {
+    $this->_createFileSystem();
+
+    $this->assertFalse(file_exists(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow2/test1_1.copy'));
+
+    $res = lmbFs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/test1_1',
+                        TEST_DIR_ABSOLUTE_PATH . '/tmp/wow2/test1_1.copy');
+
+    $this->assertTrue(file_exists(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow2/test1_1.copy'));
 
     $this->_removeFileSystem();
   }
