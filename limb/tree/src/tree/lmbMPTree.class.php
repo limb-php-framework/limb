@@ -9,20 +9,19 @@
  * @version    $Id: lmbMaterializedPathTree.class.php 5680 2007-04-19 07:18:38Z pachanga $
  * @package    tree
  */
+lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
-lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/tree/src/tree/lmbTree.interface.php');
+lmb_require('limb/tree/src/tree/lmbTreeException.class.php');
+lmb_require('limb/tree/src/tree/lmbInvalidNodeTreeException.class.php');
 
 class lmbMPTree implements lmbTree
 {
   protected $_conn = null;
 
-  protected $_params = array();
-
-  protected $_required_params = array('id', 'root_id', 'path', 'level', 'children');
-
-  protected $_dumb_mode = false;
+  protected $_fields = array();
+  protected $_system_fields = array('id', 'path', 'level', 'children', 'parent_id');
 
   protected $_db_table = false;
 
@@ -33,7 +32,7 @@ class lmbMPTree implements lmbTree
     $this->_conn = $toolkit->getDefaultDbConnection();
     $this->_node_table = $node_table;
     $this->_db_table = new lmbTableGateway($this->_node_table);
-    $this->_params = $this->_db_table->getColumnNames();
+    $this->_fields = $this->_db_table->getColumnNames();
   }
 
   function initTree()
@@ -67,7 +66,7 @@ class lmbMPTree implements lmbTree
   function _getSelectFields()
   {
     $sql_exec_fields = array();
-    foreach($this->_params as $name)
+    foreach($this->_fields as $name)
     {
       $sql_exec_fields[] = $this->_node_table . '.' . $name . ' AS ' . $name;
     }
@@ -77,16 +76,13 @@ class lmbMPTree implements lmbTree
 
   function _processUserValues($values)
   {
-    if($this->_dumb_mode)
-      return $values;
-
     $processed = array();
     foreach($values as $field => $value)
     {
-      if(!in_array($field, $this->_params))
+      if(!in_array($field, $this->_fields))
         continue;
 
-      if(in_array($field, $this->_required_params))
+      if(in_array($field, $this->_system_fields))
         continue;
 
       $processed[$field] = $value;
@@ -96,8 +92,7 @@ class lmbMPTree implements lmbTree
 
   function getParents($node)
   {
-    if(!$child = $this->getNode($node))
-      return null;
+    $child = $this->_ensureNode($node);
 
     if($child['level'] < 1)
       return null;
@@ -109,13 +104,11 @@ class lmbMPTree implements lmbTree
             FROM {$this->_node_table}, {$this->_node_table} AS  {$join_table}
             WHERE
             {$join_table}.path LIKE {$concat} AND
-            {$this->_node_table}.root_id = :root_id: AND
             {$this->_node_table}.level < :level: AND
             {$join_table}.id = :id:
             ORDER BY {$this->_node_table}.level ASC";
 
     $stmt = $this->_conn->newStatement($sql);
-    $stmt->setInteger('root_id', $child['root_id']);
     $stmt->setVarChar('level', $child['level']);
     $stmt->setVarChar('id', $child['id']);
 
@@ -124,29 +117,23 @@ class lmbMPTree implements lmbTree
 
   function getParent($node)
   {
-    if(!$child = $this->getNode($node))
-      return null;
-
-    if($child['id'] == $child['root_id'])
-      return null;
-
+    $child = $this->_ensureNode($node);
     return $this->getNode($child['parent_id']);
   }
 
   function getSiblings($node)
   {
-    if(!$me = $this->getNode($node))
-      return null;
+    $me = $this->_ensureNode($node);
 
     if(!$me['parent_id'])
       return new lmbCollection(array($me));
+
     return $this->getChildren($me['parent_id']);
   }
 
   function getChildren($node, $depth = 1)
   {
-    if(!$parent = $this->getNode($node))
-      return null;
+    $parent = $this->_ensureNode($node);
 
     if($depth == 1)
     {
@@ -174,8 +161,7 @@ class lmbMPTree implements lmbTree
 
   function getChildrenAll($node)
   {
-    if(!$node = $this->getNode($node))
-      return null;
+    $node = $this->_ensureNode($node);
 
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
@@ -190,8 +176,7 @@ class lmbMPTree implements lmbTree
 
   function countChildren($node, $depth = 1)
   {
-    if(!$parent = $this->getNode($node))
-      return null;
+    $parent = $this->_ensureNode($node);
 
     if($depth == 1)
     {
@@ -216,8 +201,7 @@ class lmbMPTree implements lmbTree
 
   function countChildrenAll($node)
   {
-    if(!$parent = $this->getNode($node))
-      return null;
+    $parent = $this->_ensureNode($node);
 
     $sql = "SELECT count(id) as counter
             FROM {$this->_node_table}
@@ -238,9 +222,17 @@ class lmbMPTree implements lmbTree
       return $res;
     }
     elseif(is_array($node))
-      return $node;
+    {
+      if(isset($node['id']))
+        $id = $node['id'];
+      else
+        return null;
+    }
     elseif(is_object($node))
-      $id = $node->get('id');
+    {
+      if(!$id = $node->get('id'))
+        return null;
+    }
     else
       $id = $node;
 
@@ -250,8 +242,8 @@ class lmbMPTree implements lmbTree
     $stmt = $this->_conn->newStatement($sql);
     $stmt->setInteger('id', $id);
 
-    if($r = $stmt->getOneRecord())
-      return $r;
+    if($node = $stmt->getOneRecord())
+      return $node;
 
     return null;
   }
@@ -308,14 +300,12 @@ class lmbMPTree implements lmbTree
           return $node;
       }
     }
-
     return null;
   }
 
   function getPathToNode($node)
   {
-    if(!$node = $this->getNode($node))
-      return null;
+    $node = $this->_ensureNode($node);
 
     if(!$parents = $this->getParents($node['id']))
       return '/';
@@ -343,16 +333,13 @@ class lmbMPTree implements lmbTree
 
   function getMaxChildIdentifier($node)
   {
-    if(!($parent = $this->getNode($node)))
-      return false;
+    $parent = $this->_ensureNode($node);
 
     $sql = "SELECT identifier FROM {$this->_node_table}
             WHERE
-            root_id=:root_id: AND
             parent_id=:parent_id:";
 
     $stmt = $this->_conn->newStatement($sql);
-    $stmt->setInteger('root_id', $parent['root_id']);
     $stmt->setInteger('parent_id', $parent['id']);
 
     if($arr = $stmt->getOneColumnAsArray())
@@ -369,25 +356,17 @@ class lmbMPTree implements lmbTree
     return ($this->getNode($id) !== null);
   }
 
-  function updateNode($id, $values, $internal = false)
+  function updateNode($node, $values, $internal = false)
   {
-    if(!$this->isNode($id))
-      return false;
+    $node = $this->_ensureNode($node);
 
     if($internal === false)
       $values = $this->_processUserValues($values);
 
     if(!$values)
-      return false;
+      return;
 
-    $node = $this->getNode($id);
-
-    if(isset($values['parent_id']) && $node['parent_id'] != $values['parent_id'])
-      $this->moveNode($id, $values['parent_id']);
-
-    $this->_db_table->updateById($id, $values);
-
-    return true;//???
+    $this->_db_table->updateById($node['id'], $values);
   }
 
   function _getNextNodeInsertId()
@@ -411,11 +390,10 @@ class lmbMPTree implements lmbTree
         return '(' . implode(' || ', $values) . ')';
 
       default:
-        throw new Exception("This database type '" . $this->_conn->getType() . "' is not supported(concat operation)");
+        throw new lmbException("This database type '" . $this->_conn->getType() . "' is not supported(concat operation)");
     }
   }
 
-  //the same story...
   function _dbSubstr($string, $offset, $limit=null)
   {
     switch($this->_conn->getType())
@@ -428,7 +406,7 @@ class lmbMPTree implements lmbTree
           return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
 
       default:
-        throw new Exception("This database type '" . $this->_conn->getType() . "' is not supported(substr operation)");
+        throw new lmbException("This database type '" . $this->_conn->getType() . "' is not supported(substr operation)");
     }
   }
 
@@ -442,7 +420,6 @@ class lmbMPTree implements lmbTree
   {
     $new_values['id'] = $this->_getNextNodeInsertId();
     $new_values['path'] = '/' . $new_values['id'] . '/';
-    $new_values['root_id'] = $new_values['id'];
     $new_values['level'] = 0;
     $new_values['parent_id'] = 0;
     $new_values['children'] = 0;
@@ -452,10 +429,16 @@ class lmbMPTree implements lmbTree
     return $new_values['id'];
   }
 
+  protected function _ensureNode($node)
+  {
+    if(!$res = $this->getNode($node))
+      throw new lmbInvalidNodeTreeException($node);
+    return $res;
+  }
+
   function createNode($node, $values)
   {
-    if(!$parent_node = $this->getNode($node))
-      return false;
+    $parent_node = $this->_ensureNode($node);
 
     $parent_id = $parent_node['id'];
 
@@ -473,7 +456,6 @@ class lmbMPTree implements lmbTree
         return false;
     }
 
-    $new_values['root_id'] = $parent_node['root_id'];
     $new_values['level'] = $parent_node['level'] + 1;
     $new_values['parent_id'] = $parent_id;
     $new_values['path'] = $parent_node['path'] . $new_values['id'] . '/';
@@ -488,16 +470,13 @@ class lmbMPTree implements lmbTree
 
   function deleteNode($node)
   {
-    if(!$node = $this->getNode($node))
-      return false;
+    $node = $this->_ensureNode($node);
 
     $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}
                                         WHERE
-                                        path LIKE :path: AND
-                                        root_id = :root_id:");
+                                        path LIKE :path:");
 
     $stmt->setVarChar('path', $node['path'] . '%');
-    $stmt->setInteger('root_id', $node['root_id']);
 
     $stmt->execute();
 
@@ -509,20 +488,15 @@ class lmbMPTree implements lmbTree
     $stmt->setInteger('id', $node['parent_id']);
 
     $stmt->execute();
-
-    return true;
   }
 
   function moveNode($source_node, $target_node)
   {
     if($source_node == $target_node)
-      return false;
+      throw new lmbTreeException("Can not move node into itself('$source_node')");
 
-    if(!$source_node = $this->getNode($source_node))
-      return false;
-
-    if(!$target_node = $this->getNode($target_node))
-      return false;
+    $source_node = $this->_ensureNode($source_node);
+    $target_node = $this->_ensureNode($target_node);
 
     if(strstr($target_node['path'], $source_node['path']) !== false)
       return false;
@@ -548,8 +522,7 @@ class lmbMPTree implements lmbTree
     $sql = "UPDATE {$this->_node_table}
             SET
             path = {$path_set},
-            level = level + {$target_node['level']} - {$source_node['level']} + 1,
-            root_id = {$target_node['root_id']}
+            level = level + {$target_node['level']} - {$source_node['level']} + 1
             WHERE
             {$sub_string} = '{$source_node['path']}' OR
             path = '{$source_node['path']}'";

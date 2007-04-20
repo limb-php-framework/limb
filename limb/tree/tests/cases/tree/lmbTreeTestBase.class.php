@@ -133,10 +133,15 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testGetParentFailed()
   {
-    $this->assertNull($this->imp->getParent(1000));
+    try
+    {
+      $this->imp->getParent(1000);
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
-  function testGetParentFailedForRootNode()
+  function testGetParentReturnsNullForRootNode()
   {
     $id = $this->imp->initTree();
     $this->assertNull($this->imp->getParent($id));
@@ -164,6 +169,16 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($parent_node['identifier'], 'node_1');
   }
 
+  function testCreateNodeThrowsException()
+  {
+    try
+    {
+      $this->imp->createNode(100, array('identifier'=>'node_1'));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
+  }
+
   function testCreateNode()
   {
     $root_id = $this->imp->initTree();
@@ -181,16 +196,41 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testUpdateNodeFailed()
   {
-    $this->assertFalse($this->imp->updateNode(1000, array('junk')));
+    try
+    {
+      $this->imp->updateNode(1000, array('junk'));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
-  function testGetNodeByNodeReturnsSameNode()
+  function testGetNodeByInvalidArray()
+  {
+    $this->assertNull($this->imp->getNode(array('identifier' => 'node_1')));
+  }
+
+  function testGetNodeByArrayWithId()
   {
     $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node = $this->imp->getNode(array('id' => $node_1));
+    $this->assertEqual($node['id'], $node_1);
+    $this->assertEqual($node['identifier'], 'node_1');
+  }
 
-    $node = array('identifier' => 'node_1');
-    $new_node = $this->imp->getNode($node);
-    $this->assertEqual($new_node, $node);
+  function testGetNodeByInvalidObject()
+  {
+    $obj = new lmbSet();
+    $this->assertNull($this->imp->getNode($obj));
+  }
+
+  function testGetNodeByObjectWithId()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node = $this->imp->getNode(new lmbSet(array('id' => $node_1)));
+    $this->assertEqual($node['id'], $node_1);
+    $this->assertEqual($node['identifier'], 'node_1');
   }
 
   function testGetNodeByStringCallsGetNodeByPath()
@@ -260,7 +300,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testGetPathToNodeFailed()
   {
-    $this->assertNull($this->imp->getPathToNode(1000));
+    try
+    {
+      $this->assertNull($this->imp->getPathToNode(1000));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testGetPathToRootNode()
@@ -285,7 +330,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testGetParentsFailed()
   {
-    $this->assertNull($this->imp->getParents(1000));
+    try
+    {
+      $this->assertNull($this->imp->getParents(1000));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testGetRootParents()
@@ -317,7 +367,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testGetSiblingsFailed()
   {
-    $this->assertNull($this->imp->getSiblings(1000));
+    try
+    {
+      $this->assertNull($this->imp->getSiblings(1000));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testGetRootSiblings()
@@ -343,7 +398,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testCountChildrenFailed()
   {
-    $this->assertEqual($this->imp->countChildren(1000), 0);
+    try
+    {
+      $this->assertEqual($this->imp->countChildren(1000), 0);
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testCountRootChildren()
@@ -397,7 +457,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testCountAllChildrenFailed()
   {
-    $this->assertEqual($this->imp->countChildrenAll(1000), 0);
+    try
+    {
+      $this->imp->countChildrenAll(1000);
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testCountAllRootChildren()
@@ -418,7 +483,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testGetChildrenFailed()
   {
-    $this->assertNull($this->imp->getChildren(1000));
+    try
+    {
+      $this->assertNull($this->imp->getChildren(1000));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testGetRootChildren()
@@ -526,7 +596,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testDeleteNodeFailed()
   {
-    $this->assertFalse($this->imp->deleteNode(100000));
+    try
+    {
+      $this->assertFalse($this->imp->deleteNode(100000));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testDeleteNode()
@@ -544,13 +619,23 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
   function testMoveNodeFailed()
   {
-    $this->assertFalse($this->imp->moveNode(100, 1000));
+    try
+    {
+      $this->assertFalse($this->imp->moveNode(100, 1000));
+      $this->assertTrue(false);
+    }
+    catch(lmbInvalidNodeTreeException $e){}
   }
 
   function testMoveRootNodeOnItselfFailed()
   {
     $root_id = $this->imp->initTree();
-    $this->assertFalse($this->imp->moveNode($root_id, $root_id));
+    try
+    {
+      $this->assertFalse($this->imp->moveNode($root_id, $root_id));
+      $this->assertTrue(false);
+    }
+    catch(lmbTreeException $e){}
   }
 
   function testMoveRootNodeFailed()

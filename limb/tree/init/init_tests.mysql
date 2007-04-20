@@ -2,7 +2,6 @@
 DROP TABLE IF EXISTS `test_materialized_path_tree`;
 CREATE TABLE `test_materialized_path_tree` (
   `id` int(11) NOT NULL auto_increment,
-  `root_id` int(11) NOT NULL default '0',
   `parent_id` int(11) NOT NULL default '0',
   `level` int(11) NOT NULL default '0',
   `identifier` varchar(128) NOT NULL default '',
@@ -10,7 +9,6 @@ CREATE TABLE `test_materialized_path_tree` (
   `children` int(11) NOT NULL default '0',
   `priority` int(11) default NULL,
   PRIMARY KEY  (`id`),
-  KEY `root_id` (`root_id`),
   KEY `level` (`level`),
   KEY `parent_id` (`parent_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
