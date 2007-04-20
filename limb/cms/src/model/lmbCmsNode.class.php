@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5710 2007-04-19 22:10:58Z pachanga $
+ * @version    $Id: lmbCmsNode.class.php 5725 2007-04-20 11:21:43Z pachanga $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -67,16 +67,20 @@ class lmbCmsNode extends lmbActiveRecord
 
   protected function _insertDbRecord($values)
   {
-    if($this->getParent() && $parent_id = $this->getParent()->id)
+    if($this->getParent() && $parent_id = $this->getParent()->getId())
       return $this->tree->createNode($parent_id, $values);
     else
-      throw lmbException('FIX ME!!!');
-      //return $this->tree->createNode($values);
+    {
+      if(!$root_id = $this->tree->getRootNode())
+        $root_id = $this->tree->initTree();
+
+      return $this->tree->createNode($root_id, $values);
+    }
   }
 
   protected function _updateDbRecord($values)
   {
-    return $this->tree->updateNode($this->id, $values);
+    return $this->tree->updateNode($this->getId(), $values);
   }
 
   protected function _onBeforeDestroy()
@@ -90,14 +94,14 @@ class lmbCmsNode extends lmbActiveRecord
 
   protected function _deleteDbRecord()
   {
-    $this->tree->deleteNode($this->id);
+    $this->tree->deleteNode($this->getId());
   }
 
   static function findByPath($class_name, $path)
   {
     $object = new $class_name();
     if($object->loadByPath($path))
-      return lmbActiveRecord :: findById('lmbCmsNode', $object->id);
+      return lmbActiveRecord :: findById('lmbCmsNode', $object->getId());
   }
 
   function loadByPath($path)
@@ -144,15 +148,15 @@ class lmbCmsNode extends lmbActiveRecord
       return $this->url_path;
 
     if(!($parent_path = $this->tree->getPathToNode($this->parent_id)))
-      return '/' . $this->identifier;
+      return '/' . $this->getIdentifier();
 
-    $this->url_path = rtrim($parent_path, '/') . '/' . $this->identifier;
+    $this->url_path = rtrim($parent_path, '/') . '/' . $this->getIdentifier();
     return $this->url_path;
   }
 
   function getParents()
   {
-    return $this->decorateRecordSet($this->tree->getParents($this->id));
+    return $this->decorateRecordSet($this->tree->getParents($this->getId()));
   }
 
   function getRoots()

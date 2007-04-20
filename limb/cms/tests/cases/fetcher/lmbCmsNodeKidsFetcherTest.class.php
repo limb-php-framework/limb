@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeKidsFetcherTest.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsNodeKidsFetcherTest.class.php 5725 2007-04-20 11:21:43Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/fetcher/lmbCmsNodeKidsFetcher.class.php');
@@ -16,7 +16,7 @@ class lmbCmsNodeKidsFetcherTest extends lmbCmsTestCase
   function _cleanUp()
   {
     $this->db->delete('class_name');
-    $this->db->delete('node');
+    $this->tree->deleteAll();
   }
 
   function testFetchByParentId()

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsTestCase.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsTestCase.class.php 5725 2007-04-20 11:21:43Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
@@ -17,12 +17,14 @@ class lmbCmsTestCase extends UnitTestCase
   protected $db;
   protected $toolkit;
   protected $request;
+  protected $tree;
 
   function setUp()
   {
     $this->toolkit = lmbToolkit :: save();
     $this->request = $this->toolkit->getRequest();
     $this->conn = $this->toolkit->getDefaultDbConnection();
+    $this->tree = $this->toolkit->getCmsTree();
     $this->db = new lmbSimpleDb($this->conn);
 
     $this->_cleanUp();

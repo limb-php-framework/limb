@@ -15,15 +15,18 @@ class lmbCmsNodeBasedRequestDispatcherTest extends UnitTestCase
 {
   protected $request;
   protected $toolkit;
+  protected $tree;
 
   function setUp()
   {
     $this->toolkit = lmbToolkit :: save();
     $this->request = $this->toolkit->getRequest();
+    $this->tree = $this->toolkit->getCmsTree();
   }
 
   function tearDown()
   {
+    $this->tree->deleteAll();
     lmbToolkit :: restore();
   }
 

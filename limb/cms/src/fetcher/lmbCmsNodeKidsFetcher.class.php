@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeKidsFetcher.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsNodeKidsFetcher.class.php 5725 2007-04-20 11:21:43Z pachanga $
  * @package    cms
  */
 
@@ -18,7 +18,7 @@ lmb_require('limb/cms/src/model/lmbCmsClassName.class.php');
 class lmbCmsNodeKidsFetcher extends lmbFetcher
 {
   protected $controller_name;
-  protected $parent_id = 0;
+  protected $parent_id = null;
   protected $path;
 
   function setController($controller_name)
@@ -41,13 +41,17 @@ class lmbCmsNodeKidsFetcher extends lmbFetcher
   {
     $toolkit = lmbToolkit :: instance();
 
-    if($this->path && !$this->parent_id)
+    if($this->path && $this->parent_id === null)
     {
-
       if($node = lmbCmsNode :: findByPath('lmbCmsNode', $this->path))
         $this->parent_id = $node->id;
     }
 
+    if($this->parent_id === null)
+    {
+      $tree = $toolkit->getCmsTree();
+      $this->parent_id = $tree->getRootNode()->get('id');
+    }
 
     $criteria = new lmbSQLRawCriteria("parent_id = " . (int)$this->parent_id);
     if($this->controller_name)

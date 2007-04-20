@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeTest.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsNodeTest.class.php 5725 2007-04-20 11:21:43Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
@@ -26,11 +26,13 @@ class lmbTestingNodeChild extends lmbCmsNode{}
 class lmbCmsNodeTest extends UnitTestCase
 {
   protected $db;
+  protected $tree;
 
   function setUp()
   {
     $toolkit = lmbToolkit :: instance();
     $this->db = new lmbSimpleDb($toolkit->getDefaultDbConnection());
+    $this->tree = $toolkit->getCmsTree();
 
     $this->_cleanUp();
   }
@@ -42,13 +44,15 @@ class lmbCmsNodeTest extends UnitTestCase
 
   function _cleanUp()
   {
-    $this->db->delete('node');
+    $this->tree->deleteAll();
     $this->db->delete('class_name');
     $this->db->delete('testing_node_object');
   }
 
-  function testSaveLoad()
+  function testSavingNewNodeInEmptyTreeCreatesTreeRoot()
   {
+    $this->assertNull($this->tree->getRootNode());
+
     $node = new lmbCmsNode();
     $node->setTitle($title = 'Some title');
     $node->setIdentifier($identifier = 'my_node');
@@ -57,9 +61,9 @@ class lmbCmsNodeTest extends UnitTestCase
 
     $node2 = lmbActiveRecord :: findById('lmbCmsNode', $node->getId());
     $this->assertEqual($node2->title, $title);
-    $this->assertEqual($node2->getIdentifier(), $identifier);
-    $this->assertEqual($node2->root_id, $node->getId());
-    $this->assertEqual($node2->parent_id, 0);
+    $this->assertEqual($node2->identifier, $identifier);
+    $this->assertEqual($node2->id, $node->getId());
+    $this->assertEqual($node2->parent_id, $this->tree->getRootNode()->get('id'));
     $this->assertEqual($node2->children, 0);
   }
 
@@ -96,13 +100,13 @@ class lmbCmsNodeTest extends UnitTestCase
     $node1 = $this->_createNode('root', $parent_node = null);
     $node2 = $this->_createNode('child', $node1);
 
-    $this->assertEqual($this->db->count('node'), 2);
+    $this->assertEqual($this->tree->countChildrenAll('/'), 2);
 
     $node3 = lmbActiveRecord :: findById('lmbCmsNode', $node1->getId());
 
     $node3->destroy();
 
-    $this->assertEqual($this->db->count('node'), 0);
+    $this->assertEqual($this->tree->countChildrenAll('/'), 0);
   }
 
   function testGetChildren()
