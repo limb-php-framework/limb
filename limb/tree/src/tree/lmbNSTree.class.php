@@ -417,6 +417,9 @@ class lmbNSTree implements lmbTree
     
     if(isset($values[$this->_identifier]))
     {
+      if ($node[$this->_left]==1 && $values[$this->_identifier])
+        throw new lmbConsistencyTreeException('Root node is forbidden to have an identifier');
+        
       if($node[$this->_identifier] != $values[$this->_identifier])
         $this->_ensureUniqueSiblingIdentifier($values[$this->_identifier], $this->getParent($node));
     }
@@ -427,7 +430,7 @@ class lmbNSTree implements lmbTree
     if(!$values)
       return false;
 
-    $this->_db_table->updateById($id, $values);
+    $this->_db_table->updateById($node[$this->_id], $values);
 
     return true;
   }
