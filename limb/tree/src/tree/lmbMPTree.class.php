@@ -15,6 +15,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/tree/src/tree/lmbTree.interface.php');
 lmb_require('limb/tree/src/tree/lmbTreeException.class.php');
 lmb_require('limb/tree/src/tree/lmbInvalidNodeTreeException.class.php');
+lmb_require('limb/tree/src/tree/lmbConsistencyTreeException.class.php');
 
 class lmbMPTree implements lmbTree
 {
@@ -351,14 +352,20 @@ class lmbMPTree implements lmbTree
       return 0;
   }
 
-  function isNode($id)
+  function isNode($node)
   {
-    return ($this->getNode($id) !== null);
+    return ($this->getNode($node) !== null);
   }
 
   function updateNode($node, $values, $internal = false)
   {
     $node = $this->_ensureNode($node);
+
+    if(isset($values['identifier']))
+    {
+      if($node['identifier'] != $values['identifier'])
+        $this->_ensureUniqueSiblingIdentifier($values['identifier'], $node['parent_id']);
+    }
 
     if($internal === false)
       $values = $this->_processUserValues($values);
@@ -434,6 +441,20 @@ class lmbMPTree implements lmbTree
     if(!$res = $this->getNode($node))
       throw new lmbInvalidNodeTreeException($node);
     return $res;
+  }
+
+  protected function _ensureUniqueSiblingIdentifier($identifier, $parent_id)
+  {
+    $sql = "SELECT identifier FROM {$this->_node_table}
+            WHERE
+            identifier=:identifier: AND
+            parent_id=:parent_id:";
+
+    $stmt = $this->_conn->newStatement($sql);
+    $stmt->setVarChar('identifier', $identifier);
+    $stmt->setInteger('parent_id', $parent_id);
+    if($stmt->getOneRecord())
+      throw new lmbConsistencyTreeException("There's already a sibling with such an identifier '$identifier'");
   }
 
   function createNode($node, $values)

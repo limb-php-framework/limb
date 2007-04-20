@@ -10,6 +10,9 @@
  * @package    tree
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
+lmb_require('limb/tree/src/tree/lmbTreeException.class.php');
+lmb_require('limb/tree/src/tree/lmbInvalidNodeTreeException.class.php');
+lmb_require('limb/tree/src/tree/lmbConsistencyTreeException.class.php');
 
 abstract class lmbTreeTestBase extends UnitTestCase
 {
@@ -202,6 +205,20 @@ abstract class lmbTreeTestBase extends UnitTestCase
       $this->assertTrue(false);
     }
     catch(lmbInvalidNodeTreeException $e){}
+  }
+
+  function testUpdateNodeFailedWithDuplicateIdentifier()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+
+    try
+    {
+      $this->imp->updateNode($node_1, array('identifier' => 'node_2'));
+      $this->assertTrue(false);
+    }
+    catch(lmbConsistencyTreeException $e){}
   }
 
   function testGetNodeByInvalidArray()
