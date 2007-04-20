@@ -681,6 +681,19 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($this->imp->countChildrenAll('/'), 2);
   }
 
+  function testDeleteAll()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+
+    $this->imp->deleteAll();
+    $this->assertNull($this->imp->getRootNode());
+    $this->assertNull($this->imp->getNode($root_id));
+    $this->assertNull($this->imp->getNode($node_1));
+    $this->assertNull($this->imp->getNode($node_2));
+  }
+
   function testMoveNodeFailed()
   {
     try

@@ -501,6 +501,12 @@ class lmbMPTree implements lmbTree
     $stmt->execute();
   }
 
+  function deleteAll()
+  {
+    $stmt = $this->_conn->newStatement("DELETE FROM {$this->_node_table}");
+    $stmt->execute();
+  }
+
   function moveNode($source_node, $target_node)
   {
     if($source_node == $target_node)

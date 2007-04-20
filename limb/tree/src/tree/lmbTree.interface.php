@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTree.interface.php 5694 2007-04-19 15:19:07Z pachanga $
+ * @version    $Id: lmbTree.interface.php 5723 2007-04-20 10:58:23Z pachanga $
  * @package    tree
  */
 
@@ -25,6 +25,7 @@ interface lmbTree
   function countChildrenAll($node);
   function createNode($parent_node, $values);
   function deleteNode($node);
+  function deleteAll();
   function updateNode($node, $values, $internal = false);
   function moveNode($source_node, $target_node);
   function getNodesByIds($ids_array);
