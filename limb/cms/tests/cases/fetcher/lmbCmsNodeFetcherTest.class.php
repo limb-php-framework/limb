@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeFetcherTest.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsNodeFetcherTest.class.php 5729 2007-04-20 12:32:19Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/fetcher/lmbCmsNodeFetcher.class.php');
@@ -17,6 +17,18 @@ class lmbCmsNodeFetcherTest extends lmbCmsTestCase
   {
     $this->db->delete('class_name');
     $this->db->delete('node');
+  }
+
+  function testFetchRootNodeIfIdNotSpecified()
+  {
+    $root = $this->_createNode('root');
+
+    $fetcher = new lmbCmsNodeFetcher();
+    $nodes = $fetcher->getDataset();
+    $this->assertEqual($nodes->count(), 1);
+    $nodes->rewind();
+    $node = $nodes->current();
+    $this->assertEqual($node->getParentId(), 0);//root
   }
 
   function testFetchByNodeId()

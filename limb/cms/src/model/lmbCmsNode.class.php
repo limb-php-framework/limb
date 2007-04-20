@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5725 2007-04-20 11:21:43Z pachanga $
+ * @version    $Id: lmbCmsNode.class.php 5729 2007-04-20 12:32:19Z pachanga $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/tree/src/tree/lmbMaterializedPathTree.class.php');
 lmb_require('limb/cms/src/model/lmbCmsClassName.class.php');
-lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
+lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
 
 class lmbCmsNode extends lmbActiveRecord
 {
@@ -71,10 +71,12 @@ class lmbCmsNode extends lmbActiveRecord
       return $this->tree->createNode($parent_id, $values);
     else
     {
-      if(!$root_id = $this->tree->getRootNode())
-        $root_id = $this->tree->initTree();
-
-      return $this->tree->createNode($root_id, $values);
+      if(!$root = $this->tree->getRootNode())
+      {
+        $cms_root = new lmbCmsRootNode();
+        $root = $cms_root->save();
+      }
+      return $this->tree->createNode($root, $values);
     }
   }
 

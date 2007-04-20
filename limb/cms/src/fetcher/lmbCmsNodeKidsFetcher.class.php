@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeKidsFetcher.class.php 5725 2007-04-20 11:21:43Z pachanga $
+ * @version    $Id: lmbCmsNodeKidsFetcher.class.php 5729 2007-04-20 12:32:19Z pachanga $
  * @package    cms
  */
 
@@ -50,7 +50,9 @@ class lmbCmsNodeKidsFetcher extends lmbFetcher
     if($this->parent_id === null)
     {
       $tree = $toolkit->getCmsTree();
-      $this->parent_id = $tree->getRootNode()->get('id');
+      if(!$root = $tree->getRootNode())
+        return array();
+      $this->parent_id = $root->get('id');
     }
 
     $criteria = new lmbSQLRawCriteria("parent_id = " . (int)$this->parent_id);

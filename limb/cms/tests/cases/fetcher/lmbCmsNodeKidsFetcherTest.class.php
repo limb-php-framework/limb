@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeKidsFetcherTest.class.php 5725 2007-04-20 11:21:43Z pachanga $
+ * @version    $Id: lmbCmsNodeKidsFetcherTest.class.php 5729 2007-04-20 12:32:19Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/fetcher/lmbCmsNodeKidsFetcher.class.php');
@@ -17,6 +17,13 @@ class lmbCmsNodeKidsFetcherTest extends lmbCmsTestCase
   {
     $this->db->delete('class_name');
     $this->tree->deleteAll();
+  }
+
+  function testFetchWithEmptyTree()
+  {
+    $fetcher = new lmbCmsNodeKidsFetcher();
+    $kids = $fetcher->getDataset();
+    $this->assertEqual($kids->count(), 0);
   }
 
   function testFetchByParentId()

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeTest.class.php 5725 2007-04-20 11:21:43Z pachanga $
+ * @version    $Id: lmbCmsNodeTest.class.php 5729 2007-04-20 12:32:19Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
@@ -49,7 +49,7 @@ class lmbCmsNodeTest extends UnitTestCase
     $this->db->delete('testing_node_object');
   }
 
-  function testSavingNewNodeInEmptyTreeCreatesTreeRoot()
+  function testSavingNewNodeInEmptyTreeCreatesTreeRootNode()
   {
     $this->assertNull($this->tree->getRootNode());
 
@@ -65,6 +65,11 @@ class lmbCmsNodeTest extends UnitTestCase
     $this->assertEqual($node2->id, $node->getId());
     $this->assertEqual($node2->parent_id, $this->tree->getRootNode()->get('id'));
     $this->assertEqual($node2->children, 0);
+
+    $root_node = $node2->getParent();
+    $this->assertEqual($root_node->identifier, '');
+    $this->assertEqual($root_node->children, 1);
+    $this->assertEqual($root_node->id, $node2->parent_id);
   }
 
   function testLoadByPath()
@@ -160,8 +165,9 @@ class lmbCmsNodeTest extends UnitTestCase
 
     $node1->destroy();
 
-    $nodes = lmbActiveRecord :: find('lmbCmsNode');
-    $this->assertEqual($nodes->count(), 0);
+    $nodes = lmbActiveRecord :: find('lmbCmsNode'); //it's a root node
+    $this->assertEqual($nodes->count(), 1);
+    $this->assertEqual($nodes[0]->getParentId(), 0);//root
 
     $objects = lmbActiveRecord :: find('lmbTestingNodeObject');
     $this->assertEqual($objects->count(), 0);
@@ -179,8 +185,9 @@ class lmbCmsNodeTest extends UnitTestCase
 
     $node1->destroy();
 
-    $nodes = lmbActiveRecord :: find('lmbCmsNode');
-    $this->assertEqual($nodes->count(), 0);
+    $nodes = lmbActiveRecord :: find('lmbCmsNode'); //it's a root node
+    $this->assertEqual($nodes->count(), 1);
+    $this->assertEqual($nodes[0]->getParentId(), 0);//root
 
     $objects = lmbActiveRecord :: find('lmbTestingNodeObject');
     $this->assertEqual($objects->count(), 0);
@@ -195,8 +202,9 @@ class lmbCmsNodeTest extends UnitTestCase
     $object2 = lmbActiveRecord :: findById('lmbTestingNodeObject', $object1->id);
     $object2->destroy();
 
-    $nodes = lmbActiveRecord :: find('lmbCmsNode');
-    $this->assertEqual($nodes->count(), 0);
+    $nodes = lmbActiveRecord :: find('lmbCmsNode'); //it's a root node
+    $this->assertEqual($nodes->count(), 1);
+    $this->assertEqual($nodes[0]->getParentId(), 0);
   }
 
   function testDestroyNodeUsingTreeAlgorithm()
@@ -222,7 +230,8 @@ class lmbCmsNodeTest extends UnitTestCase
     $this->assertEqual($node1_2->children, 0);
 
     $nodes = lmbActiveRecord :: find('lmbCmsNode');
-    $this->assertEqual($nodes->count(), 1);
+    $this->assertEqual($nodes[0]->getParentId(), 0);//root
+    $this->assertEqual($nodes[1]->getId(), $node1->getId());
 
     $objects = lmbActiveRecord :: find('lmbTestingNodeObject');
     $this->assertEqual($objects->count(), 1);

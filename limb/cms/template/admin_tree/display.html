@@ -6,9 +6,9 @@
 
 <core:datasource id='node'>
 
-You are here: <route_url params='controller:admin_tree'>Site tree</route_url> &gt;&gt;
+You are here: <route_url params='controller:admin_tree'>Site tree</route_url>&gt;&gt;
 <list:list from='parents'>
-<list:item><route_url params='id:{$id}'>{$title}</route_url> &gt;&gt; </list:item>
+<list:item><core:optional for='identifier'><route_url params='id:{$id}'>{$title}</route_url> &gt;&gt;</core:optional></list:item>
 </list:list>
 <b>{$title}</b><br/>
 
