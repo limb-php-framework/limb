@@ -70,6 +70,28 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($node['id'], $id);
   }
 
+  function testNodeContainsParentId()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+
+    $node = $this->imp->getNode($node_1);
+    $this->assertEqual($node['id'], $node_1);
+    $this->assertEqual($node['parent_id'], $root_id);
+  }
+
+  function testNodeContainsLevel()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+
+    $node = $this->imp->getNode($root_id);
+    $this->assertEqual($node['level'], 0);
+
+    $node = $this->imp->getNode($node_1);
+    $this->assertEqual($node['level'], 1);
+  }
+
   function testGetNodeByNode()
   {
     $id = $this->imp->initTree();
@@ -704,7 +726,8 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($arr[1]['id'], $node_2);
     $this->assertEqual($arr[2]['id'], $node_1_1);
     $this->assertEqual($arr[3]['id'], $node_1_1_1);
-    $this->assertEqual($this->imp->getNode($node_1_1_1)->export(), $this->imp->getNodeByPath('/node_2/node_1_1/node_1_1_1/')->export());
+    $this->assertEqual($this->imp->getNode($node_1_1_1)->export(),
+                       $this->imp->getNodeByPath('/node_2/node_1_1/node_1_1_1/')->export());
   }
 }
 ?>
