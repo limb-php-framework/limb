@@ -787,5 +787,42 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($this->imp->getNode($node_1_1_1)->export(),
                        $this->imp->getNodeByPath('/node_2/node_1_1/node_1_1_1/')->export());
   }
+  
+  function testMoveNodeUpwardByPath()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+    $node_1_1_1 = $this->imp->createNode($node_1_1, array('identifier'=>'node_1_1_1'));
+
+    $this->imp->moveNode($node_1_1_1, $node_1);
+    $this->assertEqual($this->imp->getNode($node_1_1_1)->export(),
+                       $this->imp->getNodeByPath('/node_1/node_1_1_1/')->export());
+  }
+  
+  function testMoveNodeFromAnotherBrunchUp()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
+    $node_2 = $this->imp->createNode( $root_id, array('identifier' => 'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier' => 'node_1_1'));
+
+    $this->imp->moveNode($node_2, $node_1);
+    $this->assertEqual($this->imp->getNode($node_2)->export(),
+                       $this->imp->getNodeByPath('/node_1/node_2/')->export());
+  }
+  
+  function testMoveNodeFromAnotherBrunchDown()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier' => 'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier' => 'node_1_1'));
+
+    $this->imp->moveNode($node_1, $node_2);
+    $this->assertEqual($this->imp->getNode($node_1_1)->export(),
+                       $this->imp->getNodeByPath('/node_2/node_1/node_1_1/')->export());
+  }
 }
 ?>

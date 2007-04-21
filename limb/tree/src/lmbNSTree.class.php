@@ -137,7 +137,7 @@ class lmbNSTree implements lmbTree
             FROM  {$this->_node_table}
             WHERE {$this->_left} < {$child[$this->_left]}
             AND {$this->_right} >  {$child[$this->_right]}";
-
+    
     $stmt = $this->_conn->newStatement($sql);
 
     return $stmt->getRecordSet();
@@ -306,7 +306,7 @@ class lmbNSTree implements lmbTree
 
     if(!$parents = $this->getParents($node))
       return $path .= $delimeter . $node[$this->_identifier];
-
+    
     foreach($parents as $parent)
       $path .= $delimeter . $parent[$this->_identifier];
 
@@ -462,8 +462,8 @@ class lmbNSTree implements lmbTree
 
     $delta = ($node[$this->_right] - $node[$this->_left])+1;
     $sql = "UPDATE {$this->_node_table}
-            SET {$this->_left}=IF({$this->_left}>{$node[$this->_left]}, {$this->_left}-{$delta}, {$this->_left}),
-                {$this->_right}=IF({$this->_right}>{$node[$this->_left]}, {$this->_right}-{$delta}, {$this->_right})
+            SET {$this->_left}=CASE WHEN {$this->_left}>{$node[$this->_left]} THEN {$this->_left}-{$delta} ELSE {$this->_left} END,
+                {$this->_right}=CASE WHEN {$this->_right}>{$node[$this->_left]} THEN {$this->_right}-{$delta} ELSE {$this->_right} END
             WHERE {$this->_right}>{$node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
@@ -496,28 +496,28 @@ class lmbNSTree implements lmbTree
     if ($stmt->getOneValue())
       throw new lmbTreeConsistencyException("Can not move parent node('$source_node') into child node('$target_node')");
 
-    $parent_id = "{$this->_parent_id} = IF({$this->_id} = {$source_node[$this->_id]}, {$target_node[$this->_id]}, {$this->_parent_id})";
+    $parent_id = "{$this->_parent_id} = CASE WHEN {$this->_id} = {$source_node[$this->_id]} THEN {$target_node[$this->_id]} ELSE {$this->_parent_id} END";
 
     // whether it is being moved upwards along the path
-    if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
+    if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < ($source_node[$this->_level] - 1) )
     {
       $sql = "UPDATE {$this->_node_table} SET
-              {$this->_level}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$this->_level} END,
-              {$this->_right}=CASE WNEN {$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
-              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND ({$source_node[$this->_right]}), {$this->_right}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).",{$this->_right})),
-              {$this->_left}=IF({$this->_left} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
-              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).", {$this->_left}))
+              {$this->_level}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level])." ELSE {$this->_level} END,
+              {$this->_right}=CASE WHEN {$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE
+               CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND ({$source_node[$this->_right]}) THEN {$this->_right}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1)." ELSE {$this->_right} END END,
+              {$this->_left}= CASE WHEN {$this->_left} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE
+               CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_left}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1)." ELSE {$this->_left} END END
               ,{$parent_id}
               WHERE {$this->_left} BETWEEN ".($target_node[$this->_left]+1)." AND ".($target_node[$this->_right]-1);
     }
     elseif($target_node[$this->_left] < $source_node[$this->_left])
     {
-       $sql = "UPDATE {$this->_node_table} SET
-              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).', '.$this->_level."),
-              {$this->_left}=IF($this->_left BETWEEN {$target_node[$this->_right]} AND ".($source_node[$this->_left]-1).", {$this->_left}+".($source_node[$this->_right]-$source_node[$this->_left]+1).",
-              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}-".($source_node[$this->_left]-$target_node[$this->_right]).", {$this->_left})),
-              {$this->_right}=IF({$this->_right} BETWEEN {$target_node[$this->_right]} AND {$source_node[$this->_left]}, {$this->_right}+".($source_node[$this->_right]-$source_node[$this->_left]+1).",
-              IF({$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_right}-".($source_node[$this->_left]-$target_node[$this->_right]).", {$this->_right}))
+      $sql = "UPDATE {$this->_node_table} SET
+              {$this->_level}= CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).' ELSE '.$this->_level." END,
+              {$this->_left}= CASE WHEN {$this->_left} BETWEEN {$target_node[$this->_right]} AND ".($source_node[$this->_left]-1)." THEN {$this->_left}+".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE
+              CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_left}-".($source_node[$this->_left]-$target_node[$this->_right])." ELSE {$this->_left} END END,
+              {$this->_right}= CASE WHEN {$this->_right} BETWEEN {$target_node[$this->_right]} AND {$source_node[$this->_left]} THEN {$this->_right}+".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE
+              CASE WHEN {$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_right}-".($source_node[$this->_left]-$target_node[$this->_right])." ELSE {$this->_right} END END
               ,{$parent_id}
               WHERE {$this->_left} BETWEEN {$target_node[$this->_left]} AND {$source_node[$this->_right]}
               OR {$this->_right} BETWEEN {$target_node[$this->_left]} AND {$source_node[$this->_right]}";
@@ -526,11 +526,11 @@ class lmbNSTree implements lmbTree
     else
     {
        $sql = "UPDATE {$this->_node_table} SET
-              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$this->_level}),
-              {$this->_left}=IF({$this->_left} BETWEEN {$source_node[$this->_right]} AND {$target_node[$this->_right]}, {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
-              IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_left})),
-              {$this->_right}=IF({$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
-              IF({$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_right}+".($target_node[$this->_right]-1-$source_node[$this->_right]).", {$this->_right}))
+              {$this->_level}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level])." ELSE {$this->_level} END,
+              {$this->_left}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_right]} AND {$target_node[$this->_right]} THEN {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE 
+              CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_left}+".($target_node[$this->_right]-1-$source_node[$this->_right])." ELSE {$this->_left} END END,
+              {$this->_right}=CASE WHEN {$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE 
+              CASE WHEN {$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_right}+".($target_node[$this->_right]-1-$source_node[$this->_right])." ELSE {$this->_right} END END
               ,{$parent_id}
               WHERE {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}
               OR {$this->_right} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}";
