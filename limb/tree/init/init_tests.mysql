@@ -21,8 +21,6 @@ CREATE TABLE test_nested_sets_tree (
   `c_right`   INT(11) UNSIGNED NOT NULL,
   `level`   INT(11) UNSIGNED NOT NULL,
   `identifier` varchar(128) NOT NULL,
-  `path`      varchar(255) NOT NULL,
   PRIMARY KEY(id),
-  KEY(`c_left`, `c_right`, `level`),
-  UNIQUE (`path`)
+  KEY(`c_left`, `c_right`, `level`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

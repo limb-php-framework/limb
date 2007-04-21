@@ -41,8 +41,8 @@ class lmbNSTree implements lmbTree
                        $conn = null,
                        $column_map = array('id' => 'id', 'parent_id' => 'parent_id',
                                            'left' => 'c_left', 'right' => 'c_right',
-                                           'level' => 'level', 'identifier' => 'identifier',
-                                           'path' => 'path'))
+                                           'level' => 'level', 'identifier' => 'identifier'
+                                           ))
   {
     $this->_mapColumns($column_map);
 
@@ -64,10 +64,9 @@ class lmbNSTree implements lmbTree
     $this->_right = isset($column_map['right']) ? $column_map['right'] : 'c_right';
     $this->_level = isset($column_map['level']) ? $column_map['level'] : 'level';
     $this->_identifier = isset($column_map['identifier']) ? $column_map['identifier'] : 'identifier';
-    $this->_path = isset($column_map['path']) ? $column_map['path'] : 'path';
 
     $this->_system_columns = array($this->_id, $this->_parent_id, $this->_left,
-                                  $this->_right, $this->_level, $this->_path);
+                                  $this->_right, $this->_level);
   }
 
   function setNodeTable($table_name)
@@ -376,12 +375,11 @@ class lmbNSTree implements lmbTree
     $new_values[$this->_left] = $parent_node[$this->_right];
     $new_values[$this->_right] = $parent_node[$this->_right]+1;
     $new_values[$this->_level] = $parent_node[$this->_level]+1;
-    $new_values[$this->_path] =$parent_node[$this->_path].$new_values[$this->_identifier].'/';
 
     // creating a place for the record being inserted
     $sql = "UPDATE {$this->_node_table}
-            SET {$this->_left}=IF( {$this->_left}>{$parent_node[$this->_right]}, {$this->_left}+2, {$this->_left}),
-                {$this->_right}=IF( {$this->_right}>={$parent_node[$this->_right]},{$this->_right}+2,{$this->_right})
+            SET {$this->_left}= CASE WHEN {$this->_left}>{$parent_node[$this->_right]} THEN {$this->_left}+2 ELSE {$this->_left} END,
+                {$this->_right}=CASE WHEN {$this->_right}>={$parent_node[$this->_right]} THEN {$this->_right}+2 ELSE {$this->_right} END
             WHERE {$this->_right}>={$parent_node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
@@ -400,7 +398,6 @@ class lmbNSTree implements lmbTree
     $values[$this->_right] = 2;
     $values[$this->_level] = 0;
     $values[$this->_identifier] = '';
-    $values[$this->_path] = '/';
 
     $this->_db_table->insert($values);
 
@@ -499,15 +496,14 @@ class lmbNSTree implements lmbTree
     if ($stmt->getOneValue())
       throw new lmbTreeConsistencyException("Can not move parent node('$source_node') into child node('$target_node')");
 
-    $path = $this->_path."=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ,{$this->_path})";
     $parent_id = "{$this->_parent_id} = IF({$this->_id} = {$source_node[$this->_id]}, {$target_node[$this->_id]}, {$this->_parent_id})";
 
     // whether it is being moved upwards along the path
     if($target_node[$this->_left] < $source_node[$this->_left] && $target_node[$this->_right] > $source_node[$this->_right] && $target_node[$this->_level] < $source_node[$this->_level] - 1 )
     {
       $sql = "UPDATE {$this->_node_table} SET
-              {$this->_level}=IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$this->_level}),
-              {$this->_right}=IF({$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
+              {$this->_level}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level]).", {$this->_level} END,
+              {$this->_right}=CASE WNEN {$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND ({$source_node[$this->_right]}), {$this->_right}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).",{$this->_right})),
               {$this->_left}=IF({$this->_left} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1).", {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1).",
               IF({$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]}, {$this->_left}+".((($target_node[$this->_right]-$source_node[$this->_right]-$source_node[$this->_level]+$target_node[$this->_level])/2)*2 + $source_node[$this->_level] - $target_node[$this->_level] - 1).", {$this->_left}))
