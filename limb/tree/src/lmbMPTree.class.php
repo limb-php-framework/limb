@@ -164,7 +164,8 @@ class lmbMPTree implements lmbTree
     {
       $sql = "SELECT " . $this->_getSelectFields() . "
               FROM {$this->_node_table}
-              WHERE {$this->_parent_id} = :parent_id:";
+              WHERE {$this->_parent_id} = :parent_id:
+              ORDER BY {$this->_path}";
 
       $stmt = $this->_conn->newStatement($sql);
       $stmt->set($this->_parent_id, $parent['id']);

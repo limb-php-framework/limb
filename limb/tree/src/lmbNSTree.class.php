@@ -136,7 +136,8 @@ class lmbNSTree implements lmbTree
    $sql =  "SELECT " . $this->_getSelectFields() . "
             FROM  {$this->_node_table}
             WHERE {$this->_left} < {$child[$this->_left]}
-            AND {$this->_right} >  {$child[$this->_right]}";
+            AND {$this->_right} >  {$child[$this->_right]}
+            ORDER BY {$this->_left} ASC";
     
     $stmt = $this->_conn->newStatement($sql);
 
@@ -190,6 +191,7 @@ class lmbNSTree implements lmbTree
             AND {$parent[$this->_right]} > {$this->_right}";
     if($depth!=-1)
       $sql .= " AND {$this->_level} <= ".($parent[$this->_level]+$depth);
+    $sql .= " ORDER BY {$this->_left}";
 
     $stmt = $this->_conn->newStatement($sql);
 
