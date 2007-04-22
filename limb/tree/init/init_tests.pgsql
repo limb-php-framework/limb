@@ -6,7 +6,6 @@ CREATE TABLE test_materialized_path_tree (
   "level" int NOT NULL default '0',
   "identifier" varchar(128) NOT NULL default '',
   "path" varchar(255) NOT NULL default '',
-  "children" int NOT NULL default '0',
   "priority" int default NULL,
   PRIMARY KEY  ("id")
 ) ;

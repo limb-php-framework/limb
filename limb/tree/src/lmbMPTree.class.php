@@ -29,7 +29,6 @@ class lmbMPTree implements lmbTree
   protected $_identifier;
   protected $_level;
   protected $_path;
-  protected $_children;
 
   protected $_db_table;
 
@@ -37,7 +36,7 @@ class lmbMPTree implements lmbTree
                        $conn = null,
                        $column_map = array('id' => 'id', 'parent_id' => 'parent_id',
                                            'level' => 'level', 'identifier' => 'identifier',
-                                           'path' => 'path', 'children' => 'children'))
+                                           'path' => 'path'))
   {
     $this->_mapColumns($column_map);
 
@@ -57,7 +56,6 @@ class lmbMPTree implements lmbTree
     $this->_level = isset($column_map['level']) ? $column_map['level'] : 'level';
     $this->_identifier = isset($column_map['identifier']) ? $column_map['identifier'] : 'identifier';
     $this->_path = isset($column_map['path']) ? $column_map['path'] : 'path';
-    $this->_children = isset($column_map['children']) ? $column_map['children'] : 'children';
 
     $this->_system_columns = array($this->_id, $this->_parent_id, $this->_level, $this->_path);
   }
@@ -457,7 +455,6 @@ class lmbMPTree implements lmbTree
     $new_values[$this->_path] = '/' . $new_values[$this->_id] . '/';
     $new_values[$this->_level] = 0;
     $new_values[$this->_parent_id] = 0;
-    $new_values[$this->_children] = 0;
 
     $this->_db_table->insert($new_values);
 
@@ -502,11 +499,8 @@ class lmbMPTree implements lmbTree
     $new_values[$this->_level] = $parent_node[$this->_level] + 1;
     $new_values[$this->_parent_id] = $parent_id;
     $new_values[$this->_path] = $parent_node[$this->_path] . $new_values[$this->_id] . '/';
-    $new_values[$this->_children] = 0;
 
     $this->_db_table->insert($new_values);
-
-    $this->_db_table->updateById($parent_id, array($this->_children => $parent_node[$this->_children] + 1));
 
     return $new_values[$this->_id];
   }
@@ -520,15 +514,6 @@ class lmbMPTree implements lmbTree
                                         {$this->_path} LIKE :path:");
 
     $stmt->setVarChar('path', $node[$this->_path] . '%');
-    $stmt->execute();
-
-    $stmt = $this->_conn->newStatement("UPDATE {$this->_node_table}
-                                        SET {$this->_children} = {$this->_children} - 1
-                                        WHERE
-                                        {$this->_id} = :id:");
-
-    $stmt->setInteger('id', $node[$this->_parent_id]);
-
     $stmt->execute();
   }
 
@@ -574,22 +559,6 @@ class lmbMPTree implements lmbTree
             WHERE
             {$sub_string} = '{$source_node[$this->_path]}' OR
             {$this->_path} = '{$source_node[$this->_path]}'";
-
-    $stmt = $this->_conn->newStatement($sql);
-    $stmt->execute();
-
-    $sql = "UPDATE {$this->_node_table}
-            SET {$this->_children} = {$this->_children} - 1
-            WHERE
-            {$this->_id} = {$source_node[$this->_parent_id]}";
-
-    $stmt = $this->_conn->newStatement($sql);
-    $stmt->execute();
-
-    $sql = "UPDATE {$this->_node_table}
-            SET {$this->_children} = {$this->_children} + 1
-            WHERE
-            {$this->_id} = {$target_id}";
 
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
