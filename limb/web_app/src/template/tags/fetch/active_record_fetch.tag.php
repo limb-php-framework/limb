@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: active_record_fetch.tag.php 5431 2007-03-29 15:33:42Z serega $
+ * @version    $Id: active_record_fetch.tag.php 5751 2007-04-23 13:57:30Z serega $
  * @package    web_app
  */
 require_once('limb/wact/src/tags/fetch/fetch.tag.php');
 
 /**
-* @tag active_record:FETCH
+* @tag active_record:FETCH,ar:fetch
 * @req_const_attributes class_path
 */
 class lmbActiveRecordFetchTag extends WactFetchTag
