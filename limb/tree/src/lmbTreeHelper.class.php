@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeRsProcessor.class.php 5732 2007-04-20 20:07:28Z pachanga $
+ * @version    $Id: lmbTreeHelper.class.php 5747 2007-04-23 08:50:46Z pachanga $
  * @package    tree
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 
-class lmbTreeRsProcessor
+class lmbTreeHelper
 {
   function sort($rs, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
@@ -69,7 +69,7 @@ class lmbTreeRsProcessor
 
     for($i=0; $i < $count; $i++)
     {
-      lmbTreeRsProcessor :: _doSort($tree_array, $sorted_tree_array, $sort_params, $children[$i][$id_hash], $id_hash, $parent_hash);
+      lmbTreeHelper :: _doSort($tree_array, $sorted_tree_array, $sort_params, $children[$i][$id_hash], $id_hash, $parent_hash);
     }
   }
 }

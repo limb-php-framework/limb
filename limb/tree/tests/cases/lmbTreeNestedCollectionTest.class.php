@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMakerTest.class.php 5732 2007-04-20 20:07:28Z pachanga $
+ * @version    $Id: lmbTreeNestedCollectionTest.class.php 5747 2007-04-23 08:50:46Z pachanga $
  * @package    tree
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/tree/src/dataset/lmbTreeItemsNestingMaker.class.php');
+lmb_require('limb/tree/src/dataset/lmbTreeNestedCollection.class.php');
 
-class lmbTreeItemsNestingMakerTest extends UnitTestCase
+class lmbTreeNestedCollectionTest extends UnitTestCase
 {
   function testMakeNestedOneElementRs()
   {
@@ -25,7 +25,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
       );
 
     $raw = new lmbCollection($raw_tree_array);
-    $nested = new lmbTreeItemsNestingMaker($raw);
+    $nested = new lmbTreeNestedCollection($raw);
     $arr = $this->toArray($nested);
 
     $this->assertEqual($arr, $expected_tree_array);
@@ -55,7 +55,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
       );
 
     $raw = new lmbCollection($raw_tree_array);
-    $nested = new lmbTreeItemsNestingMaker($raw);
+    $nested = new lmbTreeNestedCollection($raw);
     $arr = $this->toArray($nested);
 
     $this->assertEqual($arr, $expected_tree_array);
@@ -100,7 +100,7 @@ class lmbTreeItemsNestingMakerTest extends UnitTestCase
     );
 
     $raw = new lmbCollection($raw_tree_array);
-    $nested = new lmbTreeItemsNestingMaker($raw);
+    $nested = new lmbTreeNestedCollection($raw);
     $arr = $this->toArray($nested);
 
     $this->assertEqual($arr, $expected_tree_array);

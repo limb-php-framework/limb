@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeItemsNestingMaker.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbTreeNestedCollection.class.php 5747 2007-04-23 08:50:46Z pachanga $
  * @package    tree
  */
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 
-class lmbTreeItemsNestingMaker extends lmbCollectionDecorator
+class lmbTreeNestedCollection extends lmbCollectionDecorator
 {
   protected $node_field = 'id';
   protected $parent_field = 'parent_id';
