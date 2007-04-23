@@ -57,7 +57,6 @@ class TestingFetchTagsDatasetFetcher implements WactFetcher
 
   function fetch()
   {
-
     $result = array();
     foreach(self :: $stub_dataset as $key => $value)
     {
@@ -181,7 +180,7 @@ class WactFetchTagTest extends WactTemplateTestCase
     }
     catch(WactException $e)
     {
-      $this->assertWantedPattern('/Non existing expression datasource context/', $e->getMessage());
+      $this->assertWantedPattern('/None existing expression datasource context/', $e->getMessage());
     }
   }
 

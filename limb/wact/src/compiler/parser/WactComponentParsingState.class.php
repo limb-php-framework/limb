@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactComponentParsingState.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactComponentParsingState.class.php 5750 2007-04-23 13:56:35Z serega $
  * @package    wact
  */
 
@@ -44,33 +44,54 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
 
     $lower_attributes = $this->checkAttributes($attrs, $location);
 
-    $WactTagInfo = $this->tag_dictionary->findTagInfo($tag, $lower_attributes, FALSE, $this->tree_builder->getCursor());
+    $tag_info = $this->tag_dictionary->getWactTagInfo($tag);
+    $runtime_tag_info = $this->tag_dictionary->findTagInfo($tag, $lower_attributes, FALSE, $this->tree_builder->getCursor());
 
-    if (is_object($WactTagInfo))
+    if (is_object($runtime_tag_info))
     {
-      if ($WactTagInfo->isEndTagForbidden() && WACT_STRICT_MODE)
+      if ($runtime_tag_info->isEndTagForbidden() && WACT_STRICT_MODE)
       {
         throw new WactException('Closing tag is forbidden for this tag. Use self closing notation',
-                                array('tag' => $WactTagInfo->Tag,
+                                array('tag' => $runtime_tag_info->Tag,
                                       'file' => $location->getFile(),
                                       'line' => $location->getLine()));
       }
 
-      $WactTagInfo->load();
+      $runtime_tag_info->load();
 
       $this->tree_builder->pushExpectedTag($tag, PARSER_TAG_IS_COMPONENT, $location);
 
-      $tag_node = $this->node_builder->buildTagNode($WactTagInfo, $tag, $attrs, FALSE);
+      $tag_node = $this->node_builder->buildTagNode($runtime_tag_info, $tag, $attrs, FALSE);
 
       $result = $this->tree_builder->pushNode($tag_node);
 
-      if (($result == WACT_PARSER_FORBID_PARSING) || $WactTagInfo->isParsingForbidden())
+      if (($result == WACT_PARSER_FORBID_PARSING) || $runtime_tag_info->isParsingForbidden())
         $this->parser->changeToLiteralParsingState($tag);
 
-      // Cleanup for components that have no closing tag in none strict parsint mode
-      if ($WactTagInfo->isEndTagForbidden() && !WACT_STRICT_MODE)
+      // Cleanup for components that have no closing tag in none strict parsing mode
+      if ($runtime_tag_info->isEndTagForbidden() && !WACT_STRICT_MODE)
       {
         $this->tree_builder->popNode(FALSE);
+        $this->tree_builder->popExpectedTag($tag, $location);
+        $this->parser->changeToComponentParsingState();
+      }
+    }
+    elseif($tag_info)
+    {
+      if ($tag_info->isEndTagForbidden() && WACT_STRICT_MODE)
+      {
+        throw new WactException('Closing tag is forbidden for this tag. Use self closing notation',
+                                array('tag' => $tag_info->Tag,
+                                      'file' => $location->getFile(),
+                                      'line' => $location->getLine()));
+      }
+
+      $this->tree_builder->pushExpectedTag($tag, PARSER_TAG_IS_PLAIN, $location);
+      $this->node_builder->addContent('<' . $tag . $this->getAttributeString($attrs) . '>');
+
+      // Cleanup for components that have no closing tag in none strict parsing mode
+      if ($tag_info->isEndTagForbidden() && !WACT_STRICT_MODE)
+      {
         $this->tree_builder->popExpectedTag($tag, $location);
         $this->parser->changeToComponentParsingState();
       }
@@ -89,15 +110,15 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
   */
   function endElement($tag)
   {
-    $WactTagInfo = $this->tag_dictionary->getWactTagInfo($tag);
+    $tag_info = $this->tag_dictionary->getWactTagInfo($tag);
     $location = $this->locator->getCurrentLocation();
 
-    if (is_object($WactTagInfo))
+    if (is_object($tag_info))
     {
-      if ($WactTagInfo->isEndTagForbidden())
+      if ($tag_info->isEndTagForbidden())
       {
         throw new WactException('Closing tag forbidden',
-                                array('tag' => $WactTagInfo->Tag,
+                                array('tag' => $tag_info->Tag,
                                       'file' => $location->getFile(),
                                       'line' => $location->getLine()));
       }
@@ -114,19 +135,19 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
     $location = $this->locator->getCurrentLocation();
     $lower_attributes = $this->checkAttributes($attrs, $location);
 
-    $WactTagInfo = $this->tag_dictionary->findTagInfo($tag, $lower_attributes, TRUE, $this->tree_builder->getCursor());
-    if (is_object($WactTagInfo))
+    $runtime_tag_info = $this->tag_dictionary->findTagInfo($tag, $lower_attributes, TRUE, $this->tree_builder->getCursor());
+    if (is_object($runtime_tag_info))
     {
-      $WactTagInfo->load();
+      $runtime_tag_info->load();
 
-      $tag_node = $this->node_builder->buildTagNode($WactTagInfo, $tag, $attrs, TRUE);
+      $tag_node = $this->node_builder->buildTagNode($runtime_tag_info, $tag, $attrs, TRUE);
       $this->tree_builder->pushNode($tag_node);
 
-      if ($WactTagInfo->isParsingForbidden())
+      if ($runtime_tag_info->isParsingForbidden())
         $this->parser->changeToLiteralParsingState($tag);
 
        // Cleanup for components that have no closing tag
-      if ( $WactTagInfo->isEndTagForbidden())
+      if ( $runtime_tag_info->isEndTagForbidden())
       {
         $this->parser->changeToComponentParsingState();
         $this->tree_builder->popNode(FALSE);

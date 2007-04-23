@@ -75,6 +75,16 @@ abstract class WactBaseIteratorComponent extends WactRuntimeComponent
   {
     $dataset = $this->getDataset();
 
+    if(!is_object($dataset))
+      throw new WactException('Expected a dataset object');
+
+    // process a special case when dataset is not an iterator but some other object
+    if(!method_exists($dataset, 'count'))
+    {
+      $this->_passRecordToBuffer($dataset);
+      return;
+    }
+
     if(is_array($this->order_params) && count($this->order_params) && method_exists($dataset, 'sort'))
       $dataset->sort($this->order_params);
 

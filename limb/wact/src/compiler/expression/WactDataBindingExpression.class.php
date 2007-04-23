@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpression.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactDataBindingExpression.class.php 5750 2007-04-23 13:56:35Z serega $
  * @package    wact
  */
 
@@ -98,7 +98,7 @@ class WactDataBindingExpression
         $context_name = substr($this->processed_expression, 1, $pos - 1);
         $this->datasource_context = $this->datasource_context->findChild($context_name);
         if(!$this->datasource_context)
-          $this->context->raiseCompilerError('Non existing expression datasource context', array('expression' => $this->original_expression));
+          $this->context->raiseCompilerError('None existing expression datasource context', array('expression' => $this->original_expression));
 
         $this->processed_expression = substr($this->processed_expression, $pos+1);
         continue;
