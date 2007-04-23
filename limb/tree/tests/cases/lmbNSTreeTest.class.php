@@ -9,30 +9,24 @@
  * @version    $Id: lmbMaterializedPathTreeTest.class.php 5677 2007-04-18 14:02:43Z alex433 $
  * @package    tree
  */
-lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/tree/src/lmbNSTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
-class NSTreeTestVersion extends lmbNSTree
-{
-  function __construct($node_table)
-  {
-    parent :: __construct($node_table);
-  }
-}
-
 class lmbNSTreeTest extends lmbTreeTestBase
 {
-  protected $_node_table = 'test_nested_sets_tree';
+  protected $node_table = 'test_nested_sets_tree';
 
   function _createTreeImp()
   {
-    return new NSTreeTestVersion($this->_node_table);
+    return new lmbNSTree($this->node_table, $this->conn,
+                                 array('id' => 'id', 'parent_id' => 'p_parent_id',
+                                       'c_left' => 'p_left', 'c_right' => 'p_right',
+                                       'level' => 'p_level', 'identifier' => 'p_identifier'));
   }
 
   function _cleanUp()
   {
-    $this->db->delete($this->_node_table);
+    $this->db->delete($this->node_table);
   }
 
   function testMoveNodeUpDown()
@@ -42,9 +36,9 @@ class lmbNSTreeTest extends lmbTreeTestBase
     $node_2 = $this->imp->createNode($root_id, array('identifier' => 'node_2'));
     $node_1_1 = $this->imp->createNode($node_1, array('identifier' => 'node_1_1'));
     $node_1_1_1 = $this->imp->createNode($node_1_1, array('identifier' => 'node_1_1_1'));
-    
+
     $this->imp->moveNodeUp($node_2);
-    
+
     $moved_node = array(
       'id' => $node_2,
       'parent_id' => $root_id,
@@ -53,11 +47,11 @@ class lmbNSTreeTest extends lmbTreeTestBase
       'level' => 1,
       'identifier' => 'node_2'
     );
-    
+
     $this->assertEqual($this->imp->getNode($node_2)->export(), $moved_node);
-    
+
     $this->imp->moveNodeDown($node_2);
-    
+
     $moved_node = array(
       'id' => $node_2,
       'parent_id' => $root_id,
@@ -66,7 +60,7 @@ class lmbNSTreeTest extends lmbTreeTestBase
       'level' => 1,
       'identifier' => 'node_2'
     );
-    
+
     $this->assertEqual($this->imp->getNode($node_2)->export(), $moved_node);
   }
 }

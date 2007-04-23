@@ -9,18 +9,17 @@
  * @version    $Id: lmbMaterializedPathTreeTest.class.php 5677 2007-04-18 14:02:43Z alex433 $
  * @package    tree
  */
-lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/tree/src/lmbMPTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
 
 class lmbMPTreeTest extends lmbTreeTestBase
 {
-  protected $_node_table = 'test_materialized_path_tree';
+  protected $node_table = 'test_materialized_path_tree';
 
   function _createTreeImp()
   {
-    return new lmbMPTree($this->_node_table, $this->conn,
+    return new lmbMPTree($this->node_table, $this->conn,
                          array('id' => 'id', 'parent_id' => 'p_parent_id',
                                'level' => 'p_level', 'identifier' => 'p_identifier',
                                'path' => 'p_path'));
@@ -28,7 +27,7 @@ class lmbMPTreeTest extends lmbTreeTestBase
 
   function _cleanUp()
   {
-    $this->db->delete($this->_node_table);
+    $this->db->delete($this->node_table);
   }
 
   function _checkProperNesting($nodes, $line='')

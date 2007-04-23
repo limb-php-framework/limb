@@ -19,7 +19,7 @@ lmb_require('limb/tree/src/exception/lmbTreeConsistencyException.class.php');
 
 class lmbMPTree implements lmbTree
 {
-  protected $_conn = null;
+  protected $_conn;
 
   protected $_system_columns = array();
   protected $_column_map;
