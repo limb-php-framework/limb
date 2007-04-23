@@ -34,5 +34,40 @@ class lmbNSTreeTest extends lmbTreeTestBase
   {
     $this->db->delete($this->_node_table);
   }
+
+  function testMoveNodeUpDown()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier' => 'node_1'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier' => 'node_2'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier' => 'node_1_1'));
+    $node_1_1_1 = $this->imp->createNode($node_1_1, array('identifier' => 'node_1_1_1'));
+    
+    $this->imp->moveNodeUp($node_2);
+    
+    $moved_node = array(
+      'id' => $node_2,
+      'parent_id' => $root_id,
+      'c_left' => 2,
+      'c_right' => 3,
+      'level' => 1,
+      'identifier' => 'node_2'
+    );
+    
+    $this->assertEqual($this->imp->getNode($node_2)->export(), $moved_node);
+    
+    $this->imp->moveNodeDown($node_2);
+    
+    $moved_node = array(
+      'id' => $node_2,
+      'parent_id' => $root_id,
+      'c_left' => 8,
+      'c_right' => 9,
+      'level' => 1,
+      'identifier' => 'node_2'
+    );
+    
+    $this->assertEqual($this->imp->getNode($node_2)->export(), $moved_node);
+  }
 }
 ?>
