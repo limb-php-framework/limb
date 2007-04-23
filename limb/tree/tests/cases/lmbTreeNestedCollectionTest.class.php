@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeNestedCollectionTest.class.php 5747 2007-04-23 08:50:46Z pachanga $
+ * @version    $Id: lmbTreeNestedCollectionTest.class.php 5748 2007-04-23 08:54:52Z pachanga $
  * @package    tree
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/tree/src/dataset/lmbTreeNestedCollection.class.php');
+lmb_require('limb/tree/src/lmbTreeNestedCollection.class.php');
 
 class lmbTreeNestedCollectionTest extends UnitTestCase
 {

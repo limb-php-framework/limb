@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeSortedCollection.class.php 5747 2007-04-23 08:50:46Z pachanga $
+ * @version    $Id: lmbTreeSortedCollection.class.php 5748 2007-04-23 08:54:52Z pachanga $
  * @package    tree
  */
 lmb_require('limb/tree/src/lmbTreeHelper.class.php');
