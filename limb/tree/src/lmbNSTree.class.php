@@ -138,7 +138,7 @@ class lmbNSTree implements lmbTree
             WHERE {$this->_left} < {$child[$this->_left]}
             AND {$this->_right} >  {$child[$this->_right]}
             ORDER BY {$this->_left} ASC";
-    
+
     $stmt = $this->_conn->newStatement($sql);
 
     return $stmt->getRecordSet();
@@ -165,7 +165,7 @@ class lmbNSTree implements lmbTree
   {
     $sibling = $this->_ensureNode($node);
 
-    if (!$parent = $this->getParent($sibling[$this->_id]))
+    if(!$parent = $this->getParent($sibling[$this->_id]))
       return new lmbCollection(array($sibling));
 
     return $this->getChildren($parent[$this->_id]);
@@ -242,7 +242,7 @@ class lmbNSTree implements lmbTree
         return null;
     }
 
-    if (!isset($id))
+    if(!isset($id))
       $id = $node;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
@@ -308,7 +308,7 @@ class lmbNSTree implements lmbTree
 
     if(!$parents = $this->getParents($node))
       return $path .= $delimeter . $node[$this->_identifier];
-    
+
     foreach($parents as $parent)
       $path .= $delimeter . $parent[$this->_identifier];
 
@@ -435,7 +435,7 @@ class lmbNSTree implements lmbTree
 
     if(isset($values[$this->_identifier]))
     {
-      if ($node[$this->_left]==1 && $values[$this->_identifier])
+      if($node[$this->_left]==1 && $values[$this->_identifier])
         throw new lmbTreeConsistencyException('Root node is forbidden to have an identifier');
 
       if($node[$this->_identifier] != $values[$this->_identifier])
@@ -479,24 +479,24 @@ class lmbNSTree implements lmbTree
     $stmt->execute();
   }
 
-  function moveNode($source_node, $target_node)
+  function moveNode($source, $target)
   {
-    if($source_node == $target_node)
-      throw new lmbTreeConsistencyException("Can not move node into itself('$source_node')");
+    $source_node = $this->_ensureNode($source);
+    $target_node = $this->_ensureNode($target);
 
-    $source_node = $this->_ensureNode($source_node);
-    $target_node = $this->_ensureNode($target_node);
+    if($source_node[$this->_id] == $target_node[$this->_id])
+      throw new lmbTreeConsistencyException("Can not move node into itself('{$source_node[$this->_id]}')");
 
-    if ($source_node == $this->getRootNode())
+    if($source_node == $this->getRootNode())
       throw new lmbTreeConsistencyException("Can not move root node");
 
-    if ($target_node == $this->getParent($source_node))
-      return false;
+    if($target_node == $this->getParent($source_node))
+      throw new lmbTreeConsistencyException("Can not move parent node('{$source_node[$this->_id]}') into child node('{$target_node[$this->_id]}')");
 
     $sql = "SELECT 1 FROM {$this->_node_table} WHERE {$this->_id} = {$target_node[$this->_id]} AND {$this->_left} > {$source_node[$this->_left]} AND {$this->_right} < {$source_node[$this->_right]}";
     $stmt = $this->_conn->newStatement($sql);
-    if ($stmt->getOneValue())
-      throw new lmbTreeConsistencyException("Can not move parent node('$source_node') into child node('$target_node')");
+    if($stmt->getOneValue())
+      throw new lmbTreeConsistencyException("Can not move parent node('{$source_node[$this->_id]}') into child node('{$target_node[$this->_id]}')");
 
     $parent_id = "{$this->_parent_id} = CASE WHEN {$this->_id} = {$source_node[$this->_id]} THEN {$target_node[$this->_id]} ELSE {$this->_parent_id} END";
 
@@ -529,9 +529,9 @@ class lmbNSTree implements lmbTree
     {
        $sql = "UPDATE {$this->_node_table} SET
               {$this->_level}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN ".$this->_level.sprintf('%+d', -($source_node[$this->_level]-1)+$target_node[$this->_level])." ELSE {$this->_level} END,
-              {$this->_left}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_right]} AND {$target_node[$this->_right]} THEN {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE 
+              {$this->_left}=CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_right]} AND {$target_node[$this->_right]} THEN {$this->_left}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE
               CASE WHEN {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_left}+".($target_node[$this->_right]-1-$source_node[$this->_right])." ELSE {$this->_left} END END,
-              {$this->_right}=CASE WHEN {$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE 
+              {$this->_right}=CASE WHEN {$this->_right} BETWEEN ".($source_node[$this->_right]+1)." AND ".($target_node[$this->_right]-1)." THEN {$this->_right}-".($source_node[$this->_right]-$source_node[$this->_left]+1)." ELSE
               CASE WHEN {$this->_right} BETWEEN {$source_node[$this->_left]} AND {$source_node[$this->_right]} THEN {$this->_right}+".($target_node[$this->_right]-1-$source_node[$this->_right])." ELSE {$this->_right} END END
               ,{$parent_id}
               WHERE {$this->_left} BETWEEN {$source_node[$this->_left]} AND {$target_node[$this->_right]}

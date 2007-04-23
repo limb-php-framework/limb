@@ -523,16 +523,16 @@ class lmbMPTree implements lmbTree
     $stmt->execute();
   }
 
-  function moveNode($source_node, $target_node)
+  function moveNode($source, $target)
   {
-    if($source_node == $target_node)
-      throw new lmbTreeConsistencyException("Can not move node into itself('$source_node')");
+    $source_node = $this->_ensureNode($source);
+    $target_node = $this->_ensureNode($target);
 
-    $source_node = $this->_ensureNode($source_node);
-    $target_node = $this->_ensureNode($target_node);
+    if($source_node[$this->_path] == $target_node[$this->_path])
+      throw new lmbTreeConsistencyException("Can not move node into itself('{$source_node[$this->_id]}')");
 
     if(strstr($target_node[$this->_path], $source_node[$this->_path]) !== false)
-      throw new lmbTreeConsistencyException("Can not parent node('$source_node') into child node('$target_node')");
+      throw new lmbTreeConsistencyException("Can not move parent node('{$source_node[$this->_id]}') into child node('{$target_node[$this->_id]}')");
 
     $id = $source_node[$this->_id];
     $target_id = $target_node[$this->_id];
