@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeTest.class.php 5729 2007-04-20 12:32:19Z pachanga $
+ * @version    $Id: lmbCmsNodeTest.class.php 5752 2007-04-23 14:14:56Z serega $
  * @package    cms
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
@@ -68,7 +68,6 @@ class lmbCmsNodeTest extends UnitTestCase
 
     $root_node = $node2->getParent();
     $this->assertEqual($root_node->identifier, '');
-    $this->assertEqual($root_node->children, 1);
     $this->assertEqual($root_node->id, $node2->parent_id);
   }
 
@@ -222,12 +221,12 @@ class lmbCmsNodeTest extends UnitTestCase
     $node3->save();
 
     $node1_1 = lmbActiveRecord :: findById('lmbCmsNode', $node1->id);
-    $this->assertEqual($node1_1->children, 1);
+    $this->assertEqual($this->tree->countChildren($node1_1), 1);
 
     $node2->destroy();
 
     $node1_2 = lmbActiveRecord :: findById('lmbCmsNode', $node1->id);
-    $this->assertEqual($node1_2->children, 0);
+    $this->assertEqual($this->tree->countChildren($node1_2), 0);
 
     $nodes = lmbActiveRecord :: find('lmbCmsNode');
     $this->assertEqual($nodes[0]->getParentId(), 0);//root

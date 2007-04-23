@@ -1,8 +1,8 @@
 <core:wrap file="_cms/page.html" in="content_zone">
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeFetcher' target='node' first='true' >
-  <fetch:param path='/files' node_id='{$#request.id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNode' find='by_id_or_path' target='node'>
+  <find:params node_id='{$#request.id}' path='/files' />
+</ar:fetch>
 
 <core:datasource id='node'>
 
@@ -10,9 +10,9 @@
 
 <core:include file='_cms/node_breadcrumbs.html'/>
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeKidsFetcher' target='subfolders'>
-  <fetch:param controller='file_folder' parent_id='{$id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNodeKids' find='immediate_children' target='subfolders'>
+  <find:params parent_id='{$id}' controller='file_folder' />
+</ar:fetch>
 
 <h2>Folders list</h2>
 
@@ -48,9 +48,9 @@
 
 </form>
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeKidsFetcher' target='files' navigator='pager'>
-  <fetch:param controller='file_object' parent_id='{$id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNodeKids' find='immediate_children' target='files' navigator='pager'>
+  <find:params parent_id='{$id}' controller='file_object' />
+</ar:fetch>
 
 <core:include file='_cms/pager.html'/>
 

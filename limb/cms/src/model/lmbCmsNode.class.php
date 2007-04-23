@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5732 2007-04-20 20:07:28Z pachanga $
+ * @version    $Id: lmbCmsNode.class.php 5752 2007-04-23 14:14:56Z serega $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -98,13 +98,6 @@ class lmbCmsNode extends lmbActiveRecord
     $this->tree->deleteNode($this->getId());
   }
 
-  static function findByPath($class_name, $path)
-  {
-    $object = new $class_name();
-    if($object->loadByPath($path))
-      return lmbActiveRecord :: findById('lmbCmsNode', $object->getId());
-  }
-
   function loadByPath($path)
   {
     if(!$node = $this->tree->getNodeByPath($path))
@@ -155,6 +148,70 @@ class lmbCmsNode extends lmbActiveRecord
     return $this->url_path;
   }
 
+  static function findByPath($path)
+  {
+    $tree = lmbToolkit :: instance()->getCmsTree();
+    $node = $tree->getNodeByPath($path);
+    if($node)
+      return lmbActiveRecord :: findById('lmbCmsNode', $node['id']);
+  }
+
+  static function findById($node_id)
+  {
+    $tree = lmbToolkit :: instance()->getCmsTree();
+    if($node_id && $node = $tree->getNode($node_id))
+      return lmbActiveRecord :: findById('lmbCmsNode', $node['id']);
+  }
+
+  static function findByIdOrPath($node_id, $path)
+  {
+    if($node_ar = lmbCmsNode :: findById($node_id))
+     return $node_ar;
+
+    $tree = lmbToolkit :: instance()->getCmsTree();
+
+    if($node = $tree->getNodeByPath($path))
+      return lmbActiveRecord :: findById('lmbCmsNode', $node['id']);
+  }
+
+  static function findRequested()
+  {
+    if($path = lmbToolkit :: instance()->getRequest()->getUriPath())
+      return lmbCmsNode :: findByPath($path);
+  }
+
+  static function findChildren($node_id, $depth = 1)
+  {
+    if($node_id)
+    {
+      $tree = lmbToolkit :: instance()->getCmsTree();
+      return lmbActiveRecord :: decorateRecordSet($tree->getChildren($node_id, $depth), 'lmbCmsNode');
+    }
+  }
+
+  static function findChildrenByPath($path, $depth = 1)
+  {
+    $tree = lmbToolkit :: instance()->getCmsTree();
+    if($path && $parent = $tree->getNodeByPath($path))
+      return lmbActiveRecord :: decorateRecordSet($tree->getChildren($parent['id'], $depth), 'lmbCmsNode');
+  }
+
+  static function findImmediateChildren($parent_id, $controller = '')
+  {
+    $criteria = new lmbSQLRawCriteria("parent_id = " . (int)$this->parent_id);
+    if($controller)
+    {
+      $controller_id = lmbCmsClassName :: generateIdFor($controller);
+      $criteria->addAnd(new lmbSQLRawCriteria('controller_id ='. $controller_id));
+    }
+    return lmbActiveRecord :: find('lmbCmsNode', array('criteria' => $criteria));
+  }
+
+  function getChildren($depth = 1)
+  {
+    return lmbActiveRecord :: decorateRecordSet($this->tree->getChildren($this->getId(), $depth), 'lmbCmsNode');
+  }
+
   function getParents()
   {
     return $this->decorateRecordSet($this->tree->getParents($this->getId()));
@@ -172,7 +229,7 @@ class lmbCmsNode extends lmbActiveRecord
 
   function generateIdentifier($parent_id)
   {
-    $identifier = lmbToolkit :: instance()->getCmsTree()->getMaxChildIdentifier($parent_id);
+    $identifier = lmbCmsNode :: getMaxChildIdentifier($parent_id);
 
     if($identifier === false)
       return 1;
@@ -184,6 +241,26 @@ class lmbCmsNode extends lmbActiveRecord
 
     return $new_identifier;
   }
+
+  static function getMaxChildIdentifier($node)
+  {
+    if(!$parent = lmbCmsNode :: findById($node))
+      return false;
+
+    $children = lmbCmsNode :: findChildren($parent['id']);
+    $identifiers = array();
+    foreach($children as $child)
+      $identifiers[] = $child['identifier'];
+
+    if(count($identifiers))
+    {
+      uasort($identifiers, 'strnatcmp');
+      return end($identifiers);
+    }
+    else
+      return 0;
+  }
+
 }
 
 ?>

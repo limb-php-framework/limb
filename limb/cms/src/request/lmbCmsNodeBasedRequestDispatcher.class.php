@@ -29,7 +29,7 @@ class lmbCmsNodeBasedRequestDispatcher implements lmbRequestDispatcher
   {
     $result = array();
 
-    if(!$node = lmbCmsNode :: findByPath('lmbCmsNode', $request->getUriPath()))
+    if(!$node = lmbCmsNode :: findByPath($request->getUriPath()))
        return $result;
 
     $result['controller'] = $node->getControllerName();

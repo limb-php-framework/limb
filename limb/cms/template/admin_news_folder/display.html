@@ -1,6 +1,6 @@
 <core:wrap file="_cms/page.html" in="content_zone">
 
-<fetch one using='limb/cms/src/fetcher/lmbCmsNodeFetcher' target='node' />
+<ar:fetch using='limb/cms/src/model/lmbCmsNode' find='requested'/>
 
 <core:datasource id='node'>
 <h1>News folder "{$title}"</h1>
@@ -31,9 +31,9 @@
 </span>
 </div>
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeKidsFetcher' order='priority=ASC' target='folders'>
-  <fetch:param controller='news_folder' parent_id='{$id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNodeKids' find='immediate_children' target='folders' order='priority=ASC'>
+  <find:params parent_id='{$id}' controller='news_folder' />
+</ar:fetch>
 
 <form name='list_form' method='post'>
 <list:list id='folders'>
@@ -86,9 +86,9 @@
 </span>
 </div>
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeKidsFetcher' order='priority=ASC' target='items'>
-  <fetch:param controller='news_item' parent_id='{$id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNodeKids' find='immediate_children' target='items'>
+  <find:params parent_id='{$id}' controller='news_item' />
+</ar:fetch>
 
 <form name='list_form' method='post'>
 <list:list id='items'>

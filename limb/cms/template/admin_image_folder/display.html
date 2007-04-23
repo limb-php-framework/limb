@@ -10,9 +10,10 @@
 
 <core:include file='_cms/node_breadcrumbs.html'/>
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeKidsFetcher' target='subfolders'>
-  <fetch:param controller='image_folder' parent_id='{$id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNodeKids' find='immediate_children' target='subfolders'>
+  <find:params parent_id='{$id}' controller='image_folder' />
+</ar:fetch>
+
 
 <h2>Folders list</h2>
 
@@ -50,9 +51,9 @@
 
 </form>
 
-<fetch using='limb/cms/src/fetcher/lmbCmsNodeKidsFetcher' target='files' navigator='pager'>
-  <fetch:param controller='image' parent_id='{$id}' />
-</fetch>
+<ar:fetch using='limb/cms/src/model/lmbCmsNodeKids' find='immediate_children' target='files' navigator='pager'>
+  <find:params parent_id='{$id}' controller='image' />
+</ar:fetch>
 
 <h2>Images list</h2>
 
