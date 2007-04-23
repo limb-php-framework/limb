@@ -13,13 +13,6 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/tree/src/lmbMPTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');
 
-class MPTreeTestVersion extends lmbMPTree
-{
-  function __construct($node_table)
-  {
-    parent :: __construct($node_table);
-  }
-}
 
 class lmbMPTreeTest extends lmbTreeTestBase
 {
@@ -27,7 +20,10 @@ class lmbMPTreeTest extends lmbTreeTestBase
 
   function _createTreeImp()
   {
-    return new MPTreeTestVersion($this->_node_table);
+    return new lmbMPTree($this->_node_table, $this->conn,
+                         array('id' => 'id', 'parent_id' => 'p_parent_id',
+                               'level' => 'p_level', 'identifier' => 'p_identifier',
+                               'path' => 'p_path'));
   }
 
   function _cleanUp()

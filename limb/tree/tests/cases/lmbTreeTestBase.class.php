@@ -16,8 +16,9 @@ lmb_require('limb/tree/src/exception/lmbTreeConsistencyException.class.php');
 
 abstract class lmbTreeTestBase extends UnitTestCase
 {
-  var $db = null;
-  var $driver = null;
+  protected $db;
+  protected $conn;
+  protected $imp;
 
   abstract function _createTreeImp();
   abstract function _cleanUp();
@@ -25,8 +26,8 @@ abstract class lmbTreeTestBase extends UnitTestCase
   function setUp()
   {
     $toolkit = lmbToolkit :: instance();
-    $this->db = new lmbSimpleDb($toolkit->getDefaultDbConnection());
-
+    $this->conn = $toolkit->getDefaultDbConnection();
+    $this->db = new lmbSimpleDb($this->conn);
     $this->imp = $this->_createTreeImp();
 
     $this->_cleanUp();
@@ -787,7 +788,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($this->imp->getNode($node_1_1_1)->export(),
                        $this->imp->getNodeByPath('/node_2/node_1_1/node_1_1_1/')->export());
   }
-  
+
   function testMoveNodeUpwardByPath()
   {
     $root_id = $this->imp->initTree();
@@ -800,7 +801,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($this->imp->getNode($node_1_1_1)->export(),
                        $this->imp->getNodeByPath('/node_1/node_1_1_1/')->export());
   }
-  
+
   function testMoveNodeFromAnotherBrunchUp()
   {
     $root_id = $this->imp->initTree();
@@ -812,7 +813,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($this->imp->getNode($node_2)->export(),
                        $this->imp->getNodeByPath('/node_1/node_2/')->export());
   }
-  
+
   function testMoveNodeFromAnotherBrunchDown()
   {
     $root_id = $this->imp->initTree();

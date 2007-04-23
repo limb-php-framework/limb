@@ -2,14 +2,13 @@
 DROP TABLE IF EXISTS `test_materialized_path_tree`;
 CREATE TABLE `test_materialized_path_tree` (
   `id` int(11) NOT NULL auto_increment,
-  `parent_id` int(11) NOT NULL default '0',
-  `level` int(11) NOT NULL default '0',
-  `identifier` varchar(128) NOT NULL default '',
-  `path` varchar(255) NOT NULL default '',
-  `priority` int(11) default NULL,
+  `p_parent_id` int(11) NOT NULL default '0',
+  `p_level` int(11) NOT NULL default '0',
+  `p_identifier` varchar(128) NOT NULL default '',
+  `p_path` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `level` (`level`),
-  KEY `parent_id` (`parent_id`)
+  KEY `level` (`p_level`),
+  KEY `parent_id` (`p_parent_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `test_nested_sets_tree`;

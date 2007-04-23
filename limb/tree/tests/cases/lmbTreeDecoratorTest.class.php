@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeDecoratorTest.class.php 5732 2007-04-20 20:07:28Z pachanga $
+ * @version    $Id: lmbTreeDecoratorTest.class.php 5743 2007-04-23 07:03:28Z pachanga $
  * @package    tree
  */
 lmb_require('limb/tree/src/lmbTreeDecorator.class.php');
@@ -27,7 +27,10 @@ class lmbTreeDecoratorTest extends lmbTreeTestBase
 
   function _createTreeImp()
   {
-    return new lmbTreeDecorator(new TreeTestVersionForDecorator());
+    return new lmbTreeDecorator(new lmbMPTree($this->_node_table, $this->conn,
+                                              array('id' => 'id', 'parent_id' => 'p_parent_id',
+                                                    'level' => 'p_level', 'identifier' => 'p_identifier',
+                                                    'path' => 'p_path')));
   }
 
   function _cleanUp()
