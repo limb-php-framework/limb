@@ -70,6 +70,8 @@ abstract class AdminObjectController extends lmbController
   {
     $this->item->validate($this->error_list);
 
+    $this->_onBeforeSave();
+
     if($this->error_list->isValid())
     {
       $this->item->saveSkipValidation();
@@ -77,13 +79,9 @@ abstract class AdminObjectController extends lmbController
     }
   }
 
-  protected function _initCreateForm()
-  {
-  }
-
-  protected function _initEditForm()
-  {
-  }
+  protected function _initCreateForm() {}
+  protected function _initEditForm() {}
+  protected function _onBeforeSave() {}
 
   function performPublishCommand()
   {
