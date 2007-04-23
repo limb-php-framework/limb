@@ -55,8 +55,11 @@ class lmbCollection implements lmbCollectionInterface
 
   function sort($params)
   {
-    $this->dataset = lmbArrayHelper :: sortArray($this->dataset, $params, false);
-    $this->iteratedDataset = null;
+    if(count($this->dataset))
+    {
+      $this->dataset = lmbArrayHelper :: sortArray($this->dataset, $params, false);
+      $this->iteratedDataset = null;
+    }
     return $this;
   }
 

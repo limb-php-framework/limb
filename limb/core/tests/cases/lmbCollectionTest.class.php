@@ -135,5 +135,12 @@ class lmbCollectionTest extends UnitTestCase
     $this->assertEqual($arr[1]->get('x'), 'B');
     $this->assertEqual($arr[2]->get('x'), 'A');
   }
+
+  function testDontSortEmptyCollection()
+  {
+    $iterator = new lmbCollection();
+    $iterator->sort(array('x' => 'DESC'));
+    $this->assertEqual($iterator->getArray(), array());
+  }
 }
 ?>
