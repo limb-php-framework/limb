@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5758 2007-04-24 10:19:09Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5763 2007-04-24 11:31:29Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5758 2007-04-24 10:19:09Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5763 2007-04-24 11:31:29Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1555,57 +1555,67 @@ class lmbActiveRecord extends lmbObject
    */
   function registerCallback($type, $callback)
   {
-    $this->_listeners[$type][] = $callback;
+    $this->_listeners[$type][] = lmbDelegate :: objectify($callback);
   }
 
-  function registerOnBeforeSaveCallback($object, $method)
+  function registerOnBeforeSaveCallback($callback)
   {
-    $this->registerCallback(self :: ON_BEFORE_SAVE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_BEFORE_SAVE, $args);
   }
 
-  function registerOnAfterSaveCallback($object, $method)
+  function registerOnAfterSaveCallback($callback)
   {
-    $this->registerCallback(self :: ON_AFTER_SAVE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_AFTER_SAVE, $args);
   }
 
-  function registerOnBeforeUpdateCallback($object, $method)
+  function registerOnBeforeUpdateCallback($callback)
   {
-    $this->registerCallback(self :: ON_BEFORE_UPDATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_BEFORE_UPDATE, $args);
   }
 
-  function registerOnUpdateCallback($object, $method)
+  function registerOnUpdateCallback($callback)
   {
-    $this->registerCallback(self :: ON_UPDATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_UPDATE, $args);
   }
 
-  function registerOnAfterUpdateCallback($object, $method)
+  function registerOnAfterUpdateCallback($callback)
   {
-    $this->registerCallback(self :: ON_AFTER_UPDATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_AFTER_UPDATE, $args);
   }
 
-  function registerOnBeforeCreateCallback($object, $method)
+  function registerOnBeforeCreateCallback($callback)
   {
-    $this->registerCallback(self :: ON_BEFORE_CREATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_BEFORE_CREATE, $args);
   }
 
-  function registerOnCreateCallback($object, $method)
+  function registerOnCreateCallback($callback)
   {
-    $this->registerCallback(self :: ON_CREATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_CREATE, $args);
   }
 
-  function registerOnAfterCreateCallback($object, $method)
+  function registerOnAfterCreateCallback($callback)
   {
-    $this->registerCallback(self :: ON_AFTER_CREATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_AFTER_CREATE, $args);
   }
 
-  function registerOnBeforeDestroyCallback($object, $method)
+  function registerOnBeforeDestroyCallback($callback)
   {
-    $this->registerCallback(self :: ON_BEFORE_DESTROY, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_BEFORE_DESTROY, $args);
   }
 
-  function registerOnAfterDestroyCallback($object, $method)
+  function registerOnAfterDestroyCallback($callback)
   {
-    $this->registerCallback(self :: ON_AFTER_DESTROY, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    $this->registerCallback(self :: ON_AFTER_DESTROY, $args);
   }
   /**
    *  Registers global listener of specified type
@@ -1614,57 +1624,67 @@ class lmbActiveRecord extends lmbObject
    */
   static function registerGlobalCallback($type, $callback)
   {
-    self :: $_global_listeners[$type][] = $callback;
+    self :: $_global_listeners[$type][] = lmbDelegate :: objectify($callback);
   }
 
-  function registerGlobalOnBeforeSaveCallback($object, $method)
+  function registerGlobalOnBeforeSaveCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_BEFORE_SAVE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_BEFORE_SAVE, $args);
   }
 
-  function registerGlobalOnAfterSaveCallback($object, $method)
+  function registerGlobalOnAfterSaveCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_AFTER_SAVE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_AFTER_SAVE, $args);
   }
 
-  function registerGlobalOnBeforeUpdateCallback($object, $method)
+  function registerGlobalOnBeforeUpdateCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_BEFORE_UPDATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_BEFORE_UPDATE, $args);
   }
 
-  function registerGlobalOnUpdateCallback($object, $method)
+  function registerGlobalOnUpdateCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_UPDATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_UPDATE, $args);
   }
 
-  function registerGlobalOnAfterUpdateCallback($object, $method)
+  function registerGlobalOnAfterUpdateCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_AFTER_UPDATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_AFTER_UPDATE, $args);
   }
 
-  function registerGlobalOnBeforeCreateCallback($object, $method)
+  function registerGlobalOnBeforeCreateCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_BEFORE_CREATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_BEFORE_CREATE, $args);
   }
 
-  function registerGlobalOnCreateCallback($object, $method)
+  function registerGlobalOnCreateCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_CREATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_CREATE, $args);
   }
 
-  function registerGlobalOnAfterCreateCallback($object, $method)
+  function registerGlobalOnAfterCreateCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_AFTER_CREATE, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_AFTER_CREATE, $args);
   }
 
-  function registerGlobalOnBeforeDestroyCallback($object, $method)
+  function registerGlobalOnBeforeDestroyCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_BEFORE_DESTROY, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_BEFORE_DESTROY, $args);
   }
 
-  function registerGlobalOnAfterDestroyCallback($object, $method)
+  function registerGlobalOnAfterDestroyCallback($callback)
   {
-    self :: registerGlobalCallback(self :: ON_AFTER_DESTROY, new lmbDelegate($object, $method));
+    $args = func_get_args();
+    self :: registerGlobalCallback(self :: ON_AFTER_DESTROY, $args);
   }
 
   protected function _invokeListeners($type)
