@@ -53,7 +53,6 @@ class lmbDelegate
 
   /**
   * Invokes object method with $args
-  * @see lmbBaseDelegate :: invoke
   */
   function invoke($args = array())
   {
