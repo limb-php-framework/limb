@@ -17,6 +17,9 @@ class DelegateTestingStub
   public $instance_arg;
   public $instance_called = false;
 
+  public $instance_arg1;
+  public $instance_arg2;
+
   static public $static_arg;
   static public $static_called = false;
 
@@ -30,6 +33,12 @@ class DelegateTestingStub
   {
     $this->instance_called = true;
     return $arg;
+  }
+
+  function instanceMethodWithManyArgs($arg1, $arg2)
+  {
+    $this->instance_arg1 = $arg1;
+    $this->instance_arg2 = $arg2;
   }
 
   function staticMethod($arg)
@@ -120,6 +129,24 @@ class lmbDelegateTest extends UnitTestCase
     $this->assertEqual($stub->instance_arg, 'bar');
   }
 
+  function testInvokeWithMultipleArgs()
+  {
+    $stub = new DelegateTestingStub();
+    $delegate = new lmbDelegate(array($stub, 'instanceMethodWithManyArgs'));
+    $delegate->invoke('bar', 'foo');
+    $this->assertEqual($stub->instance_arg1, 'bar');
+    $this->assertEqual($stub->instance_arg2, 'foo');
+  }
+
+  function testInvokeArray()
+  {
+    $stub = new DelegateTestingStub();
+    $delegate = new lmbDelegate(array($stub, 'instanceMethodWithManyArgs'));
+    $delegate->invokeArray(array('bar', 'foo'));
+    $this->assertEqual($stub->instance_arg1, 'bar');
+    $this->assertEqual($stub->instance_arg2, 'foo');
+  }
+
   function testInvokeAll()
   {
     $s1 = new DelegateTestingStub();
@@ -130,7 +157,7 @@ class lmbDelegateTest extends UnitTestCase
     $d2 = new lmbDelegate($s2, 'instanceMethod');
     $d3 = new lmbDelegate($s3, 'instanceMethod');
 
-    lmbDelegate :: invokeAll(array($d1, $d2, $d3), 'bar');
+    lmbDelegate :: invokeAll(array($d1, $d2, $d3), array('bar'));
 
     $this->assertTrue($s1->instance_called);
     $this->assertEqual($s1->instance_arg, 'bar');
@@ -150,7 +177,7 @@ class lmbDelegateTest extends UnitTestCase
     $d2 = new lmbDelegate($s2, 'instanceReturningMethod');//returns argument
     $d3 = new lmbDelegate($s3, 'instanceMethod');
 
-    lmbDelegate :: invokeChain(array($d1, $d2, $d3), 'bar');
+    lmbDelegate :: invokeChain(array($d1, $d2, $d3), array('bar'));
 
     $this->assertTrue($s1->instance_called);
     $this->assertEqual($s1->instance_arg, 'bar');

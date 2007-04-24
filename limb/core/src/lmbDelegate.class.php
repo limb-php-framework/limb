@@ -32,7 +32,9 @@ class lmbDelegate
   function __construct($object, $method = null)
   {
     if(is_array($object))
+    {
       $this->php_callback = $object;
+    }
     else
     {
       if(!$method)
@@ -54,11 +56,19 @@ class lmbDelegate
   /**
   * Invokes object method with $args
   */
-  function invoke($args = array())
+  function invoke()
   {
     if(!$this->isValid())
       throw new lmbException("Invalid callback", array('callback' => $this->php_callback));
 
+    $args = func_get_args();
+    return call_user_func_array($this->php_callback, $args);
+  }
+
+  function invokeArray($args = array())
+  {
+    if(!$this->isValid())
+      throw new lmbException("Invalid callback", array('callback' => $this->php_callback));
     return call_user_func_array($this->php_callback, $args);
   }
 
@@ -85,7 +95,7 @@ class lmbDelegate
   static function invokeAll($list, $args = array())
   {
     foreach($list as $item)
-      $item->invoke($args);
+      $item->invokeArray($args);
   }
 
   /**
@@ -97,7 +107,7 @@ class lmbDelegate
   {
     foreach($list as $item)
     {
-      $result = $item->invoke($args);
+      $result = $item->invokeArray($args);
       if(!is_null($result))
         return $result;
     }
