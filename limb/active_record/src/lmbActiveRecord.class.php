@@ -6,10 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5758 2007-04-24 10:19:09Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbDelegate.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
@@ -22,12 +23,11 @@ lmb_require('limb/active_record/src/lmbARNotFoundException.class.php');
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
 lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
-lmb_require('limb/core/src/lmbDelegate.class.php');
 
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5758 2007-04-24 10:19:09Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1670,10 +1670,10 @@ class lmbActiveRecord extends lmbObject
   protected function _invokeListeners($type)
   {
     if(isset($this->_listeners[$type]))
-      lmbDelegateList :: invokeChain($this->_listeners[$type], array($this));
+      lmbDelegate :: invokeAll($this->_listeners[$type], array($this));
 
     if(isset(self :: $_global_listeners[$type]))
-      lmbDelegateList :: invokeChain(self :: $_global_listeners[$type], array($this));
+      lmbDelegate :: invokeAll(self :: $_global_listeners[$type], array($this));
   }
 }
 
