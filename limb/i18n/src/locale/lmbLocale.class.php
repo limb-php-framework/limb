@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocale.class.php 5635 2007-04-11 13:26:57Z pachanga $
+ * @version    $Id: lmbLocale.class.php 5767 2007-04-24 12:02:11Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -90,7 +90,7 @@ class lmbLocale
   function initLocaleSettings($config)
   {
     if(!is_a($config, 'lmbIni'))
-      throw new lmbInvalidArgumentException('Container must be an lmbIni instance');
+      throw new lmbException('Config object must be an lmbIni instance', array('config' => $config));
 
     $this->_initCountrySettings($config);
     $this->_initLanguageSettings($config);

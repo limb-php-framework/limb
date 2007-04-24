@@ -6,10 +6,9 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbOrderQueryModifier.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbOrderQueryModifier.class.php 5767 2007-04-24 12:02:11Z pachanga $
  * @package    dbal
  */
-lmb_require('limb/core/src/exception/lmbInvalidValueException.class.php');
 lmb_require('limb/dbal/src/modifier/lmbQueryModifier.interface.php');
 
 class lmbOrderQueryModifier implements lmbQueryModifier
@@ -35,7 +34,7 @@ class lmbOrderQueryModifier implements lmbQueryModifier
            || strtolower($arr[1]) == 'rand()')
           $order_pairs[$arr[0]] = strtoupper($arr[1]);
         else
-          throw new lmbInvalidValueException('Wrong order type', array('order' => $arr[1]));
+          throw new lmbException('Wrong order type', array('order' => $arr[1]));
       }
       else
         $order_pairs[$arr[0]] = 'ASC';

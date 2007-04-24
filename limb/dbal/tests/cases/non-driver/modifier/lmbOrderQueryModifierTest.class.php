@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbOrderQueryModifierTest.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbOrderQueryModifierTest.class.php 5767 2007-04-24 12:02:11Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/modifier/lmbOrderQueryModifier.class.php');
@@ -63,12 +63,9 @@ class lmbOrderQueryModifierTest extends UnitTestCase
     try
     {
       $modifier = new lmbOrderQueryModifier($order);
-
       $this->assertTrue(false);
     }
-    catch(lmbInvalidValueException $e)
-    {
-    }
+    catch(lmbException $e){}
   }
 }
 ?>
