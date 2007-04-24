@@ -10,6 +10,8 @@
  * @package    log
  */
 
+lmb_require('limb/fs/src/lmbFs.class.php');
+
 class lmbLogFileWriter
 {
   protected $log_files;
