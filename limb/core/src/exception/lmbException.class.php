@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbException.class.php 4991 2007-02-08 15:35:35Z pachanga $
+ * @version    $Id: lmbException.class.php 5756 2007-04-24 10:16:11Z pachanga $
  * @package    core
  */
 
@@ -17,10 +17,12 @@ class lmbException extends Exception
   function __construct($message, $params = array(), $code = 0)
   {
     if(is_array($params) && sizeof($params))
+    {
       $this->params = $params;
+      $message .= "\n[params: " . var_export($params, true) . "]\n";
+    }
 
     $this->backtrace = debug_backtrace();
-
     parent :: __construct($message, $code);
   }
 
@@ -91,12 +93,6 @@ class lmbException extends Exception
       $str .= ($html ? "<br />\n" : "\n");
     }
     return $str;
-  }
-
-  function __toString()
-  {
-    return parent :: __toString() .
-           "\n[params: " . var_export($this->params, true) . "]\n";
   }
 }
 ?>
