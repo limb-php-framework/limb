@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFormCommand.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbFormCommand.class.php 5759 2007-04-24 10:19:49Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
@@ -133,7 +133,7 @@ class lmbFormCommand extends lmbActionCommand
   protected function _invokeListeners($type)
   {
     if(isset($this->listeners[$type]))
-      lmbDelegateList :: invokeChain($this->listeners[$type], array($this));
+      lmbDelegate :: invokeChain($this->listeners[$type], array($this));
   }
 
   protected function _validate()
