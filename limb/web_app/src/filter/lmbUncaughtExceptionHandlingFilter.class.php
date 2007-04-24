@@ -6,43 +6,68 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUncaughtExceptionHandlingFilter.class.php 5607 2007-04-10 16:45:17Z pachanga $
+ * @version    $Id: lmbUncaughtExceptionHandlingFilter.class.php 5765 2007-04-24 11:35:38Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
+lmb_require('limb/core/src/lmbErrorGuard.class.php');
 
 class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
 {
   const CONTEXT_RADIUS = 3;
+  protected $toolkit;
 
   function run($filter_chain)
   {
-    try
-    {
-      $filter_chain->next();
-    }
-    catch(Exception $e)
-    {
-      if(function_exists('debugBreak'))
-        debugBreak();
+    $this->toolkit = lmbToolkit :: instance();
 
-      $toolkit = lmbToolkit :: instance();
-      $toolkit->getLog()->exception($e);
-      $toolkit->getResponse()->reset();
+    lmbErrorGuard :: registerFatalErrorHandler(array($this, 'handleFatalError'));
+    lmbErrorGuard :: registerExceptionHandler(array($this, 'handleException'));
 
-      $error = htmlspecialchars($e->getMessage());
-      $trace = htmlspecialchars($e->getTraceAsString());
-      list($file, $line) = $this->_extractExceptionFileAndLine($e);
-      $context = htmlspecialchars($this->_getFileContext($file, $line));
-      $request = htmlspecialchars(lmbToolkit :: instance()->getRequest()->dump());
-      $session = htmlspecialchars(lmbToolkit :: instance()->getSession()->dump());
+    $filter_chain->next();
 
-      for($i = 0; $i < ob_get_level(); $i++)
-        ob_end_clean();
+  }
 
-      echo $this->_renderTemplate($error, $trace, $file, $line, $context, $request, $session);
-      exit(1);
-    }
+  function handleFatalError($error)
+  {
+    $this->toolkit->getLog()->error($error['message']);
+    $this->toolkit->getResponse()->reset();
+
+    $message = $error['message'];
+    $trace = '';
+    $file = $error['file'];
+    $line = $error['line'];
+    $context = htmlspecialchars($this->_getFileContext($file, $line));
+    $request = htmlspecialchars($this->toolkit->getRequest()->dump());
+
+    for($i=0; $i < ob_get_level(); $i++)
+      ob_end_clean();
+
+    $session = htmlspecialchars($this->toolkit->getSession()->dump());
+    echo $this->_renderTemplate($message, $trace, $file, $line, $context, $request, $session);
+    exit(1);
+  }
+
+  function handleException($e)
+  {
+    if(function_exists('debugBreak'))
+      debugBreak();
+
+    $this->toolkit->getLog()->exception($e);
+    $this->toolkit->getResponse()->reset();
+
+    $error = htmlspecialchars($e->getMessage());
+    $trace = htmlspecialchars($e->getTraceAsString());
+    list($file, $line) = $this->_extractExceptionFileAndLine($e);
+    $context = htmlspecialchars($this->_getFileContext($file, $line));
+    $request = htmlspecialchars($this->toolkit->getRequest()->dump());
+    $session = htmlspecialchars($this->toolkit->getSession()->dump());
+
+    for($i=0; $i < ob_get_level(); $i++)
+      ob_end_clean();
+
+    echo $this->_renderTemplate($error, $trace, $file, $line, $context, $request, $session);
+    exit(1);
   }
 
   protected function _renderTemplate($error, $trace, $file, $line, $context, $request, $session)
@@ -85,6 +110,7 @@ class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
     w.document.write(document.getElementById('Request').innerHTML);
     w.document.write(document.getElementById('Session').innerHTML);
     w.document.write('</body></html>');
+    w.document.close();
   }
   </script>
 </head>
