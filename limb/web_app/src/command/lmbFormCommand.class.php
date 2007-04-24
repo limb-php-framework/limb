@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFormCommand.class.php 5759 2007-04-24 10:19:49Z pachanga $
+ * @version    $Id: lmbFormCommand.class.php 5768 2007-04-24 12:02:42Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
+lmb_require('limb/web_app/src/exception/lmbDelegateHaltException.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
-lmb_require('limb/core/src/exception/lmbDelegateHaltException.class.php');
 lmb_require('limb/core/src/lmbDelegate.class.php');
 
 class lmbFormCommand extends lmbActionCommand
