@@ -37,7 +37,11 @@ class lmbClassPath
 
   function import()
   {
-    lmb_require($this->raw_path . '.class.php');
+    if(!class_exists($this->class_name))
+    {
+      if(!@include_once($this->raw_path . '.class.php'))
+        throw new lmbException("Could not import class from '{$this->raw_path}.class.php'");
+    }
   }
 
   function createHandle($args = array())

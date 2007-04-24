@@ -112,7 +112,30 @@ class lmbClassPathTest extends UnitTestCase
     $this->assertTrue(class_exists('FooBarZooTest2', true));
 
     unlink(LIMB_VAR_DIR . '/FooBarZooTest2.class.php');
+  }
 
+  function testImportShortNamedClassFromNonExistingFile()
+  {
+    $class_path = new lmbClassPath('FooBarHeyZoo');
+
+    try
+    {
+      $class_path->import();
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+  }
+
+  function testImportShortNamedClass()
+  {
+    file_put_contents(LIMB_VAR_DIR . '/FooBarZooTest3.class.php', "<?php\n class FooBarZooTest3{}\n ?>");
+
+    require_once(LIMB_VAR_DIR . '/FooBarZooTest3.class.php');
+
+    $class_path = new lmbClassPath('FooBarZooTest3');
+    $class_path->import();
+
+    unlink(LIMB_VAR_DIR . '/FooBarZooTest3.class.php');
   }
 
   function testCreateObjectNoArgs()
