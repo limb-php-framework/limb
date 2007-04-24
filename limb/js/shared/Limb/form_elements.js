@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form_elements.js 5618 2007-04-11 08:17:10Z momental $
+ * @version    $Id: form_elements.js 5770 2007-04-24 12:37:04Z wiliam $
  * @package    js
  */
 
@@ -154,13 +154,9 @@ Limb.DynamicList.get_obj_by_id = function(node, id)
   return result;
 }
 
-Limb.namespace('Limb.DoubleSelect');
-
-Limb.DoubleSelect = Class.create();
-
-Limb.DoubleSelect.prototype =
+Limb.Class('Limb.DoubleSelect',
 {
-  initialize: function(instanceName)
+  __construct: function(instanceName)
   {
     // Properties
     this.instanceName	= instanceName;
@@ -208,7 +204,7 @@ Limb.DoubleSelect.prototype =
     this.addButtons(container.childNodes[1]);
     this.dstSelect = this.addSelector(container.childNodes[2])
     this.makeupSelector(this.dstSelect, this.select)
-   
+
   },
 
   makeupSelector: function(src, example)
@@ -238,24 +234,24 @@ Limb.DoubleSelect.prototype =
     button  = this.addButton(parent);
     button.value = '>>';
     button.onclick = this.selectAll;
-    
+
     this.addElement('br', parent);
     this.addElement('br', parent);
-    
+
     button  = this.addButton(parent);
     button.value = ' > ';
     button.onclick = this.selectItems;
 
     this.addElement('br', parent);
     this.addElement('br', parent);
-    
+
     button  = this.addButton(parent);
     button.value = ' < ';
     button.onclick = this.deselectItems;
-    
+
     this.addElement('br', parent);
     this.addElement('br', parent);
-    
+
     button  = this.addButton(parent);
     button.value = '<<';
     button.onclick = this.deselectAll;
@@ -267,7 +263,7 @@ Limb.DoubleSelect.prototype =
     parent.appendChild(element);
     return element;
   },
-  
+
   addButton: function(parent)
   {
     element = document.createElement('input');
@@ -328,4 +324,4 @@ Limb.DoubleSelect.prototype =
     }
   }
 }
-
+);
