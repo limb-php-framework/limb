@@ -21,8 +21,8 @@ class lmbCmsRootNode extends lmbCmsNode
 
   protected function _insertDbRecord($values)
   {
-    $root_id = $this->tree->initTree();
-    $this->tree->updateNode($root_id, $values);
+    $root_id = $this->_tree->initTree();
+    $this->_tree->updateNode($root_id, $values);
     return $root_id;
   }
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5752 2007-04-23 14:14:56Z serega $
+ * @version    $Id: lmbCmsNode.class.php 5774 2007-04-25 14:00:54Z tony $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -21,7 +21,7 @@ class lmbCmsNode extends lmbActiveRecord
 
   protected $object;
   protected $url_path;
-  protected $tree;
+  protected $_tree;
   protected $controller_name;
 
   protected $_has_one = array('parent' => array('field' => 'parent_id',
@@ -34,7 +34,7 @@ class lmbCmsNode extends lmbActiveRecord
 
   function __construct($magic_params = null)
   {
-    $this->tree = lmbToolkit :: instance()->getCmsTree();
+    $this->_tree = lmbToolkit :: instance()->getCmsTree();
 
     parent :: __construct($magic_params);
   }
@@ -67,21 +67,21 @@ class lmbCmsNode extends lmbActiveRecord
   protected function _insertDbRecord($values)
   {
     if($this->getParent() && $parent_id = $this->getParent()->getId())
-      return $this->tree->createNode($parent_id, $values);
+      return $this->_tree->createNode($parent_id, $values);
     else
     {
-      if(!$root = $this->tree->getRootNode())
+      if(!$root = $this->_tree->getRootNode())
       {
         $cms_root = new lmbCmsRootNode();
         $root = $cms_root->save();
       }
-      return $this->tree->createNode($root, $values);
+      return $this->_tree->createNode($root, $values);
     }
   }
 
   protected function _updateDbRecord($values)
   {
-    return $this->tree->updateNode($this->getId(), $values);
+    return $this->_tree->updateNode($this->getId(), $values);
   }
 
   protected function _onBeforeDestroy()
@@ -95,12 +95,12 @@ class lmbCmsNode extends lmbActiveRecord
 
   protected function _deleteDbRecord()
   {
-    $this->tree->deleteNode($this->getId());
+    $this->_tree->deleteNode($this->getId());
   }
 
   function loadByPath($path)
   {
-    if(!$node = $this->tree->getNodeByPath($path))
+    if(!$node = $this->_tree->getNodeByPath($path))
       return false;
 
     $this->import($node);
@@ -141,7 +141,7 @@ class lmbCmsNode extends lmbActiveRecord
     if(isset($this->url_path))
       return $this->url_path;
 
-    if(!($parent_path = $this->tree->getPathToNode($this->parent_id)))
+    if(!($parent_path = $this->_tree->getPathToNode($this->parent_id)))
       return '/' . $this->getIdentifier();
 
     $this->url_path = rtrim($parent_path, '/') . '/' . $this->getIdentifier();
@@ -209,17 +209,17 @@ class lmbCmsNode extends lmbActiveRecord
 
   function getChildren($depth = 1)
   {
-    return lmbActiveRecord :: decorateRecordSet($this->tree->getChildren($this->getId(), $depth), 'lmbCmsNode');
+    return lmbActiveRecord :: decorateRecordSet($this->_tree->getChildren($this->getId(), $depth), 'lmbCmsNode');
   }
 
   function getParents()
   {
-    return $this->decorateRecordSet($this->tree->getParents($this->getId()));
+    return $this->decorateRecordSet($this->_tree->getParents($this->getId()));
   }
 
   function getRoots()
   {
-    return lmbActiveRecord :: decorateRecordSet($this->tree->getChildren('/'), 'lmbCmsNode');
+    return lmbActiveRecord :: decorateRecordSet($this->_tree->getChildren('/'), 'lmbCmsNode');
   }
 
   function getRootNodes()
