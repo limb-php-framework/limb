@@ -9,7 +9,6 @@
  * @version    $Id: lmbProxy.class.php 5143 2007-02-20 21:40:01Z serega $
  * @package    core
  */
-lmb_require(dirname(__FILE__) . '/lmbProxyable.interface.php');
 
 /**
 * Base class for creating proxies.
@@ -17,7 +16,7 @@ lmb_require(dirname(__FILE__) . '/lmbProxyable.interface.php');
 * In such a case the original object is <b>resolved</b> and since that moment all method
 * and argument calls will be delegeted to the real object.
 */
-abstract class lmbProxy implements lmbProxyable
+abstract class lmbProxy
 {
   /**
   * @var boolean Flag if real object is resolved already
