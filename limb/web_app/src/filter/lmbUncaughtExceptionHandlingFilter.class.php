@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUncaughtExceptionHandlingFilter.class.php 5765 2007-04-24 11:35:38Z pachanga $
+ * @version    $Id: lmbUncaughtExceptionHandlingFilter.class.php 5772 2007-04-25 08:02:06Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -21,11 +21,10 @@ class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
   {
     $this->toolkit = lmbToolkit :: instance();
 
-    lmbErrorGuard :: registerFatalErrorHandler(array($this, 'handleFatalError'));
-    lmbErrorGuard :: registerExceptionHandler(array($this, 'handleException'));
+    lmbErrorGuard :: registerFatalErrorHandler($this, 'handleFatalError');
+    lmbErrorGuard :: registerExceptionHandler($this, 'handleException');
 
     $filter_chain->next();
-
   }
 
   function handleFatalError($error)
