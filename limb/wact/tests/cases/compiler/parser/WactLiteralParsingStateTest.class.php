@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactLiteralParsingStateTest.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactLiteralParsingStateTest.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -53,7 +53,7 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
   {
     $tag = 'test';
     $this->state->setLiteralTag('test');
-    $this->tree_builder->expectOnce('popNode', array(TRUE));
+    $this->tree_builder->expectOnce('popNode');
     $this->parser->expectOnce('changeToComponentParsingState');
     $this->state->endElement($tag);
   }

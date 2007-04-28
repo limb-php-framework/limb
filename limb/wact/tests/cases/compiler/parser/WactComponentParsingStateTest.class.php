@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactComponentParsingStateTest.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactComponentParsingStateTest.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -114,37 +114,6 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
     $this->state->startElement($tag,$attrs);
   }
 
-  function testStartElementEndtagForbidden()
-  {
-    $tag = 'test';
-    $attrs = array('foo'=>'bar');
-
-    $info = new WactTagInfo($tag, 'test');
-    $info->setForbidEndTag();
-    $this->tag_dictionary->setReturnReference('findTagInfo', $info);
-
-    $this->locator->expectOnce('getCurrentLocation');
-    $this->locator->setReturnValue('getCurrentLocation', $location = new WactSourceLocation('my_file', 10));
-
-    $this->tree_builder->expectNever('popNode');
-    $this->tree_builder->expectNever('pushExpectedTag');
-
-    $this->parser->expectNever('changeToComponentParsingState');
-
-    try
-    {
-      $this->state->startElement($tag, $attrs);
-      $this->assertTrue(false);
-    }
-    catch(WactException $e)
-    {
-      $this->assertWantedPattern('/Closing tag is forbidden for this tag\. Use self closing notation/', $e->getMessage());
-      $this->assertEqual($e->getParam('tag'), 'test');
-      $this->assertEqual($e->getParam('file'), 'my_file');
-      $this->assertEqual($e->getParam('line'), 10);
-    }
-  }
-
   function testStartElementIllegalAttributeName()
   {
     $tag = 'test';
@@ -176,7 +145,7 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
     $this->locator->expectOnce('getCurrentLocation');
     $this->locator->setReturnValue('getCurrentLocation', $location = new WactSourceLocation('my_file', 10));
 
-    $this->tree_builder->expectOnce('popExpectedTag', array($tag, $location ));
+    $this->tree_builder->expectOnce('popExpectedTag', array($tag, $location, PARSER_TAG_IS_PLAIN));
     $this->tree_builder->setReturnValue('popExpectedTag', PARSER_TAG_IS_PLAIN);
     $this->tree_builder->expectNever('popNode');
     $this->tree_builder->expectOnce('addWactTextNode', array('</'.$tag.'>'));
@@ -191,9 +160,9 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
     $this->locator->expectOnce('getCurrentLocation');
     $this->locator->setReturnValue('getCurrentLocation', $location = new WactSourceLocation('my_file', 10));
 
-    $this->tree_builder->expectOnce('popExpectedTag', array($tag, $location));
+    $this->tree_builder->expectOnce('popExpectedTag', array($tag, $location, PARSER_TAG_IS_PLAIN));
     $this->tree_builder->setReturnValue('popExpectedTag', PARSER_TAG_IS_COMPONENT);
-    $this->tree_builder->expectOnce('popNode', array(TRUE));
+    $this->tree_builder->expectOnce('popNode');
 
     $this->state->endElement($tag);
   }
@@ -248,40 +217,10 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
     $this->tag_dictionary->setReturnReference('findTagInfo', $info);
 
     $this->node_builder->expectOnce('buildTagNode', array($info, $tag, $attrs, TRUE ));
+    $this->tree_builder->expectNever('addNode');
     $this->tree_builder->expectOnce('pushNode');
+    $this->tree_builder->expectOnce('popNode');
     $this->tree_builder->expectNever('pushExpectedTag');
-
-    $this->state->emptyElement($tag, $attrs);
-  }
-
-  function testEmptyElementLiteral()
-  {
-    $tag = 'test';
-    $attrs = array('foo'=>'bar');
-
-    $info = new WactTagInfo($tag, 'test');
-    $info->setForbidParsing();
-    $this->tag_dictionary->setReturnReference('findTagInfo', $info);
-
-    $this->tree_builder->expectOnce('pushNode');
-
-    $this->parser->expectOnce('changeToLiteralParsingState',array($tag));
-
-    $this->state->emptyElement($tag,$attrs);
-  }
-
-  function testEmptyElementEndtagForbidden()
-  {
-    $tag = 'test';
-    $attrs = array('foo'=>'bar');
-
-    $info = new WactTagInfo($tag, 'test');
-    $info->setForbidEndTag();
-    $this->tag_dictionary->setReturnReference('findTagInfo', $info);
-
-    $this->tree_builder->expectOnce('popNode', array(FALSE));
-
-    $this->parser->expectOnce('changeToComponentParsingState');
 
     $this->state->emptyElement($tag, $attrs);
   }
@@ -366,5 +305,38 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
     $this->node_builder->expectOnce('addContent', array($text));
     $this->state->invalidEntitySyntax($text);
   }
+
+  /*
+  function testStartElementForTagWithEndTagForbiddenThrowsExceptionInStrictMode()
+  {
+    $tag = 'test';
+    $attrs = array('foo'=>'bar');
+
+    $info = new WactTagInfo($tag, 'test');
+    $info->setForbidEndTag();
+    $this->tag_dictionary->setReturnReference('findTagInfo', $info);
+
+    $this->locator->expectOnce('getCurrentLocation');
+    $this->locator->setReturnValue('getCurrentLocation', $location = new WactSourceLocation('my_file', 10));
+
+    $this->tree_builder->expectNever('popNode');
+    $this->tree_builder->expectNever('pushExpectedTag');
+
+    $this->parser->expectNever('changeToComponentParsingState');
+
+    try
+    {
+      $this->state->startElement($tag, $attrs);
+      $this->assertTrue(false);
+    }
+    catch(WactException $e)
+    {
+      $this->assertWantedPattern('/Closing tag is forbidden for this tag\. Use self closing notation/', $e->getMessage());
+      $this->assertEqual($e->getParam('tag'), 'test');
+      $this->assertEqual($e->getParam('file'), 'my_file');
+      $this->assertEqual($e->getParam('line'), 10);
+    }
+  }
+  */
 }
 ?>

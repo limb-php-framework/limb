@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: generictag.test.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: generictag.test.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -58,6 +58,24 @@ class WactGenericHTMLTagTestCase extends WactTemplateTestCase
 
     $output = $page->capture();
     $this->assertEqual($output, '<DIV ID="runtime" Align="center"><DIV></DIV></DIV>');
+  }
+
+  function testWactServerComponentTagIsNotClosed()
+  {
+    $template = '<DIV ID="runtime" runat="server"><DIV></DIV>';
+
+    $this->registerTestingTemplate('/tags/generictag_not_closed.html', $template);
+
+    try
+    {
+      $page = $this->initTemplate('/tags/generictag_not_closed.html');
+      $this->assertTrue(false);
+    }
+    catch(WactException $e)
+    {
+      $this->assertWantedPattern('/Missing close tag/', $e->getMessage());
+      $this->assertEqual($e->getParam('tag'), 'DIV');
+    }
   }
 
   function testWactGenericContainerHTMLTagNestingCaseInsensitive()

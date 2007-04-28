@@ -122,21 +122,6 @@ class WactButtonTagTest extends WactTemplateTestCase
     }
   }
 
-  function testEndTagRequired()
-  {
-    $template = '<form runat="server">
-                    <button id="test" name="my_Button3" runat="server">
-                 </form>';
-    $this->registerTestingTemplate('/tags/form/controls/button/endtagrequired.html', $template);
-    try{
-      $page =  $this->initTemplate('/tags/form/controls/button/endtagrequired.html');
-    }
-    catch(WactException $e)
-    {
-      $this->assertWantedPattern('/Unexpected closing tag/', $e->getMessage());
-    }
-  }
-
   function testCompilerAttribuites()
   {
     $template = '<form runat="server">

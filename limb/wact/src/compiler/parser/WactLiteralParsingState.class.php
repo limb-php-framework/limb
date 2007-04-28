@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactLiteralParsingState.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactLiteralParsingState.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -37,8 +37,8 @@ class WactLiteralParsingState extends WactBaseParsingState  implements WactParse
     if ($this->literal_tag == $tag)
     {
       $location = $this->locator->getCurrentLocation();
-      $this->tree_builder->popExpectedTag($tag, $location);
-      $this->tree_builder->popNode(TRUE);
+      $this->tree_builder->popExpectedTag($tag, $location, PARSER_TAG_IS_PLAIN);
+      $this->tree_builder->popNode();
       $this->parser->changeToComponentParsingState();
     }
     else

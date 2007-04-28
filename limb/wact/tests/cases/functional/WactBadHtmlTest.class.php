@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactBadHtmlTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactBadHtmlTest.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -205,7 +205,7 @@ class WactBadHtmlTest extends WactTemplateTestCase
     $this->assertEqual($output, $template);
   }
 
-  function testDoubleClose()
+  function testDoubleClosingTagProcessingAsASingleString()
   {
     $template = '<html><body></body/></html>';
 
@@ -217,11 +217,12 @@ class WactBadHtmlTest extends WactTemplateTestCase
     }
     catch(WactException $e)
     {
-      $this->assertWantedPattern('/Unexpected closing tag/', $e->getMessage());
+      $this->assertWantedPattern('/Lonely closing tag/', $e->getMessage());
+      $this->assertEqual($e->getParam('tag'), 'body/');
     }
   }
 
-  function testCloseAttribute()
+  function testClosingTagWithAttributeProcessedAsASingleString()
   {
     $template = '<body></body attribute="test">';
 
@@ -233,11 +234,12 @@ class WactBadHtmlTest extends WactTemplateTestCase
     }
     catch(WactException $e)
     {
-      $this->assertWantedPattern('/Unexpected closing tag/', $e->getMessage());
+      $this->assertWantedPattern('/Lonely closing tag/', $e->getMessage());
+      $this->assertEqual($e->getParam('tag'), 'body attribute="test"');
     }
   }
 
-  function XtestTruncatedTag1()
+  function testTruncatedTag1()
   {
     $template = '<';
 

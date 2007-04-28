@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreSetTagTest.class.php 5603 2007-04-10 12:45:45Z pachanga $
+ * @version    $Id: WactCoreSetTagTest.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -43,24 +43,9 @@ class WactCoreSetTagTest extends WactTemplateTestCase
      $this->assertEqual($output, '');
    }
 
-   function testEndTagForbidden()
-   {
-     $template = '<core:SET></core:SET>';
-     $this->registerTestingTemplate('/tags/core/end_tag_forbidden.html', $template);
-
-     try
-     {
-       $page = $this->initTemplate('/tags/core/end_tag_forbidden.html');
-     }
-     catch(WactException $e)
-     {
-       $this->assertWantedPattern('/Closing tag is forbidden for this tag. Use self closing notation/', $e->getMessage());
-     }
-   }
-
    function testSet()
    {
-     $template = '<core:SET var="value"/>';
+     $template = '<core:SET var="value">';
      $this->registerTestingTemplate('/tags/core/set.html', $template);
 
      $page = $this->initTemplate('/tags/core/set.html');
@@ -70,7 +55,7 @@ class WactCoreSetTagTest extends WactTemplateTestCase
 
    function testSetAndReference()
    {
-     $template = '<core:SET Var="value"/>{$Var}';
+     $template = '<core:SET Var="value">{$Var}';
      $this->registerTestingTemplate('/tags/core/set_and_reference.html', $template);
 
      $page = $this->initTemplate('/tags/core/set_and_reference.html');
@@ -80,7 +65,7 @@ class WactCoreSetTagTest extends WactTemplateTestCase
 
    function testSetFilterAndReference()
    {
-     $template = '<core:SET Var="value"/>{$Var|uppercase}';
+     $template = '<core:SET Var="value">{$Var|uppercase}';
      $this->registerTestingTemplate('/tags/core/set_filter_and_reference.html', $template);
 
      $page = $this->initTemplate('/tags/core/set_filter_and_reference.html');
@@ -90,7 +75,7 @@ class WactCoreSetTagTest extends WactTemplateTestCase
 
    function testReferenceChain()
    {
-     $template = '<core:SET First="val"/><core:SET Second="{$First}"/>{$First}-{$Second}';
+     $template = '<core:SET First="val"><core:SET Second="{$First}">{$First}-{$Second}';
      $this->registerTestingTemplate('/tags/core/reference_chain.html', $template);
 
      $page = $this->initTemplate('/tags/core/reference_chain.html');
@@ -100,7 +85,7 @@ class WactCoreSetTagTest extends WactTemplateTestCase
 
    function testSetPrecidence()
    {
-     $template = '<core:SET Var="value"/>{$Var}';
+     $template = '<core:SET Var="value">{$Var}';
      $this->registerTestingTemplate('/tags/core/set_precidence.html', $template);
 
      $page = $this->initTemplate('/tags/core/set_precidence.html');

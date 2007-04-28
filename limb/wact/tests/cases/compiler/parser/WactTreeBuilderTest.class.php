@@ -6,18 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilderTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactTreeBuilderTest.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
 require_once 'limb/wact/src/compiler/templatecompiler.inc.php';
 
 Mock::generate('WactCompileTreeNode','MockWactCompileTreeNode');
-Mock::generate('WactSourceFileParser','MockWactSourceFileParser');
-Mock::generate('WactTextNode','MockWactTextNode');
-Mock::generate('WactAttributeNode','MockWactAttributeNode');
-Mock::generate('WactPHPNode','MockWactPHPNode');
-Mock::generate('WactHTMLParser','MockWactHTMLParser');
 Mock::generate('WactCompiler','MockWactCompiler');
 
 class WactTreeBuilderTest extends UnitTestCase
@@ -25,72 +20,81 @@ class WactTreeBuilderTest extends UnitTestCase
   protected $compiler;
   protected $tree_builder;
   protected $component;
+  protected $tag_dictionary;
 
   function setUp()
   {
     $this->compiler = new MockWactCompiler();
-    $this->component = new MockWactCompileTreeNode();
+    $this->tag_dictionary = new WactTagDictionary();
+    $this->component = new WactCompilerTag(new WactSourceLocation('my_file', 1),
+                                           $tag_name = 'my_tag',
+                                           new WactTagInfo($tag_name, 'MyTagClass'));
     $this->tree_builder = new WactTreeBuilder($this->compiler);
     $this->tree_builder->setCursor($this->component);
   }
 
-  function testPushNode()
+  function testPushNodeMakedPushedNodeCurrentCursor()
   {
-    $new_component = new MockWactCompileTreeNode();
+    $this->assertEqual($this->component->getChildren(), array());
+    $this->assertReference($this->component, $this->tree_builder->getCursor());
 
-    $this->component->expectOnce('addChild');
-    $new_component->expectOnce('preParse', array($this->compiler));
+    $child_component = new MockWactCompileTreeNode();
+    $child_component->expectOnce('preParse', array($this->compiler));
 
-    $this->tree_builder->pushNode($new_component);
+    $this->tree_builder->pushNode($child_component);
 
-    $this->assertReference($new_component, $this->tree_builder->getCursor());
+    $this->assertReference($child_component, $this->tree_builder->getCursor());
+    $this->assertEqual($this->component->getChildren(), array($child_component));
   }
 
-  function testAddNode()
+  function testAddNodeDontChangeCursor()
   {
-    $new_component = new MockWactCompileTreeNode();
+    $this->assertEqual($this->component->getChildren(), array());
+    $this->assertReference($this->component, $this->tree_builder->getCursor());
 
-    $this->component->expectOnce('addChild');
-    $new_component->expectOnce('preParse');
+    $child_component = new MockWactCompileTreeNode();
+    $child_component->expectOnce('preParse');
 
-    $this->tree_builder->addNode($new_component);
+    $this->tree_builder->addNode($child_component);
 
     $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertEqual($this->component->getChildren(), array($child_component));
   }
 
   function testAddWactTextNode()
   {
-    $this->component->expectOnce('addChild');
+    $this->assertReference($this->component, $this->tree_builder->getCursor());
 
     $this->tree_builder->addWactTextNode('text');
 
     $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $children = $this->component->getChildren();
+    $this->assertEqual(sizeof($children), 1);
+    $this->assertIsA($children[0], 'WactTextNode');
+    $this->assertEqual($children[0]->getText(), 'text');
   }
 
-  function testPopNode()
+  function testPopNodeChangeCursorToParent()
   {
-    $ParentComponent = new MockWactCompileTreeNode();
-    $GrandParentComponent = new MockWactCompileTreeNode();
-    $ParentComponent->parent = $GrandParentComponent;
-    $this->component->parent = $ParentComponent;
+    $this->assertReference($this->component, $this->tree_builder->getCursor());
 
-    $this->component->setReturnValue('getChildren', array());
+    $parent_component = new WactCompileTreeNode();
+    $this->component->parent = $parent_component;
 
-    $this->tree_builder->popNode(TRUE);
+    $this->tree_builder->popNode();
     $TreeBuilderCursor = $this->tree_builder->getCursor();
 
     $this->assertTrue($this->component->hasClosingTag);
-    $this->assertReference($ParentComponent, $TreeBuilderCursor);
-    $this->assertReference($GrandParentComponent,$TreeBuilderCursor->parent);
+    $this->assertReference($parent_component, $this->tree_builder->getCursor());
   }
 
-  function testPopExpectedTag()
+  function testPopExpectedTagWithoutAnyExpected()
   {
     $location = new WactSourceLocation('my_file', 10);
 
     try
     {
-      $this->tree_builder->popExpectedTag('tag2', $location);
+      $this->tree_builder->popExpectedTag('tag2', $location, PARSER_TAG_IS_PLAIN);
     }
     catch(WactException $e)
     {
@@ -102,36 +106,90 @@ class WactTreeBuilderTest extends UnitTestCase
     }
   }
 
-  function testPushAndPopExpectedTagTwice()
+  function testPairPushAndPopTheSameTagWorksOk()
   {
-    $location1 = new WactSourceLocation('my_file', 10);
-    $location2 = new WactSourceLocation('my_file', 11);
-    $location3 = new WactSourceLocation('my_file', 12);
-    $location4 = new WactSourceLocation('my_file', 14);
+    $whatever_location = new WactSourceLocation('my_file', 1);
 
-    $this->tree_builder->pushExpectedTag('tag1', 'tag1info', $location1);
-    $this->tree_builder->pushExpectedTag('tag2', 'tag2info', $location2);
+    $open_location = new WactSourceLocation('my_file', 10);
+    $close_location = new WactSourceLocation('my_file', 12);
 
-    $this->assertEqual($this->tree_builder->popExpectedTag('tag2', $location3), 'tag2info');
+    $this->tree_builder->pushExpectedTag('other_tag', PARSER_TAG_IS_PLAIN, $whatever_location);
+    $this->tree_builder->pushExpectedTag('tag', PARSER_TAG_IS_PLAIN, $open_location);
+    $this->tree_builder->popExpectedTag('tag', $close_location, PARSER_TAG_IS_PLAIN);
+
+    $this->assertEqual($this->tree_builder->getExpectedTagCount(), 1);
+    $this->assertEqual($this->tree_builder->getExpectedTag(), 'other_tag');
+  }
+
+  function testPopPlainTagSearchesNearestOpeningTag()
+  {
+    $first_location = new WactSourceLocation('my_file', 1);
+    $open_location = new WactSourceLocation('my_file', 10);
+    $second_location = new WactSourceLocation('my_file', 11);
+    $close_location = new WactSourceLocation('my_file', 12);
+
+    $this->tree_builder->pushExpectedTag('first_tag', PARSER_TAG_IS_PLAIN, $first_location);
+    $this->tree_builder->pushExpectedTag('our_tag', PARSER_TAG_IS_PLAIN, $open_location);
+    $this->tree_builder->pushExpectedTag('plain_tag', PARSER_TAG_IS_PLAIN, $second_location);
+
+    $this->tree_builder->popExpectedTag('our_tag', $close_location, PARSER_TAG_IS_PLAIN);
+
+    $this->assertEqual($this->tree_builder->getExpectedTagCount(), 1);
+    $this->assertEqual($this->tree_builder->getExpectedTag(), 'first_tag');
+  }
+
+  function testPopPlainTagStopsSearchesNearestOpeningTagIfFoundComponentTag()
+  {
+    $first_location = new WactSourceLocation('my_file', 1);
+    $open_location = new WactSourceLocation('my_file', 9);
+    $second_location = new WactSourceLocation('my_file', 10);
+    $third_location = new WactSourceLocation('my_file', 11);
+    $close_location = new WactSourceLocation('my_file', 12);
+
+    $this->tree_builder->pushExpectedTag('first_tag', PARSER_TAG_IS_PLAIN, $first_location);
+    $this->tree_builder->pushExpectedTag('our_tag', PARSER_TAG_IS_PLAIN, $open_location);
+    $this->tree_builder->pushExpectedTag('component_tag', PARSER_TAG_IS_COMPONENT, $second_location);
+    $this->tree_builder->pushExpectedTag('plain_tag', PARSER_TAG_IS_PLAIN, $third_location);
+
+    $this->tree_builder->popExpectedTag('our_tag', $close_location, PARSER_TAG_IS_PLAIN);
+
+    $this->assertEqual($this->tree_builder->getExpectedTagCount(), 3);
+    $this->assertEqual($this->tree_builder->getExpectedTag(), 'component_tag');
+  }
+
+  function testPopComponentTagStopsSearchesNearestOpeningTagIfFoundComponentTagAndThrowsException()
+  {
+    $first_location = new WactSourceLocation('my_file', 1);
+    $open_location = new WactSourceLocation('my_file', 9);
+    $second_location = new WactSourceLocation('my_file', 10);
+    $third_location = new WactSourceLocation('my_file', 11);
+    $close_location = new WactSourceLocation('my_file', 12);
+
+    $this->tree_builder->pushExpectedTag('first_tag', PARSER_TAG_IS_PLAIN, $first_location);
+    $this->tree_builder->pushExpectedTag('our_tag', PARSER_TAG_IS_COMPONENT, $open_location);
+    $this->tree_builder->pushExpectedTag('component_tag', PARSER_TAG_IS_COMPONENT, $second_location);
+    $this->tree_builder->pushExpectedTag('plain_tag', PARSER_TAG_IS_PLAIN, $third_location);
 
     try
     {
-      $this->tree_builder->popExpectedTag('tag2', $location4);
+      $this->tree_builder->popExpectedTag('our_tag', $close_location, PARSER_TAG_IS_COMPONENT);
+      $this->assertTrue(false);
     }
     catch(WactException $e)
     {
       $this->assertWantedPattern('/Unexpected closing tag/', $e->getMessage());
       $params = $e->getParams();
       $this->assertEqual($params['file'], 'my_file');
-      $this->assertEqual($params['tag'], 'tag2');
-      $this->assertEqual($params['line'], 14);
-      $this->assertEqual($params['ExpectTag'], 'tag1');
+      $this->assertEqual($params['tag'], 'our_tag');
+      $this->assertEqual($params['line'], 12);
+      $this->assertEqual($params['ExpectTag'], 'component_tag');
       $this->assertEqual($params['ExpectTagFile'], 'my_file');
       $this->assertEqual($params['ExpectedTagLine'], 10);
     }
   }
 
-  function testPushCursor() {
+  function testPushCursor()
+  {
     // This test is essentially a test of the functionality that enables the
     // core:wrap implementation.
     // Briefly:
@@ -172,7 +230,7 @@ class WactTreeBuilderTest extends UnitTestCase
 
     // now the parser gets '</tag>', and then more content
     // so we pop 'tag' (should restore orig cursor), and add a new node
-    $this->tree_builder->popExpectedTag('tag', new WactSourceLocation('my_file', 16));
+    $this->tree_builder->popExpectedTag('tag', new WactSourceLocation('my_file', 16), PARSER_TAG_IS_COMPONENT);
     $this->tree_builder->pushNode($child2);
     $this->tree_builder->popNode(true);
 
@@ -185,25 +243,25 @@ class WactTreeBuilderTest extends UnitTestCase
   {
     $new_cursor = new WactCompileTreeNode();
 
-    $this->tree_builder->pushExpectedTag('tag1', 'tag1info', new WactSourceLocation('my_file', 10));
+    $this->tree_builder->pushExpectedTag('tag1', PARSER_TAG_IS_COMPONENT, new WactSourceLocation('my_file', 10));
 
     // push a new cursor
     $this->tree_builder->pushCursor($new_cursor, new WactSourceLocation('my_file', 12));
     $this->assertReference($this->tree_builder->getCursor(), $new_cursor);
 
-    $this->tree_builder->pushExpectedTag('tag2', 'tag2info', new WactSourceLocation('my_file', 13));
+    $this->tree_builder->pushExpectedTag('tag2', PARSER_TAG_IS_COMPONENT, new WactSourceLocation('my_file', 13));
 
     $this->assertEqual($this->tree_builder->getExpectedTagCount(), 3);
 
     $this->assertEqual($this->tree_builder->getExpectedTag(), 'tag2');
-    $this->assertEqual($this->tree_builder->popExpectedTag('tag2', new WactSourceLocation('my_file', 15)), 'tag2info');
+    $this->assertEqual($this->tree_builder->popExpectedTag('tag2', new WactSourceLocation('my_file', 15), PARSER_TAG_IS_COMPONENT), PARSER_TAG_IS_COMPONENT);
     $this->assertEqual($this->tree_builder->getExpectedTagCount(), 2);
 
     // getting expected tag should skip the cursor
     $this->assertEqual($this->tree_builder->getExpectedTag(), 'tag1');
 
     // popping the next tag should restore the cursor to the original
-    $this->assertEqual($this->tree_builder->popExpectedTag('tag1', new WactSourceLocation('my_file', 17)), 'tag1info');
+    $this->assertEqual($this->tree_builder->popExpectedTag('tag1', new WactSourceLocation('my_file', 17), PARSER_TAG_IS_COMPONENT), PARSER_TAG_IS_COMPONENT);
     $this->assertReference($this->tree_builder->getCursor(), $this->component);
     $this->assertEqual($this->tree_builder->getExpectedTagCount(), 0);
   }

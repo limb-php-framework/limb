@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilder.class.php 5203 2007-03-07 08:58:21Z serega $
+ * @version    $Id: WactTreeBuilder.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -81,10 +81,10 @@ class WactTreeBuilder
   * @return void
   * @access public
   */
-  function pushNode($newComponent)
+  function pushNode($new_component)
   {
-    $this->component->addChild($newComponent);
-    $this->setCursor($newComponent);
+    $this->component->addChild($new_component);
+    $this->setCursor($new_component);
 
     return $this->component->preParse($this->compiler);
   }
@@ -110,9 +110,8 @@ class WactTreeBuilder
   * Checks child server ids and moves the 'cursor' up the tree to the parent
   * component.
   */
-  function popNode($hasClosingTag)
+  function popNode()
   {
-    $this->component->hasClosingTag = $hasClosingTag;
     $this->component->checkChildrenServerIds();
     $this->setCursor($this->component->parent);
   }
@@ -152,7 +151,7 @@ class WactTreeBuilder
   * If the item in the tag stack is a component, then the cursor is
   * restored to that, and popExpectedTag is called again.
   */
-  function popExpectedTag($tag, $location)
+  function popExpectedTag($tag, $location, $pop_tag_info)
   {
     if(!$expectedTagItem = array_pop($this->expectedTags))
     {
@@ -166,24 +165,31 @@ class WactTreeBuilder
     if (is_object($expectedTagItem[0]))
     {
        $this->component =& $expectedTagItem[0];
-       return $this->popExpectedTag($tag, $location);
+       return $this->popExpectedTag($tag, $location, $pop_tag_info);
     }
 
     $expectedTag = $expectedTagItem[0];
-    $info = $expectedTagItem[1];
+    $expectedInfo = $expectedTagItem[1];
+    $expectedLocation = $expectedTagItem[2];
 
-    if (strcasecmp($expectedTag, $tag) !== 0)
+    if(strcasecmp($expectedTag, $tag) === 0)
+      return $expectedInfo;
+
+    if(($expectedInfo == PARSER_TAG_IS_PLAIN))
+      return $this->popExpectedTag($tag, $location, $pop_tag_info);
+    elseif(($expectedInfo == PARSER_TAG_IS_COMPONENT) && ($pop_tag_info == PARSER_TAG_IS_PLAIN))
     {
+      $this->pushExpectedTag($expectedTag, $expectedInfo, $expectedLocation);
+      return $pop_tag_info;
+    }
+    else
       throw new WactException('Unexpected closing tag',
                               array('file' => $location->getFile(),
                                     'tag' => $tag,
                                     'line' => $location->getLine(),
                                     'ExpectTag' => $expectedTag,
-                                    'ExpectTagFile' => $expectedTagItem[2]->getFile(),
-                                    'ExpectedTagLine' => $expectedTagItem[2]->getLine()));
-    }
-
-    return $info;
+                                    'ExpectTagFile' => $expectedLocation->getFile(),
+                                    'ExpectedTagLine' => $expectedLocation->getLine()));
   }
 
   /**

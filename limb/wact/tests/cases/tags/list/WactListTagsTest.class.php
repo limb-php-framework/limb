@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactListTagsTest.class.php 5625 2007-04-11 11:12:26Z serega $
+ * @version    $Id: WactListTagsTest.class.php 5780 2007-04-28 13:03:26Z serega $
  * @package    wact
  */
 
@@ -31,6 +31,7 @@ class WactListTagsTest extends WactTemplateTestCase
                           array('BaseNumber' => 6));
   }
 
+  /*
   function testList()
   {
     $template = '<list:LIST id="test"><list:ITEM>{$First}-</list:ITEM></list:LIST>';
@@ -123,10 +124,42 @@ class WactListTagsTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'John:Pavel|Peter:Harry|Roman++Sergey:Ilia|Vlad');
   }
 
+  function testListSeparatorWithUnbalancedContent()
+  {
+    $template = '<list:LIST id="test"><list:ITEM>{$First}'.
+                '<list:SEPARATOR></tr><tr></list:SEPARATOR></list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/separator_with_unbalanced_content.html', $template);
+    $page = $this->initTemplate('/tags/list/separator_with_unbalanced_content.html');
+
+    $list = $page->getChild('test');
+    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $output = $page->capture();
+    $this->assertEqual($output, "George</tr><tr>Alexander</tr><tr>Benjamin");
+  }*/
+
+  function testListSeparatorWithUnpropertyClosedParentTag()
+  {
+    $template = '<list:LIST id="test"><list:ITEM>{$First}'.
+                '<list:SEPARATOR></tr><tr></list:ITEM></list:SEPARATOR></list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/separator_with_unproperty_closed_parent_tag.html', $template);
+    try
+    {
+      $page = $this->initTemplate('/tags/list/separator_with_unproperty_closed_parent_tag.html');
+      $this->assertTrue(false);
+    }
+    catch(WactException $e)
+    {
+      $this->assertWantedPattern('/Unexpected closing tag/', $e->getMessage());
+      $this->assertEqual($e->getParam('tag'), 'list:ITEM');
+    }
+  }
+
   function testListSeparatorWithLiteralAttribute()
   {
     $template = '<list:LIST id="test"><list:ITEM>{$First}'.
-                '<list:SEPARATOR literal="true"></tr><tr></list:SEPARATOR></list:ITEM></list:LIST>';
+                 '<list:SEPARATOR literal="true">{$var}</list:SEPARATOR></list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/list/separator_with_literal.html', $template);
     $page = $this->initTemplate('/tags/list/separator_with_literal.html');
@@ -134,7 +167,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $list = $page->getChild('test');
     $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
     $output = $page->capture();
-    $this->assertEqual($output, "George</tr><tr>Alexander</tr><tr>Benjamin");
+    $this->assertEqual($output, 'George{$var}Alexander{$var}Benjamin');
   }
 
   function testListDefaultWithDataNotOutput()
