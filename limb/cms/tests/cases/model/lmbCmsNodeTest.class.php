@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNodeTest.class.php 5752 2007-04-23 14:14:56Z serega $
+ * @version    $Id: lmbCmsNodeTest.class.php 5779 2007-04-28 08:29:21Z wiliam $
  * @package    cms
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
@@ -278,6 +278,23 @@ class lmbCmsNodeTest extends UnitTestCase
     $child2 = $this->_createNode('alfa1', $root);
     $identifier = lmbCmsNode :: generateIdentifier($root->id);
     $this->assertEqual($identifier, 'alfa2');
+  }
+
+  function testGetPath()
+  {
+    $old_gateway_path = lmbCmsNode :: getGatewayPath();
+    $new_gateway_path = 'http://localhost/';
+    lmbCmsNode :: setGatewayPath($new_gateway_path);
+    $root = $this->_createNode('root');
+    $level1 = $this->_createNode('level1', $root);
+    $level2 = $this->_createNode('level2', $level1);
+
+    $this->assertEqual($level2->getRelativeUrlPath(), 'root/level1/level2');
+    $this->assertEqual($level2->getAbsoluteUrlPath(), '/root/level1/level2');
+    $this->assertEqual($level2->getUrlPath(), $new_gateway_path . 'root/level1/level2');
+
+    lmbCmsNode :: setGatewayPath($old_gateway_path);
+
   }
 
   protected function _initObject($node)

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsNode.class.php 5774 2007-04-25 14:00:54Z tony $
+ * @version    $Id: lmbCmsNode.class.php 5779 2007-04-28 08:29:21Z wiliam $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -15,6 +15,7 @@ lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
 
 class lmbCmsNode extends lmbActiveRecord
 {
+  protected static $_gateway_path = '';
   protected $_db_table_name = 'node';
   protected $_default_sort_params = array('priority' => 'ASC');
   protected $_is_being_destroyed = false;
@@ -37,6 +38,16 @@ class lmbCmsNode extends lmbActiveRecord
     $this->_tree = lmbToolkit :: instance()->getCmsTree();
 
     parent :: __construct($magic_params);
+  }
+
+  static function getGatewayPath()
+  {
+    return self :: $_gateway_path;
+  }
+
+  static function setGatewayPath($gateway_path)
+  {
+    lmbCmsNode :: $_gateway_path = $gateway_path;
   }
 
   protected function _createValidator()
@@ -136,16 +147,27 @@ class lmbCmsNode extends lmbActiveRecord
     $this->_setRaw('controller_id', $controler_id = lmbCmsClassName :: generateIdFor($this->controller_name));
   }
 
-  function getUrlPath()
+  function getAbsoluteUrlPath()
+  {
+    return '/' . $this->getRelativeUrlPath();
+  }
+
+  function getRelativeUrlPath()
   {
     if(isset($this->url_path))
       return $this->url_path;
 
-    if(!($parent_path = $this->_tree->getPathToNode($this->parent_id)))
-      return '/' . $this->getIdentifier();
+    if(!($parent_path = $this->_tree->getPathToNode($this->getId())))
+      $this->url_path = $this->getIdentifier();
+    else
+      $this->url_path = ltrim($parent_path, '/');
 
-    $this->url_path = rtrim($parent_path, '/') . '/' . $this->getIdentifier();
     return $this->url_path;
+  }
+
+  function getUrlPath()
+  {
+    return self :: getGatewayPath() . $this->getRelativeUrlPath();
   }
 
   static function findByPath($path)
