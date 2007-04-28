@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactGoodHtmlTest.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactGoodHtmlTest.class.php 5781 2007-04-28 18:04:32Z serega $
  * @package    wact
  */
 
@@ -17,7 +17,7 @@
 */
 class WactGoodHtmlTest extends WactTemplateTestCase
 {
-  function testSelfClose()
+  function _testSelfClose()
   {
     $template = '<BR /><BR />\n<BR />\n<B></B><BR />\n';
 
@@ -27,7 +27,7 @@ class WactGoodHtmlTest extends WactTemplateTestCase
     $this->assertEqual($output, $template);
   }
 
-  function testWactSelfCloseForbidden()
+  function _testWactSelfCloseForbidden()
   {
     $template = '<core:SET Variable="Value" />';
 
@@ -35,6 +35,16 @@ class WactGoodHtmlTest extends WactTemplateTestCase
     $page = $this->initTemplate('/goodhtml/wactselfcloseforbid.html');
     $output = $page->capture();
     $this->assertEqual($output, "");
+  }
+
+  function testUnclosedHtmlTagInCoreOptional()
+  {
+    $template = '<core:optional for="var"><tr></core:optional>';
+    $this->registerTestingTemplate('/goodhtml/unclosed_html_tag_in_core_optional.html', $template);
+    $page = $this->initTemplate('/goodhtml/unclosed_html_tag_in_core_optional.html');
+    $page->set('var', 1);
+    $output = $page->capture();
+    $this->assertEqual($output, '<tr>');
   }
 
   function testMinimizedAttribute()

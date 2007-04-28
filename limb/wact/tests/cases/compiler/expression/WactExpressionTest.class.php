@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionTest.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactExpressionTest.class.php 5781 2007-04-28 18:04:32Z serega $
  * @package    wact
  */
 
@@ -151,8 +151,7 @@ class WactExpressionTest extends UnitTestCase
     }
     catch(WactException $e)
     {
-      $this->assertWantedPattern('/Unknown filter/', $e->getMessage());
-      $this->assertEqual($e->getParam('filter'), '99');
+      $this->assertWantedPattern('/Filter name expected/', $e->getMessage());
     }
   }
 

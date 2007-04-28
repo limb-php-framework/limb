@@ -6,17 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpression.class.php 5691 2007-04-19 13:27:02Z serega $
+ * @version    $Id: WactExpression.class.php 5781 2007-04-28 18:04:32Z serega $
  * @package    wact
  */
 
-require_once 'limb/wact/src/compiler/expression/WactExpressionLexer.class.php';
-require_once 'limb/wact/src/compiler/expression/WactExpressionLexerParallelRegex.class.php';
-require_once 'limb/wact/src/compiler/expression/WactExpressionLexerStateStack.class.php';
+require_once 'limb/wact/src/compiler/expression/WactNewExpressionFilterParser.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
-require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
-require_once 'limb/wact/src/compiler/expression/WactExpressionFilterFindingParser.class.php';
-require_once 'limb/wact/src/compiler/expression/WactExpressionFilterParser.class.php';
 
 /**
 * Represents a single Expression found in the template like "var|uppercase|trim:0,10"
@@ -113,23 +108,18 @@ class WactExpression implements WactExpressionInterface
   */
   function createFilterChain($expression, $base)
   {
-    $filter_finding_parser = new WactExpressionFilterFindingParser($expression);
+    $filter_parser = new WactNewExpressionFilterParser($this->context);
+    $filters_specs = $filter_parser->parse($expression);
 
-    foreach($filter_finding_parser->getFilterExpressions() as $filter_expression)
+    foreach($filters_specs as $filter_spec)
     {
-      $filter_parser = new WactExpressionFilterParser($filter_expression);
-
-      $filter_name = $filter_parser->getFilterName();
-
-      if (is_null($filter_name))
-        $this->context->raiseCompilerError('Invalid filter specification');
-
+      $filter_name = $filter_spec['name'];
       $filter_info = $this->filter_dictionary->getFilterInfo($filter_name);
 
       if (!is_object($filter_info))
         $this->context->raiseCompilerError('Unknown filter', array('filter' => $filter_name));
 
-      $base = $this->_createFilter($filter_name, $base, $filter_parser->getFilterArguments());
+      $base = $this->_createFilter($filter_name, $base, $filter_spec['params']);
     }
 
     return $base;
