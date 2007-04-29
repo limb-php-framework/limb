@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilderTest.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactTreeBuilderTest.class.php 5783 2007-04-29 07:04:40Z serega $
  * @package    wact
  */
 
@@ -44,7 +44,8 @@ class WactTreeBuilderTest extends UnitTestCase
     $this->tree_builder->pushNode($child_component);
 
     $this->assertReference($child_component, $this->tree_builder->getCursor());
-    $this->assertEqual($this->component->getChildren(), array($child_component));
+    $children = $this->component->getChildren();
+    $this->assertReference($children[0], $child_component);
   }
 
   function testAddNodeDontChangeCursor()
@@ -58,7 +59,8 @@ class WactTreeBuilderTest extends UnitTestCase
     $this->tree_builder->addNode($child_component);
 
     $this->assertReference($this->component, $this->tree_builder->getCursor());
-    $this->assertEqual($this->component->getChildren(), array($child_component));
+    $children = $this->component->getChildren();
+    $this->assertReference($children[0], $child_component);
   }
 
   function testAddWactTextNode()
