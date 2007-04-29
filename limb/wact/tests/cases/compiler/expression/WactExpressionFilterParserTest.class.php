@@ -11,9 +11,9 @@
  */
 
 require_once 'limb/wact/src/compiler/templatecompiler.inc.php';
-require_once 'limb/wact/src/compiler/expression/WactNewExpressionFilterParser.class.php';
+require_once 'limb/wact/src/compiler/expression/WactExpressionFilterParser.class.php';
 
-class WactNewExpressionFilterParserTest extends UnitTestCase
+class WactExpressionFilterParserTest extends UnitTestCase
 {
   protected $parser;
 
@@ -22,7 +22,7 @@ class WactNewExpressionFilterParserTest extends UnitTestCase
     $location = new WactSourceLocation('my_testing_file', 10);
     $context_node = new WactCompileTreeNode($location);
 
-    $this->parser = new WactNewExpressionFilterParser($context_node);
+    $this->parser = new WactExpressionFilterParser($context_node);
   }
 
   function testName()
@@ -153,6 +153,14 @@ class WactNewExpressionFilterParserTest extends UnitTestCase
     $this->assertEqual($filters, array('filter' => array('name' => 'filter',
                                                          'expression' => 'filter: ", test: 99"',
                                                          'params' => array('", test: 99"'))));
+  }
+
+  function testSpaceInParams()
+  {
+    $filters = $this->parser->parse($expression = 'filter:" "');
+    $this->assertEqual($filters, array('filter' => array('name' => 'filter',
+                                                         'expression' => 'filter:" "',
+                                                         'params' => array('" "'))));
   }
 
   function testParamDelimeterInParams()

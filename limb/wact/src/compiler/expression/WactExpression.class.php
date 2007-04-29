@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpression.class.php 5781 2007-04-28 18:04:32Z serega $
+ * @version    $Id: WactExpression.class.php 5782 2007-04-29 06:28:12Z serega $
  * @package    wact
  */
 
-require_once 'limb/wact/src/compiler/expression/WactNewExpressionFilterParser.class.php';
+require_once 'limb/wact/src/compiler/expression/WactExpressionFilterParser.class.php';
 require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
 
 /**
@@ -108,7 +108,7 @@ class WactExpression implements WactExpressionInterface
   */
   function createFilterChain($expression, $base)
   {
-    $filter_parser = new WactNewExpressionFilterParser($this->context);
+    $filter_parser = new WactExpressionFilterParser($this->context);
     $filters_specs = $filter_parser->parse($expression);
 
     foreach($filters_specs as $filter_spec)

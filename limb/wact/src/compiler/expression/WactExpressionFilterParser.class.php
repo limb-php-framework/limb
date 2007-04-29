@@ -10,7 +10,7 @@
  * @package    wact
  */
 
-class WactNewExpressionFilterParser
+class WactExpressionFilterParser
 {
   protected $text;
   protected $position;
@@ -87,7 +87,7 @@ class WactNewExpressionFilterParser
 
       do
       {
-        $token = $this->getToken('/\G\s*("|\'|[^,]+,?)\s*/u');
+        $token = $this->getToken('/\G\s*("|\'|[^,]+,?)/u');
         if ($token === FALSE)
           $this->context->raiseCompilerError('Filter params expected after ":" symbol');
 
