@@ -6,10 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRouteUrlSetTagTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
+ * @version    $Id: lmbRouteUrlSetTagTest.class.php 5787 2007-05-02 13:46:30Z tony $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/request/lmbRoutes.class.php');
+lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
 class lmbRouteUrlSetTagTest extends lmbWactTestCase
 {
@@ -89,6 +90,26 @@ class lmbRouteUrlSetTagTest extends lmbWactTestCase
     $page = $this->initTemplate('/limb/routes_tag_no_route_name.html');
 
     $expected = lmbToolkit :: instance()->getRoutesUrl(array('controller' => 'news', 'action' => 'archive'));
+    $this->assertEqual($page->capture(), $expected);
+  }
+
+  function testRouteWithSkipController()
+  {
+    $toolkit = lmbToolkit :: instance();
+    $toolkit->setDispatchedController(new lmbController());
+
+    $config = array('blog' => array('path' => '/blog/:action'));
+
+    $routes = $this->_createRoutes($config);
+
+    $template = '<route_url_set field="url" params="action:archive" skip_controller="true"/>' .
+                '{$url}';
+
+    $this->registerTestingTemplate('/limb/routes_tag_route_with_skip_controller.html', $template);
+
+    $page = $this->initTemplate('/limb/routes_tag_route_with_skip_controller.html');
+
+    $expected = $toolkit->getRoutesUrl(array('action' => 'archive'), null, $skip_controller = true);
     $this->assertEqual($page->capture(), $expected);
   }
 

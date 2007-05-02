@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWebAppTools.class.php 5596 2007-04-10 09:05:33Z pachanga $
+ * @version    $Id: lmbWebAppTools.class.php 5787 2007-05-02 13:46:30Z tony $
  * @package    web_app
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -71,10 +71,10 @@ class lmbWebAppTools extends lmbAbstractTools
     return $this->dispatched_controller;
   }
 
-  function getRoutesUrl($params = array(), $route_name = '')
+  function getRoutesUrl($params = array(), $route_name = '', $skip_controller = false)
   {
     $routes = $this->toolkit->getRoutes();
-    if(!isset($params['controller']))
+    if(!isset($params['controller']) && !$skip_controller)
       $params['controller'] = $this->toolkit->getDispatchedController()->getName();
 
     return LIMB_HTTP_GATEWAY_PATH . ltrim($routes->toUrl($params, $route_name), '/');

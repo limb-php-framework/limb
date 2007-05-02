@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: route_url_set.tag.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: route_url_set.tag.php 5787 2007-05-02 13:46:30Z tony $
  * @package    web_app
  */
 /**
@@ -35,9 +35,17 @@ class lmbRouteUrlSetTag extends WactCompilerTag
       $this->attributeNodes['params']->generatePostStatement($code);
     }
 
+    $skip_controller = '$' . $code->getTempVariable();
+
+    if($this->getBoolAttribute('skip_controller'))
+      $code->writePhp($skip_controller . ' = true;');
+    else
+      $code->writePhp($skip_controller . ' = false;');
+
+
     $code->writePhp($this->parent->getDatasource()->getComponentRefCode() .
                     '->set("' . $this->getAttribute('field') . '",
-                           lmbToolkit :: instance()->getRoutesUrl(' . $params . ', ' . $route .'));');
+                           lmbToolkit :: instance()->getRoutesUrl(' . $params . ', ' . $route . ', ' . $skip_controller .'));');
   }
 }
 
