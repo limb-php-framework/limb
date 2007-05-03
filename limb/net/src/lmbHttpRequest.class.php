@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequest.class.php 5793 2007-05-03 11:06:44Z pachanga $
+ * @version    $Id: lmbHttpRequest.class.php 5794 2007-05-03 13:04:09Z pachanga $
  * @package    net
  */
 lmb_require('limb/core/src/lmbSet.class.php');
@@ -54,10 +54,6 @@ class lmbHttpRequest extends lmbSet
 
     foreach($this->request as $k => $v)
       $this->set($k, $v);
-
-    //uploaded files shouldn't be attributes of request!?
-    foreach($this->files as $k => $v)
-      $this->set($k, $v);
   }
 
   protected function _parseUploadedFiles($files)
@@ -78,9 +74,12 @@ class lmbHttpRequest extends lmbSet
     return $result;
   }
 
-  function hasAttribute($name)//rename later
+  /**
+   * @deprecated
+   */
+  function hasAttribute($name)
   {
-    return isset($this->properties[$name]);
+    return $this->has($name);
   }
 
   function getFiles($key = null)
