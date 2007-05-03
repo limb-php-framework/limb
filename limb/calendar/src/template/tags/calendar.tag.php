@@ -6,13 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: calendar.tag.php 5536 2007-04-05 11:42:44Z pachanga $
+ * @version    $Id: calendar.tag.php 5796 2007-05-03 14:14:50Z pachanga $
  * @package    calendar
  */
 require_once('limb/wact/src/tags/form/input.tag.php');
 
 /**
-* @tag limb:CALENDAR
+* @tag datetime,limb:CALENDAR
 * @forbid_end_tag
 */
 class lmbCalendarTag extends WactInputTag
