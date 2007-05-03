@@ -14,12 +14,8 @@ require_once 'limb/wact/src/components/form/form.inc.php';
 
 class WactSelectSingleComponentTest extends WactTemplateTestCase
 {
-  /**
-  * @todo Should the first element of the index really be selected automatically ?
-  */
-  function testSetChoicesWithIndex()
+  function testSetChoicesDontSelectByDefault()
   {
-
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
@@ -34,12 +30,11 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $output = $page->capture();
     $this->assertWantedPattern('~<form[^>]+id="testForm"[^>]*>.*</form>$~ims', $output);
     $this->assertWantedPattern('~<select[^>]+id="test"[^>]*>(\s*<option\svalue="\d+"[^>]*>[^<]*</option>)+.*</select>~ims', $output);
-    $this->assertWantedPattern('~<option\s+value="0"(?U)[^>]*selected[^>]*>[^<]*</option>~ims', $output);
+    $this->assertNoPattern('~<option\s+value="0"(?U)[^>]*selected[^>]*>[^<]*</option>~ims', $output);
   }
 
-
-  function testSetChoicesWithHash() {
-
+  function testSetChoicesWithHash()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
@@ -56,8 +51,8 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertWantedPattern('~<select[^>]+id="test"[^>]*>(\s*<option\svalue="[a-c]"[^>]*>[^<]*</option>)+.*</select>~ims', $output);
   }
 
-  function testSetSelectionWithIndex() {
-
+  function testSetSelectionWithIndex()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
@@ -77,8 +72,8 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertWantedPattern('~<option[^>]+value="1"[^>]+selected[^>]*>green</option>~ims', $output);
   }
 
-  function testSetSelectionWithIndexByForm() {
-
+  function testSetSelectionWithIndexByForm()
+  {
     $template = '<form id="testForm" runat="server">
                       <select id="test" name="mySelect" runat="server"></select>
                   </form>';
@@ -184,6 +179,28 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertWantedPattern('~<option[^>]+value="2"[^>]+selected[^>]*>green</option>~ims', $output);
   }
 
+  function testMixedOptionsWithZeroKey()
+  {
+    $template = '<form id="testForm" runat="server">
+                      <select id="test" name="mySelect" select_field="my_id" ></select>
+                  </form>';
+    $this->registerTestingTemplate('/tags/form/select_single/set_selection_with_zero.html', $template);
+
+    $page = $this->initTemplate('/tags/form/select_single/set_selection_with_zero.html');
+
+    $choices = array(0 => '--', 'red' => 'R', 'green' => 'G', 'blue' => 'B');
+    $Select = $page->getChild('test');
+    $Select->setChoices($choices);
+    $object = new WactArrayObject(array('my_id' => 'green'));
+    $Select->setSelection($object);
+
+    $output = $page->capture();
+    $this->assertWantedPattern('~<form[^>]+id="testForm"[^>]*>.*</form>$~ims', $output);
+    $this->assertWantedPattern('~<option[^>]+value="green"[^>]+selected[^>]*>G</option>~ims', $output);
+    $this->assertNoPattern('~<option[^>]+value="0"[^>]+selected[^>]*>--</option>~ims', $output);
+  }
+
+
   /************************************************************
    Tests below use the API as it's expected to be used
    ************************************************************/
@@ -233,7 +250,8 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
 
     $testOut = '';
 
-    foreach ($choices as $key => $choice ) {
+    foreach ($choices as $key => $choice )
+    {
       $testOut .= '<option value="'.$key.'"';
       if ( $key == $selected ) {
         $testOut .= ' selected="true"';

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.inc.php 5689 2007-04-19 11:23:20Z serega $
+ * @version    $Id: select.inc.php 5792 2007-05-03 08:41:35Z pachanga $
  * @package    wact
  */
 
@@ -110,10 +110,10 @@ class WactSelectMultipleComponent extends WactFormElementComponent
   function renderContents()
   {
     $values = $this->getValue();
-    if (!is_object($values) && !is_array($values))
+    if(!is_object($values) && !is_array($values))
       $values = $this->default_selection;
 
-    if (empty($this->option_handler))
+    if(empty($this->option_handler))
       $this->option_handler = new WactOptionRenderer();
 
     if(!$select_field = $this->getAttribute('select_field'))
@@ -262,20 +262,22 @@ class WactSelectSingleComponent extends WactFormElementComponent
     if(is_null($value))
       $value = $this->default_selection;
 
-    if (!is_object($this->option_handler))
+    if(!is_object($this->option_handler))
       $this->option_handler = new WactOptionRenderer();
 
     if(!$select_field = $this->getAttribute('select_field'))
       $select_field = 'id';
 
+    if(!is_scalar($value))
+      $selected = $value[$select_field];
+    else
+      $selected = $value;
+
     foreach($this->choice_list as $key => $choice)
     {
-      if(!is_scalar($value))
-        $selected = $value[$select_field];
-      else
-        $selected = $value;
-
-      $this->option_handler->renderOption($key, $choice, $key == $selected);
+      //special case, since in PHP "0 == 'bar'"
+      $set = ((string)$key) == $selected;
+      $this->option_handler->renderOption($key, $choice, $set);
     }
   }
 }
