@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5605 2007-04-10 14:39:32Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5789 2007-05-03 07:09:18Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -175,7 +175,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
     $object->save();
 
-    $this->assertEqual(lmbActiveRecord :: find($this->class_name)->count(), 2);
+    $this->assertEqual($this->db->count('test_one_table_object'), 2);
   }
 
   function testUpdate()
