@@ -6,13 +6,18 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSQLCriteria.class.php 5384 2007-03-28 12:55:35Z pachanga $
+ * @version    $Id: lmbSQLCriteria.class.php 5790 2007-05-03 07:59:23Z pachanga $
  * @package    dbal
  */
 lmb_require(dirname(__FILE__) . '/lmbSQLRawCriteria.class.php');
 
-class lmbSQLCriteria
+class lmbSQLCriteria extends lmbSQLRawCriteria
 {
+  function __construct()
+  {
+    parent :: __construct("1 = 1");
+  }
+
   static function objectify($args)
   {
     if(is_null($args))
