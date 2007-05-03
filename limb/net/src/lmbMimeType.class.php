@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMimeType.class.php 5001 2007-02-08 15:36:45Z pachanga $
+ * @version    $Id: lmbMimeType.class.php 5795 2007-05-03 13:43:28Z pachanga $
  * @package    net
  */
 class lmbMimeType
@@ -34,29 +34,38 @@ class lmbMimeType
     'avi' => 'video/avi',
     'mpg' => 'video/mpeg',
     'js' => 'text/javascript'
-    );
-  static protected $flipped_mime_types = NULL;
+  );
+
+  static protected $flipped_mime_types = array();
 
   static function getExtension($mime_type)
   {
-    $mime_type = strtolower($mime_type);
-    if ( !is_array(self :: $flipped_mime_types) )
-    {
+    if(!self :: $flipped_mime_types)
       self :: $flipped_mime_types = array_flip(self :: $mime_types);
-    }
+
+    $mime_type = strtolower($mime_type);
 
     return isset(self :: $flipped_mime_types[$mime_type])
       ? self :: $flipped_mime_types[$mime_type]
-      : NULL;
+      : null;
   }
 
   static function getMimeType($extension)
   {
-    $extension = strtolower($extension);
+    $extension = ltrim(strtolower($extension), '.');
 
     return isset(self :: $mime_types[$extension])
       ? self :: $mime_types[$extension]
-      : NULL;
+      : null;
+  }
+
+  static function getFileMimeType($file)
+  {
+    if($info = pathinfo($file))
+    {
+      if(isset($info['extension']))
+        return self :: getMimeType($info['extension']);
+    }
   }
 }
 ?>
