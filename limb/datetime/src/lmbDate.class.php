@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbDate.class.php 5791 2007-05-03 08:00:08Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -70,6 +70,12 @@ class lmbDate extends lmbObject
       return new lmbDate($hour_or_date, $minute_or_tz, $second, $day, $month, $year, $tz);
     else
       return new lmbDate($hour_or_date, $minute_or_tz);
+  }
+
+  static function stampToISO($stamp)
+  {
+    $date = new lmbDate((int)$stamp);
+    return $date->getISODate();
   }
 
   function _createTimeZoneObject($code=null)
@@ -158,7 +164,9 @@ class lmbDate extends lmbObject
                    $this->getHour(), $this->getMinute(), $this->getSecond());
   }
 
-  //obsolete?
+  /**
+   * @deprecated
+   */
   function toTimestamp()
   {
     return $this->getStamp();

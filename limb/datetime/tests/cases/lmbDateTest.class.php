@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 4993 2007-02-08 15:35:44Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5791 2007-05-03 08:00:08Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -127,6 +127,13 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '0000-00-00 12:45:00');
   }
 
+  function testStampToISO()
+  {
+    $stamp = mktime(21, 45, 13, 12, 1, 2005);
+    $iso = lmbDate :: stampToISO($stamp);
+    $this->assertEqual($iso, '2005-12-01 21:45:13');
+  }
+
   function testCreateByStamp()
   {
     $date = new lmbDate($stamp = mktime(21, 45, 13, 12, 1, 2005));
@@ -142,10 +149,10 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '2005-12-01 21:45:13');
   }
 
-  function testToTimestamp()
+  function testGetStamp()
   {
     $date = new lmbDate($stamp = mktime(21, 45, 13, 12, 1, 2005));
-    $this->assertEqual($date->toTimestamp(), $stamp);
+    $this->assertEqual($date->getStamp(), $stamp);
   }
 
   //in the two tests below we're testing a boundary situtation
