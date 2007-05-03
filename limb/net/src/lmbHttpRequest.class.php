@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequest.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbHttpRequest.class.php 5793 2007-05-03 11:06:44Z pachanga $
  * @package    net
  */
 lmb_require('limb/core/src/lmbSet.class.php');
@@ -52,12 +52,11 @@ class lmbHttpRequest extends lmbSet
 
     $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post);
 
-    //ugly hack, uploaded files shouldn't be attributes of request!!!
-    $all = $this->request;
-    if($this->files)
-      $all = lmbArrayHelper :: arrayMerge($all, $this->files);
+    foreach($this->request as $k => $v)
+      $this->set($k, $v);
 
-    foreach($all as $k => $v)
+    //uploaded files shouldn't be attributes of request!?
+    foreach($this->files as $k => $v)
       $this->set($k, $v);
   }
 
@@ -186,24 +185,20 @@ class lmbHttpRequest extends lmbSet
 
   function toString()
   {
-    //ugly hack: making a copy(uri must be a value object)
-    $uri = clone $this->uri;
-    $uri->removeQueryItems();
-
-    $result = array();
+    $flat = array();
     $query = '';
 
-    $exported = $this->export();
+    lmbArrayHelper :: toFlatArray($this->export(), $flat);
 
-    //ugly hack again: removing uploaded files data
-    if(isset($exported['file']))
-      unset($exported['file']);
-
-    lmbArrayHelper :: toFlatArray($exported, $result);
-
-    foreach($result as $key => $value)
+    foreach($flat as $key => $value)
+    {
+      if(is_object($value)) //skippping uploaded files
+        continue;
       $query .= $key . '=' . $value . '&';
+    }
 
+    $uri = clone($this->uri);
+    $uri->removeQueryItems();
     return rtrim($uri->toString() . '?' . rtrim($query, '&'), '?');
   }
 

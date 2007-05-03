@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequestTest.class.php 5219 2007-03-13 08:37:04Z pachanga $
+ * @version    $Id: lmbHttpRequestTest.class.php 5793 2007-05-03 11:06:44Z pachanga $
  * @package    net
  */
 lmb_require('limb/net/src/lmbHttpRequest.class.php');
@@ -127,11 +127,22 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testToString()
   {
+     $files = array(
+        'file1' => array(
+                         'name' => 'file',
+                         'type' => 'file_type',
+                         'tmp_name' => 'file_tmp_name',
+                         'size' => 'file_size',
+                         'error' => 'file_err_code'
+                         )
+     );
+
     $request = new lmbHttpRequest('http://test.com?z=1',
                                 array('b' => array('c' => 1)),
                                 array('d' => 2),
-                                array('cookie' => 2), //only get & post data gets into string
-                                array('file' => array()));
+                                //only get & post data gets into string, cookies and files are ignored
+                                array('cookie' => 2),
+                                $files);
     $this->assertEqual($request->toString(), 'http://test.com?b[c]=1&z=1&d=2');
   }
 
