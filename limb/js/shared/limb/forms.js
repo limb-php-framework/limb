@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: forms.js 5436 2007-03-30 07:30:57Z tony $
+ * @version    $Id: forms.js 5802 2007-05-04 11:37:52Z pachanga $
  * @package    js
  */
 
@@ -46,21 +46,43 @@ Limb.Form.addHidden = function (form, parameter, val)
 
 Limb.Form.submit = function (form, form_action)
 {
-  var is_popup = form_action.indexOf('popup=1');
+  var iframe_id = form.id + '_worker_frame';
 
-  if(is_popup > -1)
+  if(Limb.Browser.is_ie)
+    var iframe = document.createElement('<iframe id="' + iframe_id + '" name="' + iframe_id + '" />');
+  else
   {
-    var w = new Limb.Window(form_action, form.id + 'popup');
-    form.target = w.getWindowObject().name;
+    var iframe = document.createElement('iframe');
+    iframe.id = iframe_id;
+    iframe.name = iframe_id;
   }
+  iframe.src = '';
+  iframe.style.display = 'none';
+
+  jQuery(iframe).bind('load', function(){
+    window.location.reload();
+  });
+
+  form.appendChild(iframe);
+  form.target = iframe_id;
+
+  if(form_action)
+    form.action = form_action;
+
+  form.submit();
+}
+
+Limb.Form.submitPopup = function (form, form_action)
+{
+  var w = new Limb.Window(form_action, form.id + 'popup');
+  form.target = w.getWindowObject().name;
 
   if(form_action)
     form.action = form_action;
 
   form.submit();
 
-  if(is_popup > -1)
-    w.onOpen();
+  w.onOpen();
 }
 
 Limb.Form.getFieldLabel = function (id)

@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: browser.js 5436 2007-03-30 07:30:57Z tony $
+ * @version    $Id: browser.js 5802 2007-05-04 11:37:52Z pachanga $
  * @package    js
  */
 
@@ -23,7 +23,7 @@ Limb.Browser.detectFlash = function(requiredVersion)
 {
   var flashVersion = 0;
 
-  if (!navigator.plugins)
+  if(!navigator.plugins)
     return false;
 
   if(Limb.Browser.is_win_ie)
@@ -54,7 +54,7 @@ Limb.Browser.detectFlash = function(requiredVersion)
 
   if(navigator.userAgent.indexOf("WebTV") != -1) actualVersion = 4;
 
-  if (flashVersion < requiredVersion)
+  if(flashVersion < requiredVersion)
     return false;
 
   return true;

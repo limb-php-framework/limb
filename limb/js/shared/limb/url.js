@@ -5,15 +5,15 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: http.js 5436 2007-03-30 07:30:57Z tony $
+ * @version    $Id: url.js 5802 2007-05-04 11:37:52Z pachanga $
  * @package    js
  */
 
-Limb.namespace('Limb.Http');
+Limb.namespace('Limb.Url');
 
-Limb.Http.getQueryItem = function (page_href, item_name)
+Limb.Url.getQueryItem = function (page_href, item_name)
 {
-  arr = Limb.Http.getQueryItems(page_href);
+  arr = Limb.Url.getQueryItems(page_href);
 
   if(arr[item_name])
     return arr[item_name];
@@ -21,7 +21,7 @@ Limb.Http.getQueryItem = function (page_href, item_name)
     return null;
 }
 
-Limb.Http.buildQuery = function (items)
+Limb.Url.buildQuery = function (items)
 {
   query = '';
   for(index in items)
@@ -30,7 +30,7 @@ Limb.Http.buildQuery = function (items)
   return query;
 }
 
-Limb.Http.getQueryItems = function (uri)
+Limb.Url.getQueryItems = function (uri)
 {
   query_items = new Array();
 
@@ -57,17 +57,17 @@ Limb.Http.getQueryItems = function (uri)
   return query_items;
 }
 
-Limb.Http.addUrlQueryItem = function (uri, parameter, val)
+Limb.Url.addUrlQueryItem = function (uri, parameter, val)
 {
   uri_pieces = uri.split('?');
 
-  items = Limb.Http.getQueryItems(uri);
+  items = Limb.Url.getQueryItems(uri);
   items[parameter] = val;
 
-  return uri_pieces[0] + '?' + Limb.Http.buildQuery(items);
+  return uri_pieces[0] + '?' + Limb.Url.buildQuery(items);
 }
 
-Limb.Http.addRandomToUrl = function (page_href)
+Limb.Url.addRandomToUrl = function (page_href)
 {
   if(page_href.indexOf('?') == -1)
     page_href = page_href + '?';
@@ -84,13 +84,7 @@ Limb.Http.addRandomToUrl = function (page_href)
   return page_href;
 }
 
-Limb.Http.jump = function (href, w)
-{
-  if(!w) w = window;
-  w.location.href = href;
-}
-
-Limb.Http.click = function (href, window_name)
+Limb.Url.click = function (href, window_name)
 {
   is_popup = href.indexOf('popup=1');
 

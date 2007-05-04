@@ -5,154 +5,154 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form_elements.js 5770 2007-04-24 12:37:04Z wiliam $
+ * @version    $Id: form_elements.js 5802 2007-05-04 11:37:52Z pachanga $
  * @package    js
  */
 
-Limb.namespace('Limb.DynamicList');
-
-Limb.DynamicList = function(button_id, answer_sample_id, container_id, init_arr, init_func)
+Limb.Class('Limb.DynamicList',
 {
-  this.create_button = document.getElementById(button_id)
-  this.answer_sample = document.getElementById(answer_sample_id)
-  this.container = document.getElementById(container_id)
-  this.create_button.controller = this
-  this.init_arr = init_arr
-  this.init_func = init_func
-  this.index = 0
-  this.init()
-}
-
-Limb.DynamicList.is_modified = 0
-Limb.DynamicList.set_modified_flag = function()
-{
-  Limb.DynamicList.is_modified = 1
-}
-Limb.DynamicList.prototype.init = function()
-{
-  for(i=0; i<this.init_arr.length; i++)
+  __construct: function(button_id, answer_sample_id, container_id, init_arr, init_func)
   {
-    this.add_item();
-  }
+    this.create_button = document.getElementById(button_id);
+    this.answer_sample = document.getElementById(answer_sample_id);
+    this.container = document.getElementById(container_id);
+    this.create_button.controller = this;
+    this.init_arr = init_arr;
+    this.init_func = init_func;
+    this.index = 0;
+    this.init();
+  },
 
-  this.create_button.onclick = function()
+  init: function()
   {
-    this.controller.add_item()
-    Limb.DynamicList.set_modified_flag()
-    return false
-  }
-  this.answer_sample.style.display = 'none'
-}
+    for(i=0; i<this.init_arr.length; i++)
+      this.addItem();
 
-Limb.DynamicList.prototype.add_item = function(top_obj)
-{
-  var div = document.createElement('div');
-  if(top_obj)
-  {
-    var next = top_obj.nextSibling
-    if(next)
-      div = this.container.insertBefore(div, next)
-    else
-      this.container.appendChild(div)
-  }
-  else
-  {
-    this.container.appendChild(div)
-  }
-  div.innerHTML = this.answer_sample.innerHTML
-
-  this.init_func(div, this.index, this.init_arr)
-
-  this.init_behavior(div)
-  this.index++
-}
-Limb.DynamicList.prototype.init_behavior = function(div)
-{
-  div.name = 'Limb.DynamicList_row'
-
-  var del = Limb.DynamicList.get_obj_by_id(div, 'del');
-  del.id = del.id + this.index;
-  var add = Limb.DynamicList.get_obj_by_id(div, 'add')
-  add.id = add.id + this.index;
-  var up = Limb.DynamicList.get_obj_by_id(div, 'up')
-  up.id = up.id + this.index;
-  var down = Limb.DynamicList.get_obj_by_id(div, 'down')
-  down.id = down.id + this.index;
-
-  del.controller =
-  add.controller =
-  up.controller =
-  down.controller = this;
-
-  up.div =
-  down.div =
-  add.div = div
-
-  del.onclick =  function()
-  {
-    var node = this
-    while((node = node.parentNode) != null)
+    this.create_button.onclick = function()
     {
+      this.controller.addItem();
+      Limb.DynamicList.setModifiedFlag();
+      return false;
+    }
+    this.answer_sample.style.display = 'none';
+  },
 
-      if(node)
-        if(node.name == 'Limb.DynamicList_row')
+  addItem: function(top_obj)
+  {
+    var div = document.createElement('div');
+    if(top_obj)
+    {
+      var next = top_obj.nextSibling;
+      if(next)
+        div = this.container.insertBefore(div, next);
+      else
+        this.container.appendChild(div);
+    }
+    else
+    {
+      this.container.appendChild(div);
+    }
+    div.innerHTML = this.answer_sample.innerHTML;
+
+    this.init_func(div, this.index, this.init_arr);
+
+    this.initBehavior(div);
+    this.index++;
+  },
+
+  initBehavior: function(div)
+  {
+    div.name = 'dynamic_list_row';
+
+    var del = Limb.DynamicList.get_obj_by_id(div, 'del');
+    del.id = del.id + this.index;
+    var add = Limb.DynamicList.get_obj_by_id(div, 'add')
+    add.id = add.id + this.index;
+    var up = Limb.DynamicList.get_obj_by_id(div, 'up')
+    up.id = up.id + this.index;
+    var down = Limb.DynamicList.get_obj_by_id(div, 'down')
+    down.id = down.id + this.index;
+
+    del.controller = add.controller = up.controller = down.controller = this;
+    up.div = down.div = add.div = div;
+
+    del.onclick =  function()
+    {
+      var node = this;
+      while((node = node.parentNode) != null)
+      {
+        if(node && node.name == 'dynamic_list_row')
         {
-          node.parentNode.removeChild(node)
-          Limb.DynamicList.set_modified_flag()
+          node.parentNode.removeChild(node);
+          Limb.DynamicList.setModifiedFlag();
         }
+      }
+    }
+
+    add.onclick =  function()
+    {
+      this.controller.addItem(this.div);
+      Limb.DynamicList.setModifiedFlag();
+    }
+
+    up.onclick =  function()
+    {
+      if(!this.div.previousSibling) return;
+      var tmp = this.div.parentNode.removeChild(this.div.previousSibling);
+
+      if(this.div.nextSibling)
+        this.controller.container.insertBefore(tmp, this.div.nextSibling);
+      else
+        this.controller.container.appendChild(tmp);
+
+      Limb.DynamicList.setModifiedFlag();
+    }
+
+    down.onclick =  function()
+    {
+      if(!this.div.nextSibling) return;
+      var tmp = this.div.parentNode.removeChild(this.div.nextSibling);
+
+      this.controller.container.insertBefore(tmp, this.div);
+
+      Limb.DynamicList.setModifiedFlag();
+    }
+  },
+
+  fixSelectValues: function(original, clone)
+  {
+    var selects = original.getElementsByTagName('select');
+    var clone_selects = clone.getElementsByTagName('select');
+
+    for(var i=0; (i < clone_selects.length); i++)
+      clone_selects[i].selectedIndex = selects[i].selectedIndex;
+  },
+
+  static:
+  {
+    is_modified: 0,
+    setModifiedFlag: function()
+    {
+      Limb.DynamicList.is_modified = 1;
+    },
+
+    get_obj_by_id: function(node, id)
+    {
+      if(node.id == id)
+        return node;
+
+      if(!node.hasChildNodes())
+        return null;
+
+      result = null;
+
+      for(var i = 0; (i < node.childNodes.length && !result); i++)
+        result = Limb.DynamicList.get_obj_by_id(node.childNodes[i], id);
+
+      return result;
     }
   }
-  add.onclick =  function()
-  {
-    this.controller.add_item(this.div)
-    Limb.DynamicList.set_modified_flag()
-  }
-  up.onclick =  function()
-  {
-    if(!this.div.previousSibling) return
-    var tmp = this.div.parentNode.removeChild(this.div.previousSibling)
-
-    if(this.div.nextSibling)
-      this.controller.container.insertBefore(tmp, this.div.nextSibling)
-    else
-      this.controller.container.appendChild(tmp)
-
-    Limb.DynamicList.set_modified_flag()
-  }
-  down.onclick =  function()
-  {
-    if(!this.div.nextSibling) return
-    var tmp = this.div.parentNode.removeChild(this.div.nextSibling)
-
-    this.controller.container.insertBefore(tmp, this.div)
-
-    Limb.DynamicList.set_modified_flag()
-  }
-}
-Limb.DynamicList.prototype.fix_select_values = function(original, clone)
-{
-  var selects = original.getElementsByTagName('select')
-  var clone_selects = clone.getElementsByTagName('select')
-
-  for(var i = 0; (i < clone_selects.length); i++)
-    clone_selects[i].selectedIndex = selects[i].selectedIndex;
-}
-
-Limb.DynamicList.get_obj_by_id = function(node, id)
-{
-  if(node.id == id)
-    return node;
-
-  if(!node.hasChildNodes())
-    return null;
-
-  result = null;
-
-  for(var i = 0; (i < node.childNodes.length && !result); i++)
-    result = Limb.DynamicList.get_obj_by_id(node.childNodes[i], id);
-
-  return result;
-}
+});
 
 Limb.Class('Limb.DoubleSelect',
 {
@@ -219,8 +219,6 @@ Limb.Class('Limb.DoubleSelect',
       src.style.height = example.style.height;
     else
       src.style.height = '200px';
-
-
   },
 
   addSelector: function(parent)
