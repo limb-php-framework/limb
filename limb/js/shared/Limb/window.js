@@ -5,13 +5,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: window.js 5641 2007-04-11 14:31:43Z serega $
+ * @version    $Id: window.js 5799 2007-05-04 09:35:51Z pachanga $
  * @package    js
  */
 
 Limb.namespace('Limb.Window');
-
-Limb.Window = Class.create();
 
 Limb.Class('Limb.Window',
 {
@@ -30,10 +28,11 @@ Limb.Class('Limb.Window',
       this.window = win;
 
     if(arguments.length == 2 || arguments.length == 3)
+    {
       this.window = this._createWindow(arguments[0], arguments[1], arguments[2]);
-
-    Limb.events.add_event(this.window, 'load', this.onOpen.bind(this), false);
-    Limb.events.add_event(this.window, 'close', this.onClose.bind(this), false);
+      jQuery(this.window).ready(this.onOpen.bind(this));
+      jQuery(this.window).bind(this.window, 'close', this.onClose.bind(this));
+    }
   },
 
   getWindowObject: function()
@@ -95,7 +94,6 @@ Limb.Class('Limb.Window',
       createParams = this._getDefaultParams();
 
     var win = window.open(href, this.windowName, createParams.asString());
-
     return win;
   },
 
