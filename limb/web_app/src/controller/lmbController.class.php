@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5532 2007-04-05 10:31:47Z pachanga $
+ * @version    $Id: lmbController.class.php 5804 2007-05-04 11:38:49Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
@@ -144,7 +144,7 @@ class lmbController extends lmbAbstractController
 
   function closePopup()
   {
-    $this->response->write('<html><script>window.opener.focus();window.opener.location.reload();window.close();</script></html>');
+    $this->response->write('<html><script>if(window.opener){window.opener.focus();window.opener.location.reload();window.close();}</script></html>');
   }
 
   protected function _mapCurrentActionToMethod()
