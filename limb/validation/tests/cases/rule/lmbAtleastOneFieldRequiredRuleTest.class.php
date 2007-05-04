@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
+ * @version    $Id: lmbAtleastOneFieldRequiredRuleTest.class.php 5806 2007-05-04 14:06:34Z pachanga $
  * @package    validation
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
@@ -18,7 +18,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
   {
     $dataspace = new lmbSet(array('field1' => 'whatever'));
 
-    $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2');
+    $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2'));
 
     $this->error_list->expectNever('addError');
 
@@ -29,7 +29,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
   {
     $dataspace = new lmbSet();
 
-    $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2');
+    $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('Atleast one field required among: {fields}', array('{fields}' => '{0}, {1}'), 'validation'),
@@ -40,17 +40,6 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
   }
 
   function testValidAndMoreFields()
-  {
-    $dataspace = new lmbSet(array('field3' => 'whatever'));
-
-    $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2', 'field3');
-
-    $this->error_list->expectNever('addError');
-
-    $rule->validate($dataspace, $this->error_list);
-  }
-
-  function testValidWithConstructorAcceptingArrayOfFields()
   {
     $dataspace = new lmbSet(array('field3' => 'whatever'));
 
@@ -65,7 +54,7 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
   {
     $dataspace = new lmbSet();
 
-    $rule = new lmbAtleastOneFieldRequiredRule('field1', 'field2', 'field3');
+    $rule = new lmbAtleastOneFieldRequiredRule(array('field1', 'field2', 'field3'));
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('Atleast one field required among: {fields}', array('{fields}' => '{0}, {1}, {2}'), 'validation'),

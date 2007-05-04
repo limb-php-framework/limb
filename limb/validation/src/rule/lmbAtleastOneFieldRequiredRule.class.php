@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbAtleastOneFieldRequiredRule.class.php 5806 2007-05-04 14:06:34Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
@@ -16,7 +16,7 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 * Example of usage:
 * <code>
 * lmb_require('limb/validation/src/rule/lmbAtleastOneFieldRequiredRule.class.php');
-* $validator->addRule(new lmbAtleastOneFieldRequiredRule('name', 'nickname', 'fullname'));
+* $validator->addRule(new lmbAtleastOneFieldRequiredRule(array('name', 'nickname', 'fullname')));
 * </code>
 */
 class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
@@ -30,21 +30,10 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
   */
   protected $custom_error;
 
-  /**
-  * Constructor
-  * Can accepts any number of arguments. All arguments will be save into $field_names array
-  */
-  function __construct()
+  function __construct($field_names, $custom_error = '')
   {
-    $args = func_get_args();
-
-    if(is_array($args[0]))
-    {
-      $this->field_names = $args[0];
-      $this->custom_error = isset($args[1]) ? $args[1] : '';
-    }
-    else
-      $this->field_names = $args;
+    $this->field_names = $field_names;
+    $this->custom_error = $custom_error;
   }
 
   /**
