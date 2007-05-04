@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: window.js 5799 2007-05-04 09:35:51Z pachanga $
+ * @version    $Id: window.js 5800 2007-05-04 10:16:28Z pachanga $
  * @package    js
  */
 
@@ -212,7 +212,7 @@ Limb.Class('Limb.Window.Params',
 
     for(var name in this.params)
     {
-      if(Limb.is_function(this.params[name]))
+      if(Limb.isFunction(this.params[name]))
         continue;
 
       result += name + '=' + this.params[name] + ',';
