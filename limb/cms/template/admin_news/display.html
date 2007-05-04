@@ -8,7 +8,7 @@
 <h1>News</h1>
 
 <div class='actions'>
-  <route_url params="action:edit,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'>
+  <route_url params="action:edit,id:{$id}" extra='?popup=1'>
     <img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='edit'/>
   </route_url>
 </div>
@@ -17,7 +17,7 @@
 
 <div class='actions'>
 <span>
-<route_url params="controller:admin_news_folder,action:create" extra='?popup=1&parent={$id}' onclick='return Limb.Http.click(this.href)'>
+<route_url params="controller:admin_news_folder,action:create" extra='?popup=1&parent={$id}'>
  <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='Create news folder'/>
 </route_url>
 </span>
@@ -49,8 +49,8 @@
           </ul>
         </td>
         <td>
-          <route_url params="controller:admin_news_folder,action:edit,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit'/></route_url>
-          <route_url params="controller:admin_news_folder,action:delete" extra='?popup=1&ids[]={$id}' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24'  alt='Delete'/></route_url>
+          <route_url params="controller:admin_news_folder,action:edit,id:{$id}" extra='?popup=1'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit'/></route_url>
+          <route_url params="controller:admin_news_folder,action:delete" extra='?popup=1&ids[]={$id}'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24'  alt='Delete'/></route_url>
         </td>
       </tr>
     </list:item>
@@ -58,10 +58,10 @@
 
   <div class='list_actions'>
     <route_url_set field='delete_url' params="controller:admin_news_folder,action:delete" />
-    <input type='submit' value='Delete' onclick='Limb.Form.submit(this.form, "{$delete_url}?popup=1");return false;'/>
+    <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
 
     <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" />
-    <input type='submit' value='Save order' onclick='Limb.Form.submit(this.form, "{$save_order_url}?popup=1");return false;'/>
+    <input type='submit' value='Save order' onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
   </div>
 </list:list>
 
@@ -72,7 +72,7 @@
 
 <div class='actions'>
 <span>
-<route_url params="controller:admin_news_item,action:create" extra='?popup=1&parent={$id}' onclick='return Limb.Http.click(this.href)'>
+<route_url params="controller:admin_news_item,action:create" extra='?popup=1&parent={$id}'>
  <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='Create news'/>
 </route_url>
 </span>
@@ -108,8 +108,8 @@
         </ul>
       </td>
       <td>
-        <route_url params="controller:admin_news_item,action:edit,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit'/></route_url>
-        <route_url params="controller:admin_news_item,action:delete" extra='?popup=1&ids[]={$id}' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24'  alt='Delete'/></route_url>
+        <route_url params="controller:admin_news_item,action:edit,id:{$id}" extra='?popup=1'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit'/></route_url>
+        <route_url params="controller:admin_news_item,action:delete" extra='?popup=1&ids[]={$id}'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24'  alt='Delete'/></route_url>
       </td>
     </tr>
   </list:item>
@@ -117,10 +117,10 @@
 
   <div class='list_actions'>
     <route_url_set field='delete_url' params="controller:admin_news_item,action:delete" />
-    <input type='submit' value='Delete' onclick='Limb.Form.submit(this.form, "{$delete_url}?popup=1");return false;'/>
+    <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
 
     <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" />
-    <input type='submit' value='Save order' onclick='Limb.Form.submit(this.form, "{$save_order_url}?popup=1");return false;'/>
+    <input type='submit' value='Save order' onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
   </div>
 </list:list>
 

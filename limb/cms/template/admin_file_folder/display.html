@@ -16,7 +16,7 @@
 
 <h2>Folders list</h2>
 
-<route_url params="controller:admin_file_folder,action:create" extra='?popup=1&parent={$id}' onclick='return Limb.Http.click(this.href)'>
+<route_url params="controller:admin_file_folder,action:create" extra='?popup=1&parent={$id}'>
   <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='Create folder' />
 </route_url>
 
@@ -35,15 +35,15 @@
     <tr>
       <td><input type='checkbox' name='ids[]' value='{$id}' class='input' runat='client'/></td>
       <td><route_url params='id:{$id}'>{$title}</route_url></td>
-      <td><route_url params="controller:admin_file_folder,action:edit,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)' alt='Edit' title='Edit'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' /></route_url>
-          <route_url params="controller:admin_file_folder,action:delete" extra='?popup=1&ids[]={$id}' onclick='return Limb.Http.click(this.href)' alt='Delete' title='Delete'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24' /></route_url>
+      <td><route_url params="controller:admin_file_folder,action:edit,id:{$id}" extra='?popup=1' alt='Edit' title='Edit'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' /></route_url>
+          <route_url params="controller:admin_file_folder,action:delete" extra='?popup=1&ids[]={$id}' alt='Delete' title='Delete'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24' /></route_url>
       </td>
     </tr>
   </list:item>
 </table>
   <br/>
   <route_url_set field='delete_url' params="controller:admin_file_folder,action:delete" />
-  <input type='submit' value='Delete' onclick='Limb.Form.submit(this.form, "{$delete_url}?popup=1");return false;'/>
+  <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
 </list:list>
 
 </form>
@@ -56,7 +56,7 @@
 
 <h2>Files list</h2>
 
-<route_url params="controller:admin_file_object,action:create" extra='?popup=1&parent={$id}' onclick='return Limb.Http.click(this.href)'>
+<route_url params="controller:admin_file_object,action:create" extra='?popup=1&parent={$id}'>
   <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='Create file' />
 </route_url>
 
@@ -75,15 +75,15 @@
     <tr>
       <td><input type='checkbox' name='ids[]' value='{$id}' class='input' runat='client'/></td>
       <td>{$title}</td>
-      <td><route_url params="controller:admin_file_object,action:edit,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit' /></route_url>
-          <route_url params="controller:admin_file_object,action:delete" extra='?popup=1&ids[]={$id}' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24' alt='Delete' /></route_url>
+      <td><route_url params="controller:admin_file_object,action:edit,id:{$id}" extra='?popup=1'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit' /></route_url>
+          <route_url params="controller:admin_file_object,action:delete" extra='?popup=1&ids[]={$id}'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24' alt='Delete' /></route_url>
       </td>
     </tr>
   </list:item>
 </table>
   <br/>
   <route_url_set field='delete_url' params="controller:admin_file_object,action:delete" />
-  <input type='submit' value='Delete' onclick='Limb.Form.submit(this.form, "{$delete_url}?popup=1");return false;'/>
+  <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
 </list:list>
 
 </form>

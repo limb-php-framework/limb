@@ -15,7 +15,7 @@ You are here: <route_url params='controller:admin_tree'>Site tree</route_url>&gt
 <core:optional for='id'>
   Current node path: <b>{$url_path}</b><br/>
 </core:optional>
-<route_url params="action:create_node" extra='?popup=1&parent={$id}' onclick='return Limb.Http.click(this.href)'>
+<route_url params="action:create_node" extra='?popup=1&parent={$id}'>
   <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='Create' />
 </route_url>
 
@@ -36,18 +36,18 @@ You are here: <route_url params='controller:admin_tree'>Site tree</route_url>&gt
       <td><input type='checkbox' name='ids[]' value='{$id}' class='input' runat='client'/></td>
       <td><route_url params="id:{$id}">{$title}</route_url></td>
       <td>{$identifier}</td>
-      <td><route_url params="action:edit_node,id:{$id}" extra='?popup=1' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit' /></route_url>
-          <route_url params="action:delete" extra='?popup=1&ids[]={$id}' onclick='return Limb.Http.click(this.href)'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24' alt='Delete' /></route_url>
+      <td><route_url params="action:edit_node,id:{$id}" extra='?popup=1'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='Edit' /></route_url>
+          <route_url params="action:delete" extra='?popup=1&ids[]={$id}'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24' alt='Delete' /></route_url>
       </td>
     </tr>
   </list:item>
 </table>
   <br/>
   <route_url_set field='delete_url' params="action:delete" />
-  <input type='submit' value='Delete' onclick='Limb.Form.submit(this.form, "{$delete_url}?popup=1");return false;'/>
+  <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
 
   <route_url_set field='move_url' params="action:move,id:{$id}" />
-  <input type='submit' value='Move' onclick='Limb.Form.submit(this.form, "{$move_url}?popup=1");return false;'/>
+  <input type='submit' value='Move' onclick='Limb.Form.submitPopup(this.form, "{$move_url}");return false;'/>
 </list:list>
 
 </form>
