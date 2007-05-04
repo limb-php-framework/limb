@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: window.js 5800 2007-05-04 10:16:28Z pachanga $
+ * @version    $Id: window.js 5807 2007-05-04 14:07:37Z pachanga $
  * @package    js
  */
 
@@ -27,7 +27,7 @@ Limb.Class('Limb.Window',
     if(typeof(arguments[0]) == 'object')
       this.window = win;
 
-    if(arguments.length == 2 || arguments.length == 3)
+    if(arguments.length > 0)
     {
       this.window = this._createWindow(arguments[0], arguments[1], arguments[2]);
       jQuery(this.window).ready(this.onOpen.bind(this));

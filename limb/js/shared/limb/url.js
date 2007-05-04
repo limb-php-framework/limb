@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: url.js 5802 2007-05-04 11:37:52Z pachanga $
+ * @version    $Id: url.js 5807 2007-05-04 14:07:37Z pachanga $
  * @package    js
  */
 
@@ -82,14 +82,4 @@ Limb.Url.addRandomToUrl = function (page_href)
     page_href = page_href + '#' + items[1];
 
   return page_href;
-}
-
-Limb.Url.click = function (href, window_name)
-{
-  is_popup = href.indexOf('popup=1');
-
-  if(is_popup > -1)
-    new Limb.Window(href, window_name);
-
-  return !(is_popup > -1);
 }
