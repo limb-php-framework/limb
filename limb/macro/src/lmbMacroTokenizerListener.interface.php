@@ -10,7 +10,7 @@
  * @package    view
  */
 
-interface lmbMacroParserListener
+interface lmbMacroTokenizerListener
 {
   function startElement($tag_name, $attrs);
   function endElement($tag_name);

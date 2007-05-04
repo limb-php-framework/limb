@@ -10,7 +10,7 @@
  * @package    macro
  */
 
-class lmbMacroParser
+class lmbMacroTokenizer
 {
   protected $publicId;
   protected $observer;

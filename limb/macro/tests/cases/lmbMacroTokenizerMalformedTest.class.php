@@ -10,20 +10,20 @@
  * @package    view
  */
 
-lmb_require('limb/macro/src/lmbMacroParserListener.interface.php');
-lmb_require('limb/macro/src/lmbMacroParser.class.php');
+lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
+lmb_require('limb/macro/src/lmbMacroTokenizer.class.php');
 
-Mock::generate('lmbMacroParserListener', 'MockMacroParserListener');
+Mock::generate('lmbMacroTokenizerListener', 'MockMacroTokenizerListener');
 
-class lmbMacroParserMalformedTest extends UnitTestCase
+class lmbMacroTokenizerMalformedTest extends UnitTestCase
 {
   protected $parser;
   protected $listener;
 
   function setUp()
   {
-    $this->listener = new MockMacroParserListener();
-    $this->parser = new lmbMacroParser($this->listener);
+    $this->listener = new MockMacroTokenizerListener();
+    $this->parser = new lmbMacroTokenizer($this->listener);
   }
 
   function testOpenElementMalformedClose()
