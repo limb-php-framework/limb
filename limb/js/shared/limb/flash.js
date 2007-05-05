@@ -5,21 +5,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: browser.js 5802 2007-05-04 11:37:52Z pachanga $
+ * @version    $Id: flash.js 5810 2007-05-05 09:22:35Z pachanga $
  * @package    js
  */
 
-Limb.namespace('Limb.Browser');
+Limb.namespace('Limb.Flash');
 
-var agt = navigator.userAgent.toLowerCase();
-Limb.Browser.is_ie = (agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1);
-Limb.Browser.is_gecko = navigator.product == "Gecko";
-Limb.Browser.is_opera  = (agt.indexOf("opera") != -1);
-Limb.Browser.is_mac    = (agt.indexOf("mac") != -1);
-Limb.Browser.is_mac_ie = (Limb.Browser.is_ie && Limb.Browser.is_mac);
-Limb.Browser.is_win_ie = (Limb.Browser.is_ie && !Limb.Browser.is_mac);
-
-Limb.Browser.detectFlash = function(requiredVersion)
+Limb.Flash.detectVersion = function(requiredVersion)
 {
   var flashVersion = 0;
 
@@ -38,14 +30,12 @@ Limb.Browser.detectFlash = function(requiredVersion)
       }
       catch(e) {}
     }
-
     return flashPresent;
   }
 
-  if (navigator.plugins["Shockwave Flash 2.0"]
+  if(navigator.plugins["Shockwave Flash 2.0"]
       || navigator.plugins["Shockwave Flash"])
   {
-
     var isVersion2 = navigator.plugins["Shockwave Flash 2.0"] ? " 2.0" : "";
     var flashDescription = navigator.plugins["Shockwave Flash" + isVersion2].description;
 

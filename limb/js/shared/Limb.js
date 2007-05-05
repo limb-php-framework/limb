@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: limb.js 5801 2007-05-04 10:20:17Z pachanga $
+ * @version    $Id: limb.js 5810 2007-05-05 09:22:35Z pachanga $
  * @package    js
  */
 
@@ -337,4 +337,14 @@ Limb.Object.prototype = {
     return '[ object ' + this.NAME + ' ]';
   }
 }
+
+Limb.namespace('Limb.Browser');
+
+var agt = navigator.userAgent.toLowerCase();
+Limb.Browser.is_ie = (agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1);
+Limb.Browser.is_gecko = navigator.product == "Gecko";
+Limb.Browser.is_opera  = (agt.indexOf("opera") != -1);
+Limb.Browser.is_mac    = (agt.indexOf("mac") != -1);
+Limb.Browser.is_mac_ie = (Limb.Browser.is_ie && Limb.Browser.is_mac);
+Limb.Browser.is_win_ie = (Limb.Browser.is_ie && !Limb.Browser.is_mac);
 
