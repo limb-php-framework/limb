@@ -6,16 +6,17 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAbstractController.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbAbstractController.class.php 5814 2007-05-05 12:28:11Z pachanga $
  * @package    web_app
  */
 
 lmb_require('limb/core/src/lmbClassPath.class.php');
+lmb_require('limb/core/src/lmbMixable.class.php');
 
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version $Id: lmbAbstractController.class.php 5814 2007-05-05 12:28:11Z pachanga $
  */
 abstract class lmbAbstractController
 {
@@ -31,7 +32,14 @@ abstract class lmbAbstractController
    * @var string
    */
   protected $current_action;
-
+  /**
+   * @var array array of mixins
+   */
+  protected $mixins = array();
+  /**
+   * @var object lmbMixable instance
+   */
+  protected $mixed;
 
   /**
    *  Constructor.
@@ -41,6 +49,22 @@ abstract class lmbAbstractController
   {
     if(!$this->name)
      $this->name = $this->_guessName();
+
+    $this->mixed = new lmbMixable();
+    $this->mixed->setOwner($this);
+    foreach($this->mixins as $mixin)
+      $this->mixed->mixin($mixin);
+  }
+
+  /**
+   * Using this hacky method mixins can access controller variables
+   * @param string variable name
+   * @return mixed
+   */
+  function _get($name)
+  {
+    if(isset($this->$name))
+      return $this->$name;
   }
 
   protected function _guessName()
