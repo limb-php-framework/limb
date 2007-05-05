@@ -12,7 +12,7 @@
 lmb_require('limb/core/src/lmbMixable.class.php');
 lmb_require('limb/core/src/lmbMixin.class.php');
 
-class FooMixin extends lmbMixin
+class MixinFoo extends lmbMixin
 {
   function foo()
   {
@@ -20,7 +20,7 @@ class FooMixin extends lmbMixin
   }
 }
 
-class BarMixin extends lmbMixin
+class MixinBar extends lmbMixin
 {
   function bar()
   {
@@ -28,7 +28,7 @@ class BarMixin extends lmbMixin
   }
 }
 
-class OwnerCallingMixin extends lmbMixin
+class MixingCallingOwnerMethod extends lmbMixin
 {
   function ownerMy()
   {
@@ -36,7 +36,15 @@ class OwnerCallingMixin extends lmbMixin
   }
 }
 
-class FooOverridingMixin extends lmbMixin
+class MixinCallingOwnerVar extends lmbMixin
+{
+  function ownerVar()
+  {
+    return $this->owner->get('var');
+  }
+}
+
+class MixinOverridinFoo extends lmbMixin
 {
   function foo()
   {
@@ -46,6 +54,8 @@ class FooOverridingMixin extends lmbMixin
 
 class MixableTestVersion extends lmbMixable
 {
+  protected $var = 'var';
+
   function __construct($mixins)
   {
     $this->mixins = $mixins;
@@ -62,8 +72,8 @@ class lmbMixableTest extends UnitTestCase
   function testMixinObjects()
   {
     $mixed = new lmbMixable();
-    $mixed->mixin(new FooMixin());
-    $mixed->mixin(new BarMixin());
+    $mixed->mixin(new MixinFoo());
+    $mixed->mixin(new MixinBar());
     $this->assertEqual($mixed->foo(), 'foo');
     $this->assertEqual($mixed->bar(), 'bar');
   }
@@ -71,15 +81,15 @@ class lmbMixableTest extends UnitTestCase
   function testMixinClasses()
   {
     $mixed = new lmbMixable();
-    $mixed->mixin('FooMixin');
-    $mixed->mixin('BarMixin');
+    $mixed->mixin('MixinFoo');
+    $mixed->mixin('MixinBar');
     $this->assertEqual($mixed->foo(), 'foo');
     $this->assertEqual($mixed->bar(), 'bar');
   }
 
   function testOwnerMethodInvokation()
   {
-    $mixed = new MixableTestVersion(array('FooMixin', 'BarMixin'));
+    $mixed = new MixableTestVersion(array('MixinFoo', 'MixinBar'));
     $this->assertEqual($mixed->my(), 'my'); //native method of mixable
     $this->assertEqual($mixed->foo(), 'foo');
     $this->assertEqual($mixed->bar(), 'bar');
@@ -87,23 +97,27 @@ class lmbMixableTest extends UnitTestCase
 
   function testCallOwnerFromMixinForObjects()
   {
-    //we need to ensure owner is set in mixin
-    $mixed = new MixableTestVersion(array(new OwnerCallingMixin()));
+    $mixed = new MixableTestVersion(array(new MixingCallingOwnerMethod()));
     $this->assertEqual($mixed->ownerMy(), 'my');
   }
 
   function testCallOwnerFromMixinForClasses()
   {
-    //we need to ensure owner is set in mixin
-    $mixed = new MixableTestVersion(array('OwnerCallingMixin'));
+    $mixed = new MixableTestVersion(array('MixingCallingOwnerMethod'));
     $this->assertEqual($mixed->ownerMy(), 'my');
+  }
+
+  function testGetOwnerVarFromMixin()
+  {
+    $mixed = new MixableTestVersion(array(new MixinCallingOwnerVar()));
+    $this->assertEqual($mixed->ownerVar(), 'var');
   }
 
   function testMixinsOverriding()
   {
     $mixed = new lmbMixable();
-    $mixed->mixin(new FooMixin());
-    $mixed->mixin(new FooOverridingMixin());
+    $mixed->mixin(new MixinFoo());
+    $mixed->mixin(new MixinOverridinFoo());
     $this->assertEqual($mixed->foo(), 'overriden foo');
   }
 

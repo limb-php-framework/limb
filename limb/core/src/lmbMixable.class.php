@@ -10,9 +10,7 @@
  * @package    core
  */
 
-lmb_require('limb/core/src/lmbObject.class.php');
-
-class lmbMixable extends lmbObject
+class lmbMixable
 {
   protected $mixins = array();
   protected $mixins_loaded = false;
@@ -35,6 +33,12 @@ class lmbMixable extends lmbObject
     return call_user_func_array(array($this->mixins_signatures[$method], $method), $args);
   }
 
+  function get($name)
+  {
+    if(isset($this->$name))
+      return $this->$name;
+  }
+
   protected function _ensureSignatures()
   {
     if($this->mixins_loaded)
@@ -45,14 +49,14 @@ class lmbMixable extends lmbObject
       if(is_object($mixin))
       {
         $obj = $mixin;
-        $obj->setOwner($this);
         $class = get_class($mixin);
       }
       else
       {
-        $obj = new $mixin($this);
+        $obj = new $mixin();
         $class = $mixin;
       }
+      $obj->setOwner($this);
 
       foreach(get_class_methods($class) as $method)
         $this->mixins_signatures[$method] = $obj;

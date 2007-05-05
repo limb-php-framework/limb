@@ -14,11 +14,6 @@ class lmbMixin
 {
   protected $owner;
 
-  function __construct($owner = null)
-  {
-    $this->owner = $owner;
-  }
-
   function setOwner($owner)
   {
     $this->owner = $owner;
