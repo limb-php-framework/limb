@@ -12,6 +12,7 @@
 
 class lmbMixable
 {
+  protected $owner;
   protected $mixins = array();
   protected $mixins_loaded = false;
   protected $mixins_signatures = array();
@@ -19,6 +20,11 @@ class lmbMixable
   function mixin($mixin)
   {
     $this->mixins[] = $mixin;
+  }
+
+  function setOwner($owner)
+  {
+    $this->owner = $owner;
   }
 
   function __call($method, $args)
@@ -33,7 +39,7 @@ class lmbMixable
     return call_user_func_array(array($this->mixins_signatures[$method], $method), $args);
   }
 
-  function get($name)
+  function _get($name)
   {
     if(isset($this->$name))
       return $this->$name;
@@ -43,6 +49,8 @@ class lmbMixable
   {
     if($this->mixins_loaded)
       return;
+
+    $owner = $this->owner ? $this->owner : $this;
 
     foreach($this->mixins as $mixin)
     {
@@ -56,7 +64,7 @@ class lmbMixable
         $obj = new $mixin();
         $class = $mixin;
       }
-      $obj->setOwner($this);
+      $obj->setOwner($owner);
 
       foreach(get_class_methods($class) as $method)
         $this->mixins_signatures[$method] = $obj;

@@ -28,7 +28,7 @@ class MixinBar extends lmbMixin
   }
 }
 
-class MixingCallingOwnerMethod extends lmbMixin
+class MixinCallingOwnerMethod extends lmbMixin
 {
   function ownerMy()
   {
@@ -40,7 +40,7 @@ class MixinCallingOwnerVar extends lmbMixin
 {
   function ownerVar()
   {
-    return $this->owner->get('var');
+    return $this->owner->_get('var');
   }
 }
 
@@ -56,7 +56,7 @@ class MixableTestVersion extends lmbMixable
 {
   protected $var = 'var';
 
-  function __construct($mixins)
+  function __construct($mixins = array())
   {
     $this->mixins = $mixins;
   }
@@ -64,6 +64,14 @@ class MixableTestVersion extends lmbMixable
   function my()
   {
     return 'my';
+  }
+}
+
+class MixedTestStub
+{
+  function my()
+  {
+    return 'stub';
   }
 }
 
@@ -87,6 +95,14 @@ class lmbMixableTest extends UnitTestCase
     $this->assertEqual($mixed->bar(), 'bar');
   }
 
+  function testSetOwner()
+  {
+    $mixed = new lmbMixable();
+    $mixed->setOwner(new MixedTestStub());
+    $mixed->mixin('MixinCallingOwnerMethod');
+    $this->assertEqual($mixed->ownerMy(), 'stub');
+  }
+
   function testOwnerMethodInvokation()
   {
     $mixed = new MixableTestVersion(array('MixinFoo', 'MixinBar'));
@@ -97,13 +113,13 @@ class lmbMixableTest extends UnitTestCase
 
   function testCallOwnerFromMixinForObjects()
   {
-    $mixed = new MixableTestVersion(array(new MixingCallingOwnerMethod()));
+    $mixed = new MixableTestVersion(array(new MixinCallingOwnerMethod()));
     $this->assertEqual($mixed->ownerMy(), 'my');
   }
 
   function testCallOwnerFromMixinForClasses()
   {
-    $mixed = new MixableTestVersion(array('MixingCallingOwnerMethod'));
+    $mixed = new MixableTestVersion(array('MixinCallingOwnerMethod'));
     $this->assertEqual($mixed->ownerMy(), 'my');
   }
 
