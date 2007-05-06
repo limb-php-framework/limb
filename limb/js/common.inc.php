@@ -6,9 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 4997 2007-02-08 15:36:22Z pachanga $
- * @package    filter_chain
+ * @version    $Id$
+ * @package    js
  */
 require_once('limb/core/common.inc.php');
+require_once('limb/fs/toolkit.inc.php');
 
 ?>

@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: limb.js 5810 2007-05-05 09:22:35Z pachanga $
+ * @version    $Id: limb.js 5817 2007-05-06 09:38:17Z tony $
  * @package    js
  */
 
