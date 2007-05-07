@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRouteUrlSetTagTest.class.php 5787 2007-05-02 13:46:30Z tony $
+ * @version    $Id: lmbRouteUrlSetTagTest.class.php 5820 2007-05-07 10:34:13Z dan82 $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/request/lmbRoutes.class.php');
@@ -105,9 +105,9 @@ class lmbRouteUrlSetTagTest extends lmbWactTestCase
     $template = '<route_url_set field="url" params="action:archive" skip_controller="true"/>' .
                 '{$url}';
 
-    $this->registerTestingTemplate('/limb/routes_tag_route_with_skip_controller.html', $template);
+    $this->registerTestingTemplate('/limb/route_url_tag_with_skip_controller.html', $template);
 
-    $page = $this->initTemplate('/limb/routes_tag_route_with_skip_controller.html');
+    $page = $this->initTemplate('/limb/route_url_tag_with_skip_controller.html');
 
     $expected = $toolkit->getRoutesUrl(array('action' => 'archive'), null, $skip_controller = true);
     $this->assertEqual($page->capture(), $expected);

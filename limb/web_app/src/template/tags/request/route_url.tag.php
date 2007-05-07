@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: route_url.tag.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: route_url.tag.php 5820 2007-05-07 10:34:13Z dan82 $
  * @package    web_app
  */
 /**
 * @tag route_url
-* @suppress_attributes params route extra
+* @suppress_attributes params route extra skip_controller
 */
 class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
 {
@@ -34,6 +34,8 @@ class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
     $params = '$' . $code->getTempVariable();
     $code->writePhp($params . ' = array();');
 
+    
+    
     if(isset($this->attributeNodes['params']))
     {
       $this->attributeNodes['params']->generatePreStatement($code);
@@ -43,8 +45,12 @@ class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
       $this->attributeNodes['params']->generatePostStatement($code);
     }
 
-    $code->writePhp($href . '= lmbToolkit :: instance()->getRoutesUrl(' . $params . ', ' . $route .');');
-
+    if($this->getBoolAttribute('skip_controller')) $skip_controller = 'true';
+    else $skip_controller = 'false';
+    
+    $this->removeAttribute('skip_controller');
+    $code->writePhp($href . '= lmbToolkit :: instance()->getRoutesUrl(' . $params . ', ' . $route .', ' . $skip_controller .');');
+   
     $this->removeAttribute('route');
     $this->removeAttribute('params');
 
