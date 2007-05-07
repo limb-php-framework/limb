@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5824 2007-05-07 13:44:24Z pachanga $
+ * @version    $Id: lmbDate.class.php 5828 2007-05-07 20:52:07Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -244,7 +244,7 @@ class lmbDate extends lmbObject
 
   function isBefore($when, $use_time_zone=false)
   {
-    if ($this->compare($when, $use_time_zone) == -1)
+    if($this->compare($when, $use_time_zone) == -1)
       return true;
     else
       return false;
@@ -252,7 +252,7 @@ class lmbDate extends lmbObject
 
   function isAfter($when, $use_time_zone=false)
   {
-    if ($this->compare($when, $use_time_zone) == 1)
+    if($this->compare($when, $use_time_zone) == 1)
       return true;
     else
       return false;
@@ -260,7 +260,7 @@ class lmbDate extends lmbObject
 
   function isEqual($when, $use_time_zone=false)
   {
-    if ($this->compare($when, $use_time_zone) == 0)
+    if($this->compare($when, $use_time_zone) == 0)
       return true;
     else
       return false;
@@ -277,7 +277,7 @@ class lmbDate extends lmbObject
 
     $julian = ($days[$this->month - 1] + $this->day);
 
-    if ($this->month > 2 &&  $this->isLeapYear())
+    if($this->month > 2 &&  $this->isLeapYear())
       $julian++;
 
     return $julian;
@@ -323,7 +323,7 @@ class lmbDate extends lmbObject
     $y_1_isleap = $d->isLeapYear();
 
     $day_of_year_number = $day + $mnth[$month - 1];
-    if ($y_isleap && $month > 2)
+    if($y_isleap && $month > 2)
       $day_of_year_number++;
 
     // find Jan 1 weekday (monday = 1, sunday = 7)
@@ -335,10 +335,10 @@ class lmbDate extends lmbObject
     $h = $day_of_year_number + ($jan1_weekday - 1);
     $weekday = 1 + intval(($h - 1) % 7);
     // find if Y M D falls in YearNumber Y-1, WeekNumber 52 or
-    if ($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4)
+    if($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4)
     {
       $yearnumber = $year - 1;
-      if ($jan1_weekday == 5 || ($jan1_weekday == 6 && $y_1_isleap))
+      if($jan1_weekday == 5 || ($jan1_weekday == 6 && $y_1_isleap))
         $weeknumber = 53;
       else
         $weeknumber = 52;
@@ -346,25 +346,25 @@ class lmbDate extends lmbObject
     else
       $yearnumber = $year;
     // find if Y M D falls in YearNumber Y+1, WeekNumber 1
-    if ($yearnumber == $year)
+    if($yearnumber == $year)
     {
-      if ($y_isleap)
+      if($y_isleap)
         $i = 366;
       else
         $i = 365;
 
-      if (($i - $day_of_year_number) < (4 - $weekday))
+      if(($i - $day_of_year_number) < (4 - $weekday))
       {
         $yearnumber++;
         $weeknumber = 1;
       }
     }
     // find if Y M D falls in YearNumber Y, WeekNumber 1 through 53
-    if ($yearnumber == $year)
+    if($yearnumber == $year)
     {
       $j = $day_of_year_number + (7 - $weekday) + ($jan1_weekday - 1);
       $weeknumber = intval($j / 7);
-      if ($jan1_weekday > 4)
+      if($jan1_weekday > 4)
         $weeknumber--;
     }
    return $weeknumber;
@@ -372,17 +372,17 @@ class lmbDate extends lmbObject
 
   function dateToDays()
   {
-    $century = (int) substr("{$this->year}", 0, 2);
-    $year = (int) substr("{$this->year}", 2, 2);
+    $century = (int)substr("{$this->year}", 0, 2);
+    $year = (int)substr("{$this->year}", 2, 2);
     $month = $this->month;
     $day = $this->day;
 
-    if ($month > 2)
+    if($month > 2)
       $month -= 3;
     else
     {
       $month += 9;
-      if ($year)
+      if($year)
         $year--;
       else
       {
@@ -391,9 +391,9 @@ class lmbDate extends lmbObject
       }
     }
     return (
-        floor(( 146097 * $century) / 4 ) +
-        floor(( 1461 * $year) / 4 ) +
-        floor(( 153 * $month + 2) / 5 ) +
+        floor((146097 * $century) / 4) +
+        floor((1461 * $year) / 4) +
+        floor((153 * $month + 2) / 5) +
         $day + 1721119);
   }
 
