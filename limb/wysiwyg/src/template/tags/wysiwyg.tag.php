@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: wysiwyg.tag.php 5510 2007-04-03 07:33:31Z pachanga $
+ * @version    $Id: wysiwyg.tag.php 5827 2007-05-07 18:43:11Z pachanga $
  * @package    wysiwyg
  */
 require_once('limb/wact/src/tags/form/control.inc.php');
 define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 
 /**
-* @tag wysiwyg
+* @tag richedit,wysiwyg
 */
 class lmbWysiwygTag extends WactControlTag
 {
