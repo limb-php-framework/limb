@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5821 2007-05-07 11:13:08Z pachanga $
+ * @version    $Id: lmbDate.class.php 5824 2007-05-07 13:44:24Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
 class lmbDate extends lmbObject
 {
   //YYYY-MM-DD HH:MM:SS timezone
-  const DATE_STRING_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
+  const DATE_ISO_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
 
   protected $year = 0;
   protected $month = 0;
@@ -102,9 +102,22 @@ class lmbDate extends lmbObject
                      $this->year ? $this->year : 1);
   }
 
+  static function isValidDateString($value)
+  {
+    try
+    {
+      new lmbDate((string)$value);
+      return true;
+    }
+    catch(lmbException $e)
+    {
+      return false;
+    }
+  }
+
   protected function _setByString($string)
   {
-    if(!preg_match(self :: DATE_STRING_REGEX, trim($string), $regs))
+    if(!preg_match(self :: DATE_ISO_REGEX, trim($string), $regs))
       throw new lmbException("Could not setup date using string '$string'");
 
     if(isset($regs[1]))

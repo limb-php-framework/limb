@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5821 2007-05-07 11:13:08Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5824 2007-05-07 13:44:24Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -42,6 +42,22 @@ class lmbDateTest extends UnitTestCase
       $this->assertTrue(false);
     }
     catch(lmbException $e){}
+  }
+
+  function testIsValidDateString()
+  {
+    $this->assertTrue(lmbDate :: isValidDateString('2005-12-01 12:45:12'));
+    $this->assertTrue(lmbDate :: isValidDateString('2005-12-01 12:45'));
+    $this->assertTrue(lmbDate :: isValidDateString('2005-12-01'));
+    $this->assertTrue(lmbDate :: isValidDateString('12:45:12'));
+    $this->assertTrue(lmbDate :: isValidDateString('12:45'));
+    $this->assertTrue(lmbDate :: isValidDateString(' 12:45:12 '));
+  }
+
+  function testIsValidDateStringFalse()
+  {
+    $this->assertFalse(lmbDate :: isValidDateString('baba-duba'));
+    $this->assertFalse(lmbDate :: isValidDateString('2005-12-01 12.'));
   }
 
   function testCreate()
