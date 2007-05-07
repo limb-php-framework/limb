@@ -55,18 +55,28 @@ class lmbCalendarWidget
 
   function loadFiles()
   {
-    $code  = '<link rel="stylesheet" type="text/css" media="all" href="' .
-              $this->calendar_lib_path . $this->calendar_theme_file .
-               '" />' . $this->newline;
-    $code .=  '<script type="text/javascript" src="' .
-              $this->calendar_lib_path . $this->calendar_file .
-              '"></script>' . $this->newline;
-    $code .= '<script type="text/javascript" src="' .
-              $this->calendar_lib_path . $this->calendar_lang_file .
-              '"></script>' . $this->newline;
-    $code .= '<script type="text/javascript" src="' .
-             $this->calendar_lib_path . $this->calendar_setup_file .
-             '"></script>';
+    static $rendered = false;
+
+    $code  = '';
+
+    if(!$rendered)
+    {
+      $code  = '<link rel="stylesheet" type="text/css" media="all" href="' .
+                $this->calendar_lib_path . $this->calendar_theme_file .
+                 '" />' . $this->newline;
+      $code .=  '<script type="text/javascript" src="' .
+                $this->calendar_lib_path . $this->calendar_file .
+                '"></script>' . $this->newline;
+      $code .= '<script type="text/javascript" src="' .
+                $this->calendar_lib_path . $this->calendar_lang_file .
+                '"></script>' . $this->newline;
+      $code .= '<script type="text/javascript" src="' .
+               $this->calendar_lib_path . $this->calendar_setup_file .
+               '"></script>';
+    }
+
+    $rendered = true;
+
     return $code;
   }
 
