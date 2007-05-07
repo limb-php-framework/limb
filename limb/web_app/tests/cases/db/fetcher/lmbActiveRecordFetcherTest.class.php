@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordFetcherTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbActiveRecordFetcherTest.class.php 5826 2007-05-07 14:07:42Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/tests/cases/lmbWebAppTestCase.class.php');
@@ -19,6 +19,11 @@ class CourseForFetcherTestVersion extends CourseForTest
   static function findSpecial()
   {
     return new lmbCollection(array(array('special' => 1)));
+  }
+
+  static function findSpecialById($id)
+  {
+    return new lmbSet(array('id' => $id));
   }
 
   static function findWithParams($param1, $param2)
@@ -108,7 +113,7 @@ class lmbActiveRecordFetcherTest extends lmbWebAppTestCase
     $this->assertEqual($rs->current()->get('param'), 'Value2');
   }
 
-  function testFetchSingleARIfFetchWithIdNotDefined()
+  function testFetchSingleIfFetchWithIdNotDefined()
   {
     $course1 = $this->_createCourse();
     $course2 = $this->_createCourse();
@@ -126,7 +131,24 @@ class lmbActiveRecordFetcherTest extends lmbWebAppTestCase
     $this->assertFalse($rs->valid());
   }
 
-  function testFetchSingleARReturnsNothongIfNoId()
+  function testFetchSingleWithCustomFinder()
+  {
+    $course1 = $this->_createCourse();
+
+    $fetcher = new lmbActiveRecordFetcher();
+    $fetcher->setClassPath('CourseForFetcherTestVersion');
+    $fetcher->setFind('special_by_id');
+    $fetcher->setRecordId($course1->getId());
+
+    $rs = $fetcher->fetch();
+    $rs->rewind();
+    $this->assertTrue($rs->valid());
+    $this->assertEqual($rs->current()->get('id'), $course1->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
+  }
+
+  function testFetchSingleReturnsNothingIfNoId()
   {
     $course1 = $this->_createCourse();
     $course2 = $this->_createCourse();
