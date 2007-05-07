@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: date.filter.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @version    $Id: date.filter.php 5822 2007-05-07 11:14:00Z pachanga $
  * @package    i18n
  */
-lmb_require('limb/datetime/src/lmbDate.class.php');
-lmb_require('limb/i18n/src/datetime/lmbDateFormat.class.php');
+lmb_require('limb/datetime/src/lmbLocaleDate.class.php');
+lmb_require('limb/i18n/src/datetime/lmbLocaleDateFormat.class.php');
 
 /**
 * @filter i18n_date
@@ -35,15 +35,12 @@ class lmbI18NDateFilter extends WactCompilerFilter
     else
       $locale = $toolkit->getLocaleObject();
 
-    $this->date = new lmbDate();
+    $this->date = new lmbLocaleDate();
 
     $this->_setDate();
 
-    if ($this->isConstant())
-    {
-      $format = new lmbDateFormat();
-      return $format->toString($this->date, $this->_getFormat($locale), $locale);
-    }
+    if($this->isConstant())
+      return $this->date->localeStrftime($this->_getFormat($locale), $locale);
     else
       $this->raiseUnresolvedBindingError();
   }
@@ -59,14 +56,14 @@ class lmbI18NDateFilter extends WactCompilerFilter
     switch($date_type)
     {
       case 'string':
-        $this->date = new lmbDate($value);
+        $this->date = new lmbLocaleDate($value);
       break;
       case 'stamp':
-        $this->date = new lmbDate((int)$value);
+        $this->date = new lmbLocaleDate((int)$value);
       break;
 
       default:
-        $this->date = new lmbDate($value);
+        $this->date = new lmbLocaleDate($value);
       break;
     }
   }
@@ -92,8 +89,7 @@ class lmbI18NDateFilter extends WactCompilerFilter
     $toolkit_var = $code->getTempVarRef();
     $this->locale_var = $code->getTempVarRef();
 
-    $code->writePHP("lmb_require('limb/datetime/src/lmbDate.class.php');");
-    $code->writePHP("lmb_require('limb/i18n/src/datetime/lmbDateFormat.class.php');");
+    $code->writePHP("lmb_require('limb/datetime/src/lmbLocaleDate.class.php');");
     $code->writePHP($toolkit_var . ' = lmbToolkit :: instance();' . "\n");
     $code->writePHP($this->locale_var . ' = ');
 
@@ -107,9 +103,6 @@ class lmbI18NDateFilter extends WactCompilerFilter
     }
 
     $this->date_var = $code->getTempVarRef();
-    $this->date_format_var = $code->getTempVarRef();
-
-    $code->writePHP($this->date_format_var . ' = new lmbDateFormat();');
 
     $this->_setDBEDate($code);
 
@@ -125,19 +118,19 @@ class lmbI18NDateFilter extends WactCompilerFilter
     switch($date_type)
     {
       case 'stamp':
-        $code->writePHP($this->date_var . ' = new lmbDate((int)');
+        $code->writePHP($this->date_var . ' = new lmbLocaleDate((int)');
         $this->base->generateExpression($code);
         $code->writePHP(');');
       break;
 
       case 'string':
-        $code->writePHP($this->date_var . ' = new lmbDate(');
+        $code->writePHP($this->date_var . ' = new lmbLocaleDate(');
         $this->base->generateExpression($code);
         $code->writePHP(');');
       break;
 
       default:
-        $code->writePHP($this->date_var . ' = new lmbDate((int)');
+        $code->writePHP($this->date_var . ' = new lmbLocaleDate((int)');
         $this->base->generateExpression($code);
         $code->writePHP(');');
       break;
@@ -148,7 +141,7 @@ class lmbI18NDateFilter extends WactCompilerFilter
   {
     parent :: generateExpression($code);
 
-    $code->writePHP($this->date_format_var . '->toString(' . $this->date_var . ', ');
+    $code->writePHP($this->date_var . '->localeStrftime(');
     $this->_getDBEFormat($code);
     $code->writePHP(' ,' . $this->locale_var . ')');
   }

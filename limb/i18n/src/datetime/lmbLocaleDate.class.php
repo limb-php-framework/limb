@@ -6,15 +6,180 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDate.class.php 5353 2007-03-27 16:20:49Z pachanga $
+ * @version    $Id: lmbLocaleDate.class.php 5822 2007-05-07 11:14:00Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
 lmb_require('limb/datetime/src/lmbDate.class.php');
-lmb_require('limb/i18n/src/datetime/lmbDateFormat.class.php');
 
 class lmbLocaleDate extends lmbDate
 {
+  /**
+   *  Formats the date in the given format according to locale settings, much like
+   *  strftime().  Most strftime() attributes are supported.
+   *
+   *  %a    abbreviated weekday name (Sun, Mon, Tue)
+   *  %A    full weekday name (Sunday, Monday, Tuesday)
+   *  %b    abbreviated month name (Jan, Feb, Mar)
+   *  %B    full month name (January, February, March)
+   *  %C    century number (the year divided by 100 and truncated to an integer, range 00 to 99)
+   *  %d    day of month (range 00 to 31)
+   *  %D    same as "%m/%d/%y"
+   *  %e    day of month, single digit (range 0 to 31)
+   *  %E    number of days since unspecified epoch
+   *  %H    hour as decimal number (00 to 23)
+   *  %I    hour as decimal number on 12-hour clock (01 to 12)
+   *  %j    day of year (range 001 to 366)
+   *  %m    month as decimal number (range 01 to 12)
+   *  %M    minute as a decimal number (00 to 59)
+   *  %n    newline character (\n)
+   *  %O    dst-corrected timezone offset expressed as "+/-HH:MM"
+   *  %o    raw timezone offset expressed as "+/-HH:MM"
+   *  %p    either 'am' or 'pm' depending on the time
+   *  %P    either 'AM' or 'PM' depending on the time
+   *  %r    time in am/pm notation, same as "%I:%M:%S %p"
+   *  %R    time in 24-hour notation, same as "%H:%M"
+   *  %S    seconds as a decimal number (00 to 59)
+   *  %t    tab character (\t)
+   *  %T    current time, same as "%H:%M:%S"
+   *  %w    weekday as decimal (0 = Sunday)
+   *  %U    week number of current year, first sunday as first week
+   *  %y    year as decimal (range 00 to 99)
+   *  %Y    year as decimal including century (range 0000 to 9999)
+   *  %%    literal '%'
+   */
+  function localeStrftime($format, $locale=null)
+  {
+    $output = '';
+
+    for($strpos=0; $strpos < strlen($format); $strpos++)
+    {
+      $char = substr($format, $strpos, 1);
+      if($char != '%')
+      {
+        $output .= $char;
+        continue;
+      }
+
+      $nextchar = substr($format, $strpos + 1, 1);
+      switch($nextchar)
+      {
+        case 'a':
+            $this->_ensureLocale($locale);
+            $output .= $locale->getDayName($this->getDayOfWeek(), true);
+            break;
+        case 'A':
+            $this->_ensureLocale($locale);
+            $output .= $locale->getDayName($this->getDayOfWeek());
+            break;
+        case 'b':
+            $this->_ensureLocale($locale);
+            $output .= $locale->getMonthName($this->getMonth() - 1, true);
+            break;
+        case 'B':
+            $this->_ensureLocale($locale);
+            $output .= $locale->getMonthName($this->getMonth() - 1);
+            break;
+        case 'p':
+            $this->_ensureLocale($locale);
+            $output .= $locale->getMeridiemName($this->getHour());
+            break;
+        case 'P':
+            $this->_ensureLocale($locale);
+            $output .= $locale->getMeridiemName($this->getHour(), true);
+            break;
+        case 'C':
+            $output .= sprintf("%02d", intval($this->getYear()/100));
+            break;
+        case 'd':
+            $output .= sprintf("%02d", $this->getDay());
+            break;
+        case 'D':
+            $output .= sprintf("%02d/%02d/%02d", $this->getMonth(), $this->getDay(), substr($this->getYear(), 2));
+            break;
+        case 'e':
+            $output .= $this->getDay();
+            break;
+        case 'E':
+            $output .= $this->dateToDays();
+            break;
+        case 'H':
+            $output .= sprintf("%02d", $this->getHour());
+            break;
+        case 'I':
+            $hour = ($this->getHour() + 1) > 12 ? $this->getHour() - 12 : $this->getHour();
+            $output .= sprintf("%02d", $hour==0 ? 12 : $hour);
+            break;
+        case 'j':
+            $output .= sprintf("%03d", $this->getDayOfYear());
+            break;
+        case 'm':
+            $output .= sprintf("%02d",$this->getMonth());
+            break;
+        case 'M':
+            $output .= sprintf("%02d",$this->getMinute());
+            break;
+        case 'n':
+            $output .= "\n";
+            break;
+        case 'O':
+            $offms = $this->getTimeZone()->getOffset($this);
+            $direction = $offms >= 0 ? '+' : '-';
+            $offmins = abs($offms) / 1000 / 60;
+            $hours = $offmins / 60;
+            $minutes = $offmins % 60;
+            $output .= sprintf("%s%02d:%02d", $direction, $hours, $minutes);
+            break;
+        case 'o':
+            $offms = $this->getTimeZone()->getRawOffset($this);
+            $direction = $offms >= 0 ? '+' : '-';
+            $offmins = abs($offms) / 1000 / 60;
+            $hours = $offmins / 60;
+            $minutes = $offmins % 60;
+            $output .= sprintf("%s%02d:%02d", $direction, $hours, $minutes);
+            break;
+        case 'r':
+            $hour = ($this->getHour() + 1) > 12 ? $this->getHour() - 12 : $this->getHour();
+            $output .= sprintf("%02d:%02d:%02d %s", $hour==0 ?  12 : $hour, $this->getMinute(), $this->getSecond(), $this->getHour() >= 12 ? "PM" : "AM");
+            break;
+        case 'R':
+            $output .= sprintf("%02d:%02d", $this->getHour(), $this->getMinute());
+            break;
+        case 'S':
+            $output .= sprintf("%02d", $this->getSecond());
+            break;
+        case 't':
+            $output .= "\t";
+            break;
+        case 'T':
+            $output .= sprintf("%02d:%02d:%02d", $this->getHour(), $this->getMinute(), $this->getSecond());
+            break;
+        case 'w':
+            $output .= $this->getDayOfWeek();
+            break;
+        case 'U':
+            $output .= $this->getWeekOfYear();
+            break;
+        case 'y':
+            $output .= substr($this->getYear() . '', 2);
+            break;
+        case 'Y':
+            $output .= sprintf("%04d", $this->getYear());
+            break;
+        case 'Z':
+            $output .= $this->getTimeZone()->isInDaylightTime() ? $this->getTimeZone()->getDSTShortName() : $this->getTimeZone()->getShortName();
+            break;
+        case '%':
+            $output .= '%';
+            break;
+        default:
+            $output .= $char . $nextchar;
+      }
+      $strpos++;
+    }
+    return $output;
+  }
+
   /**
   *  Tries to guess time values in time string $time_string formatted with $fmt
   *  Returns an array('hour','minute','second','month','day','year')
@@ -117,7 +282,6 @@ class lmbLocaleDate extends lmbDate
         break;
       }
     }
-
     return array('hour' => $hour, 'minute' => $minute, 'second' => $second, 'month' => $month, 'day' => $day, 'year' => $year);
   }
 
@@ -160,7 +324,13 @@ class lmbLocaleDate extends lmbDate
     return $time_array;
   }
 
-  function localStringToDate($locale, $string, $format = null)
+  protected function _ensureLocale(&$locale)
+  {
+    if(!is_object($locale))
+      $locale = lmbToolkit :: instance()->getLocaleObject();
+  }
+
+  static function localStringToDate($locale, $string, $format = null)
   {
     if(!$format)
       $format = $locale->getShortDateFormat();
@@ -169,56 +339,17 @@ class lmbLocaleDate extends lmbDate
     return new lmbDate($arr['hour'], $arr['minute'], $arr['second'], $arr['day'], $arr['month'], $arr['year']);
   }
 
-  static function localStringToISO($locale, $string)
-  {
-    $date = self :: localStringToDate($locale, $string);
-    return $date->toString();
-  }
-
-  static function localStringToStamp($locale, $string)
-  {
-    $date = self :: localStringToDate($locale, $string);
-    return $date->toTimestamp();
-  }
-
-  static function ISOToLocalString($locale, $iso_date)
-  {
-    $date = new lmbDate($iso_date);
-    $format = new lmbDateFormat();
-
-    return $format->toString($date, $locale->getShortDateFormat());
-  }
-
-  static function stampToLocalString($locale, $stamp)
-  {
-    $date = new lmbDate((int)$stamp);
-    $format = new lmbDateFormat();
-
-    return $format->toString($date, $locale->getShortDateFormat());
-  }
-
-  static function isLocalStringValid($locale, $string)
+  static function isLocalStringValid($locale, $string, $format = null)
   {
     try
     {
-      lmbLocaleDate :: localStringToDate($locale, $string);
+      lmbLocaleDate :: localStringToDate($locale, $string, $format);
       return true;
     }
     catch(lmbException $e)
     {
       return false;
     }
-  }
-
-  static function localString($locale, $time = null, $format = null)
-  {
-    if(!$format)
-      $format = $locale->getShortDateFormat();
-
-    $date = new lmbDate($time);
-    $format = new lmbDateFormat();
-
-    return $format->toString($date, $locale->getShortDateFormat());
   }
 }
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDateTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
+ * @version    $Id: lmbLocaleDateTest.class.php 5822 2007-05-07 11:14:00Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
@@ -47,20 +47,18 @@ class lmbLocaleDateTest extends UnitTestCase
     catch(lmbException $e){}
   }
 
-  function testLocalizedDateStringToISODateString()
+  function testIsLocalStringValid()
   {
-    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../ru.ini'));
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
-    $date_string = '24.10.2005';
-    $this->assertEqual(lmbLocaleDate :: localStringToISO($locale, $date_string), '2005-10-24 00:00:00');
+    $this->assertTrue(lmbLocaleDate :: isLocalStringValid($locale, 'Mon 01', '%a %d'));
   }
 
-  function testIsoDateStringToLocalStringizedDateString()
+  function testIsLocalStringNotValid()
   {
-    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../ru.ini'));
+    $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
-    $iso_date_string = '2005-10-24 00:00:00';
-    $this->assertEqual(lmbLocaleDate :: ISOToLocalString($locale, $iso_date_string), '24.10.2005');
+    $this->assertFalse(lmbLocaleDate :: isLocalStringValid($locale, '02-29-2003', '%a %d %b %Y'));
   }
 }
 ?>
