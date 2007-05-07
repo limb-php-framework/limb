@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: window.js 5807 2007-05-04 14:07:37Z pachanga $
+ * @version    $Id: window.js 5818 2007-05-07 08:22:58Z tony $
  * @package    js
  */
 
@@ -19,6 +19,7 @@ Limb.Class('Limb.Window',
     this.windowName = this._generateName();
     this.onLoadEvents = [];
     this.onUnloadEvents = [];
+    this.params = {};
 
     if(arguments.length == 0)
       this.window = window;
@@ -90,10 +91,12 @@ Limb.Class('Limb.Window',
     if(windowName)
       this.windowName = windowName;
 
-    if(!Limb.isset(createParams))
-      createParams = this._getDefaultParams();
+    this.params = this._getDefaultParams();
 
-    var win = window.open(href, this.windowName, createParams.asString());
+    if(Limb.isset(createParams))
+       this.params.merge(createParams);
+
+    var win = window.open(href, this.windowName, this.params.asString());
     return win;
   },
 
@@ -126,15 +129,18 @@ Limb.Class('Limb.Window',
   {
     Limb.Window.register(this.windowName, this);
 
-    if(!this.window.limbWindowWidth)
-      this.window.limbWindowWidth = this.parentWindow.getRect().getWidth() * 0.85;
+    if(this.params &&!this.params.getParameter('noautoresize'))
+      this.autoResize();
 
-    if(!this.window.limbWindowHeight)
-      this.window.limbWindowHeight = this.parentWindow.getRect().getHeight() * 0.9;
-
-    this.centreWindow(this.window.limbWindowWidth, this.window.limbWindowHeight);
+    this.centreWindow(this.params.getParameter('width'), this.params.getParameter('height'));
 
     this.openHandler();
+  },
+
+  autoResize: function()
+  {
+    this.params.setParameter('width', this.parentWindow.getRect().getWidth() * 0.85);
+    this.params.setParameter('height', this.parentWindow.getRect().getHeight() * 0.9);
   },
 
   onClose: function()
@@ -203,7 +209,13 @@ Limb.Class('Limb.Window.Params',
 
   getParameter: function(name)
   {
-     return params[name];
+     return this.params[name];
+  },
+
+  merge: function(params)
+  {
+    for(var name in params)
+      this.params[name] = params[name];
   },
 
   asString: function()
