@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5791 2007-05-03 08:00:08Z pachanga $
+ * @version    $Id: lmbDate.class.php 5821 2007-05-07 11:13:08Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -15,7 +15,6 @@ class lmbDate extends lmbObject
 {
   //YYYY-MM-DD HH:MM:SS timezone
   const DATE_STRING_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
-  const DATE_ISO_FORMAT = "%04d-%02d-%02d %02d:%02d:%02d";
 
   protected $year = 0;
   protected $month = 0;
@@ -75,7 +74,7 @@ class lmbDate extends lmbObject
   static function stampToISO($stamp)
   {
     $date = new lmbDate((int)$stamp);
-    return $date->getISODate();
+    return $date->getIsoDate();
   }
 
   function _createTimeZoneObject($code=null)
@@ -157,10 +156,32 @@ class lmbDate extends lmbObject
       return mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year);
   }
 
-  function getISODate()
+  function date($format)
   {
-    return sprintf(self :: DATE_ISO_FORMAT,
+    return date($format, $this->getStamp());
+  }
+
+  function strftime($format)
+  {
+    return strftime($format, $this->getStamp());
+  }
+
+  function getIsoDate($with_seconds = true)
+  {
+    return sprintf($with_seconds ? '%04d-%02d-%02d %02d:%02d:%02d' : '%04d-%02d-%02d %02d:%02d',
                    $this->getYear(), $this->getMonth(), $this->getDay(),
+                   $this->getHour(), $this->getMinute(), $this->getSecond());
+  }
+
+  function getIsoShortDate()
+  {
+    return sprintf('%04d-%02d-%02d',
+                   $this->getYear(), $this->getMonth(), $this->getDay());
+  }
+
+  function getIsoTime($with_seconds = true)
+  {
+    return sprintf($with_seconds ? '%02d:%02d:%02d' : '%02d:%02d',
                    $this->getHour(), $this->getMinute(), $this->getSecond());
   }
 
@@ -174,7 +195,7 @@ class lmbDate extends lmbObject
 
   function toString()
   {
-    return $this->getISODate();
+    return $this->getIsoDate();
   }
 
   function isInDaylightTime()

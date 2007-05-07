@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5791 2007-05-03 08:00:08Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5821 2007-05-07 11:13:08Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -55,8 +55,54 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->getHour(), 12);
     $this->assertEqual($date->getMinute(), 45);
     $this->assertEqual($date->getSecond(), 12);
+  }
 
+  function testGetIsoDate()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->getIsoDate(), '2005-12-01 12:45:12');
+  }
+
+  function testGetIsoDateWithoutSeconds()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->getIsoDate(false), '2005-12-01 12:45');
+  }
+
+  function testGetIsoShortDate()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->getIsoShortDate(), '2005-12-01');
+  }
+
+  function testGetIsoTime()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->getIsoTime(), '12:45:12');
+  }
+
+  function testGetIsoTimeWithoutSeconds()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->getIsoTime(false), '12:45');
+  }
+
+  function testToStringReturnsIsoDate()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
     $this->assertEqual($date->toString(), '2005-12-01 12:45:12');
+  }
+
+  function testStrftime()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->strftime('%m/%d/%y'), '12/01/05');
+  }
+
+  function testDate()
+  {
+    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $this->assertEqual($date->date('m.d.y'), '12.01.05');
   }
 
   function testCreateByCopy()
