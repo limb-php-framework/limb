@@ -32,14 +32,8 @@ class lmbDateRule extends lmbSingleFieldRule
   {
     if($this->type == lmbDateRule :: TYPE_ISO)
     {
-      try
-      {
-        new lmbDate((string)$value);
-      }
-      catch(lmbException $e)
-      {
-        $this->error('{Field} is not valid ISO format date(YYYY-MM-DD HH:MM).');
-      }
+      if(!lmbDate :: isValidDateString($value))
+        $this->error('{Field} is not a valid ISO formatted date(YYYY-MM-DD HH:MM).');
     }
   }
 }
