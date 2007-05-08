@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5830 2007-05-08 11:04:03Z dan82 $
+ * @version    $Id: common.inc.php 5831 2007-05-08 11:45:14Z dan82 $
  * @package    i18n
  */
 require_once('limb/core/common.inc.php');
@@ -43,8 +43,10 @@ function lmb_translit_russian($input, $encoding = 'utf8')
                    
   $result = str_replace($arrRus, $arrEng, $input);
 	
-  if($encoding != 'utf8') return iconv('utf8', $encoding, $result);  
-  else return $result;  
+  if($encoding != 'utf8') 
+    return iconv('utf8', $encoding, $result);  
+  else 
+    return $result;  
 }
 
 
