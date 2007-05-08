@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5831 2007-05-08 11:45:14Z dan82 $
+ * @version    $Id: common.inc.php 5838 2007-05-08 14:57:46Z pachanga $
  * @package    i18n
  */
 require_once('limb/core/common.inc.php');
@@ -23,31 +23,31 @@ function lmb_i18n($text, $arg1 = null, $arg2 = null)
 }
 
 
-function lmb_translit_russian($input, $encoding = 'utf8')   
-{  
-  if($encoding != 'utf8')  
-    $input = iconv($encoding, 'utf8', $input);  
-	
-  $arrRus = array('à', 'á', 'â', 'ã', 'ä', 'å', '¸', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì',  
-                  'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ü',  
-                  'û', 'ú', 'ý', 'þ', 'ÿ',  
-                  'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', '¨', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì',  
-                  'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ü',  
-                  'Û', 'Ú', 'Ý', 'Þ', 'ß');  
-  $arrEng = array('a', 'b', 'v', 'g', 'd', 'e', 'jo', 'zh', 'z', 'i', 'y', 'k', 'l', 'm',  
-                  'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'kh', 'c', 'ch', 'sh', 'sch', '',  
-                  'y', '', 'e', 'yu', 'ya',  
-                  'A', 'B', 'V', 'G', 'D', 'E', 'JO', 'ZH', 'Z', 'I', 'Y', 'K', 'L', 'M',  
-                  'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'KH', 'C', 'CH', 'SH', 'SCH', '',  
-                  'Y', '', 'E', 'YU', 'YA');  
-                   
-  $result = str_replace($arrRus, $arrEng, $input);
-	
-  if($encoding != 'utf8') 
-    return iconv('utf8', $encoding, $result);  
-  else 
-    return $result;  
-}
+function lmb_translit_russian($input, $encoding = 'utf-8')
+{
+  $encoding = strtolower($encoding);
+  if($encoding != 'utf-8')
+    $input = iconv($encoding, 'utf-8', $input);
 
+  $arrRus = array('Ð°', 'Ð±', 'Ð²', 'Ð³', 'Ð´', 'Ðµ', 'Ñ‘', 'Ð¶', 'Ð·', 'Ð¸', 'Ð¹', 'Ðº', 'Ð»', 'Ð¼',
+                  'Ð½', 'Ð¾', 'Ð¿', 'Ñ€', 'Ñ', 'Ñ‚', 'Ñƒ', 'Ñ„', 'Ñ…', 'Ñ†', 'Ñ‡', 'Ñˆ', 'Ñ‰', 'ÑŒ',
+                  'Ñ‹', 'ÑŠ', 'Ñ', 'ÑŽ', 'Ñ',
+                  'Ð', 'Ð‘', 'Ð’', 'Ð“', 'Ð”', 'Ð•', 'Ð', 'Ð–', 'Ð—', 'Ð˜', 'Ð™', 'Ðš', 'Ð›', 'Ðœ',
+                  'Ð', 'Ðž', 'ÐŸ', 'Ð ', 'Ð¡', 'Ð¢', 'Ð£', 'Ð¤', 'Ð¥', 'Ð¦', 'Ð§', 'Ð¨', 'Ð©', 'Ð¬',
+                  'Ð«', 'Ðª', 'Ð­', 'Ð®', 'Ð¯');
+  $arrEng = array('a', 'b', 'v', 'g', 'd', 'e', 'jo', 'zh', 'z', 'i', 'y', 'k', 'l', 'm',
+                  'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'kh', 'c', 'ch', 'sh', 'sch', '',
+                  'y', '', 'e', 'yu', 'ya',
+                  'A', 'B', 'V', 'G', 'D', 'E', 'JO', 'ZH', 'Z', 'I', 'Y', 'K', 'L', 'M',
+                  'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'KH', 'C', 'CH', 'SH', 'SCH', '',
+                  'Y', '', 'E', 'YU', 'YA');
+
+  $result = str_replace($arrRus, $arrEng, $input);
+
+  if($encoding != 'utf-8')
+    return iconv('utf-8', $encoding, $result);
+  else
+    return $result;
+}
 
 ?>
