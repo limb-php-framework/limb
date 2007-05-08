@@ -26,6 +26,16 @@ class lmbMacroTagInfo
     $this->tag = $tag;
     $this->class = $class;
   }
+  
+  function getTag()
+  {
+    return $this->tag;
+  }
+  
+  function setFile($file)
+  {
+    $this->file = $file;
+  }
 
   function setForbidEndtag($flag = true)
   {
