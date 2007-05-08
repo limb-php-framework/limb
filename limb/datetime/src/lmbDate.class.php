@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5832 2007-05-08 12:32:32Z pachanga $
+ * @version    $Id: lmbDate.class.php 5837 2007-05-08 14:19:37Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -78,9 +78,15 @@ class lmbDate extends lmbObject
       return new lmbDate($hour_or_date, $minute_or_tz);
   }
 
-  static function createWithoutTime($year, $month, $day, $tz='')
+  static function createWithoutTime($year=null, $month=null, $day=null, $tz='')
   {
-    return new lmbDate(0, 0, 0, $day, $month, $year, $tz);
+    if(!$year && !$month && !$day)
+    {
+      $date = new lmbDate();
+      return $date->setSecond(0)->setMinute(0)->setHour(0);
+    }
+    else
+      return new lmbDate(0, 0, 0, $day, $month, $year, $tz);
   }
 
   static function createByDays($days)
@@ -293,9 +299,12 @@ class lmbDate extends lmbObject
     $s1 = $this->getStamp();
     $s2 = $d->getStamp();
 
-    if($s1 > $s2) return 1;
-    elseif($s2 > $s1)  return -1;
-    else return 0;
+    if($s1 > $s2)
+      return 1;
+    elseif($s2 > $s1)
+      return -1;
+    else
+      return 0;
   }
 
   function isBefore($when, $use_time_zone=false)

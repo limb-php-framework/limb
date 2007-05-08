@@ -6,10 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDateFormatTest.class.php 5822 2007-05-07 11:14:00Z pachanga $
+ * @version    $Id: lmbLocaleDateFormatTest.class.php 5837 2007-05-08 14:19:37Z pachanga $
  * @package    i18n
  */
-lmb_require('limb/datetime/src/lmbLocaleDate.class.php');
+lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
 lmb_require('limb/i18n/toolkit.inc.php');
 
 class lmbLocaleDateFormatTest extends UnitTestCase
