@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 4984 2007-02-08 15:35:02Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 5829 2007-05-08 09:01:52Z serega $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -14,9 +14,16 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 
 class PersonForTest extends lmbActiveRecord
 {
+  public $save_count = 0;
   protected $_has_one = array('social_security' => array('field' => 'ss_id',
                                                          'class' => 'SocialSecurityForTest',
                                                          'can_be_null' => true));
+
+  function _onSave()
+  {
+    $this->save_count++;
+  }
+
 }
 
 class PersonForTestNoCascadeDelete extends lmbActiveRecord
@@ -98,6 +105,27 @@ class lmbActiveRecordOneToOneRelationsTest extends UnitTestCase
     $number->save();
 
     $this->assertNotNull($person->getId());
+  }
+
+  function testDontSaveParentSecondTimeIfChildWasChanged()
+  {
+    $person = new PersonForTest();
+    $person->setName('Jim');
+
+    $number = new SocialSecurityForTest();
+    $number->setCode('099123');
+
+    $person->setSocialSecurity($number);
+    $person->save();
+
+    $this->assertEqual($person->save_count, 1);
+
+    $number->setCode($new_code = '0022112');
+    $person->save();
+
+    $this->assertEqual($person->save_count, 1);
+    $loaded_number = new SocialSecurityForTest($number->getId());
+    $this->assertEqual($loaded_number->getCode(), $new_code);
   }
 
   function testLoadParentObject()

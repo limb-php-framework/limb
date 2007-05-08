@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5763 2007-04-24 11:31:29Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5829 2007-05-08 09:01:52Z serega $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5763 2007-04-24 11:31:29Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5829 2007-05-08 09:01:52Z serega $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -337,7 +337,9 @@ class lmbActiveRecord extends lmbObject
     if(is_object($object))
     {
       $object->save($this->getErrorList());
-      $this->_setRaw($info['field'], $object->getId());
+      $object_id = $object->getId();
+      if($this->_getRaw($info['field']) != $object_id)
+        $this->_setRaw($info['field'], $object->getId());
     }
     elseif(is_null($object) && $this->isDirtyProperty($property) &&
            isset($info['can_be_null']) && $info['can_be_null'])
@@ -1247,6 +1249,11 @@ class lmbActiveRecord extends lmbObject
     $items = explode('|', $path);
     array_pop($items);//removing last empty item
     return $items;
+  }
+
+  static function getInheritanceClass($obj)
+  {
+    return end(self :: decodeInheritancePath($obj[self :: $_inheritance_field]));
   }
 
   /**
