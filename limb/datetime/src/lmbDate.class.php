@@ -6,15 +6,19 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5828 2007-05-07 20:52:07Z pachanga $
+ * @version    $Id: lmbDate.class.php 5832 2007-05-08 12:32:32Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
+
+define('LIMB_DATE_FIRST_WEEKDAY', 1);
 
 class lmbDate extends lmbObject
 {
   //YYYY-MM-DD HH:MM:SS timezone
   const DATE_ISO_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
+
+  static protected $first_day_week = 1;
 
   protected $year = 0;
   protected $month = 0;
@@ -59,10 +63,13 @@ class lmbDate extends lmbObject
     if(!$this->isValid())
     {
       $args = func_get_args();
-      throw new lmbException("Could not create date using args '$args'");
+      throw new lmbException("Could not create date using args", $args);
     }
   }
 
+  /**
+   * Wrapper around constructor, it can be useful since the following is not allowed in PHP 'new lmbDate(..)->addDay(..)->'
+   */
   static function create($hour_or_date=null, $minute_or_tz=0, $second=0, $day=0, $month=0, $year=0, $tz='')
   {
     if(func_num_args() > 2)
@@ -71,7 +78,56 @@ class lmbDate extends lmbObject
       return new lmbDate($hour_or_date, $minute_or_tz);
   }
 
-  static function stampToISO($stamp)
+  static function createWithoutTime($year, $month, $day, $tz='')
+  {
+    return new lmbDate(0, 0, 0, $day, $month, $year, $tz);
+  }
+
+  static function createByDays($days)
+  {
+    $days   -= 1721119;
+    $century = floor((4 * $days - 1) / 146097);
+    $days    = floor(4 * $days - 1 - 146097 * $century);
+    $day     = floor($days / 4);
+
+    $year    = floor((4 * $day +  3) / 1461);
+    $day     = floor(4 * $day +  3 - 1461 * $year);
+    $day     = floor(($day +  4) / 4);
+
+    $month   = floor((5 * $day - 3) / 153);
+    $day     = floor(5 * $day - 3 - 153 * $month);
+    $day     = floor(($day +  5) /  5);
+
+    if($month < 10)
+    {
+      $month +=3;
+    }
+    else
+    {
+      $month -=9;
+      if($year++ == 99)
+      {
+        $year = 0;
+        $century++;
+      }
+    }
+
+    $century = sprintf('%02d', $century);
+    $year    = sprintf('%02d', $year);
+    return new lmbDate(0, 0, 0, $day, $month, $century . $year);
+  }
+
+  static function setFirstDayOfWeek($n)
+  {
+    self :: $first_day_week = $n;
+  }
+
+  static function getFirstDayOfWeek()
+  {
+    return self :: $first_day_week;
+  }
+
+  static function stampToIso($stamp)
   {
     $date = new lmbDate((int)$stamp);
     return $date->getIsoDate();
@@ -289,6 +345,14 @@ class lmbDate extends lmbObject
     $month = $this->month;
     $day = $this->day;
 
+    if(1901 < $year && $year < 2038)
+      return (int)date('w', mktime(0, 0, 0, $month, $day, $year));
+
+    //gregorian correction
+    $correction = 0;
+    if(($year < 1582) || (($year == 1582) || (($month < 10) || (($month == 10) || ($day < 15)))))
+      $correction = 3;
+
     if($month > 2)
     {
       $month -= 2;
@@ -299,15 +363,23 @@ class lmbDate extends lmbObject
       $year--;
     }
 
-    $day = ( floor((13 * $month - 1) / 5) +
-        $day + ($year % 100) +
-        floor(($year % 100) / 4) +
-        floor(($year / 100) / 4) - 2 *
-        floor($year / 100) + 77);
+    $day  = floor((13 * $month - 1) / 5) + $day + ($year % 100) + floor(($year % 100) / 4);
+    $day += floor(($year / 100) / 4) - 2 * floor($year / 100) + 77 + $correction;
+    return (int)($day - 7 * floor($day / 7));
+  }
 
-    $weekday_number = (($day - 7 * floor($day / 7)));
+  function getBeginOfWeek()
+  {
+    $this_weekday = $this->getDayOfWeek();
+    $interval = (7 - self :: $first_day_week + $this_weekday) % 7;
+    return lmbDate :: createByDays($this->getDateDays() - $interval);
+  }
 
-    return $weekday_number - 1;
+  function getEndOfWeek()
+  {
+    $this_weekday = $this->getDayOfWeek();
+    $interval = (6 + self :: $first_day_week - $this_weekday) % 7;
+    return lmbDate :: createByDays($this->getDateDays() + $interval);
   }
 
   function getWeekOfYear()
@@ -316,61 +388,31 @@ class lmbDate extends lmbObject
     $month = $this->month;
     $year = $this->year;
 
-    $mnth = array (0,31,59,90,120,151,181,212,243,273,304,334);
-    $y_isleap = $this->isLeapYear();
-    $d = new lmbDate($this);
-    $d = $d->setYear($year - 1);
-    $y_1_isleap = $d->isLeapYear();
-
-    $day_of_year_number = $day + $mnth[$month - 1];
-    if($y_isleap && $month > 2)
-      $day_of_year_number++;
-
-    // find Jan 1 weekday (monday = 1, sunday = 7)
-    $yy = ($year - 1) % 100;
-    $c = ($year - 1) - $yy;
-    $g = $yy + intval($yy/4);
-    $jan1_weekday = 1 + intval((((($c / 100) % 4) * 5) + $g) % 7);
-    // weekday for year-month-day
-    $h = $day_of_year_number + ($jan1_weekday - 1);
-    $weekday = 1 + intval(($h - 1) % 7);
-    // find if Y M D falls in YearNumber Y-1, WeekNumber 52 or
-    if($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4)
+    if((1901 < $year) && ($year < 2038))
     {
-      $yearnumber = $year - 1;
-      if($jan1_weekday == 5 || ($jan1_weekday == 6 && $y_1_isleap))
-        $weeknumber = 53;
-      else
-        $weeknumber = 52;
+      $res  = (int)date('W', mktime(0, 0, 0, $month, $day, $year));
+      if($res > 52) //bug in PHP date???
+        return $res % 52;
+      return $res;
     }
-    else
-      $yearnumber = $year;
-    // find if Y M D falls in YearNumber Y+1, WeekNumber 1
-    if($yearnumber == $year)
-    {
-      if($y_isleap)
-        $i = 366;
-      else
-        $i = 365;
 
-      if(($i - $day_of_year_number) < (4 - $weekday))
-      {
-        $yearnumber++;
-        $weeknumber = 1;
-      }
-    }
-    // find if Y M D falls in YearNumber Y, WeekNumber 1 through 53
-    if($yearnumber == $year)
+    $dayofweek = $this->getDayOfWeek();
+    $firstday  = self :: createWithoutTime($year, 1, 1)->getDayOfWeek();
+    if(($month == 1) && (($firstday < 1) || ($firstday > 4)) && ($day < 4))
     {
-      $j = $day_of_year_number + (7 - $weekday) + ($jan1_weekday - 1);
-      $weeknumber = intval($j / 7);
-      if($jan1_weekday > 4)
-        $weeknumber--;
+      $firstday  = self :: createWithoutTime($year - 1, 1, 1)->getDayOfWeek();
+      $month     = 12;
+      $day       = 31;
     }
-   return $weeknumber;
+    elseif(($month == 12) && ((self :: createWithoutTime($year + 1, 1, 1)->getDayOfWeek() < 5) &&
+            (self :: createWithoutTime($year + 1, 1, 1)->getDayOfWeek() > 0)))
+        return 1;
+
+    return intval(((self :: createWithoutTime($year, 1, 1)->getDayOfWeek() < 5) && (self :: createWithoutTime($year, 1, 1)->getDayOfWeek() > 0)) +
+           4 * ($month - 1) + (2 * ($month - 1) + ($day - 1) + $firstday - $dayofweek + 6) * 36 / 256);
   }
 
-  function dateToDays()
+  function getDateDays()
   {
     $century = (int)substr("{$this->year}", 0, 2);
     $year = (int)substr("{$this->year}", 2, 2);

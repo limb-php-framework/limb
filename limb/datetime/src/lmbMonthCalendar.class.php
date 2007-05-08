@@ -15,14 +15,14 @@ class lmbMonthCalendar
 {
   protected $start_date;
   protected $end_date;
-  
+
   function __construct($year, $month)
   {
     $tmp_date = new lmbDate(0, 0, 0, 0, $month, $year);
     $this->start_date = $tmp_date->setDay(1);
     $this->end_date = $this->start_date->addMonth(1)->addDay(-1);
   }
-  
+
   function getStartDate()
   {
     return $this->start_date;
@@ -32,19 +32,69 @@ class lmbMonthCalendar
   {
     return $this->end_date;
   }
-  
+
   function getNumberOfDays()
   {
     return $this->end_date->getDay();
   }
-  
+
   function getNumberOfWeeks()
-  {    
-    $dof_start = $this->start_date->getDayOfWeek();    
-    $dof_end = $this->end_date->getDayOfWeek() + 1;//fix it???
-    
-    $days = ($this->getNumberOfDays() - (7 - $dof_start) - $dof_end);        
-    return ((int)$days / 7) + 1 + (($dof_end > 0) ? 1 : 0);
+  {
+    $dof = $this->start_date->getDayOfWeek();
+    if(lmbDate :: getFirstDayOfWeek() == 1 && $dof == 0)
+    {
+      $first_week_days = 7 - $dof + lmbDate :: getFirstDayOfWeek();
+      $weeks = 1;
+    }
+    elseif(lmbDate :: getFirstDayOfWeek() == 0 && $dof == 6)
+    {
+      $first_week_days = 7 - $dof + lmbDate :: getFirstDayOfWeek();
+      $weeks = 1;
+    }
+    else
+    {
+      $first_week_days = lmbDate :: getFirstDayOfWeek() - $dof;
+      $weeks = 0;
+    }
+
+    $first_week_days %= 7;
+    return ceil(($this->getNumberOfDays() - $first_week_days) / 7) + $weeks;
+  }
+
+  function getWeek($n)
+  {
+    if($n < 0 || $n > $this->getNumberOfWeeks()-1)
+      return null;
+
+    $week_array = array();
+    $curr_day = ($n * 7) + $this->start_date->getBeginOfWeek()->getDateDays();
+
+    for($i=0;$i<=6;$i++)
+    {
+      $week_array[$i] = lmbDate :: createByDays($curr_day);
+      $curr_day++;
+    }
+    return $week_array;
+  }
+
+  function getAllWeeks()
+  {
+    $weeks = array();
+    for($i = 0; $i < $this->getNumberOfWeeks(); $i++)
+      $weeks[$i] = $this->getWeek($i);
+    return $weeks;
+  }
+
+  function getNextMonth()
+  {
+    $date = $this->end_date->addDay(1);
+    return new lmbMonthCalendar($date->getYear(), $date->getMonth());
+  }
+
+  function getPrevMonth()
+  {
+    $date = $this->start_date->addDay(-1);
+    return new lmbMonthCalendar($date->getYear(), $date->getMonth());
   }
 }
 ?>

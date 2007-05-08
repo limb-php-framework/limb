@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5824 2007-05-07 13:44:24Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5832 2007-05-08 12:32:32Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -129,7 +129,7 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date, $sample);
   }
 
-  function testCreateByISO()
+  function testCreateByIso()
   {
     $date = new lmbDate('2005-12-01  12:45:12');
     $this->assertEqual(lmbDate :: create('2005-12-01  12:45:12'), $date);
@@ -144,7 +144,7 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '2005-12-01 12:45:12');
   }
 
-  function testCreateByISODateOnly()
+  function testCreateByIsoDateOnly()
   {
     $date = new lmbDate('2005-12-01');
     $this->assertEqual(lmbDate :: create('2005-12-01'), $date);
@@ -159,7 +159,13 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '2005-12-01 00:00:00');
   }
 
-  function testCreateByISOTimeOnly()
+  function testCreateWithoutTime()
+  {
+    $date = new lmbDate('2005-12-01');
+    $this->assertEqual(lmbDate :: createWithoutTime(2005, 12, 1), $date);
+  }
+
+  function testCreateByIsoTimeOnly()
   {
     $date = new lmbDate('12:45:12');
     $this->assertEqual(lmbDate :: create('12:45:12'), $date);
@@ -174,7 +180,7 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '0000-00-00 12:45:12');
   }
 
-  function testCreateByISOTimeWithSecondsOmitted()
+  function testCreateByIsoTimeWithSecondsOmitted()
   {
     $date = new lmbDate('12:45');
     $this->assertEqual(lmbDate :: create('12:45'), $date);
@@ -189,10 +195,10 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '0000-00-00 12:45:00');
   }
 
-  function testStampToISO()
+  function testStampToIso()
   {
     $stamp = mktime(21, 45, 13, 12, 1, 2005);
-    $iso = lmbDate :: stampToISO($stamp);
+    $iso = lmbDate :: stampToIso($stamp);
     $this->assertEqual($iso, '2005-12-01 21:45:13');
   }
 
@@ -211,24 +217,85 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->toString(), '2005-12-01 21:45:13');
   }
 
+  function testCreateByDays()
+  {
+    $date = new lmbDate('2005-12-01');
+    $days = $date->getDateDays();
+    $this->assertEqual(lmbDate :: createByDays($days), $date);
+  }
+
   function testGetStamp()
   {
     $date = new lmbDate($stamp = mktime(21, 45, 13, 12, 1, 2005));
     $this->assertEqual($date->getStamp(), $stamp);
   }
 
+  function testGetDayOfWeekForSunday()
+  {
+    $date = new lmbDate('2005-01-16');
+    $this->assertEqual($date->getDayOfWeek(), 0);
+  }
+
+  function testGetDayOfWeekForMonday()
+  {
+    $date = new lmbDate('2005-01-17');
+    $this->assertEqual($date->getDayOfWeek(), 1);
+  }
+
+  function testGetDayOfWeekForSuturday()
+  {
+    $date = new lmbDate('2005-01-15');
+    $this->assertEqual($date->getDayOfWeek(), 6);
+  }
+
   //in the two tests below we're testing a boundary situtation
   //for day of the week which happens in February
   function testGetDayOfWeekMonthBeforeFebruary()
   {
-    $date = new lmbDate('2005-01-20 10:20:30');
-    $this->assertEqual($date->getDayOfWeek(), 3);
+    $date = new lmbDate('2005-01-20');
+    $this->assertEqual($date->getDayOfWeek(), 4);
   }
 
   function testGetDayOfWeekMonthAfterFebruary()
   {
-    $date = new lmbDate('2005-08-20 10:20:30');
-    $this->assertEqual($date->getDayOfWeek(), 5);
+    $date = new lmbDate('2005-08-20');
+    $this->assertEqual($date->getDayOfWeek(), 6);
+  }
+
+  function testGetBeginOfWeek()
+  {
+    $date = new lmbDate('2005-01-20');
+    $this->assertEqual($date->getBeginOfWeek(), new lmbDate('2005-01-17'));
+  }
+
+  function testGetBeginOfWeekForMonday()
+  {
+    $date = new lmbDate('2005-01-17');
+    $this->assertEqual($date->getBeginOfWeek(), new lmbDate('2005-01-17'));
+  }
+
+  function testGetBeginOfWeekForSunday()
+  {
+    $date = new lmbDate('2005-01-16');
+    $this->assertEqual($date->getBeginOfWeek(), new lmbDate('2005-01-10'));
+  }
+
+  function testGetEndOfWeek()
+  {
+    $date = new lmbDate('2005-01-20');
+    $this->assertEqual($date->getEndOfWeek(), new lmbDate('2005-01-23'));
+  }
+
+  function testGetEndOfWeekForMonday()
+  {
+    $date = new lmbDate('2005-01-17');
+    $this->assertEqual($date->getEndOfWeek(), new lmbDate('2005-01-23'));
+  }
+
+  function testGetEndOfWeekForSunday()
+  {
+    $date = new lmbDate('2005-01-16');
+    $this->assertEqual($date->getEndOfWeek(), new lmbDate('2005-01-16'));
   }
 
   function testSetYear()
@@ -441,9 +508,8 @@ class lmbDateTest extends UnitTestCase
 
   function testGetWeekOfYear()
   {
-    //this one fails
-    //$date = new lmbDate('2005-01-01 12:20:40');
-    //$this->assertEqual($date->getWeekOfYear(), 1);
+    $date = new lmbDate('2005-01-01 12:20:40');
+    $this->assertEqual($date->getWeekOfYear(), 1);
 
     $date = new lmbDate('2005-01-06 12:20:40');
     $this->assertEqual($date->getWeekOfYear(), 1);
