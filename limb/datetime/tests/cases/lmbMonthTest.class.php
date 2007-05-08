@@ -10,14 +10,57 @@
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbMonth.class.php');
+lmb_require('limb/datetime/src/lmbDate.class.php');
 
 class lmbMonthTest extends UnitTestCase
 {
+  function testCreateCurrent()
+  {
+    $date = new lmbDate();
+
+    $c = new lmbMonth();
+    $this->assertEqual($c->getYear(), $date->getYear());
+    $this->assertEqual($c->getMonth(), $date->getMonth());
+  }
+
+  function testCreate()
+  {
+    $c = new lmbMonth(2007, 5);
+    $this->assertEqual($c->getYear(), 2007);
+    $this->assertEqual($c->getMonth(), 5);
+  }
+
+  function testCreateByDate()
+  {
+    $c = new lmbMonth(new lmbDate('2007-05-01'));
+    $this->assertEqual($c->getYear(), 2007);
+    $this->assertEqual($c->getMonth(), 5);
+  }
+
+  function testCreateByString()
+  {
+    $c = new lmbMonth('2007-05-01');
+    $this->assertEqual($c->getYear(), 2007);
+    $this->assertEqual($c->getMonth(), 5);
+  }
+
   function testGetBoundaries()
   {
     $c = new lmbMonth(2007, 5);
     $this->assertEqual(new lmbDate('2007-05-01'), $c->getStartDate());
     $this->assertEqual(new lmbDate('2007-05-31'), $c->getEndDate());
+  }
+
+  function testGetMonthName()
+  {
+    $c = new lmbMonth(2007, 5);
+    $this->assertEqual($c->getMonthName(), 'May');
+  }
+
+  function testGetMonthShortName()
+  {
+    $c = new lmbMonth(2007, 1);
+    $this->assertEqual($c->getMonthName(), 'Jan');
   }
 
   function testGetNumberOfDays()

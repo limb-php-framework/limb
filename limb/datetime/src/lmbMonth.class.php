@@ -16,11 +16,37 @@ class lmbMonth
   protected $start_date;
   protected $end_date;
 
-  function __construct($year, $month)
+  function __construct($year_or_date = null, $month = null)
   {
-    $tmp_date = new lmbDate(0, 0, 0, 0, $month, $year);
+    if($year_or_date && $month)
+      $tmp_date = new lmbDate(0, 0, 0, 0, $month, $year_or_date);
+    elseif($year_or_date && !$month)
+      $tmp_date = new lmbDate($year_or_date);
+    else
+      $tmp_date = new lmbDate();
+
     $this->start_date = $tmp_date->setDay(1);
     $this->end_date = $this->start_date->addMonth(1)->addDay(-1);
+  }
+
+  function getMonth()
+  {
+    return $this->start_date->getMonth();
+  }
+
+  function getMonthName()
+  {
+    return $this->start_date->date('M');
+  }
+
+  function getMonthShortName()
+  {
+    return $this->start_date->date('F');
+  }
+
+  function getYear()
+  {
+    return $this->start_date->getYear();
   }
 
   function getStartDate()
