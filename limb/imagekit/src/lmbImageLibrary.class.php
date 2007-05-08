@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbImageLibrary.class.php 4999 2007-02-08 15:36:37Z pachanga $
+ * @version    $Id: lmbImageLibrary.class.php 5840 2007-05-08 16:33:55Z pachanga $
  * @package    imagekit
  */
 define('LIMB_IMAGE_LIBRARY_FLIP_HORIZONTAL', 1);
@@ -36,8 +36,8 @@ abstract class lmbImageLibrary
 
   function setInputType($type)
   {
-    if (!$this->isTypeReadSupported($type))
-      throw new lmbException('type not supported');
+    if(!$this->isTypeReadSupported($type))
+      throw new lmbException("Type '$type' not supported");
 
     $this->input_file_type = $type;
   }
@@ -51,53 +51,53 @@ abstract class lmbImageLibrary
 
   function setOutputType($type)
   {
-    if (!$this->isTypeCreateSupported($type))
-      throw new lmbException('type not supported');
+    if(!$this->isTypeCreateSupported($type))
+      throw new lmbException("Type '$type' not supported");
 
     $this->output_file_type = $type;
   }
 
   function fallBackToAnySupportedType($type)
   {
-    if ($this->isTypeCreateSupported($type))
+    if($this->isTypeCreateSupported($type))
       return $type;
 
-    if ($this->isTypeCreateSupported('PNG'))
+    if($this->isTypeCreateSupported('PNG'))
       return 'PNG';
 
-    if ($this->isTypeCreateSupported('JPEG'))
+    if($this->isTypeCreateSupported('JPEG'))
       return 'JPEG';
 
-    throw new lmbException('no file type supported');
+    throw new lmbException("File type '$type' not supported");
   }
 
   function getImageType($str)
   {
-    if (preg_match("/bmp/i", $str))
+    if(preg_match("/bmp/i", $str))
       return 'BMP';
 
-    if (preg_match("/gif/i", $str))
+    if(preg_match("/gif/i", $str))
       return 'GIF';
 
-    if (preg_match("/png/i", $str))
+    if(preg_match("/png/i", $str))
       return 'PNG';
 
-    if (preg_match("/(jpeg|jpg)/i", $str))
+    if(preg_match("/(jpeg|jpg)/i", $str))
       return 'JPEG';
   }
 
   function getMimeType($str)
   {
-    if (preg_match("/bmp/i", $str))
+    if(preg_match("/bmp/i", $str))
       return 'image/bmp';
 
-    if (preg_match("/gif/i", $str))
+    if(preg_match("/gif/i", $str))
       return 'image/gif';
 
-    if (preg_match("/png/i", $str))
+    if(preg_match("/png/i", $str))
       return 'image/png';
 
-    if (preg_match("/(jpeg|jpg)/i", $str))
+    if(preg_match("/(jpeg|jpg)/i", $str))
       return 'image/jpeg';
   }
 
@@ -123,23 +123,23 @@ abstract class lmbImageLibrary
 
   function getDstDimensions($src_width, $src_height, $params)
   {
-    if (isset($params['max_dimension']))
+    if(isset($params['max_dimension']))
     {
       $params['preserve_aspect_ratio'] = true;
-      if ($src_width > $src_height)
+      if($src_width > $src_height)
         $params['width'] = $params['max_dimension'];
       else
         $params['height'] = $params['max_dimension'];
     }
 
-    if (isset($params['scale_factor']))
+    if(isset($params['scale_factor']))
     {
       $dst_width = floor($src_width * $params['scale_factor']);
       $dst_height = floor($src_height * $params['scale_factor']);
     }
     elseif(isset($params['xscale']) ||  isset($params['yscale']))
     {
-      if (isset($params['xscale']))
+      if(isset($params['xscale']))
         $dst_width = floor($src_width * $params['xscale']);
       else
         if(isset($params['preserve_aspect_ratio']))
@@ -147,7 +147,7 @@ abstract class lmbImageLibrary
         else
           $dst_width = $src_width;
 
-      if (isset($params['yscale']))
+      if(isset($params['yscale']))
         $dst_height = floor($src_height * $params['yscale']);
       else
         if(isset($params['preserve_aspect_ratio']))
@@ -157,7 +157,7 @@ abstract class lmbImageLibrary
     }
     elseif(isset($params['width']) ||  isset($params['height']))
     {
-      if (isset($params['width']))
+      if(isset($params['width']))
         $dst_width = $params['width'];
       else
         if(isset($params['preserve_aspect_ratio']))
@@ -168,7 +168,7 @@ abstract class lmbImageLibrary
         else
           $dst_width = $src_width;
 
-      if (isset($params['height']))
+      if(isset($params['height']))
         $dst_height = $params['height'];
       else
         if(isset($params['preserve_aspect_ratio']))
