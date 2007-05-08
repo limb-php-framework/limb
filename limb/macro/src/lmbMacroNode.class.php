@@ -35,6 +35,11 @@ class lmbMacroNode
     $this->parent = $parent;
   }
   
+  function getParent()
+  {
+    return $this->parent;
+  }
+  
   function getLocationInTemplate()
   {
     return $this->location;

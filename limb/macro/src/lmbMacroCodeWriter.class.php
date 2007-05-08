@@ -83,6 +83,11 @@ class lmbMacroCodeWriter
     $this->switchToHTML(substr($text,0,1));
     $this->code .= $text;
   }
+  
+  function writeRaw($text)
+  {
+    $this->code .= $text;
+  }
 
   function renderCode()
   {

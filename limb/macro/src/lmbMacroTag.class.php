@@ -33,6 +33,16 @@ class lmbMacroTag extends lmbMacroNode
     return $this->tag;
   }
   
+  function getHasClosingTag()
+  {
+    return $this->has_closing_tag;
+  }
+  
+  function setHasClosingTag($flag)
+  {
+    return $this->has_closing_tag = $flag;
+  }  
+  
   function getId()
   {
     if($this->id)
