@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDate.class.php 5822 2007-05-07 11:14:00Z pachanga $
+ * @version    $Id: lmbLocaleDate.class.php 5833 2007-05-08 12:33:07Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
@@ -101,7 +101,7 @@ class lmbLocaleDate extends lmbDate
             $output .= $this->getDay();
             break;
         case 'E':
-            $output .= $this->dateToDays();
+            $output .= $this->getDateDays();
             break;
         case 'H':
             $output .= sprintf("%02d", $this->getHour());
