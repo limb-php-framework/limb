@@ -9,47 +9,47 @@
  * @version    $Id: lmbDateTest.class.php 5824 2007-05-07 13:44:24Z pachanga $
  * @package    datetime
  */
-lmb_require('limb/datetime/src/lmbMonthCalendar.class.php');
+lmb_require('limb/datetime/src/lmbMonth.class.php');
 
-class lmbMonthCalendarTest extends UnitTestCase
+class lmbMonthTest extends UnitTestCase
 {
   function testGetBoundaries()
   {
-    $c = new lmbMonthCalendar(2007, 5);
+    $c = new lmbMonth(2007, 5);
     $this->assertEqual(new lmbDate('2007-05-01'), $c->getStartDate());
     $this->assertEqual(new lmbDate('2007-05-31'), $c->getEndDate());
   }
 
   function testGetNumberOfDays()
   {
-    $c = new lmbMonthCalendar(2007, 5);
+    $c = new lmbMonth(2007, 5);
     $this->assertEqual($c->getNumberOfDays(), 31);
   }
 
   function testGetNumberOfDaysForLeapYear()
   {
-    $c1 = new lmbMonthCalendar(2005, 2);
+    $c1 = new lmbMonth(2005, 2);
     $this->assertEqual($c1->getNumberOfDays(), 28);
 
-    $c2 = new lmbMonthCalendar(2004, 2);
+    $c2 = new lmbMonth(2004, 2);
     $this->assertEqual($c2->getNumberOfDays(), 29);
   }
 
   function testGetNumberOfWeeks()
   {
-    $c1 = new lmbMonthCalendar(1999, 2);
+    $c1 = new lmbMonth(1999, 2);
     $this->assertEqual($c1->getNumberOfWeeks(), 4);
 
-    $c2 = new lmbMonthCalendar(2007, 2);
+    $c2 = new lmbMonth(2007, 2);
     $this->assertEqual($c2->getNumberOfWeeks(), 5);
 
-    $c3 = new lmbMonthCalendar(2010, 5);
+    $c3 = new lmbMonth(2010, 5);
     $this->assertEqual($c3->getNumberOfWeeks(), 6);
   }
 
   function testGetWeekFailed()
   {
-    $c = new lmbMonthCalendar(1999, 2);
+    $c = new lmbMonth(1999, 2);
     $this->assertNull($c->getWeek(4));
     $this->assertNull($c->getWeek(10));
     $this->assertNull($c->getWeek(-1));
@@ -57,7 +57,7 @@ class lmbMonthCalendarTest extends UnitTestCase
 
   function testGetIdealWeek()
   {
-    $c = new lmbMonthCalendar(1999, 2);
+    $c = new lmbMonth(1999, 2);
     $week0 = $c->getWeek(0);
     $week1 = $c->getWeek(1);
     $week2 = $c->getWeek(2);
@@ -85,7 +85,7 @@ class lmbMonthCalendarTest extends UnitTestCase
 
   function testGetWeekWithDaysFromBoundaryMonths()
   {
-    $c = new lmbMonthCalendar(2007, 2);
+    $c = new lmbMonth(2007, 2);
     $week0 = $c->getWeek(0);
     $week1 = $c->getWeek(1);
     $week2 = $c->getWeek(2);
@@ -124,7 +124,7 @@ class lmbMonthCalendarTest extends UnitTestCase
 
   function testGetAllWeeks()
   {
-    $c = new lmbMonthCalendar(2007, 2);
+    $c = new lmbMonth(2007, 2);
     $weeks = $c->getAllWeeks();
     $this->assertEqual($weeks, array($c->getWeek(0),  $c->getWeek(1), $c->getWeek(2),
                                      $c->getWeek(3), $c->getWeek(4)));
@@ -132,30 +132,30 @@ class lmbMonthCalendarTest extends UnitTestCase
 
   function testGetNextMonth()
   {
-    $c = new lmbMonthCalendar(2007, 2);
+    $c = new lmbMonth(2007, 2);
     $next = $c->getNextMonth();
-    $this->assertEqual(new lmbMonthCalendar(2007, 3), $next);
+    $this->assertEqual(new lmbMonth(2007, 3), $next);
   }
 
   function testGetNextMothFromDecember()
   {
-    $c = new lmbMonthCalendar(2007, 12);
+    $c = new lmbMonth(2007, 12);
     $next = $c->getNextMonth();
-    $this->assertEqual(new lmbMonthCalendar(2008, 1), $next);
+    $this->assertEqual(new lmbMonth(2008, 1), $next);
   }
 
   function testGetPrevMonth()
   {
-    $c = new lmbMonthCalendar(2007, 2);
+    $c = new lmbMonth(2007, 2);
     $prev = $c->getPrevMonth();
-    $this->assertEqual(new lmbMonthCalendar(2007, 1), $prev);
+    $this->assertEqual(new lmbMonth(2007, 1), $prev);
   }
 
   function testGetPrevMonthFromJanuary()
   {
-    $c = new lmbMonthCalendar(2007, 1);
+    $c = new lmbMonth(2007, 1);
     $prev = $c->getPrevMonth();
-    $this->assertEqual(new lmbMonthCalendar(2006, 12), $prev);
+    $this->assertEqual(new lmbMonth(2006, 12), $prev);
   }
 }
 ?>

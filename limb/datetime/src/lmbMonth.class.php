@@ -11,7 +11,7 @@
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
 
-class lmbMonthCalendar
+class lmbMonth
 {
   protected $start_date;
   protected $end_date;
@@ -88,13 +88,13 @@ class lmbMonthCalendar
   function getNextMonth()
   {
     $date = $this->end_date->addDay(1);
-    return new lmbMonthCalendar($date->getYear(), $date->getMonth());
+    return new lmbMonth($date->getYear(), $date->getMonth());
   }
 
   function getPrevMonth()
   {
     $date = $this->start_date->addDay(-1);
-    return new lmbMonthCalendar($date->getYear(), $date->getMonth());
+    return new lmbMonth($date->getYear(), $date->getMonth());
   }
 }
 ?>
