@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5832 2007-05-08 12:32:32Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5839 2007-05-08 16:17:44Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -526,6 +526,34 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($d1->compare($d2), 0);
     $this->assertEqual($d1->addYear()->compare($d2), 1);
     $this->assertEqual($d1->compare($d2->addYear(2)), -1);
+  }
+
+  function testStripTime()
+  {
+    $date = new lmbDate('2005-01-01 12:20:40');
+    $this->assertEqual($date->stripTime(), new lmbDate('2005-01-01'));
+  }
+
+  function testStripDate()
+  {
+    $date = new lmbDate('2005-01-01 12:20:40');
+    $this->assertEqual($date->stripDate(), new lmbDate('12:20:40'));
+  }
+
+  function testIsDateEqual()
+  {
+    $date1 = new lmbDate('2005-01-01 12:20:40');
+    $date2 = new lmbDate('2005-01-01 13:20:40');
+    $this->assertTrue($date1->isEqualDate($date2));
+    $this->assertTrue($date2->isEqualDate($date1));
+  }
+
+  function testIsDateNotEqual()
+  {
+    $date1 = new lmbDate('2005-02-01 12:20:40');
+    $date2 = new lmbDate('2005-01-01 13:20:40');
+    $this->assertFalse($date1->isEqualDate($date2));
+    $this->assertFalse($date2->isEqualDate($date1));
   }
 }
 ?>

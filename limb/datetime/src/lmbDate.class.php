@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5837 2007-05-08 14:19:37Z pachanga $
+ * @version    $Id: lmbDate.class.php 5839 2007-05-08 16:17:44Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -331,6 +331,11 @@ class lmbDate extends lmbObject
       return false;
   }
 
+  function isEqualDate($when)
+  {
+    return $this->stripTime()->isEqual($when->stripTime());
+  }
+
   function isLeapYear()
   {
     return (($this->year % 4 == 0 &&  $this->year % 100 != 0) ||  $this->year % 400 == 0);
@@ -563,6 +568,16 @@ class lmbDate extends lmbObject
   {
     $date = new lmbDate(mktime($this->hour, $this->minute, $this->second + $n, $this->month, $this->day, $this->year));
     return $date->setTimeZone($this->tz);
+  }
+
+  function stripTime()
+  {
+    return lmbDate :: createWithoutTime($this->year, $this->month, $this->day, $this->tz);
+  }
+
+  function stripDate()
+  {
+    return new lmbDate($this->hour, $this->minute, $this->second, null, null, null, $this->tz);
   }
 }
 ?>
