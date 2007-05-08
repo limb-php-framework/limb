@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: calendar.tag.php 5815 2007-05-05 13:27:07Z pachanga $
+ * @version    $Id: calendar.tag.php 5841 2007-05-08 16:34:34Z pachanga $
  * @package    calendar
  */
 require_once('limb/wact/src/tags/form/input.tag.php');
@@ -40,6 +40,11 @@ class lmbCalendarTag extends WactInputTag
     {
       $widget->setOption('ifFormat', $format);
       $widget->setOption('daFormat', $format);
+    }
+    else
+    {
+      $widget->setOption('ifFormat', '%Y-%m-%d %H:%M');
+      $widget->setOption('daFormat', '%Y-%m-%d %H:%M');
     }
 
     $code->writeHTML($widget->loadFiles() .
