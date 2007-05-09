@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5839 2007-05-08 16:17:44Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5846 2007-05-09 11:35:41Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -262,6 +262,18 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->getDayOfWeek(), 6);
   }
 
+  function testGetBeginOfDay()
+  {
+    $date = new lmbDate('2005-08-20 12:24:12');
+    $this->assertEqual($date->getBeginOfDay(), new lmbDate('2005-08-20 00:00:00'));
+  }
+
+  function testGetEndOfDay()
+  {
+    $date = new lmbDate('2005-08-20 12:24:12');
+    $this->assertEqual($date->getEndOfDay(), new lmbDate('2005-08-20 23:59:59'));
+  }
+
   function testGetBeginOfWeek()
   {
     $date = new lmbDate('2005-01-20');
@@ -296,6 +308,30 @@ class lmbDateTest extends UnitTestCase
   {
     $date = new lmbDate('2005-01-16');
     $this->assertEqual($date->getEndOfWeek(), new lmbDate('2005-01-16'));
+  }
+
+  function testGetBeginOfMonth()
+  {
+    $date = new lmbDate('2005-08-20 12:24:12');
+    $this->assertEqual($date->getBeginOfMonth(), new lmbDate('2005-08-01 00:00:00'));
+  }
+
+  function testGetEndOfMonth()
+  {
+    $date = new lmbDate('2007-05-09 12:24:12');
+    $this->assertEqual($date->getEndOfMonth(), new lmbDate('2007-05-31 23:59:59'));
+  }
+
+  function testGetBeginOfYear()
+  {
+    $date = new lmbDate('2005-08-20 12:24:12');
+    $this->assertEqual($date->getBeginOfYear(), new lmbDate('2005-01-01 00:00:00'));
+  }
+
+  function testGetEndOfYear()
+  {
+    $date = new lmbDate('2007-05-09 12:24:12');
+    $this->assertEqual($date->getEndOfYear(), new lmbDate('2007-12-31 23:59:59'));
   }
 
   function testSetYear()

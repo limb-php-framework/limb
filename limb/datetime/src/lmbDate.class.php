@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5839 2007-05-08 16:17:44Z pachanga $
+ * @version    $Id: lmbDate.class.php 5846 2007-05-09 11:35:41Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -382,6 +382,16 @@ class lmbDate extends lmbObject
     return (int)($day - 7 * floor($day / 7));
   }
 
+  function getBeginOfDay()
+  {
+    return new lmbDate(0, 0, 0, $this->day, $this->month, $this->year, $this->tz);
+  }
+
+  function getEndOfDay()
+  {
+    return new lmbDate(23, 59, 59, $this->day, $this->month, $this->year, $this->tz);
+  }
+
   function getBeginOfWeek()
   {
     $this_weekday = $this->getDayOfWeek();
@@ -394,6 +404,26 @@ class lmbDate extends lmbObject
     $this_weekday = $this->getDayOfWeek();
     $interval = (6 + self :: $first_day_week - $this_weekday) % 7;
     return lmbDate :: createByDays($this->getDateDays() + $interval);
+  }
+
+  function getBeginOfMonth()
+  {
+    return new lmbDate(0, 0, 0, 1, $this->month, $this->year, $this->tz);
+  }
+
+  function getEndOfMonth()
+  {
+    return $this->setDay(1)->addMonth(1)->addDay(-1)->getEndOfDay();
+  }
+
+  function getBeginOfYear()
+  {
+    return new lmbDate(0, 0, 0, 1, 1, $this->year, $this->tz);
+  }
+
+  function getEndOfYear()
+  {
+    return new lmbDate(23, 59, 59, 31, 12, $this->year, $this->tz);
   }
 
   function getWeekOfYear()
