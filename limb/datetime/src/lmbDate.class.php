@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5846 2007-05-09 11:35:41Z pachanga $
+ * @version    $Id: lmbDate.class.php 5847 2007-05-09 12:29:32Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -28,36 +28,36 @@ class lmbDate extends lmbObject
   protected $second = 0;
   protected $tz = '';
 
-  function __construct($hour_or_date=null, $minute_or_tz=0, $second=0, $day=0, $month=0, $year=0, $tz='')
+  function __construct($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
   {
     if(func_num_args() > 2)
     {
-      $this->hour   = (int)$hour_or_date;
-      $this->minute = (int)$minute_or_tz;
-      $this->second = (int)$second;
+      $this->year   = (int)$year_or_date;
+      $this->month  = (int)$month_or_tz;
       $this->day    = (int)$day;
-      $this->month  = (int)$month;
-      $this->year   = (int)$year;
+      $this->hour   = (int)$hour;
+      $this->minute = (int)$minute;
+      $this->second = (int)$second;
       $this->tz     = $tz;
     }
-    elseif(is_a($hour_or_date, 'lmbDate'))
+    elseif(is_a($year_or_date, 'lmbDate'))
     {
-      $this->_copy($hour_or_date);
+      $this->_copy($year_or_date);
     }
-    elseif(is_numeric($hour_or_date))
+    elseif(is_numeric($year_or_date))
     {
-      $this->_setByStamp($hour_or_date);
-      $this->tz = $minute_or_tz;
+      $this->_setByStamp($year_or_date);
+      $this->tz = $month_or_tz;
     }
-    elseif(is_string($hour_or_date))
+    elseif(is_string($year_or_date))
     {
-      $this->_setByString($hour_or_date);
-      $this->tz = $minute_or_tz;
+      $this->_setByString($year_or_date);
+      $this->tz = $month_or_tz;
     }
     else
     {
       $this->_setByStamp(time());
-      $this->tz = $minute_or_tz;
+      $this->tz = $month_or_tz;
     }
 
     if(!$this->isValid())
@@ -70,23 +70,12 @@ class lmbDate extends lmbObject
   /**
    * Wrapper around constructor, it can be useful since the following is not allowed in PHP 'new lmbDate(..)->addDay(..)->'
    */
-  static function create($hour_or_date=null, $minute_or_tz=0, $second=0, $day=0, $month=0, $year=0, $tz='')
+  static function create($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
   {
     if(func_num_args() > 2)
-      return new lmbDate($hour_or_date, $minute_or_tz, $second, $day, $month, $year, $tz);
+      return new lmbDate($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
     else
-      return new lmbDate($hour_or_date, $minute_or_tz);
-  }
-
-  static function createWithoutTime($year=null, $month=null, $day=null, $tz='')
-  {
-    if(!$year && !$month && !$day)
-    {
-      $date = new lmbDate();
-      return $date->setSecond(0)->setMinute(0)->setHour(0);
-    }
-    else
-      return new lmbDate(0, 0, 0, $day, $month, $year, $tz);
+      return new lmbDate($year_or_date, $month_or_tz);
   }
 
   static function createByDays($days)
@@ -120,7 +109,7 @@ class lmbDate extends lmbObject
 
     $century = sprintf('%02d', $century);
     $year    = sprintf('%02d', $year);
-    return new lmbDate(0, 0, 0, $day, $month, $century . $year);
+    return new lmbDate($century . $year, $month, $day);
   }
 
   static function setFirstDayOfWeek($n)
@@ -384,12 +373,12 @@ class lmbDate extends lmbObject
 
   function getBeginOfDay()
   {
-    return new lmbDate(0, 0, 0, $this->day, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, $this->day, $this->tz);
   }
 
   function getEndOfDay()
   {
-    return new lmbDate(23, 59, 59, $this->day, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, $this->day, 23, 59, 59, $this->tz);
   }
 
   function getBeginOfWeek()
@@ -408,7 +397,7 @@ class lmbDate extends lmbObject
 
   function getBeginOfMonth()
   {
-    return new lmbDate(0, 0, 0, 1, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, 1, $this->tz);
   }
 
   function getEndOfMonth()
@@ -418,12 +407,12 @@ class lmbDate extends lmbObject
 
   function getBeginOfYear()
   {
-    return new lmbDate(0, 0, 0, 1, 1, $this->year, $this->tz);
+    return new lmbDate($this->year, 1, 1, $this->tz);
   }
 
   function getEndOfYear()
   {
-    return new lmbDate(23, 59, 59, 31, 12, $this->year, $this->tz);
+    return new lmbDate($this->year, 12, 31, 23, 59, 59, $this->tz);
   }
 
   function getWeekOfYear()
@@ -441,18 +430,18 @@ class lmbDate extends lmbObject
     }
 
     $dayofweek = $this->getDayOfWeek();
-    $firstday  = self :: createWithoutTime($year, 1, 1)->getDayOfWeek();
+    $firstday  = self :: create($year, 1, 1)->getDayOfWeek();
     if(($month == 1) && (($firstday < 1) || ($firstday > 4)) && ($day < 4))
     {
-      $firstday  = self :: createWithoutTime($year - 1, 1, 1)->getDayOfWeek();
+      $firstday  = self :: create($year - 1, 1, 1)->getDayOfWeek();
       $month     = 12;
       $day       = 31;
     }
-    elseif(($month == 12) && ((self :: createWithoutTime($year + 1, 1, 1)->getDayOfWeek() < 5) &&
-            (self :: createWithoutTime($year + 1, 1, 1)->getDayOfWeek() > 0)))
+    elseif(($month == 12) && ((self :: create($year + 1, 1, 1)->getDayOfWeek() < 5) &&
+            (self :: create($year + 1, 1, 1)->getDayOfWeek() > 0)))
         return 1;
 
-    return intval(((self :: createWithoutTime($year, 1, 1)->getDayOfWeek() < 5) && (self :: createWithoutTime($year, 1, 1)->getDayOfWeek() > 0)) +
+    return intval(((self :: create($year, 1, 1)->getDayOfWeek() < 5) && (self :: create($year, 1, 1)->getDayOfWeek() > 0)) +
            4 * ($month - 1) + (2 * ($month - 1) + ($day - 1) + $firstday - $dayofweek + 6) * 36 / 256);
   }
 
@@ -525,37 +514,37 @@ class lmbDate extends lmbObject
 
   function setYear($y)
   {
-    return new lmbDate($this->hour, $this->minute, $this->second, $this->day, $this->month, $y, $this->tz);
+    return new lmbDate($y, $this->month, $this->day, $this->hour, $this->minute, $this->second, $this->tz);
   }
 
   function setMonth($m)
   {
-    return new lmbDate($this->hour, $this->minute, $this->second, $this->day, $m, $this->year, $this->tz);
+    return new lmbDate($this->year, $m, $this->day, $this->hour, $this->minute, $this->second, $this->tz);
   }
 
   function setDay($d)
   {
-    return new lmbDate($this->hour, $this->minute, $this->second, $d, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, $d, $this->hour, $this->minute, $this->second, $this->tz);
   }
 
   function setHour($h)
   {
-    return new lmbDate($h, $this->minute, $this->second, $this->day, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, $this->day, $h, $this->minute, $this->second, $this->tz);
   }
 
   function setMinute($m)
   {
-    return new lmbDate($this->hour, $m, $this->second, $this->day, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, $this->day, $this->hour, $m, $this->second, $this->tz);
   }
 
   function setSecond($s)
   {
-    return new lmbDate($this->hour, $this->minute, $s, $this->day, $this->month, $this->year, $this->tz);
+    return new lmbDate($this->year, $this->month, $this->day, $this->hour, $this->minute, $s, $this->tz);
   }
 
   function setTimeZone($tz)
   {
-    return new lmbDate($this->hour, $this->minute, $this->second, $this->day, $this->month, $this->year, $tz);
+    return new lmbDate($this->year, $this->month, $this->day, $this->hour, $this->minute, $this->second, $tz);
   }
 
   function addYear($n=1)
@@ -602,12 +591,12 @@ class lmbDate extends lmbObject
 
   function stripTime()
   {
-    return lmbDate :: createWithoutTime($this->year, $this->month, $this->day, $this->tz);
+    return new lmbDate($this->year, $this->month, $this->day, 0, 0, 0, $this->tz);
   }
 
   function stripDate()
   {
-    return new lmbDate($this->hour, $this->minute, $this->second, null, null, null, $this->tz);
+    return new lmbDate(null, null, null, $this->hour, $this->minute, $this->second, $this->tz);
   }
 }
 ?>

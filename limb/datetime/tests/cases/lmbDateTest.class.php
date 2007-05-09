@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5846 2007-05-09 11:35:41Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5847 2007-05-09 12:29:32Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -62,8 +62,8 @@ class lmbDateTest extends UnitTestCase
 
   function testCreate()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
-    $this->assertEqual(lmbDate :: create(12, 45, 12, 1, 12 ,2005), $date);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
+    $this->assertEqual(lmbDate :: create(2005, 12, 1, 12, 45, 12), $date);
 
     $this->assertEqual($date->getDay(), 1);
     $this->assertEqual($date->getMonth(), 12);
@@ -75,55 +75,55 @@ class lmbDateTest extends UnitTestCase
 
   function testGetIsoDate()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->getIsoDate(), '2005-12-01 12:45:12');
   }
 
   function testGetIsoDateWithoutSeconds()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->getIsoDate(false), '2005-12-01 12:45');
   }
 
   function testGetIsoShortDate()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->getIsoShortDate(), '2005-12-01');
   }
 
   function testGetIsoTime()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->getIsoTime(), '12:45:12');
   }
 
   function testGetIsoTimeWithoutSeconds()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->getIsoTime(false), '12:45');
   }
 
   function testToStringReturnsIsoDate()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->toString(), '2005-12-01 12:45:12');
   }
 
   function testStrftime()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->strftime('%m/%d/%y'), '12/01/05');
   }
 
   function testDate()
   {
-    $date = new lmbDate(12, 45, 12, 1, 12 ,2005);
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->date('m.d.y'), '12.01.05');
   }
 
   function testCreateByCopy()
   {
-    $date = new lmbDate($sample = new lmbDate(12, 45, 12, 1, 12 ,2005));
+    $date = new lmbDate($sample = new lmbDate(2005, 12, 1, 12, 45, 12));
     $this->assertEqual(lmbDate :: create($sample), $date);
 
     $this->assertEqual($date, $sample);
@@ -157,12 +157,6 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->getSecond(), 0);
 
     $this->assertEqual($date->toString(), '2005-12-01 00:00:00');
-  }
-
-  function testCreateWithoutTime()
-  {
-    $date = new lmbDate('2005-12-01');
-    $this->assertEqual(lmbDate :: createWithoutTime(2005, 12, 1), $date);
   }
 
   function testCreateByIsoTimeOnly()
@@ -468,14 +462,14 @@ class lmbDateTest extends UnitTestCase
 
   function testCreateWithTZ()
   {
-    $date = new lmbDate(12, 10, 5, 3, 5, 2005, 'Europe/Moscow');
+    $date = new lmbDate(2005, 5, 3, 12, 10, 5, 'Europe/Moscow');
     $tz = $date->getTimeZoneObject();
     $this->assertEqual($tz, new lmbDateTimeZone('Europe/Moscow'));
   }
 
   function testCreateWithInvalidTZ()
   {
-    $date = new lmbDate(12, 10, 5, 3, 5, 2005, 'bla-bla');
+    $date = new lmbDate(2005, 5, 3, 12, 10, 5, 'bla-bla');
     $tz = $date->getTimeZoneObject();
     $this->assertEqual($tz, new lmbDateTimeZone('UTC'));
   }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTimePeriod.class.php 4993 2007-02-08 15:35:44Z pachanga $
+ * @version    $Id: lmbTimePeriod.class.php 5847 2007-05-09 12:29:32Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -30,19 +30,11 @@ class lmbTimePeriod extends lmbDatePeriod
     $month = $date->getMonth();
     $day = $date->getDay();
 
-    $start_date = new lmbDate($this->start->getHour(),
-                           $this->start->getMinute(),
-                           $this->start->getSecond(),
-                           $day,
-                           $month,
-                           $year);
+    $start_date = new lmbDate($year, $month, $day,
+                              $this->start->getHour(), $this->start->getMinute(), $this->start->getSecond());
 
-    $end_date = new lmbDate($this->end->getHour(),
-                         $this->end->getMinute(),
-                         $this->end->getSecond(),
-                         $day,
-                         $month,
-                         $year);
+    $end_date = new lmbDate($year, $month, $day,
+                            $this->end->getHour(), $this->end->getMinute(), $this->end->getSecond());
 
     return new lmbDatePeriod($start_date, $end_date);
   }

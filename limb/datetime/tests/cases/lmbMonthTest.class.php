@@ -47,8 +47,8 @@ class lmbMonthTest extends UnitTestCase
   function testGetBoundaries()
   {
     $c = new lmbMonth(2007, 5);
-    $this->assertEqual(new lmbDate('2007-05-01'), $c->getStartDate());
-    $this->assertEqual(new lmbDate('2007-05-31'), $c->getEndDate());
+    $this->assertEqual(new lmbDate('2007-05-01 00:00:00'), $c->getStartDate());
+    $this->assertEqual(new lmbDate('2007-05-31 23:59:59'), $c->getEndDate());
   }
 
   function testGetMonthName()

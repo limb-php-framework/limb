@@ -19,14 +19,14 @@ class lmbMonth
   function __construct($year_or_date = null, $month = null)
   {
     if($year_or_date && $month)
-      $tmp_date = new lmbDate(0, 0, 0, 0, $month, $year_or_date);
+      $tmp_date = new lmbDate($year_or_date, $month, 1);
     elseif($year_or_date && !$month)
       $tmp_date = new lmbDate($year_or_date);
     else
       $tmp_date = new lmbDate();
 
-    $this->start_date = $tmp_date->setDay(1);
-    $this->end_date = $this->start_date->addMonth(1)->addDay(-1);
+    $this->start_date = $tmp_date->getBeginOfMonth();
+    $this->end_date = $tmp_date->getEndOfMonth();
   }
 
   function getMonth()
