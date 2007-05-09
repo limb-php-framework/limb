@@ -295,6 +295,33 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertEqual($output, $expected_template);
   }
 
+  function testMergeOptionsListFromTagContentWithOtherOptions()
+  {
+    $template = '<form runat="server">'.
+                  '<select id="test" name="mySelect" runat="server">'.
+                  '<option value="1" prepend="true">"test1"</option>'.
+                  '<option value="4" selected="true">\'test4\'</option>'.
+                  '</select>'.
+                '</form>';
+    $expected_template =
+                '<form>'.
+                  '<select id="test" name="mySelect">'.
+                  '<option value="1">&quot;test1&quot;</option>'.
+                  '<option value="2">test2</option>'.
+                  '<option value="3">test3</option>'.
+                  '<option value="4" selected="true">\&#039;test4\&#039;</option>'.
+                  '</select>'.
+                '</form>';
+    $this->registerTestingTemplate('/tags/form/controls/select/merge_select_options.html', $template);
+    $page = $this->initTemplate('/tags/form/controls/select/merge_select_options.html');
+
+    $select = $page->getChild('test');
+    $select->setChoices(array('2' => 'test2', '3' => 'test3'));
+
+    $output = $page->capture();
+    $this->assertEqual($output, $expected_template);
+  }
+
   function testSelectUseOptionsListWithSelectedOption()
   {
     $template = '<form name="my_form" runat="server">'.

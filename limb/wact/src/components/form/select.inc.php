@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.inc.php 5792 2007-05-03 08:41:35Z pachanga $
+ * @version    $Id: select.inc.php 5845 2007-05-09 08:15:57Z serega $
  * @package    wact
  */
 
@@ -74,6 +74,11 @@ class WactSelectMultipleComponent extends WactFormElementComponent
   function addToChoices($key, $value)
   {
     $this->choice_list[$key] = $value;
+  }
+
+  function prependToChoices($key, $value)
+  {
+    $this->choice_list = array($key => $value) + $this->choice_list;
   }
 
   function addToDefaultSelection($selection)
@@ -221,13 +226,19 @@ class WactSelectSingleComponent extends WactFormElementComponent
   * @return void
   * @access public
   */
-  function setChoices($choice_list) {
+  function setChoices($choice_list)
+  {
       $this->choice_list = $choice_list;
   }
 
-  function addToChoices($key, $choice)
+  function addToChoices($key, $value)
   {
-    $this->choice_list[$key] = $choice;
+    $this->choice_list[$key] = $value;
+  }
+
+  function prependToChoices($key, $value)
+  {
+    $this->choice_list = array($key => $value) + $this->choice_list;
   }
 
   function addToDefaultSelection($selection)

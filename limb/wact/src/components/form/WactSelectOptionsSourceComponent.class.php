@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactSelectOptionsSourceComponent.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactSelectOptionsSourceComponent.class.php 5845 2007-05-09 08:15:57Z serega $
  * @package    wact
  */
 
@@ -18,6 +18,8 @@ class WactSelectOptionsSourceComponent extends WactDatasourceRuntimeComponent
   protected $default_value;
   protected $default_name;
   protected $dataset;
+
+  protected $choices = null;
 
   function useAsName($name)
   {
@@ -43,11 +45,16 @@ class WactSelectOptionsSourceComponent extends WactDatasourceRuntimeComponent
 
   function getChoices()
   {
+    if(!is_null($this->choices))
+      return $this->choices;
+
     $result = array();
 
     $this->_addDefaultOption($result);
 
-    return $this->_getArrayOfOptions($result);
+    $this->choices = $this->_getArrayOfOptions($result);
+
+    return $this->choices;
   }
 
   function _getArrayOfOptions(&$choices)

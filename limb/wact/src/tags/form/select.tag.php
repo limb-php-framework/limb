@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.tag.php 5333 2007-03-23 11:47:27Z pachanga $
+ * @version    $Id: select.tag.php 5845 2007-05-09 08:15:57Z serega $
  * @package    wact
  */
 
@@ -82,10 +82,14 @@ class WactSelectTag extends WactControlTag {
         continue;
 
       $value = $option_tag->getAttribute('value');
+      $prepend = $option_tag->getBoolAttribute('prepend');
       $option_tag->generateContents($writer);
       $text = addslashes($writer->getCode());
       $writer->reset();
-      $code_writer->writePHP($this->getComponentRefCode() . '->addToChoices("'. $value .'","'. $text.'");');
+      if($prepend)
+        $code_writer->writePHP($this->getComponentRefCode() . '->prependToChoices("'. $value .'","'. $text.'");');
+      else
+        $code_writer->writePHP($this->getComponentRefCode() . '->addToChoices("'. $value .'","'. $text.'");');
 
       if($option_tag->hasAttribute('selected'))
         $code_writer->writePHP($this->getComponentRefCode() . '->addToDefaultSelection("'. $value .'");');
