@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleTest.class.php 5550 2007-04-06 08:27:14Z pachanga $
+ * @version    $Id: lmbLocaleTest.class.php 5848 2007-05-09 12:32:31Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -34,10 +34,10 @@ class lmbLocaleTest extends UnitTestCase
   {
     $locale = new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini'));
 
-    $this->assertEqual($locale->getDayName(0, $short = false), 'Monday');
-    $this->assertEqual($locale->getDayName(0, $short = true), 'Mon');
-    $this->assertEqual($locale->getDayName(6, $short = false), 'Sunday');
-    $this->assertEqual($locale->getDayName(6, $short = true), 'Sun');
+    $this->assertEqual($locale->getDayName(0, $short = false), 'Sunday');
+    $this->assertEqual($locale->getDayName(0, $short = true), 'Sun');
+    $this->assertEqual($locale->getDayName(6, $short = false), 'Saturday');
+    $this->assertEqual($locale->getDayName(6, $short = true), 'Sat');
   }
 
   function testGetOtherOptions()
@@ -92,21 +92,21 @@ class lmbLocaleTest extends UnitTestCase
     $this->assertFalse($locale->isMondayFirst());
     $this->assertEqual($locale->getWeekDays(), array(0, 1, 2, 3, 4, 5, 6));
     $this->assertEqual($locale->getMonths(), array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
-    $this->assertEqual($locale->getWeekDayNames(), array('Monday',
+    $this->assertEqual($locale->getWeekDayNames(), array('Sunday',
+                                                         'Monday',
                                                          'Tuesday',
                                                          'Wednesday',
                                                          'Thursday',
                                                          'Friday',
-                                                         'Saturday',
-                                                         'Sunday'));
+                                                         'Saturday'));
 
-    $this->assertEqual($locale->getWeekDayNames($short = true), array('Mon',
+    $this->assertEqual($locale->getWeekDayNames($short = true), array('Sun',
+                                                                      'Mon',
                                                                       'Tue',
                                                                       'Wed',
                                                                       'Thu',
                                                                       'Fri',
-                                                                      'Sat',
-                                                                      'Sun'));
+                                                                      'Sat'));
 
     $this->assertEqual($locale->getMonthNames(), array('January',
                                                        'February',

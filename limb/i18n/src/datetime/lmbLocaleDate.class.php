@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDate.class.php 5833 2007-05-08 12:33:07Z pachanga $
+ * @version    $Id: lmbLocaleDate.class.php 5848 2007-05-09 12:32:31Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
@@ -336,7 +336,7 @@ class lmbLocaleDate extends lmbDate
       $format = $locale->getShortDateFormat();
 
     $arr = self :: parseTimeString($locale, $string, $format);
-    return new lmbDate($arr['hour'], $arr['minute'], $arr['second'], $arr['day'], $arr['month'], $arr['year']);
+    return new lmbDate($arr['year'], $arr['month'], $arr['day'], $arr['hour'], $arr['minute'], $arr['second']);
   }
 
   static function isLocalStringValid($locale, $string, $format = null)

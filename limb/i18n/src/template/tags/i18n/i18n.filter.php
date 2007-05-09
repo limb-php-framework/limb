@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: string.filter.php 5646 2007-04-12 08:38:15Z pachanga $
+ * @version    $Id: i18n.filter.php 5848 2007-05-09 12:32:31Z pachanga $
  * @package    i18n
  */
 /**

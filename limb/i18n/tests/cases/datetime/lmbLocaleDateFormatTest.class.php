@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDateFormatTest.class.php 5837 2007-05-08 14:19:37Z pachanga $
+ * @version    $Id: lmbLocaleDateFormatTest.class.php 5848 2007-05-09 12:32:31Z pachanga $
  * @package    i18n
  */
 lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
@@ -19,7 +19,7 @@ class lmbLocaleDateFormatTest extends UnitTestCase
     $date = new lmbLocaleDate('2005-01-02 23:05:03');
     $string = $date->localeStrftime('%C %d %D %e %E %H %I %j %m %M %n %R %S %U %y %Y %t %%');
 
-    $this->assertEqual($string, "20 02 01/02/05 2 2453373 23 11 002 01 05 \n 23:05 03 53 05 2005 \t %");
+    $this->assertEqual($string, "20 02 01/02/05 2 2453373 23 11 002 01 05 \n 23:05 03 1 05 2005 \t %");
   }
 
   function testLocalizedFormat()
