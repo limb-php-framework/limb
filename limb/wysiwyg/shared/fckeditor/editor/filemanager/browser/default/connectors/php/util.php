@@ -19,15 +19,23 @@
  *
  * == END LICENSE ==
  *
- * This is the integration file for PHP (All versions).
- *
- * It loads the correct integration file based on the PHP version (avoinding
- * strict error messages with PHP 5).
+ * Utility functions for the File Manager Connector for PHP.
  */
 
-if ( version_compare( phpversion(), '5', '<' ) )
-	include_once( 'fckeditor_php4.php' ) ;
-else
-	include_once( 'fckeditor_php5.php' ) ;
+function RemoveFromStart( $sourceString, $charToRemove )
+{
+	$sPattern = '|^' . $charToRemove . '+|' ;
+	return preg_replace( $sPattern, '', $sourceString ) ;
+}
 
+function RemoveFromEnd( $sourceString, $charToRemove )
+{
+	$sPattern = '|' . $charToRemove . '+$|' ;
+	return preg_replace( $sPattern, '', $sourceString ) ;
+}
+
+function ConvertToXmlAttribute( $value )
+{
+	return utf8_encode( htmlspecialchars( $value ) ) ;
+}
 ?>

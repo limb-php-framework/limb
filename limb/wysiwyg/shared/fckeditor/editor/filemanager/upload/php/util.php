@@ -19,15 +19,22 @@
  *
  * == END LICENSE ==
  *
- * This is the integration file for PHP (All versions).
- *
- * It loads the correct integration file based on the PHP version (avoinding
- * strict error messages with PHP 5).
+ * This is the File Manager Connector for PHP.
  */
 
-if ( version_compare( phpversion(), '5', '<' ) )
-	include_once( 'fckeditor_php4.php' ) ;
-else
-	include_once( 'fckeditor_php5.php' ) ;
+function RemoveExtension( $fileName )
+{
+	return substr( $fileName, 0, strrpos( $fileName, '.' ) ) ;
+}
+
+function GetRootPath()
+{
+	$sRealPath = realpath( './' ) ;
+
+	$sSelfPath = $_SERVER['PHP_SELF'] ;
+	$sSelfPath = substr( $sSelfPath, 0, strrpos( $sSelfPath, '/' ) ) ;
+
+	return substr( $sRealPath, 0, strlen( $sRealPath ) - strlen( $sSelfPath ) ) ;
+}
 
 ?>

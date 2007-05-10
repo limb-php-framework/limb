@@ -1,5 +1,4 @@
-<?php
-/*
+﻿/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
@@ -19,15 +18,10 @@
  *
  * == END LICENSE ==
  *
- * This is the integration file for PHP (All versions).
- *
- * It loads the correct integration file based on the PHP version (avoinding
- * strict error messages with PHP 5).
+ * Placholder Italian language file.
  */
-
-if ( version_compare( phpversion(), '5', '<' ) )
-	include_once( 'fckeditor_php4.php' ) ;
-else
-	include_once( 'fckeditor_php5.php' ) ;
-
-?>
+FCKLang.PlaceholderBtn			= 'Aggiungi/Modifica Placeholder' ;
+FCKLang.PlaceholderDlgTitle		= 'Proprietà del Placeholder' ;
+FCKLang.PlaceholderDlgName		= 'Nome del Placeholder' ;
+FCKLang.PlaceholderErrNoName	= 'Digitare il nome del placeholder' ;
+FCKLang.PlaceholderErrNameInUse	= 'Il nome inserito è già in uso' ;

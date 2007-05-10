@@ -1,5 +1,4 @@
-<?php
-/*
+﻿/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
@@ -19,15 +18,10 @@
  *
  * == END LICENSE ==
  *
- * This is the integration file for PHP (All versions).
- *
- * It loads the correct integration file based on the PHP version (avoinding
- * strict error messages with PHP 5).
+ * Placholder Polish language file.
  */
-
-if ( version_compare( phpversion(), '5', '<' ) )
-	include_once( 'fckeditor_php4.php' ) ;
-else
-	include_once( 'fckeditor_php5.php' ) ;
-
-?>
+FCKLang.PlaceholderBtn			= 'Wstaw/Edytuj nagłówek' ;
+FCKLang.PlaceholderDlgTitle		= 'Właśności nagłówka' ;
+FCKLang.PlaceholderDlgName		= 'Nazwa nagłówka' ;
+FCKLang.PlaceholderErrNoName	= 'Proszę wprowadzić nazwę nagłówka' ;
+FCKLang.PlaceholderErrNameInUse	= 'Podana nazwa jest już w użyciu' ;
