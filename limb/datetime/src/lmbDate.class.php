@@ -6,12 +6,10 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5847 2007-05-09 12:29:32Z pachanga $
+ * @version    $Id: lmbDate.class.php 5860 2007-05-10 14:49:53Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
-
-define('LIMB_DATE_FIRST_WEEKDAY', 1);
 
 class lmbDate extends lmbObject
 {
