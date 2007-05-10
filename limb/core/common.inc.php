@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5673 2007-04-17 11:57:35Z pachanga $
+ * @version    $Id: common.inc.php 5859 2007-05-10 14:49:36Z pachanga $
  * @package    core
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
@@ -109,13 +109,26 @@ function lmb_autoload($name)
   }
 }
 
-function lmb_var_dump($obj)
+function lmb_var_dump($obj, $echo = false)
 {
   ob_start();
   var_dump($obj);
   $dump = ob_get_contents();
   ob_end_clean();
-  return $dump;
+
+  if($echo)
+  {
+    if(PHP_SAPI != 'cli')
+    {
+      echo '<pre>';
+      echo $dump;
+      echo '</pre>';
+    }
+    else
+      echo $dump;
+  }
+  else
+    return $dump;
 }
 
 /**
