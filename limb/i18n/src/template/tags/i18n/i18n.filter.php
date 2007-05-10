@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: i18n.filter.php 5848 2007-05-09 12:32:31Z pachanga $
+ * @version    $Id: i18n.filter.php 5852 2007-05-10 09:16:47Z wiliam $
  * @package    i18n
  */
 /**
@@ -45,9 +45,32 @@ class lmbI18NStringFilter extends WactCompilerFilter
     return $result;
   }
 
+  function generatePreStatement($code)
+  {
+    parent :: generatePreStatement($code);
+
+    $this->params_var = $code->getTempVarRef();
+    $code->writePhp($this->params_var . ' = array();');
+
+    for($i=1; $i < sizeof($this->parameters); $i+=2)
+    {
+      $var = $this->parameters[$i]->getValue();
+      $code->writePhp($this->params_var . '["' . $this->parameters[$i]->getValue() . '"] = ');
+      $code->writePhp($this->parameters[$i+1]->generateExpression($code));
+      $code->writePhp(';'. "\n");
+    }
+  }
+
   function generateExpression($code)
   {
-    throw new lmbException('DBE mode is not supported in i18n filter');
+    $code->writePhp('lmb_i18n(');
+
+    $this->base->generateExpression($code);
+
+    $code->writePhp(',' . $this->params_var . ', ');
+
+    $code->writePhp($this->parameters[0]->generateExpression($code));
+    $code->writePhp(')');
   }
 }
 
