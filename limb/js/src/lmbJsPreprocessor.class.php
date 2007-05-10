@@ -109,20 +109,17 @@ class lmbJsPreprocessor
     return isset($this->processed[$file]);
   }
 
-  protected function _getFiles($name)
+  protected function _locateFiles($name)
   {
-    $fullpath = $this->toolkit->findFileAlias($name, LIMB_JS_INCLUDE_PATH, 'js');
-    if(strpos($fullpath, '*') === false)
-      return array($fullpath);
-
-    return glob($fullpath);
+    $locator = $this->toolkit->getFileLocator(LIMB_JS_INCLUDE_PATH, 'js');
+    return $locator->locateAll($name);
   }
 
   protected function _processInclude($filename)
   {
     try
     {
-      $files = $this->_getFiles(trim($filename, " \" '\r "));
+      $files = $this->_locateFiles(trim($filename, " \" '\r "));
     }
     catch(lmbException $e)
     {
