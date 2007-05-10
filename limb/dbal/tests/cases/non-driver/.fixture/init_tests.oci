@@ -26,6 +26,7 @@ CREATE TABLE test_db_table (
   id number NOT NULL,
   description VARCHAR2(255),
   title VARCHAR2(255),
+  ordr number default NULL,
   PRIMARY KEY  (id)
 );
 /

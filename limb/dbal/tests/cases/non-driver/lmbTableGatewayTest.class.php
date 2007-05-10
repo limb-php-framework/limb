@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTableGatewayTest.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbTableGatewayTest.class.php 5854 2007-05-10 10:25:36Z pachanga $
  * @package    dbal
  */
 require_once('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
@@ -84,7 +84,7 @@ class lmbTableGatewayTest extends UnitTestCase
 
   function testUpdateAll()
   {
-    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description' ));
+    $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
     $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
 
     $this->db_table_test->update(array('description' =>  'new_description',
@@ -102,6 +102,27 @@ class lmbTableGatewayTest extends UnitTestCase
     $records->next();
     $record = $records->current();
     $this->assertEqual($record->get('description'), 'new_description');
+  }
+
+  function testUpdateAllWithRawSet()
+  {
+    $this->db_table_test->insert(array('ordr' =>  '1'));
+    $this->db_table_test->insert(array('ordr' =>  '10'));
+
+    $this->db_table_test->update('ordr=ordr+1');
+
+    $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
+
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
+    $records = $stmt->getRecordSet();
+
+    $records->rewind();
+    $record = $records->current();
+    $this->assertEqual($record->get('ordr'), '2');
+
+    $records->next();
+    $record = $records->current();
+    $this->assertEqual($record->get('ordr'), '11');
   }
 
   function testUpdateByCriteria()
@@ -306,7 +327,8 @@ class lmbTableGatewayTest extends UnitTestCase
   {
     $this->assertEqual($this->db_table_test->getColumnsForSelect(), array('test_db_table.id' => 'id',
                                                                           'test_db_table.description' => 'description',
-                                                                          'test_db_table.title' => 'title'));
+                                                                          'test_db_table.title' => 'title',
+                                                                          'test_db_table.ordr' => 'ordr'));
   }
 
   function testGetColumnsForSelectSpecificNameAndPrefix()
@@ -314,13 +336,14 @@ class lmbTableGatewayTest extends UnitTestCase
     $this->assertEqual($this->db_table_test->getColumnsForSelect('tn', array(), '_'),
                        array('tn.id' => '_id',
                             'tn.description' => '_description',
-                            'tn.title' => '_title'));
+                            'tn.title' => '_title',
+                            'tn.ordr' => '_ordr'));
   }
 
   function testGetColumnsForSelectSpecificNameWithExcludes()
   {
     $this->assertEqual($this->db_table_test->getColumnsForSelect('tn', array('id', 'description')),
-                       array('tn.title' => 'title'));
+                       array('tn.title' => 'title', 'tn.ordr' => 'ordr'));
 
   }
 }

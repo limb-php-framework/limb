@@ -13,6 +13,7 @@ CREATE TABLE test_db_table (
   "id" SERIAL,
   "description" text,
   "title" varchar(255) NOT NULL default '',
+  "ordr" int8 NULL,
   PRIMARY KEY  (id)
 )  ;
 

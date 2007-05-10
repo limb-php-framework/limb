@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTableGateway.class.php 5649 2007-04-12 09:53:55Z pachanga $
+ * @version    $Id: lmbTableGateway.class.php 5854 2007-05-10 10:25:36Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
@@ -149,22 +149,31 @@ class lmbTableGateway
     return (int)$this->_stmt->insertId($this->_primary_key_name);
   }
 
-  function update($row, $criteria = null)
+  function update($set, $criteria = null)
   {
-    $row = $this->_filterRow($row);
+    if(is_array($set))
+      $set = $this->_filterRow($set);
+
     $query = new lmbUpdateQuery($this->_db_table_name, $this->_conn);
 
     if($criteria)
       $query->addCriteria($criteria);
 
-    foreach(array_keys($row) as $key)
-      $query->addField($key);
+    if(is_array($set))
+    {
+      foreach(array_keys($set) as $key)
+        $query->addField($key);
 
-    $this->_stmt = $query->getStatement();
-
-    $this->_bindValuesToStatement($this->_stmt, $row);
-
-    return $this->_stmt->execute();
+      $this->_stmt = $query->getStatement();
+      $this->_bindValuesToStatement($this->_stmt, $set);
+      return $this->_stmt->execute();
+    }
+    else
+    {
+      $query->addRawField($set);
+      $this->_stmt = $query->getStatement();
+      return $this->_stmt->execute();
+    }
   }
 
   protected function _bindValuesToStatement($stmt, $values)

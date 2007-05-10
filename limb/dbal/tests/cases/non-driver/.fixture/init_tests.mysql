@@ -12,6 +12,7 @@ CREATE TABLE `test_db_table` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `description` text,
   `title` varchar(255) NOT NULL default '',
+  `ordr` int(11) NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
