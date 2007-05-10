@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5789 2007-05-03 07:09:18Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5855 2007-05-10 10:30:43Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -178,7 +178,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($this->db->count('test_one_table_object'), 2);
   }
 
-  function testUpdate()
+  function testSaveUpdate()
   {
     $object = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
@@ -588,6 +588,54 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($object3->getContent(), $object1->getContent());
   }
 
+  function testUpdateAllWithArraySet()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+
+    lmbActiveRecord :: update($this->class_name, array('content' => 'blah'));
+
+    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs->rewind();
+    $this->assertEqual($rs->current()->getContent(), 'blah');
+    $rs->next();
+    $this->assertEqual($rs->current()->getContent(), 'blah');
+    $rs->next();
+    $this->assertFalse($rs->valid());
+  }
+
+  function testUpdateAllWithRawValues()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+
+    lmbActiveRecord :: update($this->class_name, 'ordr=1');
+
+    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs->rewind();
+    $this->assertEqual($rs->current()->getOrdr(), 1);
+    $rs->next();
+    $this->assertEqual($rs->current()->getOrdr(), 1);
+    $rs->next();
+    $this->assertFalse($rs->valid());
+  }
+
+  function testUpdateWithCriteria()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+
+    lmbActiveRecord :: update($this->class_name, array('content' => 'blah'), 'id=' . $object2->getId());
+
+    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs->rewind();
+    $this->assertEqual($rs->current()->getContent(), $object1->getContent());
+    $rs->next();
+    $this->assertEqual($rs->current()->getContent(), 'blah');
+    $rs->next();
+    $this->assertFalse($rs->valid());
+  }
+
   function testGetTableName()
   {
     $object = new TestOneTableObject();
@@ -599,6 +647,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object->set('annotation', 'Annotation ' . time());
     $object->set('content', 'Content ' . time());
     $object->set('news_date', date("Y-m-d", time()));
+    $object->set('ordr', mt_rand());
     return $object;
   }
 

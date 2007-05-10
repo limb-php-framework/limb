@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5829 2007-05-08 09:01:52Z serega $
+ * @version    $Id: lmbActiveRecord.class.php 5855 2007-05-10 10:30:43Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5829 2007-05-08 09:01:52Z serega $
+ * @version $Id: lmbActiveRecord.class.php 5855 2007-05-10 10:30:43Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1360,6 +1360,13 @@ class lmbActiveRecord extends lmbObject
     $rs = lmbActiveRecord :: find($class_name, $params);
     foreach($rs as $object)
       $object->destroy();
+  }
+
+  static function update($class_name, $set, $criteria = null)
+  {
+    $object = new $class_name();
+    $db_table = $object->getDbTable();
+    $db_table->update($set, $criteria);
   }
 
   protected function _getColumnsForSelect()

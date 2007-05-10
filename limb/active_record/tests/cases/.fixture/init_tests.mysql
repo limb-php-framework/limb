@@ -5,6 +5,7 @@ CREATE TABLE `test_one_table_object` (
   `annotation` text,
   `content` text,
   `news_date` date default NULL,
+  `ordr` int(11) NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

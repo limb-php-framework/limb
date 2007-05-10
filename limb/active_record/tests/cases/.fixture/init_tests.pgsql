@@ -5,6 +5,7 @@ CREATE TABLE test_one_table_object (
   "annotation" text,
   "content" text,
   "news_date" date default NULL,
+  "ordr" int8 NULL,
   PRIMARY KEY  (id)
 )  ;
 

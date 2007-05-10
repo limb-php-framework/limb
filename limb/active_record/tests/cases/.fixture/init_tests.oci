@@ -9,6 +9,7 @@ CREATE TABLE test_one_table_object (
   annotation clob,
   content clob,
   news_date varchar(255) default NULL,
+  ordr number default NULL,
   PRIMARY KEY  (id)
 );
 /
