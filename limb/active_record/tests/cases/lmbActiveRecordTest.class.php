@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5855 2007-05-10 10:30:43Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5858 2007-05-10 14:46:38Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -17,6 +17,17 @@ class TestOneTableObject extends lmbActiveRecord
 {
   protected $_db_table_name = 'test_one_table_object';
   protected $dummy;
+}
+
+class TestOneTableObjectWithCustomDestroy extends lmbActiveRecord
+{
+  protected $_db_table_name = 'test_one_table_object';
+
+  function destroy()
+  {
+    parent :: destroy();
+    echo "destroyed!";
+  }
 }
 
 class TestOneTableObjectWithHooks extends TestOneTableObject
@@ -574,6 +585,20 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
   }
 
+  function testDeleteCallsDestroy()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+
+    ob_start();
+    lmbActiveRecord :: delete('TestOneTableObjectWithCustomDestroy');
+    $contents = ob_get_contents();
+    ob_end_clean();
+
+    $this->assertEqual($contents, 'destroyed!destroyed!');
+    $this->assertEqual($this->db->count('test_one_table_object'), 0);
+  }
+
   function testDeleteByCriteria()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
@@ -588,12 +613,50 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($object3->getContent(), $object1->getContent());
   }
 
-  function testUpdateAllWithArraySet()
+  function testDeleteRaw()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: update($this->class_name, array('content' => 'blah'));
+    lmbActiveRecord :: deleteRaw($this->class_name);
+
+    $this->assertEqual($this->db->count('test_one_table_object'), 0);
+  }
+
+  function testDeleteRawDoesntCallDestroy()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+
+    ob_start();
+    lmbActiveRecord :: deleteRaw('TestOneTableObjectWithCustomDestroy');
+    $contents = ob_get_contents();
+    ob_end_clean();
+
+    $this->assertEqual($contents, '');
+    $this->assertEqual($this->db->count('test_one_table_object'), 0);
+  }
+
+  function testDeleteRawByCriteria()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+
+    $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
+    lmbActiveRecord :: deleteRaw($this->class_name, $criteria);
+
+    $this->assertEqual($this->db->count('test_one_table_object'), 1);
+
+    $object3 = lmbActiveRecord :: findById($this->class_name, $object1->getId());
+    $this->assertEqual($object3->getContent(), $object1->getContent());
+  }
+
+  function testUpdateRawAllWithArraySet()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+
+    lmbActiveRecord :: updateRaw($this->class_name, array('content' => 'blah'));
 
     $rs = lmbActiveRecord :: find($this->class_name);
     $rs->rewind();
@@ -604,12 +667,12 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertFalse($rs->valid());
   }
 
-  function testUpdateAllWithRawValues()
+  function testUpdateRawAllWithRawValues()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: update($this->class_name, 'ordr=1');
+    lmbActiveRecord :: updateRaw($this->class_name, 'ordr=1');
 
     $rs = lmbActiveRecord :: find($this->class_name);
     $rs->rewind();
@@ -620,12 +683,12 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertFalse($rs->valid());
   }
 
-  function testUpdateWithCriteria()
+  function testUpdateRawWithCriteria()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: update($this->class_name, array('content' => 'blah'), 'id=' . $object2->getId());
+    lmbActiveRecord :: updateRaw($this->class_name, array('content' => 'blah'), 'id=' . $object2->getId());
 
     $rs = lmbActiveRecord :: find($this->class_name);
     $rs->rewind();

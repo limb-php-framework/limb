@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5855 2007-05-10 10:30:43Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5858 2007-05-10 14:46:38Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5855 2007-05-10 10:30:43Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5858 2007-05-10 14:46:38Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1362,7 +1362,14 @@ class lmbActiveRecord extends lmbObject
       $object->destroy();
   }
 
-  static function update($class_name, $set, $criteria = null)
+  function deleteRaw($class_name, $criteria = null)
+  {
+    $object = new $class_name();
+    $db_table = $object->getDbTable();
+    $db_table->delete($criteria);
+  }
+
+  static function updateRaw($class_name, $set, $criteria = null)
   {
     $object = new $class_name();
     $db_table = $object->getDbTable();
