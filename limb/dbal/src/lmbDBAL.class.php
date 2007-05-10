@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDBAL.class.php 5705 2007-04-19 21:27:15Z pachanga $
+ * @version    $Id: lmbDBAL.class.php 5851 2007-05-10 08:52:00Z pachanga $
  * @package    dbal
  */
 
@@ -14,7 +14,7 @@ class lmbDBAL
 {
   static function setDefaultDSN($dsn)
   {
-    require_once('limb/dbal/toolkit.inc.php');
+    lmb_require('limb/dbal/toolkit.inc.php');
     lmbToolkit :: instance()->setDefaultDbDSN($dsn);
   }
 
@@ -28,6 +28,23 @@ class lmbDBAL
 
     lmb_require($file);
     return new $class($dsn);
+  }
+
+  static function query($sql, $conn = null)
+  {
+    if(!$conn)
+      $conn = lmbToolkit :: instance()->getDefaultDbConnection();
+
+    $stmt = $conn->newStatement($sql);
+    return $stmt->getRecordSet();
+  }
+
+  static function execute($sql, $conn = null)
+  {
+    if(!$conn)
+      $conn = lmbToolkit :: instance()->getDefaultDbConnection();
+
+    $conn->execute($sql);
   }
 }
 

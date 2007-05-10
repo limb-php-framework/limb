@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbTools.class.php 5649 2007-04-12 09:53:55Z pachanga $
+ * @version    $Id: lmbDbTools.class.php 5851 2007-05-10 08:52:00Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -24,7 +24,10 @@ class lmbDbTools extends lmbAbstractTools
 
   function setDefaultDbDSN($conf)
   {
-    $this->default_db_config = new lmbDbDSN($conf);
+    if(is_object($conf))
+      $this->default_db_config = $conf;
+    else
+      $this->default_db_config = new lmbDbDSN($conf);
   }
 
   function getDefaultDbDSN()
