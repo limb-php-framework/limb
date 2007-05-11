@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5157 2007-02-26 13:59:16Z pachanga $
+ * @version    $Id: common.inc.php 5869 2007-05-11 20:54:07Z pachanga $
  * @package    tests_runner
  */
 
@@ -29,7 +29,7 @@ class GeneratedTestClass
     $code = '';
     $code .= $add_php ? "<?php\n" : '';
     $code .= "class {$this->class_name} extends UnitTestCase {
-              function testMe() {echo '{$this->class_name}';}
+              function testMe() {echo \"{$this->class_name}\";}
             }";
     $code .= $add_php ? "\n?>" : '';
 

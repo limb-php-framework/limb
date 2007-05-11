@@ -12,7 +12,7 @@
 
 class lmbTestRunner
 {
-  protected $test_path;
+  protected $test_paths = array();
   protected $test_reporter;
   protected $coverage;
   protected $coverage_reporter;
@@ -22,7 +22,10 @@ class lmbTestRunner
 
   function __construct($test_path)
   {
-    $this->test_path = $test_path;
+    if(!is_array($test_path))
+      $this->test_paths[] = $test_path;
+    else
+      $this->test_paths = $test_path;
   }
 
   function setTestReporter($reporter)
@@ -50,13 +53,17 @@ class lmbTestRunner
     require_once(dirname(__FILE__) . '/../simpletest.inc.php');
 
     $res = true;
-    foreach(glob($this->_normalizePath($this->test_path)) as $file)
+    foreach($this->test_paths as $test_path)
     {
-      $tests_found = true;
-      $root_dir = $this->_getRootDir($file);
-      $node = $this->_mapFileToNode($root_dir, $file);
-      $tree = $this->_initTree($root_dir);
-      $res = $res & $tree->perform($node, $this->_getReporter());
+      foreach(glob($this->_normalizePath($test_path)) as $file)
+      {
+        $tests_found = true;
+        $root_dir = $this->_getRootDir($file);
+        $node = $this->_mapFileToNode($root_dir, $file);
+        $tree = $this->_initTree($root_dir);
+        //we need fresh reporter every time
+        $res = $res & $tree->perform($node, clone($this->_getReporter()));
+      }
     }
     return $res;
   }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUITest.class.php 5589 2007-04-10 06:35:50Z pachanga $
+ * @version    $Id: lmbTestShellUITest.class.php 5869 2007-05-11 20:54:07Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
@@ -81,6 +81,23 @@ class lmbTestShellUITest extends lmbTestsUtilitiesBase
     $this->assertPattern('~1\s+of\s+1\s+done\(' . $foo->getClass() . '\)~', $screen);
     $this->assertPattern('~OK~i', $screen);
     $this->assertNoPattern('~Error~i', $screen);
+  }
+  
+  function testPerformMultipleArgs()
+  {
+    $foo = $this->_createTestCase($f1 = LIMB_VAR_DIR . '/cases/foo_test.php');
+    $bar = $this->_createTestCase($f2 = LIMB_VAR_DIR . '/cases/a/bar_test.php');
+    $zoo = $this->_createTestCase($f3 = LIMB_VAR_DIR . '/cases/a/z/zoo_test.php');
+    
+    $ret = $this->_execScript("$f2 $f1 $f3", $screen);
+    if(!$this->assertEqual($ret, 0))
+      echo $screen;    
+        
+    $this->assertPattern('~1\s+of\s+1\s+done\(' . $foo->getClass() . '\)~', $screen);
+    $this->assertPattern('~1\s+of\s+1\s+done\(' . $bar->getClass() . '\)~', $screen);
+    $this->assertPattern('~1\s+of\s+1\s+done\(' . $zoo->getClass() . '\)~', $screen);
+    $this->assertPattern('~(.*OK\nTest cases run: 1\/1.*){3}~si', $screen);
+    $this->assertNoPattern('~Error~i', $screen);    
   }
 
   function _createRunScript()

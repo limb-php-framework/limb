@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5665 2007-04-16 13:12:00Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5869 2007-05-11 20:54:07Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
@@ -150,13 +150,13 @@ EOD;
     if(!$configured && $config = getenv('LIMB_TESTS_RUNNER_CONFIG'))
       include_once($config);
 
-    if(!isset($options[1][0]))
+    if(!is_array($options[1]))
       $this->_help(1);
-
+    
     if(!$cover_report_dir && defined('LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR'))
       $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
 
-    $runner = new lmbTestRunner($options[1][0]);
+    $runner = new lmbTestRunner($options[1]);
 
     if($cover_include)
       $runner->useCoverage($cover_include, $cover_exclude, $cover_report_dir);
