@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbException.class.php 5756 2007-04-24 10:16:11Z pachanga $
+ * @version    $Id: lmbException.class.php 5861 2007-05-11 04:23:53Z pachanga $
  * @package    core
  */
 
@@ -29,6 +29,12 @@ class lmbException extends Exception
   function getParams()
   {
     return $this->params;
+  }
+  
+  function getParam($name)
+  {
+    if(isset($this->params[$name]))
+      return $this->params[$name];
   }
 
   function getNiceTraceAsString()
