@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5860 2007-05-10 14:49:53Z pachanga $
+ * @version    $Id: lmbDate.class.php 5865 2007-05-11 13:05:33Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -151,11 +151,14 @@ class lmbDate extends lmbObject
                      $this->year ? $this->year : 1);
   }
 
-  static function isValidDateString($value)
+  static function validate($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
   {
     try
     {
-      new lmbDate((string)$value);
+      if(func_num_args() > 2)
+        new lmbDate($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
+      else
+        new lmbDate($year_or_date, $month_or_tz);
       return true;
     }
     catch(lmbException $e)

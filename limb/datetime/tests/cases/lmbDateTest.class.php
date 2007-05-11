@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5847 2007-05-09 12:29:32Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5865 2007-05-11 13:05:33Z pachanga $
  * @package    datetime
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -44,20 +44,21 @@ class lmbDateTest extends UnitTestCase
     catch(lmbException $e){}
   }
 
-  function testIsValidDateString()
+  function testValidate()
   {
-    $this->assertTrue(lmbDate :: isValidDateString('2005-12-01 12:45:12'));
-    $this->assertTrue(lmbDate :: isValidDateString('2005-12-01 12:45'));
-    $this->assertTrue(lmbDate :: isValidDateString('2005-12-01'));
-    $this->assertTrue(lmbDate :: isValidDateString('12:45:12'));
-    $this->assertTrue(lmbDate :: isValidDateString('12:45'));
-    $this->assertTrue(lmbDate :: isValidDateString(' 12:45:12 '));
+    $this->assertTrue(lmbDate :: validate('2005-12-01 12:45:12'));
+    $this->assertTrue(lmbDate :: validate('2005-12-01 12:45'));
+    $this->assertTrue(lmbDate :: validate('2005-12-01'));
+    $this->assertTrue(lmbDate :: validate('12:45:12'));
+    $this->assertTrue(lmbDate :: validate('12:45'));
+    $this->assertTrue(lmbDate :: validate(' 12:45:12 '));
   }
 
-  function testIsValidDateStringFalse()
+  function testValidateFalse()
   {
-    $this->assertFalse(lmbDate :: isValidDateString('baba-duba'));
-    $this->assertFalse(lmbDate :: isValidDateString('2005-12-01 12.'));
+    $this->assertFalse(lmbDate :: validate('baba-duba'));
+    $this->assertFalse(lmbDate :: validate('2005-12-01 12.'));
+    $this->assertFalse(lmbDate :: validate(2006, 13, 11));
   }
 
   function testCreate()

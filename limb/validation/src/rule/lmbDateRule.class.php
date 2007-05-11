@@ -32,7 +32,7 @@ class lmbDateRule extends lmbSingleFieldRule
   {
     if($this->type == lmbDateRule :: TYPE_ISO)
     {
-      if(!lmbDate :: isValidDateString($value))
+      if(!lmbDate :: validate((string)$value))
         $this->error('{Field} is not a valid ISO formatted date(YYYY-MM-DD HH:MM).');
     }
   }
