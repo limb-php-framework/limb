@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5804 2007-05-04 11:38:49Z pachanga $
+ * @version    $Id: lmbController.class.php 5864 2007-05-11 12:57:12Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
@@ -140,6 +140,11 @@ class lmbController extends lmbAbstractController
   function flash($message)
   {
     $this->flashMessage($message);
+  }
+
+  function addError($message, $fields = array(), $values = array())
+  {
+    $this->error_list->addError($message, $fields, $values);
   }
 
   function closePopup()
