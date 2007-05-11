@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5863 2007-05-11 12:56:42Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5868 2007-05-11 14:52:12Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5863 2007-05-11 12:56:42Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5868 2007-05-11 14:52:12Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -722,70 +722,79 @@ class lmbActiveRecord extends lmbObject
     if($this->_is_being_saved)
       return;
 
-    $this->_is_being_saved = true;
-
-    $this->_savePreRelations();
-
-    $this->_onBeforeSave();
-
-    $this->_invokeListeners(self :: ON_BEFORE_SAVE);
-
-    if(!$this->isNew() && $this->isDirty())
+    try
     {
-      $this->_onBeforeUpdate();
+      $this->_is_being_saved = true;
 
-      $this->_invokeListeners(self :: ON_BEFORE_UPDATE);
+      $this->_savePreRelations();
 
-      if($need_validation && !$this->_validateUpdate())
-        throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
-                                         $this->_error_list);
+      $this->_onBeforeSave();
 
-      $this->_onSave();
+      $this->_invokeListeners(self :: ON_BEFORE_SAVE);
 
-      $this->_onUpdate();
+      if(!$this->isNew() && $this->isDirty())
+      {
+        $this->_onBeforeUpdate();
 
-      $this->_invokeListeners(self :: ON_UPDATE);
+        $this->_invokeListeners(self :: ON_BEFORE_UPDATE);
 
-      $this->_updateDbRecord($this->_propertiesToDbFields());
+        if($need_validation && !$this->_validateUpdate())
+          throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
+                                           $this->_error_list);
 
-      $this->_onAfterUpdate();
+        $this->_onSave();
 
-      $this->_invokeListeners(self :: ON_AFTER_UPDATE);
+        $this->_onUpdate();
+
+        $this->_invokeListeners(self :: ON_UPDATE);
+
+        $this->_updateDbRecord($this->_propertiesToDbFields());
+
+        $this->_onAfterUpdate();
+
+        $this->_invokeListeners(self :: ON_AFTER_UPDATE);
+      }
+      elseif($this->isNew())
+      {
+        $this->_onBeforeCreate();
+
+        $this->_invokeListeners(self :: ON_BEFORE_CREATE);
+
+        if($need_validation && !$this->_validateInsert())
+          throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
+                                           $this->_error_list);
+
+        $this->_onSave();
+
+        $this->_onCreate();
+
+        $this->_invokeListeners(self :: ON_CREATE);
+
+        $new_id = $this->_insertDbRecord($this->_propertiesToDbFields());
+        $this->_is_new = false;
+        $this->setId($new_id);
+
+        $this->_onAfterCreate();
+
+        $this->_invokeListeners(self :: ON_AFTER_CREATE);
+      }
+
+      $this->_onAfterSave();
+
+      $this->_invokeListeners(self :: ON_AFTER_SAVE);
+
+      $this->_savePostRelations();
+
+      $this->_resetDirty();
+
+      $this->_is_being_saved = false;
     }
-    elseif($this->isNew())
+    catch(Exception $e)
     {
-      $this->_onBeforeCreate();
-
-      $this->_invokeListeners(self :: ON_BEFORE_CREATE);
-
-      if($need_validation && !$this->_validateInsert())
-        throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
-                                         $this->_error_list);
-
-      $this->_onSave();
-
-      $this->_onCreate();
-
-      $this->_invokeListeners(self :: ON_CREATE);
-
-      $new_id = $this->_insertDbRecord($this->_propertiesToDbFields());
-      $this->_is_new = false;
-      $this->setId($new_id);
-
-      $this->_onAfterCreate();
-
-      $this->_invokeListeners(self :: ON_AFTER_CREATE);
+      $conn = lmbToolkit :: instance()->getDefaultDbConnection();
+      $conn->rollbackTransaction();
+      throw $e;
     }
-
-    $this->_onAfterSave();
-
-    $this->_invokeListeners(self :: ON_AFTER_SAVE);
-
-    $this->_savePostRelations();
-
-    $this->_resetDirty();
-
-    $this->_is_being_saved = false;
 
     return $this->getId();
   }
@@ -858,7 +867,7 @@ class lmbActiveRecord extends lmbObject
     {
       $this->save($error_list);
     }
-    catch(lmbValidationException $e)
+    catch(Exception $e)
     {
       return false;
     }
