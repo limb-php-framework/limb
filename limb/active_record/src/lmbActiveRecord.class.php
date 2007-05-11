@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5858 2007-05-10 14:46:38Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5863 2007-05-11 12:56:42Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5858 2007-05-10 14:46:38Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5863 2007-05-11 12:56:42Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -159,6 +159,7 @@ class lmbActiveRecord extends lmbObject
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
     $this->_db_table_name = $this->_db_table->getTableName();
+    $this->_error_list = new lmbErrorList();
 
     if(is_int($magic_params))
       $this->loadById($magic_params);
@@ -213,10 +214,6 @@ class lmbActiveRecord extends lmbObject
    */
   function getErrorList()
   {
-    if($this->_error_list)
-      return $this->_error_list;
-
-    $this->_error_list = new lmbErrorList();
     return $this->_error_list;
   }
   /**
@@ -336,7 +333,7 @@ class lmbActiveRecord extends lmbObject
     $object = $this->_getRaw($property);
     if(is_object($object))
     {
-      $object->save($this->getErrorList());
+      $object->save($this->_error_list);
       $object_id = $object->getId();
       if($this->_getRaw($info['field']) != $object_id)
         $this->_setRaw($info['field'], $object->getId());
@@ -362,7 +359,7 @@ class lmbActiveRecord extends lmbObject
   {
     $collection = $this->_getRaw($property);
     if(is_object($collection))
-      $collection->save($this->getErrorList());
+      $collection->save($this->_error_list);
   }
 
   protected function _savePostRelationObject($property, $info)
@@ -371,7 +368,7 @@ class lmbActiveRecord extends lmbObject
     if(is_object($object))
     {
       $object->set($info['field'], $this->getId());
-      $object->save($this->getErrorList());
+      $object->save($this->_error_list);
     }
   }
 
@@ -741,7 +738,7 @@ class lmbActiveRecord extends lmbObject
 
       if($need_validation && !$this->_validateUpdate())
         throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
-                                         $this->getErrorList());
+                                         $this->_error_list);
 
       $this->_onSave();
 
@@ -763,7 +760,7 @@ class lmbActiveRecord extends lmbObject
 
       if($need_validation && !$this->_validateInsert())
         throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
-                                         $this->getErrorList());
+                                         $this->_error_list);
 
       $this->_onSave();
 
@@ -929,6 +926,8 @@ class lmbActiveRecord extends lmbObject
 
   protected function _onAfterDestroy(){}
 
+  protected function _onValidate(){}
+
   protected function _validateInsert()
   {
     return $this->_validate($this->_createInsertValidator());
@@ -941,8 +940,11 @@ class lmbActiveRecord extends lmbObject
 
   protected function _validate($validator)
   {
-    $validator->setErrorList($this->getErrorList());
-    return $validator->validate($this);
+    $this->_onValidate();
+
+    $validator->setErrorList($this->_error_list);
+    $validator->validate($this);
+    return $this->_error_list->isValid();
   }
 
   protected static function _isCriteria($params)

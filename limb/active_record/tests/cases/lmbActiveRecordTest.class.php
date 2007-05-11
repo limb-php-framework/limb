@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5858 2007-05-10 14:46:38Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5863 2007-05-11 12:56:42Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -32,6 +32,11 @@ class TestOneTableObjectWithCustomDestroy extends lmbActiveRecord
 
 class TestOneTableObjectWithHooks extends TestOneTableObject
 {
+  protected function _onValidate()
+  {
+    echo '|on_validate|';
+  }
+
   protected function _onBeforeUpdate()
   {
     echo '|on_before_update|';
@@ -217,7 +222,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object->save();
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, '|on_before_save||on_before_create||on_save||on_create||on_after_create||on_after_save|');
+    $this->assertEqual($str, '|on_before_save||on_before_create||on_validate||on_save||on_create||on_after_create||on_after_save|');
   }
 
   function testProperOrderOfUpdateHooksCalls()
@@ -234,7 +239,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object->save();
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, '|on_before_save||on_before_update||on_save||on_update||on_after_update||on_after_save|');
+    $this->assertEqual($str, '|on_before_save||on_before_update||on_validate||on_save||on_update||on_after_update||on_after_save|');
   }
 
   function testProperOrderOfDestroyHooksCalls()

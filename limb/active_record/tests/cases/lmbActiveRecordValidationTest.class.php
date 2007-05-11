@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordValidationTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
+ * @version    $Id: lmbActiveRecordValidationTest.class.php 5863 2007-05-11 12:56:42Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -14,6 +14,7 @@ lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
 
 Mock :: generate('lmbValidator', 'MockValidator');
+Mock :: generate('lmbErrorList', 'MockErrorList');
 
 class lmbActiveRecordValidationStub extends lmbActiveRecord
 {
@@ -115,7 +116,8 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->setInsertValidator($insert_validator);
 
     $insert_validator->expectOnce('setErrorList', array($error_list));
-    $insert_validator->setReturnValue('validate', false);
+    $insert_validator->expectOnce('validate', array(new ReferenceExpectation($object)));
+    $error_list->addError('foo');//simulating validation error
 
     $this->assertFalse($object->validate($error_list));
   }
@@ -149,7 +151,8 @@ class lmbActiveRecordValidationTest extends UnitTestCase
     $object->setUpdateValidator($update_validator);
 
     $update_validator->expectOnce('setErrorList', array($error_list));
-    $update_validator->setReturnValue('validate', false);
+    $update_validator->expectOnce('validate', array(new ReferenceExpectation($object)));
+    $error_list->addError('foo');//simulating validation error
 
     $this->assertFalse($object->validate($error_list));
   }
@@ -170,7 +173,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
     $validator->expectOnce('setErrorList', array($error_list));
     $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
-    $validator->setReturnValue('validate', false);
+    $error_list->addError('foo');//simulating validation error
 
     try
     {
@@ -221,7 +224,7 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
     $validator->expectOnce('setErrorList', array($error_list));
     $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
-    $validator->setReturnValue('validate', false);
+    $error_list->addError('foo');//simulating validation error
 
     try
     {
