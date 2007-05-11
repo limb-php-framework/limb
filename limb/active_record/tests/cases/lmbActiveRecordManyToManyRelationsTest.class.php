@@ -6,11 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordManyToManyRelationsTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
+ * @version    $Id: lmbActiveRecordManyToManyRelationsTest.class.php 5866 2007-05-11 14:13:24Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
+lmb_require('limb/validation/src/rule/lmbRequiredRule.class.php');
 
 class GroupForTest extends lmbActiveRecord
 {
@@ -20,6 +21,21 @@ class GroupForTest extends lmbActiveRecord
                                                         'foreign_field' => 'user_id',
                                                         'table' => 'user2group_for_test',
                                                         'class' => 'UserForTest'));
+
+  protected $_test_validator;
+
+  function setValidator($validator)
+  {
+    $this->_test_validator = $validator;
+  }
+
+  function _createValidator()
+  {
+    if($this->_test_validator)
+      return $this->_test_validator;
+
+    return parent :: _createValidator();
+  }
 }
 
 class UserForTest extends lmbActiveRecord
@@ -242,6 +258,24 @@ class lmbActiveRecordManyToManyRelationsTest extends UnitTestCase
   {
     $user = new UserForTestWithCustomCollection();
     $this->assertTrue($user->getGroups() instanceof GroupsForTestCollectionStub);
+  }
+
+  function testErrorListIsSharedWithCollection()
+  {
+    $user = new UserForTest();
+    $user->setFirstName('Bob');
+
+    $group = new GroupForTest();
+
+    $validator = new lmbValidator();
+    $validator->addRequiredRule('title');
+    $group->setValidator($validator);
+
+    $user->addToGroups($group);
+    $user->addToGroups($group);
+
+    $error_list = new lmbErrorList();
+    $this->assertFalse($user->trySave($error_list));
   }
 }
 

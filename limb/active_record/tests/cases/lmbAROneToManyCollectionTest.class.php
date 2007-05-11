@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAROneToManyCollectionTest.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbAROneToManyCollectionTest.class.php 5866 2007-05-11 14:13:24Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
@@ -49,9 +49,9 @@ class LectureForTestStub extends LectureForTest
 {
   var $save_calls = 0;
 
-  function save()
+  function save($error_list = null)
   {
-    parent :: save();
+    parent :: save($error_list);
     $this->save_calls++;
   }
 }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRelationCollection.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version    $Id: lmbARRelationCollection.class.php 5866 2007-05-11 14:13:24Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
@@ -174,14 +174,14 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     }
   }
 
-  function save()
+  function save($error_list = null)
   {
     $this->_ensureDataset();
 
     if(is_a($this->dataset, 'lmbCollection'))
     {
       foreach($this->dataset as $object)
-        $this->_saveObject($object);
+        $this->_saveObject($object, $error_list);
     }
 
     $this->reset();
@@ -279,7 +279,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
 
   abstract protected function _removeRelatedRecords();
 
-  abstract protected function _saveObject($object);
+  abstract protected function _saveObject($object, $error_list = null);
 
   function addDecorator($decorator, $params = array())
   {

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5674 2007-04-17 11:57:56Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5866 2007-05-11 14:13:24Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -30,6 +30,20 @@ class LectureForTest extends lmbActiveRecord
                                       'alt_course' => array('field' => 'alt_course_id',
                                                             'class' => 'CourseForTest',
                                                             'can_be_null' => true));
+  protected $_test_validator;
+
+  function setValidator($validator)
+  {
+    $this->_test_validator = $validator;
+  }
+
+  function _createValidator()
+  {
+    if($this->_test_validator)
+      return $this->_test_validator;
+
+    return parent :: _createValidator();
+  }
 }
 
 class LecturesForTestCollectionStub extends lmbAROneToManyCollection{}
@@ -287,6 +301,21 @@ class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
     $lectures = $course3->getLectures();
     $this->assertEqual($lectures->count(), 1);
     $this->assertEqual($lectures->at(0)->getTitle(), $l3->getTitle());
+  }
+
+  function testErrorListIsSharedWithCollection()
+  {
+    $course = $this->_initCourse();
+
+    $l = new LectureForTest();
+    $validator = new lmbValidator();
+    $validator->addRequiredRule('title');
+    $l->setValidator($validator);
+
+    $course->addToLectures($l);
+
+    $error_list = new lmbErrorList();
+    $this->assertFalse($course->trySave($error_list));
   }
 
   function _initCourse()
