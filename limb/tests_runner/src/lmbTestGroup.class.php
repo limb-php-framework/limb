@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestGroup.class.php 5049 2007-02-13 08:44:23Z pachanga $
+ * @version    $Id: lmbTestGroup.class.php 5870 2007-05-11 20:55:01Z pachanga $
  * @package    tests_runner
  */
 
-class lmbTestGroup extends GroupTest
+class lmbTestGroup extends TestSuite
 {
   protected $_fixture;
   protected $_container = array();
