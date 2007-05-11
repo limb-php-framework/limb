@@ -6,10 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSingleFieldRule.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbSingleFieldRule.class.php 5867 2007-05-11 14:13:55Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
+lmb_require('limb/i18n/common.inc.php');
 
 /**
 * A base class for rules responsbile for validating a single field should inherit this class.
@@ -75,8 +76,8 @@ abstract class lmbSingleFieldRule implements lmbValidationRule
   {
     $this->error_list = $error_list;
     $value = $datasource->get($this->field_name);
-    if (isset($value) && $value !== '')
-        $this->check($value);
+    if(isset($value) && $value !== '')
+      $this->check($value);
   }
 
   /**

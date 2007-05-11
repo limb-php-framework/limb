@@ -6,10 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRequiredObjectRule.class.php 5584 2007-04-09 10:43:58Z serega $
+ * @version    $Id: lmbRequiredObjectRule.class.php 5867 2007-05-11 14:13:55Z pachanga $
  * @package    validation
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
+lmb_require('limb/i18n/common.inc.php');
 
 /**
 * Checks that field is present in datasource and it's value is an object of some or any class
