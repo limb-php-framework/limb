@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequestTest.class.php 5794 2007-05-03 13:04:09Z pachanga $
+ * @version    $Id: lmbHttpRequestTest.class.php 5862 2007-05-11 09:39:45Z pachanga $
  * @package    net
  */
 lmb_require('limb/net/src/lmbHttpRequest.class.php');
@@ -123,6 +123,29 @@ class lmbHttpRequestTest extends UnitTestCase
 
     //files are not returned with get
     $this->assertNull($request->get('form'));
+  }
+
+  function testGetFilesMultipartException()
+  {
+    $old = null;
+    if(isset($_SERVER['CONTENT_TYPE']))
+      $old = $_SERVER['CONTENT_TYPE'];
+
+    $_SERVER['CONTENT_TYPE'] = 'blah';
+
+    $request = new lmbHttpRequest('http://test.com');
+    $request->getFiles();//it's ok, no post request
+
+    $request->pretendPost();
+
+    try
+    {
+      $request->getFiles();
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+
+    $_SERVER['CONTENT_TYPE'] = $old;
   }
 
   function testToString()

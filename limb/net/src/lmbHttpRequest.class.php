@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequest.class.php 5794 2007-05-03 13:04:09Z pachanga $
+ * @version    $Id: lmbHttpRequest.class.php 5862 2007-05-11 09:39:45Z pachanga $
  * @package    net
  */
 lmb_require('limb/core/src/lmbSet.class.php');
@@ -84,6 +84,8 @@ class lmbHttpRequest extends lmbSet
 
   function getFiles($key = null)
   {
+    $this->_ensureMultipartFormData();
+
     return $this->_get('files', $key);
   }
 
@@ -204,6 +206,15 @@ class lmbHttpRequest extends lmbSet
   function dump()
   {
     return $this->toString();
+  }
+
+  protected function _ensureMultipartFormData()
+  {
+    if(!$this->hasPost() || $this->files)
+      return;
+
+    if(strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') === false)
+      throw new lmbException("Submitted form does not have enctype='multipart/form-data' attribute, no files loaded!");
   }
 }
 
