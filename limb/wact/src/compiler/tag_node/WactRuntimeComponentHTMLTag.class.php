@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeComponentHTMLTag.class.php 5690 2007-04-19 13:03:28Z serega $
+ * @version    $Id: WactRuntimeComponentHTMLTag.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -33,18 +33,38 @@ class WactRuntimeComponentHTMLTag extends WactRuntimeComponentTag
     $this->generateDynamicAttributeList($code_writer);
   }
 
-  function preGenerate($code_writer)
+  function generateBeforeContent($code_writer)
   {
-    parent :: preGenerate($code_writer);
+    $this->generateBeforeOpenTag($code_writer);
 
     $this->_renderOpenTag($code_writer);
+
+    $this->generateAfterOpenTag($code_writer);
   }
 
-  function postGenerate($code_writer)
+  function generateBeforeOpenTag($code_writer)
   {
+  }
+
+  function generateAfterOpenTag($code_writer)
+  {
+  }
+
+  function generateAfterContent($code_writer)
+  {
+    $this->generateBeforeCloseTag($code_writer);
+
     $this->_renderCloseTag($code_writer);
 
-    parent::postGenerate($code_writer);
+    $this->generateAfterCloseTag($code_writer);
+  }
+
+  function generateBeforeCloseTag($code_writer)
+  {
+  }
+
+  function generateAfterCloseTag($code_writer)
+  {
   }
 
   protected function _renderOpenTag($code_writer)

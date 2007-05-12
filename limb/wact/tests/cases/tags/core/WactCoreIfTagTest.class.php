@@ -43,6 +43,28 @@ class WactCoreIfTagTest extends WactTemplateTestCase
     $this->assertEqual($output, '');
   }
 
+  function testDBEExpressionRoorModifier()
+  {
+    $template = '<core:datasource id="container1"><core:if exp="{$#[container1]Var}">here</core:if></core:datasource>';
+
+    $this->registerTestingTemplate('/tags/core/if/dbe_root_modifier.html', $template);
+    $page = $this->initTemplate('/tags/core/if/dbe_root_modifier.html');
+    $page->setChildDatasource('container1', array('Var' => 1));
+    $output = $page->capture();
+    $this->assertEqual($output, 'here');
+  }
+
+  function testDBEExpressionPathBasedVariable()
+  {
+    $template = '<core:datasource id="container1"><core:if exp="{$#[container1]Var.subvar}">here</core:if></core:datasource>';
+
+    $this->registerTestingTemplate('/tags/core/if/dbe_path_based_variable.html', $template);
+    $page = $this->initTemplate('/tags/core/if/dbe_path_based_variable.html');
+    $page->setChildDatasource('container1', array('Var' => array('subvar' => 1)));
+    $output = $page->capture();
+    $this->assertEqual($output, 'here');
+  }
+
   function testComplexExpression()
   {
     $template = '<core:if exp="{$Var1 * 3 > Var2}">here</core:if>';

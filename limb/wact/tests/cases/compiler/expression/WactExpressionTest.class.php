@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionTest.class.php 5781 2007-04-28 18:04:32Z serega $
+ * @version    $Id: WactExpressionTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -86,6 +86,16 @@ class WactExpressionTest extends UnitTestCase
     return new WactExpression($expression_text, $context_node, $this->filter_dictionary, $default_filter);
   }
 
+  function _parseAndReturnGeneratedCode($expression_text)
+  {
+    $code = new WactCodeWriter();
+    $expression = $this->_createExpression($expression_text);
+    $expression->generatePreStatement($code);
+    $expression->generateExpression($code);
+    $expression->generatePostStatement($code);
+    return $code->getCode();
+  }
+
   function testCreateValueInteger()
   {
     $expression = $this->_createExpression('29');
@@ -102,16 +112,14 @@ class WactExpressionTest extends UnitTestCase
 
   function testCreateValueNegInteger()
   {
-    $expression = $this->_createExpression('-29');
-    $this->assertTrue($expression->isConstant());
-    $this->assertEqual($expression->getValue(), -29);
+    $code = $this->_parseAndReturnGeneratedCode('-29');
+    $this->assertEqual($code, '<?php -29');
   }
 
   function testCreateValueNegFloat()
   {
-    $expression = $this->_createExpression('-1.5');
-    $this->assertTrue($expression->isConstant());
-    $this->assertEqual($expression->getValue(), -1.5);
+    $code = $this->_parseAndReturnGeneratedCode('-1.5');
+    $this->assertEqual($code, '<?php -1.5');
   }
 
   function testCreateValueSingleQuoteString()

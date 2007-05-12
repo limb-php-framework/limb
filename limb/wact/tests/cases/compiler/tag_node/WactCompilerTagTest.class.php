@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompilerTagTest.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactCompilerTagTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -142,7 +142,7 @@ class WactCompilerTagTest extends WactCompileTreeNodeTest
 
   function testAddChildAttribute()
   {
-    $attrib = new WactAttributeNode('Foo', 'bar');
+    $attrib = new WactAttribute('Foo', 'bar');
     $this->component->addChildAttribute($attrib);
     $this->assertEqual($this->component->getAttribute('FOO'), 'bar');
   }

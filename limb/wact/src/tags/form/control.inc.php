@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: control.inc.php 5690 2007-04-19 13:03:28Z serega $
+ * @version    $Id: control.inc.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -92,22 +92,17 @@ class WactControlTag extends WactRuntimeComponentHTMLTag
     }
   }
 
-  function preGenerate($code_writer)
+  function generateBeforeOpenTag($code_writer)
   {
     if($this->hasAttribute('given_value'))
     {
-      $this->attributeNodes['given_value']->generatePreStatement($code_writer);
-
       $code_writer->writePhp($this->getComponentRefCode() .
                       '->setGivenValue(');
       $this->attributeNodes['given_value']->generateExpression($code_writer);
       $code_writer->writePhp(');');
 
-      $this->attributeNodes['given_value']->generatePostStatement($code_writer);
       unset($this->attributeNodes['given_value']);
     }
-
-    parent :: preGenerate($code_writer);
   }
 }
 

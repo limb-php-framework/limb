@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactSourceFileParserTest.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactSourceFileParserTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -16,7 +16,6 @@ require_once 'limb/wact/src/locator/WactTemplateLocator.interface.php';
 
 Mock::generate('WactLiteralParsingState','MockWactLiteralParsingState');
 Mock::generate('WactComponentParsingState','MockWactComponentParsingState');
-Mock::generate('WactNodeBuilder', 'MockWactNodeBuilder');
 Mock::generate('WactTreeBuilder', 'MockWactTreeBuilder');
 Mock::generate('WactTemplateConfig', 'MockWactTemplateConfig');
 Mock::generate('WactTemplateLocator', 'MockWactTemplateLocator');
@@ -53,25 +52,14 @@ class WactSourceFileParserTest extends UnitTestCase
   function setUp()
   {
     $this->tree_builder = new MockWactTreeBuilder();
-    $this->node_builder = new MockWactNodeBuilder();
-    $this->config = new MockWactTemplateConfig();
     $this->locator = new MockWactTemplateLocator();
 
     $this->parser = new WactSourceFileParserTestVersion($this->tree_builder,
-                                                        $this->node_builder,
-                                                        $this->config,
                                                         $this->locator,
                                                         $this->tag_dictionary);
 
     $this->component_parsing_state = $this->parser->mock_component_parsing_state;
     $this->literal_parsing_state = $this->parser->mock_literal_parsing_state;
-  }
-
-  function testBuildFilterChain()
-  {
-    $Parser = $this->parser->buildFilterChain('TagsToLower');
-    $this->component_parsing_state->expectOnce('startElement', array('test', '*'));
-    $Parser->startElement('TEST', array());
   }
 
   function testChangeToComponentParsingState()
@@ -97,99 +85,47 @@ class WactSourceFileParserTest extends UnitTestCase
     $this->assertIsA($this->parser->getActiveParsingState(), 'MockWactComponentParsingState');
   }
 
-  function testSetDocumentLocator()
-  {
-    $this->component_parsing_state->expectOnce('setDocumentLocator');
-    $this->literal_parsing_state->expectOnce('setDocumentLocator');
-    $Locator = NULL;
-
-    $this->parser->setDocumentLocator($Locator);
-  }
-
-  function testStartElement()
+  function testStartTag()
   {
     $tag = 'test';
     $attributes = array('foo' => 'bar');
-    $this->component_parsing_state->expectOnce('startElement', array($tag, $attributes));
-    $this->parser->startElement($tag, $attributes);
+    $location = new WactSourceLocation('my_file', 10);
+    $this->component_parsing_state->expectOnce('startTag', array($tag, $attributes, $location));
+    $this->parser->startTag($tag, $attributes, $location);
   }
 
-  function testEndElement()
+  function testEndTag()
   {
     $tag = 'test';
-    $this->component_parsing_state->expectOnce('endElement', array($tag));
-    $this->parser->endElement($tag);
+    $location = new WactSourceLocation('my_file', 10);
+    $this->component_parsing_state->expectOnce('endTag', array($tag, $location));
+    $this->parser->endTag($tag, $location);
   }
 
-  function testEmptyElement()
+  function testEmptyTag()
   {
     $tag = 'test';
     $attributes = array('foo' => 'bar');
-    $this->component_parsing_state->expectOnce('emptyElement', array($tag, $attributes));
-    $this->parser->emptyElement($tag, $attributes);
+    $location = new WactSourceLocation('my_file', 10);
+    $this->component_parsing_state->expectOnce('emptyTag', array($tag, $attributes, $location));
+    $this->parser->emptyTag($tag, $attributes, $location);
   }
 
   function testCharacters()
   {
     $data = 'test';
-    $this->component_parsing_state->expectOnce('characters', array($data));
-    $this->parser->characters($data);
+    $location = new WactSourceLocation('my_file', 10);
+    $this->component_parsing_state->expectOnce('characters', array($data, $location));
+    $this->parser->characters($data, $location);
   }
 
-  function testProcessingInstruction()
+  function testInstruction()
   {
     $target = 'test';
     $instruction = 'hi';
-    $this->component_parsing_state->expectOnce('processingInstruction', array($target, $instruction));
-    $this->parser->processingInstruction($target, $instruction);
-  }
-
-  function testEscape()
-  {
-    $text = 'test';
-    $this->component_parsing_state->expectOnce('escape', array($text));
-    $this->parser->escape($text);
-  }
-
-  function testComment()
-  {
-    $text = 'test';
-    $this->component_parsing_state->expectOnce('comment', array($text));
-    $this->parser->comment($text);
-  }
-
-  function testDoctype()
-  {
-    $text = 'test';
-    $this->component_parsing_state->expectOnce('doctype', array($text));
-    $this->parser->doctype($text);
-  }
-
-  function testJasp()
-  {
-    $text = 'test';
-    $this->component_parsing_state->expectOnce('jasp', array($text));
-    $this->parser->jasp($text);
-  }
-
-  function testUnexpectedEOF()
-  {
-    $text = 'test';
-    $this->component_parsing_state->expectOnce('unexpectedEOF', array($text));
-    $this->parser->unexpectedEOF($text);
-  }
-
-  function testInvalidEntitySyntax()
-  {
-    $text = 'test';
-    $this->component_parsing_state->expectOnce('invalidEntitySyntax', array($text));
-    $this->parser->invalidEntitySyntax($text);
-  }
-
-  function testInvalidAttributeSyntax()
-  {
-    $this->component_parsing_state->expectOnce('invalidAttributeSyntax', array());
-    $this->parser->invalidAttributeSyntax();
+    $location = new WactSourceLocation('my_file', 10);
+    $this->component_parsing_state->expectOnce('instruction', array($target, $instruction, $location));
+    $this->parser->instruction($target, $instruction, $location);
   }
 }
 ?>

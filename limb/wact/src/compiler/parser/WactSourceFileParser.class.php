@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactSourceFileParser.class.php 5553 2007-04-06 09:05:17Z serega $
+ * @version    $Id: WactSourceFileParser.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
-class WactSourceFileParser implements WactParserListener
+class WactSourceFileParser implements WactHTMLParserListener
 {
   /**
   * @var WactComponentParsingState
@@ -32,21 +32,20 @@ class WactSourceFileParser implements WactParserListener
   /**
    * @var WactTreeBuilder
    */
-  protected $TreeBuilder;
+  protected $tree_builder;
 
   /**
    * @var WactTemplateLocator
    */
   protected $template_locator;
 
-  function __construct($tree_builder, $node_builder, $config, $template_locator, $tag_dictionary)
+  function __construct($tree_builder, $template_locator, $tag_dictionary)
   {
-    $this->TreeBuilder = $tree_builder;
+    $this->tree_builder = $tree_builder;
 
-    $this->config = $config;
     $this->template_locator = $template_locator;
 
-    $this->component_parsing_state = $this->_createComponentParsingState($node_builder, $tag_dictionary);
+    $this->component_parsing_state = $this->_createComponentParsingState($tag_dictionary);
 
     $this->literal_parsing_state = $this->_createLiteralParsingState();
 
@@ -54,35 +53,15 @@ class WactSourceFileParser implements WactParserListener
   }
 
   // for testing purposes
-  protected function _createComponentParsingState($node_builder, $tag_dictionary)
+  protected function _createComponentParsingState($tag_dictionary)
   {
-    return new WactComponentParsingState($this, $this->TreeBuilder, $node_builder, $tag_dictionary);
+    return new WactComponentParsingState($this, $this->tree_builder, $tag_dictionary);
   }
 
   // for testing purposes
   protected function _createLiteralParsingState()
   {
-    return new WactLiteralParsingState($this, $this->TreeBuilder);
-  }
-
-  function buildFilterChain($sax_filters = '')
-  {
-    // Build a filter chain
-    if (empty($sax_filters))
-      return $this;
-
-    $chain = $this;
-
-    foreach(explode(':', $sax_filters) as $sax_filter)
-    {
-      $sax_filter_file = 'Wact' . $sax_filter . 'SaxFilter.class.php';
-      $sax_filter_class = 'Wact' . $sax_filter . 'SaxFilter';
-      require_once('limb/wact/src/compiler/saxfilters/'.$sax_filter_file);
-
-      $chain = new $sax_filter_class($chain);
-    }
-
-    return $chain;
+    return new WactLiteralParsingState($this, $this->tree_builder);
   }
 
   /**
@@ -97,25 +76,23 @@ class WactSourceFileParser implements WactParserListener
     if(empty($source_file_path))
         throw new WactException('Template source file not found', array('file_name' => $file_name));
 
-    $tagCountBeforeParse = $this->TreeBuilder->getExpectedTagCount();
+    $tag_count_before_parse = $this->tree_builder->getExpectedTagCount();
 
-    $this->TreeBuilder->setCursor($compile_tree_root_node);
+    $this->tree_builder->setCursor($compile_tree_root_node);
 
     $this->changeToComponentParsingState();
 
-    $parser = new WactHTMLParser($this->buildFilterChain($this->config->getSaxFilters()));
-
-    $this->setDocumentLocator($parser);
+    $parser = new WactHTMLParser($this);
 
     $template = $this->template_locator->readTemplateFile($source_file_path);
 
     $parser->parse($template, $source_file_path);
 
-    if($tagCountBeforeParse != $this->TreeBuilder->getExpectedTagCount())
+    if($tag_count_before_parse != $this->tree_builder->getExpectedTagCount())
     {
-      $location = $this->TreeBuilder->getExpectedTagLocation();
+      $location = $this->tree_builder->getExpectedTagLocation();
       throw new WactException('Missing close tag',
-                              array('tag' => $this->TreeBuilder->getExpectedTag(),
+                              array('tag' => $this->tree_builder->getExpectedTag(),
                                     'file' => $location->getFile(),
                                     'line' => $location->getLine()));
     }
@@ -137,70 +114,29 @@ class WactSourceFileParser implements WactParserListener
     $this->active_parsing_state->setLiteralTag($tag);
   }
 
-  function setDocumentLocator($template_locator)
+  function startTag($tag, $attrs, $location)
   {
-    $this->literal_parsing_state->setDocumentLocator($template_locator);
-    $this->component_parsing_state->setDocumentLocator($template_locator);
+    $this->active_parsing_state->startTag($tag, $attrs, $location);
   }
 
-  function startElement($tag, $attrs)
+  function endTag($tag, $location)
   {
-    $this->active_parsing_state->startElement($tag, $attrs);
+    $this->active_parsing_state->endTag($tag, $location);
   }
 
-  function endElement($tag)
+  function emptyTag($tag, $attrs, $location)
   {
-    $this->active_parsing_state->endElement($tag);
+    $this->active_parsing_state->emptyTag($tag, $attrs, $location);
   }
 
-  function emptyElement($tag, $attrs)
+  function characters($text, $location)
   {
-    $this->active_parsing_state->emptyElement($tag, $attrs);
+    $this->active_parsing_state->characters($text, $location);
   }
 
-  function characters($text)
+  function instruction($target, $instruction, $location)
   {
-    $this->active_parsing_state->characters($text);
-  }
-
-  function processingInstruction($target, $instruction)
-  {
-    $this->active_parsing_state->processingInstruction($target, $instruction);
-  }
-
-  function escape($text)
-  {
-    $this->active_parsing_state->escape($text);
-  }
-
-  function comment($text)
-  {
-    $this->active_parsing_state->comment($text);
-  }
-
-  function doctype($text)
-  {
-    $this->active_parsing_state->doctype($text);
-  }
-
-  function jasp($text)
-  {
-    $this->active_parsing_state->jasp($text);
-  }
-
-  function unexpectedEOF($text)
-  {
-    $this->active_parsing_state->unexpectedEOF($text);
-  }
-
-  function invalidEntitySyntax($text)
-  {
-    $this->active_parsing_state->invalidEntitySyntax($text);
-  }
-
-  function invalidAttributeSyntax()
-  {
-    $this->active_parsing_state->invalidAttributeSyntax();
+    $this->active_parsing_state->instruction($target, $instruction, $location);
   }
 }
 

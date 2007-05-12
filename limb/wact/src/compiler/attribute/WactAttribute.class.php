@@ -6,23 +6,24 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompoundAttribute.class.php 5168 2007-02-28 16:05:08Z serega $
+ * @version    $Id: WactAttribute.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
-
-require_once('limb/wact/src/compiler/attribute/WactAttributeNode.class.php');
 
 /**
 * Used to store complex expressions like "{$var1}_my_{$var2}" found inside tag attributes
 */
-class WactCompoundAttribute implements WactExpressionInterface
+class WactAttribute implements WactExpressionInterface
 {
   protected $name;
   protected $fragments = array();
 
-  function __construct($name)
+  function __construct($name, $value = null)
   {
     $this->name = $name;
+
+    if($value)
+      $this->addFragment(new WactAttributeLiteralFragment($value));
   }
 
   function getName()
@@ -30,7 +31,7 @@ class WactCompoundAttribute implements WactExpressionInterface
     return $this->name;
   }
 
-  function addAttributeFragment($fragment)
+  function addFragment($fragment)
   {
     $this->fragments[] = $fragment;
   }
@@ -64,7 +65,7 @@ class WactCompoundAttribute implements WactExpressionInterface
     $code_writer->writeHTML('="');
 
     foreach( array_keys($this->fragments) as $key)
-        $this->fragments[$key]->generateFragment($code_writer);
+      $this->fragments[$key]->generateFragment($code_writer);
 
     $code_writer->writeHTML('"');
   }

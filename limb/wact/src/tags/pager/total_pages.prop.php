@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: total_pages.prop.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: total_pages.prop.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: clip_filter.test.php 5168 2007-02-28 16:05:08Z serega $
+ * @version    $Id: clip_filter.test.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -132,7 +132,7 @@ class WactTemplateClipFilterTestCase extends WactTemplateTestCase
     }
     catch (WactException $e)
     {
-      $this->assertWantedPattern('/Attribute syntax error/', $e->getMessage());
+      $this->assertWantedPattern('/Invalid tag attribute syntax/', $e->getMessage());
     }
   }
 
@@ -148,7 +148,7 @@ class WactTemplateClipFilterTestCase extends WactTemplateTestCase
     }
     catch (WactException $e)
     {
-      $this->assertWantedPattern('/Attribute syntax error/', $e->getMessage());
+      $this->assertWantedPattern('/Invalid tag attribute syntax/', $e->getMessage());
     }
   }
 
@@ -188,26 +188,10 @@ class WactTemplateClipFilterTestCase extends WactTemplateTestCase
     }
     catch(WactException $e)
     {
-      $this->assertWantedPattern('/Attribute syntax error/', $e->getMessage());
+      $this->assertWantedPattern('/Invalid tag attribute syntax/', $e->getMessage());
     }
   }
 
-/*
-preg_match hangs with this input cause by this test case:
-string(53) "/^((?Us).*)\{\$(([^"'}]+|('|")(?U).*\4)+)\}((?s).*)$/"
-string(74) "<img src="img.gif" alt="{$val|clip:5,0," ...'}' title="{$val|clip:5,0," />"
-
-  function testTwoAttributeSingleQuoteVar() {
-      $template = '<img src=\'img.gif\' alt=\'{$val|clip:5,0,\'...\'}\' title=\'{$val|clip:5,0,\'...\'}\' />';
-
-      $this->registerTestingTemplate('/template/filter/clip/testtwoattributesinglequote.html',$template);
-      $page = $this->initTemplate('/template/filter/clip/testtwoattributesinglequote.html');
-      $page->set('val','abcdefgh');
-
-      $output = $page->capture();
-      $this->assertEqual($output, "<img src='img.gif' alt='abcde...' title='abcde...' />");
-  }
-*/
   function testTwoAttributeMixedQuote1Var()
   {
     $template = '<img src="img.gif" alt="{$val|clip:5,0,\'...\'}" title="{$val|clip:5,0,\'...\'}"/>';

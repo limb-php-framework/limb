@@ -6,15 +6,16 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionValueParser.class.php 5691 2007-04-19 13:27:02Z serega $
+ * @version    $Id: WactExpressionValueParser.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
-require_once 'limb/wact/src/compiler/expression/node/expression.inc.php';
-require_once 'limb/wact/src/compiler/expression/node/constant.inc.php';
-require_once 'limb/wact/src/compiler/expression/node/math.inc.php';
-require_once 'limb/wact/src/compiler/expression/node/logical.inc.php';
-require_once 'limb/wact/src/compiler/expression/WactDataBindingExpression.class.php';
+require_once 'limb/wact/src/compiler/expression/node/WactTemplateExpressionNode.class.php';
+require_once 'limb/wact/src/compiler/expression/node/WactConstantExpressionNode.class.php';
+require_once 'limb/wact/src/compiler/expression/node/WactBinaryExpressionNode.class.php';
+require_once 'limb/wact/src/compiler/expression/node/WactParenthesisExpressionNode.class.php';
+require_once 'limb/wact/src/compiler/expression/node/WactUnaryExpressionNode.class.php';
+require_once 'limb/wact/src/compiler/expression/WactDataBindingExpressionNode.class.php';
 
 class WactExpressionValueParser
 {
@@ -31,182 +32,110 @@ class WactExpressionValueParser
     $this->context = $context;
   }
 
+  function raiseError($message, $params = array())
+  {
+    $this->context->raiseCompilerError($message, $params);
+  }
+
   /**
   */
-  protected function getToken($pattern) {
-    if (preg_match($pattern, $this->text, $match, PREG_OFFSET_CAPTURE, $this->position)) {
+  protected function getToken($pattern)
+  {
+    if (preg_match($pattern, $this->text, $match, PREG_OFFSET_CAPTURE, $this->position))
+    {
       $this->position += strlen($match[0][0]);
       return $match[1][0];
-    } else {
-      return FALSE;
     }
+    else
+      return FALSE;
   }
 
   /**
   */
   protected function parsePrimary()
   {
-    $token = $this->getToken('/\G\s*(#|\^|-|"|\'|\[|\(|[0-9]+|[A-Za-z][A-Za-z0-9_.]*)/u');
-    if ($token === FALSE) {
-      throw new Exception("expecting primary.");
-    }
+    $token = $this->getToken('/\G\s*(#|\^|\$|-|"|\'|!|\[|\(|[0-9]+|[A-Za-z][A-Za-z0-9_.]*)/u');
+    if ($token === FALSE)
+      $this->raiseError("Expecting primary operand in expression.");
 
-    if ($token == '-') {
-      return new WactUnaryMInusExpressionNode($this->parsePrimary());
-    } else if ($token == '(') {
+    if ($token == '-')
+      return new WactUnaryExpressionNode($this->parsePrimary(), '-');
+
+    if ($token == '(')
+    {
       $expr = $this->parseExpression();
-      if ($this->getToken('/\G\s*(\))/u')) {
-        return $expr;
-      } else {
-        throw new Exception('Expecting ).');
-      }
-    } elseif($token == '^' || $token == '#' || $token == '[') {
-      if (!($token2 = $this->getToken('/\G([A-Za-z^][A-Za-z0-9_.\[\]^]*)/u'))) {
-        throw new Exception("expecting identifier.");
-      }
-      return new WactDataBindingExpression($token . $token2, $this->context);
-    } else if ($token == '#') {
-      if (!($token = $this->getToken('/\G\s*([A-Za-z][A-Za-z0-9_]*)/u'))) {
-        throw new Exception("expecting identifier.");
-      }
-      return new WactRootDataBindingExpressionNode($token);
-    } else if ($token == '"' || $token == "'") {
+      if ($this->getToken('/\G\s*(\))/u'))
+        return new WactParenthesisExpressionNode($expr);
+      else
+        $this->raiseError('Expecting ) in expression');
+    }
+    // one of the DBE context modifier
+    elseif($token == '^' || $token == '#' || $token == '[')
+    {
+      if (!($token2 = $this->getToken('/\G([A-Za-z^\[][A-Za-z0-9_.\[\]^]*)/u')))
+        $this->raiseError("Expecting identifier after DBE modifier.");
+
+      return new WactDataBindingExpressionNode($token . $token2, $this->context);
+    }
+    // php variable
+    elseif($token == '$')
+    {
+      if (!($token2 = $this->getToken('/\G([A-Za-z][A-Za-z0-9_.\[\]^]*)/u')))
+        $this->raiseError("Expecting variable name after \$ symbol.");
+
+      return new WactDataBindingExpressionNode($token . $token2, $this->context);
+    }
+    // string
+    elseif ($token == '"' || $token == "'")
+    {
       $string = $this->getToken('/\G([^' . $token . ']*)' . $token . '/u');
-      if ($string !== FALSE) {
+      if ($string !== FALSE)
         return new WactConstantExpressionNode($string);
-      } else {
-        throw new Exception("Expecting a string literal.");
-      }
-    } else if (ctype_digit($token)) {
-      if ($decimalToken = $this->getToken('/\G\.(\d+)/u')) {
+      else
+        $this->raiseError("Expecting a string literal.");
+    }
+    // integer or float
+    elseif (ctype_digit($token))
+    {
+      if ($decimalToken = $this->getToken('/\G\.(\d+)/u'))
         return new WactConstantExpressionNode(floatval($token . '.' . $decimalToken));
-      } else {
+      else
         return new WactConstantExpressionNode(intval($token));
-      }
-    } else if (strcasecmp($token, 'and') == 0) {
-      throw new Exception('reserved');
-    } else if (strcasecmp($token, 'or') == 0) {
-      throw new Exception('reserved');
-    } else if (strcasecmp($token, 'not') == 0) {
+    }
+    // logical not
+    elseif($token == '!')
+    {
       $expr = $this->parseExpression();
-      return new WactLogicalNotExpressionNode($expr);
-    } else if (strcasecmp($token, 'null') == 0) {
+      return new WactUnaryExpressionNode($expr, '!');
+    }
+    elseif (strcasecmp($token, 'null') == 0)
       return new WactConstantExpressionNode(NULL);
-    } else if (strcasecmp($token, 'true') == 0) {
+    elseif (strcasecmp($token, 'true') == 0)
       return new WactConstantExpressionNode(TRUE);
-    } else if (strcasecmp($token, 'false') == 0) {
+    elseif (strcasecmp($token, 'false') == 0)
       return new WactConstantExpressionNode(FALSE);
-    } else {
-      return new WactDataBindingExpression($token, $this->context);
-    }
+    else
+      return new WactDataBindingExpressionNode($token, $this->context);
   }
 
-  /**
-  * term := primary { '*' primary | '/' primary | '%' primary }
-  */
-  protected function parseTerm() {
+  protected function parseOperators()
+  {
+    $sum = $this->parsePrimary();
 
-    $term = $this->parsePrimary();
-
-    while ($token = $this->getToken('/\G\s*(\*|\/|%)/u')) {
-      $deref = $this->parsePrimary();
-
-      if ($token == '*') {
-        $term = new WactMultiplicationExpressionNode($term, $deref);
-      } else if ($token == '/') {
-        $term = new WactDivisionExpressionNode($term, $deref);
-      } else {
-        $term = new WactModuloExpressionNode($term, $deref);
-      }
-
-    }
-
-    return $term;
-  }
-
-  /**
-  * sum := term { '+' term | '-' term | '&' term }
-  */
-  protected function parseSum() {
-
-    $sum = $this->parseTerm();
-
-    while ($token = $this->getToken('/\G\s*(\+|-|&)/u')) {
-      $term = $this->parseTerm();
-
-      if ($token == '+') {
-        $sum = new WactAdditionExpressionNode($sum, $term);
-      } else if ($token == '-') {
-        $sum = new WactSubtractionExpressionNode($sum, $term);
-      } else {
-        $sum = new WactConcatinationExpressionNode($sum, $term);
-      }
-
+    while ($token = $this->getToken('/\G\s*(\*|\/|%|\+|-|>=|<=|==|!=|>|<|\|\||&&|&|\!)/u'))
+    {
+      $term = $this->parseOperators();
+      $sum = new WactBinaryExpressionNode($sum, $term, $token);
     }
 
     return $sum;
   }
 
-  /**
-  * comparison :=
-  */
-  protected function parseComparison() {
-
-    $comparison = $this->parseSum();
-
-    while ($token = $this->getToken('/\G\s*(>=|<=|==|!=|>|<)/u')) {
-      $sum = $this->parseSum();
-
-      if ($token == '==') {
-        $comparison = new WactEqualToExpressionNode($comparison, $sum);
-      } else if ($token == '!=') {
-        $comparison = new WactNotEqualToExpressionNode($comparison, $sum);
-      } else if ($token == '<') {
-        $comparison = new WactLessThanExpressionNode($comparison, $sum);
-      } else if ($token == '>') {
-        $comparison = new WactGreaterThanExpressionNode($comparison, $sum);
-      } else if ($token == '<=') {
-        $comparison = new WactLessThanOrEqualToExpressionNode($comparison, $sum);
-      } else {
-        $comparison = new WactGreaterThanOrEqualToExpressionNode($comparison, $sum);
-      }
-
-    }
-
-    return $comparison;
+  protected function parseExpression()
+  {
+    return $this->parseOperators();
   }
 
-  /**
-  * logical := comparison { 'and' comparison | 'or' comparison }
-  */
-  protected function parseLogical() {
-
-    $logical = $this->parseComparison();
-
-    while ($token = $this->getToken('/\G\s*(or|and)/u')) {
-      $comparison = $this->parseComparison();
-
-      if (strcasecmp($token, 'and') == 0) {
-        $logical = new WactLogicalAndExpressionNode($logical, $comparison);
-      } else {
-        $logical = new WactLogicalOrExpressionNode($logical, $comparison);
-      }
-
-    }
-
-    return $logical;
-  }
-
-  /**
-  * expression := logical
-  */
-  protected function parseExpression() {
-    return $this->parseLogical();
-  }
-
-  /**
-  * Parse text for expressions and emit a stream of events for expression fragments
-  */
   function parse($text)
   {
     $this->length = strlen($text);
@@ -222,7 +151,7 @@ class WactExpressionValueParser
 
     if ($this->position < $this->length &&
       preg_match('/\G\s*$/u', $this->text, $match, PREG_OFFSET_CAPTURE, $this->position)) {
-      throw new Exception('Expection end of expression.');
+      $this->raiseError('Expection end of expression.');
     }
 
     return $expression;

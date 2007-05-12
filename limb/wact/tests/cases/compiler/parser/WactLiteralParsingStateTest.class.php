@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactLiteralParsingStateTest.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactLiteralParsingStateTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -20,10 +20,10 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
 
   function setUp()
   {
+    $this->location = new WactSourceLocation('my_file', 10);
     $this->parser = new MockWactSourceFileParser();
     $this->tree_builder = new MockTreeBuilder();
     $this->state = new WactLiteralParsingState($this->parser, $this->tree_builder);
-    $this->state->setDocumentLocator(new MockWactHTMLParser());
   }
 
   function testGetAttributeStringRunatTrimmed()
@@ -38,7 +38,7 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
     $attrs = array('foo' => 'bar');
     $this->state->setLiteralTag('foo');
     $this->tree_builder->expectOnce('addWactTextNode', array( '<test foo="bar">'));
-    $this->state->startElement($tag, $attrs);
+    $this->state->startTag($tag, $attrs, $this->location);
   }
 
   function testEndElement()
@@ -46,7 +46,7 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
     $tag = 'test';
     $this->state->setLiteralTag('foo');
     $this->tree_builder->expectOnce('addWactTextNode', array( '</' . $tag . '>'));
-    $this->state->endElement($tag);
+    $this->state->endTag($tag, $this->location);
   }
 
   function testEndElementLiteral()
@@ -55,7 +55,7 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
     $this->state->setLiteralTag('test');
     $this->tree_builder->expectOnce('popNode');
     $this->parser->expectOnce('changeToComponentParsingState');
-    $this->state->endElement($tag);
+    $this->state->endTag($tag, $this->location);
   }
 
   function testEmptyElement()
@@ -64,65 +64,23 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
     $attrs = array('foo' => 'bar');
     $this->state->setLiteralTag('foo');
     $this->tree_builder->expectOnce('addWactTextNode', array( '<test foo="bar" />'));
-    $this->state->emptyElement($tag, $attrs);
+    $this->state->emptyTag($tag, $attrs, $this->location);
   }
 
   function testCharacters()
   {
     $text = 'test';
     $this->tree_builder->expectOnce('addWactTextNode', array($text));
-    $this->state->characters($text);
+    $this->state->characters($text, $this->location);
   }
 
-  function testProcessingInstruction()
+  function testInstruction()
   {
     $target = 'test';
     $instruction = 'doit';
     $pi = '<?' . $target . ' ' . $instruction . '?>';
     $this->tree_builder->expectOnce('addWactTextNode', array($pi));
-    $this->state->processingInstruction($target, $instruction);
-  }
-
-  function testJasp()
-  {
-    $text = 'test';
-    $this->tree_builder->expectOnce('addWactTextNode', array('<%' . $text . '%>'));
-    $this->state->jasp($text);
-  }
-
-  function testComment()
-  {
-    $text = 'test';
-    $this->tree_builder->expectOnce('addWactTextNode', array('<!--' . $text . '-->'));
-    $this->state->comment($text);
-  }
-
-  function testEscape()
-  {
-    $text = 'test';
-    $this->tree_builder->expectOnce('addWactTextNode', array('<!' . $text . '>'));
-    $this->state->escape($text);
-  }
-
-  function testDoctype()
-  {
-    $text = 'test';
-    $this->tree_builder->expectOnce('addWactTextNode', array('<!' . $text . '>'));
-    $this->state->doctype($text);
-  }
-
-  function testUnexpectedEOF()
-  {
-    $text = 'test';
-    $this->tree_builder->expectOnce('addWactTextNode', array($text));
-    $this->state->unexpectedEOF($text);
-  }
-
-  function testInvalidEntitySyntax()
-  {
-    $text = 'test';
-    $this->tree_builder->expectOnce('addWactTextNode', array($text));
-    $this->state->invalidEntitySyntax($text);
+    $this->state->instruction($target, $instruction, $this->location);
   }
 }
 ?>

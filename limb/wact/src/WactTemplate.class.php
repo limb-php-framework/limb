@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTemplate.class.php 5667 2007-04-17 09:58:40Z pachanga $
+ * @version    $Id: WactTemplate.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -73,9 +73,8 @@ class WactTemplate extends WactDatasourceRuntimeComponent
   /**
   * @return WactArrayObject
   **/
-  static function makeObject($DataSource, $name)
+  static function makeObject($value)
   {
-    $value = $DataSource->get($name);
     if (is_object($value) && method_exists($value, 'get'))
       return $value;
     elseif(is_object($value) || is_array($value))

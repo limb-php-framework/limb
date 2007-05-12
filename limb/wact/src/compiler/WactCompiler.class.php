@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompiler.class.php 5594 2007-04-10 09:00:02Z pachanga $
+ * @version    $Id: WactCompiler.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -59,7 +59,7 @@ class WactCompiler
     $this->property_dictionary = $dictionary_holder->getPropertyDictionary();
     $this->filter_dictionary = $dictionary_holder->getFilterDictionary();
 
-    $this->tree_builder = new WactTreeBuilder($this);
+    $this->tree_builder = new WactTreeBuilder($this, $this->tag_dictionary, $this->property_dictionary, $this->filter_dictionary);
   }
 
   function compile($file_name)
@@ -103,23 +103,10 @@ class WactCompiler
   function parseTemplate($source_file_path, $root_node)
   {
     $parser = new WactSourceFileParser($this->tree_builder,
-                                       $this->_createNodeBuilder(),
-                                       $this->config,
                                        $this->template_locator,
                                        $this->tag_dictionary);
 
     $parser->parse($source_file_path, $root_node);
-  }
-
-  /**
-  * @return WactNodeBuilder
-  */
-  protected function _createNodeBuilder()
-  {
-    $node_builder = new WactNodeBuilder($this->tree_builder,
-                                        $this->property_dictionary,
-                                        $this->filter_dictionary);
-    return $node_builder;
   }
 
   /**

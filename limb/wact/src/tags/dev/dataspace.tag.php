@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: dataspace.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: dataspace.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
 /**
- * @version $Id: dataspace.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version $Id: dataspace.tag.php 5873 2007-05-12 17:17:45Z serega $
  */
 
 /**
@@ -19,13 +19,14 @@
  * @tag dev:DATASPACE
  * @forbid_end_tag
  */
-class WactDevDataSpaceTag extends WactCompilerTag {
+class WactDevDataSpaceTag extends WactCompilerTag
+{
   /**
    * @param WactCodeWriter
-   * @return void
    */
-  function generateContents($code_writer) {
-    parent::preGenerate($code_writer);
+  function generateChildren($code_writer)
+  {
+    parent::generateChildren($code_writer);
     if ( NULL !== ( $context = $this->getAttribute('context') ) ) {
       $contexts = array('root','parent','current');
       if ( !in_array($context,$contexts) ) {

@@ -1,5 +1,14 @@
 <?php
-require_once 'limb/wact/src/compiler/expression/node/expression.inc.php';
+/**
+ * Limb Web Application Framework
+ *
+ * @link http://limb-project.com
+ *
+ * @copyright  Copyright &copy; 2004-2007 BIT
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
+ * @version    $Id$
+ * @package    wact
+ */
 
 /**
 * A property representing a constant value.
@@ -39,7 +48,7 @@ class WactConstantExpressionNode extends WactTemplateExpressionNode
   */
   function generateExpression($code)
   {
-    $code->writePHPLiteral($this->value);
+    $code->writePHP(var_export($this->value, TRUE));
   }
 }
 

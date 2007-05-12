@@ -6,12 +6,12 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpression.class.php 5750 2007-04-23 13:56:35Z serega $
+ * @version    $Id: WactDataBindingExpressionNode.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
 
-class WactDataBindingExpression
+class WactDataBindingExpressionNode
 {
   protected $context;
   protected $datasource_context;
@@ -26,6 +26,7 @@ class WactDataBindingExpression
   protected $expression_analyzed = FALSE;
 
   protected $property;
+  protected $php_variable = false;
 
   function __construct($expression, $context_node, $datasource_context = null)
   {
@@ -45,14 +46,13 @@ class WactDataBindingExpression
 
     $this->_findRealContext();
 
-    if(!$this->datasource_context)
+    if(!$this->datasource_context && !$this->php_variable)
       $this->context->raiseCompilerError('Expression datasource context not found', array('expression' => $this->original_expression));
 
     $this->_extractPathToTargetDatasource();
 
     $this->_extractTargetFieldName();
 
-    /* pre-defined properties will never be found inside a child datasource context */
     if (is_object($this->datasource_context))
     {
       $this->property = $this->datasource_context->getProperty($this->field_name);
@@ -75,6 +75,15 @@ class WactDataBindingExpression
     do
     {
       $modifier = $this->processed_expression{0};
+      // local PHP variable
+      if ($modifier == "$")
+      {
+        $this->datasource_context = null;
+        $this->php_variable = true;
+        $this->processed_expression = substr($this->processed_expression, 1);
+        continue;
+      }
+
       // root context
       if ($modifier == "#")
       {
@@ -155,6 +164,9 @@ class WactDataBindingExpression
   {
     $this->analyzeExpression();
 
+    if($this->php_variable)
+      return false;
+
     if (is_null($this->datasource_context))
       return TRUE;
 
@@ -199,16 +211,23 @@ class WactDataBindingExpression
 
     $this->datasource_ref_var = $code_writer->getTempVarRef();
 
-    $code_writer->writePHP($this->datasource_ref_var . '= WactTemplate :: makeObject(' . $this->datasource_context->getDataSource()->getComponentRefCode() . ',');
-    $code_writer->writePHPLIteral($key);
-    $code_writer->writePHP(');');
+    if($this->php_variable)
+    {
+      $code_writer->writePHP($this->datasource_ref_var . '= WactTemplate :: makeObject($' . $key . ');');
+    }
+    else
+    {
+      $code_writer->writePHP($this->datasource_ref_var . '= WactTemplate :: makeObject(' . $this->datasource_context->getDataSource()->getComponentRefCode() . '->get(');
+      $code_writer->writePHPLIteral($key);
+      $code_writer->writePHP('));');
+    }
 
     foreach ($this->path_to_target_datasource as $key)
     {
       $datasource_ref_var = $code_writer->getTempVarRef();
-      $code_writer->writePHP($datasource_ref_var . '= WactTemplate :: makeObject(' . $this->datasource_ref_var . ',');
+      $code_writer->writePHP($datasource_ref_var . '= WactTemplate :: makeObject(' . $this->datasource_ref_var . '->get(');
       $code_writer->writePHPLIteral($key);
-      $code_writer->writePHP(');');
+      $code_writer->writePHP('));');
       $this->datasource_ref_var = $datasource_ref_var;
     }
   }
@@ -225,6 +244,22 @@ class WactDataBindingExpression
     {
       $this->property->generateExpression($code_writer);
       return;
+    }
+
+    if($this->php_variable)
+    {
+      if($this->datasource_ref_var)
+      {
+        $code_writer->writePHP($this->datasource_ref_var . '->get(');
+        $code_writer->writePHPLiteral($this->field_name);
+        $code_writer->writePHP(')');
+        return;
+      }
+      else
+      {
+        $code_writer->writePHP('$' . $this->field_name);
+        return;
+      }
     }
 
     if (isset($this->datasource_ref_var))

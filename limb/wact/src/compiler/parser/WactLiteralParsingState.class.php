@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactLiteralParsingState.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactLiteralParsingState.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
-require_once('limb/wact/src/compiler/parser/WactParserListener.interface.php');
+require_once('limb/wact/src/compiler/parser/WactHTMLParserListener.interface.php');
 require_once('limb/wact/src/compiler/parser/WactBaseParsingState.class.php');
 
-class WactLiteralParsingState extends WactBaseParsingState  implements WactParserListener
+class WactLiteralParsingState extends WactBaseParsingState  implements WactHTMLParserListener
 {
   protected $literal_tag;
 
@@ -27,67 +27,39 @@ class WactLiteralParsingState extends WactBaseParsingState  implements WactParse
     return $this->literal_tag;
   }
 
-  function startElement($tag, $attrs)
+  function startTag($tag, $attrs, $location)
   {
     $this->tree_builder->addWactTextNode('<' . $tag . $this->getAttributeString($attrs) . '>');
   }
 
-  function endElement($tag)
+  function endTag($tag, $location)
   {
     if ($this->literal_tag == $tag)
-    {
-      $location = $this->locator->getCurrentLocation();
-      $this->tree_builder->popExpectedTag($tag, $location, PARSER_TAG_IS_PLAIN);
-      $this->tree_builder->popNode();
-      $this->parser->changeToComponentParsingState();
-    }
+      $this->_closeLiteralState($location);
     else
       $this->tree_builder->addWactTextNode('</' . $tag . '>');
   }
 
-  function emptyElement($tag, $attrs)
+  protected function _closeLiteralState($location)
+  {
+    $this->tree_builder->popExpectedWactTag($this->literal_tag, $location);
+    $this->tree_builder->popNode();
+    $this->parser->changeToComponentParsingState();
+  }
+
+  function emptyTag($tag, $attrs, $location)
   {
     $this->tree_builder->addWactTextNode('<' . $tag . $this->getAttributeString($attrs) . ' />');
   }
 
-  function characters($text)
+  function characters($text, $location)
   {
     $this->tree_builder->addWactTextNode($text);
   }
 
-  function processingInstruction($target, $instruction)
+  function instruction($target, $instruction, $location)
   {
     $this->tree_builder->addWactTextNode('<?' . $target . ' ' . $instruction . '?>');
-  }
-
-  function jasp($text)
-  {
-    $this->tree_builder->addWactTextNode('<%' .  $text . '%>');
-  }
-
-  function escape($text)
-  {
-    $this->tree_builder->addWactTextNode('<!' . $text . '>');
-  }
-
-  function comment($text)
-  {
-    $this->tree_builder->addWactTextNode('<!--' . $text . '-->');
-  }
-
-  function doctype($text)
-  {
-    $this->tree_builder->addWactTextNode('<!' . $text . '>');
-  }
-
-  function unexpectedEOF($text)
-  {
-    $this->tree_builder->addWactTextNode($text);
-  }
-
-  function invalidEntitySyntax($text)
-  {
-    $this->tree_builder->addWactTextNode($text);
   }
 }
 ?>

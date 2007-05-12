@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form_errors.tag.php 5223 2007-03-13 13:31:39Z serega $
+ * @version    $Id: form_errors.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -18,7 +18,7 @@ class WactFormErrorsTag extends WactCompilerTag
 {
   protected $list_tag;
 
-  function preGenerate($code)
+  function generateBeforeContent($code)
   {
     if($target = $this->getAttribute('target'))
     {
@@ -32,11 +32,6 @@ class WactFormErrorsTag extends WactCompilerTag
     if(!$this->list_tag)
       $this->raiseCompilerError('Could not find child list tag');
 
-    parent::preGenerate($code);
-  }
-
-  function generateContents($code)
-  {
     $for = '';
     if($this->hasAttribute('for'))
       $for = $this->getAttribute('for');
@@ -45,8 +40,6 @@ class WactFormErrorsTag extends WactCompilerTag
 
     $code->writePHP($this->list_tag->getComponentRefCode() . '->registerDataSet(' .
                     $form->getComponentRefCode() . '->getErrorsDataSet("' . $for. '"));');
-
-    parent :: generateContents($code);
   }
 }
 ?>

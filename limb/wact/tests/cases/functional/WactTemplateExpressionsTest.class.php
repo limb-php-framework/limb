@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTemplateExpressionsTest.class.php 5233 2007-03-14 08:12:21Z serega $
+ * @version    $Id: WactTemplateExpressionsTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -115,6 +115,16 @@ class WactTemplateExpressionsTest extends WactTemplateTestCase
     $page->set('Data', array('first', 'second'));
     $output = $page->capture();
     $this->assertEqual($output, 'first');
+  }
+
+  function testPathWithLocalModifier()
+  {
+    $template = '<? $var1 = array("subvar" => "ivan"); ?>{$$var1.subvar|uppercase}';
+
+    $this->registerTestingTemplate('/template/expression/path_with_local_modifier.html', $template);
+    $page = $this->initTemplate('/template/expression/path_with_local_modifier.html');
+    $output = $page->capture();
+    $this->assertEqual($output, 'IVAN');
   }
 }
 ?>

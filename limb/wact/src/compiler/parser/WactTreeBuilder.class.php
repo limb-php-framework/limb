@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilder.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactTreeBuilder.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -24,69 +24,77 @@
 * or addWactTextNode().
 *
 */
+
+define ('WACT_EXPECTED_WACT_TAG', 	1);
+define ('WACT_EXPECTED_PLAIN_TAG',	2);
+
 class WactTreeBuilder
 {
-    /**
-    * @var WactCompiler
-    */
-    protected $compiler;
+  /**
+  * @var WactCompiler
+  */
+  protected $compiler;
 
-    /**
-    * Current node
-    * @var WactCompileTreeNode
-    * @access private
-    */
-    var $component;
+  /**
+  * Current node
+  * @var WactCompileTreeNode
+  * @access private
+  */
+  var $component;
 
-    /**
-    * Stack of tags pushed onto the tree builder, may also contain components
+  protected $property_dictionary;
+  protected $tag_dictionary;
+  protected $filter_dictionary;
+
+  /**
+  * Stack of tags pushed onto the tree builder, may also contain components
   * @see pushExpectedTag
   * @see popExpectedTag
   * @see pushCursor
-    * @var array of array($tagname, $info) or array($Component)
-    * @access private
-    */
-    var $expectedTags = array();
+  * @access private
+  */
+  protected $expected_tags = array();
 
-    function __construct($compiler)
-    {
-      $this->compiler = $compiler;
-    }
+  function __construct($compiler, $tag_dictionary, $property_dictionary, $filter_dictionary)
+  {
+    $this->compiler = $compiler;
+    $this->tag_dictionary = $tag_dictionary;
+    $this->property_dictionary = $property_dictionary;
+    $this->filter_dictionary = $filter_dictionary;
+  }
 
-    /**
-    * Returns the current component
-    * @return WactCompileTreeNode
-    * @access public
-    */
-    function getCursor()
-    {
-      return $this->component;
-    }
+  /**
+  * Returns the current component
+  * @return WactCompileTreeNode
+  * @return void
+  */
+  function getCursor()
+  {
+    return $this->cursor_node;
+  }
 
   /**
   * Sets the cursor (the current working component) of the tree builder
   * @param WactCompileTreeNode
   * @return void
-  * @access public
   */
-    function setCursor($component)
-    {
-      $this->component = $component;
-    }
+  function setCursor($node)
+  {
+    $this->cursor_node = $node;
+  }
 
   /**
   * Begins a component's build phase in relation to the component tree.
   * Adds a component to the tree, then makes that component the 'cursor'.
   * @param WactCompileTreeNode
   * @return void
-  * @access public
   */
-  function pushNode($new_component)
+  function pushNode($new_node)
   {
-    $this->component->addChild($new_component);
-    $this->setCursor($new_component);
+    $this->cursor_node->addChild($new_node);
+    $this->setCursor($new_node);
 
-    return $this->component->preParse($this->compiler);
+    return $this->cursor_node->preParse($this->compiler);
   }
 
   /**
@@ -94,10 +102,10 @@ class WactTreeBuilder
   * This begins and finishes the component's composition
   * @param WactCompileTreeNode
   */
-  function addNode($childComponent)
+  function addNode($child_node)
   {
-    $childComponent->preParse($this->compiler);
-    $this->component->addChild($childComponent);
+    $this->cursor_node->addChild($child_node);
+    $child_node->preParse($this->compiler);
   }
 
   function addWactTextNode($text)
@@ -112,111 +120,207 @@ class WactTreeBuilder
   */
   function popNode()
   {
-    $this->component->checkChildrenServerIds();
-    $this->setCursor($this->component->parent);
+    $this->cursor_node->checkChildrenServerIds();
+    $this->setCursor($this->cursor_node->parent);
   }
 
   /**
-  * Expects the passed tag.  Optionally $info may be passed which is info
-  * about that tag.  The parser state that calls TreeBuilder may use this info
-  * to differentiate, say, plain vs. component tags.
   * @param string tag name
   * @param mixed info about the tag
+  * @param boolean if the tag is one of the wact tags (of having wact:id or runat='server' attributes)
   * @return void
-  * @access public
   */
-  function pushExpectedTag($tag, $info = null, $location = null)
+  function _pushExpectedTag($tag, $location, $tag_kind)
   {
-    array_push($this->expectedTags, array($tag, $info, $location));
+    array_push($this->expected_tags, array($tag, $location, $tag_kind));
+  }
+
+  function pushExpectedPlainTag($tag, $location)
+  {
+    $this->_pushExpectedTag($tag, $location, WACT_EXPECTED_PLAIN_TAG);
+  }
+
+  function pushExpectedWactTag($tag, $location)
+  {
+    $this->_pushExpectedTag($tag, $location, WACT_EXPECTED_WACT_TAG);
   }
 
   /**
-  * Sets the cursor to a new position, and pushes the old cursor onto the
-  * expected tags stack.
-  * @see popExpectedTag
+  * Sets the cursor to a new position, and pushes the old cursor onto the expected tags stack.
   * @param WactCompileTreeNode
   * @return void
-  * @access public
   */
-  function pushCursor($newPosition, $location)
+  function pushCursor($new_position, $location)
   {
-    // use of array() is to preserve reference from array_pop()
-    array_push($this->expectedTags, array($this->component, PARSER_TAG_IS_COMPONENT, $location));
-    $this->setCursor($newPosition);
+    $this->pushExpectedWactTag($this->cursor_node, $location);
+    $this->setCursor($new_position);
   }
 
   /**
-  * Tests the passed tag against what is expected.  Returns any info that
-  * was kept about the expected tag.
-  * If the item in the tag stack is a component, then the cursor is
-  * restored to that, and popExpectedTag is called again.
+  * Tests the passed tag against what is expected.
+  * Returns info if expected tag was a wact tag or a plain tag
   */
-  function popExpectedTag($tag, $location, $pop_tag_info)
+  protected function _popExpectedTag($pop_tag, $pop_tag_location, $pop_tag_kind)
   {
-    if(!$expectedTagItem = array_pop($this->expectedTags))
+    if(!$expected_tag_info = array_pop($this->expected_tags))
     {
-      throw new WactException('Lonely closing tag', array('tag' => $tag,
-                                                          'file' => $location->getFile(),
-                                                          'line' => $location->getLine()));
+      throw new WactException('Lonely closing tag', array('tag' => $pop_tag,
+                                                          'file' => $pop_tag_location->getFile(),
+                                                          'line' => $pop_tag_location->getLine()));
     }
 
-    // if we have a component on the stack, restore the cursor to that, and
+    // if we have a cursor on the stack, restore the current cursor to that, and
     // pop the stack again
-    if (is_object($expectedTagItem[0]))
+    if (is_object($expected_tag_info[0]))
     {
-       $this->component =& $expectedTagItem[0];
-       return $this->popExpectedTag($tag, $location, $pop_tag_info);
+       $this->cursor_node =& $expected_tag_info[0];
+       return $this->_popExpectedTag($pop_tag, $pop_tag_location, $pop_tag_kind);
     }
 
-    $expectedTag = $expectedTagItem[0];
-    $expectedInfo = $expectedTagItem[1];
-    $expectedLocation = $expectedTagItem[2];
+    $expected_tag = $expected_tag_info[0];
+    $expected_tag_location = $expected_tag_info[1];
+    $expected_tag_kind = $expected_tag_info[2];
 
-    if(strcasecmp($expectedTag, $tag) === 0)
-      return $expectedInfo;
+    // if the tag names are equal we dont care about if they are both wact tags or not
+    if(strcasecmp($expected_tag, $pop_tag) === 0)
+      return $expected_tag_kind;
 
-    if(($expectedInfo == PARSER_TAG_IS_PLAIN))
-      return $this->popExpectedTag($tag, $location, $pop_tag_info);
-    elseif(($expectedInfo == PARSER_TAG_IS_COMPONENT) && ($pop_tag_info == PARSER_TAG_IS_PLAIN))
+    // ignore plain html tag since we dont need to balance them
+    if($expected_tag_kind == WACT_EXPECTED_PLAIN_TAG)
+      return $this->_popExpectedTag($pop_tag, $pop_tag_location, $pop_tag_kind);
+
+    // we stops at the nearest wact tag if we poping up a plain html tag
+    if(($expected_tag_kind == WACT_EXPECTED_WACT_TAG) && ($pop_tag_kind == WACT_EXPECTED_PLAIN_TAG))
     {
-      $this->pushExpectedTag($expectedTag, $expectedInfo, $expectedLocation);
-      return $pop_tag_info;
+      // restore stack
+      $this->pushExpectedWactTag($expected_tag, $expected_tag_location);
+      return WACT_EXPECTED_PLAIN_TAG;
     }
-    else
-      throw new WactException('Unexpected closing tag',
-                              array('file' => $location->getFile(),
-                                    'tag' => $tag,
-                                    'line' => $location->getLine(),
-                                    'ExpectTag' => $expectedTag,
-                                    'ExpectTagFile' => $expectedLocation->getFile(),
-                                    'ExpectedTagLine' => $expectedLocation->getLine()));
+
+    // if we expected a wact tag and poping up a wact tag also and the tags names are different
+    //  => template is not balanced.
+    throw new WactException('Unexpected closing tag',
+                            array('file' => $pop_tag_location->getFile(),
+                                  'tag' => $pop_tag,
+                                  'line' => $pop_tag_location->getLine(),
+                                  'ExpectTag' => $expected_tag,
+                                  'ExpectTagFile' => $expected_tag_location->getFile(),
+                                  'ExpectedTagLine' => $expected_tag_location->getLine()));
   }
 
-  /**
-  * Return the size of the expected tags stack
-  */
-  function getExpectedTagCount() {
-    return count($this->expectedTags);
+  function popExpectedPlainTag($pop_tag, $pop_tag_location)
+  {
+    return $this->_popExpectedTag($pop_tag, $pop_tag_location, WACT_EXPECTED_PLAIN_TAG);
   }
 
-  /**
-  * Returns the current expected tag
-  */
+  function popExpectedWactTag($pop_tag, $pop_tag_location)
+  {
+    return $this->_popExpectedTag($pop_tag, $pop_tag_location, WACT_EXPECTED_WACT_TAG);
+  }
+
+  function getExpectedTagCount()
+  {
+    return count($this->expected_tags);
+  }
+
   function getExpectedTag()
   {
     // Returns the tagname of the first non-component item on the stack
-    $item = end($this->expectedTags);
+    $item = end($this->expected_tags);
     while ($item && !is_string($item[0])) {
-      $item = prev($this->expectedTags);
+      $item = prev($this->expected_tags);
     }
     return $item ? $item[0] : false;
   }
 
   function getExpectedTagLocation()
   {
-    $item = end($this->expectedTags);
-    return $item[2];
+    $item = end($this->expected_tags);
+    return $item[1];
   }
 
+  function addProcessingInstruction($target, $instruction)
+  {
+    // Pass through any PI's except PHP PI's
+    $php_targets = array('php','PHP','=','');
+    if(in_array($target, $php_targets))
+    {
+      $this->addNode(new WactPHPNode(null, $instruction));
+    }
+    else
+    {
+      $php = 'echo "<?'.$target.' '; // Whitespace assumption
+      $php.= str_replace('"','\"',$instruction);
+      $php.= '?>\n";'; // Newline assumption
+      $this->addNode(new WactPHPNode(null, $php));
+    }
+  }
+
+  /**
+  * Builds a component, adding attributes
+  * @param WactTagInfo
+  * @param string XML tag name of component
+  * @param array attributes for tag
+  * @param boolean whether the tag has contents
+  * @return WactCompileTreeNode
+  */
+  function buildTagNode($tag_info, $tag, $location, $attrs, $is_empty = false, $has_closing_tag = true)
+  {
+    $tag_node = $this->_createTagNode($tag_info, $tag, $location);
+    $this->_registerPropertiesInTagNode($tag_node);
+    $tag_node->emptyClosedTag = $is_empty;
+    $tag_node->hasClosingTag = $has_closing_tag;
+    $this->_addAttributesToTagNode($tag_node, $location, $attrs);
+    return $tag_node;
+  }
+
+  protected function _createTagNode($tag_info, $tag, $location)
+  {
+    $class = $tag_info->TagClass;
+    $tag_node = new $class($location, $tag, $tag_info);
+
+    return $tag_node;
+  }
+
+  protected function _registerPropertiesInTagNode($tag_node)
+  {
+    $properties = $this->property_dictionary->getPropertyList($tag_node);
+    foreach ($properties as $property)
+    {
+      $property->load();
+      $property_class = $property->PropertyClass;
+      $tag_node->registerProperty($property->Property, new $property_class($tag_node));
+    }
+  }
+
+  protected function _addAttributesToTagNode($tag_node, $location, $attrs)
+  {
+    foreach ($attrs as $name => $value)
+    {
+      if(($value === NULL) && WACT_STRICT_MODE)
+      {
+        throw new WactException('Attribute should have a value',
+                              array('file' => $location->getFile(),
+                                    'line' => $location->getLine(),
+                                    'tag' => $tag_node->getTag(),
+                                    'attribute' => $name));
+      }
+
+      $attribute = new WactAttribute($name);
+      $listener = new WactAttributeBlockAnalizerListener($attribute, $tag_node, $this->filter_dictionary);
+
+      $analizer = new WactBlockAnalizer();
+      $analizer->parse($value, $listener);
+
+      $tag_node->addChildAttribute($attribute);
+    }
+  }
+
+  function addContent($text, $location)
+  {
+    $listener = new WactContentBlockAnalizerListener($this, $location, $this->filter_dictionary);
+    $analizer = new WactBlockAnalizer();
+    $analizer->parse($text, $listener);
+  }
 }
 ?>

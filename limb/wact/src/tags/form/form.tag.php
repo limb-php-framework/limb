@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: form.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -51,16 +51,14 @@ class WactFormTag extends WactRuntimeDatasourceComponentHTMLTag
     return $this->ServerId;
   }
 
-  function preGenerate($code_writer)
+  function generateBeforeOpenTag($code_writer)
   {
-    parent::preGenerate($code_writer);
     $code_writer->writePHP($this->getComponentRefCode() . '->prepare();');
   }
 
-  function postGenerate($code_writer)
+  function generateBeforeCloseTag($code_writer)
   {
     $code_writer->writePHP($this->getComponentRefCode() . '->renderState();');
-    parent::postGenerate($code_writer);
   }
 }
 ?>

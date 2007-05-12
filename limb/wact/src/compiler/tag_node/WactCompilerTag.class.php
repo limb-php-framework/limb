@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompilerTag.class.php 5203 2007-03-07 08:58:21Z serega $
+ * @version    $Id: WactCompilerTag.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -98,8 +98,9 @@ class WactCompilerTag extends WactCompileTreeNode
   */
   function setAttribute($attrib, $value)
   {
-    $Component = new WactAttributeNode($attrib, $value);
-    $this->addChildAttribute($Component);
+    $attribute = new WactAttribute($attrib);
+    $attribute->addFragment(new WactAttributeLiteralFragment($value));
+    $this->addChildAttribute($attribute);
   }
 
   /**
@@ -175,24 +176,61 @@ class WactCompilerTag extends WactCompileTreeNode
     return $attributes;
   }
 
-  function generateAttributeList($code_writer_writer, $suppress = array())
+  function generateAttributeList($code_writer, $suppress = array())
   {
     $suppress = array_map('strtolower', $suppress);
     foreach(array_keys($this->attributeNodes) as $key)
     {
       if (!in_array($key, $suppress))
-        $this->attributeNodes[$key]->generate($code_writer_writer);
+        $this->attributeNodes[$key]->generate($code_writer);
     }
   }
 
-  function generateDynamicAttributeList($code_writer_writer, $suppress = array())
+  function generateDynamicAttributeList($code_writer, $suppress = array())
   {
     $suppress = array_map('strtolower', $suppress);
     foreach( array_keys($this->attributeNodes) as $key)
     {
       if (!in_array($key, $suppress) && !$this->attributeNodes[$key]->isConstant())
-        $this->attributeNodes[$key]->generate($code_writer_writer);
+        $this->attributeNodes[$key]->generate($code_writer);
     }
+  }
+
+  // children should never override this method
+  function generateContent($code_writer)
+  {
+    foreach( array_keys($this->attributeNodes) as $key)
+    {
+      if (!$this->attributeNodes[$key]->isConstant())
+        $this->attributeNodes[$key]->generatePreStatement($code_writer);
+    }
+
+    $this->generateBeforeContent($code_writer);
+
+    $this->generateTagContent($code_writer);
+
+    $this->generateAfterContent($code_writer);
+
+    foreach( array_keys($this->attributeNodes) as $key)
+    {
+      if (!$this->attributeNodes[$key]->isConstant())
+        $this->attributeNodes[$key]->generatePostStatement($code_writer);
+    }
+  }
+
+  // children can override this method if they need to generate some code around content in simple cases
+  // but it's recommended to override generateBeforeContent() and generateAfterContent() instead.
+  function generateTagContent($code_writer)
+  {
+    parent :: generateContent($code_writer);
+  }
+
+  function generateBeforeContent($code_writer)
+  {
+  }
+
+  function generateAfterContent($code_writer)
+  {
   }
 
   function getServerId()

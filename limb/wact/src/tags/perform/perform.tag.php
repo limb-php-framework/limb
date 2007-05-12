@@ -18,10 +18,8 @@ class WactPerformTag extends WactRuntimeComponentTag
   protected $runtimeComponentName = 'WactPerformComponent';
   protected $runtimeIncludeFile = 'limb/wact/src/components/perform/WactPerformComponent.class.php';
 
-  function generateContents($code)
+  function generateAfterContent($code)
   {
-    parent :: generateContents($code);
-
     $code->writePhp($this->getComponentRefCode() . '->setCommand("' . $this->getAttribute('command') .'");' . "\n");
 
     if($this->hasAttribute('include'))

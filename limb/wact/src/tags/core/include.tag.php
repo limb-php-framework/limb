@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: include.tag.php 5342 2007-03-25 16:36:43Z serega $
+ * @version    $Id: include.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -54,7 +54,7 @@ class WactCoreIncludeTag extends WactCompilerTag
     }
   }
 
-  function preGenerate($code_writer)
+  function generateBeforeContent($code_writer)
   {
     $ref = $this->_getProperDatasourceRefCode();
 
@@ -64,16 +64,10 @@ class WactCoreIncludeTag extends WactCompilerTag
       if(in_array($name, $this->skip_vars))
         continue;
 
-      $this->attributeNodes[$key]->generatePreStatement($code_writer);
-
       $code_writer->writePHP($ref . '->set("' . $name . '", ');
       $this->attributeNodes[$key]->generateExpression($code_writer);
       $code_writer->writePHP(');');
-
-      $this->attributeNodes[$key]->generatePostStatement($code_writer);
     }
-
-    parent :: preGenerate($code_writer);
   }
 
   protected function _getProperDatasourceRefCode()

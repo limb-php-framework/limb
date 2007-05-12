@@ -17,7 +17,7 @@
 */
 class WactIteratorDecorateTag extends WactCompilerTag
 {
-  function preGenerate($code)
+  function generateTagContent($code)
   {
     $include_path = $this->getAttribute('include');
 

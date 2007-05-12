@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactBaseParsingState.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactBaseParsingState.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -21,11 +21,6 @@ abstract class WactBaseParsingState
   protected $parser;
 
   /**
-  * Used to locate position within source template
-  */
-  protected $locator;
-
-  /**
   * @var WactTreeBuilder
   */
   protected $tree_builder;
@@ -34,11 +29,6 @@ abstract class WactBaseParsingState
   {
     $this->parser = $parser;
     $this->tree_builder = $tree_builder;
-  }
-
-  function setDocumentLocator($locator)
-  {
-    $this->locator = $locator;
   }
 
   function getAttributeString($attrs)
@@ -59,19 +49,6 @@ abstract class WactBaseParsingState
       }
     }
     return $attrib_str;
-  }
-
-  protected function _addTextNode($text)
-  {
-    $location = null; // we never care where text nodes are
-    $this->tree_builder->addNode(new WactTextNode($location, $text));
-  }
-
-  function invalidAttributeSyntax()
-  {
-    throw new WactException('Attribute syntax error',
-                            array('file' => $this->locator->getPublicId(),
-                                  'line' => $this->locator->getLineNumber()));
   }
 }
 ?>

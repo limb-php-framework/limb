@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: section.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: section.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -17,7 +17,7 @@
 */
 class WactPagerSectionTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateTagContent($code)
   {
     $parent = $this->findParentByClass('WactPagerNavigatorTag');
     $code->writePhp('if (!' . $parent->getComponentRefCode() . '->isDisplayedSection()) {');
@@ -26,7 +26,7 @@ class WactPagerSectionTag extends WactCompilerTag
     $code->writePhp($this->getDataSource()->getComponentRefCode() . '["number_begin"] = ' . $parent->getComponentRefCode() . '->getSectionBeginPage();' . "\n");
     $code->writePhp($this->getDataSource()->getComponentRefCode() . '["number_end"] = ' . $parent->getComponentRefCode() . '->getSectionEndPage();' . "\n");
 
-    parent :: generateContents($code);
+    parent :: generateTagContent($code);
 
     $code->writePhp('}');
   }

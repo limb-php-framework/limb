@@ -14,7 +14,7 @@
 */
 class WactSiteBranchSelectorTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateChildren($code)
   {
     $is_first = true;
     $default = null;

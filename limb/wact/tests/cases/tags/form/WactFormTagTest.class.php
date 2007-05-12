@@ -118,11 +118,11 @@ class WactFormTagTest extends WactTemplateTestCase
 
     $template = '<form id="testForm" runat="server">
                     <label id="Label1" for="Input1" class="Normal" errorclass="Error" runat="server">A label</label>
-                    <input id="Input1" type="text" runat="server"/>
+                    <input id="Input1" type="text" runat="server">
                     <label id="Label2" for="Input2" class="Normal" errorclass="Error" runat="server">A label</label>
-                    <input id="Input2" type="text" runat="server"/>
+                    <input id="Input2" type="text" runat="server">
                     <label id="Label3" for="Input3" class="Normal" errorclass="Error" runat="server">A label</label>
-                    <input name="Input3" type="text" runat="server"/>
+                    <input name="Input3" type="text" runat="server">
                 </form>';
 
     $this->registerTestingTemplate('/components/form/seterrors.html', $template);
@@ -274,14 +274,14 @@ class WactFormTagTest extends WactTemplateTestCase
 
   function testKnownChildrenReuseRunatTrue()
   {
-    $template = '<form id="test" runat="server" children_reuse_runat="true"><input id="submit" type="submit" name="submit" value="hey"/></form>';
+    $template = '<form id="test" runat="server" children_reuse_runat="true"><input id="submit" type="submit" name="submit" value="hey"></form>';
     $this->registerTestingTemplate('/tags/form/knownchildrenchildren_reuse_runattrue.html', $template);
 
     $page = $this->initTemplate('/tags/form/knownchildrenchildren_reuse_runattrue.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
-    $this->assertEqual($output, '<form id="test"><input id="submit" type="submit" name="submit" value="hey" /></form>');
+    $this->assertEqual($output, '<form id="test"><input id="submit" type="submit" name="submit" value="hey"></form>');
   }
 
   function testKnownChildrenReuseRunatFalse()
@@ -408,9 +408,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testComplexDynamicAttributes()
   {
     $template = '<form id="test" action="{$^my.action}" runat="server"></form>';
-    $this->registerTestingTemplate('/tags/form/complex_dymanic_attribute.html', $template);
+    $this->registerTestingTemplate('/tags/form/complex_dynamic_attribute.html', $template);
 
-    $page = $this->initTemplate('/tags/form/complex_dymanic_attribute.html');
+    $page = $this->initTemplate('/tags/form/complex_dynamic_attribute.html');
     $page->set('my', array('action' => 'my_action'));
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test" action="my_action"></form>');

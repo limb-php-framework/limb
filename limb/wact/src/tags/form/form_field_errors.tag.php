@@ -16,7 +16,7 @@
  */
 class WactFormFieldErrorsTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateBeforeContent($code)
   {
     $for = '';
     if($this->hasAttribute('for'))
@@ -29,8 +29,6 @@ class WactFormFieldErrorsTag extends WactCompilerTag
 
     $code->writePHP($list_tag->getComponentRefCode() . '->registerDataSet(' .
                     $form->getComponentRefCode() . '->getFieldErrorsDataSet("' . $for. '"));');
-
-    parent :: generateContents($code);
   }
 }
 ?>

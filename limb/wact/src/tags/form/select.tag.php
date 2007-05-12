@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.tag.php 5845 2007-05-09 08:15:57Z serega $
+ * @version    $Id: select.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -20,23 +20,8 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @restrict_self_nesting
  * @runat client
  */
-class WactSelectTag extends WactControlTag {
-
-  /**
-   * File to include at runtime
-   * @var string path to runtime component relative to WACT_ROOT
-   */
-  protected $runtimeIncludeFile;
-
-  /**
-   * Name of runtime component class
-   * @var string
-   */
-  protected $runtimeComponentName;
-
-  /**
-   * @return void
-   */
+class WactSelectTag extends WactControlTag
+{
   function prepare()
   {
     if ($this->getBoolAttribute('multiple'))
@@ -73,7 +58,7 @@ class WactSelectTag extends WactControlTag {
    * Ignore the compiler time contents and generate the contents at run time.
    * @return void
    */
-  function generateContents($code_writer)
+  function generateTagContent($code_writer)
   {
     $writer = new WactCodeWriter();
     foreach($this->getChildren() as $option_tag)
@@ -83,7 +68,7 @@ class WactSelectTag extends WactControlTag {
 
       $value = $option_tag->getAttribute('value');
       $prepend = $option_tag->getBoolAttribute('prepend');
-      $option_tag->generateContents($writer);
+      $option_tag->generateNow($writer);
       $text = addslashes($writer->getCode());
       $writer->reset();
       if($prepend)

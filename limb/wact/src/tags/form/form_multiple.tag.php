@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form_multiple.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: form_multiple.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -32,6 +32,8 @@ class WactFormMultipleTag extends WactFormTag
       return;
 
     $this->_renameChildren($form_name, $this->children);
+
+    $this->tag = 'form';
   }
 
   function _renameChildren($form_name, $children)
@@ -54,11 +56,5 @@ class WactFormMultipleTag extends WactFormTag
     return preg_replace('/^([^\[\]]+)(\[.*\])*$/', "[\\1]\\2", $name);
   }
 
-  function preGenerate($code)
-  {
-    $this->tag = 'form';
-
-    parent :: preGenerate($code);
-  }
 }
 ?>

@@ -16,20 +16,16 @@
 */
 class WactFetchParametersTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateTagContent($code)
   {
     foreach(array_keys($this->attributeNodes) as $key)
     {
       $name = $this->attributeNodes[$key]->getName();
 
-      $this->attributeNodes[$key]->generatePreStatement($code);
-
       $code->writePhp($this->parent->getComponentRefCode() .
                       '->setAdditionalParam("' . $name . '",');
       $this->attributeNodes[$key]->generateExpression($code);
       $code->writePhp(');');
-
-      $this->attributeNodes[$key]->generatePostStatement($code);
     }
   }
 }

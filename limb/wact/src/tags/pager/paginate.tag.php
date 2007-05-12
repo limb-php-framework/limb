@@ -18,7 +18,7 @@
  */
 class WactPaginateTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateTagContent($code)
   {
     if(!$list = $this->parent->findUpChild($this->getAttribute('list')))
       $this->raiseCompilerError('List tag is not found', array('id' => $this->getAttribute('list')));

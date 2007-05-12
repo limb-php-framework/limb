@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: input.tag.php 5689 2007-04-19 11:23:20Z serega $
+ * @version    $Id: input.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -31,9 +31,11 @@ class WactInputTag extends WactControlTag
    * Input tag
    * @return void
    */
-  function prepare() {
+  function prepare()
+  {
     $type = strtolower($this->getAttribute('type'));
-    switch ($type) {
+    switch ($type)
+    {
       case 'text':
         $this->runtimeComponentName = 'WactInputComponent';
         break;

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: repeat.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: repeat.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -16,7 +16,7 @@
 */
 class WactCoreRepeatTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateTagContent($code)
   {
     $counter = '$' . $code->getTempVariable();
 
@@ -37,7 +37,7 @@ class WactCoreRepeatTag extends WactCompilerTag
       $code->writePhp('for(' . $counter . '=0;' . $counter . ' < ' . $value . '; ' . $counter . '++){');
     }
 
-    parent :: generateContents($code);
+    parent :: generateTagContent($code);
 
     $code->writePhp('}');
   }

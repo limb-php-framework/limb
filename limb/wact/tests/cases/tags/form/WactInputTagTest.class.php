@@ -77,12 +77,12 @@ class WactInputTagTest extends WactTemplateTestCase
   function testUseGivenValueRegardlessOfFormValue()
   {
     $template ='<form id="testForm" runat="server">'.
-               '<input type="text" id="test" name="myInput" runat="server" given_value="{$#bar}" />'.
+               '<input type="text" id="test" name="myInput" runat="server" given_value="{$#bar.var1}" />'.
                '</form>';
     $this->registerTestingTemplate('/components/form/input_tag/use_given_value.html', $template);
 
     $page = $this->initTemplate('/components/form/input_tag/use_given_value.html');
-    $page->set('bar', 'other_value');
+    $page->set('bar', array('var1' => 'other_value'));
 
     $form = $page->getChild('testForm');
     $form->registerDataSource(array('myInput' => 'foo'));

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompileTreeNode.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactCompileTreeNode.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -310,23 +310,16 @@ class WactCompileTreeNode
       $this->children[$key]->generateConstructor($code_writer);
   }
 
-  function generateContents($code_writer)
-  {
-    foreach( array_keys($this->children) as $key)
-      $this->children[$key]->generate($code_writer);
-  }
-
-  function preGenerate($code_writer)
+  function generate($code_writer)
   {
     foreach( array_keys($this->properties) as $key)
     {
       if ($this->properties[$key]->isActive())
         $this->properties[$key]->generateScopeEntry($code_writer);
     }
-  }
 
-  function postGenerate($code_writer)
-  {
+    $this->generateContent($code_writer);
+
     foreach(array_keys($this->properties) as $key)
     {
       if ($this->properties[$key]->isActive())
@@ -334,11 +327,15 @@ class WactCompileTreeNode
     }
   }
 
-  function generate($code_writer)
+  function generateContent($code_writer)
   {
-    $this->preGenerate($code_writer);
-    $this->generateContents($code_writer);
-    $this->postGenerate($code_writer);
+    $this->generateChildren($code_writer);
+  }
+
+  function generateChildren($code_writer)
+  {
+    foreach( array_keys($this->children) as $key)
+      $this->children[$key]->generate($code_writer);
   }
 
   function setServerId($id)

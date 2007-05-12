@@ -6,14 +6,14 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactAttributeExpressionTest.class.php 5071 2007-02-16 09:09:35Z serega $
+ * @version    $Id: WactAttributeExpressionFragmentTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
 require_once 'limb/wact/src/compiler/templatecompiler.inc.php';
-require_once 'limb/wact/src/compiler/attribute/WactAttributeExpression.class.php';
+require_once 'limb/wact/src/compiler/attribute/WactAttributeExpressionFragment.class.php';
 
-class WactAttributeExpressionTest extends UnitTestCase
+class WactAttributeExpressionFragmentTest extends UnitTestCase
 {
   protected $filter_dictionary;
 
@@ -25,7 +25,7 @@ class WactAttributeExpressionTest extends UnitTestCase
   function testIsConstant()
   {
     $component = new WactCompilerTag(null, null, null);
-    $attribute = new WactAttributeExpression('test', '"hello"', $component, $this->filter_dictionary);
+    $attribute = new WactAttributeExpressionFragment('"hello"', $component, $this->filter_dictionary);
 
     $this->assertTrue($attribute->isConstant());
   }
@@ -33,7 +33,7 @@ class WactAttributeExpressionTest extends UnitTestCase
   function testGetValue()
   {
     $component = new WactCompilerTag(null, null, null);
-    $attribute = new WactAttributeExpression('test', '"hello"', $component, $this->filter_dictionary);
+    $attribute = new WactAttributeExpressionFragment('"hello"', $component, $this->filter_dictionary);
 
     $this->assertEqual($attribute->getValue(), 'hello');
   }
@@ -41,7 +41,7 @@ class WactAttributeExpressionTest extends UnitTestCase
   function testGenerateConstantFragment()
   {
     $component = new WactCompilerTag(null, null, null);
-    $attribute = new WactAttributeExpression('test', '"hello"', $component, $this->filter_dictionary);
+    $attribute = new WactAttributeExpressionFragment('"hello"', $component, $this->filter_dictionary);
     $code_writer = new WactCodeWriter();
 
     $attribute->generateFragment($code_writer);
@@ -54,33 +54,11 @@ class WactAttributeExpressionTest extends UnitTestCase
     $component = new WactCompilerTag(null, null, null);
     $property = new WactCompilerProperty();
     $component->registerProperty('hello', $property);
-    $attribute = new WactAttributeExpression('test', 'hello', $component, $this->filter_dictionary);
+    $attribute = new WactAttributeExpressionFragment('hello', $component, $this->filter_dictionary);
 
     $code_writer = new WactCodeWriter(null, null, null);
     $attribute->generateFragment($code_writer);
     $this->assertEqual($code_writer->renderCode(), '<?php echo htmlspecialchars(, ENT_QUOTES); ?>');
-  }
-
-  function testGenerateForConstantValue()
-  {
-    $component = new WactCompilerTag(null, null, null);
-    $attribute = new WactAttributeExpression('test', '"<hello"', $component, $this->filter_dictionary);
-
-    $code_writer = new WactCodeWriter();
-    $attribute->generate($code_writer);
-    $this->assertEqual($code_writer->renderCode(), ' test="&lt;hello"');
-  }
-
-  function testGenerateForNonConstantValue()
-  {
-    $component = new WactCompilerTag(null, null, null);
-    $property = new WactCompilerProperty();
-    $component->registerProperty('hello', $property);
-    $attribute = new WactAttributeExpression('test', 'hello', $component, $this->filter_dictionary);
-
-    $code_writer = new WactCodeWriter();
-    $attribute->generate($code_writer);
-    $this->assertEqual($code_writer->renderCode(), ' test="<?php echo htmlspecialchars(, ENT_QUOTES); ?>"');
   }
 
   function testGenerateExpression()
@@ -90,7 +68,7 @@ class WactAttributeExpressionTest extends UnitTestCase
     $component = new WactCompilerTag(null, null, null);
     $property = new WactCompilerProperty();
     $component->registerProperty('hello', $property);
-    $attribute = new WactAttributeExpression('test', 'hello', $component, $this->filter_dictionary);
+    $attribute = new WactAttributeExpressionFragment('hello', $component, $this->filter_dictionary);
 
     $attribute->generatePreStatement($code_writer);
     $attribute->generateExpression($code_writer);

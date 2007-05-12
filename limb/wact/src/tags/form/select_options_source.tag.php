@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select_options_source.tag.php 5845 2007-05-09 08:15:57Z serega $
+ * @version    $Id: select_options_source.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -21,7 +21,7 @@ class WactSelectOptionsSource extends WactRuntimeDatasourceComponentTag
   protected $runtimeComponentName = 'WactSelectOptionsSourceComponent';
   protected $runtimeIncludeFile = 'limb/wact/src/components/form/WactSelectOptionsSourceComponent.class.php';
 
-  function generateContents($code)
+  function generateTagContent($code)
   {
     $targets = $this->_getTargetsAsArray();
     if(!$this->_isTargetsOk($targets))

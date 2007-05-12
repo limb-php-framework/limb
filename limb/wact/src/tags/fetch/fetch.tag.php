@@ -22,10 +22,8 @@ class WactFetchTag extends WactBaseFetchingTag
   protected $runtimeComponentName = 'WactFetchComponent';
   protected $runtimeIncludeFile = 'limb/wact/src/components/fetch/WactFetchComponent.class.php';
 
-  function preGenerate($code)
+  function generateBeforeContent($code)
   {
-    parent :: preGenerate($code);
-
     $code->writePhp($this->getComponentRefCode() . '->setFetcherName("' . $this->getAttribute('using') .'");');
 
     $code->writePhp($this->getComponentRefCode() . '->setIncludePath("' . $this->getAttribute('include') .'");');
@@ -34,6 +32,8 @@ class WactFetchTag extends WactBaseFetchingTag
     {
       $code->writePhp($this->getComponentRefCode() . '->setCacheDataset(false);');
     }
+
+    parent :: generateBeforeContent($code);
   }
 }
 

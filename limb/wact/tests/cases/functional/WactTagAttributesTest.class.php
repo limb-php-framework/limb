@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTagAttributesTest.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactTagAttributesTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -77,7 +77,7 @@ class WactTagAttributesTest extends WactTemplateTestCase
   }
 
 
-  function testWactWactCompoundAttributeVariable()
+  function testWactWactAttributeVariable()
   {
     $template = '<form id="test" extra="bar{$Var}bar" extra2="{$Var}bar{$Var}" runat="server">contents</form>';
 
@@ -94,7 +94,7 @@ class WactTagAttributesTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form id="test" extra="barFoobar" extra2="FoobarFoo">contents</form>');
   }
 
-  function testWactWactCompoundAttributeExpression()
+  function testWactWactAttributeExpression()
   {
     $template = '<form id="test" extra="bar{$3*3 + 1}bar" extra2="{$Var}bar{$Var}" runat="server">contents</form>';
 
@@ -111,7 +111,7 @@ class WactTagAttributesTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form id="test" extra="bar10bar" extra2="FoobarFoo">contents</form>');
   }
 
-  function testWactWactCompoundAttributeExpressionWithDBE()
+  function testWactWactAttributeExpressionWithDBE()
   {
     $template = '<form id="test" extra="bar{$3*3 + var}bar" runat="server">contents</form>';
 

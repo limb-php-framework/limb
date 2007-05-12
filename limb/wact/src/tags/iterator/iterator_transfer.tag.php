@@ -20,16 +20,16 @@ class WactIteratorTransferTag extends WactBaseFetchingTag
   protected $runtimeComponentName = 'WactIteratorTransferComponent';
   protected $runtimeIncludeFile = 'limb/wact/src/components/iterator/WactIteratorTransferComponent.class.php';
 
-  function preGenerate($code)
+  function generateBeforeContent($code)
   {
-    parent :: preGenerate($code);
+    parent :: generateBeforeContent($code);
 
     $this->generateDereference($code);
   }
 
   function generateDereference($code_writer)
   {
-    $from_dbe = new WactDataBindingExpression($this->getAttribute('from'), $this);
+    $from_dbe = new WactDataBindingExpressionNode($this->getAttribute('from'), $this);
     $from_dbe->generatePreStatement($code_writer);
 
     $code_writer->writePHP($this->getComponentRefCode() . '->registerDataset(');

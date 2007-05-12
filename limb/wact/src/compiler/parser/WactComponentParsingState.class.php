@@ -6,42 +6,30 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactComponentParsingState.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactComponentParsingState.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
-require_once('limb/wact/src/compiler/parser/WactParserListener.interface.php');
+require_once('limb/wact/src/compiler/parser/WactHTMLParserListener.interface.php');
 require_once('limb/wact/src/compiler/parser/WactBaseParsingState.class.php');
 
-define ('PARSER_TAG_IS_COMPONENT', 	1);
-define ('PARSER_TAG_IS_PLAIN', 		2);
-define ('WACT_PARSER_FORBID_PARSING', 		10);
+define ('WACT_PARSER_FORBID_PARSING', 10);
 
-class WactComponentParsingState extends WactBaseParsingState implements WactParserListener
+class WactComponentParsingState extends WactBaseParsingState implements WactHTMLParserListener
 {
   protected $tag_dictionary;
 
   protected $node_builder;
 
-  function __construct($parser, $tree_builder, $node_builder, $tag_dictionary)
+  function __construct($parser, $tree_builder, $tag_dictionary)
   {
     parent :: __construct($parser, $tree_builder);
 
-    $this->node_builder = $node_builder;
     $this->tag_dictionary = $tag_dictionary;
   }
 
-  function setDocumentLocator($locator)
+  function startTag($tag, $attrs, $location)
   {
-    parent :: setDocumentLocator($locator);
-
-    $this->node_builder->setDocumentLocator($locator);
-  }
-
-  function startElement($tag, $attrs)
-  {
-    $location = $this->locator->getCurrentLocation();
-
     $lower_attributes = $this->checkAttributes($attrs, $location);
 
     $runtime_tag_info = $this->tag_dictionary->findTagInfo($tag, $lower_attributes, FALSE, $this->tree_builder->getCursor());
@@ -52,15 +40,15 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
 
       if($runtime_tag_info->isEndTagForbidden())
       {
-        $tag_node = $this->node_builder->buildTagNode($runtime_tag_info, $tag, $attrs, $self_closed_tag = TRUE);
-        $tag_node->hasClosingTag = false;
-        $this->tree_builder->pushNode($tag_node); // for cases like <core:include> we do pushNode() and popNode() here.
+        $tag_node = $this->tree_builder->buildTagNode($runtime_tag_info, $tag, $location, $attrs, $self_closed_tag = FALSE, $has_closing_tag = false);
+        // for cases like <core:include> or <core:wrap> we have to pushNode() and popNode() here.
+        $this->tree_builder->pushNode($tag_node);
         $this->tree_builder->popNode();
       }
       else
       {
-        $this->tree_builder->pushExpectedTag($tag, PARSER_TAG_IS_COMPONENT, $location);
-        $tag_node = $this->node_builder->buildTagNode($runtime_tag_info, $tag, $attrs, $self_closed_tag = FALSE);
+        $this->tree_builder->pushExpectedWactTag($tag, $location);
+        $tag_node = $this->tree_builder->buildTagNode($runtime_tag_info, $tag, $location, $attrs);
         $result = $this->tree_builder->pushNode($tag_node);
 
         if (($result == WACT_PARSER_FORBID_PARSING) || $runtime_tag_info->isParsingForbidden())
@@ -69,20 +57,14 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
     }
     else
     {
-      $this->tree_builder->pushExpectedTag($tag, PARSER_TAG_IS_PLAIN, $location);
-      $this->node_builder->addContent('<' . $tag . $this->getAttributeString($attrs) . '>');
+      $this->tree_builder->pushExpectedPlainTag($tag, $location);
+      $this->tree_builder->addContent('<' . $tag . $this->getAttributeString($attrs) . '>', $location);
     }
   }
 
-  /**
-  * Handle closing tags
-  * @param string tag name
-  * @access public
-  */
-  function endElement($tag)
+  function endTag($tag, $location)
   {
     $tag_info = $this->tag_dictionary->getWactTagInfo($tag);
-    $location = $this->locator->getCurrentLocation();
 
     if (is_object($tag_info))
     {
@@ -96,19 +78,18 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
     }
 
     if($tag_info && ($tag_info->getRunat() == LOCATION_SERVER))
-      $info = PARSER_TAG_IS_COMPONENT;
+      $result = $this->tree_builder->popExpectedWactTag($tag, $location);
     else
-      $info = PARSER_TAG_IS_PLAIN;
+      $result = $this->tree_builder->popExpectedPlainTag($tag, $location);
 
-    if ($this->tree_builder->popExpectedTag($tag, $location, $info) == PARSER_TAG_IS_COMPONENT)
+    if ($result == WACT_EXPECTED_WACT_TAG)
       $this->tree_builder->popNode();
     else
       $this->tree_builder->addWactTextNode('</' . $tag .'>');
   }
 
-  function emptyElement($tag, $attrs)
+  function emptyTag($tag, $attrs, $location)
   {
-    $location = $this->locator->getCurrentLocation();
     $lower_attributes = $this->checkAttributes($attrs, $location);
 
     $runtime_tag_info = $this->tag_dictionary->findTagInfo($tag, $lower_attributes, TRUE, $this->tree_builder->getCursor());
@@ -116,13 +97,13 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
     {
       $runtime_tag_info->load();
 
-      $tag_node = $this->node_builder->buildTagNode($runtime_tag_info, $tag, $attrs, $self_closed_tag = TRUE);
-      $tag_node->hasClosingTag = false;
-      $this->tree_builder->pushNode($tag_node); // for cases like <core:include> we do pushNode() and popNode() here.
+      $tag_node = $this->tree_builder->buildTagNode($runtime_tag_info, $tag, $location, $attrs, $self_closed_tag = TRUE, $has_closing_tag = false);
+      // for cases like <core:include> or <core:wrap> we have to pushNode() and popNode() here.
+      $this->tree_builder->pushNode($tag_node);
       $this->tree_builder->popNode();
     }
     else
-      $this->node_builder->addContent('<' . $tag . $this->getAttributeString($attrs) . ' />');
+      $this->tree_builder->addContent('<' . $tag . $this->getAttributeString($attrs) . ' />', $location);
   }
 
   /**
@@ -143,44 +124,14 @@ class WactComponentParsingState extends WactBaseParsingState implements WactPars
     return $lower_attributes;
   }
 
-  function characters($text)
+  function characters($text, $location)
   {
-    $this->node_builder->addContent($text);
+    $this->tree_builder->addContent($text, $location);
   }
 
-  function processingInstruction($target, $instruction)
+  function instruction($target, $instruction, $location)
   {
-    $this->node_builder->addProcessingInstruction($target, $instruction);
-  }
-
-  function jasp($text)
-  {
-    $this->node_builder->addContent('<%' . $text . '%>');
-  }
-
-  function escape($text)
-  {
-    $this->node_builder->addContent('<!' . $text . '>');
-  }
-
-  function doctype($text)
-  {
-    $this->node_builder->addContent('<!' . $text . '>');
-  }
-
-  function comment($text)
-  {
-    $this->node_builder->addContent('<!--' . $text . '-->');
-  }
-
-  function unexpectedEOF($text)
-  {
-    $this->node_builder->addContent($text);
-  }
-
-  function invalidEntitySyntax($text)
-  {
-    $this->node_builder->addContent($text);
+    $this->tree_builder->addProcessingInstruction($target, $instruction, $location);
   }
 }
 ?>

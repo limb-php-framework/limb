@@ -26,10 +26,8 @@ class WactBaseFetchingTag extends WactRuntimeComponentTag
     return parent :: preParse();
   }
 
-  function preGenerate($code)
+  function generateBeforeContent($code)
   {
-    parent :: preGenerate($code);
-
     $this->_processTargetAttribute($code);
 
     if($this->getBoolAttribute('first') || $this->getBoolAttribute('one'))
@@ -51,10 +49,8 @@ class WactBaseFetchingTag extends WactRuntimeComponentTag
     }
   }
 
-  function generateContents($code)
+  function generateAfterContent($code)
   {
-    parent :: generateContents($code);
-
     $code->writePhp($this->getComponentRefCode() . '->process();');
   }
 
@@ -76,7 +72,7 @@ class WactBaseFetchingTag extends WactRuntimeComponentTag
   {
     foreach($this->_getExpressionsFromTargetAttribute() as $expression)
     {
-      $dbe = new WactDataBindingExpression($expression, $this, $this->parent);
+      $dbe = new WactDataBindingExpressionNode($expression, $this, $this->parent);
       $datasource = $dbe->getDatasourceContext();
       $field_name = $dbe->getFieldName();
 

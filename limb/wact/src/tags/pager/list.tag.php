@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: list.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: list.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -23,15 +23,13 @@ class WactPagerListTag extends WactCompilerTag
   protected $show_separator_var = '';
   protected $elipses_count_var = '';
 
-  function preGenerate($code)
+  function generateBeforeContent($code)
   {
     $this->navigator = $this->findParentByClass('WactPagerNavigatorTag');
     $this->navigator_component = $this->navigator->getComponentRefCode();
 
     if($this->findChildByClass('WactPagerElipsesTag'))
       $this->sections_mode = false;
-
-    parent::preGenerate($code);
 
     $this->show_separator_var = $code->getTempVarRef();
     $code->writePhp($this->show_separator_var . ' = false;' . "\n");
@@ -43,7 +41,7 @@ class WactPagerListTag extends WactCompilerTag
     $code->writePhp('while (' . $parent->getComponentRefCode() . '->isValid()) {');
   }
 
-  function generateContents($code)
+  function generateTagContent($code)
   {
     if($this->sections_mode)
       $this->_generateForSectionsMode($code);
@@ -51,11 +49,9 @@ class WactPagerListTag extends WactCompilerTag
       $this->_generateForElipsesMode($code);
   }
 
-  function postGenerate($code)
+  function generateAfterContent($code)
   {
     $code->writePhp('}');
-
-    parent::postGenerate($code);
   }
 
   protected function _generateForSectionsMode($code)

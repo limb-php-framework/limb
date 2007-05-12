@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: default.filter.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: default.filter.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -14,16 +14,12 @@
  * @filter default
  * @min_attributes 1
  * @max_attributes 1
- * @version $Id: default.filter.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version $Id: default.filter.php 5873 2007-05-12 17:17:45Z serega $
  */
 class WactDefaultFilter extends WactCompilerFilter
 {
-  /**
-   * Return this value as a PHP value
-   * @return String
-   * @access public
-   */
-  function getValue() {
+  function getValue()
+  {
     if ($this->isConstant())
     {
       $value = $this->base->getValue();
@@ -33,17 +29,11 @@ class WactDefaultFilter extends WactCompilerFilter
       } else {
         return $value;
       }
-    } else {
-      $this->raiseUnresolvedBindingError();
     }
+    else
+      $this->raiseUnresolvedBindingError();
   }
 
-  /**
-   * Generate the code to read the data value at run time
-   * Must generate only a valid PHP Expression.
-   * @param WactCodeWriter
-   * @return void
-   */
   function generateExpression($code_writer)
   {
     $code_writer->registerInclude('limb/wact/src/components/core/default_filter.inc.php');

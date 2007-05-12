@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: js_checkbox.tag.php 5184 2007-03-05 21:26:32Z serega $
+ * @version    $Id: js_checkbox.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -34,10 +34,8 @@ class WactJSCheckboxTag extends WactControlTag
     return 'input';
   }
 
-  function generateContents($code)
+  function generateAfterCloseTag($code)
   {
-    parent :: generateContents($code);
-
     $code->writePhp($this->getComponentRefCode() . '->renderJSCheckbox();');
   }
 }

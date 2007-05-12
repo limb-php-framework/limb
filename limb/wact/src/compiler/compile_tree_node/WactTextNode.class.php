@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTextNode.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactTextNode.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -21,11 +21,11 @@ class WactTextNode extends WactCompileTreeNode
     $this->contents = $text;
   }
 
-  function generateContents($code_writer)
+  function generate($code_writer)
   {
     $code_writer->writeHTML($this->contents);
 
-    parent :: generateContents($code_writer);
+    parent :: generate($code_writer);
   }
 
   function getText()

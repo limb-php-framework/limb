@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.inc.php 5845 2007-05-09 08:15:57Z serega $
+ * @version    $Id: select.inc.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -166,20 +166,21 @@ class WactOptionRenderer {
   * @return void
   * @access private
   */
-  function renderOption($key, $contents, $selected) {
-      echo '<option value="';
-      echo htmlspecialchars($key, ENT_QUOTES);
-      echo '"';
-      if ($selected) {
-          echo " selected=\"true\"";
-      }
-      echo '>';
-      if (empty($contents)) {
-          echo htmlspecialchars($key, ENT_QUOTES);
-      } else {
-          echo htmlspecialchars($contents, ENT_QUOTES);
-      }
-      echo '</option>';
+  function renderOption($key, $contents, $selected)
+  {
+    echo '<option value="';
+    echo htmlspecialchars($key, ENT_QUOTES);
+    echo '"';
+    if ($selected) {
+        echo " selected=\"true\"";
+    }
+    echo '>';
+    if (empty($contents)) {
+        echo htmlspecialchars($key, ENT_QUOTES);
+    } else {
+        echo htmlspecialchars($contents, ENT_QUOTES);
+    }
+    echo '</option>';
   }
 }
 
@@ -228,7 +229,7 @@ class WactSelectSingleComponent extends WactFormElementComponent
   */
   function setChoices($choice_list)
   {
-      $this->choice_list = $choice_list;
+    $this->choice_list = $choice_list;
   }
 
   function addToChoices($key, $value)

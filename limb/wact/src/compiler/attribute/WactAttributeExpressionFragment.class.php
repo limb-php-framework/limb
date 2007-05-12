@@ -11,25 +11,16 @@
  */
 
 
-require_once('limb/wact/src/compiler/attribute/WactAttributeNode.class.php');
-
 /**
 * Used to store expressions like "{$var}" found inside tag attributes
 */
-class WactAttributeExpression implements WactExpressionInterface
+class WactAttributeExpressionFragment implements WactExpressionInterface
 {
-  protected $name;
   protected $expression;
 
-  function __construct($name, $expression, $context, $filter_dictionary)
+  function __construct($expression, $context, $filter_dictionary)
   {
-    $this->name = $name;
     $this->expression = new WactExpression($expression, $context, $filter_dictionary, 'raw');
-  }
-
-  function getName()
-  {
-    return $this->name;
   }
 
   function isConstant()
@@ -42,9 +33,6 @@ class WactAttributeExpression implements WactExpressionInterface
     return $this->expression->getValue();
   }
 
-  /**
-  * Generate the attribute value portion of this attribute
-  */
   function generateFragment($code_writer)
   {
     if ($this->isConstant())
@@ -55,23 +43,10 @@ class WactAttributeExpression implements WactExpressionInterface
     }
     else
     {
-      $this->expression->generatePreStatement($code_writer);
       $code_writer->writePHP('echo htmlspecialchars(');
       $this->expression->generateExpression($code_writer);
       $code_writer->writePHP(', ENT_QUOTES);');
-      $this->expression->generatePostStatement($code_writer);
     }
-  }
-
-  /**
-  * Generate the code to output this attribute as part of a tag.
-  */
-  function generate($code_writer)
-  {
-    $code_writer->writeHTML(' ' . $this->name);
-    $code_writer->writeHTML('="');
-    $this->generateFragment($code_writer);
-    $code_writer->writeHTML('"');
   }
 
   function generatePreStatement($code_writer)

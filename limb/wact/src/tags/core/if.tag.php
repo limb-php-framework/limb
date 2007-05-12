@@ -17,23 +17,15 @@
  */
 class WactCoreIfTag extends WactCompilerTag
 {
-  function preGenerate($code)
+  function generateTagContent($code)
   {
-    parent::preGenerate($code);
-
-    $this->attributeNodes['exp']->generatePreStatement($code);
-
     $code->writePHP('if (');
     $code->writePHP($this->attributeNodes['exp']->generateExpression($code));
     $code->writePHP('){');
-  }
 
-  function postGenerate($code)
-  {
+    parent :: generateTagContent($code);
+
     $code->writePHP('}');
-    parent::postGenerate($code);
-
-    $this->attributeNodes['exp']->generatePostStatement($code);
   }
 }
 ?>

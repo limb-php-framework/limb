@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactListTagsTest.class.php 5780 2007-04-28 13:03:26Z serega $
+ * @version    $Id: WactListTagsTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -31,7 +31,6 @@ class WactListTagsTest extends WactTemplateTestCase
                           array('BaseNumber' => 6));
   }
 
-  /*
   function testList()
   {
     $template = '<list:LIST id="test"><list:ITEM>{$First}-</list:ITEM></list:LIST>';
@@ -136,7 +135,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
     $output = $page->capture();
     $this->assertEqual($output, "George</tr><tr>Alexander</tr><tr>Benjamin");
-  }*/
+  }
 
   function testListSeparatorWithUnpropertyClosedParentTag()
   {

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeDatasourceComponentHTMLTag.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactRuntimeDatasourceComponentHTMLTag.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -14,9 +14,9 @@ require_once('limb/wact/src/compiler/tag_node/WactRuntimeComponentHTMLTag.class.
 
 class WactRuntimeDatasourceComponentHTMLTag extends WactRuntimeComponentHTMLTag
 {
-  function preGenerate($code_writer)
+  function generateBeforeContent($code_writer)
   {
-    parent :: preGenerate($code_writer);
+    parent :: generateBeforeContent($code_writer);
 
     if($this->hasAttribute('from'))
       $this->generateRegisterDatasource($code_writer, $this->getAttribute('from'));
@@ -24,7 +24,7 @@ class WactRuntimeDatasourceComponentHTMLTag extends WactRuntimeComponentHTMLTag
 
   function generateRegisterDatasource($code_writer, $from)
   {
-    $from_dbe = new WactDataBindingExpression($from, $this->parent);
+    $from_dbe = new WactDataBindingExpressionNode($from, $this->parent);
 
     $from_dbe->generatePreStatement($code_writer);
 

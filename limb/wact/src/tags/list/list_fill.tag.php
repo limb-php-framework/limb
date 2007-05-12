@@ -41,10 +41,8 @@ class WactListFillTag extends WactCompilerTag
       return WACT_PARSER_FORBID_PARSING;
   }
 
-  function preGenerate($code)
+  function generateTagContent($code)
   {
-    parent::preGenerate($code);
-
     $ListList = $this->findParentByClass('WactListListTag');
 
     $code->writePhp('if (!' . $ListList->getComponentRefCode($code) . '->valid()){' . "\n");
@@ -61,11 +59,8 @@ class WactListFillTag extends WactCompilerTag
     $code->writePhp("if ({$items_left_var}){\n");
 
     $code->writePhp($this->getDataSource()->getComponentRefCode() . "['" . $this->var_name . "'] = {$items_left_var};");
-  }
 
-  function postGenerate($code)
-  {
-    parent::postGenerate($code);
+    parent :: generateTagContent($code);
 
     $code->writePhp('}'. "\n");
     $code->writePhp('}'. "\n");

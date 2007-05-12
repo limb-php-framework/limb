@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeComponentHTMLTagTest.class.php 5071 2007-02-16 09:09:35Z serega $
+ * @version    $Id: WactRuntimeComponentHTMLTagTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -47,21 +47,21 @@ class WactRuntimeComponentHTMLTagTest extends WactRuntimeComponentTagTest
     $this->assertEqual($this->component->getRenderedTag(), 'test');
   }
 
-  function testPreGenerate()
+  function testGenerateBeforeContent()
   {
     $code_writer = new TestingWactCodeWriter();
     $code_writer->setReturnValue('getTempVariable', 'AA');
 
     $this->component->generateUniqueId($code_writer);
 
-    $this->component->preGenerate($code_writer);
+    $this->component->generateBeforeContent($code_writer);
     $this->assertEqual($code_writer->renderCode(),'<test<?php $components[\'AA\']->renderAttributes(); ?>>');
   }
 
   function testPostGenerate()
   {
     $Code = new WactCodeWriter();
-    $this->component->postGenerate($Code);
+    $this->component->generateAfterContent($Code);
     $this->assertEqual($Code->renderCode(), '</test>');
   }
 

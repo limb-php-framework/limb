@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompileTreeNodeTest.class.php 5142 2007-02-20 15:44:30Z wiliam $
+ * @version    $Id: WactCompileTreeNodeTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -174,13 +174,13 @@ class WactCompileTreeNodeTest extends UnitTestCase
     $this->component->generateConstructor($code_writer);
   }
 
-  function testGenerateContents()
+  function testGenerateContent()
   {
     $code_writer = new MockWactCodeWriter();
     $child = new MockWactCompileTreeNode();
     $child->expectCallCount('generate', 1);
     $this->component->addChild($child);
-    $this->component->generateContents($code_writer);
+    $this->component->generateContent($code_writer);
   }
 
   function testGenerate()

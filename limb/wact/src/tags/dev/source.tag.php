@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: source.tag.php 5071 2007-02-16 09:09:35Z serega $
+ * @version    $Id: source.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -38,8 +38,8 @@ class WactDevSourceTag extends WactCompilerTag {
    * @param WactCodeWriter
    * @return void
    */
-  function preGenerate($code_writer) {
-    parent::preGenerate($code_writer);
+  function generateBeforeContent($code_writer)
+  {
     $this->startPos = strlen($code_writer->getCode());
     $this->startMode = $code_writer->getMode();
   }
@@ -48,7 +48,8 @@ class WactDevSourceTag extends WactCompilerTag {
    * @param WactCodeWriter
    * @return void
    */
-  function postGenerate($code_writer) {
+  function generateAfterContent($code_writer)
+  {
     $source = substr($code_writer->getCode(),$this->startPos);
 
     if ( !$this->getBoolAttribute('raw') ) {
@@ -91,7 +92,6 @@ class WactDevSourceTag extends WactCompilerTag {
     }
 
     $code_writer->setCode($code);
-    parent::postGenerate($code_writer);
   }
 }
 ?>

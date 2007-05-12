@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionValueParserTest.class.php 5691 2007-04-19 13:27:02Z serega $
+ * @version    $Id: WactExpressionValueParserTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -17,9 +17,11 @@ class WactExpressionValueParserTest extends UnitTestCase
   protected $parser;
   protected $root;
   protected $context;
+  protected $code;
 
   function setUp()
   {
+    $this->code = new WactCodeWriter();
     // preparing tree nodes with runtime
     $this->root = new WactCompileTreeRootNode();
 
@@ -35,42 +37,53 @@ class WactExpressionValueParserTest extends UnitTestCase
     unset($this->parser);
   }
 
-  function testNull() {
-    $expr = $this->parser->parse('null');
-    $this->assertIdentical($expr->getValue(), null);
+  function _parseAndReturnGeneratedCode($expression)
+  {
+    $expr = $this->parser->parse($expression);
+    $expr->generatePreStatement($this->code);
+    $expr->generateExpression($this->code);
+    $expr->generatePostStatement($this->code);
+    return $this->code->getCode();
+  }
+
+  function testNull()
+  {
+    $code = $this->_parseAndReturnGeneratedCode('null');
+    $this->assertEqual($code, '<?php NULL');
   }
 
   function testTrue()
   {
-    $expr = $this->parser->parse('true');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('true');
+    $this->assertEqual($code, '<?php true');
   }
 
   function testFalse()
   {
-    $expr = $this->parser->parse('false');
-    $this->assertIdentical($expr->getValue(), false);
+    $code = $this->_parseAndReturnGeneratedCode('false');
+    $this->assertEqual($code, '<?php false');
   }
 
   function testInteger()
   {
-    $expr = $this->parser->parse('1');
-    $this->assertIdentical($expr->getValue(), 1);
+    $code = $this->_parseAndReturnGeneratedCode('1');
+    $this->assertEqual($code, '<?php 1');
   }
 
   function testZero()
   {
-    $expr = $this->parser->parse('0');
-    $this->assertIdentical($expr->getValue(), 0);
+    $code = $this->_parseAndReturnGeneratedCode('0');
+    $this->assertEqual($code, '<?php 0');
   }
 
   function testFloat()
   {
-    $expr = $this->parser->parse('1.2');
-    $this->assertIdentical($expr->getValue(), 1.2);
+    $code = $this->_parseAndReturnGeneratedCode('1.2');
+    $this->assertEqual($code, '<?php 1.2');
   }
 
-  function testStringDoubleQuotes() {
+  function testStringDoubleQuotes()
+  {
     $expr = $this->parser->parse('"hello"');
     $this->assertIdentical($expr->getValue(), "hello");
   }
@@ -95,140 +108,140 @@ class WactExpressionValueParserTest extends UnitTestCase
 
   function testAddition()
   {
-    $expr = $this->parser->parse('1+2');
-    $this->assertIdentical($expr->getValue(), 1+2);
+    $code = $this->_parseAndReturnGeneratedCode('1+2');
+    $this->assertEqual($code, "<?php 1+2");
   }
 
   function testSubtraction()
   {
-    $expr = $this->parser->parse('1-2');
-    $this->assertIdentical($expr->getValue(), 1-2);
+    $code = $this->_parseAndReturnGeneratedCode('1-2');
+    $this->assertEqual($code, "<?php 1-2");
   }
 
   function testMultiplication()
   {
-    $expr = $this->parser->parse('2*3');
-    $this->assertIdentical($expr->getValue(), 2*3);
+    $code = $this->_parseAndReturnGeneratedCode('2*3');
+    $this->assertEqual($code, "<?php 2*3");
   }
 
   function testDivision()
   {
-    $expr = $this->parser->parse('8/2');
-    $this->assertIdentical($expr->getValue(), 8/2);
+    $code = $this->_parseAndReturnGeneratedCode('8/2');
+    $this->assertEqual($code, "<?php 8/2");
   }
 
   function testModulo()
   {
-    $expr = $this->parser->parse('5%2');
-    $this->assertIdentical($expr->getValue(), 5%2);
+    $code = $this->_parseAndReturnGeneratedCode('5%2');
+    $this->assertEqual($code, "<?php 5%2");
   }
 
   function testMinus()
   {
-    $expr = $this->parser->parse('-2');
-    $this->assertIdentical($expr->getValue(), -2);
+    $code = $this->_parseAndReturnGeneratedCode('-2');
+    $this->assertEqual($code, "<?php -2");
   }
 
   function testConcatination()
   {
-    $expr = $this->parser->parse('"head" & "tail"');
-    $this->assertIdentical($expr->getValue(), 'headtail');
+    $code = $this->_parseAndReturnGeneratedCode('"head" & "tail"');
+    $this->assertEqual($code, "<?php 'head'&'tail'");
   }
 
   function testLogicalAnd()
   {
-    $expr = $this->parser->parse('true and false');
-    $this->assertIdentical($expr->getValue(), false);
+    $code = $this->_parseAndReturnGeneratedCode('true && false');
+    $this->assertEqual($code, "<?php true&&false");
   }
 
   function testLogicalOr()
   {
-    $expr = $this->parser->parse('true or false');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('true || false');
+    $this->assertEqual($code, "<?php true||false");
   }
 
   function testLogicalNot()
   {
-    $expr = $this->parser->parse('not false');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('!false');
+    $this->assertEqual($code, "<?php !false");
   }
 
   function testLogicalEqual()
   {
-    $expr = $this->parser->parse('1 == 1');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('1 == 1');
+    $this->assertEqual($code, "<?php 1==1");
   }
 
   function testLogicalNotEqual()
   {
-    $expr = $this->parser->parse('1 != 2');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('1!=2');
+    $this->assertEqual($code, "<?php 1!=2");
   }
 
   function testLogicalLessThan()
   {
-    $expr = $this->parser->parse('1 < 2');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('1 < 2');
+    $this->assertEqual($code, "<?php 1<2");
   }
 
   function testLogicalLessThanOrEqual()
   {
-    $expr = $this->parser->parse('2 <= 2');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('2 <= 2');
+    $this->assertEqual($code, "<?php 2<=2");
   }
 
   function testLogicalGreaterThan()
   {
-    $expr = $this->parser->parse('3 > 2');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('3 > 2');
+    $this->assertEqual($code, "<?php 3>2");
   }
 
   function testLogicalGreaterThanOrEqual()
   {
-    $expr = $this->parser->parse('3 >= 2');
-    $this->assertIdentical($expr->getValue(), true);
+    $code = $this->_parseAndReturnGeneratedCode('3 >= 2');
+    $this->assertEqual($code, "<?php 3>=2");
   }
 
   function testMyDearAuntSally()
   {
-    $expr = $this->parser->parse('1+2*3');
-    $this->assertIdentical($expr->getValue(), 1+2*3);
+    $code = $this->_parseAndReturnGeneratedCode('1+2*3');
+    $this->assertEqual($code, "<?php 1+2*3");
   }
 
   function testMyDearAuntSally2()
   {
-    $expr = $this->parser->parse('2*3+1');
-    $this->assertIdentical($expr->getValue(), 2*3+1);
+    $code = $this->_parseAndReturnGeneratedCode('2*3+1');
+    $this->assertEqual($code, "<?php 2*3+1");
   }
 
   function testMyDearAuntSally3()
   {
-    $expr = $this->parser->parse('2*3+4*5');
-    $this->assertIdentical($expr->getValue(), 2*3+4*5);
+    $code = $this->_parseAndReturnGeneratedCode('2*3+4*5');
+    $this->assertEqual($code, "<?php 2*3+4*5");
   }
 
   function testMyDearAuntSally4()
   {
-    $expr = $this->parser->parse('8-4-2');
-    $this->assertIdentical($expr->getValue(), 8-4-2);
+    $code = $this->_parseAndReturnGeneratedCode('8-4-2');
+    $this->assertEqual($code, "<?php 8-4-2");
   }
 
   function testMyDearAuntSally5()
   {
-    $expr = $this->parser->parse('24*6*2');
-    $this->assertIdentical($expr->getValue(), 24*6*2);
+    $code = $this->_parseAndReturnGeneratedCode('24*6*2');
+    $this->assertEqual($code, "<?php 24*6*2");
   }
 
   function testMyDearAuntSally6()
   {
-    $expr = $this->parser->parse('24/6/2');
-    $this->assertIdentical($expr->getValue(), 24/6/2);
+    $code = $this->_parseAndReturnGeneratedCode('24/6/2');
+    $this->assertEqual($code, "<?php 24/6/2");
   }
 
   function testParenthesis()
   {
-    $expr = $this->parser->parse('8-(4-2)');
-    $this->assertIdentical($expr->getValue(), 8-(4-2));
+    $code = $this->_parseAndReturnGeneratedCode('8-(4-2)');
+    $this->assertEqual($code, "<?php 8-(4-2)");
   }
 
   function testConstantPropertyFromContext()
@@ -260,6 +273,23 @@ class WactExpressionValueParserTest extends UnitTestCase
     //debugBreak();
     $expr = $this->parser->parse('^Test');
     $this->assertIdentical($expr->getValue(),'hello');
+  }
+
+  function testLocalVariableModifier()
+  {
+    $expr = $this->parser->parse('$Test');
+
+    $code_writer = new WactCodeWriter();
+
+    $root = new WactCompileTreeRootNode();
+    $context = new WactCompileTreeNode();
+    $context->parent = $root;
+
+    $expr->generatePreStatement($code_writer);
+    $expr->generateExpression($code_writer);
+    $expr->generatePostStatement($code_writer);
+
+    $this->assertEqual($code_writer->getCode(), '<?php $Test');
   }
 }
 

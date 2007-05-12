@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: block.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: block.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -29,22 +29,13 @@ class WactCoreBlockTag extends WactRuntimeComponentTag
       $code_writer->writePHP($this->getComponentRefCode() . '->hide();'."\n");
   }
 
-  /**
-  * @param WactCodeWriter
-  */
-  function preGenerate($code_writer)
+  function generateTagContent($code_writer)
   {
-    parent::preGenerate($code_writer);
     $code_writer->writePHP('if (' . $this->getComponentRefCode() . '->isVisible()) {');
-  }
 
-  /**
-  * @param WactCodeWriter
-  */
-  function postGenerate($code_writer)
-  {
+    parent :: generateTagContent($code_writer);
+
     $code_writer->writePHP('}');
-    parent::postGenerate($code_writer);
   }
 }
 ?>

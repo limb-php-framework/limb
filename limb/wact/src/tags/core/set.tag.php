@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: set.tag.php 5603 2007-04-10 12:45:45Z pachanga $
+ * @version    $Id: set.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -37,24 +37,15 @@ class WactCoreSetTag extends WactCompilerTag
     }
   }
 
-  function generateContents($code_writer)
+  function generateTagContent($code_writer)
   {
     $ref = $this->getDataSource()->getComponentRefCode();
-    foreach(array_keys($this->attributeNodes) as $key) {
+    foreach(array_keys($this->attributeNodes) as $key)
+    {
       $name = $this->attributeNodes[$key]->getName();
-      if($this->attributeNodes[$key]->isConstant()) {
-        $code_writer->writePHP($ref . '->set("' . $name . '", ');
-        $code_writer->writePHPLiteral($this->attributeNodes[$key]->getValue());
-        $code_writer->writePHP(');');
-      } else {
-        $this->attributeNodes[$key]->generatePreStatement($code_writer);
-
-        $code_writer->writePHP($ref . '->set("' . $name . '", ');
-        $this->attributeNodes[$key]->generateExpression($code_writer);
-        $code_writer->writePHP(');');
-
-        $this->attributeNodes[$key]->generatePostStatement($code_writer);
-      }
+      $code_writer->writePHP($ref . '->set("' . $name . '", ');
+      $this->attributeNodes[$key]->generateExpression($code_writer);
+      $code_writer->writePHP(');');
     }
   }
 }

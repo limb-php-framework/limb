@@ -6,15 +6,13 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactBaseParsingStateTestCase.class.php 5334 2007-03-23 11:48:20Z pachanga $
+ * @version    $Id: WactBaseParsingStateTestCase.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
 require_once 'limb/wact/src/compiler/templatecompiler.inc.php';
 
-Mock::generate('WactHTMLParser','MockWactHTMLParser');
 Mock::generate('WactSourceFileParser','MockWactSourceFileParser');
-Mock::generate('WactNodeBuilder', 'MockNodeBuilder');
 Mock::generate('WactTreeBuilder','MockTreeBuilder');
 Mock::generate('WactTagDictionary','MockWactTagDictionary');
 Mock::generate('WactRuntimeComponentTag','MockWactRuntimeComponentTag');
@@ -30,22 +28,10 @@ class WactBaseParsingStateTestCase extends UnitTestCase
     $this->assertIdentical($this->state->getAttributeString($attrs), '');
   }
 
-  function testInvalidAttributeSyntax()
+  function testGetAttributeStringRunat()
   {
-    $Parser = new MockWactHTMLParser();
-    $Parser->expectOnce('getPublicId');
-    $Parser->expectOnce('getLineNumber');
-    $this->state->setDocumentLocator($Parser);
-
-    try
-    {
-      $this->state->invalidAttributeSyntax();
-      $this->assertTrue(false);
-    }
-    catch(WactException $e)
-    {
-      $this->assertWantedPattern('/Attribute syntax error/', $e->getMessage());
-    }
+    $attrs = array('foo'=>'bar', 'runat'=>'client');
+    $this->assertIdentical($this->state->getAttributeString($attrs), ' foo="bar"');
   }
 }
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpressionTest.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactDataBindingExpressionNodeTest.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -44,13 +44,13 @@ class WactCompilerPropertyDBETestVersion extends WactCompilerProperty
   }
 }
 
-class WactDataBindingExpressionTest extends UnitTestCase
+class WactDataBindingExpressionNodeTest extends UnitTestCase
 {
   function testAnalizeSimpleExpression()
   {
     $context = new WactCompileTreeNode();
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
     $DBE->prepare();
     $this->assertEqual($DBE->getFieldName(), 'Test');
   }
@@ -62,7 +62,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->parent = $root;
 
-    $DBE = new WactDataBindingExpression('#Test', $context);
+    $DBE = new WactDataBindingExpressionNode('#Test', $context);
     $DBE->prepare();
     $this->assertEqual($DBE->getFieldName(), 'Test');
   }
@@ -74,7 +74,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode(); // use root node as a regular node.
     $context->parent = $parent;
 
-    $DBE = new WactDataBindingExpression('^Test', $context);
+    $DBE = new WactDataBindingExpressionNode('^Test', $context);
     $DBE->prepare();
     $this->assertEqual($DBE->getFieldName(), 'Test');
   }
@@ -86,7 +86,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode(); // use root node as a regular node.
     $context->parent = $parent;
 
-    $DBE = new WactDataBindingExpression('Test.0', $context);
+    $DBE = new WactDataBindingExpressionNode('Test.0', $context);
     $DBE->prepare();
     $this->assertEqual($DBE->getFieldName(), '0');
   }
@@ -101,7 +101,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
 
     $parent->addChild($child);
 
-    $DBE = new WactDataBindingExpression('[child]', $parent);
+    $DBE = new WactDataBindingExpressionNode('[child]', $parent);
     $DBE->prepare();
     $this->assertNull($DBE->getFieldName());
     $this->assertReference($DBE->getDatasourceContext(), $child);
@@ -112,7 +112,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $location = new WactSourceLocation('my_file', 10);
     $context = new WactCompileTreeNode($location);
 
-    $DBE = new WactDataBindingExpression('^Test', $context);
+    $DBE = new WactDataBindingExpressionNode('^Test', $context);
     try
     {
       $DBE->prepare();
@@ -132,7 +132,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
 
     $context = new WactCompileTreeNode(new WactSourceLocation('my_file', 10));
 
-    $DBE = new WactDataBindingExpression($expression, $context);
+    $DBE = new WactDataBindingExpressionNode($expression, $context);
     try
     {
       $DBE->prepare();
@@ -153,7 +153,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
 
     $context = new WactCompileTreeRootNode(new WactSourceLocation('my_file', 10));
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
     $this->assertFalse($DBE->isConstant());
     try
     {
@@ -173,7 +173,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
   {
     $context = new WactCompileTreeNode();
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
 
     $this->assertFalse($DBE->isConstant());
   }
@@ -185,7 +185,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->registerProperty('Test', $property);
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
 
     $this->assertTrue($DBE->isConstant());
   }
@@ -197,7 +197,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->registerProperty('Test', $property);
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
 
     $this->assertFalse($DBE->isConstant());
   }
@@ -209,7 +209,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->registerProperty('Test', $property);
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -221,7 +221,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->registerProperty('Test', $property);
 
-    $DBE = new WactDataBindingExpression('#Test', $context);
+    $DBE = new WactDataBindingExpressionNode('#Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -236,7 +236,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode();
     $context->parent = $parent;
 
-    $DBE = new WactDataBindingExpression('^Test', $context);
+    $DBE = new WactDataBindingExpressionNode('^Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -254,7 +254,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode();
     $context->parent = $child;
 
-    $DBE = new WactDataBindingExpression('^^Test', $context);
+    $DBE = new WactDataBindingExpressionNode('^^Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -279,7 +279,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode();
     $context->parent = $child1;
 
-    $DBE = new WactDataBindingExpression('#[child2]Test', $context);
+    $DBE = new WactDataBindingExpressionNode('#[child2]Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -309,7 +309,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeRootNode();
     $context->parent = $child1;
 
-    $DBE = new WactDataBindingExpression('#[child2][sub_child1]Test', $context);
+    $DBE = new WactDataBindingExpressionNode('#[child2][sub_child1]Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }
@@ -322,7 +322,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->registerProperty('Test', $property);
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
     $DBE->generatePreStatement($code_writer);
     $DBE->generateExpression($code_writer);
     $DBE->generatePostStatement($code_writer);
@@ -341,7 +341,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new MockWactCompileTreeNode();
     $context->setReturnReference('getDataSource', $root);
 
-    $DBE = new WactDataBindingExpression('Test', $context);
+    $DBE = new WactDataBindingExpressionNode('Test', $context);
     $DBE->generateExpression($code_writer);
 
     $this->assertEqual($code_writer->getCode(), '<?php $root->get(\'Test\')');
@@ -355,10 +355,24 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new WactCompileTreeNode();
     $context->parent = $root;
 
-    $DBE = new WactDataBindingExpression('#Test', $context);
+    $DBE = new WactDataBindingExpressionNode('#Test', $context);
     $DBE->generateExpression($code_writer);
 
     $this->assertEqual($code_writer->getCode(), '<?php $root->get(\'Test\')');
+  }
+
+  function testGenerateExpressionWithLocalVariableModifier()
+  {
+    $code_writer = new WactCodeWriter();
+
+    $root = new WactCompileTreeRootNode();
+    $context = new WactCompileTreeNode();
+    $context->parent = $root;
+
+    $DBE = new WactDataBindingExpressionNode('$Test', $context);
+    $DBE->generateExpression($code_writer);
+
+    $this->assertEqual($code_writer->getCode(), '<?php $Test');
   }
 
   function testGenerateExpressionWithContextModifierAndNoFieldName()
@@ -372,7 +386,7 @@ class WactDataBindingExpressionTest extends UnitTestCase
 
     $context->addChild($child1);
 
-    $DBE = new WactDataBindingExpression('[child1]', $context);
+    $DBE = new WactDataBindingExpressionNode('[child1]', $context);
     $DBE->analyzeExpression();
 
     $this->assertFalse($DBE->isConstant());
@@ -394,14 +408,32 @@ class WactDataBindingExpressionTest extends UnitTestCase
     $context = new MockWactCompileTreeNode();
     $context->setReturnReference('getDataSource', $root);
 
-    $DBE = new WactDataBindingExpression('Test.item1.item2', $context);
+    $DBE = new WactDataBindingExpressionNode('Test.item1.item2', $context);
     $DBE->generatePreStatement($code_writer);
     $DBE->generateExpression($code_writer);
     $DBE->generatePostStatement($code_writer);
 
-    $this->assertEqual($code_writer->getCode(), '<?php $A= WactTemplate :: makeObject($root,\'Test\');'.
-                                                '$B= WactTemplate :: makeObject($A,\'item1\');'.
+    $this->assertEqual($code_writer->getCode(), '<?php $A= WactTemplate :: makeObject($root->get(\'Test\'));'.
+                                                '$B= WactTemplate :: makeObject($A->get(\'item1\'));'.
                                                 '$B->get(\'item2\')');
+  }
+
+
+  function testGenerateExpressionWithLocalVariableModifierWithPath()
+  {
+    $code_writer = new WactCodeWriter();
+
+    $root = new WactCompileTreeRootNode();
+    $context = new WactCompileTreeNode();
+    $context->parent = $root;
+
+    $DBE = new WactDataBindingExpressionNode('$Test.var', $context);
+    $DBE->generatePreStatement($code_writer);
+    $DBE->generateExpression($code_writer);
+    $DBE->generatePostStatement($code_writer);
+
+    $this->assertEqual($code_writer->getCode(), '<?php $A= WactTemplate :: makeObject($Test);'.
+                                                '$A->get(\'var\')');
   }
 }
 

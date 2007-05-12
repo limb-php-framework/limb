@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactPHPNode.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactPHPNode.class.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -24,6 +24,11 @@ class WactPHPNode extends WactCompileTreeNode
   function generate($code_writer)
   {
     $code_writer->writePHP($this->contents);
+  }
+
+  function getCode()
+  {
+    return $this->contents;
   }
 }
 ?>

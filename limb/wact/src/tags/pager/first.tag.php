@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: first.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: first.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -17,44 +17,15 @@
 */
 class WactPagerFirstTag extends WactCompilerTag
 {
-  protected $hide_for_current_page;
-
-  function preGenerate($code)
+  function generateTagContent($code)
   {
-    $this->hide_for_current_page = $this->getBoolAttribute('hide_for_current_page');
-
     $parent = $this->findParentByClass('WactPagerNavigatorTag');
     $code->writePhp('if (!' . $parent->getComponentRefCode() . '->isFirst()) {');
 
-    parent::preGenerate($code);
+    $code->writePhp($this->getDataSource()->getComponentRefCode() . '["href"] = ' .
+                    $parent->getComponentRefCode() . '->getFirstPageUri();' . "\n");
 
-    $code->writePhp($this->getDataSource()->getComponentRefCode() . '["href"] = ' . $parent->getComponentRefCode() . '->getFirstPageUri();' . "\n");
-    if (!$this->hide_for_current_page)
-    {
-      $code->writePhp('}');
-    }
-  }
-
-  function postGenerate($code)
-  {
-    if (!$this->hide_for_current_page)
-    {
-      $parent = $this->findParentByClass('WactPagerNavigatorTag');
-      $code->writePhp('if (!' . $parent->getComponentRefCode() . '->isFirst()) {');
-    }
-
-    parent::postGenerate($code);
-
-    $code->writePhp('}');
-  }
-
-  function generateContents($code)
-  {
-    $parent = $this->findParentByClass('WactPagerNavigatorTag');
-
-    $code->writePhp('if (!' . $parent->getComponentRefCode() . '->isFirst()) {');
-
-    parent :: generateContents($code);
+    parent :: generateTagContent($code);
 
     $code->writePhp('}' . "\n");
   }

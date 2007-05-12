@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: runtimecontent.tag.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: runtimecontent.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -20,12 +20,10 @@ class WactCoreRuntimeContentTag extends WactRuntimeComponentTag
   /**
    * @param WactCodeWriter
    */
-  function postGenerate($code_writer)
+  function generate($code_writer)
   {
     // Perhaps the render() call should be in the generate() method?
     $code_writer->writePHP($this->getComponentRefCode() . '->render();');
-
-    parent::postGenerate($code_writer);
   }
 }
 

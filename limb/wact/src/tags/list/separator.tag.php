@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: separator.tag.php 5625 2007-04-11 11:12:26Z serega $
+ * @version    $Id: separator.tag.php 5873 2007-05-12 17:17:45Z serega $
  * @package    wact
  */
 
@@ -40,11 +40,9 @@ class WactListSeparatorTag extends WactRuntimeComponentTag
       return WACT_PARSER_FORBID_PARSING;
   }
 
-  function preGenerate($code)
+  function generateTagContent($code)
   {
     $code->writePhp($this->getComponentRefCode($code) . '->setStep(' . $this->step .');' . "\n");
-
-    parent::preGenerate($code);
 
     $ListList = $this->findParentByClass('WactListListTag');
 
@@ -63,11 +61,8 @@ class WactListSeparatorTag extends WactRuntimeComponentTag
           $code->writePhp($separator->getComponentRefCode($code) . "->skipNext();\n");
       }
     }
-  }
 
-  function postGenerate($code)
-  {
-    parent::postGenerate($code);
+    parent :: generateTagContent($code);
 
     $code->writePhp('}'. "\n");
   }
