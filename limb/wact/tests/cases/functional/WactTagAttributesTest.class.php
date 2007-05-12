@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTagAttributesTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactTagAttributesTest.class.php 5875 2007-05-12 22:45:34Z serega $
  * @package    wact
  */
 
@@ -339,24 +339,17 @@ class WactTagAttributesTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form id="test" extra="&#039;">contents</form>');
   }
 
-  function testNullAttributesNotAllowedInStrictMode()
+  function testNullAttributeValue()
   {
     $template = '<P id="test" runat="server" extra>contents</P>';
 
     $this->registerTestingTemplate('/attributes/minimized_attribute.html', $template);
 
-    try
-    {
-      $page = $this->initTemplate('/attributes/minimized_attribute.html');
-      $this->assertTrue(false);
-    }
-    catch(WactException $e)
-    {
-      $this->assertWantedPattern('/Attribute should have a value/', $e->getMessage());
-    }
+    $page = $this->initTemplate('/attributes/minimized_attribute.html');
+    $this->assertEqual($page->capture(), '<P id="test" extra>contents</P>');
   }
 
-  function testEmptyAttributeValueIsAllowedInStrictMode()
+  function testEmptyAttributeValue()
   {
     $template = '<P id="test" extra="">contents</P>';
 

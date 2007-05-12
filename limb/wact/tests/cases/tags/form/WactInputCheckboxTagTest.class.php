@@ -41,7 +41,7 @@ class WactInputCheckboxTagTest extends WactTemplateTestCase
   function testRemoveCheckedIfNoChecked()
   {
     $template = '<form id="testForm" runat="server">'.
-                '<input type="checkbox" id="test" name="myInput" runat="server" value="bar" checked="true"/>' .
+                '<input type="checkbox" id="test" name="myInput" runat="server" value="bar" checked />' .
                 '</form>';
     $this->registerTestingTemplate('/components/form/inputcheckbox/isunchecked.html', $template);
 

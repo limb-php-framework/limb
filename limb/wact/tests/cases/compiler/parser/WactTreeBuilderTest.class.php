@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilderTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactTreeBuilderTest.class.php 5875 2007-05-12 22:45:34Z serega $
  * @package    wact
  */
 
@@ -353,26 +353,15 @@ class WactTreeBuilderTest extends UnitTestCase
                            $this->filter_dictionary);
   }
 
-  function testBuildTagNodeWithNullAttributeThrowsException()
+  function testBuildTagNodeWithNullAttribute()
   {
     $location = new WactSourceLocation('my_file', 5);
     $tag_info = new WactTagInfo('my_tag', 'WactNodeBuilderTestTag');
 
     $attrs = array('attr1' => null);
 
-    try
-    {
-      $node = $this->tree_builder->buildTagNode($tag_info, $tag = 'MY_TAG', $location, $attrs, $isEmpty = true);
-      $this->assertTrue(false);
-    }
-    catch (WactException $e)
-    {
-      $this->assertWantedPattern('/Attribute should have a value/', $e->getMessage());
-      $this->assertEqual($e->getParam('file'), 'my_file');
-      $this->assertEqual($e->getParam('line'), 5);
-      $this->assertEqual($e->getParam('tag'), 'MY_TAG');
-      $this->assertEqual($e->getParam('attribute'), 'attr1');
-    }
+    $node = $this->tree_builder->buildTagNode($tag_info, $tag = 'MY_TAG', $location, $attrs, $isEmpty = true);
+    $this->assertFalse($node->getAttribute('attr1'));
   }
 
   function testAddContentWithSimpleText()

@@ -11,9 +11,9 @@
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';
-require_once 'limb/wact/src/components/form/select.inc.php';
+require_once 'limb/wact/src/components/form/WactOptionRenderer.class.php';
 
-class WactOptionRenderTest extends UnitTestCase
+class WactOptionRendererTest extends UnitTestCase
 {
   protected $renderer;
 

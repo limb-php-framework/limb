@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: select.tag.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: select.tag.php 5875 2007-05-12 22:45:34Z serega $
  * @package    wact
  */
 
@@ -26,7 +26,7 @@ class WactSelectTag extends WactControlTag
   {
     if ($this->getBoolAttribute('multiple'))
     {
-      $this->runtimeIncludeFile = 'limb/wact/src/components/form/select.inc.php';
+      $this->runtimeIncludeFile = 'limb/wact/src/components/form/WactSelectMultipleComponent.class.php';
       $this->runtimeComponentName = 'WactSelectMultipleComponent';
 
       // Repetition of ControlTag::prepare but required for special case
@@ -47,7 +47,7 @@ class WactSelectTag extends WactControlTag
     }
     else
     {
-      $this->runtimeIncludeFile = 'limb/wact/src/components/form/select.inc.php';
+      $this->runtimeIncludeFile = 'limb/wact/src/components/form/WactSelectSingleComponent.class.php';
       $this->runtimeComponentName = 'WactSelectSingleComponent';
     }
 

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilder.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactTreeBuilder.class.php 5875 2007-05-12 22:45:34Z serega $
  * @package    wact
  */
 
@@ -297,20 +297,14 @@ class WactTreeBuilder
   {
     foreach ($attrs as $name => $value)
     {
-      if(($value === NULL) && WACT_STRICT_MODE)
-      {
-        throw new WactException('Attribute should have a value',
-                              array('file' => $location->getFile(),
-                                    'line' => $location->getLine(),
-                                    'tag' => $tag_node->getTag(),
-                                    'attribute' => $name));
-      }
-
       $attribute = new WactAttribute($name);
-      $listener = new WactAttributeBlockAnalizerListener($attribute, $tag_node, $this->filter_dictionary);
+      if($value !== NULL)
+      {
+        $listener = new WactAttributeBlockAnalizerListener($attribute, $tag_node, $this->filter_dictionary);
 
-      $analizer = new WactBlockAnalizer();
-      $analizer->parse($value, $listener);
+        $analizer = new WactBlockAnalizer();
+        $analizer->parse($value, $listener);
+      }
 
       $tag_node->addChildAttribute($attribute);
     }

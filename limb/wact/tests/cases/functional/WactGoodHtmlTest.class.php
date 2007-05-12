@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactGoodHtmlTest.class.php 5781 2007-04-28 18:04:32Z serega $
+ * @version    $Id: WactGoodHtmlTest.class.php 5875 2007-05-12 22:45:34Z serega $
  * @package    wact
  */
 
@@ -17,7 +17,7 @@
 */
 class WactGoodHtmlTest extends WactTemplateTestCase
 {
-  function _testSelfClose()
+  function testSelfClose()
   {
     $template = '<BR /><BR />\n<BR />\n<B></B><BR />\n';
 
@@ -27,7 +27,7 @@ class WactGoodHtmlTest extends WactTemplateTestCase
     $this->assertEqual($output, $template);
   }
 
-  function _testWactSelfCloseForbidden()
+  function testWactSelfCloseForbidden()
   {
     $template = '<core:SET Variable="Value" />';
 
