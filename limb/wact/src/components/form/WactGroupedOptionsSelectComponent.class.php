@@ -6,11 +6,11 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactGroupedOptionsSelectComponent.class.php 5689 2007-04-19 11:23:20Z serega $
+ * @version    $Id: WactGroupedOptionsSelectComponent.class.php 5876 2007-05-12 22:49:18Z serega $
  * @package    wact
  */
 
-require_once('limb/wact/src/components/form/select.inc.php');
+require_once('limb/wact/src/components/form/WactOptionRenderer.class.php');
 
 class WactGroupedOptionsSelectComponent extends WactFormElementComponent
 {
