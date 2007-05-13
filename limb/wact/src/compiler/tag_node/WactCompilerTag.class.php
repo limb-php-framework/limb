@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCompilerTag.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactCompilerTag.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -124,6 +124,11 @@ class WactCompilerTag extends WactCompileTreeNode
     return isset($this->attributeNodes[strtolower($attrib)]);
   }
 
+  function hasConstantAttribute($attrib)
+  {
+    return $this->hasAttribute($attrib) && $this->attributeNodes[strtolower($attrib)]->isConstant();
+  }
+
   /**
   * Return the value of a boolean attribute as a boolean.
   * ATTRIBUTE=ANYTHING  (true)
@@ -174,16 +179,6 @@ class WactCompilerTag extends WactCompileTreeNode
         $attributes[$this->attributeNodes[$key]->getName()] = $this->getAttribute($key);
     }
     return $attributes;
-  }
-
-  function generateAttributeList($code_writer, $suppress = array())
-  {
-    $suppress = array_map('strtolower', $suppress);
-    foreach(array_keys($this->attributeNodes) as $key)
-    {
-      if (!in_array($key, $suppress))
-        $this->attributeNodes[$key]->generate($code_writer);
-    }
   }
 
   function generateDynamicAttributeList($code_writer, $suppress = array())

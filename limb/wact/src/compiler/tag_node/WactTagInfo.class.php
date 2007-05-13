@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTagInfo.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactTagInfo.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -24,6 +24,8 @@ class WactTagInfo
   public $RestrictSelfNesting = false;
   public $ForbidParsing = false;
   public $ForbidEndTag = false;
+  // this code here for BC only
+  public $ConvertAttributesToExpressions = array();
 
   function WactTagInfo($tag, $class)
   {
@@ -125,6 +127,17 @@ class WactTagInfo
   {
     if (!class_exists($this->TagClass) && isset($this->File))
       require_once $this->File;
+  }
+
+  // this code here for BC only
+  function setConvertAttributesToExpressions($attributes)
+  {
+    $this->ConvertAttributesToExpressions = $attributes;
+  }
+
+  function getConvertAttributesToExpressions()
+  {
+    return $this->ConvertAttributesToExpressions;
   }
 }
 ?>

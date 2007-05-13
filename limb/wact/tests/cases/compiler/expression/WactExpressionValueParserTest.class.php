@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionValueParserTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactExpressionValueParserTest.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -254,6 +254,16 @@ class WactExpressionValueParserTest extends UnitTestCase
     $this->assertIdentical($expr->getValue(),'hello');
   }
 
+  function testConstantPropertyWithNewSyntax()
+  {
+    $property = new WactConstantProperty('hello');
+
+    $this->root->registerProperty('Test', $property);
+
+    $expr = $this->parser->parse(':Test');
+    $this->assertIdentical($expr->getValue(),'hello');
+  }
+
   function testConstantPropertyFromRootContext()
   {
     $property = new WactConstantProperty('hello');
@@ -270,8 +280,17 @@ class WactExpressionValueParserTest extends UnitTestCase
 
     $this->root->registerProperty('Test', $property);
 
-    //debugBreak();
     $expr = $this->parser->parse('^Test');
+    $this->assertIdentical($expr->getValue(),'hello');
+  }
+
+  function testConstantPropertyFromParentContextWithNewSyntax()
+  {
+    $property = new WactConstantProperty('hello');
+
+    $this->root->registerProperty('Test', $property);
+
+    $expr = $this->parser->parse('^:Test');
     $this->assertIdentical($expr->getValue(),'hello');
   }
 

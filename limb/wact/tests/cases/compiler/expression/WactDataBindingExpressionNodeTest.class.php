@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpressionNodeTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactDataBindingExpressionNodeTest.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -210,6 +210,18 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
     $context->registerProperty('Test', $property);
 
     $DBE = new WactDataBindingExpressionNode('Test', $context);
+
+    $this->assertIdentical($DBE->getValue(), 'hello');
+  }
+
+  function testPropertyPrefix()
+  {
+    $property = new WactConstantProperty('hello');
+
+    $context = new WactCompileTreeNode();
+    $context->registerProperty('Test', $property);
+
+    $DBE = new WactDataBindingExpressionNode(':Test', $context);
 
     $this->assertIdentical($DBE->getValue(), 'hello');
   }

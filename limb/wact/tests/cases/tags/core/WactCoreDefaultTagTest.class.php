@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreDefaultTagTest.class.php 5660 2007-04-13 20:29:02Z serega $
+ * @version    $Id: WactCoreDefaultTagTest.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -16,8 +16,8 @@ class WactCoreDefaultTagTest extends WactTemplateTestCase
   {
     parent :: setUp();
 
-    $template = '<core:default for="Var">default</core:default>'.
-                '<core:optional for="Var">optional</core:optional>';
+    $template = '<core:default for="{$Var}">default</core:default>'.
+                '<core:optional for="{$Var}">optional</core:optional>';
     $this->registerTestingTemplate('/tags/core/default/default.html', $template);
   }
 
@@ -138,6 +138,17 @@ class WactCoreDefaultTagTest extends WactTemplateTestCase
     {
       $this->assertWantedPattern('/Missing required attribute/', $e->getMessage());
     }
+  }
+
+  function testDBKept()
+  {
+    $template = '<core:default for="Var">default</core:default>'.
+                '<core:optional for="Var">optional</core:optional>';
+    $this->registerTestingTemplate('/tags/core/default/default_bc_kept.html', $template);
+    $page = $this->initTemplate('/tags/core/default/default_bc_kept.html');
+    $page->set('Var', 1);
+    $output = $page->capture();
+    $this->assertEqual($output, 'optional');
   }
 }
 ?>

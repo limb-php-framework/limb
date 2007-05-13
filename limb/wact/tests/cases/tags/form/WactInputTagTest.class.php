@@ -61,9 +61,9 @@ class WactInputTagTest extends WactTemplateTestCase
     $template ='<form id="testForm" runat="server">'.
                 '<input type="text" id="test" name="myInput" value="my_value" runat="server" />'.
                '</form>';
-    $this->registerTestingTemplate('/components/form/input_tag/value_from_form.html', $template);
+    $this->registerTestingTemplate('/tags/form/input/value_from_form.html', $template);
 
-    $page = $this->initTemplate('/components/form/input_tag/value_from_form.html');
+    $page = $this->initTemplate('/tags/form/input/value_from_form.html');
 
     $form = $page->getChild('testForm');
     $form->registerDataSource(array('myInput' => 'foo'));
@@ -79,9 +79,9 @@ class WactInputTagTest extends WactTemplateTestCase
     $template ='<form id="testForm" runat="server">'.
                '<input type="text" id="test" name="myInput" runat="server" given_value="{$#bar.var1}" />'.
                '</form>';
-    $this->registerTestingTemplate('/components/form/input_tag/use_given_value.html', $template);
+    $this->registerTestingTemplate('/tags/form/input/use_given_value.html', $template);
 
-    $page = $this->initTemplate('/components/form/input_tag/use_given_value.html');
+    $page = $this->initTemplate('/tags/form/input/use_given_value.html');
     $page->set('bar', array('var1' => 'other_value'));
 
     $form = $page->getChild('testForm');
@@ -96,9 +96,9 @@ class WactInputTagTest extends WactTemplateTestCase
   function testUseGivenValueWithoutForm()
   {
     $template = '<input type="text" id="test" name="myInput" runat="server" given_value="{$#bar}" />';
-    $this->registerTestingTemplate('/components/form/input_tag/use_given_value_without_form.html', $template);
+    $this->registerTestingTemplate('/tags/form/input/use_given_value_without_form.html', $template);
 
-    $page = $this->initTemplate('/components/form/input_tag/use_given_value_without_form.html');
+    $page = $this->initTemplate('/tags/form/input/use_given_value_without_form.html');
     $page->set('bar', 'other_value');
 
     $expected = '<input type="text" id="test" name="myInput" value="other_value" />';
@@ -110,12 +110,28 @@ class WactInputTagTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">'.
                  '<input type="text" id="test" name="myInput" runat="server"/>'.
                 '</form>';
-    $this->registerTestingTemplate('/components/form/input_tag/test_novalue.html', $template);
+    $this->registerTestingTemplate('/tags/form/input/test_novalue.html', $template);
 
-    $page = $this->initTemplate('/components/form/input_tag/test_novalue.html');
+    $page = $this->initTemplate('/tags/form/input/test_novalue.html');
 
     $expected = '<form id="testForm">'.
                 '<input type="text" id="test" name="myInput" value="" />'.
+                '</form>';
+    $this->assertEqual($page->capture(), $expected);
+  }
+
+  function testAllowToUseDynamicIdAttribute()
+  {
+    $template = '<form id="testForm" runat="server">'.
+                '<input type="text" id="{$test_value}" name="myInput" runat="server"/>'.
+                '</form>';
+    $this->registerTestingTemplate('/tags/form/input/dynamic_attribute.html', $template);
+
+    $page = $this->initTemplate('/tags/form/input/dynamic_attribute.html');
+    $page->setChildDatasource('testForm', array('test_value' => 'my_value'));
+
+    $expected = '<form id="testForm">'.
+                '<input type="text" name="myInput" value="" id="my_value" />'.
                 '</form>';
     $this->assertEqual($page->capture(), $expected);
   }

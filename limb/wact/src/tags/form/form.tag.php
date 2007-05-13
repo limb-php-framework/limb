@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form.tag.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: form.tag.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -16,6 +16,7 @@
  * @suppress_attributes children_reuse_runat from
  * @runat client
  * @restrict_self_nesting
+ * @convert_to_expression from
  */
 class WactFormTag extends WactRuntimeDatasourceComponentHTMLTag
 {

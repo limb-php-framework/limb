@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactSelectOptionsSourceTagTest.class.php 5202 2007-03-07 08:47:03Z serega $
+ * @version    $Id: WactSelectOptionsSourceTagTest.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -18,11 +18,11 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<select:OPTIONS_SOURCE target="select" from="source"/>' .
                 '</core:DATASOURCE>';
 
-    $this->registerTestingTemplate('/form/select_options_source/error.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/error.html', $template);
 
     try
     {
-      $page = $this->initTemplate('/form/select_options_source/error.html');
+      $page = $this->initTemplate('/tags/form/select_options_source/error.html');
       $this->assertTrue(false);
     }
     catch(WactException $e)
@@ -38,11 +38,11 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<core:DATASOURCE id="select"></core:DATASOURCE>' .
                 '</core:DATASOURCE>';
 
-    $this->registerTestingTemplate('/form/select_options_source/not_supported.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/not_supported.html', $template);
 
     try
     {
-      $page = $this->initTemplate('/form/select_options_source/not_supported.html');
+      $page = $this->initTemplate('/tags/form/select_options_source/not_supported.html');
       $this->assertTrue(false);
     }
     catch(WactException $e)
@@ -54,15 +54,15 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
   function testTakeOptionsFrom()
   {
     $template = '<core:DATASOURCE id="data">' .
-                '<select:OPTIONS_SOURCE target="select" from="source"/>' .
+                '<select:OPTIONS_SOURCE target="select" from="{$^source}"/>' .
                 '<form runat="server">' .
                 '<select id="select" name="select"></select>' .
                 '</form>' .
                 '</core:DATASOURCE>';
 
-    $this->registerTestingTemplate('/form/select_options_source/from.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/from.html', $template);
 
-    $page = $this->initTemplate('/form/select_options_source/from.html');
+    $page = $this->initTemplate('/tags/form/select_options_source/from.html');
 
     $data = $page->getChild('data');
     $data->set('source', $options = array('4' => 'red', '5' => 'blue'));
@@ -80,9 +80,9 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<select id="select" name="select"></select>' .
                 '</form>';
 
-    $this->registerTestingTemplate('/form/select_options_source/register_dataset.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/register_dataset.html', $template);
 
-    $page = $this->initTemplate('/form/select_options_source/register_dataset.html');
+    $page = $this->initTemplate('/tags/form/select_options_source/register_dataset.html');
 
     $data = $page->getChild('source');
 
@@ -101,9 +101,9 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<select id="select" name="select"></select>' .
                 '</form>';
 
-    $this->registerTestingTemplate('/form/select_options_source/use_name_and_id.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/use_name_and_id.html', $template);
 
-    $page = $this->initTemplate('/form/select_options_source/use_name_and_id.html');
+    $page = $this->initTemplate('/tags/form/select_options_source/use_name_and_id.html');
 
     $data = $page->getChild('source');
 
@@ -124,9 +124,9 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<select id="select2" name="select2"></select>' .
                 '</form>';
 
-    $this->registerTestingTemplate('/form/select_options_source/several_targets.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/several_targets.html', $template);
 
-    $page = $this->initTemplate('/form/select_options_source/several_targets.html');
+    $page = $this->initTemplate('/tags/form/select_options_source/several_targets.html');
 
     $data = $page->getChild('source');
 
@@ -147,9 +147,9 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<select id="select" name="select"></select>' .
                 '</form>';
 
-    $this->registerTestingTemplate('/form/select_options_source/with_default.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/with_default.html', $template);
 
-    $page = $this->initTemplate('/form/select_options_source/with_default.html');
+    $page = $this->initTemplate('/tags/form/select_options_source/with_default.html');
 
     $data = $page->getChild('source');
 
@@ -169,9 +169,9 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                 '<select id="select" name="select"></select>' .
                 '</form>';
 
-    $this->registerTestingTemplate('/form/select_options_source/register_datasource_and_default_option.html', $template);
+    $this->registerTestingTemplate('/tags/form/select_options_source/register_datasource_and_default_option.html', $template);
 
-    $page = $this->initTemplate('/form/select_options_source/register_datasource_and_default_option.html');
+    $page = $this->initTemplate('/tags/form/select_options_source/register_datasource_and_default_option.html');
 
     $data = $page->getChild('source');
 

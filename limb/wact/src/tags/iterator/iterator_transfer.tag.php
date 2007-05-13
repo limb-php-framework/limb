@@ -13,7 +13,8 @@ require_once('limb/wact/src/tags/fetch/WactBaseFetchingTag.class.php');
 
 /**
 * @tag iterator:TRANSFER
-* @req_const_attributes to from
+* @req_attributes to from
+* @convert_to_expression from
 */
 class WactIteratorTransferTag extends WactBaseFetchingTag
 {
@@ -24,21 +25,9 @@ class WactIteratorTransferTag extends WactBaseFetchingTag
   {
     parent :: generateBeforeContent($code);
 
-    $this->generateDereference($code);
-  }
-
-  function generateDereference($code_writer)
-  {
-    $from_dbe = new WactDataBindingExpressionNode($this->getAttribute('from'), $this);
-    $from_dbe->generatePreStatement($code_writer);
-
-    $code_writer->writePHP($this->getComponentRefCode() . '->registerDataset(');
-
-    $from_dbe->generateExpression($code_writer);
-
-    $code_writer->writePHP(');');
-
-    $from_dbe->generatePostStatement($code_writer);
+    $code->writePHP($this->getComponentRefCode() . '->registerDataset(');
+    $this->attributeNodes['from']->generateExpression($code);
+    $code->writePHP(');');
   }
 }
 

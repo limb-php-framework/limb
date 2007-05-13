@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactListTagsTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactListTagsTest.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -39,9 +39,22 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/list.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "George-Alexander-Benjamin-");
+  }
+
+  function testListItemGeneratedLocalVariableInside()
+  {
+    $template = '<list:LIST id="test"><list:ITEM id="father"><?php echo $father->get("First"); ?></list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_list_generates_local_php_variable.html', $template);
+    $page = $this->initTemplate('/tags/list/list_list_generates_local_php_variable.html');
+
+    $list = $page->getChild('test');
+    $list->registerDataSet($this->founding_fathers);
+    $output = $page->capture();
+    $this->assertEqual($output, "GeorgeAlexanderBenjamin");
   }
 
   function testListSeparator()
@@ -53,7 +66,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/separator.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "George-Alexander-Benjamin");
   }
@@ -132,7 +145,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/separator_with_unbalanced_content.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "George</tr><tr>Alexander</tr><tr>Benjamin");
   }
@@ -164,7 +177,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/separator_with_literal.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, 'George{$var}Alexander{$var}Benjamin');
   }
@@ -179,7 +192,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/default.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "George-Alexander-Benjamin-");
   }
@@ -207,7 +220,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/list-rownumber.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "1:George-2:Alexander-3:Benjamin-");
   }
@@ -234,8 +247,8 @@ class WactListTagsTest extends WactTemplateTestCase
   function testListRowOddProperty()
   {
     $template = '<list:LIST id="test"><list:ITEM>'.
-                '<core:optional for="ListRowOdd">odd</core:optional>'.
-                '<core:default for="ListRowOdd">even</core:default>'.
+                '<core:optional for="{$:ListRowOdd}">odd</core:optional>'.
+                '<core:default for="{$:ListRowOdd}">even</core:default>'.
                 ':{$First}-'.
                 '</list:ITEM></list:LIST>';
 
@@ -243,7 +256,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/list-rowodd.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "odd:George-even:Alexander-odd:Benjamin-");
   }
@@ -260,7 +273,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/list-roweven.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "odd:George-even:Alexander-odd:Benjamin-");
   }
@@ -273,19 +286,31 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/list-parity.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new WactArrayIterator($this->founding_fathers));
+    $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "odd:George-even:Alexander-odd:Benjamin-");
   }
 
   function testListFrom()
   {
-    $template = '<list:LIST from="test"><list:ITEM>{$First}-</list:ITEM></list:LIST>';
+    $template = '<list:LIST from="{$test}"><list:ITEM>{$First}-</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/list/list_from.html', $template);
     $page = $this->initTemplate('/tags/list/list_from.html');
 
-    $page->set('test', new WactArrayIterator($this->founding_fathers));
+    $page->set('test', $this->founding_fathers);
+    $output = $page->capture();
+    $this->assertEqual($output, "George-Alexander-Benjamin-");
+  }
+
+  function testListFromOldSyntaxForBC()
+  {
+    $template = '<list:LIST from="test"><list:ITEM>{$First}-</list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_from_old_syntax.html', $template);
+    $page = $this->initTemplate('/tags/list/list_from_old_syntax.html');
+
+    $page->set('test', $this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "George-Alexander-Benjamin-");
   }
@@ -301,7 +326,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $page = $this->initTemplate('/tags/list/nested-id-from.html');
 
     $list = $page->getChild('test');
-    $list->registerDataSet(new NestedDataSetDecorator(new WactArrayIterator($this->founding_fathers)));
+    $list->registerDataSet(new NestedDataSetDecorator($this->founding_fathers));
     $output = $page->capture();
     $this->assertEqual($output, "George:value1 value3 value5 -Alexander:value1 value3 value5 -Benjamin:value1 value3 value5 -");
   }
@@ -316,7 +341,7 @@ class WactListTagsTest extends WactTemplateTestCase
     $this->registerTestingTemplate('/tags/list/nested-from-from.html', $template);
     $page = $this->initTemplate('/tags/list/nested-from-from.html');
 
-    $page->set('test',new NestedDataSetDecorator(new WactArrayIterator($this->founding_fathers)));
+    $page->set('test',new NestedDataSetDecorator($this->founding_fathers));
     $output = $page->capture();
     $this->assertEqual($output, "George:value1 value3 value5 -Alexander:value1 value3 value5 -Benjamin:value1 value3 value5 -");
   }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: control.inc.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: control.inc.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -32,9 +32,9 @@ class WactControlTag extends WactRuntimeComponentHTMLTag
   {
     if ($this->hasAttribute('wact:id')) {
       return $this->getAttribute('wact:id');
-    } else if ($this->hasAttribute('id')) {
+    } else if ($this->hasConstantAttribute('id')) {
       return $this->getAttribute('id');
-    } else if ($this->hasAttribute('name')) {
+    } else if ($this->hasConstantAttribute('name')) {
       return str_replace('[]', '', $this->getAttribute('name'));
     } else if (!empty($this->ServerId)) {
       return $this->ServerId;
@@ -49,14 +49,14 @@ class WactControlTag extends WactRuntimeComponentHTMLTag
    */
   function prepare()
   {
-    if (!$this->getBoolAttribute('name')) {
-      if ( $this->getBoolAttribute('wact:id') ) {
-        $this->setAttribute('name', $this->getAttribute('wact:id'));
-      } else if ( $this->getBoolAttribute('id') ) {
+    if(!$this->hasAttribute('name'))
+    {
+      if($this->hasConstantAttribute('id'))
         $this->setAttribute('name', $this->getAttribute('id'));
-      } else {
+      elseif ($this->hasAttribute('wact:id') )
+        $this->setAttribute('name', $this->getAttribute('wact:id'));
+      else
         $this->raiseRequiredAttributeError('name');
-      }
     }
 
     parent::prepare();

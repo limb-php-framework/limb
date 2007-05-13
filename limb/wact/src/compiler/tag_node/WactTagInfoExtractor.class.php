@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTagInfoExtractor.class.php 5138 2007-02-19 15:06:08Z tony $
+ * @version    $Id: WactTagInfoExtractor.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -49,7 +49,6 @@ class WactTagInfoExtractor
 
   protected function _fillTagInfo($info)
   {
-
     if(isset($this->annotations['suppress_attributes']))
     {
       $attrs = $this->_processAttributesString($this->annotations['suppress_attributes']);
@@ -85,6 +84,14 @@ class WactTagInfoExtractor
 
     if(isset($this->annotations['runat_as']))
       $info->setRunatAs($this->annotations['runat_as']);
+
+    // this code added to support old form of DBE expressions in some attributes
+    // like <core:optional for='var'> should actually be <core:optional for='{$var}'>
+    if(isset($this->annotations['convert_to_expression']))
+    {
+      $attrs = $this->_processAttributesString($this->annotations['convert_to_expression']);
+      $info->setConvertAttributesToExpressions($attrs);
+    }
   }
 
   function endClass()

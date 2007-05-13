@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactExpressionValueParser.class.php 5874 2007-05-12 17:21:35Z serega $
+ * @version    $Id: WactExpressionValueParser.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -54,7 +54,7 @@ class WactExpressionValueParser
   */
   protected function parsePrimary()
   {
-    $token = $this->getToken('/\G\s*(#|\^|\$|-|"|\'|!|\[|\(|[0-9]+|[A-Za-z][A-Za-z0-9_.]*)/u');
+    $token = $this->getToken('/\G\s*(#|\^|\$|:|-|"|\'|!|\[|\(|[0-9]+|[A-Za-z][A-Za-z0-9_.]*)/u');
     if ($token === FALSE)
       $this->raiseError("Expecting primary operand in expression.");
 
@@ -70,9 +70,9 @@ class WactExpressionValueParser
         $this->raiseError('Expecting ) in expression');
     }
     // one of the DBE context modifier
-    elseif($token == '^' || $token == '#' || $token == '[')
+    elseif($token == '^' || $token == '#' || $token == '[' || $token == ':')
     {
-      if (!($token2 = $this->getToken('/\G([A-Za-z^\[][A-Za-z0-9_.\[\]^]*)/u')))
+      if (!($token2 = $this->getToken('/\G([A-Za-z^:\[][A-Za-z0-9_.\[\]^]*)/u')))
         $this->raiseError("Expecting identifier after DBE modifier.");
 
       return new WactDataBindingExpressionNode($token . $token2, $this->context);

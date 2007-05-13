@@ -125,7 +125,7 @@ class WactFetchTagTest extends WactTemplateTestCase
   function testSaveDatasetToVarInDatasource()
   {
     $template = '<core:datasource id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="[data]var1"/>' .
-                '<list:LIST from="[data]var1"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
+                '<list:LIST from="{$#[data]var1}"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_datasource_buffer.html', $template);
 
@@ -137,19 +137,18 @@ class WactFetchTagTest extends WactTemplateTestCase
   function testSaveDatasetToVarInWrongDatasourceThrowException()
   {
     $template = '<list:list id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="[data]var1"/>' .
-                '<list:LIST from="(data)var1"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
+                '<list:LIST from="{$[data]var1}"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_var_in_wrong_datasource.html', $template);
 
     try
     {
       $page = $this->initTemplate('/tags/fetch/save_dataset_to_var_in_wrong_datasource.html');
-      $page->capture(); // Need this line to show error if exception was not raised at compiletime
       $this->assertTrue(false);
     }
     catch(WactException $e)
     {
-      $this->assertWantedPattern('/Wrong DBE datasource context in buffer attribute/', $e->getMessage());
+      $this->assertWantedPattern('/None existing expression datasource context/', $e->getMessage());
       $this->assertEqual($e->getParam('expression'), '[data]var1');
     }
   }
@@ -157,7 +156,7 @@ class WactFetchTagTest extends WactTemplateTestCase
   function testSaveDatasetToListList()
   {
     $template = '<list:list id="data"/><fetch using="TestingFetchTagsDatasetFetcher" to="[data]"/>' .
-                '<list:LIST from="[data]"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
+                 '<list:LIST from="{$#[data]}"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_list_list.html', $template);
 
@@ -169,7 +168,7 @@ class WactFetchTagTest extends WactTemplateTestCase
   function testSaveDatasetToNonExistingTargetDatasourceThrowException()
   {
     $template = '<fetch using="TestingFetchTagsDatasetFetcher" to="[no_such_datasource]"/>' .
-                '<list:LIST from="(data)"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
+                '<list:LIST from="{$[data]}"><list:ITEM>{$title}|</list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/fetch/save_dataset_to_none_existing_target_datasource.html', $template);
 

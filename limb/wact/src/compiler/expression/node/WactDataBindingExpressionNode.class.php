@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpressionNode.class.php 5874 2007-05-12 17:21:35Z serega $
+ * @version    $Id: WactDataBindingExpressionNode.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -81,7 +81,14 @@ class WactDataBindingExpressionNode
         $this->datasource_context = null;
         $this->php_variable = true;
         $this->processed_expression = substr($this->processed_expression, 1);
-        continue;
+        return;
+      }
+
+      // tag property
+      if ($modifier == ":")
+      {
+        $this->processed_expression = substr($this->processed_expression, 1);
+        return;
       }
 
       // root context

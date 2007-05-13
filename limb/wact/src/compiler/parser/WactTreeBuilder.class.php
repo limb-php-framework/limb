@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactTreeBuilder.class.php 5875 2007-05-12 22:45:34Z serega $
+ * @version    $Id: WactTreeBuilder.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -267,10 +267,16 @@ class WactTreeBuilder
   function buildTagNode($tag_info, $tag, $location, $attrs, $is_empty = false, $has_closing_tag = true)
   {
     $tag_node = $this->_createTagNode($tag_info, $tag, $location);
+
     $this->_registerPropertiesInTagNode($tag_node);
+
     $tag_node->emptyClosedTag = $is_empty;
     $tag_node->hasClosingTag = $has_closing_tag;
+
+    $this->_convertAttributesToExpressionIfRequired($tag_node, $tag_info, $attrs);
+
     $this->_addAttributesToTagNode($tag_node, $location, $attrs);
+
     return $tag_node;
   }
 
@@ -307,6 +313,27 @@ class WactTreeBuilder
       }
 
       $tag_node->addChildAttribute($attribute);
+    }
+  }
+
+  // this code added to support old form of DBE expressions in some attributes
+  // like <core:optional for='var'> should actually be <core:optional
+  protected function _convertAttributesToExpressionIfRequired($tag_node, $tag_info, &$attributes)
+  {
+    foreach($tag_info->getConvertAttributesToExpressions() as $name)
+    {
+      if(!isset($attributes[$name]))
+        continue;
+
+      $value = $attributes[$name];
+
+      if(strpos($value, '{$') !== FALSE)
+        continue;
+
+      if($tag_node->isDataSource() && (strpos($value, '#') === FALSE))
+        $attributes[$name] = '{$^' . $value . '}';
+      else
+        $attributes[$name] = '{$' . $value . '}';
     }
   }
 

@@ -74,9 +74,9 @@ class WactFormTagTest extends WactTemplateTestCase
     $template = '<form id="testForm" runat="server">
                     <label id="testLabel" for="testId" runat="server">A label</label>
                 </form>';
-    $this->registerTestingTemplate('/components/form/findlabel.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/findlabel.html', $template);
 
-    $page = $this->initTemplate('/components/form/findlabel.html');
+    $page = $this->initTemplate('/tags/form/form/findlabel.html');
 
     $form = $page->getChild('testForm');
     $label = $page->getChild('testLabel');
@@ -84,14 +84,30 @@ class WactFormTagTest extends WactTemplateTestCase
     $this->assertReference($form->findLabel('testId', $form), $label);
   }
 
+  function testFormTagGeneratesLocalPHPVariableReferencingToForm()
+  {
+    $template = '<form id="testForm" runat="server">'.
+                '<?php echo $testForm->get("test_value"); ?>'.
+                '</form>';
+    $this->registerTestingTemplate('/tags/form/form/form_tag_generates_php_variable.html', $template);
+
+    $page = $this->initTemplate('/tags/form/form/form_tag_generates_php_variable.html');
+
+    $form = $page->getChild('testForm');
+    $form->registerDatasource(array('test_value' => "my_value"));
+
+    $expected = '<form id="testForm">my_value</form>';
+    $this->assertEqual($page->capture(), $expected);
+  }
+
   function testFindLabelNotFound()
   {
     $template = '<form id="testForm" runat="server">
                     <label id="testLabel" for="testId" runat="server">A label</label>
                 </form>';
-    $this->registerTestingTemplate('/components/form/findlabelnotfound.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/findlabelnotfound.html', $template);
 
-    $page = $this->initTemplate('/components/form/findlabelnotfound.html');
+    $page = $this->initTemplate('/tags/form/form/findlabelnotfound.html');
 
     $form = $page->getChild('testForm');
 
@@ -125,9 +141,9 @@ class WactFormTagTest extends WactTemplateTestCase
                     <input name="Input3" type="text" runat="server">
                 </form>';
 
-    $this->registerTestingTemplate('/components/form/seterrors.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/seterrors.html', $template);
 
-    $page = $this->initTemplate('/components/form/seterrors.html');
+    $page = $this->initTemplate('/tags/form/form/seterrors.html');
 
     $form = $page->getChild('testForm');
 
@@ -188,9 +204,9 @@ class WactFormTagTest extends WactTemplateTestCase
 
                 </form>';
 
-    $this->registerTestingTemplate('/components/form/seterrorstricky.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/seterrorstricky.html', $template);
 
-    $page = $this->initTemplate('/components/form/seterrorstricky.html');
+    $page = $this->initTemplate('/tags/form/form/seterrorstricky.html');
 
     $form = $page->getChild('testForm');
 
@@ -263,9 +279,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testKnownChildren()
   {
     $template = '<form id="test" runat="server"><input id="submit" type="submit" name="submit" value="hey"/></form>';
-    $this->registerTestingTemplate('/tags/form/knownchildren.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/knownchildren.html', $template);
 
-    $page = $this->initTemplate('/tags/form/knownchildren.html');
+    $page = $this->initTemplate('/tags/form/form/knownchildren.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
@@ -275,9 +291,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testKnownChildrenReuseRunatTrue()
   {
     $template = '<form id="test" runat="server" children_reuse_runat="true"><input id="submit" type="submit" name="submit" value="hey"></form>';
-    $this->registerTestingTemplate('/tags/form/knownchildrenchildren_reuse_runattrue.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/knownchildrenchildren_reuse_runattrue.html', $template);
 
-    $page = $this->initTemplate('/tags/form/knownchildrenchildren_reuse_runattrue.html');
+    $page = $this->initTemplate('/tags/form/form/knownchildrenchildren_reuse_runattrue.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
@@ -287,9 +303,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testKnownChildrenReuseRunatFalse()
   {
     $template = '<form id="test" runat="server" children_reuse_runat="fAlSe"><input id="submit" type="submit" name="submit" value="hey" /></form>';
-    $this->registerTestingTemplate('/tags/form/knownchildrenchildren_reuse_runatfalse.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/knownchildrenchildren_reuse_runatfalse.html', $template);
 
-    $page = $this->initTemplate('/tags/form/knownchildrenchildren_reuse_runatfalse.html');
+    $page = $this->initTemplate('/tags/form/form/knownchildrenchildren_reuse_runatfalse.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertFalse($page->findChild('submit'));
     $output = $page->capture();
@@ -299,9 +315,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testKnownChildrenRunatClient()
   {
     $template = '<form id="test" runat="server"><input id="submit" type="submit" name="submit" value="hey" runat="client" /></form>';
-    $this->registerTestingTemplate('/tags/form/knownchildrenuserunatclient.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/knownchildrenuserunatclient.html', $template);
 
-    $page = $this->initTemplate('/tags/form/knownchildrenuserunatclient.html');
+    $page = $this->initTemplate('/tags/form/form/knownchildrenuserunatclient.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertFalse($page->findChild('submit'));
     $output = $page->capture();
@@ -311,9 +327,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testNestedKnownChildren()
   {
     $template = '<form id="test" runat="server"><core:block name="block"><input id="submit" type="submit" name="submit" value="hey"/></core:block></form>';
-    $this->registerTestingTemplate('/tags/form/nestedknownchildren.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/nestedknownchildren.html', $template);
 
-    $page = $this->initTemplate('/tags/form/nestedknownchildren.html');
+    $page = $this->initTemplate('/tags/form/form/nestedknownchildren.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
@@ -323,12 +339,12 @@ class WactFormTagTest extends WactTemplateTestCase
   function testIncludedKnownChildren()
   {
     $template = '<input id="submit" type="submit" name="submit" value="hey"/>';
-    $this->registerTestingTemplate('/tags/form/knowninclude.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/knowninclude.html', $template);
 
-    $template = '<form id="test" runat="server"><core:include file="/tags/form/knowninclude.html"/></form>';
-    $this->registerTestingTemplate('/tags/form/includedknownchildren.html', $template);
+    $template = '<form id="test" runat="server"><core:include file="/tags/form/form/knowninclude.html"/></form>';
+    $this->registerTestingTemplate('/tags/form/form/includedknownchildren.html', $template);
 
-    $page = $this->initTemplate('/tags/form/includedknownchildren.html');
+    $page = $this->initTemplate('/tags/form/form/includedknownchildren.html');
     $this->assertIsA($page->findChild('test'),'WactFormComponent');
     $this->assertIsA($page->findChild('submit'),'WactFormElementComponent');
     $output = $page->capture();
@@ -338,9 +354,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testGetServerIdWithID()
   {
     $template = '<form id="test" name="foo" runat="server"></form>';
-    $this->registerTestingTemplate('/tags/form/getserveridwithid.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/getserveridwithid.html', $template);
 
-    $page = $this->initTemplate('/tags/form/getserveridwithid.html');
+    $page = $this->initTemplate('/tags/form/form/getserveridwithid.html');
     $page->getChild('test');
     $this->assertNoErrors();
   }
@@ -348,9 +364,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testGetServerIdWithName()
   {
     $template = '<form name="foo" runat="server"></form>';
-    $this->registerTestingTemplate('/tags/form/getserveridwithname.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/getserveridwithname.html', $template);
 
-    $page = $this->initTemplate('/tags/form/getserveridwithname.html');
+    $page = $this->initTemplate('/tags/form/form/getserveridwithname.html');
     $page->getChild('foo');
     $this->assertNoErrors();
   }
@@ -361,15 +377,15 @@ class WactFormTagTest extends WactTemplateTestCase
     $this->assertTrue($FormTag->isDataSource());
   }
 
-  function testFromAttributeDataTakenFromParent()
+  function testFromAttribute()
   {
     $template =
-        '<form name="my_form" from="middle" runat="server">' .
+        '<form name="my_form" from="{$^middle}" runat="server">' .
         '{$Var}:{$^Var}:{$#Var}' .
         '</form>';
 
-    $this->registerTestingTemplate('/tags/core/form/from_attribute.html', $template);
-    $page = $this->initTemplate('/tags/core/form/from_attribute.html');
+    $this->registerTestingTemplate('/tags/form/form/from_attribute.html', $template);
+    $page = $this->initTemplate('/tags/form/form/from_attribute.html');
     $page->set('Var', 'outer');
     $page->set('middle', array('Var' => 'middle'));
 
@@ -377,29 +393,28 @@ class WactFormTagTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form name="my_form">middle:outer:outer</form>');
   }
 
-  function testDBEFromAttribute()
+  function testFromAttributeWithOldSyntaxDataTakenFromParent()
   {
     $template =
-        '<core:datasource>' .
-        '<form  name="my_form" from="#middle" runat="server">' .
-        '{$Var}' .
-        '</form>'.
-        '</core:datasource>';
+        '<form name="my_form" from="middle" runat="server">' .
+        '{$Var}:{$^Var}:{$#Var}' .
+        '</form>';
 
-    $this->registerTestingTemplate('/tags/core/form/dbe_from_attribute.html', $template);
-    $page = $this->initTemplate('/tags/core/form/dbe_from_attribute.html');
+    $this->registerTestingTemplate('/tags/form/form/from_attribute_old_syntax.html', $template);
+    $page = $this->initTemplate('/tags/form/form/from_attribute_old_syntax.html');
+    $page->set('Var', 'outer');
     $page->set('middle', array('Var' => 'middle'));
 
     $output = $page->capture();
-    $this->assertEqual($output, '<form name="my_form">middle</form>');
+    $this->assertEqual($output, '<form name="my_form">middle:outer:outer</form>');
   }
 
   function testDynamicAttributes()
   {
     $template = '<form id="test" action="{$^action}" runat="server"></form>';
-    $this->registerTestingTemplate('/tags/form/dymanic_attribute.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/dymanic_attribute.html', $template);
 
-    $page = $this->initTemplate('/tags/form/dymanic_attribute.html');
+    $page = $this->initTemplate('/tags/form/form/dymanic_attribute.html');
     $page->set('action', 'my_action');
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test" action="my_action"></form>');
@@ -408,9 +423,9 @@ class WactFormTagTest extends WactTemplateTestCase
   function testComplexDynamicAttributes()
   {
     $template = '<form id="test" action="{$^my.action}" runat="server"></form>';
-    $this->registerTestingTemplate('/tags/form/complex_dynamic_attribute.html', $template);
+    $this->registerTestingTemplate('/tags/form/form/complex_dynamic_attribute.html', $template);
 
-    $page = $this->initTemplate('/tags/form/complex_dynamic_attribute.html');
+    $page = $this->initTemplate('/tags/form/form/complex_dynamic_attribute.html');
     $page->set('my', array('action' => 'my_action'));
     $output = $page->capture();
     $this->assertEqual($output, '<form id="test" action="my_action"></form>');

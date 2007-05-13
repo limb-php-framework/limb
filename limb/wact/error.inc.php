@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: error.inc.php 5334 2007-03-23 11:48:20Z pachanga $
+ * @version    $Id: error.inc.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -23,7 +23,7 @@ class WactException extends Exception
     else
       $this->params = $params;
 
-    $error_message = 'WACT exception: ' . $message . "\n" . var_export($this->params, true);
+    $error_message = 'WACT exception: ' . $message . "\n. Params : " . var_export($this->params, true);
 
     parent :: __construct($error_message);
   }

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactGoodHtmlTest.class.php 5875 2007-05-12 22:45:34Z serega $
+ * @version    $Id: WactGoodHtmlTest.class.php 5878 2007-05-13 11:14:57Z serega $
  * @package    wact
  */
 
@@ -39,7 +39,7 @@ class WactGoodHtmlTest extends WactTemplateTestCase
 
   function testUnclosedHtmlTagInCoreOptional()
   {
-    $template = '<core:optional for="var"><tr></core:optional>';
+    $template = '<core:optional for="{$var}"><tr></core:optional>';
     $this->registerTestingTemplate('/goodhtml/unclosed_html_tag_in_core_optional.html', $template);
     $page = $this->initTemplate('/goodhtml/unclosed_html_tag_in_core_optional.html');
     $page->set('var', 1);
