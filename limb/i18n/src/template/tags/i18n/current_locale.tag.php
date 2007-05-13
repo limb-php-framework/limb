@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: current_locale.tag.php 5373 2007-03-28 11:10:40Z pachanga $
+ * @version    $Id: current_locale.tag.php 5882 2007-05-13 21:21:58Z serega $
  * @package    i18n
  */
 /**
@@ -15,18 +15,15 @@
 */
 class lmbCurrentLocaleTag extends WactCompilerTag
 {
-  function preGenerate($code)
+  function generateTagContent($code)
   {
-    parent::preGenerate($code);
 
     $name = $this->getAttribute('name');
     $code->writePhp('if ("' . $name. '" == lmbToolkit :: instance()->getLocale()) {');
-  }
 
-  function postGenerate($code)
-  {
+    parent::generateTagContent($code);
+
     $code->writePhp('}');
-    parent::postGenerate($code);
   }
 }
 
