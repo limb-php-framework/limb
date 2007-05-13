@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreDatasourceTagTest.class.php 5878 2007-05-13 11:14:57Z serega $
+ * @version    $Id: WactCoreDatasourceTagTest.class.php 5879 2007-05-13 11:22:40Z serega $
  * @package    wact
  */
 
@@ -98,7 +98,7 @@ class WactCoreDatasourceTagTest extends WactTemplateTestCase
     $this->assertEqual($output, 'middle:outer:outer');
   }
 
-  function testDBEFromAttribute()
+  function testFromAttributeDataTakenFromRoot()
   {
     $template =
         '<core:datasource>' .
@@ -107,13 +107,32 @@ class WactCoreDatasourceTagTest extends WactTemplateTestCase
         '</core:datasource>'.
         '</core:datasource>';
 
-    $this->registerTestingTemplate('/tags/core/dataspace/dbe_from_attribute.html', $template);
-    $page = $this->initTemplate('/tags/core/dataspace/dbe_from_attribute.html');
+    $this->registerTestingTemplate('/tags/core/dataspace/from_attribute_root.html', $template);
+    $page = $this->initTemplate('/tags/core/dataspace/from_attribute_root.html');
     $page->set('middle', array('Var' => 'middle'));
 
     $output = $page->capture();
     $this->assertEqual($output, 'middle');
   }
+
+
+  function testFromAttributeDataTakenFromPhpVariable()
+  {
+    $template =
+        '<?php $middle = array("Var" => "middle"); ?>'.
+        '<core:datasource>' .
+        '<core:datasource from="{$$middle}">' .
+        '{$Var}' .
+        '</core:datasource>'.
+        '</core:datasource>';
+
+    $this->registerTestingTemplate('/tags/core/dataspace/from_attribute_php_variable.html', $template);
+    $page = $this->initTemplate('/tags/core/dataspace/from_attribute_php_variable.html');
+
+    $output = $page->capture();
+    $this->assertEqual($output, 'middle');
+  }
+
 
   function testOldFormOfFromAttribute()
   {
