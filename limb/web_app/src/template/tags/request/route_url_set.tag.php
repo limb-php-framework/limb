@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: route_url_set.tag.php 5787 2007-05-02 13:46:30Z tony $
+ * @version    $Id: route_url_set.tag.php 5881 2007-05-13 21:20:48Z serega $
  * @package    web_app
  */
 /**
@@ -16,7 +16,7 @@
 */
 class lmbRouteUrlSetTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateTagContent($code)
   {
     $route = '$' . $code->getTempVariable();
     $code->writePhp($route. ' = "";');
@@ -28,11 +28,9 @@ class lmbRouteUrlSetTag extends WactCompilerTag
 
     if(isset($this->attributeNodes['params']))
     {
-      $this->attributeNodes['params']->generatePreStatement($code);
       $code->writePhp($params . ' = lmbArrayHelper :: explode(",",":",');
       $this->attributeNodes['params']->generateExpression($code);
       $code->writePhp(');');
-      $this->attributeNodes['params']->generatePostStatement($code);
     }
 
     $skip_controller = '$' . $code->getTempVariable();

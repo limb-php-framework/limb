@@ -16,7 +16,7 @@
 */
 class lmbFindParametersTag extends WactCompilerTag
 {
-  function generateContents($code)
+  function generateTagContent($code)
   {
     foreach(array_keys($this->attributeNodes) as $key)
     {

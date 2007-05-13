@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: active_record_fetch.tag.php 5755 2007-04-24 04:42:23Z pachanga $
+ * @version    $Id: active_record_fetch.tag.php 5881 2007-05-13 21:20:48Z serega $
  * @package    web_app
  */
 require_once('limb/wact/src/tags/fetch/fetch.tag.php');
@@ -33,9 +33,9 @@ class lmbActiveRecordFetchTag extends WactFetchTag
     return parent :: preParse();
   }
 
-  function preGenerate($code)
+  function generateBeforeContent($code)
   {
-    parent :: preGenerate($code);
+    parent :: generateBeforeContent($code);
 
     $code->writePhp($this->getComponentRefCode() .
                       '->setAdditionalParam("class_path", "' . $this->getAttribute('class_path') . '");');
