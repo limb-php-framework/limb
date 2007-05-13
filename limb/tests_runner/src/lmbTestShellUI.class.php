@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5871 2007-05-11 21:01:02Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5877 2007-05-13 05:18:20Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
@@ -50,7 +50,7 @@ class lmbTestShellUI
     $usage = <<<EOD
 Usage:
   $script OPTIONS <file|dir> [<file|dir>, <file|dir>, ...]
-  Advanced SimpleTest based test files runner. Finds and executes unit tests within filesystem.
+  Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
 Options:
   -c, --config=/file.php        PHP configuration file path
   -h, --help                    Displays this help and exit
