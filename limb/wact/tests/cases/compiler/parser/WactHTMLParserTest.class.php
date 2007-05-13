@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactHTMLParserTest.class.php 5880 2007-05-13 12:04:03Z serega $
  * @package    wact
  */
 
@@ -531,6 +531,17 @@ class WactHTMLParserTest extends UnitTestCase
     $this->checkEndTagEvent(3, 'script', $location);
   }
 
+  function testJSComparisonSymbolIsNotATag2()
+  {
+    $location = $this->_createLocation();
+    $this->parser->parse('<script> for(var i=0; i <= 10; i++){ document.write(">");} </script>', $this->file_name);
+    $this->checkEventsCount(4);
+    $this->checkStartTagEvent(0, 'script', array(), $location);
+    $this->checkCharactersEvent(1, ' for(var i=0; i ', $location);
+    $this->checkCharactersEvent(2, '<= 10; i++){ document.write(">");} ', $location);
+    $this->checkEndTagEvent(3, 'script', $location);
+  }
+
   function testEmptyJasp()
   {
     $location = $this->_createLocation();
@@ -672,7 +683,7 @@ class WactHTMLParserTest extends UnitTestCase
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactHTMLParserTest.class.php 5880 2007-05-13 12:04:03Z serega $
  * @package    wact
  */
  ', $this->file_name);
@@ -687,7 +698,7 @@ class WactHTMLParserTest extends UnitTestCase
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactHTMLParserTest.class.php 5880 2007-05-13 12:04:03Z serega $
  * @package    wact
  */
  ');

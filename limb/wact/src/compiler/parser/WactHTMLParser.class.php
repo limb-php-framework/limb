@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParser.class.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: WactHTMLParser.class.php 5880 2007-05-13 12:04:03Z serega $
  * @package    wact
  */
 
@@ -204,6 +204,7 @@ class WactHTMLParser
         case "\n":
         case "\r":
         case "\t":
+        case "=":
           $start = $this->position - 2;
           while ($this->position < $this->length && $this->rawtext{$this->position} != '<')
               $this->position++;
