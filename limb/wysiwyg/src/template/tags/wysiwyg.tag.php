@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: wysiwyg.tag.php 5827 2007-05-07 18:43:11Z pachanga $
+ * @version    $Id: wysiwyg.tag.php 5885 2007-05-14 07:33:33Z alex433 $
  * @package    wysiwyg
  */
 require_once('limb/wact/src/tags/form/control.inc.php');
@@ -48,7 +48,7 @@ class lmbWysiwygTag extends WactControlTag
   {
   }
 
-  function generateContents($code)
+  function generateTagContent($code)
   {
     $code->writePhp($this->getComponentRefCode() . '->initWysiwyg("'. $this->ini_file_name . '","'.$this->type.'" );');
     $code->writePhp($this->getComponentRefCode() . '->renderContents();');
