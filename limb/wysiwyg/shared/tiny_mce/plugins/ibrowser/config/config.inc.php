@@ -95,18 +95,18 @@
 	// use static image libraries	
 	$cfg['ilibs'] = array (																// image library path with slashes; absolute to root directory - please make sure that the directories have write permissions	
 		array (																		
-			'value'   	=> '/images/',												
+			'value'   	=> '/dev/im/assets/images/',												
 			'text'    	=> 'Site Pictures',
 		),
 		array (
-			'value'   	=> '/images/', 				
+			'value'   	=> '/dev/im/assets/gallery/', 				
 			'text'    	=> 'Gallery',
 		),	
 	);
 	//-------------------------------------------------------------------------
 	// use dynamic image libraries - if $cfg['ilibs_inc'] is set, static image libraries above are ignored
 	// image directories to be scanned
-	//$cfg['ilibs_dir'] 	   = array('/home/cms/www/images/');						   	// image library path with slashes; absolute to root directory - please make sure that the directories have write permissions
+	$cfg['ilibs_dir'] 	   = array('/dev/im/assets/images/');						   	// image library path with slashes; absolute to root directory - please make sure that the directories have write permissions
 	$cfg['ilibs_dir_show'] = true;														// show main library (true) or only sub-dirs (false)
 	//$cfg['ilibs_inc']      = realpath(dirname(__FILE__) . '/../scripts/rdirs.php'); 	// file to include in ibrowser.php (useful for setting $cfg['ilibs] dynamically
 	//-------------------------------------------------------------------------
