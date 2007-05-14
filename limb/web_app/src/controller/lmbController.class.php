@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5864 2007-05-11 12:57:12Z pachanga $
+ * @version    $Id: lmbController.class.php 5883 2007-05-14 06:52:32Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
@@ -64,10 +64,13 @@ class lmbController extends lmbAbstractController
       $method = $this->_mapCurrentActionToMethod($this->_mapCurrentActionToMethod());
       $res = $this->$method();
 
+      $this->_passLocalAttributesToView();
+
       if(is_string($res))
         $this->response->write($res);
       elseif($this->response->isEmpty() && !$this->view->getTemplate())
-        $this->response->write('Default empty output for controller "' . get_class($this) . '" action "' . $this->current_action . '"');
+        $this->response->write('Default empty output for controller "' .
+                               get_class($this) . '" action "' . $this->current_action . '"');
 
       return;
     }
@@ -91,6 +94,16 @@ class lmbController extends lmbAbstractController
   function setTemplate($template_path)
   {
     $this->view->setTemplate($template_path);
+  }
+
+  protected function _passLocalAttributesToView()
+  {
+    foreach(get_object_vars($this) as $name => $value)
+    {
+      if($name{0} == '_')
+        continue;
+      $this->view->set($name, $value);
+    }
   }
 
   function passToView($var, $value)

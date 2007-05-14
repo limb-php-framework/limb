@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbControllerTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
+ * @version    $Id: lmbControllerTest.class.php 5883 2007-05-14 06:52:32Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
@@ -33,6 +33,11 @@ class TestingController extends lmbController
     return "Hi!";
   }
 
+  function doSetVars()
+  {
+    $this->item = 'item';
+  }
+
   function addValidatorRule($r)
   {
     $this->validator->addRule($r);
@@ -41,6 +46,11 @@ class TestingController extends lmbController
   function getErrorList()
   {
     return $this->error_list;
+  }
+
+  function set($name, $value)
+  {
+    $this->$name = $value;
   }
 }
 
@@ -101,6 +111,27 @@ class lmbControllerTest extends UnitTestCase
 
     $controller->performAction();
     $this->assertTrue($this->toolkit->getView()->getTemplate(), 'testing/detail.html');
+  }
+
+  function testControllerAttributesAutomaticallyPassedToView()
+  {
+    $mock_locator = new MockWactTemplateLocator();
+    $mock_locator->expectOnce('locateSourceTemplate', array('foo/set_vars.html'));
+    $mock_locator->setReturnValue('locateSourceTemplate', true, array('foo/set_vars.html'));
+    $this->toolkit->setWactLocator($mock_locator);
+
+    $controller = new TestingController();
+    $controller->set('foo', 'FOO');
+    $controller->set('bar', 'BAR');
+    $controller->set('_nope', 'NO');
+    $controller->setCurrentAction('set_vars');
+
+    $controller->performAction();
+    $view = $this->toolkit->getView();
+    $this->assertEqual($view->get('item'), 'item');//this one is set in action
+    $this->assertEqual($view->get('foo'), 'FOO');
+    $this->assertEqual($view->get('bar'), 'BAR');
+    $this->assertNull($view->get('_nope'));//this one is ignored, since it's "protected" with _
   }
 
   function testActionExistsReturnsTrueIsTemplateFound()
