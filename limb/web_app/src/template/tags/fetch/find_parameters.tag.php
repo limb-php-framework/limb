@@ -22,14 +22,10 @@ class lmbFindParametersTag extends WactCompilerTag
     {
       $name = $this->attributeNodes[$key]->getName();
 
-      $this->attributeNodes[$key]->generatePreStatement($code);
-
       $code->writePhp($this->parent->getComponentRefCode() .
                       '->addFindParam(');
       $this->attributeNodes[$key]->generateExpression($code);
       $code->writePhp(');' . "\n");
-
-      $this->attributeNodes[$key]->generatePostStatement($code);
     }
   }
 }
