@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 5829 2007-05-08 09:01:52Z serega $
+ * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 5887 2007-05-14 08:27:06Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -120,10 +120,25 @@ class lmbActiveRecordOneToOneRelationsTest extends UnitTestCase
 
     $this->assertEqual($person->save_count, 1);
 
-    $number->setCode($new_code = '0022112');
     $person->save();
 
     $this->assertEqual($person->save_count, 1);
+  }
+
+  function testSavingParentSavesChildAsWell()
+  {
+    $person = new PersonForTest();
+    $person->setName('Jim');
+
+    $number = new SocialSecurityForTest();
+    $number->setCode('099123');
+
+    $person->setSocialSecurity($number);
+    $person->save();
+
+    $number->setCode($new_code = '0022112');
+    $person->save();
+
     $loaded_number = new SocialSecurityForTest($number->getId());
     $this->assertEqual($loaded_number->getCode(), $new_code);
   }

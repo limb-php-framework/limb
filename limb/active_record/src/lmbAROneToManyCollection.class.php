@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAROneToManyCollection.class.php 5866 2007-05-11 14:13:24Z pachanga $
+ * @version    $Id: lmbAROneToManyCollection.class.php 5887 2007-05-14 08:27:06Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
@@ -23,6 +23,14 @@ class lmbAROneToManyCollection extends lmbARRelationCollection
       $criteria->addAnd($extra_criteria);
 
     return $object->getDbTable()->select($criteria);
+  }
+
+  function add($object)
+  {
+    $property = $object->mapFieldToProperty($this->relation_info['field']);
+    $object->set($property, $this->owner);
+
+    parent :: add($object);
   }
 
   function set($objects)

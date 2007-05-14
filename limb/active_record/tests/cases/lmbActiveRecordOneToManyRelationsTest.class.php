@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5866 2007-05-11 14:13:24Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5887 2007-05-14 08:27:06Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -20,6 +20,14 @@ class CourseForTest extends lmbActiveRecord
                                                    'class' => 'LectureForTest'),
                                'alt_lectures' => array('field' => 'alt_course_id',
                                                        'class' => 'LectureForTest'));
+
+  public $save_calls = 0;
+
+  function save()
+  {
+    parent :: save();
+    $this->save_calls++;
+  }
 }
 
 class LectureForTest extends lmbActiveRecord
@@ -245,6 +253,36 @@ class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
 
     $lecture3 = lmbActiveRecord :: findById('LectureForTest', $lecture2->getId());
     $this->assertNull($lecture3->getAltCourse());
+  }
+
+  function testSavingChildForExistingParentDoesntSaveParent()
+  {
+    $course = $this->_initCourse();
+
+    $this->assertEqual($course->save_calls, 0);
+
+    $course->save();
+
+    $this->assertEqual($course->save_calls, 1);
+
+    $lecture = new LectureForTest();
+    $lecture->setTitle('Physics');
+    $lecture->setAltCourse($course);
+    $lecture->save();
+
+    $this->assertEqual($course->save_calls, 1);
+  }
+
+  function testOwnerSetAutomaticallyForChildAddedToCollection()
+  {
+    $course = $this->_initCourse();
+
+    $lecture = new LectureForTest();
+    $lecture->setTitle('Physics');
+
+    $course->getLectures()->add($lecture);
+
+    $this->assertEqual($lecture->getCourse(), $course);
   }
 
   function testDeleteCollection()

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5868 2007-05-11 14:52:12Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5887 2007-05-14 08:27:06Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5868 2007-05-11 14:52:12Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5887 2007-05-14 08:27:06Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -322,18 +322,19 @@ class lmbActiveRecord extends lmbObject
   protected function _savePreRelations()
   {
     foreach($this->_has_one as $property => $info)
-      $this->_savePreRelationObject($property, $info);
+      $this->_savePreRelationObject($property, $info, true);
 
     foreach($this->_many_belongs_to as $property => $info)
-      $this->_savePreRelationObject($property, $info);
+      $this->_savePreRelationObject($property, $info, false);
   }
 
-  protected function _savePreRelationObject($property, $info)
+  protected function _savePreRelationObject($property, $info, $save_relation_obj = true)
   {
     $object = $this->_getRaw($property);
     if(is_object($object))
     {
-      $object->save($this->_error_list);
+      if($object->isNew() || (!$object->isNew() && $save_relation_obj))
+        $object->save($this->_error_list);
       $object_id = $object->getId();
       if($this->_getRaw($info['field']) != $object_id)
         $this->_setRaw($info['field'], $object->getId());

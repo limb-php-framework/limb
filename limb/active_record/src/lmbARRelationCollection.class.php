@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbARRelationCollection.class.php 5866 2007-05-11 14:13:24Z pachanga $
+ * @version    $Id: lmbARRelationCollection.class.php 5887 2007-05-14 08:27:06Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
@@ -15,6 +15,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
+  protected $relation;
   protected $relation_info;
   protected $owner;
   protected $dataset;
@@ -24,6 +25,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
 
   function __construct($relation, $owner, $criteria = null)
   {
+    $this->relation = $relation;
     $this->owner = $owner;
     $this->relation_info = $owner->getRelationInfo($relation);
     $this->criteria = lmbSQLCriteria :: objectify($criteria);
