@@ -14,7 +14,8 @@ lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php'
 class lmbTinyMCEComponent extends lmbWysiwygComponent
 {
   protected $_base_path;
-
+  protected $_css_class;
+  public static $is_included = false;
   function renderContents()
   {
     $this->renderEditor();
@@ -24,8 +25,13 @@ class lmbTinyMCEComponent extends lmbWysiwygComponent
   function renderEditor()
   {
     $this->_setEditorParameters();
+    if(!self::$is_included)
+    {
+      echo '<script language="javascript" type="text/javascript" src="'.$this->_base_path.'tiny_mce.js"></script>';
+      self::$is_included = true;
+      
+    }
     echo '
-    <script language="javascript" type="text/javascript" src="'.$this->_base_path.'tiny_mce.js"></script>
     <script language="javascript" type="text/javascript">
     tinyMCE.init({
     '.$this->_renderEditorParameters().'
@@ -38,7 +44,7 @@ class lmbTinyMCEComponent extends lmbWysiwygComponent
   {
     $items = array();
 
-    $items[] = 'elements : "'.$this->getAttribute('name').'"';
+    $items[] = 'editor_selector : "'.$this->_css_class.'"';
      
     if ($config = $this->getIniOption('editor') and count($config))
     {
@@ -53,6 +59,11 @@ class lmbTinyMCEComponent extends lmbWysiwygComponent
   {
     if($this->getIniOption('base_path'))
       $this->_base_path  = $this->getIniOption('base_path');
+    
+    if (!$this->_css_class = $this->getAttribute('class')){
+      $this->_css_class = $this->getAttribute('name');
+      $this->setAttribute('class', $this->_css_class);
+    }
   }
 }
 
