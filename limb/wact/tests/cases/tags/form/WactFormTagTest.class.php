@@ -62,7 +62,7 @@ class WactFormTagTest extends WactTemplateTestCase
   {
     $form = new WactFormComponent('my_id');
     $form->prepare();
-    $this->assertIsA($form->getDataSource(), 'ArrayObject');
+    $this->assertIsA($form->getDataSource(), 'WactArrayObject');
   }
 
   /**

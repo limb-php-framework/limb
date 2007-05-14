@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFormComponent.class.php 5689 2007-04-19 11:23:20Z serega $
+ * @version    $Id: WactFormComponent.class.php 5893 2007-05-14 15:05:54Z serega $
  * @package    wact
  */
 
@@ -73,7 +73,7 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   function getDataSource()
   {
-    return $this->_datasource->getInnerObject();
+    return $this->_datasource;
   }
 
   /**

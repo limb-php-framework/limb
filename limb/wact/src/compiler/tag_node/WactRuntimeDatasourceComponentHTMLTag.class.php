@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactRuntimeDatasourceComponentHTMLTag.class.php 5878 2007-05-13 11:14:57Z serega $
+ * @version    $Id: WactRuntimeDatasourceComponentHTMLTag.class.php 5893 2007-05-14 15:05:54Z serega $
  * @package    wact
  */
 
@@ -26,7 +26,7 @@ class WactRuntimeDatasourceComponentHTMLTag extends WactRuntimeComponentHTMLTag
     }
 
     $id = $this->getServerId();
-    $code_writer->writePHP('$' . $id . ' = ' . $this->getComponentRefCode() . ";\n");
+    $code_writer->writePHP('$' . $id . ' = ' . $this->getComponentRefCode() . "->getDataSource();\n");
   }
 
   function getDataSource()

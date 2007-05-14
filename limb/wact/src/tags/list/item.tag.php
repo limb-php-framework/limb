@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: item.tag.php 5873 2007-05-12 17:17:45Z serega $
+ * @version    $Id: item.tag.php 5893 2007-05-14 15:05:54Z serega $
  * @package    wact
  */
 
@@ -19,7 +19,7 @@ class WactListItemTag extends WactRuntimeDatasourceComponentTag
 {
   protected $runtimeComponentName = 'WactDatasourceRuntimeComponent';
 
-  function generateTagContent($code_writer)
+  function generateBeforeContent($code_writer)
   {
     $separators = $this->findImmediateChildrenByClass('WactListSeparatorTag');
     foreach($separators as $separator)
@@ -33,7 +33,14 @@ class WactListItemTag extends WactRuntimeDatasourceComponentTag
     $code_writer->writePHP($this->getComponentRefCode() . '->registerDataSource(' .
                     $list->getComponentRefCode() . '->current());' . "\n");
 
-    parent :: generateTagContent($code_writer);
+    parent :: generateBeforeContent($code_writer);
+  }
+
+  function generateAfterContent($code_writer)
+  {
+    parent :: generateAfterContent($code_writer);
+
+    $list = $this->findParentByClass('WactListListTag');
 
     $code_writer->writePHP($list->getComponentRefCode() . '->next();' . "\n");
     $code_writer->writePHP('} while (' . $list->getComponentRefCode() . '->valid());' . "\n");

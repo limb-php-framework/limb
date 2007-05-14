@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDatasourceRuntimeComponent.class.php 5021 2007-02-12 13:04:07Z pachanga $
+ * @version    $Id: WactDatasourceRuntimeComponent.class.php 5893 2007-05-14 15:05:54Z serega $
  * @package    wact
  */
 
