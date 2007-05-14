@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: calendar.tag.php 5841 2007-05-08 16:34:34Z pachanga $
+ * @version    $Id: calendar.tag.php 5884 2007-05-14 07:32:27Z serega $
  * @package    calendar
  */
 require_once('limb/wact/src/tags/form/input.tag.php');
@@ -29,8 +29,10 @@ class lmbCalendarTag extends WactInputTag
     parent :: prepare();
   }
 
-  function generateContents($code)
+  function generateAfterCloseTag($code)
   {
+    parent :: generateAfterCloseTag($code);
+
     if(!$lang = $this->getAttribute('lang'))
       $lang = 'en';
 
@@ -49,8 +51,6 @@ class lmbCalendarTag extends WactInputTag
 
     $code->writeHTML($widget->loadFiles() .
                      $widget->makeButton($this->getAttribute('id')));
-
-    parent :: generateContents($code);
   }
 
 }
