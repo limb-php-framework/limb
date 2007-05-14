@@ -142,5 +142,20 @@ class lmbCollectionTest extends UnitTestCase
     $iterator->sort(array('x' => 'DESC'));
     $this->assertEqual($iterator->getArray(), array());
   }
+
+  function testConcat()
+  {
+    $item1 = new lmbSet(array('x' => 'C'));
+    $item2 = new lmbSet(array('x' => 'A'));
+    $item3 = new lmbSet(array('x' => 'B'));
+    $item4 = new lmbSet(array('x' => 'D'));
+
+    $col1 = new lmbCollection(array($item1, $item2));
+    $col2 = new lmbCollection(array($item3));
+    $col3 = new lmbCollection(array($item4));
+
+    $this->assertEqual(lmbCollection :: concat($col1, $col2, $col3),
+                       new lmbCollection(array($item1, $item2, $item3, $item4)));
+  }
 }
 ?>

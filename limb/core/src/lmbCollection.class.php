@@ -27,6 +27,18 @@ class lmbCollection implements lmbCollectionInterface
     $this->dataset = $array;
   }
 
+  static function concat()
+  {
+    $args = func_get_args();
+    $result = array();
+    foreach($args as $col)
+    {
+      foreach($col as $value)
+        $result[] = $value;
+    }
+    return new lmbCollection($result);
+  }
+
   function getArray()
   {
     $result = array();
