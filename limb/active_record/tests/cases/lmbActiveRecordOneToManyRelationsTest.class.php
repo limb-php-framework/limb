@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5887 2007-05-14 08:27:06Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5895 2007-05-15 07:25:14Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -282,7 +282,7 @@ class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
 
     $course->getLectures()->add($lecture);
 
-    $this->assertEqual($lecture->getCourse(), $course);
+    $this->assertReference($lecture->getCourse(), $course);
   }
 
   function testDeleteCollection()
