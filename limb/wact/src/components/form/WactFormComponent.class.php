@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFormComponent.class.php 5893 2007-05-14 15:05:54Z serega $
+ * @version    $Id: WactFormComponent.class.php 5894 2007-05-15 07:10:23Z serega $
  * @package    wact
  */
 
@@ -68,7 +68,7 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   function registerDataSource($datasource)
   {
-    $this->_datasource = new WactArrayObject($datasource);
+    $this->_datasource = WactTemplate :: makeObject($datasource);
   }
 
   function getDataSource()
