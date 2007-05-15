@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordFetcherTest.class.php 5826 2007-05-07 14:07:42Z pachanga $
+ * @version    $Id: lmbActiveRecordFetcherTest.class.php 5896 2007-05-15 07:26:19Z serega $
  * @package    web_app
  */
 lmb_require('limb/web_app/tests/cases/lmbWebAppTestCase.class.php');
@@ -81,10 +81,10 @@ class lmbActiveRecordFetcherTest extends lmbWebAppTestCase
     $rs = $fetcher->fetch();
     $rs->rewind();
     $this->assertTrue($rs->valid());
-    $this->assertEqual($rs->current()->export(), $course1->export());
+    $this->assertEqual($rs->current()->getTitle(), $course1->getTitle());
     $rs->next();
     $this->assertTrue($rs->valid());
-    $this->assertEqual($rs->current()->export(), $course2->export());
+    $this->assertEqual($rs->current()->getTitle(), $course2->getTitle());
   }
 
   function testFetchWithSpecifiedFindMethod()
