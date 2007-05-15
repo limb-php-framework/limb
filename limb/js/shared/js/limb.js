@@ -5,24 +5,31 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: limb.js 5817 2007-05-06 09:38:17Z tony $
+ * @version    $Id: limb.js 5897 2007-05-15 08:22:49Z pachanga $
  * @package    js
  */
 
 if(Limb == undefined) var Limb = {};
 
-String.prototype.trim = function()
+if(!String.prototype.trim)
 {
-  var r=/^\s+|\s+$/;
-  return this.replace(r,'');
+  String.prototype.trim = function()
+  {
+    var r=/^\s+|\s+$/;
+    return this.replace(r,'');
+  }
 }
 
 if(!Function.prototype.bind)
 {
-  Function.prototype.bind = function(object)
+  Function.prototype.bind = function( object, args )
   {
     var __method = this;
-    return function() {__method.apply( object, arguments );};
+    var __args = args;
+    return function()
+    {
+      __method.apply( object, __args || arguments );
+    };
   };
 }
 
