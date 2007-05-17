@@ -461,34 +461,34 @@ class lmbFs
 
     $separator = self :: separator();
 
-   if($handle = @opendir($dir))
+    if($handle = @opendir($dir))
     {
       while(($element = readdir($handle)) !== false)
       {
-       if($element == '.' || $element == '..')
-          continue;
-       if(!$include_hidden && $element[0] == '.')
-          continue;
-       if($include_regex && !preg_match($include_regex, $element, $m))
-          continue;
-       if($exclude_regex && preg_match($exclude_regex, $element, $m))
-          continue;
-       if(is_dir($dir . $separator . $element) && strpos($types, 'd') === false)
-          continue;
-       if(is_link($dir . $separator . $element) && strpos($types, 'l') === false)
-          continue;
-       if(is_file( $dir . $separator . $element ) && strpos($types, 'f') === false)
-          continue;
+        if($element == '.' || $element == '..')
+         continue;
+        if(!$include_hidden && $element[0] == '.')
+         continue;
+        if($include_regex && !preg_match($include_regex, $element, $m))
+         continue;
+        if($exclude_regex && preg_match($exclude_regex, $element, $m))
+         continue;
+        if(is_dir($dir . $separator . $element) && strpos($types, 'd') === false)
+         continue;
+        if(is_link($dir . $separator . $element) && strpos($types, 'l') === false)
+         continue;
+        if(is_file( $dir . $separator . $element ) && strpos($types, 'f') === false)
+         continue;
 
-       if($add_path)
-        {
-         if(is_string($add_path))
-            $items[] = $add_path . $separator . $element;
-          else
-            $items[] = $dir . $separator . $element;
-        }
-        else
-          $items[] = $element;
+      if($add_path)
+      {
+       if(is_string($add_path))
+         $items[] = $add_path . $separator . $element;
+       else
+        $items[] = $dir . $separator . $element;
+      }
+      else
+        $items[] = $element;
       }
       closedir($handle);
     }
