@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5883 2007-05-14 06:52:32Z pachanga $
+ * @version    $Id: lmbController.class.php 5899 2007-05-17 13:23:14Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
@@ -72,11 +72,12 @@ class lmbController extends lmbAbstractController
         $this->response->write('Default empty output for controller "' .
                                get_class($this) . '" action "' . $this->current_action . '"');
 
-      return;
+      return $res;
     }
     elseif($template_path = $this->_findTemplateForAction($this->current_action))
     {
       $this->setTemplate($template_path);
+      $this->_passLocalAttributesToView();
       return;
     }
 
@@ -138,6 +139,18 @@ class lmbController extends lmbAbstractController
   function redirect($params_or_url = array(), $route_url = null)
   {
     $this->toolkit->redirect($params_or_url, $route_url);
+  }
+
+  function forward($controller_name, $action)
+  {
+    $controller = $this->toolkit->createController($controller_name);
+    $controller->setCurrentAction($action);
+    return $controller->performAction();
+  }
+
+  function forwardTo404()
+  {
+    return $this->forward('not_found', 'display');
   }
 
   function flashError($message)

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbControllerTest.class.php 5883 2007-05-14 06:52:32Z pachanga $
+ * @version    $Id: lmbControllerTest.class.php 5899 2007-05-17 13:23:14Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
@@ -185,6 +185,12 @@ class lmbControllerTest extends UnitTestCase
     $error_list->addError('blah!');
 
     $this->assertFalse($controller->validate(new lmbSet()));
+  }
+
+  function testForward()
+  {
+    $controller = new lmbController();
+    $this->assertEqual($controller->forward('testing', 'write'), "Hi!");
   }
 }
 

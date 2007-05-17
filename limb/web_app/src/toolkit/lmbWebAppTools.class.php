@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWebAppTools.class.php 5787 2007-05-02 13:46:30Z tony $
+ * @version    $Id: lmbWebAppTools.class.php 5899 2007-05-17 13:23:14Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -122,8 +122,11 @@ class lmbWebAppTools extends lmbAbstractTools
   function createController($controller_name)
   {
     $class_name = lmb_camel_case($controller_name) . 'Controller';
-    $file = $this->toolkit->findFileAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
-    lmb_require($file);
+    if(!class_exists($class_name))
+    {
+      $file = $this->toolkit->findFileAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
+      lmb_require($file);
+    }
     return new $class_name;
   }
 
