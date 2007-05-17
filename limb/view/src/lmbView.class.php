@@ -56,8 +56,6 @@ abstract class lmbView
   {
     if(isset($this->variables[$variable_name]))
       return $this->variables[$variable_name];
-    else
-      return null;
   }
 
   function getVariables()
