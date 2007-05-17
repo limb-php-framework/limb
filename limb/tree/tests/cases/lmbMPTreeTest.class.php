@@ -55,5 +55,30 @@ class lmbMPTreeTest extends lmbTreeTestBase
     preg_match('~^(.*/)[^/]+/$~', $path, $matches);
     return $matches[1];
   }
+
+  function testGetChildrenAllowOtherSort()
+  {
+    $root_id = $this->imp->initTree();
+
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
+    $node_2_1 = $this->imp->createNode($node_1, array('identifier'=>'aaaaa'));
+    $node_2_2 = $this->imp->createNode($node_1, array('identifier'=>'ccccc'));
+    $node_2_3 = $this->imp->createNode($node_1, array('identifier'=>'bbbb'));
+
+    $rs = $this->imp->getChildren($node_1);
+    $arr = $rs->sort(array('p_identifier' => 'DESC'))->getArray();
+
+    $this->assertEqual(sizeof($arr ), 3);
+    $this->assertEqual($arr[0]['id'], $node_2_2);
+    $this->assertEqual($arr[1]['id'], $node_2_3);
+    $this->assertEqual($arr[2]['id'], $node_2_1);
+
+    $rs = $this->imp->getChildren($node_1);
+    $arr = $rs->sort(array('p_identifier' => 'ASC'))->getArray();
+
+    $this->assertEqual($arr[0]['id'], $node_2_1);
+    $this->assertEqual($arr[1]['id'], $node_2_3);
+    $this->assertEqual($arr[2]['id'], $node_2_2);
+  }
 }
 ?>

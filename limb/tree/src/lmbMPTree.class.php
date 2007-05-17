@@ -182,8 +182,7 @@ class lmbMPTree implements lmbTree
     {
       $sql = "SELECT " . $this->_getSelectFields() . "
               FROM {$this->_node_table}
-              WHERE {$this->_parent_id} = :parent_id:
-              ORDER BY {$this->_path}";
+              WHERE {$this->_parent_id} = :parent_id:";
 
       $stmt = $this->_conn->newStatement($sql);
       $stmt->setInteger('parent_id', $parent['id']);
@@ -196,11 +195,12 @@ class lmbMPTree implements lmbTree
               AND {$this->_id} != {$parent['id']}";
       if($depth != -1)
         $sql .= " AND {$this->_level} < ". ($parent['level'] + 1 + $depth);
-      $sql .= " ORDER BY {$this->_path}";
       $stmt = $this->_conn->newStatement($sql);
     }
 
-    return $stmt->getRecordSet();
+    $rs = $stmt->getRecordSet();
+    $rs->sort(array($this->_path => 'ASC'));
+    return $rs;
   }
 
   function getChildrenAll($node)
@@ -210,12 +210,13 @@ class lmbMPTree implements lmbTree
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
             WHERE {$this->_path} LIKE '{$node['path']}%'
-            AND {$this->_id} != {$node['id']}
-            ORDER BY {$this->_path}";
+            AND {$this->_id} != {$node['id']}";
 
     $stmt = $this->_conn->newStatement($sql);
 
-    return $stmt->getRecordSet();
+    $rs = $stmt->getRecordSet();
+    $rs->sort(array($this->_path => 'ASC'));
+    return $rs;
   }
 
   function countChildren($node, $depth = 1)
