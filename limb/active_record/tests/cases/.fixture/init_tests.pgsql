@@ -9,6 +9,16 @@ CREATE TABLE test_one_table_object (
   PRIMARY KEY  (id)
 )  ;
 
+DROP TABLE test_auto_times_object CASCADE;
+
+CREATE TABLE test_auto_times_object (
+  "id" SERIAL,
+  "content" text,
+  "ctime" int8 NULL,
+  "mtime" int8 NULL,
+  PRIMARY KEY  (id)
+)  ;
+
 DROP TABLE test_one_table_typed_object CASCADE;
 
 CREATE TABLE test_one_table_typed_object (

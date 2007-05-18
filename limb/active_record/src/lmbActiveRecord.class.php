@@ -6,18 +6,18 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5887 2007-05-14 08:27:06Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5902 2007-05-18 14:36:13Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/core/src/lmbDelegate.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
-lmb_require('limb/validation/src/exception/lmbValidationException.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
-lmb_require('limb/core/src/lmbCollection.class.php');
+lmb_require('limb/validation/src/exception/lmbValidationException.class.php');
 lmb_require('limb/active_record/src/lmbARException.class.php');
 lmb_require('limb/active_record/src/lmbARNotFoundException.class.php');
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5887 2007-05-14 08:27:06Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5902 2007-05-18 14:36:13Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -35,6 +35,14 @@ class lmbActiveRecord extends lmbObject
    * @var string database column name used to store object class name for single table inheritance
    */
   protected static $_inheritance_field = 'kind';
+  /**
+   * @var string database column name used to store object's create time
+   */
+  protected static $_ctime_field = 'ctime';
+  /**
+   * @var string database column name used to store object's update time
+   */
+  protected static $_utime_field = 'utime';
   /**
    * @var array global event listeners which receieve events from ALL lmbActiveRecord instances
    */
@@ -749,6 +757,8 @@ class lmbActiveRecord extends lmbObject
 
         $this->_invokeListeners(self :: ON_UPDATE);
 
+        $this->_setAutoTimes();
+
         $this->_updateDbRecord($this->_propertiesToDbFields());
 
         $this->_onAfterUpdate();
@@ -770,6 +780,8 @@ class lmbActiveRecord extends lmbObject
         $this->_onCreate();
 
         $this->_invokeListeners(self :: ON_CREATE);
+
+        $this->_setAutoTimes();
 
         $new_id = $this->_insertDbRecord($this->_propertiesToDbFields());
         $this->_is_new = false;
@@ -827,6 +839,25 @@ class lmbActiveRecord extends lmbObject
       }
     }
     return $fields;
+  }
+
+  protected function _setAutoTimes()
+  {
+    if($this->isNew() && $this->_hasCreateTime())
+      $this->_setRaw(self :: $_ctime_field, time());
+
+    if($this->_hasUpdateTime())
+      $this->_setRaw(self :: $_utime_field, time());
+  }
+
+  protected function _hasUpdateTime()
+  {
+    return $this->_db_meta_info->hasColumn(self :: $_utime_field);
+  }
+
+  protected function _hasCreateTime()
+  {
+    return $this->_db_meta_info->hasColumn(self :: $_ctime_field);
   }
 
   protected function _isInheritable()
@@ -1325,6 +1356,17 @@ class lmbActiveRecord extends lmbObject
   {
     $this->_setRaw('id', (int)$id);
   }
+
+  function getUpdateTime()
+  {
+    return $this->_getRaw(self :: $_utime_field);
+  }
+
+  function getCreateTime()
+  {
+    return $this->_getRaw(self :: $_ctime_field);
+  }
+
   /**
    *  Destroys current object removing it from database as well, removes related objects if
    *  object was configured to do so. Throws exception if object doesn't have identity.

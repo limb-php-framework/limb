@@ -9,6 +9,15 @@ CREATE TABLE `test_one_table_object` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `test_auto_times_object`;
+CREATE TABLE `test_auto_times_object` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `content` text,
+  `ctime` int(11) NULL,
+  `utime` int(11) NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `test_one_table_typed_object`;
 CREATE TABLE `test_one_table_typed_object` (
   `id` bigint(20) NOT NULL auto_increment,

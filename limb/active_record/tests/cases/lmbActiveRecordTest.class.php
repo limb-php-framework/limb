@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5863 2007-05-11 12:56:42Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5902 2007-05-18 14:36:13Z pachanga $
  * @package    active_record
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -100,8 +100,8 @@ class TestOneTableObjectWithSortParams extends TestOneTableObject
 
 class lmbActiveRecordTest extends UnitTestCase
 {
-  var $conn = null;
-  var $db = null;
+  var $conn;
+  var $db;
   var $class_name = 'TestOneTableObject';
 
   function setUp()

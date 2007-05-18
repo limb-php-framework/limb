@@ -17,6 +17,24 @@ CREATE OR REPLACE TRIGGER test_one_table_object_trigger
 BEFORE INSERT ON test_one_table_object REFERENCING NEW AS NEW FOR EACH ROW
 BEGIN IF :NEW.ID IS NULL THEN SELECT test_one_table_object_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
 /
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE test_auto_times_object_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE test_auto_times_object_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE test_auto_times_object'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE test_auto_times_object (
+  id number NOT NULL,
+  content clob,
+  ctime number default NULL,
+  mtime number default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER test_auto_times_object_trigger
+BEFORE INSERT ON test_auto_times_object REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT test_auto_times_object.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
 BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE test_one_table_typed_objec_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
 CREATE SEQUENCE test_one_table_typed_objec_seq;
