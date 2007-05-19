@@ -1,3 +1,9 @@
+0.7.1-alpha - 19 May 2007 (r5902)
+==================================================
+-- lmbTestGroup now extends TestSuite not deprecated GroupTest
+-- lmbTestRunner may accept multiple paths in constructor: limb_unit now can accept multiple file paths(TR-9)
+-- a bit better help message
+
 0.7.0-alpha - 19 April 2007 (r5678)
 ==================================================
 -- initial SpikePHPCoverage support added into lmbTestShellUI
