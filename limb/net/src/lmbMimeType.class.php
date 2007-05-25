@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMimeType.class.php 5795 2007-05-03 13:43:28Z pachanga $
+ * @version    $Id: lmbMimeType.class.php 5908 2007-05-25 11:45:29Z tony $
  * @package    net
  */
 class lmbMimeType
@@ -33,7 +33,8 @@ class lmbMimeType
     'rtf' => 'text/rtf',
     'avi' => 'video/avi',
     'mpg' => 'video/mpeg',
-    'js' => 'text/javascript'
+    'js' => 'text/javascript',
+    'flv' => 'video/x-flv'
   );
 
   static protected $flipped_mime_types = array();
