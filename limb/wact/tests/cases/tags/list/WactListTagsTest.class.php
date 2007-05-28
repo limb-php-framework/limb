@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactListTagsTest.class.php 5878 2007-05-13 11:14:57Z serega $
+ * @version    $Id: WactListTagsTest.class.php 5909 2007-05-28 08:57:58Z serega $
  * @package    wact
  */
 
@@ -549,6 +549,20 @@ class WactListTagsTest extends WactTemplateTestCase
     $list->registerDataSet($data);
 
     $this->assertEqual($page->capture(), 'John:SeregaPavel++Ilia1Mike:RomanDenis++Alex1');
+  }
+
+  function testListKeyProperty()
+  {
+    $template = '<list:LIST id="test"><list:ITEM>{$:Key}-{$lastname}|</list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_key_property.html', $template);
+    $page = $this->initTemplate('/tags/list/list_key_property.html');
+
+    $page->setChildDataset('test', array('Ivan' => array('lastname' => 'Ivanov'),
+                                         'Peter' => array('lastname' => 'Petrov')));
+
+    $output = $page->capture();
+    $this->assertEqual($output, "Ivan-Ivanov|Peter-Petrov|");
   }
 }
 ?>

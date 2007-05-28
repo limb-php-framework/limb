@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactListComponent.class.php 5188 2007-03-06 07:42:21Z serega $
+ * @version    $Id: WactListComponent.class.php 5909 2007-05-28 08:57:58Z serega $
  * @package    wact
  */
 
@@ -65,6 +65,11 @@ class WactListComponent extends WactRuntimeComponent
   function valid()
   {
     return $this->dataset->valid();
+  }
+
+  function key()
+  {
+    return $this->dataset->key();
   }
 
   function current()
