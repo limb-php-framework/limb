@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5877 2007-05-13 05:18:20Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5911 2007-05-29 09:27:39Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
@@ -108,14 +108,16 @@ EOD;
     try
     {
       if($this->posix_opts)
-        $options = lmbTestGetopt::getopt($this->argv, $short_opts, $long_opts);
+        $options = lmbTestGetopt :: getopt($this->argv, $short_opts, $long_opts);
       else
-        $options = lmbTestGetopt::getopt2($this->argv, $short_opts, $long_opts);
+        $options = lmbTestGetopt :: getopt2($this->argv, $short_opts, $long_opts);
     }
     catch(Exception $e)
     {
       $this->_help(1);
     }
+
+    lmbTestGetopt :: defineConstants($this->argv);
 
     $configured = false;
     $cover_include = '';
@@ -152,7 +154,7 @@ EOD;
 
     if(!is_array($options[1]))
       $this->_help(1);
-    
+
     if(!$cover_report_dir && defined('LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR'))
       $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
 

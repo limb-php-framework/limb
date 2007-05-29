@@ -91,6 +91,18 @@ class lmbTestGetopt {
         return lmbTestGetopt::doGetopt(1, $args, $short_options, $long_options);
     }
 
+    function defineConstants($argv)
+    {
+        for($i=0;$i<sizeof($argv);$i++) {
+          if(preg_match('~^[A-Z_][A-Z0-9_]+$~', $argv[$i])) {
+            @define($argv[$i], $argv[$i+1]);
+          }
+          elseif(preg_match('~^([A-Z_][A-Z0-9_]+)=(.*)$~', $argv[$i], $m)) {
+            @define($m[1], $m[2]);
+          }
+        }
+    }
+
     /**
      * The actual implementation of the argument parsing code.
      */
