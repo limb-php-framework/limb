@@ -309,7 +309,7 @@ class lmbFsTest extends UnitTestCase
     $this->assertTrue(is_dir(LIMB_VAR_DIR . '/tmp/whatever'));
   }
 
-  function testMoveOntoDoesNothing()
+  function testMoveOntoItselfDoesNothing()
   {
     $this->_createFileSystem();
 
