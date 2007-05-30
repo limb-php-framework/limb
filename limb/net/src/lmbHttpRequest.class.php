@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequest.class.php 5862 2007-05-11 09:39:45Z pachanga $
+ * @version    $Id: lmbHttpRequest.class.php 5914 2007-05-30 09:16:29Z pachanga $
  * @package    net
  */
 lmb_require('limb/core/src/lmbSet.class.php');
@@ -128,6 +128,11 @@ class lmbHttpRequest extends lmbSet
   function getCookie($key = null)
   {
     return $this->_get('cookies', $key);
+  }
+
+  function getSafe($var)
+  {
+    return htmlspecialchars(parent :: get($var));
   }
 
   protected function _get($var, $key = null)

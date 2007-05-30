@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbHttpRequestTest.class.php 5862 2007-05-11 09:39:45Z pachanga $
+ * @version    $Id: lmbHttpRequestTest.class.php 5914 2007-05-30 09:16:29Z pachanga $
  * @package    net
  */
 lmb_require('limb/net/src/lmbHttpRequest.class.php');
@@ -26,17 +26,24 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getUriPath(), '/path');
   }
 
-  function testGetPostAttributes()
+  function testGet()
   {
-    $request = new lmbHttpRequest('http://test.com', array('a' => 2), array('b' => 3));
-    $this->assertEqual($request->get('a'), 2);
-    $this->assertEqual($request->get('b'), 3);
+    $request = new lmbHttpRequest('http://test.com', array('c' => 1), array('d' => 2));
+    $this->assertEqual($request->get('c'), 1);
+    $this->assertEqual($request->get('d'), 2);
+    $this->assertNull($request->get('foo'));
   }
 
-  function testMergeGetPost()
+  function testMergePostOverGet()
   {
     $request = new lmbHttpRequest('http://test.com', array('a' => 2), array('a' => 3));
     $this->assertEqual($request->get('a'), 3);
+  }
+
+  function testGetSafe()
+  {
+    $request = new lmbHttpRequest('http://test.com', array('c' => '<xss>'));
+    $this->assertEqual($request->getSafe('c'), htmlspecialchars('<xss>'));
   }
 
   function testGetRequest()
