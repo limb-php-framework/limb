@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5859 2007-05-10 14:49:36Z pachanga $
+ * @version    $Id: common.inc.php 5918 2007-05-30 13:19:55Z pachanga $
  * @package    core
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
@@ -130,24 +130,6 @@ function lmb_var_dump($obj, $echo = false)
   else
     return $dump;
 }
-
-/**
- * Generates an unique object id using object class path and internal php object id
- */
-function lmb_php_object_id($obj)
-{
-  if(!is_object($obj))
-    throw new lmbException('Object expected but "' . $obj. '" is given');
-
-  $objId = (int)substr(strrchr(lmb_var_dump($obj), "#"), 1);
-
-  if($objId <= 0)
-    throw new lmbException('Could not generate id for object "' . $obj . '"');
-
-  $class = (method_exists('getClass', $obj) ? $obj->getClass() : get_class($obj));
-  return $class . $objId;
-}
-
 
 /**
  * @see lmb_camel_case
