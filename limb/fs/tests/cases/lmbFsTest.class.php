@@ -298,6 +298,40 @@ class lmbFsTest extends UnitTestCase
     $this->_removeFileSystem();
   }
 
+  function testMv()
+  {
+    $this->_createFileSystem();
+
+    lmbFs :: mv(LIMB_VAR_DIR . '/tmp/wow',
+                LIMB_VAR_DIR . '/tmp/whatever');
+
+    $this->assertFalse(is_dir(LIMB_VAR_DIR . '/tmp/wow'));
+    $this->assertTrue(is_dir(LIMB_VAR_DIR . '/tmp/whatever'));
+  }
+
+  function testMoveOntoDoesNothing()
+  {
+    $this->_createFileSystem();
+
+    lmbFs :: mv(LIMB_VAR_DIR . '/tmp/wow',
+                LIMB_VAR_DIR . '/tmp/wow');
+
+    $this->assertTrue(is_dir(LIMB_VAR_DIR . '/tmp/wow'));
+  }
+
+  function testMoveNonExistingFails()
+  {
+    $this->_createFileSystem();
+
+    try
+    {
+      lmbFs :: mv(LIMB_VAR_DIR . '/tmp/blaaah',
+                  LIMB_VAR_DIR . '/tmp/cp');
+      $this->assertFalse(true);
+    }
+    catch(lmbIOException $e){}
+  }
+
   function testCpDirs()
   {
     $this->_createFileSystem();

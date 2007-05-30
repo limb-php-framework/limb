@@ -246,6 +246,19 @@ class lmbFs
       throw new lmbIOException('failed to remove directory', array('dir' => $item));
   }
 
+  static function mv($src, $dest)
+  {
+    if(is_dir($src) || is_file($src))
+    {
+      if(!@rename($src, $dest))
+        throw new lmbIOException('failed to move item', array('src' => $src, 'dest' => $dest));
+
+      clearstatcache();
+    }
+    else
+      throw new lmbIOException('source file or directory does not exist', array('src' => $src));
+  }
+
   static function cp($src, $dest, $exclude_regex = '', $include_regex = '', $as_child = false, $include_hidden = true)
   {
     if(!is_dir($src))
