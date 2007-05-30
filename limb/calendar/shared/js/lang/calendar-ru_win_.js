@@ -1,7 +1,7 @@
 // ** I18N
 
-// Calendar RU language
-// Translation: Sly Golovanov, http://golovanov.net, <sly@golovanov.net>
+// Calendar EN language
+// Author: Mihai Bazon, <mihai_bazon@yahoo.com>
 // Encoding: any
 // Distributed under the same terms as the calendar itself.
 
@@ -11,14 +11,14 @@
 
 // full day names
 Calendar._DN = new Array
-("воскресенье",
- "понедельник",
- "вторник",
- "среда",
- "четверг",
- "пятница",
- "суббота",
- "воскресенье");
+("Воскресенье",
+ "Понедельник",
+ "Вторник",
+ "Среда",
+ "Четверг",
+ "Пятница",
+ "Суббота",
+ "Воскресенье");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -34,44 +34,48 @@ Calendar._DN = new Array
 
 // short day names
 Calendar._SDN = new Array
-("вск",
- "пон",
- "втр",
- "срд",
- "чет",
- "пят",
- "суб",
- "вск");
+("Вск",
+ "Пн",
+ "Вт",
+ "Ср",
+ "Чет",
+ "Пят",
+ "Суб",
+ "Вск");
+
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
-("январь",
- "февраль",
- "март",
- "апрель",
- "май",
- "июнь",
- "июль",
- "август",
- "сентябрь",
- "октябрь",
- "ноябрь",
- "декабрь");
+("Январь",
+ "Февраль",
+ "Март",
+ "Апрель",
+ "Май",
+ "Июнь",
+ "Июль",
+ "Август",
+ "Сентябрь",
+ "Октябрь",
+ "Ноябрь",
+ "Декабрь");
 
 // short month names
 Calendar._SMN = new Array
-("янв",
- "фев",
- "мар",
- "апр",
- "май",
- "июн",
- "июл",
- "авг",
- "сен",
- "окт",
- "ноя",
- "дек");
+("Янв",
+ "Фев",
+ "Мар",
+ "Апр",
+ "Май",
+ "Июн",
+ "Июл",
+ "Авг",
+ "Сен",
+ "Окт",
+ "Ноя",
+ "Дек");
 
 // tooltips
 Calendar._TT = {};
@@ -117,7 +121,7 @@ Calendar._TT["TIME_PART"] = "(Shift-)клик или нажать и двигать";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
-Calendar._TT["TT_DATE_FORMAT"] = "%e %b, %a";
+Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
 Calendar._TT["WK"] = "нед";
 Calendar._TT["TIME"] = "Время:";
