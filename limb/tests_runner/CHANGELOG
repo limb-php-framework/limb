@@ -1,3 +1,12 @@
+0.7.2-alpha - 30 May 2007 (r5916)
+==================================================
+-- lmbTestRunner :: getRunTime() added, it allows you to get total script runtime during tests
+-- lmbTestShellUI prints tests runtime
+-- limb_unit -v|--version option added, it simply prints the current version of limb_unit
+-- lmbTestGetopt :: defineConstants($argv) added, it defines constants automatically using input which has format of "SOME_FOO_CONST=foo", "
+SOME_BAR_CONST=bar", etc
+-- lmbTestShellUI calls lmbTestGetopt :: defineConstants(..), it should help simplify passing extra stuff into tests
+
 0.7.1-alpha - 19 May 2007 (r5902)
 ==================================================
 -- lmbTestGroup now extends TestSuite not deprecated GroupTest
