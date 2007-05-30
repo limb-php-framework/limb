@@ -19,6 +19,8 @@ class lmbTestRunner
   protected $coverage_include;
   protected $coverage_exclude;
   protected $coverage_report_dir;
+  protected $start_time = 0;
+  protected $end_time = 0;
 
   function __construct($test_path)
   {
@@ -42,9 +44,11 @@ class lmbTestRunner
 
   function run(&$tests_found = false)
   {
+    $this->_startTimer();
     $this->_startCoverage();
     $res = $this->_runForTestPath($tests_found);
     $this->_endCoverage();
+    $this->_stopTimer();
     return $res;
   }
 
@@ -66,6 +70,28 @@ class lmbTestRunner
       }
     }
     return $res;
+  }
+
+  protected function _startTimer()
+  {
+    $this->start_time = $this->_getMicrotime();
+  }
+
+  protected function _stopTimer()
+  {
+    $this->end_time = $this->_getMicrotime();
+  }
+
+  protected function _getMicrotime()
+  {
+    $t_time = explode(' ', microtime());
+    preg_match("~0\.([0-9]+)~", '' . $t_time[0], $t1);
+    return $t_time[1] . '.' . $t1[1];
+  }
+
+  function getRunTime()
+  {
+    return round($this->end_time - $this->start_time, 3);
   }
 
   protected function _startCoverage()

@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5911 2007-05-29 09:27:39Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5916 2007-05-30 10:30:17Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
@@ -43,13 +43,9 @@ class lmbTestShellUI
 
   function help($script = '')
   {
-    global $argv;
-    if(!$script && isset($argv[0]))
-      $script = basename($argv[0]);
-
     $usage = <<<EOD
 Usage:
-  $script OPTIONS <file|dir> [<file|dir>, <file|dir>, ...]
+  limb_unit OPTIONS <file|dir> [<file|dir>, <file|dir>, ...]
   Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
 Options:
   -c, --config=/file.php        PHP configuration file path
@@ -64,8 +60,15 @@ EOD;
 
   protected function _help($code = 0)
   {
+    echo "\n" . $this->_getVersion() . "\n\n";
     echo $this->help();
     exit($code);
+  }
+
+  protected function _version()
+  {
+    echo $this->_getVersion();
+    exit();
   }
 
   protected function _error($message, $code = 1)
@@ -75,14 +78,20 @@ EOD;
     exit($code);
   }
 
+  protected function _getVersion()
+  {
+    list(, $number, $status) = explode('-', trim(file_get_contents(dirname(__FILE__) . '/../VERSION')));
+    return "limb_unit-$number-$status";
+  }
+
   static function getShortOpts()
   {
-    return 'ht:b:c:';
+    return 'hvt:b:c:';
   }
 
   static function getLongOpts()
   {
-    return array('help', 'config=', 'cover=', 'cover-report=', 'cover-exclude=');
+    return array('help', 'version', 'config=', 'cover=', 'cover-report=', 'cover-exclude=');
   }
 
   function run()
@@ -132,6 +141,10 @@ EOD;
         case '--help':
           $this->_help(0);
           break;
+        case 'v':
+        case '--version':
+          $this->_version();
+          break;
         case 'c':
         case '--config':
           include_once(realpath($option[1]));
@@ -168,6 +181,8 @@ EOD;
 
     if(!$found)
       $this->_help(1);
+
+    echo $runner->getRuntime() . " sec.\n";
 
     return $res;
   }
