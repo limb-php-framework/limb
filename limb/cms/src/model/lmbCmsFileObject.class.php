@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCmsFileObject.class.php 4989 2007-02-08 15:35:27Z pachanga $
+ * @version    $Id: lmbCmsFileObject.class.php 5921 2007-05-31 12:22:12Z pachanga $
  * @package    cms
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -85,7 +85,7 @@ class lmbCmsFileObject extends lmbActiveRecord
 
     if (!copy($disk_file_path, $media_file))
     {
-      throw new lmbIOException('copy failed',
+      throw new lmbFsException('copy failed',
         array(
           'dst' => $media_file,
           'src' => $disk_file_path

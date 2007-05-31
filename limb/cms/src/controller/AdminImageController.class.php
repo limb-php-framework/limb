@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: AdminImageController.class.php 5166 2007-02-28 14:10:28Z tony $
+ * @version    $Id: AdminImageController.class.php 5921 2007-05-31 12:22:12Z pachanga $
  * @package    cms
  */
 lmb_require('limb/cms/src/controller/AdminNodeWithObjectController.class.php');
@@ -88,7 +88,7 @@ class AdminImageController extends AdminNodeWithObjectController
       {
         $image->loadFile($file['tmp_name']);
       }
-      catch(lmbIOException $e)
+      catch(lmbFsException $e)
       {
         $this->toolkit->flashError('File upload error!');
       }

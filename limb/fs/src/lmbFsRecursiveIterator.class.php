@@ -9,7 +9,7 @@
  * @version    $Id: lmbFsRecursiveIterator.class.php 5009 2007-02-08 15:37:31Z pachanga $
  * @package    fs
  */
-lmb_require('limb/fs/src/exception/lmbIOException.class.php');
+lmb_require('limb/fs/src/exception/lmbFsException.class.php');
 
 class lmbFsRecursiveIterator
 {
@@ -39,7 +39,7 @@ class lmbFsRecursiveIterator
   {
     $dir = rtrim($dir, '/') . '/';
     if(($h = @opendir($dir)) === false)
-      throw new lmbIOException('can not open directory for scanning', array('dir' => $dir));
+      throw new lmbFsException('can not open directory for scanning', array('dir' => $dir));
 
     $this->open_dirs[] = array('handle' => $h, 'dir' => $dir);
   }

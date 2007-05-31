@@ -48,7 +48,7 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
       $it->rewind();
       $this->assertTrue(false);
     }
-    catch(lmbIOException $e){}
+    catch(lmbFsException $e){}
   }
 
   function testSimpleIterate()

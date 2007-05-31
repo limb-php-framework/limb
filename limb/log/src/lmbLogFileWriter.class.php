@@ -61,7 +61,7 @@ class lmbLogFileWriter
     }
     else
     {
-      throw new lmbIOException("Cannot open log file '$file_name' for writing\n" .
+      throw new lmbFsException("Cannot open log file '$file_name' for writing\n" .
                                "The web server must be allowed to modify the file.\n" .
                                "File logging for '$file_name' is disabled.");
     }

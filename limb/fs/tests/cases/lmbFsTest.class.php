@@ -329,7 +329,7 @@ class lmbFsTest extends UnitTestCase
                   LIMB_VAR_DIR . '/tmp/cp');
       $this->assertFalse(true);
     }
-    catch(lmbIOException $e){}
+    catch(lmbFsException $e){}
   }
 
   function testCpDirs()

@@ -10,7 +10,7 @@
  * @package    fs
  */
 lmb_require('limb/core/src/lmbSys.class.php');
-lmb_require('limb/fs/src/exception/lmbIOException.class.php');
+lmb_require('limb/fs/src/exception/lmbFsException.class.php');
 
 class lmbFs
 {
@@ -29,7 +29,7 @@ class lmbFs
     if($fh === false)
     {
       @unlink($tmp);
-      throw new lmbIOException('could not open file for writing', array('file' => $file));
+      throw new lmbFsException('could not open file for writing', array('file' => $file));
     }
 
     //just for safety
@@ -44,7 +44,7 @@ class lmbFs
     if(!@rename($tmp, $file))
     {
       @unlink($tmp);
-      throw new lmbIOException('could not move file', array('src' => $tmp, 'file' => $file));
+      throw new lmbFsException('could not move file', array('src' => $tmp, 'file' => $file));
     }
 
     @chmod($file, $perm);
@@ -122,7 +122,7 @@ class lmbFs
 
     if($index === false)
     {
-      throw new lmbIOException('cant find first existent path', array('dir' => $dir));
+      throw new lmbFsException('cant find first existent path', array('dir' => $dir));
     }
 
     $offset_path = '';
@@ -171,7 +171,7 @@ class lmbFs
     if(!mkdir($dir, $perm))
     {
       umask($oldumask);
-      throw new lmbIOException('failed to create directory', array('dir' => $dir));
+      throw new lmbFsException('failed to create directory', array('dir' => $dir));
     }
 
     umask($oldumask);
@@ -225,12 +225,12 @@ class lmbFs
     if(!is_dir($item))
     {
       if(!@unlink($item))
-        throw new lmbIOException('failed to remove file', array('file' => $item));
+        throw new lmbFsException('failed to remove file', array('file' => $item));
       return;
     }
 
     if(!$handle = @opendir($item))
-      throw new lmbIOException('failed to open directory', array('dir' => $item));
+      throw new lmbFsException('failed to open directory', array('dir' => $item));
 
     while(($file = readdir($handle)) !== false)
     {
@@ -243,7 +243,7 @@ class lmbFs
     closedir($handle);
 
     if(!@rmdir($item))
-      throw new lmbIOException('failed to remove directory', array('dir' => $item));
+      throw new lmbFsException('failed to remove directory', array('dir' => $item));
   }
 
   static function mv($src, $dest)
@@ -251,12 +251,12 @@ class lmbFs
     if(is_dir($src) || is_file($src))
     {
       if(!@rename($src, $dest))
-        throw new lmbIOException('failed to move item', array('src' => $src, 'dest' => $dest));
+        throw new lmbFsException('failed to move item', array('src' => $src, 'dest' => $dest));
 
       clearstatcache();
     }
     else
-      throw new lmbIOException('source file or directory does not exist', array('src' => $src));
+      throw new lmbFsException('source file or directory does not exist', array('src' => $src));
   }
 
   static function cp($src, $dest, $exclude_regex = '', $include_regex = '', $as_child = false, $include_hidden = true)
@@ -269,7 +269,7 @@ class lmbFs
         $dest = $dest . '/' . basename($src);
 
       if(@copy($src, $dest) === false)
-        throw new lmbIOException('failed to copy file', array('src' => $src, 'dest' => $dest));
+        throw new lmbFsException('failed to copy file', array('src' => $src, 'dest' => $dest));
       return;
     }
 
