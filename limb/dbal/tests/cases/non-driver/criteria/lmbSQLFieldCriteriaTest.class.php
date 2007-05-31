@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSQLFieldCriteriaTest.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbSQLFieldCriteriaTest.class.php 5923 2007-05-31 13:38:39Z pachanga $
  * @package    dbal
  */
 require_once('limb/dbal/tests/common.inc.php');
@@ -109,14 +109,14 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
   {
     $c = new lmbSQLFieldCriteria('count', null);
     $values = array();
-    $this->assertEqual($c->toStatementString($values, $this->conn), "'count' IS null");
+    $this->assertEqual($c->toStatementString($values, $this->conn), "'count' IS NULL");
   }
 
   function testIsNotNull()
   {
     $c = new lmbSQLFieldCriteria('count', null, lmbSQLFieldCriteria::NOT_EQUAL);
     $values = array();
-    $this->assertEqual($c->toStatementString($values, $this->conn), "'count' IS NOT null");
+    $this->assertEqual($c->toStatementString($values, $this->conn), "'count' IS NOT NULL");
   }
 
   function testAnd()

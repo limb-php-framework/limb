@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSQLFieldCriteria.class.php 4994 2007-02-08 15:36:08Z pachanga $
+ * @version    $Id: lmbSQLFieldCriteria.class.php 5923 2007-05-31 13:38:39Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
@@ -26,8 +26,8 @@ class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
   const NOT_LIKE = " NOT LIKE ";
   const IN = " IN ";
   const NOT_IN = " NOT IN ";
-  const IS_NULL = " IS null";
-  const IS_NOT_NULL = " IS NOT null";
+  const IS_NULL = " IS NULL";
+  const IS_NOT_NULL = " IS NOT NULL";
 
   protected $value;
   protected $comparison;
