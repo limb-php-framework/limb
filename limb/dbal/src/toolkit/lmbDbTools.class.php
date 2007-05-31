@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDbTools.class.php 5851 2007-05-10 08:52:00Z pachanga $
+ * @version    $Id: lmbDbTools.class.php 5924 2007-05-31 13:52:47Z pachanga $
  * @package    dbal
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -21,6 +21,19 @@ class lmbDbTools extends lmbAbstractTools
   protected $cache_db_info = true;
   protected $db_info = array();
   protected $db_tables = array();
+  protected $db_env = 'devel';
+
+  function setDbEnvironment($env)
+  {
+    $this->db_env = $env;
+    $this->default_db_config = null;
+    $this->default_connection = null;
+  }
+
+  function getDbEnvironment()
+  {
+    return $this->db_env;
+  }
 
   function setDefaultDbDSN($conf)
   {
@@ -36,9 +49,33 @@ class lmbDbTools extends lmbAbstractTools
       return $this->default_db_config;
 
     $conf = $this->toolkit->getConf('db');
-    $this->default_db_config = new lmbDbDSN($conf->get('dsn'));
+
+    //for BC 'dsn' overrides other db environments
+    if($dsn = $conf->get('dsn'))
+    {
+      $this->default_db_config = new lmbDbDSN($dsn);
+    }
+    else
+    {
+      $env = $conf->get($this->db_env);
+      if(!is_array($env) || !isset($env['dsn']))
+        throw new lmbException("Could not find database connection settings for environment '{$this->db_env}'");
+
+      $this->default_db_config = new lmbDbDSN($env['dsn']);
+    }
 
     return $this->default_db_config;
+  }
+
+  function getDbDSN($env)
+  {
+    $conf = $this->toolkit->getConf('db');
+    $array = $conf->get($env);
+
+    if(!is_array($array) || !isset($array['dsn']))
+      throw new lmbException("Could not find database connection settings for environment '{$env}'");
+
+    return new lmbDbDSN($array['dsn']);
   }
 
   function getDefaultDbConnection()
@@ -49,8 +86,20 @@ class lmbDbTools extends lmbAbstractTools
     if(!is_object($dsn = $this->toolkit->getDefaultDbDSN()))
       throw new lmbException('Default database DSN is not valid');
 
-    $this->default_connection = lmbDBAL :: newConnection($dsn);
+    $this->default_connection = $this->toolkit->createDbConnection($dsn);
     return $this->default_connection;
+  }
+
+  function createDbConnection($dsn)
+  {
+    $driver = $dsn->getDriver();
+    $class = 'lmb' . ucfirst($driver) . 'Connection';
+    $file = dirname(__FILE__) . '/../drivers/' . $driver . '/' . $class . '.class.php';
+    if(!file_exists($file))
+      throw new lmbException("Driver '$driver' file not found for DSN '" . $dsn->toString() . "'!");
+
+    lmb_require($file);
+    return new $class($dsn);
   }
 
   function cacheDbInfo($flag = true)
