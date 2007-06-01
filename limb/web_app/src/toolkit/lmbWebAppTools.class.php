@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWebAppTools.class.php 5899 2007-05-17 13:23:14Z pachanga $
+ * @version    $Id: lmbWebAppTools.class.php 5926 2007-06-01 07:49:04Z pachanga $
  * @package    web_app
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -48,7 +48,8 @@ class lmbWebAppTools extends lmbAbstractTools
       return $this->view;
 
     lmb_require('limb/view/src/lmbWactView.class.php');
-    $this->view = new lmbWactView(LIMB_VAR_DIR . '/compiled/');
+    $this->view = new lmbWactView();
+    $this->view->setCacheDir(LIMB_VAR_DIR . '/compiled/');
 
     return $this->view;
   }
