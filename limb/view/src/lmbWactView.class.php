@@ -19,11 +19,6 @@ class lmbWactView extends lmbView
   protected $forms_errors = array();
   protected $cache_dir;
 
-  function __construct($dir)
-  {
-    $this->cache_dir = $dir;
-  }
-
   function setCacheDir($dir)
   {
     $this->cache_dir = $dir;
