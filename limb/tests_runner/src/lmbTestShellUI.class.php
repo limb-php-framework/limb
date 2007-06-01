@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5916 2007-05-30 10:30:17Z pachanga $
+ * @version    $Id: lmbTestShellUI.class.php 5929 2007-06-01 13:28:53Z pachanga $
  * @package    tests_runner
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
@@ -147,7 +147,8 @@ EOD;
           break;
         case 'c':
         case '--config':
-          include_once(realpath($option[1]));
+          if(!@include_once(realpath($option[1])))
+            $this->_error("Could not include configuration file '{$option[1]}'");
           $configured = true;
           break;
         case '--cover':
