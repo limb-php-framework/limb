@@ -91,7 +91,7 @@
     </message>
     <message>
       <source>Object {Field} is required</source>
-      <translation type="unfinished"/>
+      <translation>Объект {Field} является обязательным</translation>
     </message>
     <message>
       <source>{Field} is required</source>
