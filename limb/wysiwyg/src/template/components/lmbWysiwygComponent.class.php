@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWysiwygComponent.class.php 5425 2007-03-29 13:11:01Z pachanga $
+ * @version    $Id: lmbWysiwygComponent.class.php 5932 2007-06-04 12:30:26Z pachanga $
  * @package    wysiwyg
  */
 lmb_require('limb/wact/src/components/form/form.inc.php');
@@ -29,19 +29,17 @@ class lmbWysiwygComponent extends WactTextAreaComponent
   {
     if($value = $this->ini->getOption($option, $this->group))
       return $value;
-
-    if($this->group != 'default')
-      return $this->ini->getOption($option);
     return '';
   }
 
-  function initWysiwyg($ini_file_name, $group = 'default')
+  function initWysiwyg($ini_file_name, $group = null)
   {
     $this->ini = lmbToolkit :: instance()->getConf($ini_file_name);
     $this->group = $group;
 
     if(!$this->getAttribute('rows'))
       $this->setAttribute('rows', $this->getIniOption('rows'));
+
     if(!$this->getAttribute('cols'))
       $this->setAttribute('cols', $this->getIniOption('cols'));
 
@@ -52,7 +50,5 @@ class lmbWysiwygComponent extends WactTextAreaComponent
       $this->setAttribute('height', $this->getIniOption('height'));
 
   }
-
 }
-
 ?>

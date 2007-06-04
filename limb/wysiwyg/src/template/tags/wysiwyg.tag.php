@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: wysiwyg.tag.php 5888 2007-05-14 12:16:38Z alex433 $
+ * @version    $Id: wysiwyg.tag.php 5932 2007-06-04 12:30:26Z pachanga $
  * @package    wysiwyg
  */
 require_once('limb/wact/src/tags/form/control.inc.php');
@@ -20,7 +20,7 @@ class lmbWysiwygTag extends WactControlTag
   var $runtimeComponentName = 'lmbWysiwygComponent';
   var $runtimeIncludeFile = 'limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php';
   var $ini_file_name = 'wysiwyg.ini';
-  var $type = '';
+  var $type;
 
   function prepare()
   {
@@ -31,9 +31,10 @@ class lmbWysiwygTag extends WactControlTag
   {
     $ini = lmbToolkit :: instance()->getConf($this->ini_file_name);
 
-    if(!$this->type = $ini->getOption('wysiwyg'))
+    if(($this->type = $this->getAttribute('wysiwyg')) == '' &&
+       ($this->type = $ini->getOption('wysiwyg')) == '')
     {
-       $this->type = 'default';
+       $this->type = null;
        return;
     }
 
