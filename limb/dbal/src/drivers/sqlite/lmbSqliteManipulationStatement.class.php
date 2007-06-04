@@ -17,7 +17,7 @@ class lmbSqliteManipulationStatement extends lmbSqliteStatement implements lmbDb
 {
   function getAffectedRowCount()
   {
-    return mysql_affected_rows($this->connection->getConnectionId());
+    return sqlite_changes($this->connection->getConnectionId());
   }
 }
 

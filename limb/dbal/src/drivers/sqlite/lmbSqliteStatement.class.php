@@ -87,21 +87,21 @@ class lmbSqliteStatement implements lmbDbStatement
   {
     $this->parameters[$name] = is_null($value) ?
     'null' :
-    "'" . mysql_escape_string((string) $value) . "'";
+    "'" . sqlite_escape_string((string) $value) . "'";
   }
 
   function setVarChar($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
     'null' :
-    "'" . mysql_escape_string((string) $value) . "'";
+    "'" . sqlite_escape_string((string) $value) . "'";
   }
 
   function setClob($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
     'null' :
-    "'" . mysql_escape_string((string) $value) . "'";
+    "'" . sqlite_escape_string((string) $value) . "'";
   }
 
   protected function _setDate($name, $value, $format)
@@ -112,7 +112,7 @@ class lmbSqliteStatement implements lmbDbStatement
     }
     else if(is_string($value))
     {
-      $this->parameters[$name] = "'" . mysql_escape_string((string) $value) . "'";
+      $this->parameters[$name] = "'" . sqlite_escape_string((string) $value) . "'";
     }
     else
     {

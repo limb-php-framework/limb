@@ -31,17 +31,14 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
   function freeQuery()
   {
     if(isset($this->queryId) && is_resource($this->queryId))
-    {
-      mysql_free_result($this->queryId);
       $this->queryId = null;
-    }
   }
 
   function rewind()
   {
-    if(isset($this->queryId) && is_resource($this->queryId) && mysql_num_rows($this->queryId))
+    if(isset($this->queryId) && is_resource($this->queryId) && sqlite_num_rows($this->queryId))
     {
-      if(mysql_data_seek($this->queryId, 0) === false)
+      if(sqlite_seek($this->queryId, 0) === false)
       {
         $this->connection->_raiseError();
       }
@@ -65,8 +62,8 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
       if($this->limit)
       {
         $query .= ' LIMIT ' .
-        $this->offset . ',' .
-        $this->limit;
+        $this->limit . ' OFFSET ' . 
+        $this->offset;        
       }
 
       $this->queryId = $this->connection->execute($query);
@@ -78,7 +75,7 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
   function next()
   {
     $this->current = new lmbSqliteRecord();
-    $values = mysql_fetch_assoc($this->queryId);
+    $values = sqlite_fetch_array($this->queryId, SQLITE_ASSOC);
     $this->current->import($values);
     $this->valid = is_array($values);
     $this->key++;
@@ -111,10 +108,9 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
       $query = rtrim($query, ',');
     }
 
-    $queryId = $this->connection->execute($query . " LIMIT $pos, 1");
+    $queryId = $this->connection->execute($query . " LIMIT 1 OFFSET $pos");
 
-    $res = mysql_fetch_assoc($queryId);
-    mysql_free_result($queryId);
+    $res = sqlite_fetch_array($queryId, SQLITE_ASSOC);    
     if($res)
     {
       $record = new lmbSqliteRecord();
@@ -127,7 +123,7 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
   {
     if(is_null($this->queryId))
       $this->rewind();
-    return mysql_num_rows($this->queryId);
+    return sqlite_num_rows($this->queryId);
   }
 
   function count()
@@ -138,16 +134,12 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
       $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','', $rewritesql);
 
       $queryId = $this->connection->execute($rewritesql);
-      $row = mysql_fetch_row($queryId);
-      mysql_free_result($queryId);
-      if(is_array($row))
-        return $row[0];
+      return sqlite_fetch_single($queryId);
     }
 
     // could not re-write the query, try a different method.
     $queryId = $this->connection->execute($this->query);
-    $count = mysql_num_rows($queryId);
-    mysql_free_result($queryId);
+    $count = sqlite_num_rows($queryId);
     return $count;
   }
 }

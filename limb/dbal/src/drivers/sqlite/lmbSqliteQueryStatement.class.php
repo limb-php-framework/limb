@@ -21,18 +21,18 @@ class lmbSqliteQueryStatement extends lmbSqliteStatement implements lmbDbQuerySt
   {
     $record = new lmbSqliteRecord();
     $queryId = $this->connection->execute($this->getSQL());
-    $values = mysql_fetch_assoc($queryId);
-    $record->import($values);
-    mysql_free_result($queryId);
+    $values = sqlite_fetch_array($queryId, SQLITE_ASSOC);       
     if(is_array($values))
+    {
+      $record->import($values);
       return $record;
+    }
   }
 
   function getOneValue()
   {
     $queryId = $this->connection->execute($this->getSQL());
-    $row = mysql_fetch_row($queryId);
-    mysql_free_result($queryId);
+    $row = sqlite_fetch_single($queryId);    
     if(is_array($row))
       return $row[0];
   }
@@ -41,9 +41,8 @@ class lmbSqliteQueryStatement extends lmbSqliteStatement implements lmbDbQuerySt
   {
     $column = array();
     $queryId = $this->connection->execute($this->getSQL());
-    while(is_array($row = mysql_fetch_row($queryId)))
-      $column[] = $row[0];
-    mysql_free_result($queryId);
+    while($value = sqlite_fetch_single($queryId))
+      $column[] = $value;
     return $column;
   }
 

@@ -11,18 +11,25 @@
  */
 
 function DriverSqliteSetup($conn)
-{
-  if(DriverSqliteTableExists($conn, 'founding_fathers'))
-    DriverSqliteExec($conn, 'DROP TABLE founding_fathers');
+{  
+  DriverSqliteExec($conn, 'DROP TABLE founding_fathers', false);
 
   $sql = "CREATE TABLE founding_fathers (
             id INTEGER,
             first VARCHAR,
             last VARCHAR)";
   DriverSqliteExec($conn, $sql);
+  
+  $inserts = array(
+        "INSERT INTO founding_fathers VALUES (1, 'George', 'Washington');",
+        "INSERT INTO founding_fathers VALUES (2, 'Alexander', 'Hamilton');",
+        "INSERT INTO founding_fathers VALUES (3, 'Benjamin', 'Franklin');"
+    );
 
-  if(DriverSqliteTableExists($conn, 'standard_types'))
-    DriverSqliteExec($conn, 'DROP TABLE standard_types');
+  foreach($inserts as $sql)
+    DriverSqliteExec($conn, $sql);  
+  
+  DriverSqliteExec($conn, 'DROP TABLE standard_types', false);
 
   $sql = "CREATE TABLE standard_types (
             id INTEGER,
@@ -40,35 +47,18 @@ function DriverSqliteSetup($conn)
             type_time time,
             type_blob blob)";
   DriverSqliteExec($conn, $sql);
-
-  DriverSqliteExec($conn, 'DELETE founding_fathers');
-  DriverSqliteExec($conn, 'DELETE standard_types');
-
-  $inserts = array(
-        "INSERT INTO founding_fathers VALUES (1, 'George', 'Washington');",
-        "INSERT INTO founding_fathers VALUES (2, 'Alexander', 'Hamilton');",
-        "INSERT INTO founding_fathers VALUES (3, 'Benjamin', 'Franklin');"
-    );
-
-  foreach($inserts as $sql)
-    DriverSqliteExec($conn, $sql);
 }
 
-function DriverSqliteExec($conn, $sql)
+function DriverSqliteExec($conn, $sql, $check_result = true)
 {
-  $result = sqlite_query($conn, $sql);
-  if(!$result)
-    throw new lmbDbException('SQLite error happened: ' . sqlite_error_string(sqlite_last_error($conn)));
-  return $result;
-}
-
-function DriverSqliteTableExists($conn, $table)
-{
-  $query = DriverSqliteExec($conn, "SELECT name FROM sqlite_master WHERE type='table'");
-  if($tables = sqlite_fetch_array($query))
-    return in_array($table, $tables);
+  if($check_result)
+  {    
+    if(!$result = sqlite_query($conn, $sql))
+      throw new lmbDbException('SQLite error happened: ' . sqlite_error_string(sqlite_last_error($conn)));    
+  }
   else
-    return false;
+    $result = @sqlite_query($conn, $sql);
+  return $result;   
 }
 
 ?>

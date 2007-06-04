@@ -154,9 +154,9 @@ class lmbSqliteConnection implements lmbDbConnection
       return '';
 
     $pieces = explode('.', $id);
-    $quoted = '`' . $pieces[0] . '`';
+    $quoted = "'" . $pieces[0] . "'";
     if(isset($pieces[1]))
-       $quoted .= '.`' . $pieces[1] . '`';
+       $quoted .= ".'" . $pieces[1] . "'";
     return $quoted;
   }
 

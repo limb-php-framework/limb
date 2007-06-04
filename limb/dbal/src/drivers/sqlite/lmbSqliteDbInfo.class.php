@@ -34,12 +34,11 @@ class lmbSqliteDbInfo extends lmbDbInfo
   {
     if($this->isExisting && !$this->isTablesLoaded)
     {
-      $queryId = $this->connection->execute("SHOW TABLES FROM `" . $this->name . "`");
-      while(is_array($row = mysql_fetch_row($queryId)))
+      $queryId = $this->connection->execute("SHOW TABLES FROM '" . $this->name . "'");
+      while(is_array($value = sqlite_fetch_single($queryId)))
       {
-        $this->tables[$row[0]] = null;
+        $this->tables[$value] = null;
       }
-      mysql_free_result($queryId);
       $this->isTablesLoaded = true;
     }
   }

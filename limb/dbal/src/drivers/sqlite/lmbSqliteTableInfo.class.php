@@ -36,9 +36,9 @@ class lmbSqliteTableInfo extends lmbDbTableInfo
     if($this->isExisting && !$this->isColumnsLoaded)
     {
       $connection = $this->database->getConnection();
-      $queryId = $connection->execute("SHOW COLUMNS FROM `" . $this->name . "`");
+      $queryId = $connection->execute("SHOW COLUMNS FROM '" . $this->name . "'");
 
-      while($row = mysql_fetch_assoc($queryId))
+      while($row = sqlite_fetch_array($queryId, SQLITE_ASSOC))
       {
         $name = $row['Field'];
         $isNullable =($row['Null'] == 'YES');
