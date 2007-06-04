@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFsRecursiveIteratorTest.class.php 5177 2007-03-02 16:01:30Z pachanga $
- * @package    fs
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/fs/src/lmbFsRecursiveIterator.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCliInputTest.class.php 5456 2007-04-02 08:07:00Z pachanga $
- * @package    cli
+ * @version    $Id: lmbCliInputTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/cli/src/lmbCliInput.class.php');
 lmb_require('limb/cli/src/lmbCliOption.class.php');

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: item.tag.php 5893 2007-05-14 15:05:54Z serega $
- * @package    wact
+ * @version    $Id: item.tag.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 /**

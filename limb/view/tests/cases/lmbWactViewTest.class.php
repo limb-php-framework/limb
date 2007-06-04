@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbWactViewTest.class.php 5226 2007-03-13 14:12:29Z serega $
- * @package    view
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/view/src/lmbWactView.class.php');
 

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbEmailRule.class.php 5413 2007-03-29 10:08:00Z pachanga $
- * @package    validation
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 lmb_require('limb/datetime/src/lmbDate.class.php');

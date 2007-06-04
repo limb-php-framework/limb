@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFormErrorsTagTest.class.php 5223 2007-03-13 13:31:39Z serega $
- * @package    wact
+ * @version    $Id: WactFormErrorsTagTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 

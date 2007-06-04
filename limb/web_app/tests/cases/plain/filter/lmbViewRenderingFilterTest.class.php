@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbViewRenderingFilterTest.class.php 5372 2007-03-28 09:06:30Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbViewRenderingFilterTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
 lmb_require('limb/net/src/lmbHttpResponse.class.php');

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5918 2007-05-30 13:19:55Z pachanga $
- * @package    core
+ * @version    $Id: common.inc.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 

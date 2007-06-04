@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFormCommandTest.class.php 5628 2007-04-11 12:09:20Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbFormCommandTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/web_app/src/command/lmbFormCommand.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');

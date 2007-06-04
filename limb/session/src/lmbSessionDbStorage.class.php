@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSessionDbStorage.class.php 5196 2007-03-06 17:46:02Z pachanga $
- * @package    session
+ * @version    $Id: lmbSessionDbStorage.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/session/src/lmbSessionStorage.interface.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -20,7 +20,7 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
  * @todo Check client ip while reading session.
  * @todo Allow to set any db table name to store session data in.
  * @see lmbSessionStartupFilter
- * @version $Id: lmbSessionDbStorage.class.php 5196 2007-03-06 17:46:02Z pachanga $
+ * @version $Id: lmbSessionDbStorage.class.php 5933 2007-06-04 13:06:23Z pachanga $
  */
 class lmbSessionDbStorage implements lmbSessionStorage
 {

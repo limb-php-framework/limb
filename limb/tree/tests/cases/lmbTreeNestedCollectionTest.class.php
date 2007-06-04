@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTreeNestedCollectionTest.class.php 5748 2007-04-23 08:54:52Z pachanga $
- * @package    tree
+ * @version    $Id: lmbTreeNestedCollectionTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/tree/src/lmbTreeNestedCollection.class.php');

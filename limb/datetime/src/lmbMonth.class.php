@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5824 2007-05-07 13:44:24Z pachanga $
- * @package    datetime
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
 

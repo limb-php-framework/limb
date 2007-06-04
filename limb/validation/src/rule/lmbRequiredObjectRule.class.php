@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRequiredObjectRule.class.php 5867 2007-05-11 14:13:55Z pachanga $
- * @package    validation
+ * @version    $Id: lmbRequiredObjectRule.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 lmb_require('limb/i18n/common.inc.php');

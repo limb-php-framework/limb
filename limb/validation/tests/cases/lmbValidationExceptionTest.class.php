@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbValidationExceptionTest.class.php 5010 2007-02-08 15:37:40Z pachanga $
- * @package    validation
+ * @version    $Id: lmbValidationExceptionTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/validation/src/exception/lmbValidationException.class.php');

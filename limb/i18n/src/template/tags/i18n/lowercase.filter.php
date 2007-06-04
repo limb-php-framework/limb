@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lowercase.filter.php 5646 2007-04-12 08:38:15Z pachanga $
- * @package    i18n
+ * @version    $Id: lowercase.filter.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 /**
 * @filter i18n_lowercase

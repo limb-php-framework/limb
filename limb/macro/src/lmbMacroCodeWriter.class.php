@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCodeWriter.class.php 5071 2007-02-16 09:09:35Z serega $
- * @package    macro
+ * @version    $Id$
+ * @package    $package$
  */
 
 class lmbMacroCodeWriter

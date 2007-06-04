@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMacroTreeBuilderTest.class.php 5783 2007-04-29 07:04:40Z serega $
- * @package    core
+ * @version    $Id$
+ * @package    $package$
  */
 
 lmb_require('limb/macro/src/lmbMacroCompiler.class.php');

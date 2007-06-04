@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSQLFieldCriteria.class.php 5923 2007-05-31 13:38:39Z pachanga $
- * @package    dbal
+ * @version    $Id: lmbSQLFieldCriteria.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFalseCriteria.class.php');

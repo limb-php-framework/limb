@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: toolkit.inc.php 5161 2007-02-28 08:26:24Z pachanga $
- * @package    view
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/fs/toolkit.inc.php');
 lmb_require('limb/config/toolkit.inc.php');

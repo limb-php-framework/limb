@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSession.class.php 5198 2007-03-06 17:53:46Z pachanga $
- * @package    session
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/session/src/lmbSession.class.php');
 

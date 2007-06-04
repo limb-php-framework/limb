@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMailer.class.php 5000 2007-02-08 15:36:41Z pachanga $
- * @package    mail
+ * @version    $Id: lmbMailer.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 @define('PHPMAILER_DIR', dirname(__FILE__) . '/../lib/phpmailer-1.72/');
 @define('LIMB_USE_PHPMAIL', false);

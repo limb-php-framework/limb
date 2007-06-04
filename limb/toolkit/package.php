@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: package.php 5127 2007-02-19 10:12:32Z pachanga $
- * @package    toolkit
+ * @version    $Id: package.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 require_once 'PEAR/PackageFileManager2.php';

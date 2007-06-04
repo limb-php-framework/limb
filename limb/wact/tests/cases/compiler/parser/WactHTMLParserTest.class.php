@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5880 2007-05-13 12:04:03Z serega $
- * @package    wact
+ * @version    $Id: WactHTMLParserTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 require_once('limb/wact/src/compiler/templatecompiler.inc.php');
@@ -676,30 +676,30 @@ class WactHTMLParserTest extends UnitTestCase
   {
     $location = $this->_createLocation();
     $this->parser->parse('stuff<?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5880 2007-05-13 12:04:03Z serega $
- * @package    wact
+ * @version    $Id: WactHTMLParserTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
  ', $this->file_name);
 
     $this->checkEventsCount(2);
     $this->checkCharactersEvent(0, 'stuff', $location);
     $this->checkCharactersEvent(1, '<?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5880 2007-05-13 12:04:03Z serega $
- * @package    wact
+ * @version    $Id: WactHTMLParserTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
  ');
   }

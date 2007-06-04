@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSetInterface.interface.php 5558 2007-04-06 13:02:07Z pachanga $
- * @package    core
+ * @version    $Id$
+ * @package    $package$
  */
 
 interface lmbSetInterface extends ArrayAccess

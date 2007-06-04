@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbArrayHelper.class.php 5621 2007-04-11 09:36:16Z pachanga $
- * @package    core
+ * @version    $Id$
+ * @package    $package$
  */
 
 class lmbArrayHelper

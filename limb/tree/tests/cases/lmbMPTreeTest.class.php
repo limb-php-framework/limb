@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbMaterializedPathTreeTest.class.php 5677 2007-04-18 14:02:43Z alex433 $
- * @package    tree
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/tree/src/lmbMPTree.class.php');
 lmb_require(dirname(__FILE__) . '/lmbTreeTestBase.class.php');

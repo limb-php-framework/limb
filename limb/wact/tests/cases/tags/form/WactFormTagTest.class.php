@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form.test.php 5189 2007-03-06 08:06:16Z serega $
- * @package    wact
+ * @version    $Id$
+ * @package    $package$
  */
 
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');

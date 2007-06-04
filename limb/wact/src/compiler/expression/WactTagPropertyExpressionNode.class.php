@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactDataBindingExpressionNode.class.php 5750 2007-04-23 13:56:35Z serega $
- * @package    wact
+ * @version    $Id$
+ * @package    $package$
  */
 
 

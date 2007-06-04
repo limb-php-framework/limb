@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFile2TestNodeMapperTest.class.php 5417 2007-03-29 11:39:33Z pachanga $
- * @package    tests_runner
+ * @version    $Id: lmbFile2TestNodeMapperTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
 require_once(dirname(__FILE__) . '/../../src/lmbFile2TestNodeMapper.class.php');

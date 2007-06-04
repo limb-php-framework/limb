@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: button.tag.php 5689 2007-04-19 11:23:20Z serega $
- * @package    wact
+ * @version    $Id: button.tag.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 require_once 'limb/wact/src/tags/form/control.inc.php';

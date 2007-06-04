@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5929 2007-06-01 13:28:53Z pachanga $
- * @package    tests_runner
+ * @version    $Id: lmbTestShellUI.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
 require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbUploadedFilesParser.class.php 5001 2007-02-08 15:36:45Z pachanga $
- * @package    net
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 

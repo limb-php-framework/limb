@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAbstractController.class.php 5814 2007-05-05 12:28:11Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbAbstractController.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 lmb_require('limb/core/src/lmbClassPath.class.php');
@@ -16,7 +16,7 @@ lmb_require('limb/core/src/lmbMixable.class.php');
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 5814 2007-05-05 12:28:11Z pachanga $
+ * @version $Id: lmbAbstractController.class.php 5933 2007-06-04 13:06:23Z pachanga $
  */
 abstract class lmbAbstractController
 {

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbFilterChain.class.php 5195 2007-03-06 16:42:37Z pachanga $
- * @package    filter_chain
+ * @version    $Id: lmbFilterChain.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 
@@ -55,7 +55,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  *  $chain->process();
  *  </code>
  *
- * @version $Id: lmbFilterChain.class.php 5195 2007-03-06 16:42:37Z pachanga $
+ * @version $Id: lmbFilterChain.class.php 5933 2007-06-04 13:06:23Z pachanga $
  */
 class lmbFilterChain implements lmbInterceptingFilter
 {

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5902 2007-05-18 14:36:13Z pachanga $
- * @package    active_record
+ * @version    $Id: lmbActiveRecord.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/core/src/lmbDelegate.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5902 2007-05-18 14:36:13Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5933 2007-06-04 13:06:23Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {

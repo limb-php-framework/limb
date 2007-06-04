@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: AdminFileObjectController.class.php 5921 2007-05-31 12:22:12Z pachanga $
- * @package    cms
+ * @version    $Id: AdminFileObjectController.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/cms/src/controller/AdminNodeWithObjectController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsFileObject.class.php');

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactFSM.php 5646 2007-04-12 08:38:15Z pachanga $
- * @package    wact
+ * @version    $Id: WactFSM.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 /* vim: set expandtab softtabstop=4 tabstop=4 shiftwidth=4: */
@@ -32,7 +32,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  *
- * $Id: WactFSM.php 5646 2007-04-12 08:38:15Z pachanga $
+ * $Id: WactFSM.php 5933 2007-06-04 13:06:23Z pachanga $
  */
 
 /**

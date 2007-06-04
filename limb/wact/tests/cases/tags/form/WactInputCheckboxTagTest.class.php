@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: inputcheckbox.test.php 5339 2007-03-23 14:12:48Z pachanga $
- * @package    wact
+ * @version    $Id$
+ * @package    $package$
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';

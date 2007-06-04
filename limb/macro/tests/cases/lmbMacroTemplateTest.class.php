@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbPHPViewTest.class.php 5012 2007-02-08 15:38:06Z pachanga $
- * @package    macro
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');

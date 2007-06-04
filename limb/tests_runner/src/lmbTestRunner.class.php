@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTestShellUI.class.php 5663 2007-04-16 08:56:20Z pachanga $
- * @package    tests_runner
+ * @version    $Id$
+ * @package    $package$
  */
 
 class lmbTestRunner

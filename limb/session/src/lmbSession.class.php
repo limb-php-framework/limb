@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSession.class.php 5645 2007-04-12 07:13:10Z pachanga $
- * @package    session
+ * @version    $Id: lmbSession.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/core/src/lmbSerializable.class.php');
 
@@ -16,7 +16,7 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
  * Wrapper class for global $_SESSION variable
  *
  * @see lmbWebAppTools :: getSession()
- * @version $Id: lmbSession.class.php 5645 2007-04-12 07:13:10Z pachanga $
+ * @version $Id: lmbSession.class.php 5933 2007-06-04 13:06:23Z pachanga $
  */
 class lmbSession
 {

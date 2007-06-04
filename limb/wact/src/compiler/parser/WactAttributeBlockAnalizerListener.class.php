@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactNodeBuilder.class.php 5660 2007-04-13 20:29:02Z serega $
- * @package    wact
+ * @version    $Id$
+ * @package    $package$
  */
 
 class WactAttributeBlockAnalizerListener implements WactBlockAnalizerListener

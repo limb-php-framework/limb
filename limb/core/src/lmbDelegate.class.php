@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDelegate.class.php 5143 2007-02-20 21:40:01Z serega $
- * @package    core
+ * @version    $Id$
+ * @package    $package$
  */
 
 /**

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachePersister.interface.php 4985 2007-02-08 15:35:06Z pachanga $
- * @package    cache
+ * @version    $Id: lmbCachePersister.interface.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 define('LIMB_CACHE_NULL_RESULT', 'cache_null_' . md5(mt_rand()));
 

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NSizeRangeRule.class.php 5652 2007-04-13 10:36:39Z pachanga $
- * @package    validation
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 lmb_require('limb/i18n/utf8.inc.php');

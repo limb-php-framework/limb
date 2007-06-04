@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbTemplateHighlightHandler.class.php 5256 2007-03-15 20:17:39Z serega $
- * @package    view
+ * @version    $Id$
+ * @package    $package$
  */
 @define('XML_HTMLSAX3', 'limb/view/lib/XML/');
 

@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: common.inc.php 5049 2007-02-13 08:44:23Z pachanga $
- * @package    tests_runner
+ * @version    $Id$
+ * @package    $package$
  */
 @define('SIMPLE_TEST', dirname(__FILE__) . '/lib/simpletest/');
 

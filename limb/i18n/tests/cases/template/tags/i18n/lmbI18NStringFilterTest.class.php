@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbI18NStringFilterTest.class.php 5852 2007-05-10 09:16:47Z wiliam $
- * @package    i18n
+ * @version    $Id: lmbI18NStringFilterTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 

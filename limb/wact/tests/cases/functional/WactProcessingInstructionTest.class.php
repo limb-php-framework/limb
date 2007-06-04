@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactProcessingInstructionTest.class.php 5235 2007-03-14 09:44:28Z serega $
- * @package    wact
+ * @version    $Id: WactProcessingInstructionTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 class WactProcessingInstructionTest extends WactTemplateTestCase
@@ -24,15 +24,15 @@ class WactProcessingInstructionTest extends WactTemplateTestCase
   function testPHPProcessingInstruction()
   {
     $template = '<?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactProcessingInstructionTest.class.php 5235 2007-03-14 09:44:28Z serega $
- * @package    wact
+ * @version    $Id: WactProcessingInstructionTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
  echo "Foo"; ?>';
     $this->registerTestingTemplate('/procinst/php_processing_instruction.html', $template);

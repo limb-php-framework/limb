@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbSqliteUpdateTest.class.php 4994 2007-02-08 15:36:08Z pachanga $
- * @package    dbal
+ * @version    $Id$
+ * @package    $package$
  */
 
 require_once(dirname(__FILE__) . '/../DriverUpdateTestBase.class.php');

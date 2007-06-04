@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbImageFactory.class.php 4999 2007-02-08 15:36:37Z pachanga $
- * @package    imagekit
+ * @version    $Id: lmbImageFactory.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 class lmbImageFactory
 {

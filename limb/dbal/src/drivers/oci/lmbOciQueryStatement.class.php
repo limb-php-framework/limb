@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbOciQueryStatement.class.php 5147 2007-02-22 08:34:32Z pachanga $
- * @package    dbal
+ * @version    $Id: lmbOciQueryStatement.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/dbal/src/drivers/lmbDbQueryStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbOciStatement.class.php');

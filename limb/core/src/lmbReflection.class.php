@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbReflection.class.php 4987 2007-02-08 15:35:15Z pachanga $
- * @package    core
+ * @version    $Id$
+ * @package    $package$
  */
 //code is based on SimpleReflection class from SimpleTest test suite
 

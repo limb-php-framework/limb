@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbControllerTest.class.php 5899 2007-05-17 13:23:14Z pachanga $
- * @package    web_app
+ * @version    $Id: lmbControllerTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/view/src/wact/lmbWactTemplateLocator.class.php');

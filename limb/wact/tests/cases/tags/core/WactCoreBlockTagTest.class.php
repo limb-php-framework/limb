@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactCoreBlockTagTest.class.php 5203 2007-03-07 08:58:21Z serega $
- * @package    wact
+ * @version    $Id: WactCoreBlockTagTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @package    $package$
  */
 
 class WactCoreBlockTagTest extends WactTemplateTestCase

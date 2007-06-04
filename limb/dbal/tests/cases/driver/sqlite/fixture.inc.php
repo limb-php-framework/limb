@@ -1,31 +1,31 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: fixture.inc.php 4994 2007-02-08 15:36:08Z pachanga $
- * @package    dbal
+ * @version    $Id$
+ * @package    $package$
  */
 
 function DriverSqliteSetup($conn)
-{  
-  if(DriverSqliteTableExists($conn, 'founding_fathers'))     
+{
+  if(DriverSqliteTableExists($conn, 'founding_fathers'))
     DriverSqliteExec($conn, 'DROP TABLE founding_fathers');
-  
+
   $sql = "CREATE TABLE founding_fathers (
-            id INTEGER PRIMARY KEY,
+            id INTEGER,
             first VARCHAR,
             last VARCHAR)";
   DriverSqliteExec($conn, $sql);
-  
+
   if(DriverSqliteTableExists($conn, 'standard_types'))
     DriverSqliteExec($conn, 'DROP TABLE standard_types');
-  
+
   $sql = "CREATE TABLE standard_types (
-            id INTEGER PRIMARY KEY,
+            id INTEGER,
             type_smallint smallint,
             type_integer integer,
             type_boolean smallint,
@@ -62,10 +62,10 @@ function DriverSqliteExec($conn, $sql)
   return $result;
 }
 
-function DriverSqliteTableExists($conn, $table) 
+function DriverSqliteTableExists($conn, $table)
 {
   $query = DriverSqliteExec($conn, "SELECT name FROM sqlite_master WHERE type='table'");
-  if($tables = sqlite_fetch_array($query))  
+  if($tables = sqlite_fetch_array($query))
     return in_array($table, $tables);
   else
     return false;

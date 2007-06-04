@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbRouteUrlTagTest.class.php 5287 2007-03-20 08:39:30Z serega $
- * @package    web_app
+ * @version    $Id$
+ * @package    $package$
  */
 
 class lmbFlashBoxTagTest extends lmbWactTestCase

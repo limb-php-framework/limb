@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactOptionRenderTest.class.php 5202 2007-03-07 08:47:03Z serega $
- * @package    wact
+ * @version    $Id$
+ * @package    $package$
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';

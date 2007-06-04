@@ -1,13 +1,13 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
  * @link http://limb-project.com
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbCachingFileLocator.class.php 5548 2007-04-06 07:39:14Z pachanga $
- * @package    fs
+ * @version    $Id$
+ * @package    $package$
  */
 lmb_require('limb/fs/src/lmbFileLocatorDecorator.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
