@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDateTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbDateTest.class.php 5939 2007-06-05 14:50:20Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
@@ -225,36 +225,54 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($date->getStamp(), $stamp);
   }
 
-  function testGetDayOfWeekForSunday()
+  function testGetPhpDayOfWeekForSunday()
   {
     $date = new lmbDate('2005-01-16');
-    $this->assertEqual($date->getDayOfWeek(), 0);
+    $this->assertEqual($date->getPhpDayOfWeek(), 0);
   }
 
-  function testGetDayOfWeekForMonday()
+  function testGetIntlDayOfWeekForSunday()
+  {
+    $date = new lmbDate('2005-01-16');
+    $this->assertEqual($date->getIntlDayOfWeek(), 6);
+  }
+
+  function testGetPhpDayOfWeekForMonday()
   {
     $date = new lmbDate('2005-01-17');
-    $this->assertEqual($date->getDayOfWeek(), 1);
+    $this->assertEqual($date->getPhpDayOfWeek(), 1);
   }
 
-  function testGetDayOfWeekForSuturday()
+  function testGetIntlDayOfWeekForMonday()
+  {
+    $date = new lmbDate('2005-01-17');
+    $this->assertEqual($date->getIntlDayOfWeek(), 0);
+  }
+
+  function testGetPhpDayOfWeekForSuturday()
   {
     $date = new lmbDate('2005-01-15');
-    $this->assertEqual($date->getDayOfWeek(), 6);
+    $this->assertEqual($date->getPhpDayOfWeek(), 6);
+  }
+
+  function testGetIntlDayOfWeekForSuturday()
+  {
+    $date = new lmbDate('2005-01-15');
+    $this->assertEqual($date->getIntlDayOfWeek(), 5);
   }
 
   //in the two tests below we're testing a boundary situtation
   //for day of the week which happens in February
-  function testGetDayOfWeekMonthBeforeFebruary()
+  function testGetPhpDayOfWeekMonthBeforeFebruary()
   {
     $date = new lmbDate('2005-01-20');
-    $this->assertEqual($date->getDayOfWeek(), 4);
+    $this->assertEqual($date->getPhpDayOfWeek(), 4);
   }
 
-  function testGetDayOfWeekMonthAfterFebruary()
+  function testGetPhpDayOfWeekMonthAfterFebruary()
   {
     $date = new lmbDate('2005-08-20');
-    $this->assertEqual($date->getDayOfWeek(), 6);
+    $this->assertEqual($date->getPhpDayOfWeek(), 6);
   }
 
   function testGetBeginOfDay()
@@ -383,10 +401,6 @@ class lmbDateTest extends UnitTestCase
     $new_date = $date->setWeek(2);
     $this->assertEqual($date->toString(), '2005-01-01 00:00:00');
     $this->assertEqual($new_date->toString(), '2005-01-08 00:00:00');//???
-  }
-
-  function TODO_testSetDayOfWeek()
-  {
   }
 
   function testSetTimeZone()

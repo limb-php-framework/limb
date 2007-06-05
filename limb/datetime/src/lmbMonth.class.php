@@ -66,20 +66,21 @@ class lmbMonth
 
   function getNumberOfWeeks()
   {
-    $dof = $this->start_date->getDayOfWeek();
-    if(lmbDate :: getFirstDayOfWeek() == 1 && $dof == 0)
+    $dow = $this->start_date->getPhpDayOfWeek();
+
+    if(lmbDate :: getFirstDayOfWeek() == 1 && $dow == 0)
     {
-      $first_week_days = 7 - $dof + lmbDate :: getFirstDayOfWeek();
+      $first_week_days = 7 - $dow + lmbDate :: getFirstDayOfWeek();
       $weeks = 1;
     }
-    elseif(lmbDate :: getFirstDayOfWeek() == 0 && $dof == 6)
+    elseif(lmbDate :: getFirstDayOfWeek() == 0 && $dow == 6)
     {
-      $first_week_days = 7 - $dof + lmbDate :: getFirstDayOfWeek();
+      $first_week_days = 7 - $dow + lmbDate :: getFirstDayOfWeek();
       $weeks = 1;
     }
     else
     {
-      $first_week_days = lmbDate :: getFirstDayOfWeek() - $dof;
+      $first_week_days = lmbDate :: getFirstDayOfWeek() - $dow;
       $weeks = 0;
     }
 

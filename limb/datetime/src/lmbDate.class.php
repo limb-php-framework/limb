@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbDate.class.php 5939 2007-06-05 14:50:20Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -16,6 +16,11 @@ class lmbDate extends lmbObject
   //YYYY-MM-DD HH:MM:SS timezone
   const DATE_ISO_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
 
+  /**
+   * Defines what day starts the week.
+   * Monday (1) is the international standard, Sunday (0) is used in US.
+   * @see setFirstDayOfWeek()
+   */
   static protected $first_day_week = 1;
 
   protected $year = 0;
@@ -345,17 +350,22 @@ class lmbDate extends lmbObject
 
   function getDayOfWeek()
   {
+    return $this->_correctDayOfWeek($this->getPhpDayOfWeek(), self :: $first_day_week);
+  }
+
+  function getIntlDayOfWeek()
+  {
+    return $this->_correctDayOfWeek($this->getPhpDayOfWeek(), 1);
+  }
+
+  function getPhpDayOfWeek()
+  {
     $year = $this->year;
     $month = $this->month;
     $day = $this->day;
 
     if(1901 < $year && $year < 2038)
       return (int)date('w', mktime(0, 0, 0, $month, $day, $year));
-
-    //gregorian correction
-    $correction = 0;
-    if(($year < 1582) || (($year == 1582) || (($month < 10) || (($month == 10) || ($day < 15)))))
-      $correction = 3;
 
     if($month > 2)
     {
@@ -367,9 +377,23 @@ class lmbDate extends lmbObject
       $year--;
     }
 
-    $day  = floor((13 * $month - 1) / 5) + $day + ($year % 100) + floor(($year % 100) / 4);
-    $day += floor(($year / 100) / 4) - 2 * floor($year / 100) + 77 + $correction;
-    return (int)($day - 7 * floor($day / 7));
+    $day = (floor((13 * $month - 1) / 5) +
+            $day + ($year % 100) +
+            floor(($year % 100) / 4) +
+            floor(($year / 100) / 4) - 2 *
+            floor($year / 100) + 77);
+
+    return $day - 7 * floor($day / 7);
+  }
+
+  protected function _correctDayOfWeek($dow, $first_day_week)
+  {
+    if($first_day_week == 0)
+      return $dow;
+
+    if($dow == 0)
+      return 6;
+    return $dow - 1;
   }
 
   function getBeginOfDay()
@@ -384,14 +408,14 @@ class lmbDate extends lmbObject
 
   function getBeginOfWeek()
   {
-    $this_weekday = $this->getDayOfWeek();
+    $this_weekday = $this->getPhpDayOfWeek();
     $interval = (7 - self :: $first_day_week + $this_weekday) % 7;
     return lmbDate :: createByDays($this->getDateDays() - $interval);
   }
 
   function getEndOfWeek()
   {
-    $this_weekday = $this->getDayOfWeek();
+    $this_weekday = $this->getPhpDayOfWeek();
     $interval = (6 + self :: $first_day_week - $this_weekday) % 7;
     return lmbDate :: createByDays($this->getDateDays() + $interval);
   }
@@ -430,19 +454,19 @@ class lmbDate extends lmbObject
       return $res;
     }
 
-    $dayofweek = $this->getDayOfWeek();
-    $firstday  = self :: create($year, 1, 1)->getDayOfWeek();
+    $dayofweek = $this->getPhpDayOfWeek();
+    $firstday  = self :: create($year, 1, 1)->getPhpDayOfWeek();
     if(($month == 1) && (($firstday < 1) || ($firstday > 4)) && ($day < 4))
     {
-      $firstday  = self :: create($year - 1, 1, 1)->getDayOfWeek();
+      $firstday  = self :: create($year - 1, 1, 1)->getPhpDayOfWeek();
       $month     = 12;
       $day       = 31;
     }
-    elseif(($month == 12) && ((self :: create($year + 1, 1, 1)->getDayOfWeek() < 5) &&
-            (self :: create($year + 1, 1, 1)->getDayOfWeek() > 0)))
+    elseif(($month == 12) && ((self :: create($year + 1, 1, 1)->getPhpDayOfWeek() < 5) &&
+            (self :: create($year + 1, 1, 1)->getPhpDayOfWeek() > 0)))
         return 1;
 
-    return intval(((self :: create($year, 1, 1)->getDayOfWeek() < 5) && (self :: create($year, 1, 1)->getDayOfWeek() > 0)) +
+    return intval(((self :: create($year, 1, 1)->getPhpDayOfWeek() < 5) && (self :: create($year, 1, 1)->getPhpDayOfWeek() > 0)) +
            4 * ($month - 1) + (2 * ($month - 1) + ($day - 1) + $firstday - $dayofweek + 6) * 36 / 256);
   }
 
