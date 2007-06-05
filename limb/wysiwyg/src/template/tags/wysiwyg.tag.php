@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: wysiwyg.tag.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: wysiwyg.tag.php 5935 2007-06-05 05:54:29Z pachanga $
  * @package    $package$
  */
 require_once('limb/wact/src/tags/form/control.inc.php');
@@ -20,7 +20,7 @@ class lmbWysiwygTag extends WactControlTag
   var $runtimeComponentName = 'lmbWysiwygComponent';
   var $runtimeIncludeFile = 'limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php';
   var $ini_file_name = 'wysiwyg.ini';
-  var $type;
+  var $profile;
 
   function prepare()
   {
@@ -31,17 +31,17 @@ class lmbWysiwygTag extends WactControlTag
   {
     $ini = lmbToolkit :: instance()->getConf($this->ini_file_name);
 
-    if(($this->type = $this->getAttribute('wysiwyg')) == '' &&
-       ($this->type = $ini->getOption('wysiwyg')) == '')
+    if(($this->profile = $this->getAttribute('profile')) == '' &&
+       ($this->profile = $ini->getOption('profile')) == '')
     {
-       $this->type = null;
+       $this->profile = null;
        return;
     }
 
-    if($ini->getOption('runtimeIncludeFile', $this->type))
-      $this->runtimeIncludeFile = $ini->getOption('runtimeIncludeFile', $this->type);
-    if($ini->getOption('runtimeComponentName', $this->type))
-      $this->runtimeComponentName = $ini->getOption('runtimeComponentName', $this->type);
+    if($ini->getOption('runtimeIncludeFile', $this->profile))
+      $this->runtimeIncludeFile = $ini->getOption('runtimeIncludeFile', $this->profile);
+    if($ini->getOption('runtimeComponentName', $this->profile))
+      $this->runtimeComponentName = $ini->getOption('runtimeComponentName', $this->profile);
 
   }
 
@@ -51,7 +51,7 @@ class lmbWysiwygTag extends WactControlTag
 
   function generateTagContent($code)
   {
-    $code->writePhp($this->getComponentRefCode() . '->initWysiwyg("'. $this->ini_file_name . '","'.$this->type.'" );');
+    $code->writePhp($this->getComponentRefCode() . '->initWysiwyg("'. $this->ini_file_name . '","'.$this->profile.'" );');
     $code->writePhp($this->getComponentRefCode() . '->renderContents();');
   }
 
