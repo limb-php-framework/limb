@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbLocaleDate.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbLocaleDate.class.php 5940 2007-06-05 14:51:03Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
@@ -66,11 +66,11 @@ class lmbLocaleDate extends lmbDate
       {
         case 'a':
             $this->_ensureLocale($locale);
-            $output .= $locale->getDayName($this->getDayOfWeek(), true);
+            $output .= $locale->getDayName($this->getPhpDayOfWeek(), true);
             break;
         case 'A':
             $this->_ensureLocale($locale);
-            $output .= $locale->getDayName($this->getDayOfWeek());
+            $output .= $locale->getDayName($this->getPhpDayOfWeek());
             break;
         case 'b':
             $this->_ensureLocale($locale);
@@ -155,7 +155,7 @@ class lmbLocaleDate extends lmbDate
             $output .= sprintf("%02d:%02d:%02d", $this->getHour(), $this->getMinute(), $this->getSecond());
             break;
         case 'w':
-            $output .= $this->getDayOfWeek();
+            $output .= $this->getPhpDayOfWeek();
             break;
         case 'U':
             $output .= $this->getWeekOfYear();
