@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbController.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbController.class.php 5937 2007-06-05 07:13:46Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
@@ -151,6 +151,11 @@ class lmbController extends lmbAbstractController
   function forwardTo404()
   {
     return $this->forward('not_found', 'display');
+  }
+
+  function forwardTo500()
+  {
+    return $this->forward('server_error', 'display');
   }
 
   function flashError($message)
