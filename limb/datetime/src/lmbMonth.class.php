@@ -68,19 +68,19 @@ class lmbMonth
   {
     $dow = $this->start_date->getPhpDayOfWeek();
 
-    if(lmbDate :: getFirstDayOfWeek() == 1 && $dow == 0)
+    if(lmbDate :: getWeekStartsAt() == 1 && $dow == 0)
     {
-      $first_week_days = 7 - $dow + lmbDate :: getFirstDayOfWeek();
+      $first_week_days = 7 - $dow + lmbDate :: getWeekStartsAt();
       $weeks = 1;
     }
-    elseif(lmbDate :: getFirstDayOfWeek() == 0 && $dow == 6)
+    elseif(lmbDate :: getWeekStartsAt() == 0 && $dow == 6)
     {
-      $first_week_days = 7 - $dow + lmbDate :: getFirstDayOfWeek();
+      $first_week_days = 7 - $dow + lmbDate :: getWeekStartsAt();
       $weeks = 1;
     }
     else
     {
-      $first_week_days = lmbDate :: getFirstDayOfWeek() - $dow;
+      $first_week_days = lmbDate :: getWeekStartsAt() - $dow;
       $weeks = 0;
     }
 

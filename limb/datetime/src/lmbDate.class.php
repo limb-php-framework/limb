@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbDate.class.php 5939 2007-06-05 14:50:20Z pachanga $
+ * @version    $Id: lmbDate.class.php 5941 2007-06-05 15:01:01Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -19,9 +19,9 @@ class lmbDate extends lmbObject
   /**
    * Defines what day starts the week.
    * Monday (1) is the international standard, Sunday (0) is used in US.
-   * @see setFirstDayOfWeek()
+   * @see setWeekStartsAt()
    */
-  static protected $first_day_week = 1;
+  static protected $week_starts_at = 1;
 
   protected $year = 0;
   protected $month = 0;
@@ -115,14 +115,14 @@ class lmbDate extends lmbObject
     return new lmbDate($century . $year, $month, $day);
   }
 
-  static function setFirstDayOfWeek($n)
+  static function setWeekStartsAt($n)
   {
-    self :: $first_day_week = $n;
+    self :: $week_starts_at = $n;
   }
 
-  static function getFirstDayOfWeek()
+  static function getWeekStartsAt()
   {
-    return self :: $first_day_week;
+    return self :: $week_starts_at;
   }
 
   static function stampToIso($stamp)
@@ -350,7 +350,7 @@ class lmbDate extends lmbObject
 
   function getDayOfWeek()
   {
-    return $this->_correctDayOfWeek($this->getPhpDayOfWeek(), self :: $first_day_week);
+    return $this->_correctDayOfWeek($this->getPhpDayOfWeek(), self :: $week_starts_at);
   }
 
   function getIntlDayOfWeek()
@@ -386,9 +386,9 @@ class lmbDate extends lmbObject
     return $day - 7 * floor($day / 7);
   }
 
-  protected function _correctDayOfWeek($dow, $first_day_week)
+  protected function _correctDayOfWeek($dow, $week_starts_at)
   {
-    if($first_day_week == 0)
+    if($week_starts_at == 0)
       return $dow;
 
     if($dow == 0)
@@ -409,14 +409,14 @@ class lmbDate extends lmbObject
   function getBeginOfWeek()
   {
     $this_weekday = $this->getPhpDayOfWeek();
-    $interval = (7 - self :: $first_day_week + $this_weekday) % 7;
+    $interval = (7 - self :: $week_starts_at + $this_weekday) % 7;
     return lmbDate :: createByDays($this->getDateDays() - $interval);
   }
 
   function getEndOfWeek()
   {
     $this_weekday = $this->getPhpDayOfWeek();
-    $interval = (6 + self :: $first_day_week - $this_weekday) % 7;
+    $interval = (6 + self :: $week_starts_at - $this_weekday) % 7;
     return lmbDate :: createByDays($this->getDateDays() + $interval);
   }
 
