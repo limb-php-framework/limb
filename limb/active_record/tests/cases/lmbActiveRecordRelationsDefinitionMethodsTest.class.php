@@ -1,13 +1,10 @@
 <?php
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
- * @link http://limb-project.com
- *
- * @copyright  Copyright &copy; 2004-2007 BIT
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 5887 2007-05-14 08:27:06Z pachanga $
- * @package    active_record
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');

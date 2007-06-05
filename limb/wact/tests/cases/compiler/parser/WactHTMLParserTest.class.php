@@ -2,12 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com
- *
- * @copyright  Copyright &copy; 2004-2007 BIT
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
- * @package    $package$
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
 require_once('limb/wact/src/compiler/templatecompiler.inc.php');
@@ -679,12 +676,9 @@ class WactHTMLParserTest extends UnitTestCase
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com
- *
- * @copyright  Copyright &copy; 2004-2007 BIT
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
- * @package    $package$
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
  ', $this->file_name);
 
@@ -694,12 +688,9 @@ class WactHTMLParserTest extends UnitTestCase
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com
- *
- * @copyright  Copyright &copy; 2004-2007 BIT
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: WactHTMLParserTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
- * @package    $package$
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
  ');
   }

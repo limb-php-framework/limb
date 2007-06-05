@@ -1,12 +1,9 @@
-/**
- * Limb Web Application Framework
+/*
+ * Limb PHP Framework
  *
- * @link http://limb-project.com
- *
- * @copyright  Copyright &copy; 2004-2007 BIT
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: form_elements.js 5802 2007-05-04 11:37:52Z pachanga $
- * @package    js
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
 Limb.Class('Limb.DynamicList',

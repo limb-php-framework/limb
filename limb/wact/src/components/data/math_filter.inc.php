@@ -2,12 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com
- *
- * @copyright  Copyright &copy; 2004-2007 BIT
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: math_filter.inc.php 5933 2007-06-04 13:06:23Z pachanga $
- * @package    $package$
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
 /**
@@ -57,7 +54,7 @@ function math_filter($value, $exp, $file, $line) {
  *
  * @author   Maciej Szczytowski <admin@e-rower.pl>
  * @version  1.1
- * @package    wact
+ * @package  wact
  * @access   public
  */
 class WactMathRpn
