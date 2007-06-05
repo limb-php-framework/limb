@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5936 2007-06-05 06:30:30Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5938 2007-06-05 11:38:45Z serega $
  * @package    $package$
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5936 2007-06-05 06:30:30Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5938 2007-06-05 11:38:45Z serega $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -163,6 +163,8 @@ class lmbActiveRecord extends lmbObject
   {
     parent :: __construct();
 
+    $this->_defineRelations();
+
     $this->_db_meta_info = lmbToolkit :: instance()->getActiveRecordMetaInfo($this);
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
@@ -224,6 +226,41 @@ class lmbActiveRecord extends lmbObject
   {
     return $this->_error_list;
   }
+
+  protected function _defineRelations()
+  {
+  }
+
+  protected function _hasOne($relation_name, $info)
+  {
+    $this->_has_one[$relation_name] = $info;
+  }
+
+  protected function _hasMany($relation_name, $info)
+  {
+    $this->_has_many[$relation_name] = $info;
+  }
+
+  protected function _hasManyToMany($relation_name, $info)
+  {
+    $this->_has_many_to_many[$relation_name] = $info;
+  }
+
+  protected function _belongsTo($relation_name, $info)
+  {
+    $this->_belongs_to[$relation_name] = $info;
+  }
+
+  protected function _manyBelongsTo($relation_name, $info)
+  {
+    $this->_many_belongs_to[$relation_name] = $info;
+  }
+
+  protected function _composedOf($relation_name, $info)
+  {
+    $this->_composed_of[$relation_name] = $info;
+  }
+
   /**
    *  Returns relation info array defined during class declaration
    *  @return array
@@ -338,6 +375,14 @@ class lmbActiveRecord extends lmbObject
 
   protected function _savePreRelationObject($property, $info, $save_relation_obj = true)
   {
+    if($this->isDirtyProperty($info['field']))
+    {
+      $value = $this->_getRaw($info['field']);
+      if(is_null($value))
+        $this->_setRaw($property, null);
+      return;
+    }
+
     $object = $this->_getRaw($property);
     if(is_object($object))
     {
@@ -1389,6 +1434,7 @@ class lmbActiveRecord extends lmbObject
     $this->_removeOneToOneObjects();
     $this->_removeOneToManyObjects();
     $this->_removeManyToManyRecords();
+    $this->_removeBelongsToRelations();
 
     $this->_deleteDbRecord();
 
@@ -1453,7 +1499,14 @@ class lmbActiveRecord extends lmbObject
   {
     foreach($this->_has_many as $property => $info)
     {
-      if($collection = $this->get($property))
+      $collection = $this->get($property);
+
+      if(!$collection)
+        continue;
+
+      if(isset($info['nullify']) && $info['nullify'])
+        $collection->nullify();
+      else
         $collection->removeAll();
     }
   }
@@ -1464,6 +1517,18 @@ class lmbActiveRecord extends lmbObject
     {
       if($collection = $this->get($property))
         $collection->removeAll();
+    }
+  }
+
+  protected function _removeBelongsToRelations()
+  {
+    foreach($this->_belongs_to as $property => $info)
+    {
+      if($parent = $this->get($property))
+      {
+        $parent->set($info['field'], null);
+        $parent->save();
+      }
     }
   }
 

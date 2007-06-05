@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToOneRelationsTest.class.php 5938 2007-06-05 11:38:45Z serega $
  * @package    $package$
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -33,6 +33,21 @@ class PersonForTestNoCascadeDelete extends lmbActiveRecord
                                                          'class' => 'SocialSecurityForTest',
                                                          'can_be_null' => true,
                                                          'cascade_delete' => false));
+}
+
+class PersonForTestWithRequiredSocialSecurity extends lmbActiveRecord
+{
+  protected $_db_table_name = 'person_for_test';
+  protected $_has_one = array('social_security' => array('field' => 'ss_id',
+                                                         'class' => 'SocialSecurityForTest',
+                                                         'can_be_null' => true));
+
+  function _createValidator()
+  {
+    $validator = new lmbValidator();
+    $validator->addRequiredObjectRule('social_security');
+    return $validator;
+  }
 }
 
 class SocialSecurityForTest extends lmbActiveRecord
@@ -283,13 +298,49 @@ class lmbActiveRecordOneToOneRelationsTest extends UnitTestCase
     $this->assertEqual($ss2->getCode(), $number->getCode());
   }
 
-  function testParentRemovalWithoutChildren()
+  function testChildRemovalNullifyParentField()
   {
+    $number = new SocialSecurityForTest();
+    $number->setCode('099123');
+
     $person = new PersonForTest();
     $person->setName('Jim');
+
+    $person->setSocialSecurity($number);
+    $number->setPerson($person);
     $person->save();
 
-    $person->destroy();
+    $number->destroy();
+
+    $person2 = new PersonForTest($person->getId());
+    $this->assertNull($person2->get('ss_id'));
+  }
+
+  function testChildRemovalWithRequiredObjectInParentRelationDefinitionThrowsValidationException()
+  {
+    $number = new SocialSecurityForTest();
+    $number->setCode('099123');
+
+    $person = new PersonForTestWithRequiredSocialSecurity();
+    $person->setName('Jim');
+
+    $person->setSocialSecurity($number);
+    $number->setPerson($person);
+    $person->save();
+
+    try
+    {
+      $number->destroy();
+      $this->assertTrue(false);
+    }
+    catch(lmbValidationException $e)
+    {
+      $this->assertTrue(true);
+    }
+
+    $number2 = lmbActiveRecord :: findFirst('SocialSecurityForTest');
+    $this->assertNotNull($number2, 'Removal should not be finished');
+    $this->assertEqual($number2->getId(), $number->getId());
   }
 
   function testSettingNullDetachesChildObject()

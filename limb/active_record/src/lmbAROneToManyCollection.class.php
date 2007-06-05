@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbAROneToManyCollection.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbAROneToManyCollection.class.php 5938 2007-06-05 11:38:45Z serega $
  * @package    $package$
  */
 lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
@@ -64,6 +64,17 @@ class lmbAROneToManyCollection extends lmbARRelationCollection
   {
     $object->set($this->relation_info['field'], $this->owner->getId());
     $object->save($error_list);
+  }
+
+  function nullify()
+  {
+    $rs = $this->find();
+    foreach($rs as $object)
+    {
+      $object->set($this->relation_info['field'], null);
+      $object->save();
+    }
+
   }
 }
 

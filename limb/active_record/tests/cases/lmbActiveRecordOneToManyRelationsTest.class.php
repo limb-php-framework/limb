@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbActiveRecordOneToManyRelationsTest.class.php 5938 2007-06-05 11:38:45Z serega $
  * @package    $package$
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -62,6 +62,14 @@ class CourseForTestWithCustomCollection extends lmbActiveRecord
   protected $_has_many = array('lectures' => array('field' => 'course_id',
                                                    'class' => 'LectureForTest',
                                                    'collection' => 'LecturesForTestCollectionStub'));
+}
+
+class CourseForTestWithNullifyRelationProperty extends lmbActiveRecord
+{
+  protected $_db_table_name = 'course_for_test';
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'LectureForTest',
+                                                   'nullify' => true));
 }
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
@@ -304,6 +312,30 @@ class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
 
     $this->assertNull(lmbActiveRecord :: findFirst('LectureForTest', array('criteria' => 'id = ' . $l1->getId())));
     $this->assertNull(lmbActiveRecord :: findFirst('LectureForTest', array('criteria' => 'id = ' . $l2->getId())));
+  }
+
+  function testNullifyOnDestroy()
+  {
+    $course = new CourseForTestWithNullifyRelationProperty();
+    $course->setTitle('Super course');
+
+    $l1 = new LectureForTest();
+    $l1->setTitle('Physics');
+    $l2 = new LectureForTest();
+    $l2->setTitle('Math');
+
+    $course->addToLectures($l1);
+    $course->addToLectures($l2);
+
+    $course->save();
+
+    $course2 = new CourseForTestWithNullifyRelationProperty($course->getId());
+    $course2->destroy();
+
+    $lectures = lmbActiveRecord :: find('LectureForTest')->getArray();
+    $this->assertEqual(sizeof($lectures), 2);
+    $this->assertNull($lectures[0]->getCourseId());
+    $this->assertNull($lectures[0]->getCourseId());
   }
 
   function testUseCustomCollection()
