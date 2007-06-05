@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecordTest.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbActiveRecordTest.class.php 5936 2007-06-05 06:30:30Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -275,6 +275,11 @@ class lmbActiveRecordTest extends UnitTestCase
     catch(lmbARException $e){}
   }
 
+  function testFindByIdReturnsNullIfNotFound()
+  {
+    $this->assertNull(lmbActiveRecord :: findById($this->class_name, -1000, false));
+  }
+
   function testLoadById()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
@@ -475,13 +480,18 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertFalse($rs->valid());
   }
 
-  function testFindWithIntCallsFindById()
+  function testFindWithIntegerCallsFindById()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
     $object = lmbActiveRecord :: find($this->class_name, $object2->getId());
     $this->assertEqual($object2->getId(), $object->getId());
+  }
+
+  function testFindWithIntegerDoesNotThrowException()
+  {
+    $this->assertNull(lmbActiveRecord :: find($this->class_name, -10000));
   }
 
   function testFindByThrowsExceptionIfMagicParamsIsNull()

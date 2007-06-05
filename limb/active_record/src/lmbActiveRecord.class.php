@@ -6,7 +6,7 @@
  *
  * @copyright  Copyright &copy; 2004-2007 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
- * @version    $Id: lmbActiveRecord.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version    $Id: lmbActiveRecord.class.php 5936 2007-06-05 06:30:30Z pachanga $
  * @package    $package$
  */
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5933 2007-06-04 13:06:23Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5936 2007-06-05 06:30:30Z pachanga $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -1056,13 +1056,13 @@ class lmbActiveRecord extends lmbObject
    *  @param integer object id
    *  @return object|null
    */
-  static function findById($class_name, $id)
+  static function findById($class_name, $id, $not_found_exception = true)
   {
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
     $obj = new $class_name();
-    return $obj->_findById($id);
+    return $obj->_findById($id, $not_found_exception);
   }
   /**
    *  Userland filter for findById() static method
@@ -1070,12 +1070,14 @@ class lmbActiveRecord extends lmbObject
    *  @param integer object id
    *  @return object
    */
-  protected function _findById($id)
+  protected function _findById($id, $not_found_exception)
   {
     if($object = lmbActiveRecord :: find(get_class($this), array('first', 'criteria' => 'id=' . (int)$id)))
       return $object;
-    else
+    elseif($not_found_exception)
       throw new lmbARNotFoundException(get_class($this), $id);
+    else
+      return null;
   }
   /**
    *  Finds a collection of objects in database using array of object ids, this method is actually a wrapper around find()
@@ -1195,7 +1197,7 @@ class lmbActiveRecord extends lmbObject
     if(self :: _isCriteria($magic_params))
       $params = array('criteria' => $magic_params);
     elseif(is_int($magic_params))
-      return self :: findById($class_name, $magic_params);
+      return self :: findById($class_name, $magic_params, false);
     elseif(!is_array($magic_params))
       throw new lmbARException("Invalid magic params", array($magic_params));
     else
