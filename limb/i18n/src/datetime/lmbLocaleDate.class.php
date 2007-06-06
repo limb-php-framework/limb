@@ -9,6 +9,12 @@
 lmb_require('limb/core/src/exception/lmbException.class.php');
 lmb_require('limb/datetime/src/lmbDate.class.php');
 
+/**
+ * class lmbLocaleDate.
+ *
+ * @package i18n
+ * @version $Id: lmbLocaleDate.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbLocaleDate extends lmbDate
 {
   /**

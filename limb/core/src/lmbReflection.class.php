@@ -8,6 +8,12 @@
  */
 //code is based on SimpleReflection class from SimpleTest test suite
 
+/**
+ * class lmbReflection.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbReflection
 {
   protected $_interface;

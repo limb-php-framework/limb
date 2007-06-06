@@ -12,6 +12,8 @@
  * @tag core:INCLUDE
  * @req_const_attributes file
  * @forbid_end_tag
+ * @package wact
+ * @version $Id: include.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreIncludeTag extends WactCompilerTag
 {

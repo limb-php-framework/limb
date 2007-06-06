@@ -16,6 +16,8 @@ lmb_require('limb/tree/src/exception/lmbTreeConsistencyException.class.php');
 
 /**
  * Base class implementing a Nested Sets approach for storing tree-like structures in database tables.
+ * @package tree
+ * @version $Id$
  */
 class lmbNSTree implements lmbTree
 {

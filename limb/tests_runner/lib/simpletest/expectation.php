@@ -1,9 +1,9 @@
 <?php
     /**
      *    base include file for SimpleTest
-     *    @package    SimpleTest
+     *    @package tests_runner
      *    @subpackage    UnitTester
-     *    @version    $Id: expectation.php 5671 2007-04-17 11:56:02Z pachanga $
+     *    @version    $Id: expectation.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -16,7 +16,7 @@
     /**
      *    Assertion that can display failure information.
      *    Also includes various helper methods.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      *    @abstract
      */
@@ -95,7 +95,7 @@
 
     /**
      *    A wildcard expectation always matches.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage MockObjects
      */
     class AnythingExpectation extends SimpleExpectation {
@@ -125,7 +125,7 @@
 
     /**
      *    An expectation that passes on boolean true.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage MockObjects
      */
     class TrueExpectation extends SimpleExpectation {
@@ -155,7 +155,7 @@
 
     /**
      *    An expectation that passes on boolean false.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage MockObjects
      */
     class FalseExpectation extends SimpleExpectation {
@@ -185,7 +185,7 @@
 
     /**
      *    Test for equality.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class EqualExpectation extends SimpleExpectation {
@@ -267,7 +267,7 @@
 
     /**
      *    Test for inequality.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class NotEqualExpectation extends EqualExpectation {
@@ -315,7 +315,7 @@
 
     /**
      *    Test for being within a range.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class WithinMarginExpectation extends SimpleExpectation {
@@ -390,7 +390,7 @@
 
     /**
      *    Test for being outside of a range.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class OutsideMarginExpectation extends WithinMarginExpectation {
@@ -436,7 +436,7 @@
 
     /**
      *    Test for identity.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class IdenticalExpectation extends EqualExpectation {
@@ -484,7 +484,7 @@
 
     /**
      *    Test for non-identity.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class NotIdenticalExpectation extends IdenticalExpectation {
@@ -530,7 +530,7 @@
 
     /**
      *    Test for a pattern using Perl regex rules.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class PatternExpectation extends SimpleExpectation {
@@ -604,7 +604,7 @@
     }
 
     /**
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      *    @deprecated
      */
@@ -614,7 +614,7 @@
     /**
      *    Fail if a pattern is detected within the
      *    comparison.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class NoPatternExpectation extends PatternExpectation {
@@ -660,7 +660,7 @@
     }
 
     /**
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      *      @deprecated
      */
@@ -669,7 +669,7 @@
 
     /**
      *    Tests either type or class name if it's an object.
-     *      @package SimpleTest
+     *      @package tests_runner
      *      @subpackage UnitTester
      */
     class IsAExpectation extends SimpleExpectation {
@@ -746,7 +746,7 @@
     /**
      *    Tests either type or class name if it's an object.
      *    Will succeed if the type does not match.
-     *      @package SimpleTest
+     *      @package tests_runner
      *      @subpackage UnitTester
      */
     class NotAExpectation extends IsAExpectation {
@@ -789,7 +789,7 @@
 
     /**
      *    Tests for existance of a method in an object
-     *      @package SimpleTest
+     *      @package tests_runner
      *      @subpackage UnitTester
      */
     class MethodExistsExpectation extends SimpleExpectation {

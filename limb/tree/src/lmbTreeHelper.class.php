@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 
+/**
+ * class lmbTreeHelper.
+ *
+ * @package tree
+ * @version $Id: lmbTreeHelper.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTreeHelper
 {
   function sort($rs, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')

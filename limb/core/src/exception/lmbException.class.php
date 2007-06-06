@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbException.
+ *
+ * @package core
+ * @version $Id: lmbException.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbException extends Exception
 {
   protected $params = array();

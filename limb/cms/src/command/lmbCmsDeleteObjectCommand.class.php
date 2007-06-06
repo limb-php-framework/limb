@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbFormCommand.class.php');
 
+/**
+ * class lmbCmsDeleteObjectCommand.
+ *
+ * @package cms
+ * @version $Id: lmbCmsDeleteObjectCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsDeleteObjectCommand extends lmbFormCommand
 {
   protected $class_name;

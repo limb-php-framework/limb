@@ -8,6 +8,12 @@
  */
 require_once('limb/wact/src/components/iterator/WactBaseIteratorComponent.class.php');
 
+/**
+ * class WactIteratorTransferComponent.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactIteratorTransferComponent extends WactBaseIteratorComponent
 {
   protected $dataset;

@@ -1,9 +1,9 @@
 <?php
 /**
  *	base include file for SimpleTest
- *	@package	SimpleTest
+ *	@package tests_runner
  *	@subpackage	UnitTester
- *	@version	$Id: exceptions.php 5157 2007-02-26 13:59:16Z pachanga $
+ *	@version	$Id: exceptions.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 
 /**#@+
@@ -16,7 +16,7 @@ require_once dirname(__FILE__) . '/expectation.php';
 /**
  *    Extension that traps exceptions and turns them into
  *    an error message. PHP5 only.
- *	  @package SimpleTest
+ *	  @package tests_runner
  *	  @subpackage UnitTester
  */
 class SimpleExceptionTrappingInvoker extends SimpleInvokerDecorator {
@@ -58,7 +58,7 @@ class SimpleExceptionTrappingInvoker extends SimpleInvokerDecorator {
  *    exception. This could be improved to accept
  *    a pattern expectation to test the error
  *    message, but that will have to come later.
- *	  @package SimpleTest
+ *	  @package tests_runner
  *	  @subpackage UnitTester
  */
 class ExceptionExpectation extends SimpleExpectation {
@@ -125,7 +125,7 @@ class ExceptionExpectation extends SimpleExpectation {
  *    Stores expected exceptions for when they
  *    get thrown. Saves the irritating try...catch
  *    block.
- *	  @package	SimpleTest
+ *	  @package tests_runner
  *	  @subpackage	UnitTester
  */
 class SimpleExceptionTrap {

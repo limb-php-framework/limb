@@ -11,6 +11,12 @@ require_once 'limb/wact/src/compiler/property/WactPropertyInfo.class.php';
 require_once 'limb/wact/src/compiler/WactCompilerArtifactDictionary.class.php';
 require_once 'limb/wact/src/compiler/property/WactPropertyInfoExtractor.class.php';
 
+/**
+ * class WactPropertyDictionary.
+ *
+ * @package wact
+ * @version $Id: WactPropertyDictionary.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPropertyDictionary extends WactCompilerArtifactDictionary
 {
   protected $property_information = array();

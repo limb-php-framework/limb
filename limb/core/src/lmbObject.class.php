@@ -67,6 +67,7 @@ lmb_require('limb/core/src/lmbSetInterface.interface.php');
  * </code>
  *
  * @version $Id: lmbObject.class.php 5567 2007-04-06 14:37:24Z serega $
+ * @package core
  */
 class lmbObject implements lmbSetInterface
 {

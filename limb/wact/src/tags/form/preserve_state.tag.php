@@ -8,10 +8,12 @@
  */
 
 /**
-* @tag form:PRESERVE_STATE
-* @forbid_end_tag
-* @req_const_attributes name
-*/
+ * @tag form:PRESERVE_STATE
+ * @forbid_end_tag
+ * @req_const_attributes name
+ * @package wact
+ * @version $Id: preserve_state.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactFormPreserveStateTag extends WactCompilerTag
 {
   function generateTagContent($code)

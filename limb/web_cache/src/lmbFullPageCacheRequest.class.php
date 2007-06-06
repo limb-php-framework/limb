@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
 
+/**
+ * class lmbFullPageCacheRequest.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheRequest.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheRequest
 {
   protected $http_request;

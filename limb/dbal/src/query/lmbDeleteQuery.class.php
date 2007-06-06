@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
 
+/**
+ * class lmbDeleteQuery.
+ *
+ * @package dbal
+ * @version $Id: lmbDeleteQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDeleteQuery extends lmbCriteriaQuery
 {
   protected $_table;

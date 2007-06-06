@@ -11,9 +11,11 @@ require_once 'limb/wact/src/components/form/WactFormElementComponent.class.php';
 require_once 'limb/wact/src/components/form/WactOptionRenderer.class.php';
 
 /**
-* Represents an HTML select multiple tag where multiple options
-* can be selected
-*/
+ * Represents an HTML select multiple tag where multiple options
+ * can be selected
+ * @package wact
+ * @version $Id$
+ */
 class WactSelectMultipleComponent extends WactFormElementComponent
 {
   /**

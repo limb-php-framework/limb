@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * abstract class lmbView.
+ *
+ * @package view
+ * @version $Id$
+ */
 abstract class lmbView
 {
   protected $template_name;

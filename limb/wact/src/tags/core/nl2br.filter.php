@@ -9,6 +9,8 @@
 
 /**
  * @filter nl2br
+ * @package wact
+ * @version $Id: nl2br.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactNL2BRFilter extends WactCompilerFilter
 {

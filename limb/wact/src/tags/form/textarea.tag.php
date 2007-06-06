@@ -16,6 +16,8 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @suppress_attributes errorclass errorstyle displayname
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id: textarea.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactTextAreaTag extends WactControlTag
 {

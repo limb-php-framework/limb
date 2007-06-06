@@ -8,6 +8,12 @@
  */
 lmb_require('limb/session/src/lmbSession.class.php');
 
+/**
+ * class lmbFakeSession.
+ *
+ * @package session
+ * @version $Id$
+ */
 class lmbFakeSession extends lmbSession
 {
   function start($storage = null){}

@@ -9,6 +9,12 @@
 require_once(dirname(__FILE__). '/lmbTestTreeNode.class.php');
 require_once(dirname(__FILE__). '/lmbTestTreeDirNode.class.php');
 
+/**
+ * class lmbTestTreeGlobNode.
+ *
+ * @package tests_runner
+ * @version $Id: lmbTestTreeGlobNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
   protected $glob;

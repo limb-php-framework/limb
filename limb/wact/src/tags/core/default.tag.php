@@ -12,6 +12,8 @@
  * @tag core:DEFAULT
  * @req_attributes for
  * @convert_to_expression for
+ * @package wact
+ * @version $Id: default.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreDefaultTag extends WactCompilerTag
 {

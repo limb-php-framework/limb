@@ -8,6 +8,12 @@
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
+/**
+ * class lmbFileUploadMaxSizeRule.
+ *
+ * @package validation
+ * @version $Id: lmbFileUploadMaxSizeRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFileUploadMaxSizeRule extends lmbSingleFieldRule
 {
   protected $max_size;

@@ -14,6 +14,12 @@ require_once 'limb/wact/src/compiler/expression/node/WactParenthesisExpressionNo
 require_once 'limb/wact/src/compiler/expression/node/WactUnaryExpressionNode.class.php';
 require_once 'limb/wact/src/compiler/expression/node/WactDataBindingExpressionNode.class.php';
 
+/**
+ * class WactExpressionValueParser.
+ *
+ * @package wact
+ * @version $Id: WactExpressionValueParser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactExpressionValueParser
 {
   protected $text;

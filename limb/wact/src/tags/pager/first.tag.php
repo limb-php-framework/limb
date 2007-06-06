@@ -8,10 +8,12 @@
  */
 
 /**
-* @tag pager:FIRST
-* @restrict_self_nesting
-* @parent_tag_class WactPagerNavigatorTag
-*/
+ * @tag pager:FIRST
+ * @restrict_self_nesting
+ * @parent_tag_class WactPagerNavigatorTag
+ * @package wact
+ * @version $Id: first.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerFirstTag extends WactCompilerTag
 {
   function generateTagContent($code)

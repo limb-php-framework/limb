@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: test_case.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: test_case.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -36,7 +36,7 @@
      *    suite. It searches for
      *    all methods that start with the the string "test" and
      *    runs them. Working test cases extend this class.
-	 *    @package		SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage	UnitTester
      */
     class SimpleTestCase {
@@ -369,7 +369,7 @@
      *    This is a composite test class for combining
      *    test cases and other RunnableTest classes into
      *    a group test.
-	 *    @package		SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage	UnitTester
      */
     class TestSuite {
@@ -666,7 +666,7 @@
     }
 
     /**
-	 *    @package		SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage	UnitTester
      *    @deprecated
      */
@@ -675,7 +675,7 @@
     /**
      *    This is a failing group test for when a test suite hasn't
      *    loaded properly.
-	 *    @package		SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage	UnitTester
      */
     class BadTestSuite {
@@ -726,7 +726,7 @@
     }
 
     /**
-	 *    @package		SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage	UnitTester
      *    @deprecated
      */

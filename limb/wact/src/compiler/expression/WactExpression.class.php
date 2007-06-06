@@ -11,10 +11,12 @@ require_once 'limb/wact/src/compiler/expression/WactExpressionFilterParser.class
 require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.php';
 
 /**
-* Represents a single Expression found in the template like "var|uppercase|trim:0,10"
-* Responsibly for parsing the expression and building a filter chain
-* for the expression (if expression contained filter syntax)
-*/
+ * Represents a single Expression found in the template like "var|uppercase|trim:0,10"
+ * Responsibly for parsing the expression and building a filter chain
+ * for the expression (if expression contained filter syntax)
+ * @package wact
+ * @version $Id: WactExpression.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactExpression implements WactExpressionInterface
 {
   protected $parsed;

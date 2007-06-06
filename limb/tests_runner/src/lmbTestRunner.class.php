@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbTestRunner.
+ *
+ * @package tests_runner
+ * @version $Id$
+ */
 class lmbTestRunner
 {
   protected $test_paths = array();

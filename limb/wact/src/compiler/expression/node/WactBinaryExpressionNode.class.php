@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactBinaryExpressionNode.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactBinaryExpressionNode extends WactTemplateExpressionNode
 {
   protected $first_operand;

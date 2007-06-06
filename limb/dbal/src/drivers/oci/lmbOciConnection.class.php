@@ -17,6 +17,12 @@ lmb_require(dirname(__FILE__) . '/lmbOciStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciTypeInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
 
+/**
+ * class lmbOciConnection.
+ *
+ * @package dbal
+ * @version $Id: lmbOciConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciConnection implements lmbDbConnection
 {
   protected $connectionId;

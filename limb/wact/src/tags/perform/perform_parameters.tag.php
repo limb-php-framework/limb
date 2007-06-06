@@ -7,10 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag perform:params
-* @forbid_end_tag
-* @parent_tag_class WactPerformTag
-*/
+ * @tag perform:params
+ * @forbid_end_tag
+ * @parent_tag_class WactPerformTag
+ * @package wact
+ * @version $Id$
+ */
 class WactPerformParametersTag extends WactCompilerTag
 {
   function generateTagContent($code)

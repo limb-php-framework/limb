@@ -8,6 +8,12 @@
  */
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbFullPageCacheWriter.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheWriter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheWriter
 {
   protected $storage_dir;

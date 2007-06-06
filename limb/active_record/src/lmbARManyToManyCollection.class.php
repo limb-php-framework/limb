@@ -8,6 +8,12 @@
  */
 lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
 
+/**
+ * class lmbARManyToManyCollection.
+ *
+ * @package active_record
+ * @version $Id: lmbARManyToManyCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
   protected function _createDbRecordSet2($criteria = null)

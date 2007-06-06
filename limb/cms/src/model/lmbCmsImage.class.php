@@ -10,6 +10,12 @@ lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/cms/src/model/lmbCmsImageFileObject.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * class lmbCmsImage.
+ *
+ * @package cms
+ * @version $Id: lmbCmsImage.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsImage extends lmbActiveRecord
 {
   protected $_has_one = array('original' => array('field' => 'original_id',

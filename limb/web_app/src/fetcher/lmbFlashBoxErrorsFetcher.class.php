@@ -9,6 +9,12 @@
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
+/**
+ * class lmbFlashBoxErrorsFetcher.
+ *
+ * @package web_app
+ * @version $Id: lmbFlashBoxErrorsFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFlashBoxErrorsFetcher extends lmbFetcher
 {
   protected function _createDataSet()

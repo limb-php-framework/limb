@@ -10,6 +10,12 @@ lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php'
 
 @define('LIMB_FCKEDITOR_DIR', 'limb/wysiwyg/lib/FCKeditor/');
 
+/**
+ * class lmbFCKEditorComponent.
+ *
+ * @package wysiwyg
+ * @version $Id: lmbFCKEditorComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFCKEditorComponent extends lmbWysiwygComponent
 {
   var $dir = '';

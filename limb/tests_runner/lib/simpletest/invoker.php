@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: invoker.php 4378 2006-10-27 10:04:53Z pachanga $
+     *	@version	$Id: invoker.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -24,7 +24,7 @@
      *    This is called by the class runner to run a
      *    single test method. Will also run the setUp()
      *    and tearDown() methods.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class SimpleInvoker {
@@ -83,7 +83,7 @@
     /**
      *    Do nothing decorator. Just passes the invocation
      *    straight through.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class SimpleInvokerDecorator {

@@ -10,6 +10,12 @@ lmb_require('limb/cli/src/lmbCliBaseCmd.class.php');
 
 @define('LIMB_CLI_INCLUDE_PATH', 'cli;limb/*/cli');
 
+/**
+ * class lmbCliRunner.
+ *
+ * @package cli
+ * @version $Id$
+ */
 class lmbCliRunner
 {
   protected $input;

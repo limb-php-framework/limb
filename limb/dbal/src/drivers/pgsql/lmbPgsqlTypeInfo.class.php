@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 
+/**
+ * class lmbPgsqlTypeInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlTypeInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlTypeInfo extends lmbDbTypeInfo
 {
   function getNativeToColumnTypeMapping()

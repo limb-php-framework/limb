@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbBacktrace.
+ *
+ * @package log
+ * @version $Id$
+ */
 class lmbBacktrace
 {
   protected $backtrace = array();

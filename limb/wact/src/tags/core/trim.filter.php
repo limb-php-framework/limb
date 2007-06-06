@@ -8,9 +8,11 @@
  */
 
 /**
-* @filter trim
-* @max_attributes 1
-*/
+ * @filter trim
+ * @max_attributes 1
+ * @package wact
+ * @version $Id: trim.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactTrimFilter extends WactCompilerFilter
 {
   function getValue()

@@ -23,7 +23,7 @@
 //
 /**
 * Main parser components
-* @package XML_HTMLSax3
+* @package view
 * @version $Id: HTMLSax3.php,v 1.1 2004/06/02 14:09:19 hfuecks Exp $
 */
 /**
@@ -37,7 +37,7 @@ require_once(XML_HTMLSAX3 . 'HTMLSax3/Decorators.php');
 
 /**
 * Base State Parser
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 * @abstract
 */
@@ -316,7 +316,7 @@ class XML_HTMLSax3_StateParser {
 /**
 * Parser for PHP Versions below 4.3.0. Uses a slower parsing mechanism than
 * the equivalent PHP 4.3.0+  subclass of StateParser
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 * @see XML_HTMLSax3_StateParser_Gtet430
 */
@@ -380,7 +380,7 @@ class XML_HTMLSax3_StateParser_Lt430 extends XML_HTMLSax3_StateParser {
 /**
 * Parser for PHP Versions equal to or greater than 4.3.0. Uses a faster
 * parsing mechanism than the equivalent PHP < 4.3.0 subclass of StateParser
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 * @see XML_HTMLSax3_StateParser_Lt430
 */
@@ -439,7 +439,7 @@ class XML_HTMLSax3_StateParser_Gtet430 extends XML_HTMLSax3_StateParser {
 
 /**
 * Default NullHandler for methods which were not set by user
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_NullHandler {
@@ -454,7 +454,7 @@ class XML_HTMLSax3_NullHandler {
 
 /**
 * User interface class. All user calls should only be made to this class
-* @package XML_HTMLSax3
+* @package view
 * @access public
 */
 class XML_HTMLSax3 {

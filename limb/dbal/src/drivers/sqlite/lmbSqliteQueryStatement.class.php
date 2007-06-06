@@ -12,6 +12,12 @@ lmb_require(dirname(__FILE__) . '/lmbSqliteStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteRecord.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteRecordSet.class.php');
 
+/**
+ * class lmbSqliteQueryStatement.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteQueryStatement extends lmbSqliteStatement implements lmbDbQueryStatement
 {
   function getOneRecord()

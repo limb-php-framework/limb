@@ -11,6 +11,8 @@
  * Compile time component for items (rows) in the list
  * @tag list:ITEM
  * @parent_tag_class WactListListTag
+ * @package wact
+ * @version $Id: item.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactListItemTag extends WactRuntimeDatasourceComponentTag
 {

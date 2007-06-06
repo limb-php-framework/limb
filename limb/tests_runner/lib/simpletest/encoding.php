@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: encoding.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: encoding.php 5945 2007-06-06 08:31:43Z pachanga $
      */
      
     /**#@+
@@ -14,7 +14,7 @@
 
     /**
      *    Single post parameter.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleEncodedPair {
@@ -83,7 +83,7 @@
 
     /**
      *    Single post parameter.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleAttachment {
@@ -185,7 +185,7 @@
     /**
      *    Bundle of GET/POST parameters. Can include
      *    repeated parameters.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleEncoding {
@@ -323,7 +323,7 @@
     /**
      *    Bundle of GET parameters. Can include
      *    repeated parameters.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleGetEncoding extends SimpleEncoding {
@@ -378,7 +378,7 @@
     
     /**
      *    Bundle of URL parameters for a HEAD request.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleHeadEncoding extends SimpleGetEncoding {
@@ -407,7 +407,7 @@
     /**
      *    Bundle of POST parameters. Can include
      *    repeated parameters.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimplePostEncoding extends SimpleEncoding {
@@ -465,7 +465,7 @@
     /**
      *    Bundle of POST parameters in the multipart
      *    format. Can include file uploads.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleMultipartEncoding extends SimplePostEncoding {

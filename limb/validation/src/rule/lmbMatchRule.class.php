@@ -9,13 +9,15 @@
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 
 /**
-* Checks that field value exactly match a reference field value
-* Example of usage:
-* <code>
-*  lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
-*  $validator->addRule(new lmbMatchRule('password', 'repeat_password'));
-* </code>
-*/
+ * Checks that field value exactly match a reference field value
+ * Example of usage:
+ * <code>
+ *  lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
+ *  $validator->addRule(new lmbMatchRule('password', 'repeat_password'));
+ * </code>
+ * @package validation
+ * @version $Id: lmbMatchRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMatchRule implements lmbValidationRule
 {
   /**

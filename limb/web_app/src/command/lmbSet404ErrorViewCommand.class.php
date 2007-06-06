@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
 
+/**
+ * class lmbSet404ErrorViewCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbSet404ErrorViewCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSet404ErrorViewCommand extends lmbActionCommand
 {
   function __construct()

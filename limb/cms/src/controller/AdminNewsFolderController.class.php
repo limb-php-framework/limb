@@ -9,6 +9,12 @@
 lmb_require('limb/cms/src/controller/AdminNodeController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNewsFolder.class.php');
 
+/**
+ * class AdminNewsFolderController.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class AdminNewsFolderController extends AdminNodeController
 {
   protected $_form_id = 'news_folder_form';

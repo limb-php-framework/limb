@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
+/**
+ * class lmbCriteriaQuery.
+ *
+ * @package dbal
+ * @version $Id: lmbCriteriaQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCriteriaQuery extends lmbTemplateQuery
 {
   protected $_criterias;

@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/modifier/lmbQueryModifier.interface.php');
 
+/**
+ * class lmbOrderQueryModifier.
+ *
+ * @package dbal
+ * @version $Id: lmbOrderQueryModifier.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOrderQueryModifier implements lmbQueryModifier
 {
   protected $order_pairs = array();

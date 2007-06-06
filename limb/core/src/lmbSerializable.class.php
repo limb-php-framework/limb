@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbSerializable.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbSerializable
 {
   protected $subject;

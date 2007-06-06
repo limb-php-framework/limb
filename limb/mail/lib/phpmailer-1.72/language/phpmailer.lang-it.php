@@ -2,7 +2,7 @@
 /**
 * PHPMailer language file.
 * Italian version
-* @package PHPMailer
+* @package mail
 * @author Ilias Bartolini <brain79@inwind.it>
 */
 

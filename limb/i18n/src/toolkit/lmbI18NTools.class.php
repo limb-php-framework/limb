@@ -12,6 +12,12 @@ lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
 
 @define('LIMB_LOCALE_INCLUDE_PATH', 'i18n/locale;limb/i18n/i18n/locale');
 
+/**
+ * class lmbI18NTools.
+ *
+ * @package i18n
+ * @version $Id: lmbI18NTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbI18NTools extends lmbAbstractTools
 {
   protected $current_locale;

@@ -14,6 +14,12 @@ lmb_require('limb/web_cache/src/lmbFullPageCacheUser.class.php');
 lmb_require('limb/web_cache/src/lmbFullPageCacheWriter.class.php');
 lmb_require('limb/web_cache/src/lmbFullPageCacheIniPolicyLoader.class.php');
 
+/**
+ * class lmbFullPageCacheFilter.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheFilter implements lmbInterceptingFilter
 {
   protected $user;

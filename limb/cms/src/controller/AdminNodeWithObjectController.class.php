@@ -9,6 +9,12 @@
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * abstract class AdminNodeWithObjectController.
+ *
+ * @package cms
+ * @version $Id$
+ */
 abstract class AdminNodeWithObjectController extends lmbController
 {
   protected $_form_name = 'object_form';

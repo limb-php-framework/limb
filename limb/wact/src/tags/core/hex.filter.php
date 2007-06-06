@@ -9,6 +9,8 @@
 
 /**
  * @filter hex
+ * @package wact
+ * @version $Id: hex.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactHexFilter extends WactCompilerFilter
 {

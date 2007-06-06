@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
 
+/**
+ * class lmbCmsSaveObjectPriorityCommand.
+ *
+ * @package cms
+ * @version $Id: lmbCmsSaveObjectPriorityCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsSaveObjectPriorityCommand extends lmbActionCommand
 {
   function __construct($class_name)

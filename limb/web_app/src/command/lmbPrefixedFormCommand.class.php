@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbFormCommand.class.php');
 
+/**
+ * class lmbPrefixedFormCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbPrefixedFormCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPrefixedFormCommand extends lmbFormCommand
 {
   function getRequestData()

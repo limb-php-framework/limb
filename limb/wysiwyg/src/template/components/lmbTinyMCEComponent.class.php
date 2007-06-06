@@ -8,6 +8,12 @@
  */
 lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php');
 
+/**
+ * class lmbTinyMCEComponent.
+ *
+ * @package wysiwyg
+ * @version $Id$
+ */
 class lmbTinyMCEComponent extends lmbWysiwygComponent
 {
   protected $_base_path;

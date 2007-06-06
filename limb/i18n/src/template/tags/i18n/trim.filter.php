@@ -7,9 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter i18n_trim
-* @max_attributes 1
-*/
+ * @filter i18n_trim
+ * @max_attributes 1
+ * @package i18n
+ * @version $Id: trim.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbI18NTrimFilter extends WactCompilerFilter
 {
   function getValue()

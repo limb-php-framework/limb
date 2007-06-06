@@ -8,22 +8,23 @@
  */
 
 /**
-* Acts on the root lmbMacroNode in response to events within the lmbMacroParser
-*
-* When adding an open tag to the tree, call pushExpectedTag().  When closing
-* a tag, call popExpectedTag(), which ensures the tree is balanced.
-*
-* These methods do not actually add nodes to the tree, as tags and nodes
-* do not necessarily match up.
-*
-* To add a node to the tree, you have the following choices.  To add a node
-* which can have children, use pushNode().  To add a terminal node use addNode(),
-* or addTextNode().
-*/
+ * Acts on the root lmbMacroNode in response to events within the lmbMacroParser
+ *
+ * When adding an open tag to the tree, call pushExpectedTag().  When closing
+ * a tag, call popExpectedTag(), which ensures the tree is balanced.
+ *
+ * These methods do not actually add nodes to the tree, as tags and nodes
+ * do not necessarily match up.
+ *
+ * To add a node to the tree, you have the following choices.  To add a node
+ * which can have children, use pushNode().  To add a terminal node use addNode(),
+ * or addTextNode().
+ * @package macro
+ * @version $Id$
+ */
 
-lmb_require('limb/macro/src/lmbMacroTextNode.class.php');
 
-class lmbMacroTreeBuilder
+lmb_require('limb/macro/src/lmbMacroTextNode.class.php');class lmbMacroTreeBuilder
 {
   protected $compiler;
   protected $node;

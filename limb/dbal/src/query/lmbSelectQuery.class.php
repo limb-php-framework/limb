@@ -10,6 +10,12 @@ lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
 
 //TODO: use primitive lexer for parsing sql templates someday...
 
+/**
+ * class lmbSelectQuery.
+ *
+ * @package dbal
+ * @version $Id: lmbSelectQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSelectQuery extends lmbCriteriaQuery
 {
   protected $_fields = array();

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbTreeException.
+ *
+ * @package tree
+ * @version $Id$
+ */
 class lmbTreeException extends lmbException{}
 
 ?>

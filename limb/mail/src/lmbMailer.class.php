@@ -14,6 +14,12 @@
 @define('LIMB_SMTP_USER', '');
 @define('LIMB_SMTP_PASSWORD', '');
 
+/**
+ * class lmbMailer.
+ *
+ * @package mail
+ * @version $Id: lmbMailer.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMailer
 {
   protected $attachments = array();

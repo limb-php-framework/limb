@@ -15,6 +15,12 @@ lmb_require(dirname(__FILE__) . '/lmbSqliteManipulationStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteTypeInfo.class.php');
 
+/**
+ * class lmbSqliteConnection.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteConnection implements lmbDbConnection
 {
   protected $connectionId;

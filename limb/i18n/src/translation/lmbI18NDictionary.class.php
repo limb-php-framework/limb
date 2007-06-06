@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbI18NDictionary.
+ *
+ * @package i18n
+ * @version $Id$
+ */
 class lmbI18NDictionary
 {
   protected $translations;

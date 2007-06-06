@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * class lmbCmsImageFolder.
+ *
+ * @package cms
+ * @version $Id: lmbCmsImageFolder.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsImageFolder extends lmbCmsNode
 {
 }

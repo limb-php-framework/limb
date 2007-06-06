@@ -8,6 +8,12 @@
  */
 lmb_require('limb/wact/src/WactTemplateConfig.interface.php');
 
+/**
+ * class lmbWactTemplateConfig.
+ *
+ * @package view
+ * @version $Id$
+ */
 class lmbWactTemplateConfig implements WactTemplateConfig
 {
   function __construct($cache_dir)

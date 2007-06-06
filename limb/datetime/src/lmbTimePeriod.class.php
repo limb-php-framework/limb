@@ -9,6 +9,12 @@
 lmb_require('limb/datetime/src/lmbDate.class.php');
 lmb_require('limb/datetime/src/lmbDatePeriod.class.php');
 
+/**
+ * class lmbTimePeriod.
+ *
+ * @package datetime
+ * @version $Id: lmbTimePeriod.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTimePeriod extends lmbDatePeriod
 {
   function __construct($start, $end)

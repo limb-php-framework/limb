@@ -8,9 +8,11 @@
  */
 
 /**
-* Represents list tags separator at runtime.
-* Created just to simplify list:separator tag code
-*/
+ * Represents list tags separator at runtime.
+ * Created just to simplify list:separator tag code
+ * @package wact
+ * @version $Id$
+ */
 class WactListSeparatorComponent extends WactRuntimeComponent
 {
   protected $step = 1;

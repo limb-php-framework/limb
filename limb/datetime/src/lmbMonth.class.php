@@ -8,6 +8,12 @@
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
 
+/**
+ * class lmbMonth.
+ *
+ * @package datetime
+ * @version $Id$
+ */
 class lmbMonth
 {
   protected $start_date;

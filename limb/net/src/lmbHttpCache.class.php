@@ -11,6 +11,12 @@
 define('LIMB_HTTP_CACHE_TYPE_PRIVATE', 0);
 define('LIMB_HTTP_CACHE_TYPE_PUBLIC', 1);
 
+/**
+ * class lmbHttpCache.
+ *
+ * @package net
+ * @version $Id: lmbHttpCache.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbHttpCache
 {
   protected $etag;

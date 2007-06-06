@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
 lmb_require('limb/dbal/src/drivers/oci/lmbOciRecord.class.php');
 
+/**
+ * class lmbOciRecordSet.
+ *
+ * @package dbal
+ * @version $Id: lmbOciRecordSet.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciRecordSet extends lmbDbBaseRecordSet
 {
   protected $queryId;

@@ -9,6 +9,8 @@
 
 /**
  * @filter capitalize
+ * @package wact
+ * @version $Id: capitalize.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCapitalizeFilter extends WactCompilerFilter
 {

@@ -25,6 +25,8 @@ lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
  *
  * currency/funds are specified by the ISO 4217
  * http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90.xalter
+ * @package i18n
+ * @version $Id: lmbLocale.class.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class lmbLocale
 {

@@ -7,8 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter i18n_capitalize
-*/
+ * @filter i18n_capitalize
+ * @package i18n
+ * @version $Id: capitalize.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbI18NCapitalizeFilter extends WactCompilerFilter
 {
   var $locale_var;

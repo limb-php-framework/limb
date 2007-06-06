@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactAttributeBlockAnalizerListener.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactAttributeBlockAnalizerListener implements WactBlockAnalizerListener
 {
   protected $attribute;

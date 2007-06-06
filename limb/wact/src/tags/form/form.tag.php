@@ -14,6 +14,8 @@
  * @runat client
  * @restrict_self_nesting
  * @convert_to_expression from
+ * @package wact
+ * @version $Id: form.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactFormTag extends WactRuntimeDatasourceComponentHTMLTag
 {

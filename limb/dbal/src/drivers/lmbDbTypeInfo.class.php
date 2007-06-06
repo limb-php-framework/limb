@@ -25,6 +25,12 @@ define('LIMB_DB_TYPE_TIME',       52);
 define('LIMB_DB_TYPE_BLOB',       60);
 define('LIMB_DB_TYPE_CLOB',       70);
 
+/**
+ * class lmbDbTypeInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbDbTypeInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDbTypeInfo
 {
   function getColumnTypeList()

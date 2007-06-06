@@ -11,6 +11,12 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
 @define('LIMB_TRANSLATIONS_INCLUDE_PATH', 'i18n/translations;limb/*/i18n/translations');
 
+/**
+ * class lmbQtDictionaryBackend.
+ *
+ * @package i18n
+ * @version $Id$
+ */
 class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 {
   protected $use_cache = false;

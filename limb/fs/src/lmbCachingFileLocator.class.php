@@ -9,6 +9,12 @@
 lmb_require('limb/fs/src/lmbFileLocatorDecorator.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbCachingFileLocator.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbCachingFileLocator extends lmbFileLocatorDecorator
 {
   protected $_cached_paths = array();

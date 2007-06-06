@@ -21,7 +21,7 @@
     * 
     * @author Nimish Pachapurkar (npac@spikesource.com)
     * @version $Revision: 14009 $
-    * @package SpikePHPCoverage_Parser
+    * @package tests_runner
     */
 
     define("LINE_TYPE_UNKNOWN", "0");

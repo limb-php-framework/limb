@@ -7,9 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter i18n_number
-* @max_attributes 5
-*/
+ * @filter i18n_number
+ * @max_attributes 5
+ * @package i18n
+ * @version $Id: number.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbI18NNumberFilter extends WactCompilerFilter
 {
   var $locale_var;

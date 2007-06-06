@@ -7,8 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter ip
-*/
+ * @filter ip
+ * @package web_app
+ * @version $Id: ip.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbIpFilter extends WactCompilerFilter
 {
   function getValue()

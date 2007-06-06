@@ -8,9 +8,11 @@
  */
 
 /**
-* Server tag component tags are WactRuntimeComponentTags which also correspond to
-* an HTML tag.
-*/
+ * Server tag component tags are WactRuntimeComponentTags which also correspond to
+ * an HTML tag.
+ * @package wact
+ * @version $Id: WactRuntimeComponentHTMLTag.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactRuntimeComponentHTMLTag extends WactRuntimeComponentTag
 {
   protected $runtimeComponentName = 'WactRuntimeTagComponent';

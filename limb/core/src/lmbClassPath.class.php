@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbHandle.class.php');
 
+/**
+ * class lmbClassPath.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbClassPath
 {
   protected $class_name;

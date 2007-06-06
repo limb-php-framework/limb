@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbLogEchoWriter.
+ *
+ * @package log
+ * @version $Id$
+ */
 class lmbLogEchoWriter
 {
   function write($entry)

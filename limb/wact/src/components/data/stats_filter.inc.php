@@ -20,6 +20,12 @@ function wact_stats_filter($value, $id, $mode='acc')
   return $stat->perform($mode, $value);
 }
 
+/**
+ * class WactStatFilterFinder.
+ *
+ * @package wact
+ * @version $Id: stats_filter.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactStatFilterFinder
 {
     var $stat_filters;
@@ -45,6 +51,12 @@ class WactStatFilterFinder
     }
 }
 
+/**
+ * class WactStatFilter.
+ *
+ * @package wact
+ * @version $Id: stats_filter.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactStatFilter
 {
   var $hist = array();

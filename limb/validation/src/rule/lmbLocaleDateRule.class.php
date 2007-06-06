@@ -9,6 +9,12 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
 
+/**
+ * class lmbLocaleDateRule.
+ *
+ * @package validation
+ * @version $Id$
+ */
 class lmbLocaleDateRule extends lmbSingleFieldRule
 {
   protected $locale;

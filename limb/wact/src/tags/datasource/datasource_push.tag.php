@@ -9,11 +9,13 @@
 require_once('limb/wact/src/tags/fetch/WactBaseFetchingTag.class.php');
 
 /**
-* @tag datasource:push
-* @req_const_attributes to
-* @req_attributes from
-* @forbid_end_tag
-*/
+ * @tag datasource:push
+ * @req_const_attributes to
+ * @req_attributes from
+ * @forbid_end_tag
+ * @package wact
+ * @version $Id$
+ */
 class WactDatasourcePushTag extends WactCompilerTag
 {
   function preParse()

@@ -10,6 +10,12 @@
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 
+/**
+ * class lmbCmsNodeBreadcrumbsFetcher.
+ *
+ * @package cms
+ * @version $Id: lmbCmsNodeBreadcrumbsFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsNodeBreadcrumbsFetcher extends lmbFetcher
 {
   function _createDataSet()

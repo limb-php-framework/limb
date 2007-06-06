@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactInputComponent.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactInputComponent extends WactFormElementComponent
 {
   function renderAttributes()

@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
 
+/**
+ * class lmbCachePersisterKeyDecorator.
+ *
+ * @package cache
+ * @version $Id: lmbCachePersisterKeyDecorator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCachePersisterKeyDecorator implements lmbCachePersister
 {
   protected $persister;

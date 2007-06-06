@@ -10,6 +10,12 @@
 lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
 lmb_require('limb/macro/src/lmbMacroBaseParsingState.class.php');
 
+/**
+ * class lmbMacroTagParsingState.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMacroTokenizerListener
 {
   protected $tag_dictionary;

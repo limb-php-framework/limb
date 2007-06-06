@@ -18,6 +18,8 @@
  * from which I borrowed some ideas to make it work.
  *
  * @author Oak Nauhygon <ezpdo4php@gmail.com>
+ * @package core
+ * @version $Id$
  */
 class lmbPHPTokenizer
 {

@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: url.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: url.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -19,7 +19,7 @@
      *    Guesses a bit trying to separate the host from
      *    the path and tries to keep a raw, possibly unparsable,
      *    request string as long as possible.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleUrl {

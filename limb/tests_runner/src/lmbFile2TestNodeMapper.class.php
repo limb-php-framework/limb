@@ -8,6 +8,12 @@
  */
 require_once(dirname(__FILE__) . '/lmbTestTreeDirNode.class.php');
 
+/**
+ * class lmbFile2TestNodeMapper.
+ *
+ * @package tests_runner
+ * @version $Id: lmbFile2TestNodeMapper.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFile2TestNodeMapper
 {
   protected $file_filter;

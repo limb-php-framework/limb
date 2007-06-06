@@ -9,6 +9,12 @@
 
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 
+/**
+ * class lmbSqliteTypeInfo.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteTypeInfo extends lmbDbTypeInfo
 {
   function getNativeToColumnTypeMapping()

@@ -4,16 +4,16 @@
      * {@link SimplePatternCollector}.
      *
      * @author Travis Swicegood <development@domain51.com>
-     * @package SimpleTest
+     * @package tests_runner
      * @subpackage UnitTester
-     * @version $Id: collector.php 5157 2007-02-26 13:59:16Z pachanga $
+     * @version $Id: collector.php 5945 2007-06-06 08:31:43Z pachanga $
      */
     
     /**
      * The basic collector for {@link GroupTest}
      *
      * @see collect(), GroupTest::collect()
-     * @package SimpleTest
+     * @package tests_runner
      * @subpackage UnitTester
      */
     class SimpleCollector {
@@ -73,7 +73,7 @@
      * An extension to {@link SimpleCollector} that only adds files matching a
      * given pattern.
      *
-     * @package SimpleTest
+     * @package tests_runner
      * @subpackage UnitTester
      * @see SimpleCollector
      */

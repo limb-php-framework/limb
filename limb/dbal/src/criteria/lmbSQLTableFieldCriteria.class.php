@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 
+/**
+ * class lmbSQLTableFieldCriteria.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLTableFieldCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSQLTableFieldCriteria extends lmbSQLFieldCriteria
 {
   protected $table;

@@ -9,8 +9,10 @@
 lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 
 /**
-* Checks that field value is a valid Url.
-*/
+ * Checks that field value is a valid Url.
+ * @package validation
+ * @version $Id: lmbUrlRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUrlRule extends lmbDomainRule
 {
   /**

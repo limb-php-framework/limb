@@ -10,8 +10,10 @@ require_once('limb/wact/src/tags/form/control.inc.php');
 define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 
 /**
-* @tag richedit,wysiwyg
-*/
+ * @tag richedit,wysiwyg
+ * @package wysiwyg
+ * @version $Id: wysiwyg.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbWysiwygTag extends WactControlTag
 {
   var $runtimeComponentName = 'lmbWysiwygComponent';

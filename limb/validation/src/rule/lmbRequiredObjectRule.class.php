@@ -10,16 +10,18 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 lmb_require('limb/i18n/common.inc.php');
 
 /**
-* Checks that field is present in datasource and it's value is an object of some or any class
-* Example of usage:
-* <code>
-*  lmb_require('limb/validation/src/rule/lmbRequiredObjectRule.class.php');
-*  $validator->addRule(new lmbRequiredObjectRule('author', 'Author'));
-*  // or
-*  $validator->addRequiredObjectRule('folder');
-* </code>
-* @see lmbValidator :: addRequiredObjectRule()
-*/
+ * Checks that field is present in datasource and it's value is an object of some or any class
+ * Example of usage:
+ * <code>
+ *  lmb_require('limb/validation/src/rule/lmbRequiredObjectRule.class.php');
+ *  $validator->addRule(new lmbRequiredObjectRule('author', 'Author'));
+ *  // or
+ *  $validator->addRequiredObjectRule('folder');
+ * </code>
+ * @see lmbValidator :: addRequiredObjectRule()
+ * @package validation
+ * @version $Id: lmbRequiredObjectRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbRequiredObjectRule implements lmbValidationRule
 {
   /**

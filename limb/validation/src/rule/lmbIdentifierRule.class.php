@@ -9,8 +9,10 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 /**
-* Checks that field value is an alpha-numeric string
-*/
+ * Checks that field value is an alpha-numeric string
+ * @package validation
+ * @version $Id: lmbIdentifierRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbIdentifierRule extends lmbSingleFieldRule
 {
   function check($value)

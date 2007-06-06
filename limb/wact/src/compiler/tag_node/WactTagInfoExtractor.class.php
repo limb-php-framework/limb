@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactTagInfoExtractor.
+ *
+ * @package wact
+ * @version $Id: WactTagInfoExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactTagInfoExtractor
 {
   protected $dictionary;

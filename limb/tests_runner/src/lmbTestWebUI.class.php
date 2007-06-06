@@ -10,6 +10,12 @@ require_once(dirname(__FILE__) . '/lmbTestTree.class.php');
 require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
 require_once(dirname(__FILE__) . '/lmbTestHTMLReporter.class.php');
 
+/**
+ * class lmbTestWebUI.
+ *
+ * @package tests_runner
+ * @version $Id: lmbTestWebUI.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTestWebUI
 {
   protected $tree;

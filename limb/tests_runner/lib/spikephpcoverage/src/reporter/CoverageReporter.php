@@ -32,7 +32,7 @@
     * 
     * @author Nimish Pachapurkar <npac@spikesource.com>
     * @version $Revision: 14665 $
-    * @package SpikePHPCoverage_Reporter
+    * @package tests_runner
     */
     abstract class CoverageReporter {
         // {{{ Members

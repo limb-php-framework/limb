@@ -8,10 +8,12 @@
  */
 
 /**
-* Datasources act is "namespaces" for a template.
-* @tag core:DATASOURCE
-* @convert_to_expression from
-*/
+ * Datasources act is "namespaces" for a template.
+ * @tag core:DATASOURCE
+ * @convert_to_expression from
+ * @package wact
+ * @version $Id: datasource.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactCoreDatasourceTag extends WactRuntimeDatasourceComponentTag
 {
   protected $runtimeComponentName = 'WactDatasourceRuntimeComponent';

@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: page.php 4378 2006-10-27 10:04:53Z pachanga $
+     *	@version	$Id: page.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -19,7 +19,7 @@
     /**
      *    Creates tags and widgets given HTML tag
      *    attributes.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleTagBuilder {
@@ -113,7 +113,7 @@
     /**
      *    SAX event handler. Maintains a list of
      *    open tags and dispatches them as they close.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimplePageBuilder extends SimpleSaxListener {
@@ -327,7 +327,7 @@
 
     /**
      *    A wrapper for a web page.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimplePage {

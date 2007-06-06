@@ -10,6 +10,12 @@ lmb_require('limb/js/common.inc.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/js/src/lmbJsPreprocessor.class.php');
 
+/**
+ * class JsCliCmd.
+ *
+ * @package js
+ * @version $Id$
+ */
 class JsCliCmd extends lmbCliBaseCmd
 {
   function execute($argv)

@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
+/**
+ * class SearchController.
+ *
+ * @package search
+ * @version $Id: SearchController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class SearchController extends lmbController
 {
   function doDisplay()

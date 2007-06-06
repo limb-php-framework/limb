@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 
+/**
+ * class lmbUploadedFile.
+ *
+ * @package net
+ * @version $Id$
+ */
 class lmbUploadedFile extends lmbObject
 {
   function getFilePath()

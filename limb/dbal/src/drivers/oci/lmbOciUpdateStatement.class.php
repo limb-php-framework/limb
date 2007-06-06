@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbInsertStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbOciManipulationStatement.class.php');
 
+/**
+ * class lmbOciUpdateStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbOciUpdateStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciUpdateStatement extends lmbOciManipulationStatement
 {
   protected function _mapHolderToField($name, $sql)

@@ -9,6 +9,12 @@
 
 lmb_require('limb/macro/src/lmbMacroNode.class.php');
 
+/**
+ * class lmbMacroTag.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroTag extends lmbMacroNode
 {
   protected $tag;

@@ -10,6 +10,12 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/log/src/lmbLog.class.php');
 lmb_require('limb/log/src/lmbLogFileWriter.class.php');
 
+/**
+ * class lmbLogTools.
+ *
+ * @package log
+ * @version $Id$
+ */
 class lmbLogTools extends lmbAbstractTools
 {
   protected $log;

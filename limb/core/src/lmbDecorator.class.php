@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbDecoratorGenerator.class.php');
 
+/**
+ * class lmbDecorator.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbDecorator
 {
   protected $original;

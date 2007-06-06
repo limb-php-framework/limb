@@ -8,6 +8,12 @@
  */
 require_once('limb/wact/src/locator/WactTemplateLocator.interface.php');
 
+/**
+ * class lmbWactTemplateLocator.
+ *
+ * @package view
+ * @version $Id$
+ */
 class lmbWactTemplateLocator implements WactTemplateLocator
 {
   protected $locator;

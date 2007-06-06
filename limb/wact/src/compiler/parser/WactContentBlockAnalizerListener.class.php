@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactContentBlockAnalizerListener.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactContentBlockAnalizerListener implements WactBlockAnalizerListener
 {
   protected $tree_builder;

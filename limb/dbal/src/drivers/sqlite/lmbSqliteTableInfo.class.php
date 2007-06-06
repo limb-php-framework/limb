@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
 lmb_require('limb/dbal/src/drivers/mysql/lmbSqliteColumnInfo.class.php');
 
+/**
+ * class lmbSqliteTableInfo.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteTableInfo extends lmbDbTableInfo
 {
   protected $isExisting = false;

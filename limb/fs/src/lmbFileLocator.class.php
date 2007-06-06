@@ -9,6 +9,12 @@
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbFileLocator.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFileLocator
 {
   protected $locations;

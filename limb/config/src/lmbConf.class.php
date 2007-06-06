@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbSet.class.php');
 
+/**
+ * class lmbConf.
+ *
+ * @package config
+ * @version $Id: lmbConf.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbConf extends lmbSet
 {
   function __construct($file)

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMetaRedirectStrategy.
+ *
+ * @package net
+ * @version $Id: lmbMetaRedirectStrategy.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMetaRedirectStrategy
 {
   protected $template_path;

@@ -8,6 +8,12 @@
  */
 require_once('limb/wact/src/components/WactClassPath.class.php');
 
+/**
+ * class WactPerformComponent.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactPerformComponent extends WactRuntimeComponent
 {
   protected $command;

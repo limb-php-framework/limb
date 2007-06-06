@@ -8,8 +8,10 @@
  */
 
 /**
-* Base class for runtime components that output XML tags
-*/
+ * Base class for runtime components that output XML tags
+ * @package wact
+ * @version $Id: WactRuntimeTagComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactRuntimeTagComponent extends WactRuntimeComponent
 {
   protected $attributes = array();

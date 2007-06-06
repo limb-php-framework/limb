@@ -8,6 +8,12 @@
  */
 lmb_require('limb/wact/src/components/fetch/WactFetchComponent.class.php');
 
+/**
+ * class lmbActiveRecordFetchComponent.
+ *
+ * @package web_app
+ * @version $Id$
+ */
 class lmbActiveRecordFetchComponent extends WactFetchComponent
 {
   protected $find_params = array();

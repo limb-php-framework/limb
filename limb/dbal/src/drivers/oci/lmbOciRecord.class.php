@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
+/**
+ * class lmbOciRecord.
+ *
+ * @package dbal
+ * @version $Id: lmbOciRecord.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciRecord extends lmbDbBaseRecord
 {
   protected $properties = array();

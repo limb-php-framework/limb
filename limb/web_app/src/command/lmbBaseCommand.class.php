@@ -9,6 +9,12 @@
 require_once('limb/web_app/toolkit.inc.php');
 lmb_require('limb/web_app/src/command/lmbCommand.interface.php');
 
+/**
+ * abstract class lmbBaseCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbBaseCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbBaseCommand implements lmbCommand
 {
   protected $toolkit;

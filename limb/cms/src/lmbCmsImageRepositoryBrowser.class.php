@@ -10,6 +10,12 @@ lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 lmb_require('limb/cms/src/model/lmbCmsImage.class.php');
 lmb_require('limb/cms/src/model/lmbCmsImageFolder.class.php');
 
+/**
+ * class lmbCmsImageRepositoryBrowser.
+ *
+ * @package cms
+ * @version $Id: lmbCmsImageRepositoryBrowser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsImageRepositoryBrowser
 {
   protected $current_folder;

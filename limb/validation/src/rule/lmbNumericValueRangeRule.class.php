@@ -9,14 +9,16 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 /**
-* Checks that field has minimux and (or) maximum length
-* Example of usage:
-* <code>
-*  lmb_require('limb/validation/src/rule/lmbNumericValueRangeRule.class.php');
-*  // restricts "length" field to have values less than 10.5 and more than 50
-*  $validator->addRule(new lmbNumericValueRangeRule('length', 10.5, 50));
-* </code>
-*/
+ * Checks that field has minimux and (or) maximum length
+ * Example of usage:
+ * <code>
+ *  lmb_require('limb/validation/src/rule/lmbNumericValueRangeRule.class.php');
+ *  // restricts "length" field to have values less than 10.5 and more than 50
+ *  $validator->addRule(new lmbNumericValueRangeRule('length', 10.5, 50));
+ * </code>
+ * @package validation
+ * @version $Id: lmbNumericValueRangeRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbNumericValueRangeRule extends lmbSingleFieldRule
 {
   /**

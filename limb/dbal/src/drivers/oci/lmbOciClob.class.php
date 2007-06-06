@@ -8,6 +8,12 @@
  */
 lmb_require(dirname(__FILE__) . '/lmbOciLob.class.php');
 
+/**
+ * class lmbOciClob.
+ *
+ * @package dbal
+ * @version $Id: lmbOciClob.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciClob extends lmbOciLob
 {
   function getDescriptorType()

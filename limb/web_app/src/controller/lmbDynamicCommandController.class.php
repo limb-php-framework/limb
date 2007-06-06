@@ -9,6 +9,12 @@
 lmb_require('limb/core/src/lmbHandle.class.php');
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
 
+/**
+ * class lmbDynamicCommandController.
+ *
+ * @package web_app
+ * @version $Id: lmbDynamicCommandController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDynamicCommandController extends lmbAbstractController
 {
   function actionExists($action)

@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbDelegate.class.php');
 
+/**
+ * class lmbErrorGuard.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbErrorGuard
 {
   static protected $fatal_error_delegate;

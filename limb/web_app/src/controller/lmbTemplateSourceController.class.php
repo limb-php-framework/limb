@@ -9,6 +9,12 @@
 
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
+/**
+ * class lmbTemplateSourceController.
+ *
+ * @package web_app
+ * @version $Id$
+ */
 class lmbTemplateSourceController extends lmbController
 {
   function doDisplay()

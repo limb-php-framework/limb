@@ -1,9 +1,9 @@
 <?php
 /**
  *	base include file for SimpleTest
- *	@package	SimpleTest
+ *	@package tests_runner
  *	@subpackage	UnitTester
- *	@version	$Id: errors.php 5157 2007-02-26 13:59:16Z pachanga $
+ *	@version	$Id: errors.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 
 /**
@@ -23,7 +23,7 @@ require_once dirname(__FILE__) . '/expectation.php';
 
 /**
  *    Extension that traps errors into an error queue.
- *	  @package SimpleTest
+ *	  @package tests_runner
  *	  @subpackage UnitTester
  */
 class SimpleErrorTrappingInvoker extends SimpleInvokerDecorator {
@@ -61,7 +61,7 @@ class SimpleErrorTrappingInvoker extends SimpleInvokerDecorator {
 /**
  *    Singleton error queue used to record trapped
  *    errors.
- *	  @package	SimpleTest
+ *	  @package tests_runner
  *	  @subpackage	UnitTester
  */
 class SimpleErrorQueue {

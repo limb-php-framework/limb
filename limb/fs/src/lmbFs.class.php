@@ -9,6 +9,12 @@
 lmb_require('limb/core/src/lmbSys.class.php');
 lmb_require('limb/fs/src/exception/lmbFsException.class.php');
 
+/**
+ * class lmbFs.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFs
 {
   const LOCAL = 1;

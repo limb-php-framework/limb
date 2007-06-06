@@ -9,11 +9,13 @@
 
 require_once('limb/wact/src/tags/form/control.inc.php');
 /**
-* @tag js_checkbox
-* @known_parent WactFormTag
-* @suppress_attributes errorclass errorstyle displayname
-* @forbid_end_tag
-*/
+ * @tag js_checkbox
+ * @known_parent WactFormTag
+ * @suppress_attributes errorclass errorstyle displayname
+ * @forbid_end_tag
+ * @package wact
+ * @version $Id: js_checkbox.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactJSCheckboxTag extends WactControlTag
 {
   protected $runtimeComponentName = 'WactJSCheckboxComponent';

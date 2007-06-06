@@ -12,6 +12,12 @@ require_once 'limb/wact/src/compiler/property/WactPropertyDictionary.class.php';
 require_once 'limb/wact/src/compiler/tag_node/WactTagDictionary.class.php';
 require_once 'limb/wact/src/compiler/WactCompiler.class.php';
 
+/**
+ * class WactDictionaryHolder.
+ *
+ * @package wact
+ * @version $Id: WactDictionaryHolder.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactDictionaryHolder
 {
   protected $dictionaries;

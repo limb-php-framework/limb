@@ -11,11 +11,12 @@
  * @filter math
  * @min_attributes 1
  * @max_attributes 9999
+ * @package wact
+ * @version $Id: math.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 
-require_once('limb/wact/src/components/data/math_filter.inc.php');
 
-class WactMathFilter extends WactCompilerFilter {
+require_once('limb/wact/src/components/data/math_filter.inc.php');class WactMathFilter extends WactCompilerFilter {
 
     /**
      * Return this value as a PHP value

@@ -11,6 +11,8 @@
  * Inserts an IF statement into compiled template
  * @tag core:IF
  * @req_attributes exp
+ * @package wact
+ * @version $Id$
  */
 class WactCoreIfTag extends WactCompilerTag
 {

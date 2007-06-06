@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 
+/**
+ * class lmbSearchResultProcessor.
+ *
+ * @package search
+ * @version $Id: lmbSearchResultProcessor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSearchResultProcessor extends lmbCollectionDecorator
 {
   protected $radius = 0;

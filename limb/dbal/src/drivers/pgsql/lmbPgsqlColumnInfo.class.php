@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbColumnInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
 
+/**
+ * class lmbPgsqlColumnInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlColumnInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlColumnInfo extends lmbDbColumnInfo
 {
   protected $nativeType;

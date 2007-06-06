@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMacroParser.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroParser implements lmbMacroTokenizerListener
 {
   protected $active_parsing_state;

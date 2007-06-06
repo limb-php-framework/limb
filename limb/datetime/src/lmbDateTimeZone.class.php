@@ -9,21 +9,23 @@
 //inspired by PEAR::lmbDate package
 
 /**
-* time_zone representation class, along with time zone information data.
-*
-* time_zone representation class, along with time zone information data.
-* The default timezone is set from the first valid timezone id found
-* in one of the following places, in this order:
-* 1) global $_DATE_TIMEZONE_DEFAULT
-* 2) system environment variable PHP_TZ
-* 3) system environment variable TZ
-* 4) the result of date('T')
-* If no valid timezone id is found, the default timezone is set to 'UTC'.
-* You may also manually set the default timezone by passing a valid id to
-* date_time_zone::set_default().
-*
-* This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
-*/
+ * time_zone representation class, along with time zone information data.
+ *
+ * time_zone representation class, along with time zone information data.
+ * The default timezone is set from the first valid timezone id found
+ * in one of the following places, in this order:
+ * 1) global $_DATE_TIMEZONE_DEFAULT
+ * 2) system environment variable PHP_TZ
+ * 3) system environment variable TZ
+ * 4) the result of date('T')
+ * If no valid timezone id is found, the default timezone is set to 'UTC'.
+ * You may also manually set the default timezone by passing a valid id to
+ * date_time_zone::set_default().
+ *
+ * This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
+ * @package datetime
+ * @version $Id: lmbDateTimeZone.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDateTimeZone
 {
   var $id;

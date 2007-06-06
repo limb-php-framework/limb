@@ -8,6 +8,12 @@
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 
+/**
+ * class lmbCmsAccessPolicyFilter.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
 {
   function run($filter_chain)

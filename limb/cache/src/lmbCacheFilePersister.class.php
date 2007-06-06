@@ -12,6 +12,12 @@ lmb_require('limb/fs/src/lmbFs.class.php', false);
 
 @define('LIMB_CACHE_FILE_PREFIX', 'cache_');
 
+/**
+ * class lmbCacheFilePersister.
+ *
+ * @package cache
+ * @version $Id: lmbCacheFilePersister.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCacheFilePersister implements lmbCachePersister
 {
   protected $cache_dir;

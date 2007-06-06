@@ -8,12 +8,14 @@
  */
 
 /**
-* @tag select:OPTIONS_SOURCE
-* @known_parent WactFormTag
-* @forbid_end_tag
-* @req_const_attributes target
-* @convert_to_expression from
-*/
+ * @tag select:OPTIONS_SOURCE
+ * @known_parent WactFormTag
+ * @forbid_end_tag
+ * @req_const_attributes target
+ * @convert_to_expression from
+ * @package wact
+ * @version $Id: select_options_source.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactSelectOptionsSource extends WactRuntimeDatasourceComponentTag
 {
   protected $runtimeComponentName = 'WactSelectOptionsSourceComponent';

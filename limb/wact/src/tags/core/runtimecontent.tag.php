@@ -11,6 +11,8 @@
  * Present a named location where content can be inserted at runtime
  * @tag core:RUNTIMECONTENT
  * @forbid_end_tag
+ * @package wact
+ * @version $Id: runtimecontent.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreRuntimeContentTag extends WactRuntimeComponentTag
 {

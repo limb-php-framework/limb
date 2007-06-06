@@ -1,9 +1,9 @@
 <?php
     /**
      *  Base include file for SimpleTest
-     *  @package        SimpleTest
+     *  @package tests_runner
      *  @subpackage     UnitTester
-     *  @version        $Id: colortext_reporter.php 4378 2006-10-27 10:04:53Z pachanga $
+     *  @version        $Id: colortext_reporter.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
 /**
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__) . '/../reporter.php');
  *
  * @author Jason Sweat (original code)
  * @author Travis Swicegood <development@domain51.com>
- * @package SimpleTest
+ * @package tests_runner
  * @subpackage UnitTester
  */
 class ColorTextReporter extends TextReporter { 

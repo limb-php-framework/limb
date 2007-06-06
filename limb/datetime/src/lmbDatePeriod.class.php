@@ -9,6 +9,12 @@
 lmb_require('limb/datetime/src/lmbDate.class.php');
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
+/**
+ * class lmbDatePeriod.
+ *
+ * @package datetime
+ * @version $Id: lmbDatePeriod.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDatePeriod
 {
   var $start;

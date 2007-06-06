@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/modifier/lmbOrderQueryModifier.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
 
+/**
+ * abstract class lmbFetcher.
+ *
+ * @package web_app
+ * @version $Id: lmbFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbFetcher
 {
   protected $decorators = array();

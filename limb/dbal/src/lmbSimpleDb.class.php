@@ -12,6 +12,12 @@ lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 
+/**
+ * class lmbSimpleDb.
+ *
+ * @package dbal
+ * @version $Id: lmbSimpleDb.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSimpleDb
 {
   protected $conn;

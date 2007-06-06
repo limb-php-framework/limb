@@ -10,6 +10,12 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
 @define('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/*/src/controller');
 
+/**
+ * class lmbWebAppTools.
+ *
+ * @package web_app
+ * @version $Id: lmbWebAppTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbWebAppTools extends lmbAbstractTools
 {
   protected $session;

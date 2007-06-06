@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbBaseCommand.class.php');
 
+/**
+ * class lmbActionCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbActionCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbActionCommand extends lmbBaseCommand
 {
   protected $template_path;

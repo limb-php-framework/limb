@@ -11,6 +11,12 @@ lmb_require('limb/fs/src/lmbFileLocator.class.php');
 lmb_require('limb/fs/src/lmbCachingFileLocator.class.php');
 lmb_require('limb/fs/src/lmbIncludePathFileLocations.class.php');
 
+/**
+ * class lmbFsTools.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFsTools extends lmbAbstractTools
 {
   protected $file_locators = array();

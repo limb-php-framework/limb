@@ -10,6 +10,12 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
 lmb_require('limb/core/src/lmbProxy.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbDbCachedInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbDbCachedInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDbCachedInfo extends lmbProxy
 {
   protected $conn;

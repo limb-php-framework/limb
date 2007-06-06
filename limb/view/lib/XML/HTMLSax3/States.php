@@ -23,7 +23,7 @@
 //
 /**
 * Parsing states.
-* @package XML_HTMLSax3
+* @package view
 * @version $Id: States.php,v 1.2 2004/06/02 14:22:40 hfuecks Exp $
 */
 /**
@@ -39,7 +39,7 @@ define('XML_HTMLSAX3_STATE_JASP', 7);
 define('XML_HTMLSAX3_STATE_PI', 8);
 /**
 * StartingState searches for the start of any XML tag
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_StartingState  {
@@ -60,7 +60,7 @@ class XML_HTMLSax3_StartingState  {
 }
 /**
 * Decides which state to move one from after StartingState
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_TagState {
@@ -91,7 +91,7 @@ class XML_HTMLSax3_TagState {
 }
 /**
 * Dealing with closing XML tags
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_ClosingTagState {
@@ -118,7 +118,7 @@ class XML_HTMLSax3_ClosingTagState {
 }
 /**
 * Dealing with opening XML tags
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_OpeningTagState {
@@ -199,7 +199,7 @@ class XML_HTMLSax3_OpeningTagState {
 
 /**
 * Deals with XML escapes handling comments and CDATA correctly
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_EscapeState {
@@ -241,7 +241,7 @@ class XML_HTMLSax3_EscapeState {
 }
 /**
 * Deals with JASP/ASP markup
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_JaspState {
@@ -263,7 +263,7 @@ class XML_HTMLSax3_JaspState {
 }
 /**
 * Deals with XML processing instructions
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_PiState {

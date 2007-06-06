@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbInsertStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteManipulationStatement.class.php');
 
+/**
+ * class lmbSqliteInsertStatement.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteInsertStatement extends lmbSqliteManipulationStatement implements lmbDbInsertStatement
 {
   function insertId($field_name = 'id')

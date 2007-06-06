@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbRecordSet.interface.php');
 
+/**
+ * abstract class lmbDbBaseRecordSet.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 abstract class lmbDbBaseRecordSet implements lmbDbRecordSet
 {
   protected $offset;

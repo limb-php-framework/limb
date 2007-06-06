@@ -8,14 +8,16 @@
  */
 
 /**
-* A special kind of tools that always returns some predefined result from each method
-* Created for testing purposes mostly
-* Example of usage:
-* <code>
-* $tools = new lmbStaticTools(array('getUser' => $mock_user, 'getDbConnection' => $mock_db_connection));
-* lmbToolkit :: merge($tools);
-* </code>
-*/
+ * A special kind of tools that always returns some predefined result from each method
+ * Created for testing purposes mostly
+ * Example of usage:
+ * <code>
+ * $tools = new lmbStaticTools(array('getUser' => $mock_user, 'getDbConnection' => $mock_db_connection));
+ * lmbToolkit :: merge($tools);
+ * </code>
+ * @package toolkit
+ * @version $Id: lmbStaticTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbStaticTools implements lmbToolkitTools
 {
   /**

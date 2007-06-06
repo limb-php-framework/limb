@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
 lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlColumnInfo.class.php');
 
+/**
+ * class lmbPgsqlTableInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlTableInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlTableInfo extends lmbDbTableInfo
 {
   protected $database;

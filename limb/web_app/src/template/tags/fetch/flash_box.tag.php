@@ -9,8 +9,10 @@
 require_once('limb/wact/src/tags/fetch/fetch.tag.php');
 
 /**
-* @tag flash_box, flashbox
-*/
+ * @tag flash_box, flashbox
+ * @package web_app
+ * @version $Id$
+ */
 class lmbFlashBoxTag extends WactFetchTag
 {
   function preParse()

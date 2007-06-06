@@ -8,8 +8,10 @@
  */
 
 /**
-* Represents an HTML label tag
-*/
+ * Represents an HTML label tag
+ * @package wact
+ * @version $Id$
+ */
 class WactLabelComponent extends WactRuntimeTagComponent
 {
   /**

@@ -8,8 +8,10 @@
  */
 
 /**
-* Empty tools. Supports no methods.
-*/
+ * Empty tools. Supports no methods.
+ * @package toolkit
+ * @version $Id: lmbEmptyToolkitTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbEmptyToolkitTools implements lmbToolkitTools
 {
   /**

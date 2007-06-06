@@ -15,6 +15,12 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
 
+/**
+ * class lmbPgsqlConnection.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlConnection implements lmbDbConnection
 {
   protected $connectionId;

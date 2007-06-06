@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactSelectOptionsSourceComponent.
+ *
+ * @package wact
+ * @version $Id: WactSelectOptionsSourceComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactSelectOptionsSourceComponent extends WactDatasourceRuntimeComponent
 {
   protected $field_for_id;

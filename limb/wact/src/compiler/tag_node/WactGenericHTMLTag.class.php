@@ -8,12 +8,14 @@
  */
 
 /**
-* Compile time component for tags in template which are not
-* recognized WACT tags but have a runat="server" attribute.
-* This allows native HTML tags, for example, to be manipulated
-* at runtime.
-* WactGenericHTMLTag is for tags with no children or content
-*/
+ * Compile time component for tags in template which are not
+ * recognized WACT tags but have a runat="server" attribute.
+ * This allows native HTML tags, for example, to be manipulated
+ * at runtime.
+ * WactGenericHTMLTag is for tags with no children or content
+ * @package wact
+ * @version $Id: WactGenericHTMLTag.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactGenericHTMLTag extends WactRuntimeComponentHTMLTag
 {
   protected $runtimeIncludeFile;

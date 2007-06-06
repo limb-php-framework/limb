@@ -9,6 +9,12 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 lmb_require('limb/i18n/utf8.inc.php');
 
+/**
+ * class lmbI18NSizeRangeRule.
+ *
+ * @package validation
+ * @version $Id$
+ */
 class lmbI18NSizeRangeRule extends lmbSingleFieldRule
 {
   /**

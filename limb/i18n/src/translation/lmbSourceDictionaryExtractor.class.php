@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * abstract class lmbSourceDictionaryExtractor.
+ *
+ * @package i18n
+ * @version $Id: lmbSourceDictionaryExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbSourceDictionaryExtractor
 {
   abstract function extract($code, &$dictionaries = array(), $response = null);

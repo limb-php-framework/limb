@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
 lmb_require('limb/dbal/src/drivers/mysql/lmbSqliteRecord.class.php');
 
+/**
+ * class lmbSqliteRecordSet.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteRecordSet extends lmbDbBaseRecordSet
 {
   protected $queryId;

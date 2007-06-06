@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbRecord.interface.php');
 
+/**
+ * abstract class lmbDbBaseRecord.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 abstract class lmbDbBaseRecord implements lmbDbRecord
 {
   //ArrayAccess interface

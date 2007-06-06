@@ -8,6 +8,12 @@
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 
+/**
+ * class lmbActionPerformingFilter.
+ *
+ * @package web_app
+ * @version $Id: lmbActionPerformingFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbActionPerformingFilter implements lmbInterceptingFilter
 {
   function run($filter_chain)

@@ -9,9 +9,11 @@
 
 require_once('limb/wact/src/tags/form/control.inc.php');
 /**
-* @tag select_with_grouped_options
-* @known_parent WactFormTag
-*/
+ * @tag select_with_grouped_options
+ * @known_parent WactFormTag
+ * @package wact
+ * @version $Id: select_with_grouped_options.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactGroupedOptionsSelectTag extends WactControlTag
 {
   protected $runtimeComponentName = 'WactGroupedOptionsSelectComponent';

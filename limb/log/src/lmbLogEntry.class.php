@@ -9,6 +9,12 @@
 
 lmb_require('limb/core/src/lmbSys.class.php');
 
+/**
+ * class lmbLogEntry.
+ *
+ * @package log
+ * @version $Id$
+ */
 class lmbLogEntry
 {
   protected $level;

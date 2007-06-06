@@ -8,8 +8,10 @@
  */
 
 /**
-* A property representing a constant value.
-*/
+ * A property representing a constant value.
+ * @package wact
+ * @version $Id: WactConstantProperty.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactConstantProperty extends WactCompilerProperty
 {
   protected $value;

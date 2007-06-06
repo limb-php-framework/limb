@@ -9,6 +9,12 @@
 lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 
+/**
+ * class lmbRequestDispatchingFilter.
+ *
+ * @package web_app
+ * @version $Id: lmbRequestDispatchingFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 {
   protected $dispatcher;

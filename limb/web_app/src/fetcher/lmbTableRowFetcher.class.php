@@ -9,6 +9,12 @@
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 
+/**
+ * class lmbTableRowFetcher.
+ *
+ * @package web_app
+ * @version $Id: lmbTableRowFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTableRowFetcher extends lmbFetcher
 {
   protected $table_class;

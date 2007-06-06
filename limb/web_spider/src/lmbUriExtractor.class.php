@@ -8,6 +8,12 @@
  */
 lmb_require('limb/net/src/lmbUri.class.php');
 
+/**
+ * class lmbUriExtractor.
+ *
+ * @package web_spider
+ * @version $Id: lmbUriExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUriExtractor
 {
   protected function _defineUriRegex()

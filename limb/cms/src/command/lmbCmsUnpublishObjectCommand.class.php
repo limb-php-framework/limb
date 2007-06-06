@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
 
+/**
+ * class lmbCmsUnpublishObjectCommand.
+ *
+ * @package cms
+ * @version $Id: lmbCmsUnpublishObjectCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsUnpublishObjectCommand extends lmbActionCommand
 {
   protected $class_name;

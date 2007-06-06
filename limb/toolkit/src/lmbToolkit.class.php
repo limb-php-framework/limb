@@ -13,31 +13,33 @@ lmb_require(dirname(__FILE__) . '/lmbCompositeToolkitTools.class.php');
 lmb_require(dirname(__FILE__) . '/lmbCompositeNonItersectingToolkitTools.class.php');
 
 /**
-* Toolkit is an implementation of Dinamic Service Locator pattern
-* The idea behind lmbToolkit class is simple:
-*  1) lmbToolkit is a Singleton
-*  2) lmbToolkit consists of so called tools. Tools is an object of any class that supports {@link lmbToolkitTools} interface
-*  3) lmbToolkit redirects all non existing methods via magic __call to tools if these methods were named in $tools :: getToolsSignatures() result.
-*  4) lmbToolkit also acts as a registry. You can put any data into toolkit and get them out at any place of your application
-* As a result we get an easily accessible object that we can extend with any methods we need.
-* We can also replace one tools with others thus we can return to client code completely different results from the same toolkit methods.
-* lmbToolkit also supports magic getters and setters. Say you have tools with getVar() method and you call $toolkit->get('var') then tools->getVar() will be actually called
-* Example of usage:
-* <code>
-* lmb_require('limb/net/src/lmbNetTools.class.php');
-* lmbToolkit :: merge(new lmbNetTools());
-* lmb_require('limb/net/src/toolkit/lmbDbTools.class.php');
-* lmbToolkit :: merge(new lmbDbTools());
-* // somethere in client code
-* $toolkit = lmbToolkit :: instance();
-* $toolkit->set('my_var', $value)'
-* $request = $toolkit->getRequest(); // supported by lmbNetTools
-* $same_request = $toolkit->get('requets'); // will delegate to getRequest()
-* $db_connection = $toolkit->getDefaultDbConnection(); // supported by lmbDbTools
-* $toolkit->get('my_var'); // returns $value value
-* </code>
-* @see lmbToolkitTools
-*/
+ * Toolkit is an implementation of Dinamic Service Locator pattern
+ * The idea behind lmbToolkit class is simple:
+ *  1) lmbToolkit is a Singleton
+ *  2) lmbToolkit consists of so called tools. Tools is an object of any class that supports {@link lmbToolkitTools} interface
+ *  3) lmbToolkit redirects all non existing methods via magic __call to tools if these methods were named in $tools :: getToolsSignatures() result.
+ *  4) lmbToolkit also acts as a registry. You can put any data into toolkit and get them out at any place of your application
+ * As a result we get an easily accessible object that we can extend with any methods we need.
+ * We can also replace one tools with others thus we can return to client code completely different results from the same toolkit methods.
+ * lmbToolkit also supports magic getters and setters. Say you have tools with getVar() method and you call $toolkit->get('var') then tools->getVar() will be actually called
+ * Example of usage:
+ * <code>
+ * lmb_require('limb/net/src/lmbNetTools.class.php');
+ * lmbToolkit :: merge(new lmbNetTools());
+ * lmb_require('limb/net/src/toolkit/lmbDbTools.class.php');
+ * lmbToolkit :: merge(new lmbDbTools());
+ * // somethere in client code
+ * $toolkit = lmbToolkit :: instance();
+ * $toolkit->set('my_var', $value)'
+ * $request = $toolkit->getRequest(); // supported by lmbNetTools
+ * $same_request = $toolkit->get('requets'); // will delegate to getRequest()
+ * $db_connection = $toolkit->getDefaultDbConnection(); // supported by lmbDbTools
+ * $toolkit->get('my_var'); // returns $value value
+ * </code>
+ * @see lmbToolkitTools
+ * @package toolkit
+ * @version $Id: lmbToolkit.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbToolkit
 {
   /**

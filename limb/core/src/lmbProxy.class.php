@@ -8,11 +8,13 @@
  */
 
 /**
-* Base class for creating proxies.
-* Proxies acts like real(original) objects until real object is definitely required.
-* In such a case the original object is <b>resolved</b> and since that moment all method
-* and argument calls will be delegeted to the real object.
-*/
+ * Base class for creating proxies.
+ * Proxies acts like real(original) objects until real object is definitely required.
+ * In such a case the original object is <b>resolved</b> and since that moment all method
+ * and argument calls will be delegeted to the real object.
+ * @package core
+ * @version $Id$
+ */
 abstract class lmbProxy
 {
   /**

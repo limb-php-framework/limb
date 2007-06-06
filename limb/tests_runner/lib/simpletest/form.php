@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest.
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: form.php 4378 2006-10-27 10:04:53Z pachanga $
+     *	@version	$Id: form.php 5945 2007-06-06 08:31:43Z pachanga $
      */
      
     /**#@+
@@ -16,7 +16,7 @@
     
     /**
      *    Form tag class to hold widget values.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleForm {

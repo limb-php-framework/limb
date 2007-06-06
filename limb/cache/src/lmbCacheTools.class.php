@@ -8,6 +8,12 @@
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
+/**
+ * class lmbCacheTools.
+ *
+ * @package cache
+ * @version $Id: lmbCacheTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCacheTools extends lmbAbstractTools
 {
   protected $cache;

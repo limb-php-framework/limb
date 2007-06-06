@@ -10,6 +10,8 @@
 /**
  * @property Parity
  * @tag_class WactListItemTag
+ * @package wact
+ * @version $Id: parity.prop.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactParityProperty extends WactCompilerProperty
 {

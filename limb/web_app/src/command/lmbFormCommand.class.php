@@ -12,6 +12,12 @@ lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/core/src/lmbDelegate.class.php');
 
+/**
+ * class lmbFormCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbFormCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFormCommand extends lmbActionCommand
 {
   const ON_BEFORE             = 1;

@@ -10,6 +10,12 @@ lmb_require('limb/cms/src/controller/AdminNodeController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsFileFolder.class.php');
 lmb_require('limb/cms/src/model/lmbCmsFileObject.class.php');
 
+/**
+ * class AdminFileFolderController.
+ *
+ * @package cms
+ * @version $Id: AdminFileFolderController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class AdminFileFolderController extends AdminNodeController
 {
   protected $_form_id = 'file_folder_form';

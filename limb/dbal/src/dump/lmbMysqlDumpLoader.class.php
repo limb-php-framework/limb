@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/dump/lmbSQLDumpLoader.class.php');
 
+/**
+ * class lmbMysqlDumpLoader.
+ *
+ * @package dbal
+ * @version $Id: lmbMysqlDumpLoader.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMysqlDumpLoader extends lmbSQLDumpLoader
 {
   // the parsing code was taken from somewhere else...

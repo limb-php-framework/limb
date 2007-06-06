@@ -9,12 +9,14 @@
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
 /**
-* Registry pattern implementation.
-* Allows to store any information and get access to it in any point of application
-* Supports saving and restoring (acts like programming stack) that is usefull for testing
-* Completely static class
-* @link http://www.phppatterns.com/docs/design/the_registry
-*/
+ * Registry pattern implementation.
+ * Allows to store any information and get access to it in any point of application
+ * Supports saving and restoring (acts like programming stack) that is usefull for testing
+ * Completely static class
+ * @link http://www.phppatterns.com/docs/design/the_registry
+ * @package toolkit
+ * @version $Id: lmbRegistry.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbRegistry
 {
   protected static $cache = array(array());

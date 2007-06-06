@@ -9,6 +9,12 @@
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/core/src/lmbObject.class.php');
 
+/**
+ * class lmbDbDSN.
+ *
+ * @package dbal
+ * @version $Id: lmbDbDSN.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDbDSN extends lmbObject
 {
   protected $uri;

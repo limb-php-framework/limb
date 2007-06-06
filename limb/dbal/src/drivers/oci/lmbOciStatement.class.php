@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
+/**
+ * class lmbOciStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbOciStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciStatement implements lmbDbStatement
 {
   protected $sql;

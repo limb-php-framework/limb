@@ -9,6 +9,12 @@
 lmb_require('limb/cms/src/controller/AdminNodeWithObjectController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsFileObject.class.php');
 
+/**
+ * class AdminFileObjectController.
+ *
+ * @package cms
+ * @version $Id: AdminFileObjectController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class AdminFileObjectController extends AdminNodeWithObjectController
 {
   protected $_object_class_name = 'lmbCmsFileObject';

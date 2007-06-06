@@ -7,10 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter i18n_clip
-* @min_attributes 1
-* @max_attributes 4
-*/
+ * @filter i18n_clip
+ * @min_attributes 1
+ * @max_attributes 4
+ * @package i18n
+ * @version $Id: clip.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class I18NClipFilter extends WactCompilerFilter
 {
   var $str;

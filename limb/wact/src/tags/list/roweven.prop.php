@@ -10,6 +10,8 @@
 /**
  * @property ListRowEven
  * @tag_class WactListItemTag
+ * @package wact
+ * @version $Id: roweven.prop.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactListRowEvenProperty extends WactCompilerProperty
 {

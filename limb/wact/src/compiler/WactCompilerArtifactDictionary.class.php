@@ -9,6 +9,12 @@
 
 require_once('limb/wact/src/annotation/WactClassAnnotationParser.class.php');
 
+/**
+ * abstract class WactCompilerArtifactDictionary.
+ *
+ * @package wact
+ * @version $Id: WactCompilerArtifactDictionary.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class WactCompilerArtifactDictionary
 {
   protected $search_paths = array();

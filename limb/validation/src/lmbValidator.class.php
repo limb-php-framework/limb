@@ -10,9 +10,11 @@ lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/core/src/lmbHandle.class.php');
 
 /**
-* Holds the list of validation rules along with errors happened during validation.
-* Validates a datasource against added validation rules.
-*/
+ * Holds the list of validation rules along with errors happened during validation.
+ * Validates a datasource against added validation rules.
+ * @package validation
+ * @version $Id: lmbValidator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbValidator
 {
   /**

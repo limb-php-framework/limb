@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactClassPath.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactClassPath
 {
   protected $class_name;

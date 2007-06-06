@@ -9,13 +9,15 @@
 
 require_once('limb/wact/src/tags/form/form.tag.php');
 /**
-* This tag allows you to have several forms on a single page and to submit them on a single page
-* In this case your request will have a variable named after submitted form
-* with all form elements inside
-* @tag form_multiple
-* @suppress_attributes children_reuse_runat
-* @restrict_self_nesting
-*/
+ * This tag allows you to have several forms on a single page and to submit them on a single page
+ * In this case your request will have a variable named after submitted form
+ * with all form elements inside
+ * @tag form_multiple
+ * @suppress_attributes children_reuse_runat
+ * @restrict_self_nesting
+ * @package wact
+ * @version $Id: form_multiple.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactFormMultipleTag extends WactFormTag
 {
   protected $runtimeComponentName = 'WactMultipleFormComponent';

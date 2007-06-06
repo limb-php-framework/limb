@@ -1,7 +1,7 @@
 <?php
 /**
  *	base include file for SimpleTest
- *	@package	SimpleTest
+ *	@package tests_runner
  *	@subpackage	UnitTester
  *	@version	$Id: array_reporter.php,v 1.1 2006/11/29 13:17:01 pp11 Exp $
  */
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__) . '/../scorer.php');
  *
  *    @author Rene vd O (original code)
  *    @author Perrick Penet
- *	  @package SimpleTest
+ *	  @package tests_runner
  *	  @subpackage UnitTester
  */
 class ArrayReporter extends SimpleReporter {

@@ -7,10 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter i18n
-* @min_attributes 1
-* @max_attributes 100
-*/
+ * @filter i18n
+ * @min_attributes 1
+ * @max_attributes 100
+ * @package i18n
+ * @version $Id: i18n.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbI18NStringFilter extends WactCompilerFilter
 {
   function getValue()

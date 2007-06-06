@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbColumnInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciTypeInfo.class.php');
 
+/**
+ * class lmbOciColumnInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbOciColumnInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciColumnInfo extends lmbDbColumnInfo
 {
   protected $nativeType;

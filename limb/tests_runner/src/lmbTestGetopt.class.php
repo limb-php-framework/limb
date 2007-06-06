@@ -35,6 +35,8 @@
  *
  * @author Andrei Zmievski <andrei@php.net>
  *
+ * @package tests_runner
+ * @version $Id$
  */
 class lmbTestGetopt {
     /**

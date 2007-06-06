@@ -8,6 +8,12 @@
  */
 lmb_require('limb/fs/src/lmbFileLocations.interface.php');
 
+/**
+ * class lmbIncludePathFileLocations.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbIncludePathFileLocations implements lmbFileLocations
 {
   protected $paths;

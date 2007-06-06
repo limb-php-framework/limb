@@ -10,6 +10,12 @@ lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 
 define('LIMB_INSERT_QUERY_NON_VALUE', uniqid());
 
+/**
+ * class lmbInsertQuery.
+ *
+ * @package dbal
+ * @version $Id: lmbInsertQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbInsertQuery extends lmbTemplateQuery
 {
   protected $_table;

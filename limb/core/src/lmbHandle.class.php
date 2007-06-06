@@ -8,6 +8,12 @@
  */
 lmb_require(dirname(__FILE__) . '/lmbProxy.class.php');
 
+/**
+ * class lmbHandle.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbHandle extends lmbProxy
 {
   protected $args;

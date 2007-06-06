@@ -8,10 +8,12 @@
  */
 
 /**
-* @tag pager:SECTION
-* @parent_tag_class WactPagerListTag
-* @restring_self_nesting true
-*/
+ * @tag pager:SECTION
+ * @parent_tag_class WactPagerListTag
+ * @restring_self_nesting true
+ * @package wact
+ * @version $Id: section.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerSectionTag extends WactCompilerTag
 {
   function generateTagContent($code)

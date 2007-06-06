@@ -10,6 +10,12 @@ lmb_require('limb/core/src/lmbPHPTokenizer.class.php');
 lmb_require('limb/i18n/src/translation/lmbSourceDictionaryExtractor.class.php');
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 
+/**
+ * class lmbPHPDictionaryExtractor.
+ *
+ * @package i18n
+ * @version $Id: lmbPHPDictionaryExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPHPDictionaryExtractor extends lmbSourceDictionaryExtractor
 {
   protected $tokenizer;

@@ -10,6 +10,8 @@
 /**
  * @filter number
  * @max_attributes 3
+ * @package wact
+ * @version $Id: number.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactNumberFilter extends WactCompilerFilter {
 

@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: reporter.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: reporter.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -15,7 +15,7 @@
     /**
      *    Sample minimal test displayer. Generates only
      *    failure messages and a pass count.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class HtmlReporter extends SimpleReporter {
@@ -189,7 +189,7 @@
      *    line use. I've tried to make it look like JUnit,
      *    but I wanted to output the errors as they arrived
      *    which meant dropping the dots.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class TextReporter extends SimpleReporter {
@@ -300,7 +300,7 @@
     /**
      *    Runs just a single test group, a single case or
      *    even a single test within that case.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class SelectiveReporter extends SimpleReporterDecorator {

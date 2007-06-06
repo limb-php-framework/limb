@@ -9,6 +9,12 @@
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 
+/**
+ * class lmbARTools.
+ *
+ * @package active_record
+ * @version $Id: lmbARTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbARTools extends lmbAbstractTools
 {
   protected $metas = array();

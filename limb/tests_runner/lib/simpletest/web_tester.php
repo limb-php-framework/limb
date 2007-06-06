@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest.
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: web_tester.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: web_tester.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -17,7 +17,7 @@
     
     /**
      *    Test for an HTML widget value match.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage WebTester
      */
     class FieldExpectation extends SimpleExpectation {
@@ -128,7 +128,7 @@
     
     /**
      *    Test for a specific HTTP header within a header block.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage WebTester
      */
     class HttpHeaderExpectation extends SimpleExpectation {
@@ -258,7 +258,7 @@
     /**
      *    Test for a specific HTTP header within a header block that
      *    should not be found.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage WebTester
      */
     class NoHttpHeaderExpectation extends HttpHeaderExpectation {
@@ -304,7 +304,7 @@
     
     /**
      *    Test for a text substring.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class TextExpectation extends SimpleExpectation {
@@ -378,7 +378,7 @@
     /**
      *    Fail if a substring is detected within the
      *    comparison text.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class NoTextExpectation extends TextExpectation {
@@ -427,7 +427,7 @@
      *    Test case for testing of web pages. Allows
      *    fetching of pages, parsing of HTML and
      *    submitting forms.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class WebTestCase extends SimpleTestCase {

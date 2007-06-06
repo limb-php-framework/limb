@@ -9,6 +9,12 @@
 
 require_once('limb/wact/src/components/form/form.inc.php');
 
+/**
+ * class WactMultipleFormComponent.
+ *
+ * @package wact
+ * @version $Id: WactMultipleFormComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactMultipleFormComponent extends WactFormComponent
 {
   function getValue($name)

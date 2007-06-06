@@ -14,6 +14,8 @@
  * Note that in the comments for this class, the terms parent and child
  * refer to the given components relative position in a template's
  * hierarchy, not to the PHP class hierarchy
+ * @package wact
+ * @version $Id: WactRuntimeComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactRuntimeComponent
 {

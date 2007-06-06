@@ -9,9 +9,11 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 /**
-* Checks that field value is a valid Url using single regexp
-* @see lmbUrlRule
-*/
+ * Checks that field value is a valid Url using single regexp
+ * @see lmbUrlRule
+ * @package validation
+ * @version $Id: lmbSimpleUrlRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSimpleUrlRule extends lmbSingleFieldRule
 {
   function check($value)

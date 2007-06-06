@@ -9,6 +9,12 @@
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 
+/**
+ * class lmbCmsFileObject.
+ *
+ * @package cms
+ * @version $Id: lmbCmsFileObject.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsFileObject extends lmbActiveRecord
 {
   protected $_has_one = array('node' => array('field' => 'node_id',

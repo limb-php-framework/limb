@@ -9,6 +9,12 @@
 lmb_require('limb/web_app/src/command/lmbFormCommand.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * class lmbCmsDeleteNodeCommand.
+ *
+ * @package cms
+ * @version $Id: lmbCmsDeleteNodeCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsDeleteNodeCommand extends lmbFormCommand
 {
   function __construct()

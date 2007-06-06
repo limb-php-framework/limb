@@ -8,10 +8,12 @@
  */
 
 /**
-* The block tag can be used to show or hide the contents of the block.
-* The WactBlockComponent provides an API which allows the block to be shown
-* or hidden at runtime.
-*/
+ * The block tag can be used to show or hide the contents of the block.
+ * The WactBlockComponent provides an API which allows the block to be shown
+ * or hidden at runtime.
+ * @package wact
+ * @version $Id: WactBlockComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactBlockComponent extends WactRuntimeComponent
 {
   protected $is_visible = TRUE;

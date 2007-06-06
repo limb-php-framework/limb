@@ -8,18 +8,20 @@
  */
 
 /**
-* Helps in introducing mock tools (mock objects generated for real tools) into lmbToolkit
-* Created for testing purposes only.
-* Example of usage:
-* <code>
-* Mock :: generate('MyTools', 'MockMyTools');
-* $tools = new MockMyTools();
-* $tools->expectOnce('getUser');
-* $tools->setReturnValue('getUser', $user);
-* $tools = new lmbMockToolsWrapper($tools, array('getUser'));
-* lmbToolkit :: merge($tools);
-* </code>
-*/
+ * Helps in introducing mock tools (mock objects generated for real tools) into lmbToolkit
+ * Created for testing purposes only.
+ * Example of usage:
+ * <code>
+ * Mock :: generate('MyTools', 'MockMyTools');
+ * $tools = new MockMyTools();
+ * $tools->expectOnce('getUser');
+ * $tools->setReturnValue('getUser', $user);
+ * $tools = new lmbMockToolsWrapper($tools, array('getUser'));
+ * lmbToolkit :: merge($tools);
+ * </code>
+ * @package toolkit
+ * @version $Id: lmbMockToolsWrapper.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMockToolsWrapper implements lmbToolkitTools
 {
   /**

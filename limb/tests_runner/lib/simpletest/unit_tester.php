@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: unit_tester.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: unit_tester.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -17,7 +17,7 @@
      *    Standard unit test class for day to day testing
      *    of PHP code XP style. Adds some useful standard
      *    assertions.
-	 *	  @package	SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage	UnitTester
      */
     class UnitTestCase extends SimpleTestCase {

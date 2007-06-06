@@ -11,6 +11,8 @@
  * Prevents a section of the template from being parsed, removing the contents
  * @tag core:COMMENT
  * @forbid_parsing
+ * @package wact
+ * @version $Id: comment.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreCommentTag extends WactCompilerTag
 {

@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 
+/**
+ * class lmbMySQL4FullTextSearchQuery.
+ *
+ * @package search
+ * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMySQL4FullTextSearchQuery extends lmbSelectQuery
 {
   function __construct($table, $words, $use_boolean_mode = true, $conn)

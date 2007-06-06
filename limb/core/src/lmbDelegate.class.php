@@ -8,8 +8,10 @@
  */
 
 /**
-* Object form of invoking an object method
-*/
+ * Object form of invoking an object method
+ * @package core
+ * @version $Id$
+ */
 class lmbDelegate
 {
   /**

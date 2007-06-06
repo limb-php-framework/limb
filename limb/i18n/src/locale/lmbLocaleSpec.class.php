@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbLocaleSpec.
+ *
+ * @package i18n
+ * @version $Id: lmbLocaleSpec.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbLocaleSpec
 {
   const REGEX = "~^([a-zA-Z]+)           #language identifier

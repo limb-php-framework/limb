@@ -7,9 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag site_branch
-* @parent_tag_class WactSiteBranchSelectorTag
-*/
+ * @tag site_branch
+ * @parent_tag_class WactSiteBranchSelectorTag
+ * @package wact
+ * @version $Id$
+ */
 class WactSiteBranchTag extends WactSilentCompilerTag
 {
   protected $path;

@@ -9,6 +9,12 @@
 
 require_once('limb/wact/src/compiler/tag_node/WactRuntimeComponentTag.class.php');
 
+/**
+ * class WactRuntimeDatasourceComponentTag.
+ *
+ * @package wact
+ * @version $Id: WactRuntimeDatasourceComponentTag.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactRuntimeDatasourceComponentTag extends WactRuntimeComponentTag
 {
   protected $runtimeComponentName = 'WactDatasourceRuntimeComponent';

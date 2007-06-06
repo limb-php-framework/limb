@@ -10,6 +10,12 @@ lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/cms/src/model/lmbCmsClassName.class.php');
 lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
 
+/**
+ * class lmbCmsNode.
+ *
+ * @package cms
+ * @version $Id: lmbCmsNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsNode extends lmbActiveRecord
 {
   protected static $_gateway_path = '';

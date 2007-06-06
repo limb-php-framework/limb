@@ -10,6 +10,12 @@ lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNewsFolder.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNewsItem.class.php');
 
+/**
+ * class AdminNewsController.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class AdminNewsController extends lmbController {}
 
 ?>

@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbColumnInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteTypeInfo.class.php');
 
+/**
+ * class lmbSqliteColumnInfo.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteColumnInfo extends lmbDbColumnInfo
 {
   protected $nativeType;

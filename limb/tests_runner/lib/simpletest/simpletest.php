@@ -1,9 +1,9 @@
 <?php
     /**
      *	Global state for SimpleTest and kicker script in future versions.
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: simpletest.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: simpletest.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -19,7 +19,7 @@
     /**
      *    Registry and test context. Includes a few
      *    global options that I'm slowly getting rid of.
-     *	  @package	SimpleTest
+     *	  @package tests_runner
      *    @subpackage	UnitTester
      */
     class SimpleTest {
@@ -207,7 +207,7 @@
      *    available to PHP event handlers, and also
      *    gets around some nasty reference issues in
      *    the mocks.
-     *	  @package	SimpleTest
+     *	  @package tests_runner
      */
     class SimpleTestContext {
         var $_test;
@@ -281,7 +281,7 @@
     /**
      *    Interrogates the stack trace to recover the
      *    failure point.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class SimpleStackTrace {
@@ -364,7 +364,7 @@
     }
 
     /**
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      *    @deprecated
      */

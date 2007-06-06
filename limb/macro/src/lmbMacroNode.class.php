@@ -9,6 +9,12 @@
 lmb_require('limb/macro/src/lmbMacroException.class.php');
 lmb_require('limb/macro/src/lmbMacroSourceLocation.class.php');
 
+/**
+ * class lmbMacroNode.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroNode
 {
   protected $id;  

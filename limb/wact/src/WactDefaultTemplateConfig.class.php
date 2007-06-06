@@ -9,6 +9,12 @@
 
 require_once('limb/wact/src/WactTemplateConfig.interface.php');
 
+/**
+ * class WactDefaultTemplateConfig.
+ *
+ * @package wact
+ * @version $Id: WactDefaultTemplateConfig.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactDefaultTemplateConfig implements WactTemplateConfig
 {
   protected $is_force_scan = false;

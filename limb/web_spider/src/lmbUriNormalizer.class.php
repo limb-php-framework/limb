@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbUriNormalizer.
+ *
+ * @package web_spider
+ * @version $Id: lmbUriNormalizer.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUriNormalizer
 {
   protected $strip_anchor;

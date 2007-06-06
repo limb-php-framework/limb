@@ -12,6 +12,8 @@
  * directly into the compiled template
  * @tag core:LITERAL
  * @forbid_parsing
+ * @package wact
+ * @version $Id: literal.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreLiteralTag extends WactCompilerTag
 {

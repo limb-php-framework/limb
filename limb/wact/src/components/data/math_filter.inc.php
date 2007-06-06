@@ -54,7 +54,7 @@ function math_filter($value, $exp, $file, $line) {
  *
  * @author   Maciej Szczytowski <admin@e-rower.pl>
  * @version  1.1
- * @package  wact
+ * @package wact
  * @access   public
  */
 class WactMathRpn

@@ -16,6 +16,12 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
 @define('LIMB_TEST_RUNNER_FILE_FILTER', '*Test.class.php;*.test.php;*_test.php');
 @define('LIMB_TEST_RUNNER_CLASS_FORMAT', '%s.class.php');
 
+/**
+ * class lmbTestTreeDirNode.
+ *
+ * @package tests_runner
+ * @version $Id: lmbTestTreeDirNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTestTreeDirNode extends lmbTestTreeNode
 {
   protected $dir;

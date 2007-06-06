@@ -8,6 +8,12 @@
  */
 lmb_require('limb/fs/src/lmbFileLocator.class.php');
 
+/**
+ * class lmbFileLocatorDecorator.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFileLocatorDecorator extends lmbFileLocator
 {
   protected $locator = null;

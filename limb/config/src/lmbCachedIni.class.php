@@ -9,6 +9,12 @@
 lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbCachedIni.
+ *
+ * @package config
+ * @version $Id: lmbCachedIni.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCachedIni extends lmbIni
 {
   protected $cache_dir;

@@ -9,6 +9,12 @@
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 lmb_require('limb/core/src/lmbErrorGuard.class.php');
 
+/**
+ * class lmbUncaughtExceptionHandlingFilter.
+ *
+ * @package web_app
+ * @version $Id: lmbUncaughtExceptionHandlingFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
 {
   const CONTEXT_RADIUS = 3;

@@ -8,8 +8,10 @@
  */
 
 /**
-* Base class for concrete form elements
-*/
+ * Base class for concrete form elements
+ * @package wact
+ * @version $Id$
+ */
 class WactFormElementComponent extends WactRuntimeTagComponent
 {
   /**

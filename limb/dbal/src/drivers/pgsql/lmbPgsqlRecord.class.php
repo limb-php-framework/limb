@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
+/**
+ * class lmbPgsqlRecord.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlRecord.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlRecord extends lmbDbBaseRecord
 {
   protected $properties = array();

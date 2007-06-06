@@ -8,6 +8,12 @@
  */
 lmb_require('limb/fs/src/lmbFileLocations.interface.php');
 
+/**
+ * class lmbFileLocationsList.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFileLocationsList implements lmbFileLocations
 {
   protected $locations = array();

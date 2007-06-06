@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
+/**
+ * class lmbSqliteRecord.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteRecord extends lmbDbBaseRecord
 {
   protected $properties = array();

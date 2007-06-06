@@ -18,6 +18,8 @@
  * @forbid_end_tag
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class BrGenericTag extends WactGenericHTMLTag{}
 
@@ -26,6 +28,8 @@ class BrGenericTag extends WactGenericHTMLTag{}
  * @forbid_end_tag
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class HrGenericTag extends WactGenericHTMLTag{}
 
@@ -34,6 +38,8 @@ class HrGenericTag extends WactGenericHTMLTag{}
  * @forbid_end_tag
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class ImgGenericTag extends WactGenericHTMLTag{}
 
@@ -42,6 +48,8 @@ class ImgGenericTag extends WactGenericHTMLTag{}
  * @forbid_end_tag
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class LinkGenericTag extends WactGenericHTMLTag{}
 
@@ -49,6 +57,8 @@ class LinkGenericTag extends WactGenericHTMLTag{}
  * @tag p
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class PGenericTag extends WactGenericContainerHTMLTag{}
 
@@ -57,6 +67,8 @@ class PGenericTag extends WactGenericContainerHTMLTag{}
  * @forbid_end_tag
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class ParamGenericTag extends WactGenericHTMLTag{}
 
@@ -65,6 +77,8 @@ class ParamGenericTag extends WactGenericHTMLTag{}
  * @forbid_end_tag
  * @runat client
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id$
  */
 class MetaGenericTag extends WactGenericHTMLTag{}
 

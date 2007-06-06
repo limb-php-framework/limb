@@ -11,6 +11,12 @@ lmb_require('limb/core/src/lmbDecorator.class.php');
 
 lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
 
+/**
+ * class lmbAutoTransactionConnection.
+ *
+ * @package dbal
+ * @version $Id: lmbAutoTransactionConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbAutoTransactionConnection extends lmbDbConnectionDecorator
 {
   protected $modifying_statements = array('UPDATE',

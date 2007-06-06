@@ -10,8 +10,10 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 lmb_require('limb/datetime/src/lmbDate.class.php');
 
 /**
-* Checks that field value is a valid date
-*/
+ * Checks that field value is a valid date
+ * @package validation
+ * @version $Id$
+ */
 class lmbDateRule extends lmbSingleFieldRule
 {
   const TYPE_ISO = 1;

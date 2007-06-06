@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 
+/**
+ * class lmbTableRecordsQuery.
+ *
+ * @package dbal
+ * @version $Id: lmbTableRecordsQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTableRecordsQuery extends lmbSelectQuery
 {
   function __construct($table, $conn)

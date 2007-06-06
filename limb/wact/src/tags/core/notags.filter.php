@@ -9,6 +9,8 @@
 
 /**
  * @filter notags
+ * @package wact
+ * @version $Id: notags.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactNoTagsFilter extends WactCompilerFilter {
 

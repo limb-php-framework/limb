@@ -9,6 +9,12 @@
 lmb_require('limb/cms/src/controller/AdminNodeWithObjectController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsNewsItem.class.php');
 
+/**
+ * class AdminNewsItemController.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class AdminNewsItemController extends AdminNodeWithObjectController
 {
   protected $_object_class_name = 'lmbCmsNewsItem';

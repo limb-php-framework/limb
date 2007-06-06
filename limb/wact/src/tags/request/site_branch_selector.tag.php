@@ -7,8 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag site_branch_selector
-*/
+ * @tag site_branch_selector
+ * @package wact
+ * @version $Id$
+ */
 class WactSiteBranchSelectorTag extends WactCompilerTag
 {
   function generateChildren($code)

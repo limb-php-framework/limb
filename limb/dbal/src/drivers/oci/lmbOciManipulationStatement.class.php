@@ -11,6 +11,12 @@ lmb_require(dirname(__FILE__) . '/lmbOciStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciClob.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciBlob.class.php');
 
+/**
+ * class lmbOciManipulationStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbOciManipulationStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciManipulationStatement extends lmbOciStatement implements lmbDbManipulationStatement
 {
   protected $queryId;

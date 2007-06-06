@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
 
+/**
+ * class lmbSQLRawCriteria.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLRawCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSQLRawCriteria extends lmbSQLBaseCriteria
 {
   protected $sql;

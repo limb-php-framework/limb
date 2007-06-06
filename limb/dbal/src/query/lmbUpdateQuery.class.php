@@ -10,6 +10,12 @@ lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
 
 define('LIMB_UPDATE_QUERY_NON_VALUE', uniqid());
 
+/**
+ * class lmbUpdateQuery.
+ *
+ * @package dbal
+ * @version $Id: lmbUpdateQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUpdateQuery extends lmbCriteriaQuery
 {
   protected $_table;

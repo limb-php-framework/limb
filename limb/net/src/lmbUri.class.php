@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
 
+/**
+ * class lmbUri.
+ *
+ * @package net
+ * @version $Id: lmbUri.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUri
 {
   protected $_protocol = '';

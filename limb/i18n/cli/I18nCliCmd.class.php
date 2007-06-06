@@ -10,6 +10,12 @@ lmb_require('limb/i18n/common.inc.php');
 lmb_require('limb/i18n/src/translation/lmbDictionaryUpdater.class.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
 
+/**
+ * class I18nCliCmd.
+ *
+ * @package i18n
+ * @version $Id$
+ */
 class I18nCliCmd extends lmbCliBaseCmd
 {
   function execute($argv)

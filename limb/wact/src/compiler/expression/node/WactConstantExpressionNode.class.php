@@ -8,8 +8,10 @@
  */
 
 /**
-* A property representing a constant value.
-*/
+ * A property representing a constant value.
+ * @package wact
+ * @version $Id$
+ */
 class WactConstantExpressionNode extends WactTemplateExpressionNode
 {
   protected $value;

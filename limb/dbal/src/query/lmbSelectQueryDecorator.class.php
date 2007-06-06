@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 
+/**
+ * class lmbSelectQueryDecorator.
+ *
+ * @package dbal
+ * @version $Id: lmbSelectQueryDecorator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSelectQueryDecorator
 {
   protected $query;

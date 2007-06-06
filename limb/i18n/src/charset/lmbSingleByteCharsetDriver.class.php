@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbSingleByteCharsetDriver.
+ *
+ * @package i18n
+ * @version $Id: lmbSingleByteCharsetDriver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSingleByteCharsetDriver
 {
   function __call($method, $args)

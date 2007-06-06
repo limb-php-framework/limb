@@ -10,6 +10,8 @@
 /**
  * @property Key
  * @tag_class WactListItemTag
+ * @package wact
+ * @version $Id$
  */
 class WactListItemKeyProperty extends WactCompilerProperty
 {

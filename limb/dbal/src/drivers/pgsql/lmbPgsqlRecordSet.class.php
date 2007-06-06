@@ -10,6 +10,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
 lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlRecord.class.php');
 
+/**
+ * class lmbPgsqlRecordSet.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlRecordSet.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 {
   protected $queryId;

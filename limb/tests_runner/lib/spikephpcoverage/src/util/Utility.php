@@ -23,7 +23,7 @@
     *
     * @author Nimish Pachapurkar <npac@spikesource.com>
     * @version $Revision: $
-    * @package SpikePHPCoverage_Util
+    * @package tests_runner
     */
     class Utility {
 

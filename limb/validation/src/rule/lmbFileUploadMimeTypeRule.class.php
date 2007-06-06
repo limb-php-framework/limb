@@ -8,6 +8,12 @@
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
+/**
+ * class lmbFileUploadMimeTypeRule.
+ *
+ * @package validation
+ * @version $Id: lmbFileUploadMimeTypeRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFileUploadMimeTypeRule extends lmbSingleFieldRule
 {
   protected $mime_types = array();

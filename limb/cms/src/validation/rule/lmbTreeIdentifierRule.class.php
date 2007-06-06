@@ -8,6 +8,12 @@
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
+/**
+ * class lmbTreeIdentifierRule.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbTreeIdentifierRule extends lmbSingleFieldRule
 {
   protected $parent_node_id_field_name;

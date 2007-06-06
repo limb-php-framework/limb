@@ -8,8 +8,10 @@
  */
 
 /**
-* Outputs the result of an expression like {$var} or {$'var'}
-*/
+ * Outputs the result of an expression like {$var} or {$'var'}
+ * @package wact
+ * @version $Id: WactOutputExpressionNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactOutputExpressionNode extends WactCompileTreeNode
 {
   /**

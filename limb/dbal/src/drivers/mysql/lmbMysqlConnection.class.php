@@ -15,6 +15,12 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlManipulationStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
 
+/**
+ * class lmbMysqlConnection.
+ *
+ * @package dbal
+ * @version $Id: lmbMysqlConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMysqlConnection implements lmbDbConnection
 {
 

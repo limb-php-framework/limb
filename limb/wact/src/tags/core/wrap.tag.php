@@ -12,6 +12,8 @@
  * template being inserted into the wrapper at the point where the
  * wrap tag exists.
  * @tag core:WRAP
+ * @package wact
+ * @version $Id: wrap.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreWrapTag extends WactRuntimeComponentTag
 {

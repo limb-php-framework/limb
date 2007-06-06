@@ -21,7 +21,7 @@
     * 
     * @author Nimish Pachapurkar <npac@spikesource.com>
     * @version $Revision: $
-    * @package SpikePHPCoverage_Parser
+    * @package tests_runner
     */
     class BasicXmlParser extends XML_Parser {
         /*{{{ Members */

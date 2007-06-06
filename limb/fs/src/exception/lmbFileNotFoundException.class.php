@@ -8,6 +8,12 @@
  */
 lmb_require(dirname(__FILE__) . '/lmbFsException.class.php');
 
+/**
+ * class lmbFileNotFoundException.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFileNotFoundException extends lmbFsException
 {
   function __construct($file_path, $message = 'file not found', $params = array())

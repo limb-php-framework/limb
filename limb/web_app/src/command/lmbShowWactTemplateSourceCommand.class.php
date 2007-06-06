@@ -12,6 +12,12 @@ lmb_require('limb/view/src/wact/lmbWactHighlightHandler.class.php');
 
 require_once('limb/view/lib/XML/HTMLSax3.php');
 
+/**
+ * class lmbShowWactTemplateSourceCommand.
+ *
+ * @package web_app
+ * @version $Id$
+ */
 class lmbShowWactTemplateSourceCommand extends lmbActionCommand
 {
   protected $template_for_hackers = 'template_source/error.html';

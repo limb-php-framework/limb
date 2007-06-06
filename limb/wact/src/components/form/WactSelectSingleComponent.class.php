@@ -12,9 +12,11 @@ require_once 'limb/wact/src/components/form/WactOptionRenderer.class.php';
 
 //--------------------------------------------------------------------------------
 /**
-* Represents an HTML select tag where only a single option can
-* be selected
-*/
+ * Represents an HTML select tag where only a single option can
+ * be selected
+ * @package wact
+ * @version $Id$
+ */
 class WactSelectSingleComponent extends WactFormElementComponent
 {
   /**

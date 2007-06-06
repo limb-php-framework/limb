@@ -9,6 +9,12 @@
 lmb_require('limb/log/src/lmbLogEntry.class.php');
 lmb_require('limb/log/src/lmbBacktrace.class.php');
 
+/**
+ * class lmbLog.
+ *
+ * @package log
+ * @version $Id$
+ */
 class lmbLog
 {
   const NOTICE  = 1;

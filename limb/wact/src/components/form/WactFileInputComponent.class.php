@@ -8,12 +8,14 @@
  */
 
 /**
-* Represents an HTML input type="file" tag
-*
-* (Someday someone is actually going to need to upload something.
-* Maybe then they will come write some nice methods for this
-* tag).
-*/
+ * Represents an HTML input type="file" tag
+ *
+ * (Someday someone is actually going to need to upload something.
+ * Maybe then they will come write some nice methods for this
+ * tag).
+ * @package wact
+ * @version $Id: WactFileInputComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactFileInputComponent extends WactInputComponent
 {
   /**

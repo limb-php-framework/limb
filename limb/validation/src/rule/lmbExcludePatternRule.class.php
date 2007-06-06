@@ -9,14 +9,16 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 /**
-* Checks that field value doesn't match some regexp.
-* In other words this rule triggers validation error if field value matches regexp.
-* Example of usage:
-* <code>
-* lmb_require('limb/validation/src/rule/lmbExcludePatternRule.class.php');
-* $validator->addRule(new lmbExcludePatternRule("title", "/[^a-zA-Z0-9.-]+/i"));
-* </code>
-*/
+ * Checks that field value doesn't match some regexp.
+ * In other words this rule triggers validation error if field value matches regexp.
+ * Example of usage:
+ * <code>
+ * lmb_require('limb/validation/src/rule/lmbExcludePatternRule.class.php');
+ * $validator->addRule(new lmbExcludePatternRule("title", "/[^a-zA-Z0-9.-]+/i"));
+ * </code>
+ * @package validation
+ * @version $Id: lmbExcludePatternRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbExcludePatternRule extends lmbSingleFieldRule
 {
   /**

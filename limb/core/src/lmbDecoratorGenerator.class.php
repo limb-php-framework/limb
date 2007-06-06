@@ -9,6 +9,12 @@
 //code is based on MockGenerator class from SimpleTest test suite
 lmb_require('limb/core/src/lmbReflection.class.php');
 
+/**
+ * class lmbDecoratorGenerator.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbDecoratorGenerator
 {
   protected $_class;

@@ -9,6 +9,12 @@
 lmb_require('limb/search/src/db/query/lmbMySQL4FullTextSearchQuery.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
+/**
+ * class lmbSearchFetcher.
+ *
+ * @package search
+ * @version $Id: lmbSearchFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSearchFetcher extends lmbFetcher
 {
   protected function _createDataSet()

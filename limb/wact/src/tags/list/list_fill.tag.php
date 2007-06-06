@@ -16,6 +16,8 @@
  * @restrict_self_nesting
  * @req_const_attributes upto
  * @parent_tag_class WactListListTag
+ * @package wact
+ * @version $Id$
  */
 class WactListFillTag extends WactCompilerTag
 {

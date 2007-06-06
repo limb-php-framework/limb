@@ -8,8 +8,10 @@
  */
 
 /**
-* @tag pager:NAVIGATOR
-*/
+ * @tag pager:NAVIGATOR
+ * @package wact
+ * @version $Id: navigator.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerNavigatorTag extends WactRuntimeComponentTag
 {
   protected $runtimeComponentName = 'WactPagerComponent';

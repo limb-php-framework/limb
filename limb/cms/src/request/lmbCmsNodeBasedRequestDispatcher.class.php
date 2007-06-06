@@ -10,6 +10,12 @@ lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 
+/**
+ * class lmbCmsNodeBasedRequestDispatcher.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsNodeBasedRequestDispatcher implements lmbRequestDispatcher
 {
   function dispatch($request)

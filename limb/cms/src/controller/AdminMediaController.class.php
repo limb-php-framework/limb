@@ -10,6 +10,12 @@ lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/cms/src/lmbCmsFileRepositoryBrowser.class.php');
 lmb_require('limb/cms/src/lmbCmsImageRepositoryBrowser.class.php');
 
+/**
+ * class AdminMediaController.
+ *
+ * @package cms
+ * @version $Id: AdminMediaController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class AdminMediaController extends lmbController
 {
   function doProcessCommand()

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbSearchIndexingObserver.
+ *
+ * @package web_spider
+ * @version $Id: lmbSearchIndexingObserver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSearchIndexingObserver
 {
   protected $counter = 0;

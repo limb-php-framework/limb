@@ -7,10 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag route_url_set
-* @forbid_end_tag
-* @req_const_attributes field
-*/
+ * @tag route_url_set
+ * @forbid_end_tag
+ * @req_const_attributes field
+ * @package web_app
+ * @version $Id: route_url_set.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbRouteUrlSetTag extends WactCompilerTag
 {
   function generateTagContent($code)

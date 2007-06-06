@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbSys.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbSys
 {
   static function isWin32()

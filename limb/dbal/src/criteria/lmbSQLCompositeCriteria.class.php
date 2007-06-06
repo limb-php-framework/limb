@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
 
+/**
+ * class lmbSQLCompositeCriteria.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLCompositeCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSQLCompositeCriteria extends lmbSQLBaseCriteria
 {
   function appendStatementTo(&$str, &$values = array(), $conn = null)

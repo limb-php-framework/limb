@@ -1,9 +1,9 @@
 <?php
 /**
  *	base include file for SimpleTest PUnit reporter
- *	@package	SimpleTest
+ *	@package tests_runner
  *	@subpackage	UnitTester
- *	@version	$Id: webunit_reporter.php 4378 2006-10-27 10:04:53Z pachanga $
+ *	@version	$Id: webunit_reporter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 
 /**
@@ -72,7 +72,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
     /**
      *    Sample minimal test displayer. Generates only
      *    failure messages and a pass count.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class WebUnitReporter extends SimpleReporter {

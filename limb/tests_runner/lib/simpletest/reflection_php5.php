@@ -1,14 +1,14 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: reflection_php5.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: reflection_php5.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**
      *    Version specific reflection API.
-     *    @package SimpleTest
+     *    @package tests_runner
      *    @subpackage UnitTester
      */
     class SimpleReflection {

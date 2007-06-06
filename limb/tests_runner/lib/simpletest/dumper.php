@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: dumper.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: dumper.php 5945 2007-06-06 08:31:43Z pachanga $
      */
     /**
      * does type matter
@@ -14,7 +14,7 @@
     
     /**
      *    Displays variables as text and does diffs.
-	 *	  @package	SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage	UnitTester
      */
     class SimpleDumper {

@@ -9,6 +9,12 @@
 
 require_once('limb/wact/src/locator/WactTemplateLocator.interface.php');
 
+/**
+ * class WactDefaultTemplateLocator.
+ *
+ * @package wact
+ * @version $Id: WactDefaultTemplateLocator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactDefaultTemplateLocator implements WactTemplateLocator
 {
   /**

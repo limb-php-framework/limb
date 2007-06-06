@@ -11,7 +11,8 @@
  * @filter default
  * @min_attributes 1
  * @max_attributes 1
- * @version $Id: default.filter.php 5942 2007-06-05 19:22:26Z pachanga $
+ * @version $Id: default.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @package wact
  */
 class WactDefaultFilter extends WactCompilerFilter
 {

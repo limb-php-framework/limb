@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
 
+/**
+ * abstract class lmbDbInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbDbInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbDbInfo
 {
   protected $tables = array();

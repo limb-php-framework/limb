@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMacroTagInfo.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroTagInfo
 {
   protected $tag = '';

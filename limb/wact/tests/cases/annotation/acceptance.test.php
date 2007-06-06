@@ -20,7 +20,7 @@ class AcceptanceTestOfWactClassAnnotationParser extends UnitTestCase {
 // Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 //--------------------------------------------------------------------------------
 /**
- * @package    wact
+ * @package wact
  */
 //-------------------------------------------------------------------------------
 

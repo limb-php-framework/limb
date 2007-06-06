@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactPagerComponent.
+ *
+ * @package wact
+ * @version $Id: WactPagerComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerComponent extends WactRuntimeComponent
 {
   protected $total_items = 0;

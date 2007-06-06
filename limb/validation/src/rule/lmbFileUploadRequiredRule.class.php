@@ -8,6 +8,12 @@
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 
+/**
+ * class lmbFileUploadRequiredRule.
+ *
+ * @package validation
+ * @version $Id: lmbFileUploadRequiredRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFileUploadRequiredRule implements lmbValidationRule
 {
   protected $field_name;

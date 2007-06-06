@@ -10,6 +10,12 @@ lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
+/**
+ * abstract class lmbARRelationCollection.
+ *
+ * @package active_record
+ * @version $Id: lmbARRelationCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
   protected $relation;

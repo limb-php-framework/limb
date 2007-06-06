@@ -9,14 +9,15 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 /**
-* Checks that field value is not equal some invalid value
-* Example of usage:
-* <code>
-* lmb_require('limb/validation/src/rule/lmbInvalidValueRule.class.php');
-* $validator->addRule(new lmbInvalidValueRule("region", -1));
-* </code>
-*/
-
+ * Checks that field value is not equal some invalid value
+ * Example of usage:
+ * <code>
+ * lmb_require('limb/validation/src/rule/lmbInvalidValueRule.class.php');
+ * $validator->addRule(new lmbInvalidValueRule("region", -1));
+ * </code>
+ * @package validation
+ * @version $Id: lmbInvalidValueRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbInvalidValueRule extends lmbSingleFieldRule
 {
   protected $invalid_value;

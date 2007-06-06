@@ -8,8 +8,10 @@
  */
 
 /**
-* Base state handler for the WactSourceFileParser.
-*/
+ * Base state handler for the WactSourceFileParser.
+ * @package wact
+ * @version $Id: WactBaseParsingState.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class WactBaseParsingState
 {
   /**

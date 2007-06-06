@@ -7,10 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag find:params
-* @forbid_end_tag
-* @parent_tag_class lmbActiveRecordFetchTag
-*/
+ * @tag find:params
+ * @forbid_end_tag
+ * @parent_tag_class lmbActiveRecordFetchTag
+ * @package web_app
+ * @version $Id$
+ */
 class lmbFindParametersTag extends WactCompilerTag
 {
   function generateTagContent($code)

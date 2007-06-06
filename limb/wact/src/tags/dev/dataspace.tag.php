@@ -8,13 +8,15 @@
  */
 
 /**
- * @version $Id: dataspace.tag.php 5942 2007-06-05 19:22:26Z pachanga $
+ * @version $Id: dataspace.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 
 /**
  * Dumps a runtime dataspace for display using print_r or var_dump
  * @tag dev:DATASPACE
  * @forbid_end_tag
+ * @package wact
+ * @version $Id: dataspace.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactDevDataSpaceTag extends WactCompilerTag
 {

@@ -9,6 +9,12 @@
 
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 
+/**
+ * class lmbMacroTagDictionary.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroTagDictionary
 {
   protected $info = array();

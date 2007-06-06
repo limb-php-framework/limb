@@ -7,10 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag fetch:param, fetch:params
-* @forbid_end_tag
-* @parent_tag_class WactFetchTag
-*/
+ * @tag fetch:param, fetch:params
+ * @forbid_end_tag
+ * @parent_tag_class WactFetchTag
+ * @package wact
+ * @version $Id$
+ */
 class WactFetchParametersTag extends WactCompilerTag
 {
   function generateTagContent($code)

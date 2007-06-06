@@ -9,10 +9,12 @@
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
 /**
-* Validation exception.
-* Uses in some classes where validation process is very important for performing an operation successfully
-* @see lmbActiveRecord :: save()
-*/
+ * Validation exception.
+ * Uses in some classes where validation process is very important for performing an operation successfully
+ * @see lmbActiveRecord :: save()
+ * @package validation
+ * @version $Id: lmbValidationException.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbValidationException extends lmbException
 {
   /**

@@ -8,8 +8,10 @@
  */
 
 /**
-* Used to store complex expressions like "{$var1}_my_{$var2}" found inside tag attributes
-*/
+ * Used to store complex expressions like "{$var1}_my_{$var2}" found inside tag attributes
+ * @package wact
+ * @version $Id: WactAttribute.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactAttribute implements WactExpressionInterface
 {
   protected $name;

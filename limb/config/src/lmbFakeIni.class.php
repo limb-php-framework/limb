@@ -8,6 +8,12 @@
  */
 lmb_require('limb/config/src/lmbIni.class.php');
 
+/**
+ * class lmbFakeIni.
+ *
+ * @package config
+ * @version $Id$
+ */
 class lmbFakeIni extends lmbIni
 {
   function __construct($contents)

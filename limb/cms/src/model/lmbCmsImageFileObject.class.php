@@ -11,6 +11,12 @@ lmb_require('limb/imagekit/src/lmbImageFactory.class.php');
 lmb_require('limb/net/src/lmbMimeType.class.php');
 lmb_require('limb/cms/src/model/lmbCmsFileObject.class.php');
 
+/**
+ * class lmbCmsImageFileObject.
+ *
+ * @package cms
+ * @version $Id: lmbCmsImageFileObject.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsImageFileObject extends lmbCmsFileObject
 {
   protected $image_library;

@@ -10,6 +10,12 @@ lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');
 
+/**
+ * class lmbCollection.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbCollection implements lmbCollectionInterface
 {
   protected $dataset;

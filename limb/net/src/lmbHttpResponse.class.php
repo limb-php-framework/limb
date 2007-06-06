@@ -9,6 +9,12 @@
 lmb_require('limb/core/src/exception/lmbException.class.php');
 lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
 
+/**
+ * class lmbHttpResponse.
+ *
+ * @package net
+ * @version $Id: lmbHttpResponse.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbHttpResponse
 {
   protected $response_string = '';

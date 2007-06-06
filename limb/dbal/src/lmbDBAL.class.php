@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/toolkit.inc.php');
 
+/**
+ * class lmbDBAL.
+ *
+ * @package dbal
+ * @version $Id: lmbDBAL.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDBAL
 {
   static function setDefaultDSN($dsn)

@@ -10,6 +10,12 @@
 
 require_once(XML_HTMLSAX3 . '/HTMLSax3.php');
 
+/**
+ * class lmbWactHighlightHandler.
+ *
+ * @package view
+ * @version $Id$
+ */
 class lmbWactHighlightHandler
 {
   protected $html = '';

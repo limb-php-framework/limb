@@ -7,14 +7,15 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag fetch:DECORATE
-* @forbid_end_tag
-* @parent_tag_class WactFetchTag
-* @req_const_attributes using
-*/
-require_once('limb/wact/src/tags/iterator/iterator_decorate.tag.php');
+ * @tag fetch:DECORATE
+ * @forbid_end_tag
+ * @parent_tag_class WactFetchTag
+ * @req_const_attributes using
+ * @package wact
+ * @version $Id$
+ */
 
-class WactFetchDecorateTag extends WactIteratorDecorateTag
+require_once('limb/wact/src/tags/iterator/iterator_decorate.tag.php');class WactFetchDecorateTag extends WactIteratorDecorateTag
 {
 }
 

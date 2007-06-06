@@ -8,9 +8,11 @@
  */
 
 /**
-* @property TotalPages
-* @tag_class WactPagerNavigatorTag
-*/
+ * @property TotalPages
+ * @tag_class WactPagerNavigatorTag
+ * @package wact
+ * @version $Id: total_pages.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerTotalPagesProperty extends WactCompilerProperty
 {
   function generateExpression($code)

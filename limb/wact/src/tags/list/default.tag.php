@@ -11,6 +11,8 @@
  * Default List tag for a list which failed to have any contents
  * @tag list:DEFAULT
  * @parent_tag_class WactListListTag
+ * @package wact
+ * @version $Id: default.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactListDefaultTag extends WactSilentCompilerTag
 {

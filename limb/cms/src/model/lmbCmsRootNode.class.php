@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * class lmbCmsRootNode.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsRootNode extends lmbCmsNode
 {
   protected function _createValidator()

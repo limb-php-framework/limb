@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMacroTokenizer.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroTokenizer
 {
   protected $publicId;

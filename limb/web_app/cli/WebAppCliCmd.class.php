@@ -8,6 +8,12 @@
  */
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class WebAppCliCmd.
+ *
+ * @package web_app
+ * @version $Id$
+ */
 class WebAppCliCmd extends lmbCliBaseCmd
 {
   function execute($argv)

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactFormComponent.
+ *
+ * @package wact
+ * @version $Id: WactFormComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactFormComponent extends WactRuntimeTagComponent
 {
   protected $error_list;

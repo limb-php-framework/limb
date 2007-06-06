@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 
+/**
+ * class lmbTreeNestedCollection.
+ *
+ * @package tree
+ * @version $Id: lmbTreeNestedCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTreeNestedCollection extends lmbCollectionDecorator
 {
   protected $node_field = 'id';

@@ -7,7 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
-
+/**
+ * class WactTagPropertyExpressionNode.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactTagPropertyExpressionNode
 {
   protected $context;

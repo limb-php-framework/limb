@@ -8,9 +8,11 @@
  */
 
 /**
-* @tag core:REPEAT
-* @req_attributes value
-*/
+ * @tag core:REPEAT
+ * @req_attributes value
+ * @package wact
+ * @version $Id: repeat.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactCoreRepeatTag extends WactCompilerTag
 {
   function generateTagContent($code)

@@ -8,8 +8,10 @@
  */
 
 /**
-* HTML/XHTML/XML parser
-*/
+ * HTML/XHTML/XML parser
+ * @package wact
+ * @version $Id: WactHTMLParser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactHTMLParser
 {
   protected $file_name;

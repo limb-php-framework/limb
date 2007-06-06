@@ -13,18 +13,20 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 */
 
 /**
-* Checks that field has minimux and (or) maximum length
-* Example of usage:
-* <code>
-*  lmb_require('limb/validation/src/rule/lmbSizeRangeRule.class.php');
-*  // restricts "title" field to be more than 50 characters (minimum length is 0)
-*  $validator->addRule(new lmbSizeRangeRule('title', 50));
-*  //same as above
-*  $validator->addRule(new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule', array('title', 10)));
-*  // checks that "title" field have length between 10 and 50 characters
-*  $validator->addRule(new lmbSizeRangeRule('title', 10, 50));
-* </code>
-*/
+ * Checks that field has minimux and (or) maximum length
+ * Example of usage:
+ * <code>
+ *  lmb_require('limb/validation/src/rule/lmbSizeRangeRule.class.php');
+ *  // restricts "title" field to be more than 50 characters (minimum length is 0)
+ *  $validator->addRule(new lmbSizeRangeRule('title', 50));
+ *  //same as above
+ *  $validator->addRule(new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule', array('title', 10)));
+ *  // checks that "title" field have length between 10 and 50 characters
+ *  $validator->addRule(new lmbSizeRangeRule('title', 10, 50));
+ * </code>
+ * @package validation
+ * @version $Id: lmbSizeRangeRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSizeRangeRule extends lmbSingleFieldRule
 {
   /**

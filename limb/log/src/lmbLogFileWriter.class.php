@@ -9,6 +9,12 @@
 
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbLogFileWriter.
+ *
+ * @package log
+ * @version $Id$
+ */
 class lmbLogFileWriter
 {
   protected $log_files;

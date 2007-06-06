@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cache/src/lmbCachePersister.interface.php');
 
+/**
+ * class lmbCacheCompositePersister.
+ *
+ * @package cache
+ * @version $Id: lmbCacheCompositePersister.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCacheCompositePersister implements lmbCachePersister
 {
   protected $persisters = array();

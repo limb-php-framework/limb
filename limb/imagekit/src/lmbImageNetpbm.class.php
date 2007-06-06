@@ -42,6 +42,12 @@ if(!defined('NETPBM_LIB_DIR'))
 
 lmb_require('limb/imagekit/src/lmbImageLibrary.class.php');
 
+/**
+ * class lmbImageNetpbm.
+ *
+ * @package imagekit
+ * @version $Id: lmbImageNetpbm.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbImageNetpbm extends lmbImageLibrary
 {
   var $lib_dir = '';

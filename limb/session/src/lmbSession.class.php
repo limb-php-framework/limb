@@ -13,7 +13,8 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
  * Wrapper class for global $_SESSION variable
  *
  * @see lmbWebAppTools :: getSession()
- * @version $Id: lmbSession.class.php 5942 2007-06-05 19:22:26Z pachanga $
+ * @version $Id: lmbSession.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @package session
  */
 class lmbSession
 {

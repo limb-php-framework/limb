@@ -8,9 +8,11 @@
  */
 
 /**
-* Compile time component for block tags
-* @tag core:BLOCK
-*/
+ * Compile time component for block tags
+ * @tag core:BLOCK
+ * @package wact
+ * @version $Id: block.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactCoreBlockTag extends WactRuntimeComponentTag
 {
   protected $runtimeIncludeFile = 'limb/wact/src/components/core/WactBlockComponent.class.php';

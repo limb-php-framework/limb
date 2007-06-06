@@ -11,6 +11,12 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFalseCriteria.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLTrueCriteria.class.php');
 
+/**
+ * class lmbSQLFieldCriteria.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLFieldCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
 {
   const EQUAL = "=";

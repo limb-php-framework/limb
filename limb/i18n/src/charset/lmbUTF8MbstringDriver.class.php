@@ -10,6 +10,12 @@ lmb_require('limb/i18n/src/charset/lmbUTF8BaseDriver.class.php');
 
 // This class is based on Harry Fuecks' phputf8 library code(http://sourceforge.net/projects/phputf8)
 
+/**
+ * class lmbUTF8MbstringDriver.
+ *
+ * @package i18n
+ * @version $Id: lmbUTF8MbstringDriver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUTF8MbstringDriver extends lmbUTF8BaseDriver {
     function _strlen($string) {
         return mb_strlen($string, 'utf-8');

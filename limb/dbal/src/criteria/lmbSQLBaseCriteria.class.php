@@ -9,6 +9,12 @@
 //inspired by Propel Criteria(http://propel.phpdb.org)
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
+/**
+ * abstract class lmbSQLBaseCriteria.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLBaseCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbSQLBaseCriteria
 {
   const _AND_ = " AND ";

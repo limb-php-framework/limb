@@ -13,6 +13,12 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlRecord.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlRecordSet.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlArraySet.class.php');
 
+/**
+ * class lmbPgsqlQueryStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlQueryStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStatement
 {
   function getOneRecord()

@@ -8,8 +8,10 @@
  */
 
 /**
-* Base class for all expression nodes
-*/
+ * Base class for all expression nodes
+ * @package wact
+ * @version $Id$
+ */
 class WactTemplateExpressionNode
 {
   /**

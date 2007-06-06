@@ -10,18 +10,20 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 lmb_require('limb/i18n/common.inc.php');
 
 /**
-* Checks that field is present in datasource and has not empty value
-* Example of usage:
-* <code>
-*  lmb_require('limb/validation/src/rule/lmbRequiredRule.class.php');
-*  $validator->addRule(new lmbRequiredRule('title'));
-*  //or
-*  $validator->addRule(new lmbHandle('limb/validation/src/rule/lmbRequiredRule', array('title')));
-*  // or
-*  $validator->addRequiredRule('title');
-* </code>
-* @see lmbValidator :: addRequiredRule()
-*/
+ * Checks that field is present in datasource and has not empty value
+ * Example of usage:
+ * <code>
+ *  lmb_require('limb/validation/src/rule/lmbRequiredRule.class.php');
+ *  $validator->addRule(new lmbRequiredRule('title'));
+ *  //or
+ *  $validator->addRule(new lmbHandle('limb/validation/src/rule/lmbRequiredRule', array('title')));
+ *  // or
+ *  $validator->addRequiredRule('title');
+ * </code>
+ * @see lmbValidator :: addRequiredRule()
+ * @package validation
+ * @version $Id: lmbRequiredRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbRequiredRule implements lmbValidationRule
 {
   /**

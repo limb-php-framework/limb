@@ -12,7 +12,12 @@ lmb_require('limb/web_spider/src/lmbUriExtractor.class.php');
 lmb_require('limb/web_spider/src/lmbUriNormalizer.class.php');
 lmb_require('limb/web_spider/src/lmbUriContentReader.class.php');
 
-
+/**
+ * class lmbWebSpider.
+ *
+ * @package web_spider
+ * @version $Id: lmbWebSpider.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbWebSpider
 {
   protected $uri_extractor;

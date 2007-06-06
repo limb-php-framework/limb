@@ -7,9 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag perform
-* @req_const_attributes command
-*/
+ * @tag perform
+ * @req_const_attributes command
+ * @package wact
+ * @version $Id$
+ */
 class WactPerformTag extends WactRuntimeComponentTag
 {
   protected $runtimeComponentName = 'WactPerformComponent';

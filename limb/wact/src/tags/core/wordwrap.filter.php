@@ -11,6 +11,8 @@
  * @filter wordwrap
  * @min_attributes 1
  * @max_attributes 1
+ * @package wact
+ * @version $Id: wordwrap.filter.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactWordWrapFilter extends WactCompilerFilter {
 

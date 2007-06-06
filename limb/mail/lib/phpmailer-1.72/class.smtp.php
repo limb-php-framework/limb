@@ -18,7 +18,7 @@
  * commands except TURN which will always return a not implemented
  * error. SMTP also provides some utility methods for sending mail
  * to an SMTP server.
- * @package PHPMailer
+ * @package mail
  * @author Chris Ryan
  */
 class SMTP

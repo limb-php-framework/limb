@@ -9,10 +9,11 @@
 
 require_once('limb/wact/src/compiler/tag_node/WactCompilerTag.class.php');
 /**
-* Runtime component tags have a corresponding WactRuntimeComponent which represents
-* an API which can be used to manipulate the marked up portion of the template.
-*/
-
+ * Runtime component tags have a corresponding WactRuntimeComponent which represents
+ * an API which can be used to manipulate the marked up portion of the template.
+ * @package wact
+ * @version $Id: WactRuntimeComponentTag.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactRuntimeComponentTag extends WactCompilerTag
 {
   protected $runtimeIncludeFile = '';

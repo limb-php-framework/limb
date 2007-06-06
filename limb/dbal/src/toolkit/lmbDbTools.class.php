@@ -11,6 +11,12 @@ lmb_require('limb/dbal/src/lmbDBAL.class.php');
 lmb_require('limb/dbal/src/lmbDbDSN.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
 
+/**
+ * class lmbDbTools.
+ *
+ * @package dbal
+ * @version $Id: lmbDbTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDbTools extends lmbAbstractTools
 {
   protected $default_connection;

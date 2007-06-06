@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciTableInfo.class.php');
 
+/**
+ * class lmbOciDbInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbOciDbInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciDbInfo extends lmbDbInfo
 {
   protected $connection;

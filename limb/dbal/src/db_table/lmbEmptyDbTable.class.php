@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 
+/**
+ * class lmbEmptyDbTable.
+ *
+ * @package dbal
+ * @version $Id: lmbEmptyDbTable.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbEmptyDbTable extends lmbTableGateway
 {
   protected function _defineDbTableName()

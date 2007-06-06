@@ -9,6 +9,12 @@
 lmb_require('limb/view/src/wact/lmbWactTemplate.class.php');
 lmb_require('limb/view/src/lmbView.class.php');
 
+/**
+ * class lmbWactView.
+ *
+ * @package view
+ * @version $Id$
+ */
 class lmbWactView extends lmbView
 {
   protected $wact_template;

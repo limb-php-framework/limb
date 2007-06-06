@@ -22,7 +22,7 @@
     * 
     * @author Nimish Pachapurkar <npac@spikesource.com>
     * @version $Revision: $
-    * @package SpikePHPCoverage_Remote
+    * @package tests_runner
     */
     class RemoteCoverageRecorder extends CoverageRecorder {
         /*{{{ Members */

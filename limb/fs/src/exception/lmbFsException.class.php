@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
+/**
+ * class lmbFsException.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFsException extends lmbException{}
 
 ?>

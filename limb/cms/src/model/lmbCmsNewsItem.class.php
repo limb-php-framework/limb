@@ -9,6 +9,12 @@
 
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 
+/**
+ * class lmbCmsNewsItem.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsNewsItem extends lmbActiveRecord
 {
   protected $_db_table_name = 'news_item';

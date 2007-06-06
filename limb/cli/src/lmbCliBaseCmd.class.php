@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cli/src/lmbCliInput.class.php');
 
+/**
+ * abstract class lmbCliBaseCmd.
+ *
+ * @package cli
+ * @version $Id$
+ */
 abstract class lmbCliBaseCmd
 {
   function __construct($output)

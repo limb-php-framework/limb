@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbUriFilter.
+ *
+ * @package web_spider
+ * @version $Id: lmbUriFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUriFilter
 {
   protected $allowed_protocols = array();

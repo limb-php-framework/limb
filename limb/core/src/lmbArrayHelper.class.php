@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbArrayHelper.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbArrayHelper
 {
   function map($map_array, $src_array, &$dest_array)

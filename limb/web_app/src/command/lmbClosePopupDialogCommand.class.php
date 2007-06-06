@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
 
+/**
+ * class lmbClosePopupDialogCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbClosePopupDialogCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbClosePopupDialogCommand extends lmbActionCommand
 {
   function __construct()

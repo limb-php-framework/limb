@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbIp.
+ *
+ * @package net
+ * @version $Id: lmbIp.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbIp
 {
   function encodeIpRange($ip_begin, $ip_end)

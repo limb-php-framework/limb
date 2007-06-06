@@ -8,6 +8,12 @@
  */
 lmb_require('limb/net/src/lmbHttpResponse.class.php');
 
+/**
+ * class lmbFakeHttpResponse.
+ *
+ * @package net
+ * @version $Id$
+ */
 class lmbFakeHttpResponse extends lmbHttpResponse
 {
   protected function _sendHeader($header){}

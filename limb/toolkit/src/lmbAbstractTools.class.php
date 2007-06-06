@@ -10,9 +10,11 @@ lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
 
 /**
-* Base class for most real applications tools
-* @see lmbToolkit
-*/
+ * Base class for most real applications tools
+ * @see lmbToolkit
+ * @package toolkit
+ * @version $Id: lmbAbstractTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbAbstractTools implements lmbToolkitTools
 {
   protected $reserved_methods = array('__construct', '_setRaw', '_getRaw');

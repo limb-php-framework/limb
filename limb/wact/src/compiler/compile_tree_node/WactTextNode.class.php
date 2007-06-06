@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactTextNode.
+ *
+ * @package wact
+ * @version $Id: WactTextNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactTextNode extends WactCompileTreeNode
 {
   protected $contents;

@@ -14,6 +14,8 @@
  * an input tag in a form tag, for example, where the nesting level will
  * result in an error. It may also result in a mess in terms of HTML
  * @tag dev:SOURCE
+ * @package wact
+ * @version $Id: source.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactDevSourceTag extends WactCompilerTag {
 

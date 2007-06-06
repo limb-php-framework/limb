@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbCurlRequest.
+ *
+ * @package net
+ * @version $Id$
+ */
 class lmbCurlRequest
 {
   protected $url = '';

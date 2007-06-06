@@ -8,6 +8,12 @@
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
+/**
+ * class lmbUniqueTableFieldRule.
+ *
+ * @package web_app
+ * @version $Id: lmbUniqueTableFieldRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUniqueTableFieldRule extends lmbSingleFieldRule
 {
   protected $table_name = '';

@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/util/lmbMessageBox.class.php');
 
+/**
+ * class lmbFlashBox.
+ *
+ * @package web_app
+ * @version $Id: lmbFlashBox.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFlashBox extends lmbMessageBox
 {
   static function create($session)

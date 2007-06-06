@@ -11,6 +11,12 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 @define('LIMB_TEMPLATES_INCLUDE_PATH', 'template;limb/*/template');
 @define('LIMB_WACT_TAGS_INCLUDE_PATH', 'src/template/tags;limb/*/src/template/tags;limb/wact/src/tags');
 
+/**
+ * class lmbViewTools.
+ *
+ * @package view
+ * @version $Id$
+ */
 class lmbViewTools extends lmbAbstractTools
 {
   protected $wact_locator;

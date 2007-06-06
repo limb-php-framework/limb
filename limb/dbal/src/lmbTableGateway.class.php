@@ -14,6 +14,12 @@ lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
 
+/**
+ * class lmbTableGateway.
+ *
+ * @package dbal
+ * @version $Id: lmbTableGateway.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTableGateway
 {
   protected $_db_table_name;

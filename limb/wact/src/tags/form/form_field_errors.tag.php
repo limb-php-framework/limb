@@ -10,6 +10,8 @@
 /**
  * @tag form:FIELD_ERRORS
  * @parent_tag_class WactFormTag
+ * @package wact
+ * @version $Id$
  */
 class WactFormFieldErrorsTag extends WactCompilerTag
 {

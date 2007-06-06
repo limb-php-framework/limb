@@ -10,6 +10,12 @@
 
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 
+/**
+ * class lmbCmsDocument.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsDocument extends lmbActiveRecord
 {
   protected $_db_table_name = 'document';

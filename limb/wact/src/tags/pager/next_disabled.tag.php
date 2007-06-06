@@ -8,9 +8,11 @@
  */
 
 /**
-* @tag pager:next:DISABLED
-* @parent_tag_class WactPagerNavigatorTag
-*/
+ * @tag pager:next:DISABLED
+ * @parent_tag_class WactPagerNavigatorTag
+ * @package wact
+ * @version $Id: next_disabled.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerNextDisabledTag extends WactCompilerTag
 {
   function generateTagContent($code)

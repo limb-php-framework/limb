@@ -7,8 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @filter i18n_lowercase
-*/
+ * @filter i18n_lowercase
+ * @package i18n
+ * @version $Id: lowercase.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbI18NLowercaseFilter extends WactCompilerFilter
 {
   var $locale_var;

@@ -10,10 +10,11 @@
 require_once('limb/wact/src/tags/fetch/WactBaseFetchingTag.class.php');
 
 /**
-* @tag fetch
-* @req_const_attributes using to
-*/
-
+ * @tag fetch
+ * @req_const_attributes using to
+ * @package wact
+ * @version $Id$
+ */
 class WactFetchTag extends WactBaseFetchingTag
 {
   protected $runtimeComponentName = 'WactFetchComponent';

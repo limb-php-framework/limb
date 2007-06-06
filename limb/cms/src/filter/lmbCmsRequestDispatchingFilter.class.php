@@ -11,6 +11,12 @@ lmb_require('limb/cms/src/request/lmbCmsNodeBasedRequestDispatcher.class.php');
 lmb_require('limb/web_app/src/filter/lmbRequestDispatchingFilter.class.php');
 lmb_require('limb/web_app/src/request/lmbCompositeRequestDispatcher.class.php');
 
+/**
+ * class lmbCmsRequestDispatchingFilter.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsRequestDispatchingFilter extends lmbRequestDispatchingFilter
 {
   function __construct()

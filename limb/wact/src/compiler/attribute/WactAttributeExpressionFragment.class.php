@@ -9,8 +9,10 @@
 
 
 /**
-* Used to store expressions like "{$var}" found inside tag attributes
-*/
+ * Used to store expressions like "{$var}" found inside tag attributes
+ * @package wact
+ * @version $Id$
+ */
 class WactAttributeExpressionFragment implements WactExpressionInterface
 {
   protected $expression;

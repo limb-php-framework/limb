@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
+/**
+ * class lmbMysqlStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbMysqlStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMysqlStatement implements lmbDbStatement
 {
   protected $statement;

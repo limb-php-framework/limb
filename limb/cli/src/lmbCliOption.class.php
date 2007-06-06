@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cli/src/lmbCliException.class.php');
 
+/**
+ * class lmbCliOption.
+ *
+ * @package cli
+ * @version $Id: lmbCliOption.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCliOption
 {
   const VALUE_OPT = 0;

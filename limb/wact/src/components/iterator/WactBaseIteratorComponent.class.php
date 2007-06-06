@@ -8,6 +8,12 @@
  */
 require_once('limb/wact/src/components/WactClassPath.class.php');
 
+/**
+ * abstract class WactBaseIteratorComponent.
+ *
+ * @package wact
+ * @version $Id$
+ */
 abstract class WactBaseIteratorComponent extends WactRuntimeComponent
 {
   protected $decorators = array();

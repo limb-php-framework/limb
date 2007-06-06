@@ -8,10 +8,12 @@
  */
 
 /**
-* @tag pager:LAST
-* @restrict_self_nesting
-* @parent_tag_class WactPagerNavigatorTag
-*/
+ * @tag pager:LAST
+ * @restrict_self_nesting
+ * @parent_tag_class WactPagerNavigatorTag
+ * @package wact
+ * @version $Id: last.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerLastTag extends WactCompilerTag
 {
   function generateTagContent($code)

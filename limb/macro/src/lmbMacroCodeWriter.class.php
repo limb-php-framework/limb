@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMacroCodeWriter.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroCodeWriter
 {
   const MODE_PHP = 1;

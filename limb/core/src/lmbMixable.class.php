@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMixable.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbMixable
 {
   protected $owner;

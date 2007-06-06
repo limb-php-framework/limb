@@ -15,6 +15,12 @@ lmb_require('limb/cli/src/lmbCliResponse.class.php');
 lmb_require('limb/fs/src/lmbFsRecursiveIterator.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
+/**
+ * class lmbDictionaryUpdater.
+ *
+ * @package i18n
+ * @version $Id: lmbDictionaryUpdater.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDictionaryUpdater
 {
   protected $response;

@@ -8,9 +8,11 @@
  */
 
 /**
-* @property EndItemNumber
-* @tag_class WactPagerNavigatorTag
-*/
+ * @property EndItemNumber
+ * @tag_class WactPagerNavigatorTag
+ * @package wact
+ * @version $Id: end_item_number.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerEndItemNumberProperty extends WactCompilerProperty
 {
   function generateExpression($code)

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbUriNormalizerDecorator.
+ *
+ * @package web_spider
+ * @version $Id: lmbUriNormalizerDecorator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUriNormalizerDecorator
 {
   var $decorated;

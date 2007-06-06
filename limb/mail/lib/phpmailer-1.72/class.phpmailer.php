@@ -13,7 +13,7 @@
 
 /**
  * PHPMailer - PHP email transport class
- * @package PHPMailer
+ * @package mail
  * @author Brent R. Matzelle
  * @copyright 2001 - 2003 Brent R. Matzelle
  */

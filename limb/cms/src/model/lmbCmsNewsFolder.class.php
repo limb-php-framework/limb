@@ -9,6 +9,12 @@
 
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * class lmbCmsNewsFolder.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class lmbCmsNewsFolder extends lmbCmsNode {}
 
 ?>

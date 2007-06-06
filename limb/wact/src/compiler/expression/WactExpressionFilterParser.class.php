@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactExpressionFilterParser.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactExpressionFilterParser
 {
   protected $text;

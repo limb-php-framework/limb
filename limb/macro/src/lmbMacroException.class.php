@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMacroException.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroException extends lmbException
 {
   function __construct($message, $params = array())

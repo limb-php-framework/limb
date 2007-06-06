@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactAttributeLiteralFragment.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactAttributeLiteralFragment implements WactExpressionInterface
 {
   protected $name;

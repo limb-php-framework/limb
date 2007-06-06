@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
+/**
+ * class lmbDelegateHaltException.
+ *
+ * @package web_app
+ * @version $Id$
+ */
 class lmbDelegateHaltException extends lmbException{}
 
 ?>

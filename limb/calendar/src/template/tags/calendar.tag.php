@@ -10,9 +10,11 @@ require_once('limb/wact/src/tags/form/input.tag.php');
 require_once('limb/calendar/src/lmbCalendarWidget.class.php');
 
 /**
-* @tag datetime,limb:CALENDAR
-* @forbid_end_tag
-*/
+ * @tag datetime,limb:CALENDAR
+ * @forbid_end_tag
+ * @package calendar
+ * @version $Id: calendar.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCalendarTag extends WactInputTag
 {
   function getRenderedTag()

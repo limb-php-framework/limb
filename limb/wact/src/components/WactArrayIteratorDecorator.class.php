@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactArrayIteratorDecorator.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactArrayIteratorDecorator implements Iterator, Countable
 {
   protected $iterator;

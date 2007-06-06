@@ -7,9 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag limb:CURRENT_LOCALE
-* @req_const_attributes name
-*/
+ * @tag limb:CURRENT_LOCALE
+ * @req_const_attributes name
+ * @package i18n
+ * @version $Id: current_locale.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCurrentLocaleTag extends WactCompilerTag
 {
   function generateTagContent($code)

@@ -9,6 +9,12 @@
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsFileObject.class.php');
 
+/**
+ * class FileObjectController.
+ *
+ * @package cms
+ * @version $Id: FileObjectController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class FileObjectController extends lmbController
 {
   function doShow()

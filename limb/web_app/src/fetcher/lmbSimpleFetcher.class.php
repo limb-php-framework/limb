@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
+/**
+ * class lmbSimpleFetcher.
+ *
+ * @package web_app
+ * @version $Id: lmbSimpleFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSimpleFetcher extends lmbFetcher
 {
   protected $dataset_name;

@@ -7,11 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag iterator:DECORATE
-* @forbid_end_tag
-* @req_const_attributes using
-* @parent_tag_class WactIteratorTransferTag
-*/
+ * @tag iterator:DECORATE
+ * @forbid_end_tag
+ * @req_const_attributes using
+ * @parent_tag_class WactIteratorTransferTag
+ * @package wact
+ * @version $Id$
+ */
 class WactIteratorDecorateTag extends WactCompilerTag
 {
   function generateTagContent($code)

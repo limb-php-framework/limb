@@ -8,24 +8,25 @@
  */
 
 /**
-* Acts on the WactCompileTreeRootNode in response to events within the WactSourceFileParser
-*
-* When adding an open tag to the tree, call pushExpectedTag().  When closing
-* a tag, call popExpectedTag(), which ensures the tree is balanced.
-*
-* These methods do not actually add nodes to the tree, as tags and nodes
-* do not necessarily match up.
-*
-* To add a node to the tree, you have the following choices.  To add a node
-* which can have children, use pushNode().  To add a terminal node use addNode(),
-* or addWactTextNode().
-*
-*/
+ * Acts on the WactCompileTreeRootNode in response to events within the WactSourceFileParser
+ *
+ * When adding an open tag to the tree, call pushExpectedTag().  When closing
+ * a tag, call popExpectedTag(), which ensures the tree is balanced.
+ *
+ * These methods do not actually add nodes to the tree, as tags and nodes
+ * do not necessarily match up.
+ *
+ * To add a node to the tree, you have the following choices.  To add a node
+ * which can have children, use pushNode().  To add a terminal node use addNode(),
+ * or addWactTextNode().
+ *
+ * @package wact
+ * @version $Id: WactTreeBuilder.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
+
 
 define ('WACT_EXPECTED_WACT_TAG', 	1);
-define ('WACT_EXPECTED_PLAIN_TAG',	2);
-
-class WactTreeBuilder
+define ('WACT_EXPECTED_PLAIN_TAG',	2);class WactTreeBuilder
 {
   /**
   * @var WactCompiler

@@ -13,6 +13,12 @@ lmb_require('limb/config/src/lmbConf.class.php');
 
 @define('LIMB_CONF_INCLUDE_PATH', 'settings;limb/*/settings');
 
+/**
+ * class lmbConfTools.
+ *
+ * @package config
+ * @version $Id: lmbConfTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbConfTools extends lmbAbstractTools
 {
   protected $confs = array();

@@ -9,10 +9,12 @@
 lmb_require(dirname(__FILE__) . '/lmbCompositeToolkitTools.class.php');
 
 /**
-* Composes several tools into one
-* Checks if tools have intersecting methods. Throws an exception if two separate tools have the same method.
-* @see lmbToolkit :: extend()
-*/
+ * Composes several tools into one
+ * Checks if tools have intersecting methods. Throws an exception if two separate tools have the same method.
+ * @see lmbToolkit :: extend()
+ * @package toolkit
+ * @version $Id: lmbCompositeNonItersectingToolkitTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCompositeNonItersectingToolkitTools extends lmbCompositeToolkitTools
 {
   function getToolsSignatures()

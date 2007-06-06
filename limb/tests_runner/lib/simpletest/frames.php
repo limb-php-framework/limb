@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: frames.php 4378 2006-10-27 10:04:53Z pachanga $
+     *	@version	$Id: frames.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -18,7 +18,7 @@
      *    adds subframes. The original page will be
      *    mostly ignored. Implements the SimplePage
      *    interface so as to be interchangeable.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleFrameset {

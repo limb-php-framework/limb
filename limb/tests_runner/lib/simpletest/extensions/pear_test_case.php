@@ -1,9 +1,9 @@
 <?php
     /**
      *	adapter for SimpleTest to use PEAR PHPUnit test cases
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage Extensions
-     *	@version	$Id: pear_test_case.php 4378 2006-10-27 10:04:53Z pachanga $
+     *	@version	$Id: pear_test_case.php 5945 2007-06-06 08:31:43Z pachanga $
      */
     
     /**#@+
@@ -18,7 +18,7 @@
     /**
      *    Adapter for PEAR PHPUnit test case to allow
      *    legacy PEAR test cases to be used with SimpleTest.
-     *    @package      SimpleTest
+     *    @package tests_runner
      *    @subpackage   Extensions
      */
     class PHPUnit_TestCase extends SimpleTestCase {

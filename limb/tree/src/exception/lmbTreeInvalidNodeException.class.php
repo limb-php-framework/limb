@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbTreeInvalidNodeException.
+ *
+ * @package tree
+ * @version $Id$
+ */
 class lmbTreeInvalidNodeException extends lmbTreeException
 {
   protected $node;

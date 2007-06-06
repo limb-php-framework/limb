@@ -9,6 +9,12 @@
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 lmb_require('limb/core/src/lmbClassPath.class.php');
 
+/**
+ * class lmbARRecordSetDecorator.
+ *
+ * @package active_record
+ * @version $Id: lmbARRecordSetDecorator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
   protected $class_path;

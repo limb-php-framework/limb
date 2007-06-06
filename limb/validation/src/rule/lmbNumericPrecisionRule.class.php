@@ -9,15 +9,17 @@
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
 /**
-* Checks that field value is a valid numeric value and its precision falls
-* within allowable parameters.
-* Example of usage:
-* <code>
-*  lmb_require('limb/validation/src/rule/lmbNumericPrecisionRule.class.php');
-*  $validator->addRule(new lmbNumericPrecisionRule('price', 5, 2));
-*  // 100.2 with match this rule, 100.300 or 100000 - not.
-* </code>
-*/
+ * Checks that field value is a valid numeric value and its precision falls
+ * within allowable parameters.
+ * Example of usage:
+ * <code>
+ *  lmb_require('limb/validation/src/rule/lmbNumericPrecisionRule.class.php');
+ *  $validator->addRule(new lmbNumericPrecisionRule('price', 5, 2));
+ *  // 100.2 with match this rule, 100.300 or 100000 - not.
+ * </code>
+ * @package validation
+ * @version $Id: lmbNumericPrecisionRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbNumericPrecisionRule extends lmbSingleFieldRule
 {
   /**

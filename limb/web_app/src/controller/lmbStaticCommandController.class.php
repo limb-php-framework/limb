@@ -10,6 +10,12 @@ lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
 lmb_require('limb/web_app/src/command/lmbCommand.interface.php');
 lmb_require('limb/core/src/lmbClassPath.class.php');
 
+/**
+ * class lmbStaticCommandController.
+ *
+ * @package web_app
+ * @version $Id: lmbStaticCommandController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbStaticCommandController extends lmbAbstractController
 {
   protected $actions;

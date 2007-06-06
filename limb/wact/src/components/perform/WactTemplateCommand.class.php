@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactTemplateCommand.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactTemplateCommand
 {
   protected $template;

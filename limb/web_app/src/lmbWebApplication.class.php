@@ -9,6 +9,12 @@
 lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
 lmb_require('limb/core/src/lmbHandle.class.php');
 
+/**
+ * class lmbWebApplication.
+ *
+ * @package web_app
+ * @version $Id: lmbWebApplication.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbWebApplication extends lmbFilterChain
 {
   function __construct()

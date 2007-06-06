@@ -8,9 +8,11 @@
  */
 
 /**
-* Translates between form name attributes and tag displayname
-* attributes (human reabable).
-*/
+ * Translates between form name attributes and tag displayname
+ * attributes (human reabable).
+ * @package wact
+ * @version $Id: error.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactFormFieldNameDictionary
 {
 
@@ -28,7 +30,10 @@ class WactFormFieldNameDictionary
   * @param string name attribute of the field
   * @return string displayname attribute of the field
   * @access protected
-  */
+  * @package wact
+ * @version $Id: error.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
+
   function getFieldName($field_name)
   {
     $field = $this->form->findChild($field_name);
@@ -37,9 +42,7 @@ class WactFormFieldNameDictionary
     else
       return $field_name;
   }
-}
-
-class WactFormErrorList extends ArrayIterator
+}class WactFormErrorList extends ArrayIterator
 {
   protected $field_name_dictionary;
 
@@ -86,6 +89,12 @@ class WactFormErrorList extends ArrayIterator
   }
 }
 
+/**
+ * class WactFormError.
+ *
+ * @package wact
+ * @version $Id: error.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactFormError extends ArrayObject
 {
   protected $fields_list = array();

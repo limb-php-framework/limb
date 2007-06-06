@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/modifier/lmbQueryModifier.interface.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 
+/**
+ * class lmbCriteriaQueryModifier.
+ *
+ * @package dbal
+ * @version $Id: lmbCriteriaQueryModifier.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCriteriaQueryModifier implements lmbQueryModifier
 {
   protected $criteria;

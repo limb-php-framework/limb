@@ -10,6 +10,12 @@
 // This class is based on Harry Fuecks' phputf8 library code(http://sourceforge.net/projects/phputf8)
 // and original ideas taken from http://dev.splitbrain.org/view/darcs/dokuwiki/inc/utf8.php
 
+/**
+ * class lmbUTF8BaseDriver.
+ *
+ * @package i18n
+ * @version $Id: lmbUTF8BaseDriver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbUTF8BaseDriver {
     /**
     * URL-Encode a filename to allow unicodecharacters

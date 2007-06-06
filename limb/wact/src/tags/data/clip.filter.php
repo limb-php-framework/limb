@@ -8,19 +8,20 @@
  */
 
 /**
-* substr wraper
-*
-* plus some nice features about wrapping at a word boundary
-* parameters are as follows:
-* - length - integer - required - how long to make the string
-* - start - integer - optional - where to start (0 offset)
-* - terminator - string - optional - what to append to the end, i.e. "..."
-* - word boundary - char - anything but first letter "n" treated as yes, trim at a word boundary
-* @filter clip
-* @min_attributes 1
-* @max_attributes 4
-*/
-
+ * substr wraper
+ *
+ * plus some nice features about wrapping at a word boundary
+ * parameters are as follows:
+ * - length - integer - required - how long to make the string
+ * - start - integer - optional - where to start (0 offset)
+ * - terminator - string - optional - what to append to the end, i.e. "..."
+ * - word boundary - char - anything but first letter "n" treated as yes, trim at a word boundary
+ * @filter clip
+ * @min_attributes 1
+ * @max_attributes 4
+ * @package wact
+ * @version $Id: clip.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactClipFilter extends WactCompilerFilter
 {
   protected $str;

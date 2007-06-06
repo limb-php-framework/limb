@@ -9,6 +9,12 @@
 
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
+/**
+ * class ServerErrorController.
+ *
+ * @package web_app
+ * @version $Id$
+ */
 class ServerErrorController extends lmbController
 {
   function doDisplay()

@@ -10,6 +10,12 @@ lmb_require('limb/cms/src/controller/AdminNodeWithObjectController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsImage.class.php');
 lmb_require('limb/cms/src/model/lmbCmsImageFileObject.class.php');
 
+/**
+ * class AdminImageController.
+ *
+ * @package cms
+ * @version $Id: AdminImageController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class AdminImageController extends AdminNodeWithObjectController
 {
   protected $_object_class_name = 'lmbCmsImage';

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMacroTemplateLocator.
+ *
+ * @package macro
+ * @version $Id$
+ */
 class lmbMacroTemplateLocator
 {
   protected $config;

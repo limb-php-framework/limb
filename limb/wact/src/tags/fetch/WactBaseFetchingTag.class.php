@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactBaseFetchingTag.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactBaseFetchingTag extends WactRuntimeComponentTag
 {
   function preParse()

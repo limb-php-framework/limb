@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
+/**
+ * class lmbSqliteStatement.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteStatement implements lmbDbStatement
 {
   protected $statement;

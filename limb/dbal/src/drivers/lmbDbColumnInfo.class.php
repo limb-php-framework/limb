@@ -10,6 +10,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
 
+/**
+ * class lmbDbColumnInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbDbColumnInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDbColumnInfo
 {
   protected $table;

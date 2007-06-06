@@ -14,6 +14,8 @@ require_once 'limb/wact/src/compiler/property/WactConstantProperty.class.php';
  * tag at compile time.
  * @tag core:SET
  * @forbid_end_tag
+ * @package wact
+ * @version $Id: set.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactCoreSetTag extends WactCompilerTag
 {

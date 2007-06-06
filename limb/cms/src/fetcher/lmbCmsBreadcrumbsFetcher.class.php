@@ -10,6 +10,12 @@
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
 
+/**
+ * class lmbCmsBreadcrumbsFetcher.
+ *
+ * @package cms
+ * @version $Id: lmbCmsBreadcrumbsFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsBreadcrumbsFetcher extends lmbFetcher
 {
   static protected $breadcrumbs;

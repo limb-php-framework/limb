@@ -8,6 +8,12 @@
  */
 require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
 
+/**
+ * class lmbTestTreeFileNode.
+ *
+ * @package tests_runner
+ * @version $Id: lmbTestTreeFileNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
   protected $test_group;

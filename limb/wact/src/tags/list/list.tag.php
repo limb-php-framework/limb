@@ -12,6 +12,8 @@
  * The parent compile time component for lists
  * @tag list:LIST
  * @convert_to_expression from
+ * @package wact
+ * @version $Id: list.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactListListTag extends WactRuntimeComponentTag
 {

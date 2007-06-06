@@ -12,6 +12,8 @@
  * @tag paginate
  * @forbid_end_tag
  * @req_const_attributes list with
+ * @package wact
+ * @version $Id$
  */
 class WactPaginateTag extends WactCompilerTag
 {

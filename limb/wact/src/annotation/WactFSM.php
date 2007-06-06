@@ -29,7 +29,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  *
- * $Id: WactFSM.php 5942 2007-06-05 19:22:26Z pachanga $
+ * $Id: WactFSM.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 
 /**
@@ -46,7 +46,7 @@
  *
  * @author  Jon Parise <jon@php.net>
  * @version $Revision: 1.15 $
- * @package    wact
+ * @package wact
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  *
  * @example rpn.php     A Reverse Polish Notation (RPN) calculator.

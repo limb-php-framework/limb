@@ -8,6 +8,12 @@
  */
 lmb_require('limb/fs/src/exception/lmbFsException.class.php');
 
+/**
+ * class lmbFsRecursiveIterator.
+ *
+ * @package fs
+ * @version $Id$
+ */
 class lmbFsRecursiveIterator
 {
   protected $start_dir;

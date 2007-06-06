@@ -16,6 +16,8 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @runat_as WactFormTag
  * @restrict_self_nesting
  * @suppress_attributes errorclass errorstyle displayname
+ * @package wact
+ * @version $Id: button.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactButtonTag extends WactControlTag
 {

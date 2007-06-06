@@ -8,6 +8,12 @@
  */
 lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
 
+/**
+ * class lmbCmsTreeBrowser.
+ *
+ * @package cms
+ * @version $Id: lmbCmsTreeBrowser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsTreeBrowser
 {
   protected $current_folder;

@@ -8,9 +8,11 @@
  */
 
 /**
-* @property HasMoreThanOnePage
-* @tag_class WactPagerNavigatorTag
-*/
+ * @property HasMoreThanOnePage
+ * @tag_class WactPagerNavigatorTag
+ * @package wact
+ * @version $Id: more_than_one_page.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactPagerHasMoreThanOnePageProperty extends WactCompilerProperty
 {
   function generateExpression($code)

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactParenthesisExpressionNode.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactParenthesisExpressionNode extends WactTemplateExpressionNode
 {
   protected $operand;

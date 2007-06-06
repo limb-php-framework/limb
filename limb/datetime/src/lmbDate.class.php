@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 
+/**
+ * class lmbDate.
+ *
+ * @package datetime
+ * @version $Id: lmbDate.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbDate extends lmbObject
 {
   //YYYY-MM-DD HH:MM:SS timezone

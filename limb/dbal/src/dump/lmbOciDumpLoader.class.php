@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/dump/lmbSQLDumpLoader.class.php');
 
+/**
+ * class lmbOciDumpLoader.
+ *
+ * @package dbal
+ * @version $Id: lmbOciDumpLoader.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbOciDumpLoader extends lmbSQLDumpLoader
 {
   protected function _retrieveStatements($raw_sql)

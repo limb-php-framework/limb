@@ -8,6 +8,12 @@
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
+/**
+ * abstract class AdminNodeController.
+ *
+ * @package cms
+ * @version $Id: AdminNodeController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class AdminNodeController extends lmbController
 {
   protected $_form_id = 'node_form';

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbFullPageCacheUriPathRule.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheUriPathRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheUriPathRule
 {
   protected $path_regex;

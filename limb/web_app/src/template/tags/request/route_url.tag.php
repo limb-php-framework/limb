@@ -7,9 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
-* @tag route_url
-* @suppress_attributes params route extra skip_controller
-*/
+ * @tag route_url
+ * @suppress_attributes params route extra skip_controller
+ * @package web_app
+ * @version $Id: route_url.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
 {
   function getRenderedTag()

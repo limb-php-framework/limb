@@ -9,6 +9,12 @@
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 
+/**
+ * class lmbCmsClassName.
+ *
+ * @package cms
+ * @version $Id: lmbCmsClassName.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsClassName extends lmbActiveRecord
 {
   protected $_db_table_name = 'class_name';

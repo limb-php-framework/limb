@@ -9,6 +9,12 @@
 lmb_require('limb/cms/src/controller/AdminNodeWithObjectController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsDocument.class.php');
 
+/**
+ * class AdminDocumentsController.
+ *
+ * @package cms
+ * @version $Id$
+ */
 class AdminDocumentsController extends AdminNodeWithObjectController
 {
   protected $_object_class_name = 'lmbCmsDocument';

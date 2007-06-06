@@ -13,6 +13,8 @@
  * @parent_tag_class WactSelectTag
  * @runat client
  * @runat_as WactSelectTag
+ * @package wact
+ * @version $Id: option.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactOptionTag extends WactSilentCompilerTag
 {

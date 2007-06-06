@@ -11,6 +11,8 @@
  * JavaScript-encodes the contents
  * @tag encode:JAVASCRIPT
  * @restrict_self_nesting
+ * @package wact
+ * @version $Id: javascript.tag.php 5945 2007-06-06 08:31:43Z pachanga $
  */
 class WactEncodeJavascriptTag extends WactCompilerTag
 {

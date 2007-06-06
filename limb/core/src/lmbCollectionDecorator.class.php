@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 
+/**
+ * class lmbCollectionDecorator.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbCollectionDecorator implements lmbCollectionInterface
 {
   protected $iterator;

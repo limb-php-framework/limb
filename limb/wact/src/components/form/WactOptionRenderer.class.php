@@ -11,10 +11,12 @@ require_once 'limb/wact/src/components/form/form.inc.php';
 
 //--------------------------------------------------------------------------------
 /**
-* Deals with rendering option elements for HTML select tags
-* Simple renderer for OPTIONs.  Does not support disabled
-* and label attributes. Does not support OPTGROUP tags.
-*/
+ * Deals with rendering option elements for HTML select tags
+ * Simple renderer for OPTIONs.  Does not support disabled
+ * and label attributes. Does not support OPTGROUP tags.
+ * @package wact
+ * @version $Id$
+ */
 class WactOptionRenderer
 {
   /**

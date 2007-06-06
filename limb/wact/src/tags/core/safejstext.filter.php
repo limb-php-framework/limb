@@ -8,10 +8,12 @@
  */
 
 /**
-* This filter replaces all new lines with <br/> tag.
-* Could be usefull with java script sometimes
-* @filter safe_js_text
-*/
+ * This filter replaces all new lines with <br/> tag.
+ * Could be usefull with java script sometimes
+ * @filter safe_js_text
+ * @package wact
+ * @version $Id: safejstext.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactSafeJsTextFilter extends WactCompilerFilter
 {
   function getValue()

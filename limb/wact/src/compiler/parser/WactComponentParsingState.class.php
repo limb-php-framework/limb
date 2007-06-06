@@ -12,6 +12,12 @@ require_once('limb/wact/src/compiler/parser/WactBaseParsingState.class.php');
 
 define ('WACT_PARSER_FORBID_PARSING', 10);
 
+/**
+ * class WactComponentParsingState.
+ *
+ * @package wact
+ * @version $Id: WactComponentParsingState.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactComponentParsingState extends WactBaseParsingState implements WactHTMLParserListener
 {
   protected $tag_dictionary;

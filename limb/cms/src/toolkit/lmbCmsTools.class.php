@@ -9,6 +9,12 @@
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/tree/src/lmbMPTree.class.php');
 
+/**
+ * class lmbCmsTools.
+ *
+ * @package cms
+ * @version $Id: lmbCmsTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbCmsTools extends lmbAbstractTools
 {
   protected $tree;

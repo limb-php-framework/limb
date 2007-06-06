@@ -9,7 +9,8 @@
 
 /**
  * @filter html
- * @version $Id: html.filter.php 5942 2007-06-05 19:22:26Z pachanga $
+ * @version $Id: html.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @package wact
  */
 class WactHtmlFilter extends WactCompilerFilter
 {

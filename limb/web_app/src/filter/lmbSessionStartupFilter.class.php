@@ -25,7 +25,8 @@ lmb_require('limb/session/src/lmbSession.class.php');
  * @see lmbSessionNativeStorage
  * @see lmbSessionDbStorage
  *
- * @version $Id: lmbSessionStartupFilter.class.php 5942 2007-06-05 19:22:26Z pachanga $
+ * @version $Id: lmbSessionStartupFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @package web_app
  */
 class lmbSessionStartupFilter implements lmbInterceptingFilter
 {

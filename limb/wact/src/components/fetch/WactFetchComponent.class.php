@@ -9,6 +9,12 @@
 require_once('limb/wact/src/components/WactClassPath.class.php');
 require_once('limb/wact/src/components/iterator/WactBaseIteratorComponent.class.php');
 
+/**
+ * class WactFetchComponent.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactFetchComponent extends WactBaseIteratorComponent
 {
   protected $fetcher_name;

@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	MockObjects
-     *	@version	$Id: mock_objects.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: mock_objects.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -28,7 +28,7 @@
 
     /**
      *    Parameter comparison assertion.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage MockObjects
      */
     class ParametersExpectation extends SimpleExpectation {
@@ -161,7 +161,7 @@
 
     /**
      *    Confirms that the number of calls on a method is as expected.
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	MockObjects
      */
     class CallCountExpectation extends SimpleExpectation {
@@ -206,7 +206,7 @@
 
     /**
      *    Confirms that the number of calls on a method is as expected.
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	MockObjects
      */
     class MinimumCallCountExpectation extends SimpleExpectation {
@@ -251,7 +251,7 @@
 
     /**
      *    Confirms that the number of calls on a method is as expected.
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	MockObjects
      */
     class MaximumCallCountExpectation extends SimpleExpectation {
@@ -297,7 +297,7 @@
     /**
      *    Retrieves values and references by searching the
      *    parameter lists until a match is found.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage MockObjects
      */
     class CallMap {
@@ -389,7 +389,7 @@
      *    calls upon them. The mock will assert the
      *    expectations against it's attached test case in
      *    addition to the server stub behaviour.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage MockObjects
      */
     class SimpleMock {
@@ -866,7 +866,7 @@
     /**
      *    Static methods only service class for code generation of
      *    mock objects.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage MockObjects
      */
     class Mock {
@@ -936,7 +936,7 @@
     }
 
     /**
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	MockObjects
      *    @deprecated
      */
@@ -945,7 +945,7 @@
 
     /**
      *    Service class for code generation of mock objects.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage MockObjects
      */
     class MockGenerator {

@@ -23,13 +23,13 @@
 //
 /**
 * Decorators for dealing with parser options
-* @package XML_HTMLSax3
+* @package view
 * @version $Id: Decorators.php,v 1.1 2004/06/02 14:09:19 hfuecks Exp $
 * @see XML_HTMLSax3::set_option
 */
 /**
 * Trims the contents of element data from whitespace at start and end
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_Trim {
@@ -70,7 +70,7 @@ class XML_HTMLSax3_Trim {
 }
 /**
 * Coverts tag names to upper case
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_CaseFolding {
@@ -127,7 +127,7 @@ class XML_HTMLSax3_CaseFolding {
 /**
 * Breaks up data by linefeed characters, resulting in additional
 * calls to the data handler
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_Linefeed {
@@ -169,7 +169,7 @@ class XML_HTMLSax3_Linefeed {
 /**
 * Breaks up data by tab characters, resulting in additional
 * calls to the data handler
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_Tab {
@@ -212,7 +212,7 @@ class XML_HTMLSax3_Tab {
 * Breaks up data by XML entities and parses them with html_entity_decode(),
 * resulting in additional calls to the data handler<br />
 * Requires PHP 4.3.0+
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_Entities_Parsed {
@@ -264,7 +264,7 @@ if (version_compare(phpversion(), '4.3', '<') && !function_exists('html_entity_d
 /**
 * Breaks up data by XML entities but leaves them unparsed,
 * resulting in additional calls to the data handler<br />
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_Entities_Unparsed {
@@ -307,7 +307,7 @@ class XML_HTMLSax3_Entities_Unparsed {
 /**
 * Strips the HTML comment markers or CDATA sections from an escape.
 * If XML_OPTIONS_FULL_ESCAPES is on, this decorator is not used.<br />
-* @package XML_HTMLSax3
+* @package view
 * @access protected
 */
 class XML_HTMLSax3_Escape_Stripper {

@@ -14,6 +14,12 @@ require_once 'limb/wact/src/compiler/tag_node/WactTagInfoExtractor.class.php';
 define('LOCATION_SERVER', 'server');
 define('LOCATION_CLIENT', 'client');
 
+/**
+ * class WactTagDictionary.
+ *
+ * @package wact
+ * @version $Id: WactTagDictionary.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class WactTagDictionary extends WactCompilerArtifactDictionary
 {
   protected $info = array();

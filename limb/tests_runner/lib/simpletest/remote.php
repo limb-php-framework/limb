@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: remote.php 5157 2007-02-26 13:59:16Z pachanga $
+     *	@version	$Id: remote.php 5945 2007-06-06 08:31:43Z pachanga $
      */
 
     /**#@+
@@ -16,7 +16,7 @@
 
     /**
      *    Runs an XML formated test on a remote server.
-	 *	  @package SimpleTest
+	 *	  @package tests_runner
 	 *	  @subpackage UnitTester
      */
     class RemoteTestCase {

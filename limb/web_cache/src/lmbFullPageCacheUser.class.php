@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbFullPageCacheUser.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheUser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheUser
 {
   protected $groups;

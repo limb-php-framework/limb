@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbFullPageCacheUserRule.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheUserRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheUserRule
 {
   protected $user_groups = array();

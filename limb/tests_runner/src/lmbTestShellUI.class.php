@@ -9,6 +9,12 @@
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
 require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
 
+/**
+ * class lmbTestShellUI.
+ *
+ * @package tests_runner
+ * @version $Id: lmbTestShellUI.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbTestShellUI
 {
   protected $test_path;

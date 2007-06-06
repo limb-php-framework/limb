@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbInsertStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlManipulationStatement.class.php');
 
+/**
+ * class lmbPgsqlInsertStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbPgsqlInsertStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbPgsqlInsertStatement extends lmbPgsqlManipulationStatement implements lmbDbInsertStatement
 {
   function insertId($field_name = 'id')

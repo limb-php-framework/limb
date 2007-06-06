@@ -10,6 +10,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbManipulationStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteStatement.class.php');
 
+/**
+ * class lmbSqliteManipulationStatement.
+ *
+ * @package dbal
+ * @version $Id$
+ */
 class lmbSqliteManipulationStatement extends lmbSqliteStatement implements lmbDbManipulationStatement
 {
   function getAffectedRowCount()

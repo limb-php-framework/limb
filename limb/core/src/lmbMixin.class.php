@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class lmbMixin.
+ *
+ * @package core
+ * @version $Id$
+ */
 class lmbMixin
 {
   protected $owner;

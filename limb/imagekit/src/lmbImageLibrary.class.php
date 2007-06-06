@@ -9,6 +9,12 @@
 define('LIMB_IMAGE_LIBRARY_FLIP_HORIZONTAL', 1);
 define('LIMB_IMAGE_LIBRARY_FLIP_VERTICAL', 2);
 
+/**
+ * abstract class lmbImageLibrary.
+ *
+ * @package imagekit
+ * @version $Id: lmbImageLibrary.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 abstract class lmbImageLibrary
 {
   var $input_file;

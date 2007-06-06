@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * class WactBlockAnalizer.
+ *
+ * @package wact
+ * @version $Id$
+ */
 class WactBlockAnalizer
 {
   const BEFORE_CONTENT = 1;

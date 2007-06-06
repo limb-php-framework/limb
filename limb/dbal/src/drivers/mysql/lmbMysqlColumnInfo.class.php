@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/drivers/lmbDbColumnInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
 
+/**
+ * class lmbMysqlColumnInfo.
+ *
+ * @package dbal
+ * @version $Id: lmbMysqlColumnInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbMysqlColumnInfo extends lmbDbColumnInfo
 {
   protected $nativeType;

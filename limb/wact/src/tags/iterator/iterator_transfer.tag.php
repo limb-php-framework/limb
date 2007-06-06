@@ -9,10 +9,12 @@
 require_once('limb/wact/src/tags/fetch/WactBaseFetchingTag.class.php');
 
 /**
-* @tag iterator:TRANSFER
-* @req_attributes to from
-* @convert_to_expression from
-*/
+ * @tag iterator:TRANSFER
+ * @req_attributes to from
+ * @convert_to_expression from
+ * @package wact
+ * @version $Id$
+ */
 class WactIteratorTransferTag extends WactBaseFetchingTag
 {
   protected $runtimeComponentName = 'WactIteratorTransferComponent';

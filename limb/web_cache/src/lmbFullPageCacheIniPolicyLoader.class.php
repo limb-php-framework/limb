@@ -13,6 +13,12 @@ lmb_require('limb/web_cache/src/lmbFullPageCacheUserRule.class.php');
 lmb_require('limb/web_cache/src/lmbFullPageCacheRequestRule.class.php');
 lmb_require('limb/config/toolkit.inc.php');
 
+/**
+ * class lmbFullPageCacheIniPolicyLoader.
+ *
+ * @package web_cache
+ * @version $Id: lmbFullPageCacheIniPolicyLoader.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbFullPageCacheIniPolicyLoader
 {
   protected $ini;

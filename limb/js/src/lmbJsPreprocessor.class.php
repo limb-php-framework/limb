@@ -11,6 +11,12 @@ lmb_require('limb/js/src/lmbJsDirectiveHandlers.class.php');
 
 @define('LIMB_JS_INCLUDE_PATH', 'www/js;limb/*/shared/js');
 
+/**
+ * class lmbJsPreprocessor.
+ *
+ * @package js
+ * @version $Id$
+ */
 class lmbJsPreprocessor
 {
   protected $processed = array();

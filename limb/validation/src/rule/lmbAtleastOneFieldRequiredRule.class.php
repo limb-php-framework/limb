@@ -9,13 +9,15 @@
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 
 /**
-* Checks that at least one field from a list has not null value
-* Example of usage:
-* <code>
-* lmb_require('limb/validation/src/rule/lmbAtleastOneFieldRequiredRule.class.php');
-* $validator->addRule(new lmbAtleastOneFieldRequiredRule(array('name', 'nickname', 'fullname')));
-* </code>
-*/
+ * Checks that at least one field from a list has not null value
+ * Example of usage:
+ * <code>
+ * lmb_require('limb/validation/src/rule/lmbAtleastOneFieldRequiredRule.class.php');
+ * $validator->addRule(new lmbAtleastOneFieldRequiredRule(array('name', 'nickname', 'fullname')));
+ * </code>
+ * @package validation
+ * @version $Id: lmbAtleastOneFieldRequiredRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
 {
   /**

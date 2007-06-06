@@ -8,6 +8,12 @@
  */
 require_once(dirname(__FILE__) . '/../src/lmbTestShellUI.class.php');
 
+/**
+ * class UnitCliCmd.
+ *
+ * @package tests_runner
+ * @version $Id$
+ */
 class UnitCliCmd extends lmbCliBaseCmd
 {
   function execute($argv)

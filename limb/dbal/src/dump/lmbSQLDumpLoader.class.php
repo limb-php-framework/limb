@@ -9,6 +9,12 @@
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
+/**
+ * class lmbSQLDumpLoader.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLDumpLoader.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSQLDumpLoader
 {
   protected $affected_tables = array();

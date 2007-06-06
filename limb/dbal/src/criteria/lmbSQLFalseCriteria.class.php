@@ -8,6 +8,12 @@
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
 
+/**
+ * class lmbSQLFalseCriteria.
+ *
+ * @package dbal
+ * @version $Id: lmbSQLFalseCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ */
 class lmbSQLFalseCriteria extends lmbSQLBaseCriteria
 {
   function __construct(){}

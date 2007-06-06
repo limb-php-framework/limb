@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package	SimpleTest
+     *	@package tests_runner
      *	@subpackage	WebTester
-     *	@version	$Id: authentication.php 4378 2006-10-27 10:04:53Z pachanga $
+     *	@version	$Id: authentication.php 5945 2007-06-06 08:31:43Z pachanga $
      */
     /**
      *	include http class
@@ -12,7 +12,7 @@
     
     /**
      *    Represents a single security realm's identity.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleRealm {
@@ -125,7 +125,7 @@
     
     /**
      *    Manages security realms.
-	 *    @package SimpleTest
+	 *    @package tests_runner
 	 *    @subpackage WebTester
      */
     class SimpleAuthenticator {
