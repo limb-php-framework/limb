@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
@@ -276,6 +276,53 @@ class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
     $lecture->save();
 
     $this->assertEqual($course->save_calls, 1);
+  }
+
+  function testChangingParentIdRelationFieldDirectly()
+  {
+    $course1 = $this->_initCourse();
+    $course1->save();
+
+    $course2 = $this->_initCourse();
+    $course2->save();
+
+    $lecture = new LectureForTest();
+    $lecture->setTitle('Physics');
+    $lecture->setCourse($course1);
+    $lecture->save();
+
+    $lecture2 = new LectureForTest($lecture->getId());
+    $this->assertEqual($lecture2->getCourse()->getId(), $course1->getId());
+
+    $lecture2->set('course_id', $course2->getId());
+    $lecture2->save();
+
+    $lecture3 = new LectureForTest($lecture->getId());
+    $this->assertEqual($lecture3->getCourse()->getId(), $course2->getId());
+  }
+
+  function testChangingParentIdRelationFieldDirectlyDoesNotWorkIfParentObjectIsDirty()
+  {
+    $course1 = $this->_initCourse();
+    $course1->save();
+
+    $course2 = $this->_initCourse();
+    $course2->save();
+
+    $lecture = new LectureForTest();
+    $lecture->setTitle('Physics');
+    $lecture->setCourse($course1);
+    $lecture->save();
+
+    $lecture2 = new LectureForTest($lecture->getId());
+    $this->assertEqual($lecture2->getCourse()->getId(), $course1->getId());
+
+    $lecture2->set('course_id', $course2->getId());
+    $lecture2->setCourse($course1);
+    $lecture2->save();
+
+    $lecture3 = new LectureForTest($lecture->getId());
+    $this->assertEqual($lecture3->getCourse()->getId(), $course1->getId());
   }
 
   function testOwnerSetAutomaticallyForChildAddedToCollection()

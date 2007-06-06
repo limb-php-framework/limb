@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/core/src/lmbDelegate.class.php');
@@ -24,7 +24,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5942 2007-06-05 19:22:26Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5944 2007-06-06 06:58:26Z serega $
  */
 class lmbActiveRecord extends lmbObject
 {
@@ -372,7 +372,7 @@ class lmbActiveRecord extends lmbObject
 
   protected function _savePreRelationObject($property, $info, $save_relation_obj = true)
   {
-    if($this->isDirtyProperty($info['field']))
+    if($this->isDirtyProperty($info['field']) && !$this->isDirtyProperty($property))
     {
       $value = $this->_getRaw($info['field']);
       if(is_null($value))
@@ -602,6 +602,11 @@ class lmbActiveRecord extends lmbObject
       return false;
     else
       return true;
+  }
+
+  function resetDirty()
+  {
+    $this->_resetDirty();
   }
 
   protected function _resetDirty()

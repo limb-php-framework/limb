@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -153,6 +153,57 @@ class lmbActiveRecordOneToOneRelationsTest extends UnitTestCase
 
     $loaded_number = new SocialSecurityForTest($number->getId());
     $this->assertEqual($loaded_number->getCode(), $new_code);
+  }
+
+  function testChangingChildObjectIdDirectly()
+  {
+    $person = new PersonForTest();
+    $person->setName('Jim');
+
+    $number1 = new SocialSecurityForTest();
+    $number1->setCode('099123');
+
+    $person->setSocialSecurity($number1);
+    $person->save();
+
+    $number2 = new SocialSecurityForTest();
+    $number2->setCode('143453');
+    $number2->save();
+
+    $person2 = new PersonForTest($person->getId());
+    $this->assertEqual($person2->getSocialSecurity()->getId(), $number1->getId());
+
+    $person2->set('ss_id', $number2->getId());
+    $person2->save();
+
+    $person3 = new PersonForTest($person->getId());
+    $this->assertEqual($person3->getSocialSecurity()->getId(), $number2->getId());
+  }
+
+  function testChangingChildIdRelationFieldDirectlyHasNoAffectIfChildObjectPropertyIsDirty()
+  {
+    $person = new PersonForTest();
+    $person->setName('Jim');
+
+    $number1 = new SocialSecurityForTest();
+    $number1->setCode('099123');
+
+    $person->setSocialSecurity($number1);
+    $person->save();
+
+    $number2 = new SocialSecurityForTest();
+    $number2->setCode('143453');
+    $number2->save();
+
+    $person2 = new PersonForTest($person->getId());
+    $this->assertEqual($person2->getSocialSecurity()->getId(), $number1->getId());
+
+    $person2->set('ss_id', $number2->getId()); // changing child relation field directly
+    $person2->setSocialSecurity($number1); // and making child object dirty
+    $person2->save();
+
+    $person3 = new PersonForTest($person->getId());
+    $this->assertEqual($person3->getSocialSecurity()->getId(), $number1->getId());
   }
 
   function testLoadParentObject()
@@ -305,6 +356,7 @@ class lmbActiveRecordOneToOneRelationsTest extends UnitTestCase
 
     $person->setSocialSecurity($number);
     $number->setPerson($person);
+    $person->setNumber($number);
     $person->save();
 
     $number->destroy();
