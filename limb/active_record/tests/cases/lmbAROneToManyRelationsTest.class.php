@@ -71,7 +71,7 @@ class CourseForTestWithNullifyRelationProperty extends lmbActiveRecord
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 
-class lmbActiveRecordOneToManyRelationsTest extends UnitTestCase
+class lmbAROneToManyRelationsTest extends UnitTestCase
 {
   protected $db;
 

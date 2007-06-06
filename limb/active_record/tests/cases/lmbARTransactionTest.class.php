@@ -10,7 +10,7 @@ lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOneTableObjectFailing
 
-class lmbActiveRecordTransactionTest extends UnitTestCase
+class lmbARTransactionTest extends UnitTestCase
 {
   function setUp()
   {

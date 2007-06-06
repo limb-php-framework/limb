@@ -2,14 +2,14 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-require_once(dirname(__FILE__) . '/lmbActiveRecordOneToManyRelationsTest.class.php');
+require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 

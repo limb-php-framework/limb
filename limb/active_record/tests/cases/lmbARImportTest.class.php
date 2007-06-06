@@ -2,21 +2,21 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');
-require_once(dirname(__FILE__) . '/lmbActiveRecordOneToManyRelationsTest.class.php');
-require_once(dirname(__FILE__) . '/lmbActiveRecordOneToOneRelationsTest.class.php');
-require_once(dirname(__FILE__) . '/lmbActiveRecordManyToManyRelationsTest.class.php');
-require_once(dirname(__FILE__) . '/lmbActiveRecordValueObjectTest.class.php');
-require_once(dirname(__FILE__) . '/lmbActiveRecordAttributesLazyLoadingTest.class.php');
+require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
+require_once(dirname(__FILE__) . '/lmbAROneToOneRelationsTest.class.php');
+require_once(dirname(__FILE__) . '/lmbARManyToManyRelationsTest.class.php');
+require_once(dirname(__FILE__) . '/lmbARValueObjectTest.class.php');
+require_once(dirname(__FILE__) . '/lmbARAttributesLazyLoadingTest.class.php');
 
-class lmbActiveRecordImportTest extends UnitTestCase
+class lmbARImportTest extends UnitTestCase
 {
   protected $db;
 

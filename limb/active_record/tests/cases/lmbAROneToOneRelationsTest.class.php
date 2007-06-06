@@ -53,7 +53,7 @@ class SocialSecurityForTest extends lmbActiveRecord
                                                    'class' => 'PersonForTest'));
 }
 
-class lmbActiveRecordOneToOneRelationsTest extends UnitTestCase
+class lmbAROneToOneRelationsTest extends UnitTestCase
 {
   protected $db;
 

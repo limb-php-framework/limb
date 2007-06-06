@@ -41,7 +41,7 @@ class lmbActiveRecordValidationStub extends lmbActiveRecord
   }
 }
 
-class lmbActiveRecordValidationTest extends UnitTestCase
+class lmbARValidationTest extends UnitTestCase
 {
   protected $db = null;
 
