@@ -15,7 +15,7 @@ foreach($files as $file)
 {
   echo "Processing $file...\n";
   $src = file_get_contents($file);
-  $src = preg_replace('~@package\s+(\w+)~', "@package    " . $pkg, $src);
+  $src = preg_replace('~@package\s+(\w+)~', "@package " . $pkg, $src);
   file_put_contents($file, $src);
 }
 

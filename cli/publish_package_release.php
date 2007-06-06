@@ -5,7 +5,7 @@ $PEAR = 'http://pear.limb-project.com/back.php';
 
 if($argc < 4)
 {
-  echo "Usage: create_package_release <dir> <user> <password>";
+  echo "Usage: publish_package_release <dir> <user> <password>";
   exit(1);
 }
 
