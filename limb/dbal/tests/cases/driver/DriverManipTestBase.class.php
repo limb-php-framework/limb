@@ -9,7 +9,6 @@
 
 abstract class DriverManipTestBase extends UnitTestCase
 {
-
   function checkRecord($id)
   {
     $sql = "SELECT * FROM founding_fathers WHERE id = :id:";

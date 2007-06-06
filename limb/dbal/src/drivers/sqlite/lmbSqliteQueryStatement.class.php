@@ -35,9 +35,7 @@ class lmbSqliteQueryStatement extends lmbSqliteStatement implements lmbDbQuerySt
   function getOneValue()
   {
     $queryId = $this->connection->execute($this->getSQL());
-    $row = sqlite_fetch_single($queryId);    
-    if(is_array($row))
-      return $row[0];
+    return sqlite_fetch_single($queryId);    
   }
 
   function getOneColumnAsArray()

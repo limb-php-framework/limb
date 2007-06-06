@@ -12,7 +12,7 @@ function DriverSqliteSetup($conn)
   DriverSqliteExec($conn, 'DROP TABLE founding_fathers', false);
 
   $sql = "CREATE TABLE founding_fathers (
-            id INTEGER,
+            id INTEGER PRIMARY KEY,
             first VARCHAR,
             last VARCHAR)";
   DriverSqliteExec($conn, $sql);
@@ -29,7 +29,7 @@ function DriverSqliteSetup($conn)
   DriverSqliteExec($conn, 'DROP TABLE standard_types', false);
 
   $sql = "CREATE TABLE standard_types (
-            id INTEGER,
+            id INTEGER PRIMARY KEY,
             type_smallint smallint,
             type_integer integer,
             type_boolean smallint,

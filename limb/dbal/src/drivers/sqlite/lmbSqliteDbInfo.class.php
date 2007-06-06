@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
-lmb_require('limb/dbal/src/drivers/mysql/lmbSqliteTableInfo.class.php');
+lmb_require('limb/dbal/src/drivers/sqlite/lmbSqliteTableInfo.class.php');
 
 /**
  * class lmbSqliteDbInfo.

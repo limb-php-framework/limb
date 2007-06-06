@@ -39,9 +39,8 @@ class lmbSqliteConnection implements lmbDbConnection
   function getConnectionId()
   {
     if(!isset($this->connectionId))
-    {
       $this->connect();
-    }
+    
     return $this->connectionId;
   }
 
@@ -66,7 +65,7 @@ class lmbSqliteConnection implements lmbDbConnection
   function disconnect()
   {
     if($this->connectionId)
-    {
+    {      
       sqlite_close($this->connectionId);
       $this->connectionId = null;
     }
