@@ -1,12 +1,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 Limb.namespace('Limb.Window');
+
+var LIMB_WINDOW_WIDTH = null;
+var LIMB_WINDOW_HEIGHT = null;
+var LIMB_WINDOW_DEFAULT_PARAMS = {};
 
 Limb.Class('Limb.Window',
 {
@@ -29,6 +33,7 @@ Limb.Class('Limb.Window',
     {
       this.window = this._createWindow(arguments[0], arguments[1], arguments[2]);
       jQuery(this.window).ready(this.onOpen.bind(this));
+      jQuery(this.window).load(this.onLoad.bind(this));
       jQuery(this.window).bind(this.window, 'close', this.onClose.bind(this));
     }
   },
@@ -89,9 +94,7 @@ Limb.Class('Limb.Window',
       this.windowName = windowName;
 
     this.params = this._getDefaultParams();
-
-    if(Limb.isset(createParams))
-       this.params.merge(createParams);
+    this.params.merge(createParams || LIMB_WINDOW_DEFAULT_PARAMS);
 
     var win = window.open(href, this.windowName, this.params.asString());
     return win;
@@ -126,18 +129,35 @@ Limb.Class('Limb.Window',
   {
     Limb.Window.register(this.windowName, this);
 
-    if(this.params &&!this.params.getParameter('noautoresize'))
-      this.autoResize();
+    this.autoResize();
 
     this.centreWindow(this.params.getParameter('width'), this.params.getParameter('height'));
 
     this.openHandler();
   },
 
+  onLoad: function()
+  {
+    this.autoResize();
+
+    this.centreWindow(this.params.getParameter('width'), this.params.getParameter('height'));
+  },
+
   autoResize: function()
   {
-    this.params.setParameter('width', this.parentWindow.getRect().getWidth() * 0.85);
-    this.params.setParameter('height', this.parentWindow.getRect().getHeight() * 0.9);
+    if(!(this.params && !this.params.getParameter('noautoresize')) &&
+       !(this.window.LIMB_WINDOW_WIDTH || this.window.LIMB_WINDOW_HEIGHT))
+      return;
+
+    if(this.window.LIMB_WINDOW_WIDTH)
+      this.params.setParameter('width', this.window.LIMB_WINDOW_WIDTH);
+    else
+      this.params.setParameter('width', this.parentWindow.getRect().getWidth() * 0.85);
+
+    if(this.window.LIMB_WINDOW_HEIGHT)
+      this.params.setParameter('height', this.window.LIMB_WINDOW_HEIGHT);
+    else
+      this.params.setParameter('height', this.parentWindow.getRect().getHeight() * 0.9);
   },
 
   onClose: function()
