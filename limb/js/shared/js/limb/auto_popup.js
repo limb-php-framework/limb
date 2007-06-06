@@ -18,11 +18,15 @@ jQuery(window).ready(
         if(this.href.indexOf('#') > -1 && this.href.indexOf(window.location.href) > -1)
           return;
 
-        jQuery(this).bind("click", function()
-                       {
-                         new Limb.Window(this.href);
-                         return false;
-                       });
+        jQuery(this).bind("click",
+         function()
+         {
+           //we can specify explicitly not to popup, this is useful for onclick handlers in <a> tag
+           if(this.popup === false)
+             return false;
+           new Limb.Window(this.href);
+           return false;
+         });
       }
     }
    );
