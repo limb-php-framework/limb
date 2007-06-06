@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
@@ -55,8 +55,13 @@ class lmbSQLDumpLoader
     if(!file_exists($file_path))
       throw new lmbFileNotFoundException($file_path);
 
-     $this->statements = $this->_retrieveStatements(file_get_contents($file_path));
-     $this->affected_tables = $this->_getAffectedTables($this->statements);
+    $this->loadStatements(file_get_contents($file_path));
+  }
+
+  function loadStatements($sql)
+  {
+    $this->statements = $this->_retrieveStatements($sql);
+    $this->affected_tables = $this->_getAffectedTables($this->statements);
   }
 
   protected function _getAffectedTables($stmts)
