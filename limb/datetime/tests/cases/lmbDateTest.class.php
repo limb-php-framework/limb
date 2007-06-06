@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/datetime/src/lmbDate.class.php');
 lmb_require('limb/datetime/src/lmbDateTimeZone.class.php');
@@ -99,6 +99,12 @@ class lmbDateTest extends UnitTestCase
   {
     $date = new lmbDate(2005, 12, 1, 12, 45, 12);
     $this->assertEqual($date->getIsoTime(false), '12:45');
+  }
+
+  function testGetIsoShortTimeWithoutSeconds()
+  {
+    $date = new lmbDate(2005, 12, 1, 12, 45, 12);
+    $this->assertEqual($date->getIsoShortTime(), '12:45');
   }
 
   function testToStringReturnsIsoDate()

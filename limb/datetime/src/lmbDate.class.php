@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 
@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDate.class.php 5949 2007-06-06 13:19:57Z pachanga $
  */
 class lmbDate extends lmbObject
 {
@@ -256,6 +256,11 @@ class lmbDate extends lmbObject
   {
     return sprintf($with_seconds ? '%02d:%02d:%02d' : '%02d:%02d',
                    $this->getHour(), $this->getMinute(), $this->getSecond());
+  }
+
+  function getIsoShortTime()
+  {
+    return $this->getIsoTime(false);
   }
 
   /**
