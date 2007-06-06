@@ -24,7 +24,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5950 2007-06-06 13:54:07Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -947,8 +947,14 @@ class lmbActiveRecord extends lmbObject
     {
       $this->save($error_list);
     }
+    catch(lmbValidationException $e)
+    {
+      return false;
+    }
     catch(Exception $e)
     {
+      if($error_list)
+        $error_list->addError('ActiveRecord :: save() exception: ' . $e->getMessage());
       return false;
     }
     return true;
@@ -1029,10 +1035,16 @@ class lmbActiveRecord extends lmbObject
 
   protected function _validate($validator)
   {
-    $this->_onValidate();
-
     $validator->setErrorList($this->_error_list);
     $validator->validate($this);
+
+    $this->_onValidate();
+
+    return $this->_error_list->isValid();
+  }
+
+  function isValid()
+  {
     return $this->_error_list->isValid();
   }
 

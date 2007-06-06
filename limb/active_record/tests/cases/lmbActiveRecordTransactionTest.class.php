@@ -2,24 +2,13 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
-
-class TestOneTableObjectFailing extends lmbActiveRecord
-{
-  var $fail = false;
-  protected $_db_table_name = 'test_one_table_object';
-
-  protected function _onAfterSave()
-  {
-    if($this->fail)
-      throw new Exception('catch me');
-  }
-}
+require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOneTableObjectFailing
 
 class lmbActiveRecordTransactionTest extends UnitTestCase
 {
@@ -61,7 +50,7 @@ class lmbActiveRecordTransactionTest extends UnitTestCase
 
     $obj = new TestOneTableObjectFailing();
     $obj->setContent('hey');
-    $obj->fail = true;
+    $obj->fail = new Exception('whatever');
 
     $this->assertFalse($obj->trySave());
 

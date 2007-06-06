@@ -2,13 +2,14 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
+require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOneTableObjectFailing
 
 Mock :: generate('lmbValidator', 'MockValidator');
 Mock :: generate('lmbErrorList', 'MockErrorList');
@@ -273,6 +274,51 @@ class lmbActiveRecordValidationTest extends UnitTestCase
 
     $record = $this->db->getFirstRecordFrom('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $annotation);
+  }
+
+  function testIsValid()
+  {
+    $object = $this->_createActiveRecordWithDataAndSave();
+    $this->assertTrue($object->isValid());
+  }
+
+  function testIsNotValid()
+  {
+    $error_list = new lmbErrorList();
+
+    $object = $this->_createActiveRecordWithDataAndSave();
+    $this->assertTrue($object->isValid());
+
+    $error_list->addError('whatever');//actually it's a dirty simulation but that's how it works really
+
+    $object->save($error_list);
+    $this->assertFalse($object->isValid());
+  }
+
+  function testValidationExceptionIsNotAddedToErrorList()
+  {
+    $error_list = new lmbErrorList();
+
+    $object = new TestOneTableObjectFailing();
+    $object->setContent('A-a-a-a');
+    $object->fail = new lmbValidationException('foo', $error_list);
+
+    $this->assertFalse($object->trySave($error_list));
+    $this->assertTrue($error_list->isEmpty());
+  }
+
+  function testNonValidationExceptionIsAddedToErrorList()
+  {
+    $error_list = new lmbErrorList();
+
+    $object = new TestOneTableObjectFailing();
+    $object->setContent('A-a-a-a');
+    $object->fail = new Exception('yo-yo');
+
+    $this->assertFalse($object->trySave($error_list));
+    $this->assertFalse($error_list->isEmpty());
+    $this->assertEqual(sizeof($error_list), 1);
+    $this->assertPattern('~yo-yo~', $error_list[0]->getMessage());
   }
 
   function _createActiveRecord()

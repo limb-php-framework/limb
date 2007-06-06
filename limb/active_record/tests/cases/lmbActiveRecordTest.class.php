@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -14,6 +14,18 @@ class TestOneTableObject extends lmbActiveRecord
 {
   protected $_db_table_name = 'test_one_table_object';
   protected $dummy;
+}
+
+class TestOneTableObjectFailing extends lmbActiveRecord
+{
+  var $fail;
+  protected $_db_table_name = 'test_one_table_object';
+
+  protected function _onAfterSave()
+  {
+    if(is_object($this->fail))
+      throw $this->fail;
+  }
 }
 
 class TestOneTableObjectWithCustomDestroy extends lmbActiveRecord
