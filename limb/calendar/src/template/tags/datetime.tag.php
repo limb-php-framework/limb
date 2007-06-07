@@ -10,12 +10,12 @@ require_once('limb/wact/src/tags/form/input.tag.php');
 require_once('limb/calendar/src/lmbCalendarWidget.class.php');
 
 /**
- * @tag datetime,limb:CALENDAR
+ * @tag datetime
  * @forbid_end_tag
  * @package calendar
- * @version $Id: calendar.tag.php 5951 2007-06-06 13:55:22Z pachanga $
+ * @version $Id: datetime.tag.php 5957 2007-06-07 11:30:04Z pachanga $
  */
-class lmbCalendarTag extends WactInputTag
+class lmbDatetimeTag extends WactInputTag
 {
   function getRenderedTag()
   {
@@ -35,7 +35,12 @@ class lmbCalendarTag extends WactInputTag
     if(!$lang = $this->getAttribute('lang'))
       $lang = 'en';
 
-    $widget = new lmbCalendarWidget($lang);
+    if(!$this->hasAttribute('stripped'))
+      $stripped = true;
+    else
+      $stripped = $this->getBoolAttribute('stripped');
+
+    $widget = new lmbCalendarWidget($lang, $stripped);
 
     if($format = $this->getAttribute('format'))
     {

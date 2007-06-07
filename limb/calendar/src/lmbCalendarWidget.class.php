@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -26,9 +26,9 @@ class lmbCalendarWidget
   protected $calendar_options;
 
   function __construct($lang              = 'en',
+                       $stripped          = true,
                        $theme             = 'calendar-win2k-1',
-                       $calendar_lib_path = '/shared/calendar/js/',
-                       $stripped          = true)
+                       $calendar_lib_path = '/shared/calendar/js/')
   {
     if($stripped)
     {
