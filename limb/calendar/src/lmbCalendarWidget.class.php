@@ -50,7 +50,7 @@ class lmbCalendarWidget
   function setOption($name, $value)
   {
     $this->calendar_options[$name] = $value;
-  }
+  } 
 
   function loadFiles()
   {
@@ -82,8 +82,14 @@ class lmbCalendarWidget
   function makeButton($field_id, $cal_options = array(), $field_attributes = array())
   {
     $id = $this->_genId();
+    
+    if(isset($field_attributes['src']) && $field_attributes['src'])
+      $src = $field_attributes['src'];
+    else
+      $src = $this->calendar_lib_path . 'img.gif';
+    
     $out = '<a href="#" id="'. $this->_triggerId($id) . '">' .
-        '<img align="middle" border="0" src="' . $this->calendar_lib_path . 'img.gif" alt="" /></a>';
+        '<img align="middle" border="0" src="' . $src . '" alt="" hspace="3"/></a>';
 
     $options = array_merge($cal_options,
                            array('inputField' => $field_id,

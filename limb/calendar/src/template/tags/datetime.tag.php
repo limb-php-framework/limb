@@ -13,7 +13,7 @@ require_once('limb/calendar/src/lmbCalendarWidget.class.php');
  * @tag datetime
  * @forbid_end_tag
  * @package calendar
- * @version $Id: datetime.tag.php 5957 2007-06-07 11:30:04Z pachanga $
+ * @version $Id: datetime.tag.php 5958 2007-06-07 13:15:51Z momental $
  */
 class lmbDatetimeTag extends WactInputTag
 {
@@ -54,7 +54,10 @@ class lmbDatetimeTag extends WactInputTag
     }
 
     $code->writeHTML($widget->loadFiles() .
-                     $widget->makeButton($this->getAttribute('id')));
+                     $widget->makeButton($this->getAttribute('id'), 
+                                         array(),
+                                         array('src' => $this->getAttribute('src'))));
+
   }
 
 }
