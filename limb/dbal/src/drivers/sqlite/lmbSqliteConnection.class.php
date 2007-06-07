@@ -14,6 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSqliteInsertStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteManipulationStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteTypeInfo.class.php');
+lmb_require(dirname(__FILE__) . '/lmbSqliteRecord.class.php');
 
 /**
  * class lmbSqliteConnection.
@@ -38,7 +39,7 @@ class lmbSqliteConnection implements lmbDbConnection
 
   function getConnectionId()
   {
-    if(!isset($this->connectionId))
+    if(!is_resource($this->connectionId))
       $this->connect();
     
     return $this->connectionId;
@@ -64,7 +65,7 @@ class lmbSqliteConnection implements lmbDbConnection
 
   function disconnect()
   {
-    if($this->connectionId)
+    if(is_resource($this->connectionId))
     {      
       sqlite_close($this->connectionId);
       $this->connectionId = null;
@@ -91,9 +92,8 @@ class lmbSqliteConnection implements lmbDbConnection
   {
     $result = sqlite_query($this->getConnectionId(), $sql);
     if($result === false)
-    {
       $this->_raiseError($sql);
-    }
+    
     return $result;
   }
 
@@ -115,13 +115,10 @@ class lmbSqliteConnection implements lmbDbConnection
   function newStatement($sql)
   {
     if(preg_match('/^\s*\(*\s*(\w+).*$/m', $sql, $match))
-    {
       $statement = $match[1];
-    }
     else
-    {
       $statement = $sql;
-    }
+      
     switch(strtoupper($statement))
     {
       case 'SELECT':
@@ -144,7 +141,6 @@ class lmbSqliteConnection implements lmbDbConnection
     return new lmbSqliteTypeInfo();
   }
 
-
   function getDatabaseInfo()
   {
     return new lmbSqliteDbInfo($this, $this->config['database'], true);
@@ -152,13 +148,12 @@ class lmbSqliteConnection implements lmbDbConnection
 
   function quoteIdentifier($id)
   {
-    if(!$id)
-      return '';
+    if(!$id) return '';
 
     $pieces = explode('.', $id);
-    $quoted = "'" . $pieces[0] . "'";
+    $quoted = '"' . $pieces[0] . '"';
     if(isset($pieces[1]))
-       $quoted .= ".'" . $pieces[1] . "'";
+       $quoted .= '."' . $pieces[1] . '"';
     return $quoted;
   }
 
