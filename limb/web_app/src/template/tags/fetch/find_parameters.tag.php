@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 /**
  * @tag find:params
@@ -17,6 +17,8 @@ class lmbFindParametersTag extends WactCompilerTag
 {
   function generateTagContent($code)
   {
+    $code->writePhp($this->parent->getComponentRefCode() .'->resetFindParams();'. "\n");
+
     foreach(array_keys($this->attributeNodes) as $key)
     {
       $name = $this->attributeNodes[$key]->getName();
