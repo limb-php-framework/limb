@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface lmbCommand.
+ *
+ * @package web_app
+ * @version $Id: lmbCommand.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbCommand
 {
   function perform();

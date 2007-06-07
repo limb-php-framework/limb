@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface lmbSetInterface.
+ *
+ * @package core
+ * @version $Id$
+ */
 interface lmbSetInterface extends ArrayAccess
 {
   function get($name);

@@ -13,7 +13,7 @@ require_once('limb/calendar/src/lmbCalendarWidget.class.php');
  * @tag datetime
  * @forbid_end_tag
  * @package calendar
- * @version $Id: datetime.tag.php 5958 2007-06-07 13:15:51Z momental $
+ * @version $Id: datetime.tag.php 5959 2007-06-07 13:47:57Z pachanga $
  */
 class lmbDatetimeTag extends WactInputTag
 {

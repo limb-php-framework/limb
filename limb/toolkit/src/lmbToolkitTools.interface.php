@@ -8,9 +8,11 @@
  */
 
 /**
-* Interface for defining toolkit tools that extends lmbToolkit
-* @see lmbToolkit
-*/
+ * Interface for defining toolkit tools that extends lmbToolkit
+ * @see lmbToolkit
+ * @package toolkit
+ * @version $Id: lmbToolkitTools.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbToolkitTools
 {
   /**

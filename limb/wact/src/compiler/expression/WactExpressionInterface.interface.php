@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface WactExpressionInterface.
+ *
+ * @package wact
+ * @version $Id$
+ */
 interface WactExpressionInterface
 {
   function isConstant();

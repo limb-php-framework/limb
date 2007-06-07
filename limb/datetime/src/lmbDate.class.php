@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 5949 2007-06-06 13:19:57Z pachanga $
+ * @version $Id: lmbDate.class.php 5959 2007-06-07 13:47:57Z pachanga $
  */
 class lmbDate extends lmbObject
 {

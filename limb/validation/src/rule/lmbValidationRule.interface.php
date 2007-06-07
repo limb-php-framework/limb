@@ -8,8 +8,10 @@
  */
 
 /**
-* Interface for defining rules to validate against
-*/
+ * Interface for defining rules to validate against
+ * @package validation
+ * @version $Id: lmbValidationRule.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbValidationRule
 {
   /**

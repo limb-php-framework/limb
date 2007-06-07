@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface WactTemplateLocator.
+ *
+ * @package wact
+ * @version $Id: WactTemplateLocator.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface WactTemplateLocator
 {
   public function locateCompiledTemplate($fileName);

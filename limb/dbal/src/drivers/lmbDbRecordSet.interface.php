@@ -8,6 +8,12 @@
  */
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 
+/**
+ * interface lmbDbRecordSet.
+ *
+ * @package dbal
+ * @version $Id: lmbDbRecordSet.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbDbRecordSet extends lmbCollectionInterface
 {
   function freeQuery();

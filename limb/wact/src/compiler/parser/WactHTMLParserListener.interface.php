@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface WactHTMLParserListener.
+ *
+ * @package wact
+ * @version $Id: WactHTMLParserListener.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface WactHTMLParserListener
 {
   function startTag($tag_name, $attrs, $location);

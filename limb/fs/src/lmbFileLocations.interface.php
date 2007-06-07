@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface lmbFileLocations.
+ *
+ * @package fs
+ * @version $Id$
+ */
 interface lmbFileLocations
 {
   function getLocations($params = array());

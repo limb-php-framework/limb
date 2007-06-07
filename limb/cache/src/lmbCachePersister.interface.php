@@ -8,6 +8,12 @@
  */
 define('LIMB_CACHE_NULL_RESULT', 'cache_null_' . md5(mt_rand()));
 
+/**
+ * interface lmbCachePersister.
+ *
+ * @package cache
+ * @version $Id: lmbCachePersister.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbCachePersister
 {
   function getId();

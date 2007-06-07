@@ -9,6 +9,12 @@
 
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
+/**
+ * interface lmbDbManipulationStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbDbManipulationStatement.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbDbManipulationStatement extends lmbDbStatement
 {
   function getAffectedRowCount();

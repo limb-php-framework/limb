@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface WactFetcher.
+ *
+ * @package wact
+ * @version $Id$
+ */
 interface WactFetcher
 {
   /**

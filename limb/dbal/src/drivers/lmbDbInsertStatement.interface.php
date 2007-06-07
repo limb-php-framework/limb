@@ -9,6 +9,12 @@
 
 lmb_require('limb/dbal/src/drivers/lmbDbManipulationStatement.interface.php');
 
+/**
+ * interface lmbDbInsertStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbDbInsertStatement.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbDbInsertStatement extends lmbDbManipulationStatement
 {
   function insertId($field_name = 'id');

@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface lmbCollectionInterface.
+ *
+ * @package core
+ * @version $Id$
+ */
 interface lmbCollectionInterface extends Iterator, Countable, ArrayAccess
 {
   function sort($params);

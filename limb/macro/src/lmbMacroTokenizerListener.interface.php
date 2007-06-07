@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+/**
+ * interface lmbMacroTokenizerListener.
+ *
+ * @package macro
+ * @version $Id$
+ */
 interface lmbMacroTokenizerListener
 {
   function startElement($tag_name, $attrs);

@@ -9,6 +9,12 @@
 
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
+/**
+ * interface lmbDbQueryStatement.
+ *
+ * @package dbal
+ * @version $Id: lmbDbQueryStatement.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ */
 interface lmbDbQueryStatement extends lmbDbStatement
 {
   function getOneRecord();
