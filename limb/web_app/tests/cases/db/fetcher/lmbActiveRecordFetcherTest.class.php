@@ -2,14 +2,14 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/tests/cases/lmbWebAppTestCase.class.php');
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbActiveRecordFetcher.class.php');
-require_once('limb/active_record/tests/cases/lmbActiveRecordOneToManyRelationsTest.class.php');
+require_once('limb/active_record/tests/cases/lmbAROneToManyRelationsTest.class.php');
 
 class CourseForFetcherTestVersion extends CourseForTest
 {
