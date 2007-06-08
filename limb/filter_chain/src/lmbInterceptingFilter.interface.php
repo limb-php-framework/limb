@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 
 /**
- * Interface for filter classes what will be used with lmbFilterChain
+ * Interface for filter classes to be used with lmbFilterChain
  *
- * @version $Id: lmbInterceptingFilter.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbInterceptingFilter.interface.php 5965 2007-06-08 09:50:55Z pachanga $
  * @package filter_chain
  */
 interface lmbInterceptingFilter
