@@ -154,6 +154,16 @@ class lmbRequireTest extends UnitTestCase
     lmb_require($file = 'foo_' . mt_rand() . '.inc.php', true);
   }
 
+  function testRequireOptional()
+  {
+    $name = $this->_rndName();
+    $path = $this->_writeModule("$name.class.php", "<?php \$foo = new $name(); class $name {} ?>");
+
+    lmb_require_optional($path);
+
+    $foo = new $name();
+  }
+
   function _locateIncludeOnceLine($file, $start_line)
   {
     $c = 0;

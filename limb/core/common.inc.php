@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 5966 2007-06-08 09:54:46Z pachanga $
+ * @version $Id: common.inc.php 5967 2007-06-08 10:00:14Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -74,7 +74,7 @@ function lmb_require($file_path, $optional = false)
   if(strpos($file_path, '*') !== false)
   {
     foreach(lmb_glob($file_path) as $path)
-      lmb_require($path);
+      lmb_require($path, $optional);
     return;
   }
 
@@ -106,7 +106,7 @@ function lmb_require($file_path, $optional = false)
 
 function lmb_require_optional($file_path)
 {
-  lmb_require('limb/dbal/common.inc.php', true);
+  lmb_require($file_path, true);
 }
 
 function lmb_autoload($name)
