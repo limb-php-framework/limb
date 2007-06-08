@@ -576,6 +576,18 @@ class lmbDateTest extends UnitTestCase
     $this->assertEqual($d1->compare($d2->addYear(2)), -1);
   }
 
+  function testCompareThrowsExceptionForNonDate()
+  {
+    $d = new lmbDate();
+
+    try
+    {
+      $d->compare('agrch');
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+  }
+
   function testStripTime()
   {
     $date = new lmbDate('2005-01-01 12:20:40');
