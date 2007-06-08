@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbDate.class.php 5969 2007-06-08 10:51:09Z pachanga $
  */
 class lmbDate extends lmbObject
 {
@@ -299,6 +299,9 @@ class lmbDate extends lmbObject
    */
   function compare($d)
   {
+    if(!$d instanceof lmbDate)
+      throw new lmbException("Wrong date argument", array('arg' => $d));
+
     $s1 = $this->getStamp();
     $s2 = $d->getStamp();
 
