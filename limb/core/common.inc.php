@@ -6,6 +6,11 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+
+/**
+ * @package core
+ * @version $Id: common.inc.php 5966 2007-06-08 09:54:46Z pachanga $
+ */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
 function lmb_resolve_include_path($path)
@@ -134,33 +139,6 @@ function lmb_var_dump($obj, $echo = false)
   }
   else
     return $dump;
-}
-
-/**
- * @see lmb_camel_case
- * @deprecated
- */
-function toStudlyCaps($str, $ucfirst = true)
-{
-  return lmb_camel_case($str, $ucfirst);
-}
-
-/**
- * @see lmb_uder_scores
- * @deprecated
- */
-function to_under_scores($str)
-{
-  return lmb_under_scores($str);
-}
-
-/**
- * @see lmb_humanize
- * @deprecated
- */
-function makeStudlyCapsReadable($str)
-{
-  return lmb_humanize($str);
 }
 
 function lmb_camel_case($str, $ucfirst = true)
