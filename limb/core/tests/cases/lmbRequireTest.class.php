@@ -149,19 +149,24 @@ class lmbRequireTest extends UnitTestCase
     }
   }
 
-  function testRequireOptionalDoesntThrowExceptionForNonExistingFile()
-  {
-    lmb_require($file = 'foo_' . mt_rand() . '.inc.php', true);
-  }
-
   function testRequireOptional()
   {
     $name = $this->_rndName();
-    $path = $this->_writeModule("$name.class.php", "<?php \$foo = new $name(); class $name {} ?>");
+    $path = $this->_writeModule("$name.class.php", "<?php class $name {} ?>");
 
     lmb_require_optional($path);
 
     $foo = new $name();
+  }
+
+  function testRequireOptionalDoesntThrowExceptionForNonExistingFile()
+  {
+    lmb_require_optional($file = 'foo_' . mt_rand() . '.inc.php');
+  }
+
+  function testRequireOptionalGlobDoesntThrowExceptionForNonExistingFiles()
+  {
+    lmb_require_optional($file = 'foo_' . mt_rand() . '*.php');
   }
 
   function _locateIncludeOnceLine($file, $start_line)
