@@ -59,13 +59,13 @@ class lmbWactViewTest extends lmbWactTestCase
 
     $template = $view->getWACTTemplate();
     $form1_component = $template->findChild('form1');
-    $this->assertEqual($form1_component->getDatasource(), $form1);
+    $this->assertReference($form1_component->getDataSource(), $form1);
     $this->assertEqual($form1_component->getErrorsDataSet()->export(), $error_list->getReadable()->export());
     $this->assertEqual($form1_component->getErrorsDataSet()->at(0)->getMessage(),
                        'An error in "Title" with value');
 
     $form2_component = $template->findChild('form2');
-    $this->assertEqual($form2_component->getDatasource(), $form2);
+    $this->assertReference($form2_component->getDataSource(), $form2);
   }
 }
 
