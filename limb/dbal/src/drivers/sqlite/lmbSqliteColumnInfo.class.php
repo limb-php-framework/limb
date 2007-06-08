@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbColumnInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteTypeInfo.class.php');
@@ -32,13 +32,12 @@ class lmbSqliteColumnInfo extends lmbDbColumnInfo
                 $isAutoIncrement = null,
                 $isExisting = false)
   {
-
     $this->nativeType = $this->canonicalizeNativeType($nativeType);
     $this->isAutoIncrement = $this->canonicalizeIsAutoincrement($isAutoIncrement);
 
     $typeinfo = new lmbSqliteTypeInfo();
     $typemap = $typeinfo->getNativeToColumnTypeMapping();
-    $type = $typemap[$nativeType];
+    $type = $typemap[$this->nativeType];
 
     $this->isExisting = $isExisting;
 
@@ -52,7 +51,7 @@ class lmbSqliteColumnInfo extends lmbDbColumnInfo
 
   function canonicalizeNativeType($nativeType)
   {
-    return $nativeType;
+    return strtolower($nativeType);
   }
 
   function isAutoIncrement()

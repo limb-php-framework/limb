@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
 lmb_require('limb/dbal/src/drivers/sqlite/lmbSqliteColumnInfo.class.php');
@@ -39,47 +39,45 @@ class lmbSqliteTableInfo extends lmbDbTableInfo
     if($this->isExisting && !$this->isColumnsLoaded)
     {
       $connection = $this->database->getConnection();
-      $queryId = $connection->execute("SHOW COLUMNS FROM '" . $this->name . "'");
+      $sql = "PRAGMA table_info('" . $this->name . "')";
+      $queryId = $connection->execute($sql);
 
       while($row = sqlite_fetch_array($queryId, SQLITE_ASSOC))
       {
-        $name = $row['Field'];
-        $isNullable =($row['Null'] == 'YES');
-        $isAutoIncrement =(strpos($row['Extra'], 'auto_increment') !== false);
-        $size = null;
-        $precision = null;
+        $name = $row['name'];
 
-        if(preg_match('/^(\w+)[\(]?([\d,]*)[\)]?( |$)/', $row['Type'], $matches))
+        $fulltype = $row['type'];
+        $size = null;
+        $scale = null;
+        if(preg_match('/^([^\(]+)\(\s*(\d+)\s*,\s*(\d+)\s*\)$/', $fulltype, $matches))
         {
-          //            colname[1]   size/precision[2]
-          $nativeType = $matches[1];
-          if($matches[2])
-          {
-            if(($cpos = strpos($matches[2], ',')) !== false)
-            {
-              $size = (int) substr($matches[2], 0, $cpos);
-              $precision = (int) substr($matches[2], $cpos + 1);
-            }
-            else
-            {
-              $size = (int) $matches[2];
-            }
-          }
+          $type = $matches[1];
+          $size = $matches[2];
+          $scale = $matches[3]; // aka precision
         }
-        elseif(preg_match('/^(\w+)\(/', $row['Type'], $matches))
+        elseif(preg_match('/^([^\(]+)\(\s*(\d+)\s*\)$/', $fulltype, $matches))
         {
-          $nativeType = $matches[1];
+          $type = $matches[1];
+          $size = $matches[2];
         }
         else
+          $type = $fulltype;
+
+        // If column is primary key and of type INTEGER, it is auto increment
+        // See: http://sqlite.org/faq.html#q1
+        $is_auto_increment = ($row['pk'] == 1 && $fulltype == 'INTEGER');
+        $not_null = $row['notnull'];
+        $is_nullable = !$not_null;
+
+        $default_val = $row['dflt_value'];
+
+        $this->columns[$name] = new lmbSqliteColumnInfo($this, $name, $type, $size, $scale,
+                                                        $is_nullable, $default_val, $is_auto_increment);
+
+        if(($row['pk'] == 1) || (strtolower($type) == 'integer primary key'))
         {
-          $nativeType = $row['Type'];
+          //primary key handling...
         }
-
-        // BLOBs can't have any default values in MySQL
-        $default = preg_match('~blob|text~', $nativeType) ?  null : $row['Default'];
-
-        $this->columns[$name] = new lmbSqliteColumnInfo($this,
-                    $name, $nativeType, $size, $precision, $isNullable, $default, $isAutoIncrement);
       }
       $this->isColumnsLoaded = true;
     }
