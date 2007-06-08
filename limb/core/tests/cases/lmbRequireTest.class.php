@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 class lmbRequireTest extends UnitTestCase
@@ -135,6 +135,23 @@ class lmbRequireTest extends UnitTestCase
 
     $this->assertEqual($cov1[$file][$line], 1);
     $this->assertFalse(isset($cov2[$file][$line]));
+  }
+
+  function testRequireThrowsExceptionForNonExistingFile()
+  {
+    try
+    {
+      @lmb_require($file = 'foo_' . mt_rand() . '.inc.php');
+    }
+    catch(lmbException $e)
+    {
+      $this->assertPattern('~' . preg_quote($file) . '~', $e->getMessage());
+    }
+  }
+
+  function testRequireOptionalDoesntThrowExceptionForNonExistingFile()
+  {
+    lmb_require($file = 'foo_' . mt_rand() . '.inc.php', true);
   }
 
   function _locateIncludeOnceLine($file, $start_line)

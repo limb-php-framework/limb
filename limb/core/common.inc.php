@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -57,7 +57,7 @@ function lmb_is_path_absolute($path)
           (strlen($path) > 2 && $path{1} == ':'));
 }
 
-function lmb_require($file_path)
+function lmb_require($file_path, $optional = false)
 {
   static $tried = array();
 
@@ -72,6 +72,9 @@ function lmb_require($file_path)
       lmb_require($path);
     return;
   }
+
+  if($optional && !lmb_is_readable($file_path))
+    return;
 
   $file = basename($file_path);
   $items = explode('.', $file);
@@ -94,6 +97,11 @@ function lmb_require($file_path)
 
   if(!include_once($file_path))
     throw new lmbException("Could not include source file '$file_path'");
+}
+
+function lmb_require_optional($file_path)
+{
+  lmb_require('limb/dbal/common.inc.php', true);
 }
 
 function lmb_autoload($name)
