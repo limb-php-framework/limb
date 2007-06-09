@@ -3,7 +3,7 @@
      *	Base include file for SimpleTest
      *	@package tests_runner
      *	@subpackage	UnitTester
-     *	@version	$Id: test_case.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: test_case.php 5983 2007-06-09 13:33:06Z pachanga $
      */
 
     /**#@+
@@ -476,6 +476,10 @@
             }
             $group = &$this->_createGroupFromClasses($test_file, $classes);
             $this->addTestCase($group);
+        }
+
+        function addFile($test_file) {
+          $this->addTestFileOnce($test_file);
         }
 
         /**

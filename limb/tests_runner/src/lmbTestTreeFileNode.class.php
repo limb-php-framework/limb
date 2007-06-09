@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
 
@@ -12,7 +12,7 @@ require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 5983 2007-06-09 13:33:06Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -53,7 +53,7 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
       $this->test_group->addTestCase($test);
     }
     else
-      $this->test_group->addTestFileOnce($this->file);
+      $this->test_group->addFile($this->file);
 
     return $this->test_group;
   }
