@@ -116,7 +116,13 @@
         public function stopInstrumentation() {
             if(extension_loaded("xdebug")) {
                 $this->coverageData = xdebug_get_code_coverage();
-                xdebug_stop_code_coverage();
+                foreach($this->coverageData as $file => $data) {
+                       if (!file_exists($file)) {
+                               unset($this->coverageData[$file]);
+                       }
+                }
+
+		xdebug_stop_code_coverage();
                 $this->logger->debug("[CoverageRecorder::stopInstrumentation()] Code coverage: " . print_r($this->coverageData, true),
                     __FILE__, __LINE__);
                 return true;
