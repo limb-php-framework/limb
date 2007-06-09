@@ -47,9 +47,16 @@ class lmbSqliteRecord extends lmbDbBaseRecord
   function importRaw($values)
   {
     $this->properties = array();
-    //dirty hack for stripping escaping " symbols
+
     foreach($values as $key => $value)
+    {
+      //hack for converting 'foo.bar' keys into 'bar'
+      if(($pos = strpos($key, '.')) !== false)
+        $key = substr($key, $pos+1);
+
+      //hack for stripping escaping " symbols
       $this->properties[trim($key, '"')] = $value;
+    }
   }
 
   function remove($name)
