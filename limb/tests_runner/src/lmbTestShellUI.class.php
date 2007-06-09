@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
 require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 5977 2007-06-09 08:58:44Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -46,7 +46,12 @@ class lmbTestShellUI
 
   function help($script = '')
   {
+    $version = $this->_getVersion();
+
     $usage = <<<EOD
+
+$version
+
 Usage:
   limb_unit OPTIONS <file|dir> [<file|dir>, <file|dir>, ...]
   Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
@@ -63,7 +68,13 @@ EOD;
 
   protected function _help($code = 0)
   {
-    echo "\n" . $this->_getVersion() . "\n\n";
+    echo $this->help();
+    exit($code);
+  }
+
+  protected function _error($message, $code = 1)
+  {
+    echo "ERROR: $message";
     echo $this->help();
     exit($code);
   }
@@ -72,13 +83,6 @@ EOD;
   {
     echo $this->_getVersion();
     exit();
-  }
-
-  protected function _error($message, $code = 1)
-  {
-    echo "ERROR: $message";
-    echo $this->_help();
-    exit($code);
   }
 
   protected function _getVersion()
@@ -151,7 +155,7 @@ EOD;
         case 'c':
         case '--config':
           if(!@include_once(realpath($option[1])))
-            $this->_error("Could not include configuration file '{$option[1]}'");
+            $this->_error("Could not include configuration file '{$option[1]}'\n");
           $configured = true;
           break;
         case '--cover':
@@ -184,7 +188,7 @@ EOD;
     $res = $runner->run($found);
 
     if(!$found)
-      $this->_help(1);
+      $this->_error("No tests were found\n");
 
     echo $runner->getRuntime() . " sec.\n";
 
