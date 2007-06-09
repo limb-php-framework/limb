@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
@@ -42,6 +42,14 @@ class lmbSqliteRecord extends lmbDbBaseRecord
   function import($values)
   {
     $this->properties = $values;
+  }
+
+  function importRaw($values)
+  {
+    $this->properties = array();
+    //dirty hack for stripping escaping " symbols
+    foreach($values as $key => $value)
+      $this->properties[trim($key, '"')] = $value;
   }
 
   function remove($name)

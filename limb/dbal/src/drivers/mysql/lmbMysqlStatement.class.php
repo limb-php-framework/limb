@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbMysqlStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMysqlStatement.class.php 5979 2007-06-09 12:33:19Z pachanga $
  */
 class lmbMysqlStatement implements lmbDbStatement
 {
@@ -187,7 +187,7 @@ class lmbMysqlStatement implements lmbDbStatement
 
   function execute()
   {
-    return (Boolean) $this->connection->execute($this->getSQL());
+    return (bool) $this->connection->execute($this->getSQL());
   }
 }
 

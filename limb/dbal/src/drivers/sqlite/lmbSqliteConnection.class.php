@@ -2,15 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteQueryStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteInsertStatement.class.php');
+lmb_require(dirname(__FILE__) . '/lmbSqliteDropStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteManipulationStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteTypeInfo.class.php');
@@ -26,6 +27,7 @@ class lmbSqliteConnection implements lmbDbConnection
 {
   protected $connectionId;
   protected $config;
+  protected $in_transaction = false;
 
   function __construct($config)
   {
@@ -41,7 +43,7 @@ class lmbSqliteConnection implements lmbDbConnection
   {
     if(!is_resource($this->connectionId))
       $this->connect();
-    
+
     return $this->connectionId;
   }
 
@@ -66,7 +68,7 @@ class lmbSqliteConnection implements lmbDbConnection
   function disconnect()
   {
     if(is_resource($this->connectionId))
-    {      
+    {
       sqlite_close($this->connectionId);
       $this->connectionId = null;
     }
@@ -78,13 +80,13 @@ class lmbSqliteConnection implements lmbDbConnection
       throw new lmbDbException('Could not connect to database "' . $this->config['database'] . '"');
 
     $errno = sqlite_last_error($this->getConnectionId());
-    
+
     $info = array('driver' => 'sqlite');
-    $info['errorno'] = $errno;    
-    
+    $info['errorno'] = $errno;
+
     if(!is_null($sql))
-      $info['sql'] = $sql;    
-    
+      $info['sql'] = $sql;
+
     throw new lmbDbException(sqlite_error_string($errno) . ' SQL: '. $sql, $info);
   }
 
@@ -93,23 +95,32 @@ class lmbSqliteConnection implements lmbDbConnection
     $result = sqlite_query($this->getConnectionId(), $sql);
     if($result === false)
       $this->_raiseError($sql);
-    
+
     return $result;
   }
 
   function beginTransaction()
   {
     $this->execute('BEGIN');
+    $this->in_transaction = true;
   }
 
   function commitTransaction()
   {
-    $this->execute('COMMIT');
+    if($this->in_transaction)
+    {
+      $this->execute('COMMIT');
+      $this->in_transaction = false;
+    }
   }
 
   function rollbackTransaction()
   {
-    $this->execute('ROLLBACK');
+    if($this->in_transaction)
+    {
+      $this->execute('ROLLBACK');
+      $this->in_transaction = false;
+    }
   }
 
   function newStatement($sql)
@@ -118,7 +129,7 @@ class lmbSqliteConnection implements lmbDbConnection
       $statement = $match[1];
     else
       $statement = $sql;
-      
+
     switch(strtoupper($statement))
     {
       case 'SELECT':
@@ -128,6 +139,8 @@ class lmbSqliteConnection implements lmbDbConnection
       return new lmbSqliteQueryStatement($this, $sql);
       case 'INSERT':
       return new lmbSqliteInsertStatement($this, $sql);
+      case 'DROP':
+      return new lmbSqliteDropStatement($this, $sql);
       case 'UPDATE':
       case 'DELETE':
       return new lmbSqliteManipulationStatement($this, $sql);

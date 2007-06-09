@@ -7,15 +7,15 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__) . '/lmbPgsqlStatement.class.php');
+lmb_require(dirname(__FILE__) . '/lmbSqliteStatement.class.php');
 
 /**
- * class lmbPgsqlDropStatement.
+ * class lmbSqliteDropStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlDropStatement.class.php 5979 2007-06-09 12:33:19Z pachanga $
+ * @version $Id$
  */
-class lmbPgsqlDropStatement extends lmbPgsqlStatement
+class lmbSqliteDropStatement extends lmbSqliteStatement
 {
   function execute()
   {
@@ -24,9 +24,7 @@ class lmbPgsqlDropStatement extends lmbPgsqlStatement
       $this->queryId = @$this->connection->execute($this->getSQL());
       return (bool) $this->queryId;
     }
-    catch(lmbException $e)
-    {
-    }
+    catch(lmbException $e){}
   }
 }
 

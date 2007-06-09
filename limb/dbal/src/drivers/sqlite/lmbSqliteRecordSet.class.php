@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
 lmb_require('limb/dbal/src/drivers/sqlite/lmbSqliteRecord.class.php');
@@ -65,8 +65,8 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
       if($this->limit)
       {
         $query .= ' LIMIT ' .
-        $this->limit . ' OFFSET ' . 
-        $this->offset;        
+        $this->limit . ' OFFSET ' .
+        $this->offset;
       }
 
       $this->queryId = $this->connection->execute($query);
@@ -79,8 +79,8 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
   {
     $this->current = new lmbSqliteRecord();
     $values = sqlite_fetch_array($this->queryId, SQLITE_ASSOC);
-    $this->current->import($values);
-    $this->valid = is_array($values);
+    if($this->valid = is_array($values))
+      $this->current->importRaw($values);
     $this->key++;
   }
 
@@ -113,11 +113,11 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
 
     $queryId = $this->connection->execute($query . " LIMIT 1 OFFSET $pos");
 
-    $res = sqlite_fetch_array($queryId, SQLITE_ASSOC);    
-    if($res)
+    $res = sqlite_fetch_array($queryId, SQLITE_ASSOC);
+    if(is_array($res))
     {
       $record = new lmbSqliteRecord();
-      $record->import($res);
+      $record->importRaw($res);
       return $record;
     }
   }
