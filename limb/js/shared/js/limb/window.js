@@ -125,6 +125,11 @@ Limb.Class('Limb.Window',
     return true;
   },
 
+  close: function()
+  {
+    this.window.close();
+  },
+
   onOpen: function()
   {
     Limb.Window.register(this.windowName, this);
