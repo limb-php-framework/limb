@@ -570,7 +570,9 @@ class lmbActiveRecordTest extends UnitTestCase
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object3 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: findByIds($this->class_name, array($object1->getId(), $object3->getId()));
+    $rs = lmbActiveRecord :: findByIds($this->class_name,
+                                       array($object1->getId(), $object3->getId()),
+                                       array('sort' => array('id' => 'asc')));
     $rs->rewind();
     $this->assertEqual($object1->getId(), $rs->current()->getId());
     $rs->next();
