@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
 
@@ -17,6 +17,17 @@ class lmbArrayHelperTest extends UnitTestCase
 
     $this->assertEqual(lmbArrayHelper :: arrayMerge($a, $b),
                        array('apple', 'nested' => array(2), 'b' => 1, 'a' => 1));
+  }
+
+  function testArrayMergeMany()
+  {
+    $a = array('orange', 'nested' => array(1), 'b' => 1);
+    $b = array('apple', 'nested' => array(2), 'a' => 1);
+    $c = array('banana', 'b' => 2);
+
+    $this->assertEqual(lmbArrayHelper :: arrayMerge($a, $b, $c),
+                       array('banana', 'nested' => array(2), 'b' => 2, 'a' => 1));
+
   }
 
   function testMap()

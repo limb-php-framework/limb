@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -22,12 +22,21 @@ class lmbArrayHelper
         $dest_array[$dest] = $src_array[$src];
   }
 
-  function arrayMerge($a1, $a2)
+  function arrayMerge($a1, $a2)//we need at least two args and we specify them explicitly
+  {
+    $args = func_get_args();
+    $res = $a1;
+    for($i=1;$i<sizeof($args);$i++)
+      $res = self :: _arrayMerge($res, $args[$i]);
+    return $res;
+  }
+
+  function _arrayMerge($a1, $a2)
   {
     $n = $a1;
     foreach($a2 as $k => $v)
       if(is_array($v) &&  isset($n[$k]) &&  is_array($n[$k]))
-        $n[$k] = lmbArrayHelper :: arrayMerge($n[$k], $v);
+        $n[$k] = self :: _arrayMerge($n[$k], $v);
       else
         $n[$k] = $v;
     return $n;
