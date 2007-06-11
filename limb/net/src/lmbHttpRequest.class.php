@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 5985 2007-06-11 09:39:42Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -53,7 +53,7 @@ class lmbHttpRequest extends lmbSet
       $this->cookies = $this->_stripHttpSlashes($this->cookies);
     }
 
-    $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post);
+    $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post, $this->files);
 
     foreach($this->request as $k => $v)
       $this->set($k, $v);

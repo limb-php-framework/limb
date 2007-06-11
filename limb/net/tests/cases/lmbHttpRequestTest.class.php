@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/net/src/lmbHttpRequest.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
@@ -125,8 +125,8 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getFiles(), $expected);
     $this->assertEqual($request->getFiles('form'), $expected['form']);
 
-    //files are not returned with get
-    $this->assertNull($request->get('form'));
+    //files ARE returned with raw get
+    $this->assertEqual($request->get('form'), $expected['form']);
   }
 
   function testGetFilesMultipartException()
