@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 lmb_require('limb/i18n/common.inc.php');
@@ -22,7 +22,7 @@ lmb_require('limb/i18n/common.inc.php');
  * </code>
  * @see lmbValidator :: addRequiredRule()
  * @package validation
- * @version $Id: lmbRequiredRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbRequiredRule.class.php 5986 2007-06-13 06:25:43Z pachanga $
  */
 class lmbRequiredRule implements lmbValidationRule
 {
@@ -51,7 +51,7 @@ class lmbRequiredRule implements lmbValidationRule
   function validate($datasource, $error_list)
   {
     $value = $datasource->get($this->field_name);
-    if(is_null($value) || $value === '')
+    if(is_null($value) || (is_string($value) && trim($value) === ''))
     {
       $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} is required', 'validation');
       $error_list->addError($error, array('Field' => $this->field_name));

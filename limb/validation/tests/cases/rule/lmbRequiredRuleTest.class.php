@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
 lmb_require('limb/validation/src/rule/lmbRequiredRule.class.php');
@@ -78,6 +78,19 @@ class lmbRequiredRuleTest extends lmbValidationRuleTestCase
 
     $dataspace = new lmbSet();
     $dataspace->set('testfield', NULL);
+
+    $this->error_list->expectOnce('addError', array(lmb_i18n('{Field} is required', 'validation'),
+                                                         array('Field'=>'testfield')));
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testRequiredRuleWithSpacedString()
+  {
+    $rule = new lmbRequiredRule('testfield');
+
+    $dataspace = new lmbSet();
+    $dataspace->set('testfield', "\n\t   \n\t");
 
     $this->error_list->expectOnce('addError', array(lmb_i18n('{Field} is required', 'validation'),
                                                          array('Field'=>'testfield')));
