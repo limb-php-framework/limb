@@ -2,13 +2,18 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 
-Class lmbOciTypeInfo extends lmbDbTypeInfo
+/**
+ * class lmbOciTypeInfo.
+ * @package dbal
+ * @version $Id: lmbOciTypeInfo.class.php 5989 2007-06-13 13:08:11Z pachanga $
+ */
+class lmbOciTypeInfo extends lmbDbTypeInfo
 {
   function getNativeToColumnTypeMapping()
   {

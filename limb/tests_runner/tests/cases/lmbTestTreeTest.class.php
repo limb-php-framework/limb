@@ -11,12 +11,14 @@ require_once(dirname(__FILE__) . '/../../src/lmbTestTreeDirNode.class.php');
 require_once(dirname(__FILE__) . '/../../src/lmbTestGroup.class.php');
 
 Mock :: generate('lmbTestTreeDirNode', 'MockTestTreeNode');
-Mock :: generate('lmbTestGroup', 'MockTestGroup');
-
-SimpleTest :: ignore('MockTestGroup');
 
 class lmbTestTreeTest extends UnitTestCase
 {
+  function setUp()
+  {
+    Mock :: generate('lmbTestGroup', 'MockTestGroup');//prevent this mock to be executed as a test case
+  }
+
   function testPerform()
   {
     $node = new MockTestTreeNode();

@@ -2,14 +2,17 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
-* Include all the compile time base components plus the compiler
-*/
+ * Include all the compile time base components plus the compiler
+ *
+ * @package wact
+ * @version $Id: templatecompiler.inc.php 5989 2007-06-13 13:08:11Z pachanga $
+ */
 require_once 'limb/wact/src/compiler/WactDictionaryHolder.class.php';
 
 require_once 'limb/wact/src/compiler/expression/WactExpressionInterface.interface.php';
