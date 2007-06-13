@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
@@ -14,7 +14,7 @@ lmb_require('limb/validation/src/lmbValidator.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbController.class.php 5990 2007-06-13 13:57:19Z tony $
  */
 class lmbController extends lmbAbstractController
 {
@@ -26,6 +26,7 @@ class lmbController extends lmbAbstractController
   protected $error_list;
   protected $validator;
   protected $form_id;
+  protected $in_popup = true;
 
   function __construct()
   {
@@ -183,6 +184,9 @@ class lmbController extends lmbAbstractController
 
   function closePopup()
   {
+    if(!$this->in_popup)
+      return;
+
     $this->response->write('<html><script>if(window.opener){window.opener.focus();window.opener.location.reload();window.close();}</script></html>');
   }
 

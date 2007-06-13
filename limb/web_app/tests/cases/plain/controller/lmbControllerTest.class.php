@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/view/src/wact/lmbWactTemplateLocator.class.php');
@@ -33,6 +33,17 @@ class TestingController extends lmbController
   function doSetVars()
   {
     $this->item = 'item';
+  }
+
+  function doPopup()
+  {
+    $this->closePopup();
+  }
+
+  function doWithoutPopup()
+  {
+    $this->in_popup = false;
+    $this->closePopup();
   }
 
   function addValidatorRule($r)
@@ -188,6 +199,22 @@ class lmbControllerTest extends UnitTestCase
   {
     $controller = new lmbController();
     $this->assertEqual($controller->forward('testing', 'write'), "Hi!");
+  }
+
+  function testClosePopup()
+  {
+    $controller = new TestingController();
+    $controller->setCurrentAction('popup');
+    $controller->performAction();
+    $this->assertPattern('~^<html><script>~', $this->toolkit->getResponse()->getResponseString());
+  }
+
+  function testDoNotClosePopup()
+  {
+    $controller = new TestingController();
+    $controller->setCurrentAction('without_popup');
+    $controller->performAction();
+    $this->assertPattern('~^Default empty output~', $this->toolkit->getResponse()->getResponseString());
   }
 }
 
