@@ -159,3 +159,12 @@ CREATE TABLE `document` (
   PRIMARY KEY  (`id`),
   KEY `node_id` (`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `object_for_testing`;
+CREATE TABLE `object_for_testing` (
+ `id` bigint(20) NOT NULL auto_increment,
+ `field` varchar(255) default NULL,
+ `node_id` bigint(20) default NULL,
+ PRIMARY KEY  (`id`),
+ KEY `node_id` (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

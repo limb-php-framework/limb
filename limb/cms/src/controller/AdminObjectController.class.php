@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
@@ -39,7 +39,7 @@ abstract class AdminObjectController extends lmbController
     if($this->request->hasPost())
     {
       $this->_import();
-      $this->_validateAndSave();
+      $this->_validateAndSave(true);
     }
     else
     {
@@ -56,7 +56,7 @@ abstract class AdminObjectController extends lmbController
     if($this->request->hasPost())
     {
       $this->_import();
-      $this->_validateAndSave();
+      $this->_validateAndSave(false);
     }
     else
     {
@@ -69,15 +69,28 @@ abstract class AdminObjectController extends lmbController
     $this->item->import($this->request);
   }
 
-  protected function _validateAndSave()
+  protected function _validateAndSave($is_create = false)
   {
+    $this->_onBeforeValidate();
     $this->item->validate($this->error_list);
-
-    $this->_onBeforeSave();
+    $this->_onAfterValidate();
 
     if($this->error_list->isValid())
     {
+      if($is_create)
+        $this->_onBeforeCreate();
+      else
+        $this->_onBeforeEdit();
+
+      $this->_onBeforeSave();
       $this->item->saveSkipValidation();
+      $this->_onAfterSave();
+
+      if($is_create)
+        $this->_onAfterCreate();
+      else
+        $this->_onAfterEdit();
+
       $this->closePopup();
     }
   }
@@ -85,6 +98,15 @@ abstract class AdminObjectController extends lmbController
   protected function _initCreateForm() {}
   protected function _initEditForm() {}
   protected function _onBeforeSave() {}
+  protected function _onAfterSave() {}
+  protected function _onBeforeCreate() {}
+  protected function _onAfterCreate() {}
+  protected function _onBeforeEdit() {}
+  protected function _onAfterEdit() {}
+  protected function _onBeforeDelete() {}
+  protected function _onAfterDelete() {}
+  protected function _onBeforeValidate() {}
+  protected function _onAfterValidate() {}
 
   function performPublishCommand()
   {
@@ -98,7 +120,11 @@ abstract class AdminObjectController extends lmbController
 
   function doDelete()
   {
+    if($this->request->hasPost())
+      $this->_onBeforeDelete();
     $this->performCommand('limb/cms/src/command/lmbCmsDeleteObjectCommand', $this->_object_class_name);
+    if($this->request->hasPost())
+      $this->_onAfterDelete();
   }
 }
 
