@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/cms/src/model/lmbCmsClassName.class.php');
@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
  * class lmbCmsNode.
  *
  * @package cms
- * @version $Id: lmbCmsNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCmsNode.class.php 5987 2007-06-13 07:31:26Z serega $
  */
 class lmbCmsNode extends lmbActiveRecord
 {
@@ -67,6 +67,14 @@ class lmbCmsNode extends lmbActiveRecord
     {
       $this->object->registerOnAfterSaveCallback($this, 'updateNodeToObjectLink');
       $this->object->save($this->_error_list);
+    }
+  }
+
+  protected function _onAfterUpdate()
+  {
+    if($this->isDirtyProperty('parent'))
+    {
+      $this->_tree->moveNode($this->getId(), $this->getParent()->getId());
     }
   }
 
