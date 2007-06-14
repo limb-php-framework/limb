@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 5992 2007-06-14 11:46:30Z pachanga $
+ * @version $Id: common.inc.php 5993 2007-06-14 11:53:29Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -57,7 +57,7 @@ function lmb_is_path_absolute($path)
   if(!$path)
     return false;
 
-  //very trivial check, more comprehensive required?
+  //very trivial check, is more comprehensive required?
   return (($path{0} == '/' || $path{0} == '\\') ||
           (strlen($path) > 2 && $path{1} == ':'));
 }
@@ -152,6 +152,7 @@ function lmb_camel_case($str, $ucfirst = true)
     $item = $items[$i];
     if($item)
     {
+      //we don't ucfirst first word by default
       $res .= ($first && !$ucfirst ? $item : ucfirst($item));
       $first = false;
       //skipping next "_" if it's not last
