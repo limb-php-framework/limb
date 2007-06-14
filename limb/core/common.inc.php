@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 5967 2007-06-08 10:00:14Z pachanga $
+ * @version $Id: common.inc.php 5992 2007-06-14 11:46:30Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -143,16 +143,40 @@ function lmb_var_dump($obj, $echo = false)
 
 function lmb_camel_case($str, $ucfirst = true)
 {
-  $res = preg_replace('~([a-zA-Z])?_([a-zA-Z])~e',
-                      "'\\1'.strtoupper('\\2')",
-                      $str);
+  $items = explode('_', $str);
+  $len = sizeof($items);
+  $first = true;
+  $res = '';
+  for($i=0;$i<$len;$i++)
+  {
+    $item = $items[$i];
+    if($item)
+    {
+      $res .= ($first && !$ucfirst ? $item : ucfirst($item));
+      $first = false;
+      //skipping next "_" if it's not last
+      if($i+1 < $len-1 && !$items[$i+1])
+        $i++;
+    }
+    else
+      $res .= '_';
+  }
+
   return ($ucfirst) ? ucfirst($res) : $res;
 }
 
 function lmb_under_scores($str)
 {
-  return ltrim(preg_replace('~([a-z])?([A-Z])([a-z])~e', "'\\1_'.strtolower('\\2').'\\3'", $str),
-               '_');
+  $len = strlen($str);
+  $res = '';
+  for($i=0;$i<$len;$i++)
+  {
+    if(ctype_upper($str{$i}))
+      $res .= (($i-1 > 0 && $str{$i-1} != '') ?  '_' : '') . strtolower($str{$i});
+    else
+      $res .= $str{$i};
+  }
+  return $res;
 }
 
 function lmb_humanize($str)
