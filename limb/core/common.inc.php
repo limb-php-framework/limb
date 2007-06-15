@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 5993 2007-06-14 11:53:29Z pachanga $
+ * @version $Id: common.inc.php 5994 2007-06-15 10:54:41Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -168,16 +168,11 @@ function lmb_camel_case($str, $ucfirst = true)
 
 function lmb_under_scores($str)
 {
-  $len = strlen($str);
+  $items = preg_split('~([A-Z][a-z0-9]+)~', $str, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
   $res = '';
-  for($i=0;$i<$len;$i++)
-  {
-    if(ctype_upper($str{$i}))
-      $res .= (($i-1 > 0 && $str{$i-1} != '') ?  '_' : '') . strtolower($str{$i});
-    else
-      $res .= $str{$i};
-  }
-  return $res;
+  foreach($items as $item)
+    $res .= ($item == '_' ? '' : '_') . strtolower($item);
+  return substr($res, 1);
 }
 
 function lmb_humanize($str)
