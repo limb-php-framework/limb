@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
  * class lmbCmsNode.
  *
  * @package cms
- * @version $Id: lmbCmsNode.class.php 5987 2007-06-13 07:31:26Z serega $
+ * @version $Id: lmbCmsNode.class.php 5998 2007-06-18 12:28:49Z pachanga $
  */
 class lmbCmsNode extends lmbActiveRecord
 {
@@ -134,8 +134,8 @@ class lmbCmsNode extends lmbActiveRecord
     if(!isset($this->object_id) || !$this->object_id)
       return null;
 
-    $class_name = lmbActiveRecord :: findById('lmbCmsClassName', $this->object_class_id);
-    return lmbActiveRecord :: findById($class_name->title, $this->object_id);
+    $class_name = lmbActiveRecord :: findById('lmbCmsClassName', $this->object_class_id, true, $this->_db_conn);
+    return lmbActiveRecord :: findById($class_name->title, $this->object_id, true, $this->_db_conn);
   }
 
   function getControllerName()
@@ -145,7 +145,7 @@ class lmbCmsNode extends lmbActiveRecord
 
     if(!$this->controller_name)
     {
-      $class_name = lmbActiveRecord :: findById('lmbCmsClassName', $this->controller_id);
+      $class_name = lmbActiveRecord :: findById('lmbCmsClassName', $this->controller_id, true, $this->_db_conn);
       $this->controller_name = $class_name->title;
     }
 
@@ -181,30 +181,30 @@ class lmbCmsNode extends lmbActiveRecord
     return self :: getGatewayPath() . $this->getRelativeUrlPath();
   }
 
-  static function findByPath($path)
+  static function findByPath($path, $conn = null)
   {
     $tree = lmbToolkit :: instance()->getCmsTree();
     $node = $tree->getNodeByPath($path);
     if($node)
-      return lmbActiveRecord :: findById('lmbCmsNode', $node['id']);
+      return lmbActiveRecord :: findById('lmbCmsNode', $node['id'], $conn);
   }
 
-  static function findById($node_id)
+  static function findById($node_id, $conn = null)
   {
     $tree = lmbToolkit :: instance()->getCmsTree();
     if($node_id && $node = $tree->getNode($node_id))
-      return lmbActiveRecord :: findById('lmbCmsNode', $node['id']);
+      return lmbActiveRecord :: findById('lmbCmsNode', $node['id'], true, $conn);
   }
 
-  static function findByIdOrPath($node_id, $path)
+  static function findByIdOrPath($node_id, $path, $conn = null)
   {
-    if($node_ar = lmbCmsNode :: findById($node_id))
+    if($node_ar = lmbCmsNode :: findById($node_id, $conn))
      return $node_ar;
 
     $tree = lmbToolkit :: instance()->getCmsTree();
 
     if($node = $tree->getNodeByPath($path))
-      return lmbActiveRecord :: findById('lmbCmsNode', $node['id']);
+      return lmbActiveRecord :: findById('lmbCmsNode', $node['id'], true, $conn);
   }
 
   static function findRequested()
@@ -213,23 +213,27 @@ class lmbCmsNode extends lmbActiveRecord
       return lmbCmsNode :: findByPath($path);
   }
 
-  static function findChildren($node_id, $depth = 1)
+  static function findChildren($node_id, $depth = 1, $conn = null)
   {
     if($node_id)
     {
       $tree = lmbToolkit :: instance()->getCmsTree();
-      return lmbActiveRecord :: decorateRecordSet($tree->getChildren($node_id, $depth), 'lmbCmsNode');
+      return lmbActiveRecord :: decorateRecordSet($tree->getChildren($node_id, $depth),
+                                                  'lmbCmsNode',
+                                                  $conn);
     }
   }
 
-  static function findChildrenByPath($path, $depth = 1)
+  static function findChildrenByPath($path, $depth = 1, $conn = null)
   {
     $tree = lmbToolkit :: instance()->getCmsTree();
     if($path && $parent = $tree->getNodeByPath($path))
-      return lmbActiveRecord :: decorateRecordSet($tree->getChildren($parent['id'], $depth), 'lmbCmsNode');
+      return lmbActiveRecord :: decorateRecordSet($tree->getChildren($parent['id'], $depth),
+                                                  'lmbCmsNode',
+                                                  $conn);
   }
 
-  static function findImmediateChildren($parent_id, $controller = '')
+  static function findImmediateChildren($parent_id, $controller = '', $conn = null)
   {
     $criteria = new lmbSQLRawCriteria("parent_id = " . (int)$this->parent_id);
     if($controller)
@@ -237,22 +241,26 @@ class lmbCmsNode extends lmbActiveRecord
       $controller_id = lmbCmsClassName :: generateIdFor($controller);
       $criteria->addAnd(new lmbSQLRawCriteria('controller_id ='. $controller_id));
     }
-    return lmbActiveRecord :: find('lmbCmsNode', array('criteria' => $criteria));
+    return lmbActiveRecord :: find('lmbCmsNode', array('criteria' => $criteria), $conn);
   }
 
   function getChildren($depth = 1)
   {
-    return lmbActiveRecord :: decorateRecordSet($this->_tree->getChildren($this->getId(), $depth), 'lmbCmsNode');
+    return lmbActiveRecord :: decorateRecordSet($this->_tree->getChildren($this->getId(), $depth),
+                                                'lmbCmsNode',
+                                                $this->_db_conn);
   }
 
   function getParents()
   {
-    return $this->decorateRecordSet($this->_tree->getParents($this->getId()));
+    return $this->_decorateRecordSet($this->_tree->getParents($this->getId()));
   }
 
   function getRoots()
   {
-    return lmbActiveRecord :: decorateRecordSet($this->_tree->getChildren('/'), 'lmbCmsNode');
+    return lmbActiveRecord :: decorateRecordSet($this->_tree->getChildren('/'),
+                                                'lmbCmsNode',
+                                                $this->_db_conn);
   }
 
   function getRootNodes()

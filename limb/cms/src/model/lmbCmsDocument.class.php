@@ -3,9 +3,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
@@ -41,7 +41,7 @@ class lmbCmsDocument extends lmbActiveRecord
            ' FROM document LEFT JOIN node ON node.id = document.node_id '.
            ' WHERE node.parent_id = '. $parent_id;
 
-    return lmbActiveRecord :: findBySql('lmbCmsDocument', $sql);
+    return lmbActiveRecord :: findBySql('lmbCmsDocument', $sql, $this->_db_conn);
   }
 
   function getPublishedKids()
@@ -51,7 +51,7 @@ class lmbCmsDocument extends lmbActiveRecord
            ' WHERE node.parent_id = '. $this->getNode()->id .
            ' AND document.is_published = 1';
 
-    return lmbActiveRecord :: findBySql('lmbCmsDocument', $sql);
+    return lmbActiveRecord :: findBySql('lmbCmsDocument', $sql, $this->_db_conn);
   }
 }
 

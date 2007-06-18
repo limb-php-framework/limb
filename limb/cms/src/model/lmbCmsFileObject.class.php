@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
  * class lmbCmsFileObject.
  *
  * @package cms
- * @version $Id: lmbCmsFileObject.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCmsFileObject.class.php 5998 2007-06-18 12:28:49Z pachanga $
  */
 class lmbCmsFileObject extends lmbActiveRecord
 {
@@ -44,20 +44,24 @@ class lmbCmsFileObject extends lmbActiveRecord
       $this->generateAndSetUid();
   }
 
-  static function findByUid($class_name, $uid)
+  static function findByUid($class_name, $uid, $conn = null)
   {
-    $conn = lmbToolkit :: instance()->getDefaultDbConnection();
-    return lmbActiveRecord :: findFirst($class_name, array('criteria' => new lmbSQLFieldCriteria('UID', $uid)));
+    return lmbActiveRecord :: findFirst($class_name,
+                                        array('criteria' => new lmbSQLFieldCriteria('UID', $uid)),
+                                        $conn);
   }
 
-  static function findForParentNode($parent)
+  static function findForParentNode($parent, $conn = null)
   {
     $sql = 'SELECT file_object.* '.
            ' FROM file_object LEFT JOIN node ON node.id = file_object.node_id '.
            ' WHERE node.parent_id = '. $parent->id;
 
-    $stmt = lmbToolkit :: instance()->getDefaultDbConnection()->newStatement($sql);
-    return lmbActiveRecord :: decorateRecordSet($stmt->getRecordSet(), 'FileObject');
+    if(!is_object($conn))
+      $conn = lmbActiveRecord :: getDefaultConnection();
+
+    $stmt = $conn->newStatement($sql);
+    return lmbActiveRecord :: decorateRecordSet($stmt->getRecordSet(), 'FileObject', $conn);
   }
 
   function generateUid()
