@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/dbal/src/lmbDBAL.class.php');
@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDbTools.class.php 5996 2007-06-18 12:20:00Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -131,13 +131,18 @@ class lmbDbTools extends lmbAbstractTools
     $this->default_connection = $conn;
   }
 
-  function createTableGateway($table_name)
+  function createTableGateway($table_name, $conn = null)
   {
-    if(isset($this->db_tables[$table_name]))
-      return $this->db_tables[$table_name];
+    if(!$conn)
+      $cache_key = $table_name;
+    else
+      $cache_key = $table_name . $conn->getHash();
 
-    $db_table = new lmbTableGateway($table_name);
-    $this->db_tables[$table_name] = $db_table;
+    if(isset($this->db_tables[$cache_key]))
+      return $this->db_tables[$cache_key];
+
+    $db_table = new lmbTableGateway($table_name, $conn);
+    $this->db_tables[$cache_key] = $db_table;
     return $db_table;
   }
 }
