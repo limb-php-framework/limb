@@ -1,14 +1,14 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
-     *	@version	$Id: compatibility.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@package	SimpleTest
+     *	@version	$Id: compatibility.php 5999 2007-06-18 13:13:08Z pachanga $
      */
     
     /**
      *  Static methods for compatibility between different
      *  PHP versions.
-     *  @package tests_runner
+     *  @package	SimpleTest
      */
     class SimpleTestCompatibility {
     	

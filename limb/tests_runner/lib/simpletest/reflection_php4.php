@@ -1,14 +1,14 @@
 <?php
 /**
  *	base include file for SimpleTest
- *	@package tests_runner
+ *	@package	SimpleTest
  *	@subpackage	UnitTester
- *	@version	$Id: reflection_php4.php 5945 2007-06-06 08:31:43Z pachanga $
+ *	@version	$Id: reflection_php4.php 5999 2007-06-18 13:13:08Z pachanga $
  */
 
 /**
  *	Version specific reflection API.
- *	@package tests_runner
+ *	@package SimpleTest
  *	@subpackage UnitTester
  *	@ignore	duplicate with reflection_php5.php
  */
@@ -110,6 +110,16 @@ class SimpleReflection {
 	 *    @access public
 	 */
 	function isInterface() {
+		return false;
+	}
+        
+	/**
+	 *	  Scans for final methods, but as it's PHP 4 there
+	 *	  aren't any.
+	 *    @returns boolean   True if the class has a final method.
+	 *    @access public
+	 */
+	function hasFinal() {
 		return false;
 	}
 

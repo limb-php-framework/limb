@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: http.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: http.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -17,7 +17,7 @@
     /**
      *    Creates HTTP headers for the end point of
      *    a HTTP request.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleRoute {
@@ -109,7 +109,7 @@
     /**
      *    Creates HTTP headers for the end point of
      *    a HTTP request via a proxy server.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleProxyRoute extends SimpleRoute {
@@ -190,7 +190,7 @@
     /**
      *    HTTP request for a web page. Factory for
      *    HttpResponse object.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleHttpRequest {
@@ -289,7 +289,7 @@
     
     /**
      *    Collection of header lines in the response.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleHttpHeaders {
@@ -475,7 +475,7 @@
     
     /**
      *    Basic HTTP response.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleHttpResponse extends SimpleStickyError {

@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: xml.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: xml.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -15,7 +15,7 @@
     /**
      *    Creates the XML needed for remote communication
      *    by SimpleTest.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class XmlReporter extends SimpleReporter {
@@ -286,7 +286,7 @@
      *    Accumulator for incoming tag. Holds the
      *    incoming test structure information for
      *    later dispatch to the reporter.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class NestingXmlTag {
@@ -336,7 +336,7 @@
      *    Accumulator for incoming method tag. Holds the
      *    incoming test structure information for
      *    later dispatch to the reporter.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class NestingMethodTag extends NestingXmlTag {
@@ -376,7 +376,7 @@
      *    Accumulator for incoming case tag. Holds the
      *    incoming test structure information for
      *    later dispatch to the reporter.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class NestingCaseTag extends NestingXmlTag {
@@ -416,7 +416,7 @@
      *    Accumulator for incoming group tag. Holds the
      *    incoming test structure information for
      *    later dispatch to the reporter.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class NestingGroupTag extends NestingXmlTag {
@@ -468,7 +468,7 @@
     /**
      *    Parser for importing the output of the XmlReporter.
      *    Dispatches that output to another reporter.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class SimpleTestXmlParser {

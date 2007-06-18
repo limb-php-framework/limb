@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: shell_tester.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: shell_tester.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -14,7 +14,7 @@
 
     /**
      *    Wrapper for exec() functionality.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class SimpleShell {
@@ -65,7 +65,7 @@
      *    Test case for testing of command line scripts and
      *    utilities. Usually scripts that are external to the
      *    PHP code, but support it in some way.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class ShellTestCase extends SimpleTestCase {

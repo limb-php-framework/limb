@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest.
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: tag.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: tag.php 5999 2007-06-18 13:13:08Z pachanga $
      */
      
     /**#@+
@@ -15,7 +15,7 @@
    
     /**
      *    HTML or XML tag.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleTag {
@@ -152,7 +152,7 @@
     
     /**
      *    Page title.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleTitleTag extends SimpleTag {
@@ -169,7 +169,7 @@
     
     /**
      *    Link.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleAnchorTag extends SimpleTag {
@@ -199,7 +199,7 @@
     
     /**
      *    Form element.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleWidget extends SimpleTag {
@@ -308,7 +308,7 @@
     
     /**
      *    Text, password and hidden field.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleTextTag extends SimpleWidget {
@@ -351,7 +351,7 @@
     
     /**
      *    Submit button as input tag.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleSubmitTag extends SimpleWidget {
@@ -409,7 +409,7 @@
       
     /**
      *    Image button as input tag.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleImageSubmitTag extends SimpleWidget {
@@ -484,7 +484,7 @@
       
     /**
      *    Submit button as button tag.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleButtonTag extends SimpleWidget {
@@ -541,7 +541,7 @@
   
     /**
      *    Content tag for text area.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleTextAreaTag extends SimpleWidget {
@@ -626,7 +626,7 @@
     
     /**
      *    File upload widget.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleUploadTag extends SimpleWidget {
@@ -667,7 +667,7 @@
     
     /**
      *    Drop down widget.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleSelectionTag extends SimpleWidget {
@@ -754,7 +754,7 @@
     
     /**
      *    Drop down widget.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class MultipleSelectionTag extends SimpleWidget {
@@ -849,7 +849,7 @@
     
     /**
      *    Option for selection field.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleOptionTag extends SimpleWidget {
@@ -910,7 +910,7 @@
     
     /**
      *    Radio button.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleRadioButtonTag extends SimpleWidget {
@@ -967,7 +967,7 @@
     
     /**
      *    Checkbox widget.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleCheckboxTag extends SimpleWidget {
@@ -1031,7 +1031,7 @@
     
     /**
      *    A group of multiple widgets with some shared behaviour.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleTagGroup {
@@ -1121,7 +1121,7 @@
 
     /**
      *    A group of tags with the same name within a form.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleCheckboxGroup extends SimpleTagGroup {
@@ -1244,7 +1244,7 @@
     /**
      *    A group of tags with the same name within a form.
      *    Used for radio buttons.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleRadioGroup extends SimpleTagGroup {
@@ -1323,7 +1323,7 @@
     
     /**
      *    Tag to keep track of labels.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleLabelTag extends SimpleTag {
@@ -1349,7 +1349,7 @@
     
     /**
      *    Tag to aid parsing the form.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleFormTag extends SimpleTag {
@@ -1366,7 +1366,7 @@
     
     /**
      *    Tag to aid parsing the frames in a page.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleFrameTag extends SimpleTag {

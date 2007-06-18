@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: detached.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: detached.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -15,7 +15,7 @@
 
     /**
      *    Runs an XML formated test in a separate process.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class DetachedTestCase {

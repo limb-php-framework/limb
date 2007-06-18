@@ -1,9 +1,9 @@
 <?php
     /**
      *    base include file for SimpleTest
-     *    @package tests_runner
+     *    @package    SimpleTest
      *    @subpackage    UnitTester
-     *    @version    $Id: expectation.php 5945 2007-06-06 08:31:43Z pachanga $
+     *    @version    $Id: expectation.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -16,12 +16,12 @@
     /**
      *    Assertion that can display failure information.
      *    Also includes various helper methods.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      *    @abstract
      */
     class SimpleExpectation {
-        var $_dumper;
+        var $_dumper = false;
         var $_message;
 
         /**
@@ -74,6 +74,10 @@
          *    @access protected
          */
         function &_getDumper() {
+            if (! $this->_dumper) {
+                $dumper = &new SimpleDumper();
+                return $dumper;
+            }
             return $this->_dumper;
         }
 
@@ -95,7 +99,7 @@
 
     /**
      *    A wildcard expectation always matches.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage MockObjects
      */
     class AnythingExpectation extends SimpleExpectation {
@@ -124,8 +128,37 @@
     }
 
     /**
+     *    An expectation that never matches.
+     *    @package SimpleTest
+     *    @subpackage MockObjects
+     */
+    class FailedExpectation extends SimpleExpectation {
+
+        /**
+         *    Tests the expectation. Always false.
+         *    @param mixed $compare  Ignored.
+         *    @return boolean        True.
+         *    @access public
+         */
+        function test($compare) {
+            return false;
+        }
+
+        /**
+         *    Returns a human readable test message.
+         *    @param mixed $compare      Comparison value.
+         *    @return string             Description of failure.
+         *    @access public
+         */
+        function testMessage($compare) {
+            $dumper = &$this->_getDumper();
+            return 'Failed expectation never matches [' . $dumper->describeValue($compare) . ']';
+        }
+    }
+
+    /**
      *    An expectation that passes on boolean true.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage MockObjects
      */
     class TrueExpectation extends SimpleExpectation {
@@ -155,7 +188,7 @@
 
     /**
      *    An expectation that passes on boolean false.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage MockObjects
      */
     class FalseExpectation extends SimpleExpectation {
@@ -185,7 +218,7 @@
 
     /**
      *    Test for equality.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class EqualExpectation extends SimpleExpectation {
@@ -239,35 +272,9 @@
         }
     }
 
-    class ReferenceExpectation extends SimpleExpectation {
-        var $_value;
-
-        function ReferenceExpectation(&$value, $message = '%s') {
-            $this->SimpleExpectation($message);
-            $this->_value =& $value;
-        }
-
-        function test(&$compare) {
-            return SimpleTestCompatibility::isReference($this->_value, $compare);
-        }
-
-        function testMessage($compare) {
-            if ($this->test($compare)) {
-                return "Reference expectation [" . $this->_dumper->describeValue($this->_value) . "]";
-            } else {
-                return "Reference expectation fails " .
-                        $this->_dumper->describeDifference($this->_value, $compare);
-            }
-        }
-
-        function _getValue() {
-            return $this->_value;
-        }
-    }
-
     /**
      *    Test for inequality.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class NotEqualExpectation extends EqualExpectation {
@@ -315,7 +322,7 @@
 
     /**
      *    Test for being within a range.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class WithinMarginExpectation extends SimpleExpectation {
@@ -390,7 +397,7 @@
 
     /**
      *    Test for being outside of a range.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class OutsideMarginExpectation extends WithinMarginExpectation {
@@ -435,8 +442,59 @@
     }
 
     /**
+     *    Test for reference.
+     *    @package SimpleTest
+     *    @subpackage UnitTester
+     */
+    class ReferenceExpectation extends SimpleExpectation {
+        var $_value;
+
+        /**
+         *    Sets the reference value to compare against.
+         *    @param mixed $value       Test reference to match.
+         *    @param string $message    Customised message on failure.
+         *    @access public
+         */
+        function ReferenceExpectation(&$value, $message = '%s') {
+            $this->SimpleExpectation($message);
+            $this->_value =& $value;
+        }
+
+        /**
+         *    Tests the expectation. True if it exactly
+         *    references the held value.
+         *    @param mixed $compare        Comparison reference.
+         *    @return boolean              True if correct.
+         *    @access public
+         */
+        function test(&$compare) {
+            return SimpleTestCompatibility::isReference($this->_value, $compare);
+        }
+
+        /**
+         *    Returns a human readable test message.
+         *    @param mixed $compare      Comparison value.
+         *    @return string             Description of success
+         *                               or failure.
+         *    @access public
+         */
+        function testMessage($compare) {
+            if ($this->test($compare)) {
+                return "Reference expectation [" . $this->_dumper->describeValue($this->_value) . "]";
+            } else {
+                return "Reference expectation fails " .
+                        $this->_dumper->describeDifference($this->_value, $compare);
+            }
+        }
+
+        function _getValue() {
+            return $this->_value;
+        }
+    }
+
+    /**
      *    Test for identity.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class IdenticalExpectation extends EqualExpectation {
@@ -484,7 +542,7 @@
 
     /**
      *    Test for non-identity.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class NotIdenticalExpectation extends IdenticalExpectation {
@@ -530,7 +588,7 @@
 
     /**
      *    Test for a pattern using Perl regex rules.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class PatternExpectation extends SimpleExpectation {
@@ -604,7 +662,7 @@
     }
 
     /**
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      *    @deprecated
      */
@@ -614,7 +672,7 @@
     /**
      *    Fail if a pattern is detected within the
      *    comparison.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      */
     class NoPatternExpectation extends PatternExpectation {
@@ -660,7 +718,7 @@
     }
 
     /**
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage UnitTester
      *      @deprecated
      */
@@ -669,7 +727,7 @@
 
     /**
      *    Tests either type or class name if it's an object.
-     *      @package tests_runner
+     *      @package SimpleTest
      *      @subpackage UnitTester
      */
     class IsAExpectation extends SimpleExpectation {
@@ -746,7 +804,7 @@
     /**
      *    Tests either type or class name if it's an object.
      *    Will succeed if the type does not match.
-     *      @package tests_runner
+     *      @package SimpleTest
      *      @subpackage UnitTester
      */
     class NotAExpectation extends IsAExpectation {
@@ -789,7 +847,7 @@
 
     /**
      *    Tests for existance of a method in an object
-     *      @package tests_runner
+     *      @package SimpleTest
      *      @subpackage UnitTester
      */
     class MethodExistsExpectation extends SimpleExpectation {

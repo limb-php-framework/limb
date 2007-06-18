@@ -3,7 +3,7 @@
  *	base include file for SimpleTest
  *	@package	SimpleTest
  *	@subpackage	UnitTester
- *	@version	$Id: array_reporter.php,v 1.1 2006/11/29 13:17:01 pp11 Exp $
+ *	@version	$Id: recorder.php,v 1.1 2007/04/29 14:33:31 pp11 Exp $
  */
 
 /**
@@ -12,7 +12,7 @@
 require_once(dirname(__FILE__) . '/../scorer.php');
 
 /**
- *    Array-based test reporter. Returns an array
+ *    Array-based test recorder. Returns an array
  *    with timestamp, status, test name and message for each pass and failure.
  *
  *    This code is made available under the same terms as SimpleTest.  It is based
@@ -24,12 +24,12 @@ require_once(dirname(__FILE__) . '/../scorer.php');
  *	  @package SimpleTest
  *	  @subpackage UnitTester
  */
-class ArrayReporter extends SimpleReporter {
-    var $_results;
+class Recorder extends SimpleReporter {
+    var $results;
   
-	function ArrayReporter() {
+	function Recorder() {
         $this->SimpleReporter();
-        $this->_results = array();
+        $this->results = array();
 	}
 	
 	function paintPass($message) {
@@ -42,7 +42,7 @@ class ArrayReporter extends SimpleReporter {
         $result["status"] = "Passed";
         $result["test"] = $test;
         $result["message"] = $message;
-        $this->_results[] = $result;
+        $this->results[] = $result;
 	}
 	
 	function paintFail($message) {
@@ -55,11 +55,7 @@ class ArrayReporter extends SimpleReporter {
         $result["status"] = "Failed";
         $result["test"] = $test;
         $result["message"] = $message;
-        $this->_results[] = $result;
-	}
-	
-	function getStatus() {
-        return $this->_results;
+        $this->results[] = $result;
 	}
 }
 

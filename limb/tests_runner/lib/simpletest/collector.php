@@ -4,16 +4,16 @@
      * {@link SimplePatternCollector}.
      *
      * @author Travis Swicegood <development@domain51.com>
-     * @package tests_runner
+     * @package SimpleTest
      * @subpackage UnitTester
-     * @version $Id: collector.php 5945 2007-06-06 08:31:43Z pachanga $
+     * @version $Id: collector.php 5999 2007-06-18 13:13:08Z pachanga $
      */
     
     /**
      * The basic collector for {@link GroupTest}
      *
      * @see collect(), GroupTest::collect()
-     * @package tests_runner
+     * @package SimpleTest
      * @subpackage UnitTester
      */
     class SimpleCollector {
@@ -43,6 +43,9 @@
             $path = $this->_removeTrailingSlash($path);
             if ($handle = opendir($path)) {
                 while (($entry = readdir($handle)) !== false) {
+                    if ($this->_isHidden($entry)) {
+                        continue;
+                    }
                     $this->_handle($test, $path . DIRECTORY_SEPARATOR . $entry);
                 }
                 closedir($handle);
@@ -63,9 +66,21 @@
          * @access protected
          */
         function _handle(&$test, $file) {
-            if (! is_dir($file)) {
-                $test->addTestFile($file);
+            if (is_dir($file)) {
+                return;
             }
+            $test->addTestFile($file);
+        }
+        
+        /**
+         *  Tests for hidden files so as to skip them. Currently
+         *  only tests for Unix hidden files.
+         *  @param string $filename        Plain filename.
+         *  @return boolean                True if hidden file.
+         *  @access private
+         */
+        function _isHidden($filename) {
+            return strncmp($filename, '.', 1) == 0;
         }
     }
     
@@ -73,7 +88,7 @@
      * An extension to {@link SimpleCollector} that only adds files matching a
      * given pattern.
      *
-     * @package tests_runner
+     * @package SimpleTest
      * @subpackage UnitTester
      * @see SimpleCollector
      */

@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	MockObjects
-     *	@version	$Id: mock_objects.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: mock_objects.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -28,7 +28,7 @@
 
     /**
      *    Parameter comparison assertion.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage MockObjects
      */
     class ParametersExpectation extends SimpleExpectation {
@@ -161,7 +161,7 @@
 
     /**
      *    Confirms that the number of calls on a method is as expected.
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	MockObjects
      */
     class CallCountExpectation extends SimpleExpectation {
@@ -206,7 +206,7 @@
 
     /**
      *    Confirms that the number of calls on a method is as expected.
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	MockObjects
      */
     class MinimumCallCountExpectation extends SimpleExpectation {
@@ -251,7 +251,7 @@
 
     /**
      *    Confirms that the number of calls on a method is as expected.
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	MockObjects
      */
     class MaximumCallCountExpectation extends SimpleExpectation {
@@ -297,7 +297,7 @@
     /**
      *    Retrieves values and references by searching the
      *    parameter lists until a match is found.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage MockObjects
      */
     class CallMap {
@@ -389,7 +389,7 @@
      *    calls upon them. The mock will assert the
      *    expectations against it's attached test case in
      *    addition to the server stub behaviour.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage MockObjects
      */
     class SimpleMock {
@@ -406,23 +406,19 @@
         /**
          *    Creates an empty return list and expectation list.
          *    All call counts are set to zero.
-         *    @param SimpleTestCase $test    Test case to test expectations in.
-         *    @param mixed $wildcard         Parameter matching wildcard.
-         *    @param boolean $is_strict      Enables method name checks on
-         *                                   expectations.
          */
         function SimpleMock() {
             $this->_returns = array();
             $this->_return_sequence = array();
             $this->_call_counts = array();
-            $test = &$this->_getCurrentTestCase();
-            $test->tell($this);
             $this->_expected_counts = array();
             $this->_max_counts = array();
             $this->_expected_args = array();
             $this->_expected_args_at = array();
+            $test = &$this->_getCurrentTestCase();
+            $test->tell($this);
         }
-
+        
         /**
          *    Disables a name check when setting expectations.
          *    This hack is needed for the partial mocks.
@@ -744,7 +740,7 @@
         function expectOnce($method, $args = false, $message = '%s') {
             $this->expectCallCount($method, 1, $message);
             if ($args !== false) {
-                $this->expectArguments($method, $args, $message);
+                $this->expect($method, $args, $message);
             }
         }
 
@@ -760,7 +756,7 @@
         function expectAtLeastOnce($method, $args = false, $message = '%s') {
             $this->expectMinimumCallCount($method, 1, $message);
             if ($args !== false) {
-                $this->expectArguments($method, $args, $message);
+                $this->expect($method, $args, $message);
             }
         }
 
@@ -775,8 +771,8 @@
          *    test method has finished. Totals up the call
          *    counts and triggers a test assertion if a test
          *    is present for expected call counts.
-         *    @param string $test_method    Current method name.
-         *    @param SimpleTestCase $test   Test to send message to.
+         *    @param string $test_method      Current method name.
+         *    @param SimpleTestCase $test     Test to send message to.
          *    @access public
          */
         function atTestEnd($test_method, &$test) {
@@ -866,7 +862,7 @@
     /**
      *    Static methods only service class for code generation of
      *    mock objects.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage MockObjects
      */
     class Mock {
@@ -895,14 +891,6 @@
          *    @access public
          */
         function generate($class, $mock_class = false, $methods = false) {
-            $generator = new MockGenerator($class, $mock_class);
-            return $generator->generate($methods);
-        }
-        
-        /**
-         *    Temporary method while refactoring.
-         */
-        function generateSubclass($class, $mock_class = false, $methods = array()) {
             $generator = new MockGenerator($class, $mock_class);
             return $generator->generateSubclass($methods);
         }
@@ -936,8 +924,8 @@
     }
 
     /**
-     *	@package tests_runner
-     *	@subpackage	MockObjects
+     *	  @package	SimpleTest
+     *	  @subpackage	MockObjects
      *    @deprecated
      */
     class Stub extends Mock {
@@ -945,7 +933,7 @@
 
     /**
      *    Service class for code generation of mock objects.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage MockObjects
      */
     class MockGenerator {
@@ -954,6 +942,12 @@
         var $_mock_base;
         var $_reflection;
 
+        /**
+         *    Builds initial reflection object.
+         *    @param string $class        Class to be mocked.
+         *    @param string $mock_class   New class with identical interface,
+         *                                but no behaviour.
+         */
         function MockGenerator($class, $mock_class) {
             $this->_class = $class;
             $this->_mock_class = $mock_class;
@@ -982,16 +976,16 @@
             if ($mock_reflection->classExistsSansAutoload()) {
                 return false;
             }
-            return eval(
-                    $this->_createClassCode($methods ? $methods : array()) .
-                    " return true;");
+            $code = $this->_createClassCode($methods ? $methods : array());
+            return eval("$code return \$code;");
         }
         
         /**
-         *    Subclasses a class and overrides every method with a mock one.
-         *    that can have return values and expectations set.
+         *    Subclasses a class and overrides every method with a mock one
+         *    that can have return values and expectations set. Chains
+         *    to an aggregated SimpleMock.
          *    @param array $methods        Additional methods to add beyond
-         *                                 those in th cloned class. Use this
+         *                                 those in the cloned class. Use this
          *                                 to emulate the dynamic addition of
          *                                 methods in the cloned class or when
          *                                 the class hasn't been written yet.
@@ -1005,14 +999,12 @@
             if ($mock_reflection->classExistsSansAutoload()) {
                 return false;
             }
-            if ($this->_reflection->isInterface()) {
-                return eval(
-                        $this->_createClassCode($methods ? $methods : array()) .
-                        " return true;");
+            if ($this->_reflection->isInterface() || $this->_reflection->hasFinal()) {
+                $code = $this->_createClassCode($methods ? $methods : array());
+                return eval("$code return \$code;");
             } else {
-                return eval(
-                        $this->_createSubclassCode($methods ? $methods : array()) .
-                        " return true;");
+                $code = $this->_createSubclassCode($methods ? $methods : array());
+                return eval("$code return \$code;");
             }
         }
 
@@ -1034,7 +1026,8 @@
                 trigger_error('Partial mock class [' . $this->_mock_class . '] already exists');
                 return false;
             }
-            return eval($this->_extendClassCode($methods));
+            $code = $this->_extendClassCode($methods);
+            return eval("$code return \$code;");
         }
 
         /**
@@ -1189,7 +1182,9 @@
          *    @access private
          */
         function _addMethodList($methods) {
-            return "    var \$_mocked_methods = array('" . implode("', '", $methods) . "');\n";
+            return "    var \$_mocked_methods = array('" .
+                    implode("', '", array_map('strtolower', $methods)) .
+                    "');\n";
         }
 
         /**
@@ -1199,7 +1194,7 @@
          *    @access private
          */
         function _bailOutIfNotMocked($alias) {
-            $code  = "        if (! in_array($alias, \$this->_mocked_methods)) {\n";
+            $code  = "        if (! in_array(strtolower($alias), \$this->_mocked_methods)) {\n";
             $code .= "            trigger_error(\"Method [$alias] is not mocked\");\n";
             $code .= "            \$null = null;\n";
             $code .= "            return \$null;\n";
@@ -1281,7 +1276,6 @@
             $code .= "        \$this->_mock->expectAtLeastOnce(\$method, \$args, \$msg);\n";
             $code .= "    }\n";
             $code .= "    function tally() {\n";
-            $code .= "        \$this->_mock->tally();\n";
             $code .= "    }\n";
             return $code;
         }

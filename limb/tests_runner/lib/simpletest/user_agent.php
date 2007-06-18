@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: user_agent.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: user_agent.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -26,7 +26,7 @@
     /**
      *    Fetches web pages whilst keeping track of
      *    cookies and authentication.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleUserAgent {

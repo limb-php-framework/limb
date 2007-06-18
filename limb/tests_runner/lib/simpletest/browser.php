@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: browser.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: browser.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -24,7 +24,7 @@
 
     /**
      *    Browser history list.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleBrowserHistory {
@@ -154,7 +154,7 @@
      *    Simulated web browser. This is an aggregate of
      *    the user agent, the HTML parsing, request history
      *    and the last header set.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleBrowser {

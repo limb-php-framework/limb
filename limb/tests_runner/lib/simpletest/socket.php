@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	MockObjects
-     *	@version	$Id: socket.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: socket.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -15,7 +15,7 @@
     /**
      *    Stashes an error for later. Useful for constructors
      *    until PHP gets exceptions.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleStickyError {
@@ -68,7 +68,7 @@
 
     /**
      *    Wrapper for TCP/IP socket.
-     *    @package tests_runner
+     *    @package SimpleTest
      *    @subpackage WebTester
      */
     class SimpleSocket extends SimpleStickyError {
@@ -184,7 +184,7 @@
 
     /**
      *    Wrapper for TCP/IP socket over TLS.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleSecureSocket extends SimpleSocket {

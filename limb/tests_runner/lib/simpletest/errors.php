@@ -1,9 +1,9 @@
 <?php
 /**
  *	base include file for SimpleTest
- *	@package tests_runner
+ *	@package	SimpleTest
  *	@subpackage	UnitTester
- *	@version	$Id: errors.php 5945 2007-06-06 08:31:43Z pachanga $
+ *	@version	$Id: errors.php 5999 2007-06-18 13:13:08Z pachanga $
  */
 
 /**
@@ -23,7 +23,7 @@ require_once dirname(__FILE__) . '/expectation.php';
 
 /**
  *    Extension that traps errors into an error queue.
- *	  @package tests_runner
+ *	  @package SimpleTest
  *	  @subpackage UnitTester
  */
 class SimpleErrorTrappingInvoker extends SimpleInvokerDecorator {
@@ -56,12 +56,26 @@ class SimpleErrorTrappingInvoker extends SimpleInvokerDecorator {
 		}
 		restore_error_handler();
 	}
+
+	function after($method) {
+		$context = &SimpleTest::getContext();
+		$queue = &$context->get('SimpleErrorQueue');
+		$queue->setTestCase($this->getTestCase());
+		while (list($expected, $message) = $queue->extractExpectation()) {
+			$testCase = &$this->getTestCase();
+
+			$testCase->fail(
+				sprintf('Expected PHP error [%s] not caught', $expected->_value)
+			);
+		}
+		parent::after($method);
+	}
 }
 
 /**
  *    Singleton error queue used to record trapped
  *    errors.
- *	  @package tests_runner
+ *	  @package	SimpleTest
  *	  @subpackage	UnitTester
  */
 class SimpleErrorQueue {
@@ -141,6 +155,13 @@ class SimpleErrorQueue {
 		return false;
 	}
 
+	function extractExpectation() {
+		if (count($this->_expectation_queue)) {
+			return array_shift($this->_expectation_queue);
+		}
+		return false;
+	}
+
 	/**
 	 *    Discards the contents of the error queue.
 	 *    @access public
@@ -186,9 +207,7 @@ class SimpleErrorQueue {
 	 *    @access public
 	 */
 	function expectError($expected, $message) {
-		array_push(
-				$this->_expectation_queue,
-				array($expected, $message));
+		array_push($this->_expectation_queue, array($expected, $message));
 	}
 
 	/**
@@ -213,6 +232,9 @@ class SimpleErrorQueue {
 				E_USER_ERROR => 'E_USER_ERROR',
 				E_USER_WARNING => 'E_USER_WARNING',
 				E_USER_NOTICE => 'E_USER_NOTICE');
+    if(version_compare(phpversion(), '5.2.0', '>=')) {
+       $map[E_RECOVERABLE_ERROR] = 'E_RECOVERABLE_ERROR';
+    }
 		return $map[$severity];
 	}
 }
@@ -229,7 +251,7 @@ class SimpleErrorQueue {
  *    @static
  *    @access public
  */
-function SimpleTestErrorHandler($severity, $message, $filename, $line, $super_globals) {
+function SimpleTestErrorHandler($severity, $message, $filename = null, $line = null, $super_globals = null, $mask = null) {
     $severity = $severity & error_reporting();
 	if ($severity) {
 		restore_error_handler();
@@ -241,10 +263,7 @@ function SimpleTestErrorHandler($severity, $message, $filename, $line, $super_gl
 		$queue = &$context->get('SimpleErrorQueue');
 		$queue->add($severity, $message, $filename, $line);
 		set_error_handler('SimpleTestErrorHandler');
-	} else {
-		if (version_compare(phpversion(), '5.2') >= 0) {
-			return false;
-		}
 	}
+	return true;
 }
 ?>

@@ -1,9 +1,9 @@
 <?php
     /**
      *	Base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: cookies.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: cookies.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -17,7 +17,7 @@
      *    arbitary stuff. I have used...
      *    http://wp.netscape.com/newsref/std/cookie_spec.html
      *    http://www.cookiecentral.com/faq/
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleCookie {
@@ -222,7 +222,7 @@
     /**
      *    Repository for cookies. This stuff is a
      *    tiny bit browser dependent.
-	 *    @package tests_runner
+	 *    @package SimpleTest
 	 *    @subpackage WebTester
      */
     class SimpleCookieJar {

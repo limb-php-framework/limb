@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: scorer.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: scorer.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+*/
@@ -14,7 +14,7 @@
      *    Can recieve test events and display them. Display
      *    is achieved by making display methods available
      *    and visiting the incoming event.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      *    @abstract
      */
@@ -235,7 +235,7 @@
      *    page footers and headers. Also keeps track of the
      *    test nesting. This is the main base class on which
      *    to build the finished test (page based) displays.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class SimpleReporter extends SimpleScorer {
@@ -412,7 +412,7 @@
 
     /**
      *    For modifying the behaviour of the visual reporters.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class SimpleReporterDecorator {
@@ -616,7 +616,7 @@
     /**
      *    For sending messages to multiple reporters at
      *    the same time.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class MultipleReporter {

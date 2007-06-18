@@ -1,9 +1,9 @@
 <?php
     /**
      *	adapter for SimpleTest to use PHPUnit test cases
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage Extensions
-     *	@version	$Id: phpunit_test_case.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: phpunit_test_case.php 5999 2007-06-18 13:13:08Z pachanga $
      */
     
     /**#@+
@@ -16,7 +16,7 @@
     /**
      *    Adapter for sourceforge PHPUnit test case to allow
      *    legacy test cases to be used with SimpleTest.
-     *    @package tests_runner
+     *    @package		SimpleTest
      *    @subpackage	Extensions
      */
     class TestCase extends SimpleTestCase {
@@ -26,7 +26,7 @@
          *    @param $label        Test name to display.
          *    @public
          */
-        function TestCase($label) {
+        function TestCase($label = false) {
             $this->SimpleTestCase($label);
         }
         
@@ -38,7 +38,7 @@
          *    @public
          */
         function assert($condition, $message = false) {
-            parent::assertTrue($condition, $message);
+            parent::assert(new TrueExpectation(), $condition, $message);
         }
         
         /**

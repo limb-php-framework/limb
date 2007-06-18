@@ -1,9 +1,9 @@
 <?php
     /**
      *	base include file for SimpleTest
-     *	@package tests_runner
+     *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: reporter.php 5945 2007-06-06 08:31:43Z pachanga $
+     *	@version	$Id: reporter.php 5999 2007-06-18 13:13:08Z pachanga $
      */
 
     /**#@+
@@ -15,7 +15,7 @@
     /**
      *    Sample minimal test displayer. Generates only
      *    failure messages and a pass count.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class HtmlReporter extends SimpleReporter {
@@ -189,7 +189,7 @@
      *    line use. I've tried to make it look like JUnit,
      *    but I wanted to output the errors as they arrived
      *    which meant dropping the dots.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class TextReporter extends SimpleReporter {
@@ -259,6 +259,10 @@
         function paintError($message) {
             parent::paintError($message);
             print "Exception " . $this->getExceptionCount() . "!\n$message\n";
+            $breadcrumb = $this->getTestList();
+            array_shift($breadcrumb);
+            print "\tin " . implode("\n\tin ", array_reverse($breadcrumb));
+            print "\n";
         }
 
         /**
@@ -274,6 +278,10 @@
                     '] in ['. $exception->getFile() .
                     ' line ' . $exception->getLine() . ']';
             print "Exception " . $this->getExceptionCount() . "!\n$message\n";
+            $breadcrumb = $this->getTestList();
+            array_shift($breadcrumb);
+            print "\tin " . implode("\n\tin ", array_reverse($breadcrumb));
+            print "\n";
         }
 		
 		/**
@@ -300,14 +308,14 @@
     /**
      *    Runs just a single test group, a single case or
      *    even a single test within that case.
-	 *	  @package tests_runner
+	 *	  @package SimpleTest
 	 *	  @subpackage UnitTester
      */
     class SelectiveReporter extends SimpleReporterDecorator {
-        var $_just_this_case =false;
+        var $_just_this_case = false;
         var $_just_this_test = false;
-        var $_within_test_case = true;
-
+        var $_on;
+        
         /**
          *    Selects the test case or group to be run,
          *    and optionally a specific test.
@@ -318,7 +326,9 @@
         function SelectiveReporter(&$reporter, $just_this_case = false, $just_this_test = false) {
             if (isset($just_this_case) && $just_this_case) {
                 $this->_just_this_case = strtolower($just_this_case);
-                $this->_within_test_case = false;
+                $this->_off();
+            } else {
+                $this->_on();
             }
             if (isset($just_this_test) && $just_this_test) {
                 $this->_just_this_test = strtolower($just_this_test);
@@ -332,24 +342,52 @@
          *    @return boolean             True if matched.
          *    @access protected
          */
-        function _isCaseMatch($test_case) {
-            if ($this->_just_this_case) {
-                return $this->_just_this_case == strtolower($test_case);
-            }
-            return false;
+        function _matchesTestCase($test_case) {
+            return $this->_just_this_case == strtolower($test_case);
         }
 
         /**
-         *    Compares criteria to actual the test name.
+         *    Compares criteria to actual the test name. If no
+         *    name was specified at the beginning, then all tests
+         *    can run.
          *    @param string $method       The incoming test method.
          *    @return boolean             True if matched.
          *    @access protected
          */
-        function _isTestMatch($method) {
-            if ($this->_just_this_test) {
-                return $this->_just_this_test == strtolower($method);
+        function _shouldRunTest($test_case, $method) {
+            if ($this->_isOn() || $this->_matchesTestCase($test_case)) {
+                if ($this->_just_this_test) {
+                    return $this->_just_this_test == strtolower($method);
+                } else {
+                    return true;
+                }
             }
-            return true;
+            return false;
+        }
+        
+        /**
+         *    Switch on testing for the group or subgroup.
+         *    @access private
+         */
+        function _on() {
+            $this->_on = true;
+        }
+        
+        /**
+         *    Switch off testing for the group or subgroup.
+         *    @access private
+         */
+        function _off() {
+            $this->_on = false;
+        }
+        
+        /**
+         *    Is this group actually being tested?
+         *    @return boolean     True if the current test group is active.
+         *    @access private
+         */
+        function _isOn() {
+            return $this->_on;
         }
 
         /**
@@ -360,7 +398,7 @@
          *    @access public
          */
         function shouldInvoke($test_case, $method) {
-            if ($this->_within_test_case && $this->_isTestMatch($method)) {
+            if ($this->_shouldRunTest($test_case, $method)) {
                 return $this->_reporter->shouldInvoke($test_case, $method);
             }
             return false;
@@ -373,12 +411,10 @@
          *    @access public
          */
         function paintGroupStart($test_case, $size) {
-            if ($this->_isCaseMatch($test_case)) {
-                $this->_within_test_case = true;
+            if ($this->_just_this_case && $this->_matchesTestCase($test_case)) {
+                $this->_on();
             }
-            if ($this->_within_test_case) {
-                $this->_reporter->paintGroupStart($test_case, $size);
-            }
+            $this->_reporter->paintGroupStart($test_case, $size);
         }
 
         /**
@@ -387,39 +423,9 @@
          *    @access public
          */
         function paintGroupEnd($test_case) {
-            if ($this->_within_test_case) {
-                $this->_reporter->paintGroupEnd($test_case);
-            }
-            if ($this->_isCaseMatch($test_case)) {
-                $this->_within_test_case = false;
-            }
-        }
-
-        /**
-         *    Paints the start of a test case.
-         *    @param string $test_case     Name of test or other label.
-         *    @access public
-         */
-        function paintCaseStart($test_case) {
-            if ($this->_isCaseMatch($test_case)) {
-                $this->_within_test_case = true;
-            }
-            if ($this->_within_test_case) {
-                $this->_reporter->paintCaseStart($test_case);
-            }
-        }
-
-        /**
-         *    Paints the end of a test case.
-         *    @param string $test_case     Name of test or other label.
-         *    @access public
-         */
-        function paintCaseEnd($test_case) {
-            if ($this->_within_test_case) {
-                $this->_reporter->paintCaseEnd($test_case);
-            }
-            if ($this->_isCaseMatch($test_case)) {
-                $this->_within_test_case = false;
+            $this->_reporter->paintGroupEnd($test_case);
+            if ($this->_just_this_case && $this->_matchesTestCase($test_case)) {
+                $this->_off();
             }
         }
     }
