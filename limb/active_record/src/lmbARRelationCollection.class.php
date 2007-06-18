@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbARRelationCollection.class.php 5997 2007-06-18 12:27:21Z pachanga $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -23,15 +23,21 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   protected $owner;
   protected $dataset;
   protected $criteria;
+  protected $conn;
   protected $is_owner_new;
   protected $decorators = array();
 
-  function __construct($relation, $owner, $criteria = null)
+  function __construct($relation, $owner, $criteria = null, $conn = null)
   {
     $this->relation = $relation;
     $this->owner = $owner;
     $this->relation_info = $owner->getRelationInfo($relation);
     $this->criteria = lmbSQLCriteria :: objectify($criteria);
+
+    if(is_object($conn))
+      $this->conn = $conn;
+    else
+      $this->conn = lmbToolkit :: instance()->getDefaultDbConnection();
 
     $this->reset();
   }
@@ -109,7 +115,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
 
     $rs = $this->_createDbRecordSet($criteria);
     $this->_applySortParams($rs, $sort_params);
-    $dataset = $object->decorateRecordSet($rs);
+    $dataset = $object->_decorateRecordSet($rs);
     return $this->_applyDecorators($dataset);
   }
 

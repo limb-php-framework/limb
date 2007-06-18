@@ -12,6 +12,7 @@ lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
+lmb_require('limb/dbal/toolkit.inc.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/validation/src/exception/lmbValidationException.class.php');
@@ -24,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 5997 2007-06-18 12:27:21Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -45,6 +46,16 @@ class lmbActiveRecord extends lmbObject
    * @var array global event listeners which receieve events from ALL lmbActiveRecord instances
    */
   protected static $_global_listeners = array();
+  /**
+   * @var object database connection which is shared by all lmbActiveRecord instances
+   *             if no connection passed explicitly into constructor
+   */
+  protected static $_default_db_conn;
+  /**
+   * @var object current object's database connection
+   *  @see lmbDbConnection
+   */
+  protected $_db_conn;
   /**
    * @var object lmbTableGateway instance used to access underlying db table
    */
@@ -157,13 +168,18 @@ class lmbActiveRecord extends lmbObject
    *  </code>
    *  @param array|integer Depending on argument type the new object is filled with properties or loaded from database
    */
-  function __construct($magic_params = null)
+  function __construct($magic_params = null, $conn = null)
   {
     parent :: __construct();
 
     $this->_defineRelations();
 
-    $this->_db_meta_info = lmbToolkit :: instance()->getActiveRecordMetaInfo($this);
+    if(is_object($conn))
+      $this->_db_conn = $conn;
+    else
+      $this->_db_conn = self :: getDefaultConnection();
+
+    $this->_db_meta_info = lmbToolkit :: instance()->getActiveRecordMetaInfo($this, $this->_db_conn);
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
     $this->_db_table_name = $this->_db_table->getTableName();
@@ -174,15 +190,36 @@ class lmbActiveRecord extends lmbObject
     elseif(is_array($magic_params) || is_object($magic_params))
       $this->import($magic_params);
   }
-
   /**
    *  Sets database resource identifier used for database access
    *  @param string DSN, e.g. mysql://root:secret@localhost/mydb
    */
   static function setDefaultDSN($dsn)
   {
-    lmb_require('limb/dbal/toolkit.inc.php');
-    lmbToolkit :: instance()->setDefaultDbDSN($dsn);
+    self :: $_default_db_conn = lmbToolkit :: instance()->createDbConnection($dsn);
+  }
+  /**
+   *  Sets default database connection object
+   *  @param object instance of concrete lmbDbConnection interface implementation
+   *  @return object previous connection object
+   *  @see lmbDbConnection
+   */
+  static function setDefaultConnection($conn)
+  {
+    $prev = self :: $_default_db_conn;
+    self :: $_default_db_conn = $conn;
+    return $prev;
+  }
+  /**
+   *  Returns current default database connection object
+   *  @return object instance of concrete lmbDbConnection interface implementation
+   *  @see lmbDbConnection
+   */
+  static function getDefaultConnection()
+  {
+    if(is_object(self :: $_default_db_conn))
+      return self :: $_default_db_conn;
+    return lmbToolkit :: instance()->getDefaultDbConnection();
   }
   /**
    *  Returns current single table inheritance column name
@@ -225,9 +262,7 @@ class lmbActiveRecord extends lmbObject
     return $this->_error_list;
   }
 
-  protected function _defineRelations()
-  {
-  }
+  protected function _defineRelations(){}
 
   protected function _hasOne($relation_name, $info)
   {
@@ -530,9 +565,9 @@ class lmbActiveRecord extends lmbObject
     if(isset($info['collection']))
       return new $info['collection']($relation, $this, $criteria);
     elseif($this->_hasOneToManyRelation($relation))
-      return new lmbAROneToManyCollection($relation, $this, $criteria);
+      return new lmbAROneToManyCollection($relation, $this, $criteria, $this->_db_conn);
     else if($this->_hasManyToManyRelation($relation))
-      return new lmbARManyToManyCollection($relation, $this, $criteria);
+      return new lmbARManyToManyCollection($relation, $this, $criteria, $this->_db_conn);
   }
 
   protected function _hasCollectionRelation($relation)
@@ -704,8 +739,9 @@ class lmbActiveRecord extends lmbObject
 
   protected function _loadBelongsToObject($property)
   {
-    return lmbActiveRecord :: findFirst($this->_belongs_to[$property]['class'],
-                                        array('criteria' => $this->_belongs_to[$property]['field'] . ' = ' . (int)$this->getId()));
+    return self :: findFirst($this->_belongs_to[$property]['class'],
+                             array('criteria' => $this->_belongs_to[$property]['field'] . ' = ' . (int)$this->getId()),
+                             $this->_db_conn);
   }
 
   protected function _loadManyBelongsToObject($property)
@@ -714,8 +750,9 @@ class lmbActiveRecord extends lmbObject
     if(!$value && $this->_canManyBelongsToObjectBeNull($property))
       return null;
 
-    return lmbActiveRecord :: findById($this->_many_belongs_to[$property]['class'],
-                                       $this->get($this->_many_belongs_to[$property]['field']));
+    return self :: findById($this->_many_belongs_to[$property]['class'],
+                            $this->get($this->_many_belongs_to[$property]['field']),
+                            $this->_db_conn);
   }
 
   protected function _loadOneToOneObject($property)
@@ -724,8 +761,9 @@ class lmbActiveRecord extends lmbObject
     if(!$value && $this->_canHasOneObjectBeNull($property))
       return null;
 
-    return lmbActiveRecord :: findById($this->_has_one[$property]['class'],
-                                       $this->get($this->_has_one[$property]['field']));
+    return self :: findById($this->_has_one[$property]['class'],
+                            $this->get($this->_has_one[$property]['field']),
+                            $this->_db_conn);
   }
 
   protected function _canHasOneObjectBeNull($property)
@@ -852,8 +890,7 @@ class lmbActiveRecord extends lmbObject
     }
     catch(Exception $e)
     {
-      $conn = lmbToolkit :: instance()->getDefaultDbConnection();
-      $conn->rollbackTransaction();
+      $this->_db_conn->rollbackTransaction();
       throw $e;
     }
 
@@ -1075,9 +1112,10 @@ class lmbActiveRecord extends lmbObject
    *  @see find()
    *  @param string class name of the object
    *  @param mixed misc magic params
+   *  @param object database connection object
    *  @return object|null
    */
-  static function findFirst($class_name, $magic_params = array())
+  static function findFirst($class_name, $magic_params = array(), $conn = null)
   {
     $params = array();
     if(self :: _isCriteria($magic_params))
@@ -1090,19 +1128,22 @@ class lmbActiveRecord extends lmbObject
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
-    $obj = new $class_name();
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
+    $obj = new $class_name(null, $conn);
     return $obj->_findFirst($params);
   }
   /**
-   *  lmbActiveRecord :: findFirst() convenience alias
+   *  self :: findFirst() convenience alias
    *  @see findFirst()
    *  @param string class name of the object
    *  @param mixed misc magic params
    *  @return object|null
    */
-  static function findOne($class_name, $magic_params = array())
+  static function findOne($class_name, $magic_params = array(), $conn = null)
   {
-    return self :: findFirst($class_name, $magic_params);
+    return self :: findFirst($class_name, $magic_params, $conn);
   }
   /**
    *  Userland filter for findFirst() static method
@@ -1112,22 +1153,26 @@ class lmbActiveRecord extends lmbObject
    */
   protected function _findFirst($params)
   {
-    return lmbActiveRecord :: find(get_class($this), $params);
+    return self :: find(get_class($this), $params, $this->_db_conn);
   }
   /**
    *  Finds one instance of object in database using object id, this method is actually a wrapper around find()
    *  @see find()
    *  @param string class name of the object
    *  @param integer object id
+   *  @param object database connection object
    *  @return object|null
    */
-  static function findById($class_name, $id, $not_found_exception = true)
+  static function findById($class_name, $id, $throw_exception = true, $conn = null)
   {
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
-    $obj = new $class_name();
-    return $obj->_findById($id, $not_found_exception);
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
+    $obj = new $class_name(null, $conn);
+    return $obj->_findById($id, $throw_exception);
   }
   /**
    *  Userland filter for findById() static method
@@ -1135,11 +1180,13 @@ class lmbActiveRecord extends lmbObject
    *  @param integer object id
    *  @return object
    */
-  protected function _findById($id, $not_found_exception)
+  protected function _findById($id, $throw_exception)
   {
-    if($object = lmbActiveRecord :: find(get_class($this), array('first', 'criteria' => 'id=' . (int)$id)))
+    if($object = self :: find(get_class($this),
+                              array('first', 'criteria' => 'id=' . (int)$id),
+                              $this->_db_conn))
       return $object;
-    elseif($not_found_exception)
+    elseif($throw_exception)
       throw new lmbARNotFoundException(get_class($this), $id);
     else
       return null;
@@ -1150,14 +1197,18 @@ class lmbActiveRecord extends lmbObject
    *  @param string class name of the object
    *  @param array object ids
    *  @param mixed misc magic params
+   *  @param object database connection object
    *  @return iterator
    */
-  static function findByIds($class_name, $ids, $params = array())
+  static function findByIds($class_name, $ids, $params = array(), $conn = null)
   {
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
-    $obj = new $class_name();
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
+    $obj = new $class_name(null, $conn);
     return $obj->_findByIds($ids, $params);
   }
   /**
@@ -1174,7 +1225,7 @@ class lmbActiveRecord extends lmbObject
     else
     {
       $params['criteria'] = new lmbSQLFieldCriteria('id', $ids, lmbSQLFieldCriteria :: IN);
-      return lmbActiveRecord :: find(get_class($this), $params);
+      return self :: find(get_class($this), $params, $this->_db_conn);
     }
   }
   /**
@@ -1185,29 +1236,32 @@ class lmbActiveRecord extends lmbObject
    */
   function getDataset($magic_params = array())
   {
-    return lmbActiveRecord :: find(get_class($this), $magic_params);
+    return self :: find(get_class($this), $magic_params, $this->_db_conn);
   }
   /**
    *  Finds a collection of objects in database using raw SQL
    *  @param string class name of the object
    *  @param string SQL
+   *  @param object database connection object
    *  @return iterator
    */
-  static function findBySql($class_name, $sql)
+  static function findBySql($class_name, $sql, $conn = null)
   {
-    $conn = lmbToolkit :: instance()->getDefaultDbConnection();
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
     $stmt = $conn->newStatement($sql);
-    return lmbActiveRecord :: decorateRecordSet($stmt->getRecordSet(), $class_name);
+    return self :: decorateRecordSet($stmt->getRecordSet(), $class_name);
   }
   /**
    *  Finds first object in database using raw SQL
    *  @param string class name of the object
    *  @param string SQL
+   *  @param object database connection object
    *  @return object
    */
-  static function findFirstBySql($class_name, $sql)
+  static function findFirstBySql($class_name, $sql, $conn = null)
   {
-    $rs = self :: findBySql($class_name, $sql);
+    $rs = self :: findBySql($class_name, $sql, $conn);
     $rs->paginate(0, 1);
     $rs->rewind();
     if($rs->valid())
@@ -1218,9 +1272,9 @@ class lmbActiveRecord extends lmbObject
    *  @see findFirstBySql()
    *  @return object
    */
-  static function findOneBySql($class_name, $sql)
+  static function findOneBySql($class_name, $sql, $conn = null)
   {
-    return self :: findFirstBySql($class_name, $sql);
+    return self :: findFirstBySql($class_name, $sql, $conn);
   }
 
   /**
@@ -1238,31 +1292,35 @@ class lmbActiveRecord extends lmbObject
    *  // - to match 'name="hey"' criteria
    *  // - ordered by 'id' property using descendant sort
    *  // - limited to 3 items
-   *  $books = lmbActiveRecord :: find('Book', array('criteria' => 'name="hey"',
+   *  $books = self :: find('Book', array('criteria' => 'name="hey"',
    *                                                 'sort' => array('id' => 'desc'),
    *                                                 'limit' => 3));
    *  //returns a collection of all Book objects in database
-   *  $books = lmbActiveRecord :: find('Book');
+   *  $books = self :: find('Book');
    *  //returns one object with specified id
-   *  $books = lmbActiveRecord :: find('Book', 1);
+   *  $books = self :: find('Book', 1);
    *  //returns a collection of objects which match plain text criteria
-   *  $books = lmbActiveRecord :: find('Book', 'name="hey"');
+   *  $books = self :: find('Book', 'name="hey"');
    *  //returns a collection of objects which match criteria with placeholders
-   *  $books = lmbActiveRecord :: find('Book', array('name=? and author=?', 'hey', 'bob'));
+   *  $books = self :: find('Book', array('name=? and author=?', 'hey', 'bob'));
    *  //returns a collection of objects which match object criteria
-   *  $books = lmbActiveRecord :: find('Book',
+   *  $books = self :: find('Book',
    *                                    new lmbSQLFieldCriteria('name', 'hey'));
    *  </code>
    *  @param string class name of the object
    *  @param mixed misc magic params
+   *  @param object database connection object
    *  @return iterator
    */
-  static function find($class_name, $magic_params = array())
+  static function find($class_name, $magic_params = array(), $conn = null)
   {
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
     if(self :: _isCriteria($magic_params))
       $params = array('criteria' => $magic_params);
     elseif(is_int($magic_params))
-      return self :: findById($class_name, $magic_params, false);
+      return self :: findById($class_name, $magic_params, false, $conn);
     elseif(!is_array($magic_params))
       throw new lmbARException("Invalid magic params", array($magic_params));
     else
@@ -1271,7 +1329,7 @@ class lmbActiveRecord extends lmbObject
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
-    $obj = new $class_name();
+    $obj = new $class_name(null, $conn);
     return $obj->_find($params);
   }
   /**
@@ -1284,7 +1342,7 @@ class lmbActiveRecord extends lmbObject
   {
     $criteria = isset($params['criteria']) ? $params['criteria'] : null;
     $sort_params = isset($params['sort']) ? $params['sort'] : array();
-    $rs = $this->decorateRecordSet($this->findAllRecords($criteria, $sort_params));
+    $rs = $this->_decorateRecordSet($this->findAllRecords($criteria, $sort_params));
 
     $return_first = false;
     foreach(array_values($params) as $value)
@@ -1320,7 +1378,9 @@ class lmbActiveRecord extends lmbObject
     if(!count($sort_params))
       $sort_params = $this->_default_sort_params;
 
-    return $this->_db_table->select($this->addClassCriteria($criteria), $sort_params, $this->_getColumnsForSelect());
+    return $this->_db_table->select($this->addClassCriteria($criteria),
+                                    $sort_params,
+                                    $this->_getColumnsForSelect());
   }
   /**
    *  Adds class name criterion to passed in criteria
@@ -1372,7 +1432,7 @@ class lmbActiveRecord extends lmbObject
    */
   function loadById($id)
   {
-    $object = lmbActiveRecord :: findById(get_class($this), $id);
+    $object = self :: findById(get_class($this), $id, true, $this->_db_conn);
     $this->importRaw($object->exportRaw());
     $this->_resetDirty();
     $this->_is_new = false;
@@ -1472,28 +1532,38 @@ class lmbActiveRecord extends lmbObject
    *  Finds all objects which satisfy the passed criteria and destroys them one by one
    *  @param string class name
    *  @param string|object search criteria, if not set all objects are removed
+   *  @param object database connection object
    */
-  static function delete($class_name, $criteria = null)
+  static function delete($class_name, $criteria = null, $conn = null)
   {
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
     $params = array();
     if($criteria)
       $params = array('criteria' => $criteria);
 
-    $rs = lmbActiveRecord :: find($class_name, $params);
+    $rs = self :: find($class_name, $params, $conn);
     foreach($rs as $object)
       $object->destroy();
   }
 
-  function deleteRaw($class_name, $criteria = null)
+  static function deleteRaw($class_name, $criteria = null, $conn = null)
   {
-    $object = new $class_name();
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
+    $object = new $class_name(null, $conn);
     $db_table = $object->getDbTable();
     $db_table->delete($criteria);
   }
 
-  static function updateRaw($class_name, $set, $criteria = null)
+  static function updateRaw($class_name, $set, $criteria = null, $conn = null)
   {
-    $object = new $class_name();
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
+    $object = new $class_name(null, $conn);
     $db_table = $object->getDbTable();
     $db_table->update($set, $criteria);
   }
@@ -1554,8 +1624,7 @@ class lmbActiveRecord extends lmbObject
 
   protected function _createSQLStatement($sql)
   {
-    $conn = lmbToolkit :: instance()->getDefaultDbConnection();
-    return $conn->newStatement($sql);
+    return $this->_db_conn->newStatement($sql);
   }
 
   protected function _query($sql)
@@ -1571,16 +1640,23 @@ class lmbActiveRecord extends lmbObject
   }
   /**
    *  Decorates database recordset with special decorator which converts each record into
-   *  corresponding lmbActiveRecord object. This method can be used both statically and as
-   *  instance. If used statically you must pass $class argument.
+   *  corresponding lmbActiveRecord object.
    *  @see lmbARRecordSetDecorator
-   *  @todo Split this method - it is a hack since it can be called both from instance and statically
    *  @param iterator
-   *  @param string
+   *  @param string wrapper class name
+   *  @param object database connection object
    */
-  function decorateRecordSet($rs, $class = null)
+  function decorateRecordSet($rs, $class, $conn = null)
   {
-    return new lmbARRecordSetDecorator($rs, $class ? $class : get_class($this));
+    if(!is_object($conn))
+      $conn = self :: getDefaultConnection();
+
+    return new lmbARRecordSetDecorator($rs, $class, $conn);
+  }
+
+  function _decorateRecordSet($rs)
+  {
+    return new lmbARRecordSetDecorator($rs, get_class($this), $this->_db_conn);
   }
 
   function __clone()
@@ -1662,7 +1738,7 @@ class lmbActiveRecord extends lmbObject
       foreach($value as $item)
       {
         if(is_numeric($item))
-          $objects[] = new $class((int)$item);
+          $objects[] = new $class((int)$item, $this->_db_conn);
         elseif(is_object($item))
           $objects[] = $item;
       }
@@ -1674,7 +1750,7 @@ class lmbActiveRecord extends lmbObject
   {
     if(is_numeric($value))
     {
-      $obj = new $class((int)$value);
+      $obj = new $class((int)$value, $this->_db_conn);
       $this->set($property, $obj);
     }
     elseif(is_object($value))

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
 
@@ -12,7 +12,7 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbARManyToManyCollection.class.php 5997 2007-06-18 12:27:21Z pachanga $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -30,7 +30,7 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
             WHERE {$table}.id={$join_table}.$foreign_field AND
             {$join_table}.{$field}=" . $this->owner->getId() . ' %where%';
 
-    $query = new lmbSelectQuery($sql, lmbToolkit :: instance()->getDefaultDbConnection());
+    $query = new lmbSelectQuery($sql, $this->conn);
     if($criteria)
       $query->addCriteria($criteria);
     return $query->getRecordSet();
@@ -38,21 +38,19 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
 
   protected function _createDbRecordSet($criteria = null)
   {
-    $conn = lmbToolkit :: instance()->getDefaultDbConnection();
-
     $class = $this->relation_info['class'];
     $object = new $class();
-    $table = $conn->quoteIdentifier($object->getTableName());
+    $table = $this->conn->quoteIdentifier($object->getTableName());
 
-    $join_table = $conn->quoteIdentifier($this->relation_info['table']);
-    $field = $conn->quoteIdentifier($this->relation_info['field']);
-    $foreign_field = $conn->quoteIdentifier($this->relation_info['foreign_field']);
+    $join_table = $this->conn->quoteIdentifier($this->relation_info['table']);
+    $field = $this->conn->quoteIdentifier($this->relation_info['field']);
+    $foreign_field = $this->conn->quoteIdentifier($this->relation_info['foreign_field']);
 
     $sql = "SELECT $table.* FROM $table, $join_table
             WHERE $table.id=$join_table.$foreign_field AND
             $join_table.$field=" . $this->owner->getId() . ' %where%';
 
-    $query = new lmbSelectQuery($sql, $conn);
+    $query = new lmbSelectQuery($sql, $this->conn);
     if($criteria)
       $query->addCriteria($criteria);
     return $query->getRecordSet();
@@ -67,13 +65,13 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
 
   protected function _removeRelatedRecords()
   {
-    $table = new lmbTableGateway($this->relation_info['table']);
+    $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
     $table->delete(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
   }
 
   protected function _saveObject($object, $error_list = null)
   {
-    $table = new lmbTableGateway($this->relation_info['table']);
+    $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
     $object->save($error_list);
     $table->insert(array($this->relation_info['field'] => $this->owner->getId(),
                          $this->relation_info['foreign_field'] => $object->getId()));

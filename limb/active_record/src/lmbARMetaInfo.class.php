@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class lmbARMetaInfo.
  *
  * @package active_record
- * @version $Id: lmbARMetaInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbARMetaInfo.class.php 5997 2007-06-18 12:27:21Z pachanga $
  */
 class lmbARMetaInfo
 {
@@ -21,12 +21,12 @@ class lmbARMetaInfo
   protected $set_method_fields = array();
   protected $cast_methods = array();
 
-  function __construct($active_record)
+  function __construct($active_record, $conn = null)
   {
     if(!$table_name = $active_record->getTableName())
       $table_name = lmb_under_scores(get_class($active_record));
 
-    $this->db_table = lmbToolkit :: instance()->createTableGateway($table_name);
+    $this->db_table = lmbToolkit :: instance()->createTableGateway($table_name, $conn);
     $this->db_column_names = $this->db_table->getColumnNames();
   }
 

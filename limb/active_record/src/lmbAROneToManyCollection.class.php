@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
 
@@ -12,14 +12,14 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbAROneToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbAROneToManyCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbAROneToManyCollection.class.php 5997 2007-06-18 12:27:21Z pachanga $
  */
 class lmbAROneToManyCollection extends lmbARRelationCollection
 {
   protected function _createDbRecordSet($extra_criteria = null)
   {
     $class = $this->relation_info['class'];
-    $object = new $class();
+    $object = new $class(null, $this->conn);
     $criteria = new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId());
 
     if($extra_criteria)
@@ -60,7 +60,8 @@ class lmbAROneToManyCollection extends lmbARRelationCollection
   protected function _removeRelatedRecords()
   {
     lmbActiveRecord :: delete($this->relation_info['class'],
-                              new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
+                              new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()),
+                              $this->conn);
   }
 
   protected function _saveObject($object, $error_list = null)
