@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -16,7 +16,7 @@
 class lmbTestRunner
 {
   protected $test_paths = array();
-  protected $test_reporter;
+  protected $reporter;
   protected $coverage;
   protected $coverage_reporter;
   protected $coverage_include;
@@ -33,9 +33,9 @@ class lmbTestRunner
       $this->test_paths = $test_path;
   }
 
-  function setTestReporter($reporter)
+  function setReporter($reporter)
   {
-    $this->test_reporter = $reporter;
+    $this->reporter = $reporter;
   }
 
   function useCoverage($coverage_include, $coverage_exclude, $coverage_report_dir)
@@ -68,8 +68,7 @@ class lmbTestRunner
         $root_dir = $this->_getRootDir($file);
         $node = $this->_mapFileToNode($root_dir, $file);
         $tree = $this->_initTree($root_dir);
-        //we need fresh reporter every time
-        $res = $res & $tree->perform($node, clone($this->_getReporter()));
+        $res = $res & $tree->perform($node, $this->_getReporter());
       }
     }
     return $res;
@@ -77,19 +76,12 @@ class lmbTestRunner
 
   protected function _startTimer()
   {
-    $this->start_time = $this->_getMicrotime();
+    $this->start_time = microtime(true);
   }
 
   protected function _stopTimer()
   {
-    $this->end_time = $this->_getMicrotime();
-  }
-
-  protected function _getMicrotime()
-  {
-    $t_time = explode(' ', microtime());
-    preg_match("~0\.([0-9]+)~", '' . $t_time[0], $t1);
-    return $t_time[1] . '.' . $t1[1];
+    $this->end_time = microtime(true);
   }
 
   function getRunTime()
@@ -175,13 +167,23 @@ class lmbTestRunner
 
   protected function _getReporter()
   {
-    if($this->test_reporter)
-      return $this->test_reporter;
+    if(!$this->reporter)
+    {
+      if($this->_simpleTestDefaultReporterInstalled())
+      {
+        require_once(dirname(__FILE__) . '/lmbTestShellReporter.class.php');
+        SimpleTest :: prefer(new lmbTestShellReporter());
+      }
+      return clone(SimpleTest :: preferred(array('SimpleReporter', 'SimpleReporterDecorator')));
+    }
+    else
+      return clone($this->reporter);
+  }
 
-    require_once(dirname(__FILE__) . '/lmbTestShellReporter.class.php');
-    $this->test_reporter = new lmbTestShellReporter();
-
-    return $this->test_reporter;
+  protected function _simpleTestDefaultReporterInstalled()
+  {
+    $reporter = SimpleTest :: preferred(array('SimpleReporter', 'SimpleReporterDecorator'));
+    return get_class($reporter) == 'DefaultReporter';
   }
 }
 

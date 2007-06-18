@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 5977 2007-06-09 08:58:44Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6000 2007-06-18 14:35:27Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -21,6 +21,7 @@ class lmbTestShellUI
   protected $argv;
   protected $posix_opts = true;
   protected $call_exit = true;
+  protected $reporter;
 
   function __construct($argv = null)
   {
@@ -32,6 +33,11 @@ class lmbTestShellUI
     {
       $this->_error($e->getMessage() . "\n");
     }
+  }
+
+  function setReporter($reporter)
+  {
+    $this->reporter = $reporter;
   }
 
   function setPosixMode($flag = true)
@@ -180,6 +186,9 @@ EOD;
       $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
 
     $runner = new lmbTestRunner($options[1]);
+
+    if($this->reporter)
+      $runner->setReporter($this->reporter);
 
     if($cover_include)
       $runner->useCoverage($cover_include, $cover_exclude, $cover_report_dir);
