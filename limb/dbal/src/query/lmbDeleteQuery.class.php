@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
  * class lmbDeleteQuery.
  *
  * @package dbal
- * @version $Id: lmbDeleteQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDeleteQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
  */
 class lmbDeleteQuery extends lmbCriteriaQuery
 {
@@ -22,11 +22,6 @@ class lmbDeleteQuery extends lmbCriteriaQuery
   {
     $this->_table = $table;
     parent :: __construct("DELETE FROM %table% %where%", $conn);
-  }
-
-  protected function _declareHints()
-  {
-    return array('table', 'where');
   }
 
   protected function _getTableHint()

@@ -11,13 +11,14 @@
  * class lmbTemplateQuery.
  *
  * @package dbal
- * @version $Id: lmbTemplateQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTemplateQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
  */
 class lmbTemplateQuery
 {
   protected $_template_sql;
   protected $_no_hints_sql;
   protected $_conn;
+  protected $_hints;
 
   function __construct($template_sql, $conn)
   {
@@ -27,7 +28,14 @@ class lmbTemplateQuery
 
   protected function _declareHints()
   {
-    return array();
+    if($this->_hints !== null)
+      return $this->_hints;
+
+    if(preg_match_all('~%([a-z_]+)%~', $this->_template_sql, $m))
+      $this->_hints = $m[1];
+    else
+      $this->_hints = array();
+    return $this->_hints;
   }
 
   function _wrapHint($hint)
@@ -46,7 +54,7 @@ class lmbTemplateQuery
     $result = array();
     foreach($hints as $hint)
     {
-      $method = '_get' . ucfirst(lmb_camel_case($hint)) . 'Hint';
+      $method = '_get' . lmb_camel_case($hint) . 'Hint';
       $result[$this->_wrapHint($hint)] = $this->$method();
     }
     return $result;
@@ -55,20 +63,7 @@ class lmbTemplateQuery
   function toString()
   {
     $hints = $this->_fillHints();
-    $this->_validateSQLforTemplateHints($hints);
-
     return trim(strtr($this->_template_sql, $hints));
-  }
-
-  protected function _validateSQLforTemplateHints($hints)
-  {
-    foreach($hints as $hint => $value)
-    {
-      if(!trim($value)) continue;
-
-      if(strpos($this->_template_sql, $hint) === false)
-        throw new lmbException("Template hint '$hint' not for value '$value' found in '$this->_template_sql'");
-    }
   }
 
   function getStatement()

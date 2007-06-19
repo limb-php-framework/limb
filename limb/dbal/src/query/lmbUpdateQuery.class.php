@@ -14,7 +14,7 @@ define('LIMB_UPDATE_QUERY_NON_VALUE', uniqid());
  * class lmbUpdateQuery.
  *
  * @package dbal
- * @version $Id: lmbUpdateQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUpdateQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
  */
 class lmbUpdateQuery extends lmbCriteriaQuery
 {
@@ -27,11 +27,6 @@ class lmbUpdateQuery extends lmbCriteriaQuery
   {
     $this->_table = $table;
     parent :: __construct("UPDATE %table% SET %fields% %where%", $conn);
-  }
-
-  protected function _declareHints()
-  {
-    return array('table', 'fields', 'where');
   }
 
   function addField($field, $value = LIMB_UPDATE_QUERY_NON_VALUE)

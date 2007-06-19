@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
  * class lmbSelectQuery.
  *
  * @package dbal
- * @version $Id: lmbSelectQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSelectQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
  */
 class lmbSelectQuery extends lmbCriteriaQuery
 {
@@ -31,11 +31,6 @@ class lmbSelectQuery extends lmbCriteriaQuery
       $sql = "SELECT %fields% FROM %tables% %left_join% %where% %group% %having% %order%";
 
     parent :: __construct($sql, $conn);
-  }
-
-  protected function _declareHints()
-  {
-    return array('fields', 'tables', 'left_join', 'where', 'group', 'having', 'order');
   }
 
   function addField($field, $alias = null)
