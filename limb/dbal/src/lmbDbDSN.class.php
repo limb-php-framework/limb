@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDbDSN.
  *
  * @package dbal
- * @version $Id: lmbDbDSN.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDbDSN.class.php 6002 2007-06-19 21:09:36Z pachanga $
  */
 class lmbDbDSN extends lmbObject
 {
@@ -51,7 +51,7 @@ class lmbDbDSN extends lmbObject
     $this->host = $this->uri->getHost();
     $this->user = $this->uri->getUser();
     $this->password = $this->uri->getPassword();
-    $this->database = ltrim($this->uri->getPath(), '/');
+    $this->database = substr($this->uri->getPath(), 1);//removing only first slash
     $this->port = $this->uri->getPort();
     $this->extra = $this->uri->getQueryItems();
   }
