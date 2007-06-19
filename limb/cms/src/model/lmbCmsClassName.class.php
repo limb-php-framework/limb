@@ -13,23 +13,26 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
  * class lmbCmsClassName.
  *
  * @package cms
- * @version $Id: lmbCmsClassName.class.php 5998 2007-06-18 12:28:49Z pachanga $
+ * @version $Id: lmbCmsClassName.class.php 6001 2007-06-19 09:07:26Z serega $
  */
 class lmbCmsClassName extends lmbActiveRecord
 {
   protected $_db_table_name = 'class_name';
 
-  static function generateIdFor($object)
+  static function generateIdFor($object, $conn = null)
   {
     if(is_object($object))
       $title = get_class($object);
     else
       $title = $object;
 
+    if(!is_object($conn))
+      $conn = lmbActiveRecord :: getDefaultConnection();
+
     $criteria = new lmbSQLFieldCriteria('title', $title);
     if($obj = lmbActiveRecord :: findFirst('lmbCmsClassName',
                                            array('criteria' => $criteria),
-                                           $this->_db_conn))
+                                           $conn))
     {
       return $obj->id;
     }

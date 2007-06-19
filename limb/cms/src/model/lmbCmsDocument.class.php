@@ -32,16 +32,19 @@ class lmbCmsDocument extends lmbActiveRecord
     return $validator;
   }
 
-  function findKidsForParent($parent_id)
+  static function findKidsForParent($parent_id, $conn = null)
   {
     if(!$parent_id)
       $parent_id = 0;
+
+    if(!is_object($conn))
+      $conn = lmbActiveRecord :: getDefaultConnection();
 
     $sql = 'SELECT document.* '.
            ' FROM document LEFT JOIN node ON node.id = document.node_id '.
            ' WHERE node.parent_id = '. $parent_id;
 
-    return lmbActiveRecord :: findBySql('lmbCmsDocument', $sql, $this->_db_conn);
+    return lmbActiveRecord :: findBySql('lmbCmsDocument', $sql, $conn);
   }
 
   function getPublishedKids()
