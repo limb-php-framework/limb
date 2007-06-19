@@ -54,7 +54,7 @@ class lmbSqliteConnection implements lmbDbConnection
 
   function connect()
   {
-    $this->connectionId = sqlite_open($this->config['database']);
+    $this->connectionId = sqlite_open($this->config['database'], 0666, $error);
 
     if($this->connectionId === false)
       $this->_raiseError();
@@ -76,10 +76,10 @@ class lmbSqliteConnection implements lmbDbConnection
 
   function _raiseError($sql = null)
   {
-    if(!$this->getConnectionId())
+    if(!$this->connectionId)
       throw new lmbDbException('Could not connect to database "' . $this->config['database'] . '"');
 
-    $errno = sqlite_last_error($this->getConnectionId());
+    $errno = sqlite_last_error($this->connectionId);
 
     $info = array('driver' => 'sqlite');
     $info['errorno'] = $errno;
