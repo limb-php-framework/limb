@@ -146,13 +146,7 @@ class lmbSelectQueryTest extends UnitTestCase
     $sql = new lmbSelectQuery("SELECT * FROM test WHERE 1=1", $this->conn);
 
     $sql->addCriteria(new lmbSQLRawCriteria('c1=:c1:'));
-
-    try
-    {
-      $sql->toString();
-      $this->assertTrue(false);
-    }
-    catch(lmbException $e){}
+    $this->assertEqual($sql->toString(), "SELECT * FROM test WHERE 1=1");
   }
 
   function testAddSeveralConditions()
