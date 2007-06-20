@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require(dirname(__FILE__) . '/lmbSQLRawCriteria.class.php');
 
@@ -12,13 +12,16 @@ lmb_require(dirname(__FILE__) . '/lmbSQLRawCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6007 2007-06-20 06:31:15Z serega $
  */
 class lmbSQLCriteria extends lmbSQLRawCriteria
 {
-  function __construct()
+  function __construct($raw_criteria = '', $values = array())
   {
-    parent :: __construct("1 = 1");
+    if(!$raw_criteria)
+      $raw_criteria = '1 = 1';
+
+    parent :: __construct($raw_criteria, $values);
   }
 
   static function objectify($args)
