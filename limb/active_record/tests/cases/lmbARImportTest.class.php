@@ -459,6 +459,24 @@ class lmbARImportTest extends UnitTestCase
     $this->assertNull($person2->getSocialSecurity());
   }
 
+  function testImportNullEntityEmptyString()
+  {
+    $person = new PersonForTest();
+    $person->setName('Jim');
+    $number = new SocialSecurityForTest();
+    $number->setCode('099123');
+    $person->setSocialSecurity($number);
+    $person->save();
+
+    $source = array('name' => $person->getName(),
+                    'social_security' => '');
+
+    $person2 = clone $person;
+    $person2->import($source);
+    $this->assertEqual($person2->getName(), $person->getName());
+    $this->assertNull($person2->getSocialSecurity());
+  }
+
   function testImportWithValueObject()
   {
     $lesson = new LessonForTest();

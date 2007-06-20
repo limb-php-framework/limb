@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 5997 2007-06-18 12:27:21Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6008 2007-06-20 08:32:14Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1755,7 +1755,7 @@ class lmbActiveRecord extends lmbObject
     }
     elseif(is_object($value))
       $this->set($property, $value);
-    elseif(is_null($value) || strcasecmp($value, 'null') === 0)
+    elseif(is_null($value) || strcasecmp($value, 'null') === 0 || ($value === ''))
       $this->set($property, null);
   }
 
