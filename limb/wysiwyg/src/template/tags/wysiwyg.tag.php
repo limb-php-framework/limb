@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/wact/src/tags/form/control.inc.php');
 define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
@@ -12,7 +12,7 @@ define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 /**
  * @tag richedit,wysiwyg
  * @package wysiwyg
- * @version $Id: wysiwyg.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: wysiwyg.tag.php 6009 2007-06-21 09:19:18Z serega $
  */
 class lmbWysiwygTag extends WactControlTag
 {
@@ -44,19 +44,24 @@ class lmbWysiwygTag extends WactControlTag
 
   }
 
-  function generateBeforeContent($code)
+  protected function _renderOpenTag($code_writer)
+  {
+  }
+
+  protected function _renderCloseTag($code_writer)
   {
   }
 
   function generateTagContent($code)
   {
-    $code->writePhp($this->getComponentRefCode() . '->initWysiwyg("'. $this->ini_file_name . '","'.$this->profile.'" );');
-    $code->writePhp($this->getComponentRefCode() . '->renderContents();');
+    if(isset($this->attributeNodes['name']) && !$this->attributeNodes['name']->isConstant())
+    {
+      $code->writePhp($this->getComponentRefCode() . '->setAttribute("name", ');
+      $code->writePhp($this->attributeNodes['name']->generateExpression($code));
+      $code->writePhp(');' . "\n");
+    }
+    $code->writePhp($this->getComponentRefCode() . '->initWysiwyg("'. $this->ini_file_name . '","'.$this->profile.'" );' . "\n");
+    $code->writePhp($this->getComponentRefCode() . '->renderContents();' . "\n");
   }
-
-  function generateAfterContent($code)
-  {
-  }
-
 }
 ?>

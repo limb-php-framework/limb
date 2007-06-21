@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/wact/src/components/form/form.inc.php');
 
@@ -12,7 +12,7 @@ lmb_require('limb/wact/src/components/form/form.inc.php');
  * class lmbWysiwygComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbWysiwygComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbWysiwygComponent.class.php 6009 2007-06-21 09:19:18Z serega $
  */
 class lmbWysiwygComponent extends WactTextAreaComponent
 {
@@ -51,7 +51,6 @@ class lmbWysiwygComponent extends WactTextAreaComponent
 
     if(!$this->getAttribute('height'))
       $this->setAttribute('height', $this->getIniOption('height'));
-
   }
 }
 ?>
