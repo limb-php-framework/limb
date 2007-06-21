@@ -37,9 +37,6 @@ class lmbCmsDocument extends lmbActiveRecord
     if(!$parent_id)
       $parent_id = 0;
 
-    if(!is_object($conn))
-      $conn = lmbActiveRecord :: getDefaultConnection();
-
     $sql = 'SELECT document.* '.
            ' FROM document LEFT JOIN node ON node.id = document.node_id '.
            ' WHERE node.parent_id = '. $parent_id;

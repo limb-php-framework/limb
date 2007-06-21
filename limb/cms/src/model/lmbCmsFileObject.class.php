@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
  * class lmbCmsFileObject.
  *
  * @package cms
- * @version $Id: lmbCmsFileObject.class.php 5998 2007-06-18 12:28:49Z pachanga $
+ * @version $Id: lmbCmsFileObject.class.php 6010 2007-06-21 09:46:14Z pachanga $
  */
 class lmbCmsFileObject extends lmbActiveRecord
 {
@@ -56,9 +56,6 @@ class lmbCmsFileObject extends lmbActiveRecord
     $sql = 'SELECT file_object.* '.
            ' FROM file_object LEFT JOIN node ON node.id = file_object.node_id '.
            ' WHERE node.parent_id = '. $parent->id;
-
-    if(!is_object($conn))
-      $conn = lmbActiveRecord :: getDefaultConnection();
 
     $stmt = $conn->newStatement($sql);
     return lmbActiveRecord :: decorateRecordSet($stmt->getRecordSet(), 'FileObject', $conn);
