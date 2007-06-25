@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
 require_once(dirname(__FILE__) . '/lmbTestTreeNode.class.php');
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6013 2007-06-25 14:14:34Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeNode
 {
@@ -75,7 +75,7 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
 
   function bootstrap()
   {
-    if($this->_shouldIgnoreDir())
+    if($this->_shouldSkipDir())
       return false;
 
     if(file_exists($this->dir . '/.init.php'))
@@ -160,13 +160,13 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     return $clean_and_sorted;
   }
 
-  protected function _shouldIgnoreDir()
+  protected function _shouldSkipDir()
   {
     if(!is_null($this->ignored))
       return $this->ignored;
 
-    if(file_exists($this->dir . '/.ignore'))
-      $this->ignored = true;
+    if(file_exists($this->dir . '/.skip.php'))
+      $this->ignored = (bool)include($this->dir . '/.skip.php');
     elseif(file_exists($this->dir . '/.ignore.php'))
       $this->ignored = (bool)include($this->dir . '/.ignore.php');
     else

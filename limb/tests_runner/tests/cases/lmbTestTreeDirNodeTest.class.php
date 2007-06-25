@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
 require_once(dirname(__FILE__) . '/../../src/lmbTestTreeDirNode.class.php');
@@ -284,7 +284,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
 
   }
 
-  function testGetTestLabel()
+  function testUseExternalTestLabel()
   {
     file_put_contents($this->var_dir . '/.description', 'Foo');
 
@@ -370,7 +370,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     $this->assertEqual($str, 'wow' . $test1->getClass());
   }
 
-  function testIgnoreTestsDirectory()
+  function testSkipTestsDirectory()
   {
     mkdir($this->var_dir . '/a');
     mkdir($this->var_dir . '/a/b');
@@ -381,7 +381,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     file_put_contents($this->var_dir . '/a/bar_test.php', $test1->generate());
     file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
 
-    touch($this->var_dir . '/a/b/.ignore');
+    file_put_contents($this->var_dir . '/a/b/.skip.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
     $group = $root_node->createTestGroup();
@@ -393,7 +393,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     $this->assertEqual($str, $test1->getClass());
   }
 
-  function testIgnoreConditionalTrueTestsDirectory()
+  function testDontSkipTestsDirectory()
   {
     mkdir($this->var_dir . '/a');
     mkdir($this->var_dir . '/a/b');
@@ -404,30 +404,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     file_put_contents($this->var_dir . '/a/bar_test.php', $test1->generate());
     file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
 
-    file_put_contents($this->var_dir . '/a/b/.ignore.php', '<?php return true; ?>');
-
-    $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestGroup();
-
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $test1->getClass());
-  }
-
-  function testIgnoreConditionalFalseTestsDirectory()
-  {
-    mkdir($this->var_dir . '/a');
-    mkdir($this->var_dir . '/a/b');
-
-    $test1 = new GeneratedTestClass();
-    $test2 = new GeneratedTestClass();
-
-    file_put_contents($this->var_dir . '/a/bar_test.php', $test1->generate());
-    file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
-
-    file_put_contents($this->var_dir . '/a/b/.ignore.php', '<?php return false; ?>');
+    file_put_contents($this->var_dir . '/a/b/.skip.php', '<?php return false; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
     $group = $root_node->createTestGroup();
@@ -439,7 +416,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     $this->assertEqual($str, $test2->getClass() . $test1->getClass());
   }
 
-  function testIgnoredDirFixtureIgnoredToo()
+  function testSkippedDirFixtureSkippedToo()
   {
     mkdir($this->var_dir . '/a');
     $test = new GeneratedTestClass();
@@ -447,7 +424,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     file_put_contents($this->var_dir . '/a/.setup.php', '<?php echo "No!" ?>');
     file_put_contents($this->var_dir . '/a/bar_test.php', $test->generate());
 
-    file_put_contents($this->var_dir . '/a/.ignore.php', '<?php return true; ?>');
+    file_put_contents($this->var_dir . '/a/.skip.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
     $group = $root_node->createTestGroup();
@@ -459,7 +436,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     $this->assertEqual($str, '');
   }
 
-  function testBootstrappingDoesntHappenIfDirIsIgnored()
+  function testBootstrappingDoesntHappenIfDirIsSkipped()
   {
     mkdir($this->var_dir . '/a');
     mkdir($this->var_dir . '/a/b');
@@ -471,7 +448,7 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
 
     file_put_contents($this->var_dir . '/a/b/.init.php', '<?php echo "wow" ?>');
-    file_put_contents($this->var_dir . '/a/b/.ignore.php', '<?php return true; ?>');
+    file_put_contents($this->var_dir . '/a/b/.skip.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
     $group = $root_node->createTestGroup();
@@ -481,6 +458,29 @@ class lmbTestTreeDirNodeTest extends lmbTestsUtilitiesBase
     $str = ob_get_contents();
     ob_end_clean();
     $this->assertEqual($str, $test1->getClass());
+  }
+
+  function testChildDirectoriesOfSkippedParentAreSkippedAsWell()
+  {
+    mkdir($this->var_dir . '/a');
+    mkdir($this->var_dir . '/a/b');
+
+    $test1 = new GeneratedTestClass();
+    $test2 = new GeneratedTestClass();
+
+    file_put_contents($this->var_dir . '/a/bar_test.php', $test1->generate());
+    file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
+
+    file_put_contents($this->var_dir . '/a/.skip.php', '<?php return true; ?>');
+
+    $root_node = new lmbTestTreeDirNode($this->var_dir . '/a/b');
+    $group = $root_node->createTestGroup();
+
+    ob_start();
+    $group->run(new SimpleReporter());
+    $str = ob_get_contents();
+    ob_end_clean();
+    $this->assertEqual($str, '');
   }
 }
 
