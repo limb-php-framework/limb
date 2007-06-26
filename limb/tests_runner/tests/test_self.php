@@ -16,6 +16,7 @@ $group = new TestSuite();
 foreach(glob(dirname(__FILE__) . '/cases/*Test.class.php') as $file)
   $group->addTestFile($file);
 
-$group->run(new TextReporter());
+if(!$res = $group->run(new TextReporter()))
+  exit(1);
 
 ?>
