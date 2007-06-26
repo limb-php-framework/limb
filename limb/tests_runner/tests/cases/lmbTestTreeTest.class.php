@@ -38,9 +38,7 @@ class lmbTestTreeTest extends UnitTestCase
 
     $runner = new lmbTestTree($root_node);
 
-    $this->assertEqual($runner->getElapsedTime(), 0);
     $this->assertEqual($runner->perform($path, $reporter), $res);
-    $this->assertNotEqual($runner->getElapsedTime(), 0);
   }
 
   function testFind()

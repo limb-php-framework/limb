@@ -2,14 +2,14 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
 require_once(dirname(__FILE__) . '/../../src/lmbTestTreeFileNode.class.php');
 
-class lmbTestTreeFileNodeTest extends lmbTestsUtilitiesBase
+class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
 {
   function setUp()
   {
@@ -27,7 +27,7 @@ class lmbTestTreeFileNodeTest extends lmbTestsUtilitiesBase
     $foo = new GeneratedTestClass();
     $bar = new GeneratedTestClass();
     file_put_contents(LIMB_VAR_DIR . '/module.php',
-    "<?php\n" . $foo->generateBareBoned() . "\n" . $bar->generateBareBoned() . "\n?>");
+    "<?php\n" . $foo->generateClass() . "\n" . $bar->generateClass() . "\n?>");
 
     $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/module.php');
 
@@ -37,7 +37,7 @@ class lmbTestTreeFileNodeTest extends lmbTestsUtilitiesBase
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, $foo->getClass() . $bar->getClass());
+    $this->assertEqual($str, $foo->getOutput() . $bar->getOutput());
   }
 
   function testCreateTestGroupUsingClass()
@@ -46,7 +46,7 @@ class lmbTestTreeFileNodeTest extends lmbTestsUtilitiesBase
     $bar = new GeneratedTestClass();
     //module must be unique across test cases since require_once is used
     file_put_contents(LIMB_VAR_DIR . '/unique_module_name.php',
-    "<?php\n" . $foo->generateBareBoned() . "\n" . $bar->generateBareBoned() . "\n?>");
+    "<?php\n" . $foo->generateClass() . "\n" . $bar->generateClass() . "\n?>");
 
     $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/unique_module_name.php', $foo->getClass());
 
@@ -56,7 +56,7 @@ class lmbTestTreeFileNodeTest extends lmbTestsUtilitiesBase
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, $foo->getClass());
+    $this->assertEqual($str, $foo->getOutput());
   }
 
   function testGetTestLabel()

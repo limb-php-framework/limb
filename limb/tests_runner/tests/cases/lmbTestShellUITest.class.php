@@ -9,7 +9,7 @@
 require_once(dirname(__FILE__) . '/../common.inc.php');
 require_once(dirname(__FILE__) . '/../../src/lmbTestShellUI.class.php');
 
-class lmbTestShellUITest extends lmbTestsUtilitiesBase
+class lmbTestShellUITest extends lmbTestRunnerBase
 {
   function setUp()
   {
@@ -140,17 +140,6 @@ EOD;
     exec('php ' . $this->_runScriptName() . ' ' . $args, $out, $ret);
     $screen = implode("\n", $out);
     return $ret;
-  }
-
-  function _createTestCase($file, $extra = '')
-  {
-    $dir = dirname($file);
-    if(!is_dir($dir))
-      mkdir($dir, 0777, true);
-
-    $generated = new GeneratedTestClass();
-    file_put_contents($file, "<?php\n" . $generated->generate(false) . $extra . "\n?>");
-    return $generated;
   }
 }
 

@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
  */
 abstract class lmbTestTreeNode
 {
@@ -76,9 +76,19 @@ abstract class lmbTestTreeNode
     return false;
   }
 
+  function isSkipped()
+  {
+    return false;
+  }
+
   abstract function createTestGroup();
+
   abstract function createTestGroupWithoutChildren();
-  function bootstrap(){}
+
+  function bootstrap()
+  {
+    return true;
+  }
 
   function bootstrapPath($path)
   {
@@ -117,7 +127,7 @@ abstract class lmbTestTreeNode
 
     if($parent = $this->getParent())
     {
-      $final_group = new GroupTest($group->getLabel());
+      $final_group = new TestSuite($group->getLabel());
       $wrapped = $parent->wrapWithParentTestGroups($group);
       $final_group->addTestCase($wrapped);
       return $final_group;

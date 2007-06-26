@@ -20,7 +20,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6013 2007-06-25 14:14:34Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeNode
 {
@@ -29,7 +29,7 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
   protected $class_format;
   protected $test_group;
   protected $loaded;
-  protected $ignored;
+  protected $skipped;
 
   function __construct($dir, $file_filter = LIMB_TEST_RUNNER_FILE_FILTER, $class_format = LIMB_TEST_RUNNER_CLASS_FORMAT)
   {
@@ -60,6 +60,17 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     return $group->getLabel();
   }
 
+  function bootstrap()
+  {
+    if($this->isSkipped())
+      return false;
+
+    if(file_exists($this->dir . '/.init.php'))
+      include_once($this->dir . '/.init.php');
+
+    return true;
+  }
+
   function createTestGroup()
   {
     if(is_object($this->test_group))
@@ -71,17 +82,6 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
       $this->_addChildrenTestCases($this->test_group);
 
     return $this->test_group;
-  }
-
-  function bootstrap()
-  {
-    if($this->_shouldSkipDir())
-      return false;
-
-    if(file_exists($this->dir . '/.init.php'))
-      include_once($this->dir . '/.init.php');
-
-    return true;
   }
 
   function createTestGroupWithoutChildren()
@@ -160,26 +160,25 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     return $clean_and_sorted;
   }
 
-  protected function _shouldSkipDir()
+  function isSkipped()
   {
-    if(!is_null($this->ignored))
-      return $this->ignored;
+    if(!is_null($this->skipped))
+      return $this->skipped;
 
-    if(file_exists($this->dir . '/.skip.php'))
-      $this->ignored = (bool)include($this->dir . '/.skip.php');
+    if(file_exists($this->dir . '/.skipif.php'))
+      $this->skipped = (bool)include($this->dir . '/.skipif.php');
     elseif(file_exists($this->dir . '/.ignore.php'))
-      $this->ignored = (bool)include($this->dir . '/.ignore.php');
+      $this->skipped = (bool)include($this->dir . '/.ignore.php');
     else
-      $this->ignored = false;
+      $this->skipped = false;
 
-    return $this->ignored;
+    return $this->skipped;
   }
 
   protected function _isFileAllowed($file)
   {
     if($this->file_filter && !$this->file_filter->match($file))
-        return false;
-
+      return false;
     return true;
   }
 

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 class GeneratedTestClass
@@ -21,25 +21,52 @@ class GeneratedTestClass
     return $this->class_name;
   }
 
-  function generate($add_php = true)
+  function getFileName()
+  {
+    return $this->class_name . ".class.php";
+  }
+
+  function getOutput()
+  {
+    return $this->class_name . "\n";
+  }
+
+  function generate()
   {
     $code = '';
-    $code .= $add_php ? "<?php\n" : '';
-    $code .= "class {$this->class_name} extends UnitTestCase {
-              function testMe() {echo \"{$this->class_name}\";}
-            }";
-    $code .= $add_php ? "\n?>" : '';
-
+    $code .= "<?php\n";
+    $code .= $this->generateClass();
+    $code .= "\n?>";
     return $code;
   }
 
-  function generateBareBoned()
+  function generateFailing()
   {
-    return $this->generate(false);
+    $code = '';
+    $code .= "<?php\n";
+    $code .= $this->generateClassFailing();
+    $code .= "\n?>";
+    return $code;
+  }
+
+  function generateClass()
+  {
+    $code = "class {$this->class_name} extends UnitTestCase {
+              function testSay() {echo \"" . $this->getOutput() . "\";}
+            }";
+    return $code;
+  }
+
+  function generateClassFailing()
+  {
+    $code = "class {$this->class_name} extends UnitTestCase {
+              function testSay() {\$this->assertTrue(false);echo \"" . $this->getOutput() . "\";}
+            }";
+    return $code;
   }
 }
 
-abstract class lmbTestsUtilitiesBase extends UnitTestCase
+abstract class lmbTestRunnerBase extends UnitTestCase
 {
   function _rmdir($path)
   {
@@ -58,6 +85,28 @@ abstract class lmbTestsUtilitiesBase extends UnitTestCase
     $res = rmdir($path);
     clearstatcache();
     return $res;
+  }
+
+  function _createTestCase($file, $extra = '')
+  {
+    $dir = dirname($file);
+    if(!is_dir($dir))
+      mkdir($dir, 0777, true);
+
+    $generated = new GeneratedTestClass();
+    file_put_contents($file, "<?php\n" . $generated->generateClass() . $extra . "\n?>");
+    return $generated;
+  }
+
+  function _createTestCaseFailing($file, $extra = '')
+  {
+    $dir = dirname($file);
+    if(!is_dir($dir))
+      mkdir($dir, 0777, true);
+
+    $generated = new GeneratedTestClass();
+    file_put_contents($file, "<?php\n" . $generated->generateClassFailing() . $extra . "\n?>");
+    return $generated;
   }
 }
 ?>

@@ -13,13 +13,12 @@
  */
 @define('SIMPLE_TEST', dirname(__FILE__) . '/lib/simpletest/');
 
-if(!file_exists(SIMPLE_TEST . '/unit_tester.php'))
+if(!@include_once(SIMPLE_TEST . '/unit_tester.php'))
 {
   echo('SIMPLE_TEST constant doesn\'t point to SimpleTest installation directory(' . SIMPLE_TEST . ')');
   exit(1);
 }
 
-require_once(SIMPLE_TEST . '/unit_tester.php');
 require_once(SIMPLE_TEST . '/mock_objects.php');
 require_once(SIMPLE_TEST . '/reporter.php');
 ?>

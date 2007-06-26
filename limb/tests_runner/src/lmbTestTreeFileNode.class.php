@@ -12,7 +12,7 @@ require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 5983 2007-06-09 13:33:06Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -41,7 +41,7 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     if($this->test_group)
       return $this->test_group;
 
-    $this->test_group = new GroupTest(basename($this->file));
+    $this->test_group = new TestSuite(basename($this->file));
 
     if(!is_null($this->class))
     {

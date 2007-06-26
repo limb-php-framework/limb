@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestTreeDirNode.class.php');
 
@@ -12,12 +12,10 @@ require_once(dirname(__FILE__) . '/lmbTestTreeDirNode.class.php');
  * class lmbFile2TestNodeMapper.
  *
  * @package tests_runner
- * @version $Id: lmbFile2TestNodeMapper.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFile2TestNodeMapper.class.php 6016 2007-06-26 13:31:54Z pachanga $
  */
 class lmbFile2TestNodeMapper
 {
-  protected $file_filter;
-
   function map($start_dir, $file)
   {
     $start_dir = realpath($start_dir);
