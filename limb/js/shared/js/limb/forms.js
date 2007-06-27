@@ -56,12 +56,12 @@ Limb.Form.submit = function (form, form_action)
   iframe.src = '';
   iframe.style.display = 'none';
 
+  form.appendChild(iframe);
+  form.target = iframe_id;
+
   jQuery(iframe).bind('load', function(){
     window.location.reload();
   });
-
-  form.appendChild(iframe);
-  form.target = iframe_id;
 
   if(form_action)
     form.action = form_action;
