@@ -11,11 +11,11 @@
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
  */
-abstract class lmbTestTreeNode
+class lmbTestTreeNode
 {
-  protected $parent = null;
+  protected $parent;
   protected $children = array();
 
   function setParent($parent)
@@ -39,19 +39,36 @@ abstract class lmbTestTreeNode
     return $this->children;
   }
 
-  function findChildByPath($path)
+  function objectifyPath($path)
   {
-    // return itself in case of / path
-    if(!$array_path = lmbTestTreePath :: toArray($path))
-      return $this;
-
-    return $this->_findChildByArrayPath($array_path);
+    if($this->_traverseArrayPath(lmbTestTreePath :: toArray($path), $nodes))
+    {
+      $tree_path = new lmbTestTreePath();
+      foreach($nodes as $node)
+        $tree_path->addNode($node);
+      return $tree_path;
+    }
   }
 
-  protected function _findChildByArrayPath($array_path)
+  function findChildByPath($path)
   {
+    return $this->_traverseArrayPath(lmbTestTreePath :: toArray($path));
+  }
+
+  protected function _traverseArrayPath($array_path, &$nodes = array())
+  {
+    $nodes[] = $this;
+
+    // return itself in case of / path
+    if(!$array_path)
+      return $this;
+
     if(sizeof($array_path) == 1)
-      return $this->_getImmediateChildByIndex(array_shift($array_path));
+    {
+      $child = $this->_getImmediateChildByIndex(array_shift($array_path));
+      $nodes[] = $child;
+      return $child;
+    }
 
     $index = array_shift($array_path);
 
@@ -61,7 +78,7 @@ abstract class lmbTestTreeNode
     if($child->isTerminal())
       return null;
 
-    return $child->_findChildByArrayPath($array_path);
+    return $child->_traverseArrayPath($array_path, $nodes);
   }
 
   protected function _getImmediateChildByIndex($index)
@@ -71,69 +88,32 @@ abstract class lmbTestTreeNode
       return $children[$index];
   }
 
-  function isTerminal()
-  {
-    return false;
-  }
-
   function isSkipped()
   {
     return false;
   }
 
-  abstract function createTestGroup();
-
-  abstract function createTestGroupWithoutChildren();
-
-  function bootstrap()
+  function isTerminal()
   {
-    return true;
+    return false;
   }
 
-  function bootstrapPath($path)
+  function createTestGroup()
   {
-    // return itself in case of / path
-    if(!$array_path = lmbTestTreePath :: toArray($path))
-      return $this->bootstrap();
+    $group = new TestSuite();
+    foreach($this->children as $child)
+      $group->addTestCase($child->createTestGroup());
+    return $group;
+  }
 
-    $reverse_path = array();
-    foreach($array_path as $path_item)
-    {
-      $reverse_path[] = $path_item;
-      if($node = $this->_findChildByArrayPath($reverse_path))
-        $node->bootstrap();
-    }
+  function init()
+  {
+    return true;
   }
 
   function getTestLabel()
   {
     return $this->createTestGroup()->getLabel();
-  }
-
-  function wrapWithParentTestGroups($case)
-  {
-    $new_group = $this->createTestGroupWithoutChildren();
-    $new_group->addTestCase($case);
-
-    if($parent = $this->getParent())
-      return $parent->wrapWithParentTestGroups($new_group);
-    else
-      return $new_group;
-  }
-
-  function createTestGroupWithParents()
-  {
-    $group = $this->createTestGroup();
-
-    if($parent = $this->getParent())
-    {
-      $final_group = new TestSuite($group->getLabel());
-      $wrapped = $parent->wrapWithParentTestGroups($group);
-      $final_group->addTestCase($wrapped);
-      return $final_group;
-    }
-    else
-      return $group;
   }
 }
 

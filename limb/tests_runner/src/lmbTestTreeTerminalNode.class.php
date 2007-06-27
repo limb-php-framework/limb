@@ -11,18 +11,13 @@
  * abstract class lmbTestTreeTerminalNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeTerminalNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
+ * @version $Id: lmbTestTreeTerminalNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
  */
-abstract class lmbTestTreeTerminalNode extends lmbTestTreeNode
+class lmbTestTreeTerminalNode extends lmbTestTreeNode
 {
   function addChild($node){}
 
   function findChildByPath($path){}
-
-  function createTestGroupWithoutChildren()
-  {
-    return $this->createTestGroup();
-  }
 
   function isTerminal()
   {

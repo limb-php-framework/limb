@@ -7,9 +7,9 @@
  * @license    LGPL http:/www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/../common.inc.php');
-require_once(dirname(__FILE__) . '/../../src/lmbTestRunner.class.php');
+require_once(dirname(__FILE__) . '/../../src/lmbTestFileRunner.class.php');
 
-class lmbTestRunnerTest extends lmbTestRunnerBase
+class lmbTestFileRunnerTest extends lmbTestRunnerBase
 {
   protected $cases;
 
@@ -32,11 +32,11 @@ class lmbTestRunnerTest extends lmbTestRunnerBase
     $bar = $this->_createTestCase($this->cases . '/a/bar_test.php');
     $zoo = $this->_createTestCase($this->cases . '/a/z/zoo_test.php');
 
-    $runner = new lmbTestRunner($this->cases . '/a/z/zoo_test.php');
+    $runner = new lmbTestFileRunner();
     ob_start();
-    $this->assertTrue($runner->run($found));
+    $this->assertTrue($runner->runForFiles($this->cases . '/a/z/zoo_test.php'));
     ob_end_clean();
-    $this->assertTrue($found);
+    $this->assertTrue($runner->testsFound());
   }
 
   function testRunOkForDir()
@@ -45,18 +45,18 @@ class lmbTestRunnerTest extends lmbTestRunnerBase
     $bar = $this->_createTestCase($this->cases . '/a/bar_test.php');
     $zoo = $this->_createTestCase($this->cases . '/a/z/zoo_test.php');
 
-    $runner = new lmbTestRunner($this->cases . '/a');
+    $runner = new lmbTestFileRunner();
     ob_start();
-    $this->assertTrue($runner->run($found));
+    $this->assertTrue($runner->runForFiles($this->cases . '/a'));
     ob_end_clean();
-    $this->assertTrue($found);
+    $this->assertTrue($runner->testsFound());
   }
 
   function testNoRunnableFilesFound()
   {
-    $runner = new lmbTestRunner($this->cases . mt_rand());
-    $this->assertTrue($runner->run($found));
-    $this->assertFalse($found);
+    $runner = new lmbTestFileRunner();
+    $this->assertTrue($runner->runForFiles($this->cases . mt_rand()));
+    $this->assertFalse($runner->testsFound());
   }
 
   function testRunFailedForFile()
@@ -65,11 +65,11 @@ class lmbTestRunnerTest extends lmbTestRunnerBase
     $bar = $this->_createTestCase($this->cases . '/a/bar_test.php');
     $zoo = $this->_createTestCaseFailing($this->cases . '/a/z/zoo_test.php');
 
-    $runner = new lmbTestRunner($this->cases . '/a/z/zoo_test.php');
+    $runner = new lmbTestFileRunner();
     ob_start();
-    $this->assertFalse($runner->run($found));
+    $this->assertFalse($runner->runForFiles($this->cases . '/a/z/zoo_test.php'));
     ob_end_clean();
-    $this->assertTrue($found);
+    $this->assertTrue($runner->testsFound());
   }
 
   function testRunFailedForDir()
@@ -78,11 +78,28 @@ class lmbTestRunnerTest extends lmbTestRunnerBase
     $bar = $this->_createTestCase($this->cases . '/a/bar_test.php');
     $zoo = $this->_createTestCaseFailing($this->cases . '/a/z/zoo_test.php');
 
-    $runner = new lmbTestRunner($this->cases . '/a');
+    $runner = new lmbTestFileRunner();
     ob_start();
-    $this->assertFalse($runner->run($found));
+    $this->assertFalse($runner->runForFiles($this->cases . '/a'));
     ob_end_clean();
-    $this->assertTrue($found);
+    $this->assertTrue($runner->testsFound());
+  }
+
+  function testTestsInSkippedDirAreNotExecuted()
+  {
+    $foo = $this->_createTestCase($this->cases . '/foo_test.php');
+    $bar = $this->_createTestCase($this->cases . '/a/bar_test.php');
+    $zoo = $this->_createTestCase($this->cases . '/a/z/zoo_test.php');
+
+    file_put_contents($this->cases . '/a/.skipif.php', '<?php return true; ?>');
+
+    $runner = new lmbTestFileRunner();
+    ob_start();
+    $this->assertTrue($runner->runForFiles($this->cases . '/a/z/zoo_test.php'));
+    $str = ob_get_contents();
+    ob_end_clean();
+    $this->assertTrue($runner->testsFound());
+    $this->assertNoPattern('~' . preg_quote($zoo->getOutput()) . '~', $str);
   }
 }
 

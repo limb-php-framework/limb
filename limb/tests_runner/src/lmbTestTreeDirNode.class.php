@@ -13,14 +13,14 @@ require_once(dirname(__FILE__) . '/lmbDetachedFixture.class.php');
 require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
 require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
 
-@define('LIMB_TEST_RUNNER_FILE_FILTER', '*Test.class.php;*.test.php;*_test.php');
-@define('LIMB_TEST_RUNNER_CLASS_FORMAT', '%s.class.php');
+@define('LIMB_TESTS_RUNNER_FILE_FILTER', '*Test.class.php;*.test.php;*_test.php');
+@define('LIMB_TESTS_RUNNER_CLASS_FORMAT', '%s.class.php');
 
 /**
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeNode
 {
@@ -31,15 +31,13 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
   protected $loaded;
   protected $skipped;
 
-  function __construct($dir, $file_filter = LIMB_TEST_RUNNER_FILE_FILTER, $class_format = LIMB_TEST_RUNNER_CLASS_FORMAT)
+  function __construct($dir, $file_filter = LIMB_TESTS_RUNNER_FILE_FILTER, $class_format = LIMB_TESTS_RUNNER_CLASS_FORMAT)
   {
     if(!is_dir($dir))
       throw new Exception("'$dir' is not a directory!");
 
     $this->dir = $dir;
-
     $this->file_filter = $this->_createFileFilter($file_filter);
-
     $this->class_format = $class_format;
   }
 
@@ -56,48 +54,48 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
 
   function getTestLabel()
   {
-    $group = $this->createTestGroupWithoutChildren();
+    $group = $this->_createTestGroupWithoutChildren();
     return $group->getLabel();
   }
 
-  function bootstrap()
+  function init()
   {
-    if($this->isSkipped())
-      return false;
-
     if(file_exists($this->dir . '/.init.php'))
       include_once($this->dir . '/.init.php');
-
-    return true;
   }
 
+  //TODO: why having $test_group as a property?
   function createTestGroup()
   {
     if(is_object($this->test_group))
       return $this->test_group;
 
-    $this->test_group = $this->createTestGroupWithoutChildren();
-
-    if($this->bootstrap())
-      $this->_addChildrenTestCases($this->test_group);
+    $this->test_group = $this->_createTestGroupWithoutChildren();
+    $this->_addChildrenTestCases($this->test_group);
 
     return $this->test_group;
   }
 
-  function createTestGroupWithoutChildren()
+  protected function _createTestGroupWithoutChildren()
   {
-    if(!$this->bootstrap())
-      return new lmbTestGroup();
-
     $label = $this->_getDirectoryLabel();
-
     $group = new lmbTestGroup($label);
-
     $fixture = new lmbDetachedFixture($this->dir . '/.setup.php',
                                       $this->dir . '/.teardown.php');
     $group->useFixture($fixture);
-
     return $group;
+  }
+
+  protected function _addChildrenTestCases($group)
+  {
+    foreach($this->getChildren() as $child)
+    {
+      if(!$child->isSkipped())
+      {
+        $child->init();
+        $group->addTestCase($child->createTestGroup());
+      }
+    }
   }
 
   protected function _getDirectoryLabel()
@@ -118,28 +116,19 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
       return new lmbTestFileFilter(explode(';', $file_filter));
   }
 
-  protected function _addChildrenTestCases($group)
-  {
-    foreach($this->getChildren() as $child)
-      $group->addTestCase($child->createTestGroup());
-  }
-
   function _loadLazyChildren()
   {
     if(!is_null($this->loaded) && $this->loaded)
       return;
 
-    if($this->bootstrap())
-    {
-      $dir_items = $this->getDirItems();
+    $dir_items = $this->getDirItems();
 
-      foreach($dir_items as $item)
-      {
-        if(is_dir($item))
-          $this->addChild(new lmbTestTreeDirNode($item, $this->file_filter, $this->class_format));
-        else
-          $this->addChild(new lmbTestTreeFileNode($item, $this->_extractClassName($item)));
-      }
+    foreach($dir_items as $item)
+    {
+      if(is_dir($item))
+        $this->addChild(new lmbTestTreeDirNode($item, $this->file_filter, $this->class_format));
+      else
+        $this->addChild(new lmbTestTreeFileNode($item, $this->_extractClassName($item)));
     }
     $this->loaded = true;
   }

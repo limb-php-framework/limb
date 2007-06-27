@@ -15,7 +15,6 @@
  */
 class lmbTestRunner
 {
-  protected $test_paths = array();
   protected $reporter;
   protected $coverage;
   protected $coverage_reporter;
@@ -24,14 +23,6 @@ class lmbTestRunner
   protected $coverage_report_dir;
   protected $start_time = 0;
   protected $end_time = 0;
-
-  function __construct($test_path)
-  {
-    if(!is_array($test_path))
-      $this->test_paths[] = $test_path;
-    else
-      $this->test_paths = $test_path;
-  }
 
   function setReporter($reporter)
   {
@@ -45,33 +36,48 @@ class lmbTestRunner
     $this->coverage_report_dir = $coverage_report_dir;
   }
 
-  function run(&$tests_found = false)
+  function run($root_node, $path)
   {
+    require_once(dirname(__FILE__) . '/../simpletest.inc.php');
+
     $this->_startTimer();
     $this->_startCoverage();
-    $res = $this->_runForTestPath($tests_found);
+
+    try
+    {
+      $res = $this->_doRun($root_node, $path);
+    }
+    catch(Exception $e)
+    {
+      $this->_showException($e);
+      return false;
+    }
+
     $this->_endCoverage();
     $this->_stopTimer();
     return $res;
   }
 
-  protected function _runForTestPath(&$tests_found = false)
+  protected function _doRun($node, $path)
   {
-    require_once(dirname(__FILE__) . '/../simpletest.inc.php');
+    if(!$tree_path = $node->objectifyPath($path))
+      throw new Exception("Test node '$path' not found!");
 
-    $res = true;
-    foreach($this->test_paths as $test_path)
+    if($node = $tree_path->getSkippedNode())
     {
-      foreach(glob($this->_normalizePath($test_path)) as $file)
-      {
-        $tests_found = true;
-        $root_dir = $this->_getRootDir($file);
-        $node = $this->_mapFileToNode($root_dir, $file);
-        $tree = $this->_initTree($root_dir);
-        $res = $res & $tree->perform($node, $this->_getReporter());
-      }
+      echo "(There's a skipped test node in a path, skipping execution)\n";
+      return true;
     }
-    return $res;
+
+    $tree_path->init();
+
+    $test = $tree_path->createTestGroup();
+    return $test->run($this->_getReporter());
+  }
+
+  protected function _showException($e)
+  {
+    echo $e->__toString();
   }
 
   protected function _startTimer()
@@ -115,54 +121,6 @@ class lmbTestRunner
       $this->coverage->generateReport();
       $this->coverage_reporter->printTextSummary();
     }
-  }
-
-  protected function _normalizePath($path)
-  {
-    if($this->_isAbsolutePath($path))
-      return rtrim($path, '\\/');
-    else
-      return rtrim($this->_getcwd() . DIRECTORY_SEPARATOR . $path, '\\/');
-  }
-
-  /**
-   * Due to require_once error in PHP before 5.2 version this method 'strtolowers' paths under windows
-   */
-  protected function _getcwd()
-  {
-    $wd = getcwd();
-    //win32 check
-    if(DIRECTORY_SEPARATOR == '\\')
-      $wd = strtolower($wd);
-    return $wd;
-  }
-
-  protected function _isAbsolutePath($path)
-  {
-    return $path{0} == '/' || preg_match('~^[a-z]:~i', $path);
-  }
-
-  protected function _initTree($root_node)
-  {
-    require_once(dirname(__FILE__) . '/lmbTestTree.class.php');
-    require_once(dirname(__FILE__) . '/lmbTestTreeDirNode.class.php');
-    return new lmbTestTree(new lmbTestTreeDirNode($root_node));
-  }
-
-  protected function _mapFileToNode($root_dir, $file)
-  {
-    require_once(dirname(__FILE__) . '/lmbFile2TestNodeMapper.class.php');
-    $mapper = new lmbFile2TestNodeMapper();
-    return $mapper->map($root_dir, $file);
-  }
-
-  protected function _getRootDir($file)
-  {
-    $path_items = explode(DIRECTORY_SEPARATOR, $file);
-    //windows/linux filesystem paths style check
-    return empty($path_items[0]) ?
-              DIRECTORY_SEPARATOR . $path_items[1] :  //unix
-              $path_items[0] . DIRECTORY_SEPARATOR;   //windows
   }
 
   protected function _getReporter()

@@ -2,11 +2,10 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once(dirname(__FILE__) . '/lmbTestTree.class.php');
 require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
 require_once(dirname(__FILE__) . '/lmbTestHTMLReporter.class.php');
 
@@ -14,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestHTMLReporter.class.php');
  * class lmbTestWebUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestWebUI.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestWebUI.class.php 6020 2007-06-27 15:12:32Z pachanga $
  */
 class lmbTestWebUI
 {
@@ -23,7 +22,7 @@ class lmbTestWebUI
 
   function __construct($root_node)
   {
-    $this->tree = new lmbTestTree($root_node);
+    $this->root_node = $root_node;
   }
 
   function setEncoding($encoding)
@@ -61,25 +60,26 @@ class lmbTestWebUI
 
   function perform($path)
   {
-    $this->tree->perform($path, $this->_getReporter());
+    $runner = new lmbTestRunner();
+    $runner->setReporter($this->_getReporter());
+    $runner->run($this->root_node, $path);
 
     if(isset($_GET['back']))
       $postfix = '';
     else
       $postfix = '/..';
 
-    echo '<small>' . $this->tree->getElapsedTime() . '</small>';
+    echo '<small>' . $runner->getRunTime() . '</small>';
     echo '<p>' . $this->_createBrowseLink($path . $postfix, 'Back') . '</p>';
   }
 
   function browse($path='/')
   {
-    $root_node = $this->tree->find('/');
-    $node = $this->tree->find($path);
+    $node = $this->root_node->findChildByPath($path);
 
     echo '<html><body><style>@import url("style.css");</style>';
 
-    if($root_node !== $node)
+    if($this->root_node !== $node)
       echo '<p>' . $this->_createBrowseLink($path . '/..', 'Back');
 
     $sub_nodes = $node->getChildren();

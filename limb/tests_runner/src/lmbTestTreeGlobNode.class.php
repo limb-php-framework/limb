@@ -13,7 +13,7 @@ require_once(dirname(__FILE__). '/lmbTestTreeDirNode.class.php');
  * class lmbTestTreeGlobNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeGlobNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
+ * @version $Id: lmbTestTreeGlobNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
  */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
@@ -30,19 +30,6 @@ class lmbTestTreeGlobNode extends lmbTestTreeNode
   function getTestLabel()
   {
     return 'All ' . $this->glob . ' tests ';
-  }
-
-  function createTestGroup()
-  {
-    $group = new TestSuite();
-    foreach($this->children as $child)
-      $group->addTestCase($child->createTestGroup());
-    return $group;
-  }
-
-  function createTestGroupWithoutChildren()
-  {
-    return new TestSuite();
   }
 }
 
