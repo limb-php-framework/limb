@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 lmb_require('limb/core/src/lmbErrorGuard.class.php');
@@ -13,12 +13,30 @@ lmb_require('limb/core/src/lmbErrorGuard.class.php');
  * class lmbUncaughtExceptionHandlingFilter.
  *
  * @package web_app
- * @version $Id: lmbUncaughtExceptionHandlingFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUncaughtExceptionHandlingFilter.class.php 6019 2007-06-27 14:29:40Z serega $
  */
 class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
 {
-  const CONTEXT_RADIUS = 3;
+  const CONTEXT_RADIUS    = 3;
+  const MODE_DEVEL        = 'devel';
+  const MODE_PRODUCTION   = 'production';
+
   protected $toolkit;
+  protected $error_page;
+  protected $mode;
+
+  function __construct($error500_page = '')
+  {
+    if(!$error500_page)
+      $error500_page = dirname(__FILE__) . '/../../template/server_error.html';
+
+    $this->error_page = $error500_page;
+
+    if(!defined('LIMB_APP_MODE'))
+      $this->mode = self :: MODE_DEVEL;
+    else
+      $this->mode = LIMB_APP_MODE;
+  }
 
   function run($filter_chain)
   {
@@ -35,6 +53,42 @@ class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
     $this->toolkit->getLog()->error($error['message']);
     $this->toolkit->getResponse()->reset();
 
+    if($this->mode == self :: MODE_DEVEL)
+      $this->_echoErrorBacktrace($error);
+
+    if($this->mode == self :: MODE_PRODUCTION)
+      $this->_echoErrorPage();
+
+    exit(1);
+  }
+
+  function handleException($e)
+  {
+    if(function_exists('debugBreak'))
+      debugBreak();
+
+    $this->toolkit->getLog()->exception($e);
+    $this->toolkit->getResponse()->reset();
+
+    if($this->mode == self :: MODE_DEVEL)
+      $this->_echoExceptionBacktrace($e);
+
+    if($this->mode == self :: MODE_PRODUCTION)
+      $this->_echoErrorPage();
+
+    exit(1);
+  }
+
+  function _echoErrorPage()
+  {
+    for($i=0; $i < ob_get_level(); $i++)
+      ob_end_clean();
+
+    echo file_get_contents($this->error_page);
+  }
+
+  protected function _echoErrorBacktrace($error)
+  {
     $message = $error['message'];
     $trace = '';
     $file = $error['file'];
@@ -47,17 +101,10 @@ class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
 
     $session = htmlspecialchars($this->toolkit->getSession()->dump());
     echo $this->_renderTemplate($message, $trace, $file, $line, $context, $request, $session);
-    exit(1);
   }
 
-  function handleException($e)
+  protected function _echoExceptionBacktrace($e)
   {
-    if(function_exists('debugBreak'))
-      debugBreak();
-
-    $this->toolkit->getLog()->exception($e);
-    $this->toolkit->getResponse()->reset();
-
     $error = htmlspecialchars($e->getMessage());
     $trace = htmlspecialchars($e->getTraceAsString());
     list($file, $line) = $this->_extractExceptionFileAndLine($e);
@@ -69,7 +116,6 @@ class lmbUncaughtExceptionHandlingFilter implements lmbInterceptingFilter
       ob_end_clean();
 
     echo $this->_renderTemplate($error, $trace, $file, $line, $context, $request, $session);
-    exit(1);
   }
 
   protected function _renderTemplate($error, $trace, $file, $line, $context, $request, $session)
