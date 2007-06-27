@@ -12,7 +12,7 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 5997 2007-06-18 12:27:21Z pachanga $
+ * @version $Id: lmbARManyToManyCollection.class.php 6017 2007-06-27 08:19:09Z serega $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -66,7 +66,11 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
   protected function _removeRelatedRecords()
   {
     $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
-    $table->delete(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
+    $criteria = new lmbSQLCriteria();
+    $criteria->addAnd(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
+    $criteria->addAnd(new lmbSQLFieldCriteria($this->relation_info['foreign_field'], 'NULL', lmbSQLFieldCriteria :: NOT_EQUAL));
+
+    $table->delete($criteria);
   }
 
   protected function _saveObject($object, $error_list = null)

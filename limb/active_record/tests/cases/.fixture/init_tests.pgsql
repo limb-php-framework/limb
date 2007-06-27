@@ -116,3 +116,12 @@ CREATE TABLE user2group_for_test (
  PRIMARY KEY  (id)
 )  ;
 
+DROP TABLE extended_user2group_for_test CASCADE;
+
+CREATE TABLE extended_user2group_for_test (
+ "id" SERIAL,
+ "user_id" int8 default NULL,
+ "group_id" int8 default NULL,
+ "other_id" int8 default NULL,
+ PRIMARY KEY  (id)
+)  ;

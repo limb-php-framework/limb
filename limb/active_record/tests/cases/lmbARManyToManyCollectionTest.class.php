@@ -23,6 +23,16 @@ class GroupForTestStub extends GroupForTest
   }
 }
 
+class UserForTestWithSpecialRelationTable extends lmbActiveRecord
+{
+  protected $_db_table_name = 'user_for_test';
+
+  protected $_has_many_to_many = array('groups' => array('field' => 'user_id',
+                                                         'foreign_field' => 'group_id',
+                                                         'table' => 'extended_user2group_for_test',
+                                                         'class' => 'GroupForTest'));
+}
+
 class lmbARManyToManyCollectionTest extends UnitTestCase
 {
   protected $db;
@@ -40,8 +50,10 @@ class lmbARManyToManyCollectionTest extends UnitTestCase
 
   function _dbCleanUp()
   {
-    lmbActiveRecord :: delete('GroupForTest');
-    lmbActiveRecord :: delete('UserForTest');
+    $this->db->delete('group_for_test');
+    $this->db->delete('user_for_test');
+    $this->db->delete('user2group_for_test');
+    $this->db->delete('extended_user2group_for_test');
   }
 
   function testAddToWithExistingOwner()
@@ -312,6 +324,28 @@ class lmbARManyToManyCollectionTest extends UnitTestCase
     $collection->removeAll();
 
     $this->assertEqual($collection->count(), 0);
+  }
+
+  function testRemoveAllDeletesOnlyProperRecordsFromTable()
+  {
+    $group1 = $this->_initGroup();
+    $group2 = $this->_initGroup();
+
+    $user = new UserForTestWithSpecialRelationTable();
+    $user->setFirstName('User' . mt_rand());
+    $user->save();
+
+    $collection = new lmbARManyToManyCollection('groups', $user);
+    $collection->add($group1);
+    $collection->add($group2);
+
+    $db_table = new lmbTableGateway('extended_user2group_for_test');
+    $db_table->insert(array('user_id' => $user->getId(),
+                            'other_id' => 100));
+
+    $collection->removeAll();
+
+    $this->assertEqual($db_table->select()->count(), 1);
   }
 
   function testPaginateWithNonSavedOwner()
