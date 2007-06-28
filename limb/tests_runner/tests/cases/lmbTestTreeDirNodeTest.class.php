@@ -76,19 +76,19 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
   {
     $foo = new GeneratedTestClass();
     touch($this->var_dir . '/junk.php');
-    touch($this->var_dir . '/' . $foo->getFileName());
+    touch($this->var_dir . '/' . $foo->getFileName() . '.yo');
 
-    $prev_filter = lmbTestTreeDirNode :: setFileFilter('*.class.php');
-    $prev_format = lmbTestTreeDirNode :: setClassFormat('%s.class.php');
+    $prev_filter = lmbTestTreeDirNode :: setFileFilter('*.class.php.yo');
+    $prev_format = lmbTestTreeFileNode :: setClassFormat('%s.class.php.yo');
 
-    $node = new lmbTestTreeDirNode($this->var_dir, array('*.class.php'), '%s.class.php');
+    $node = new lmbTestTreeDirNode($this->var_dir);
     $nodes = $node->getChildren();
     $this->assertEqual(sizeof($nodes), 1);
-    $this->assertEqual($nodes[0]->getFile(), $this->var_dir . '/' . $foo->getFileName());
+    $this->assertEqual($nodes[0]->getFile(), $this->var_dir . '/' . $foo->getFileName() . '.yo');
     $this->assertEqual($nodes[0]->getClass(), $foo->getClass());
 
     lmbTestTreeDirNode :: setFileFilter($prev_filter);
-    lmbTestTreeDirNode :: setClassFormat($prev_format);
+    lmbTestTreeFileNode :: setClassFormat($prev_format);
   }
 
   function testFindChildByPath()
@@ -142,7 +142,6 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     //we check for any possible garbage during php includes
     ob_start();
     $group = $node->createTestCase();
-
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
     ob_end_clean();

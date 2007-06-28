@@ -7,13 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
+require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
 require_once(dirname(__FILE__) . '/lmbTestHTMLReporter.class.php');
 
 /**
  * class lmbTestWebUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestWebUI.class.php 6020 2007-06-27 15:12:32Z pachanga $
+ * @version $Id: lmbTestWebUI.class.php 6022 2007-06-28 13:35:51Z pachanga $
  */
 class lmbTestWebUI
 {

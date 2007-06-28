@@ -33,7 +33,6 @@ class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
 
     ob_start();
     $group = $node->createTestCase();
-
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
     ob_end_clean();
@@ -48,15 +47,14 @@ class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
     file_put_contents(LIMB_VAR_DIR . '/unique_module_name.php',
     "<?php\n" . $foo->generateClass() . "\n" . $bar->generateClass() . "\n?>");
 
-    $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/unique_module_name.php', $foo->getClass());
+    $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/unique_module_name.php');
 
     ob_start();
     $group = $node->createTestCase();
-
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($str, $foo->getOutput());
+    $this->assertEqual($str, $foo->getOutput() . $bar->getOutput());
   }
 
   function testGetTestLabel()

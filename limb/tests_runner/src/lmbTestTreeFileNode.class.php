@@ -12,17 +12,30 @@ require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6022 2007-06-28 13:35:51Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
+  protected static $class_format = '%s.class.php';
   protected $file;
   protected $class;
 
-  function __construct($file, $class = null)
+  function __construct($file)
   {
     $this->file = $file;
-    $this->class = $class;
+    $this->class = $this->_extractClassName($file);
+  }
+
+  static function getClassFormat()
+  {
+    return self :: $class_format;
+  }
+
+  static function setClassFormat($format)
+  {
+    $prev = self :: $class_format;
+    self :: $class_format = $format;
+    return $prev;
   }
 
   function getFile()
@@ -33,6 +46,15 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
   function getClass()
   {
     return $this->class;
+  }
+
+  protected function _extractClassName($file)
+  {
+    $regex = preg_quote(self :: $class_format);
+    $regex = '~^' . str_replace('%s', '(.*)', $regex) . '$~';
+
+    if(preg_match($regex, basename($file), $m))
+      return $m[1];
   }
 
   protected function _doCreateTestCase()

@@ -15,12 +15,11 @@ require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6022 2007-06-28 13:35:51Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
   protected static $file_filter = '*Test.class.php;*.test.php;*_test.php';
-  protected static $class_format = '%s.class.php';
   protected $loaded;
 
   function createTestCase()
@@ -46,18 +45,6 @@ class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
     return $prev;
   }
 
-  static function getClassFormat()
-  {
-    return self :: $class_format;
-  }
-
-  static function setClassFormat($format)
-  {
-    $prev = self :: $class_format;
-    self :: $class_format = $format;
-    return $prev;
-  }
-
   function _loadChildren()
   {
     if(!is_null($this->loaded) && $this->loaded)
@@ -70,7 +57,7 @@ class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
       if(is_dir($item))
         $this->addChild(new lmbTestTreeDirNode($item));
       else
-        $this->addChild(new lmbTestTreeFileNode($item, $this->_extractClassName($item)));
+        $this->addChild(new lmbTestTreeFileNode($item));
     }
     $this->loaded = true;
   }
@@ -98,15 +85,6 @@ class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
     if($filter && !$filter->match($file))
       return false;
     return true;
-  }
-
-  protected function _extractClassName($file)
-  {
-    $regex = preg_quote(self :: $class_format);
-    $regex = '~^' . str_replace('%s', '(.*)', $regex) . '$~';
-
-    if(preg_match($regex, basename($file), $m))
-      return $m[1];
   }
 
   protected function _dirSorter($a, $b)
