@@ -7,29 +7,37 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__). '/lmbTestTreeNode.class.php');
-require_once(dirname(__FILE__). '/lmbTestTreeDirNode.class.php');
+require_once(dirname(__FILE__). '/lmbTestTreeFilePathNode.class.php');
 
 /**
  * class lmbTestTreeGlobNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeGlobNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
+ * @version $Id: lmbTestTreeGlobNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
  */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
-  protected $glob;
+  protected $paths;
 
-  function __construct($glob)
+  function __construct($paths)
   {
-    $this->glob = $glob;
+    if(!is_array($paths))
+      $paths = array($paths);
+    $this->paths = $paths;
+  }
 
-    foreach(glob($glob) as $item)
-      $this->addChild(new lmbTestTreeDirNode($item));
+  protected function _loadChildren()
+  {
+    foreach($this->paths as $path)
+    {
+      foreach(glob($path) as $item)
+        $this->addChild(new lmbTestTreeFilePathNode($item));
+    }
   }
 
   function getTestLabel()
   {
-    return 'All ' . $this->glob . ' tests ';
+    return 'All ' . implode(';', $this->paths) . ' tests ';
   }
 }
 

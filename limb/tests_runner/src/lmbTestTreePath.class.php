@@ -11,54 +11,10 @@
  * class lmbTestTreePath.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreePath.class.php 6020 2007-06-27 15:12:32Z pachanga $
+ * @version $Id: lmbTestTreePath.class.php 6021 2007-06-28 13:18:44Z pachanga $
  */
 class lmbTestTreePath
 {
-  protected $nodes = array();
-
-  function addNode($node)
-  {
-    $this->nodes[] = $node;
-  }
-
-  function createTestGroup()
-  {
-    if($node = end($this->nodes))
-      return $node->createTestGroup();
-  }
-
-  function init()
-  {
-    foreach($this->nodes as $node)
-      $node->init();
-  }
-
-  function hasSkippedNodes()
-  {
-    return $this->getSkippedNode() !== null;
-  }
-
-  function getSkippedNode()
-  {
-    foreach($this->nodes as $node)
-    {
-      if($node->isSkipped())
-        return $node;
-    }
-  }
-
-  function size()
-  {
-    return count($this->nodes);
-  }
-
-  function at($index)
-  {
-    if(isset($this->nodes[$index]))
-      return $this->nodes[$index];
-  }
-
   static function normalize($tests_path)
   {
     return '/' . implode('/', self :: toArray($tests_path));

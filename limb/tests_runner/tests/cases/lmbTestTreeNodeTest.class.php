@@ -45,33 +45,6 @@ class lmbTestTreeNodeTest extends lmbTestRunnerBase
     $this->assertTrue($a->findChildByPath('/0') === $a_b);
     $this->assertNull($a->findChildByPath('/100'));
   }
-
-  function testObjectifyPath()
-  {
-    $a = new lmbTestTreeNode();
-    $a_b = new lmbTestTreeNode();
-    $c = new lmbTestTreeNode();
-
-    $root = new lmbTestTreeNode();
-    $root->addChild($a);
-    $a->addChild($a_b);
-    $root->addChild($c);
-
-    $path = $root->objectifyPath('/0/0');
-    $this->assertEqual($path->size(), 3);
-    $this->assertTrue($path->at(0) === $root);
-    $this->assertTrue($path->at(1) === $a);
-    $this->assertTrue($path->at(2) === $a_b);
-    $this->assertNull($path->at(3));
-
-    $path = $root->objectifyPath('/1');
-    $this->assertEqual($path->size(), 2);
-    $this->assertTrue($path->at(0) === $root);
-    $this->assertTrue($path->at(1) === $c);
-    $this->assertNull($path->at(2));
-
-    $this->assertNull($root->objectifyPath('/100'));
-  }
 }
 
 ?>

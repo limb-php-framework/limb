@@ -6,117 +6,59 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
-require_once(dirname(__FILE__) . '/lmbTestTreeNode.class.php');
+require_once(dirname(__FILE__) . '/lmbTestTreeShallowDirNode.class.php');
 require_once(dirname(__FILE__) . '/lmbTestTreeFileNode.class.php');
 require_once(dirname(__FILE__) . '/lmbDetachedFixture.class.php');
 require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
-require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
-
-@define('LIMB_TESTS_RUNNER_FILE_FILTER', '*Test.class.php;*.test.php;*_test.php');
-@define('LIMB_TESTS_RUNNER_CLASS_FORMAT', '%s.class.php');
 
 /**
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
  */
-class lmbTestTreeDirNode extends lmbTestTreeNode
+class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
-  protected $dir;
-  protected $file_filter;
-  protected $class_format;
-  protected $test_group;
+  protected static $file_filter = '*Test.class.php;*.test.php;*_test.php';
+  protected static $class_format = '%s.class.php';
   protected $loaded;
-  protected $skipped;
 
-  function __construct($dir, $file_filter = LIMB_TESTS_RUNNER_FILE_FILTER, $class_format = LIMB_TESTS_RUNNER_CLASS_FORMAT)
+  function createTestCase()
   {
-    if(!is_dir($dir))
-      throw new Exception("'$dir' is not a directory!");
-
-    $this->dir = $dir;
-    $this->file_filter = $this->_createFileFilter($file_filter);
-    $this->class_format = $class_format;
+    $this->_loadChildren();
+    return parent :: createTestCase();
   }
 
-  function getDir()
+  static function getFileFilter()
   {
-    return $this->dir;
-  }
-
-  function getChildren()
-  {
-    $this->_loadLazyChildren();
-    return $this->children;
-  }
-
-  function getTestLabel()
-  {
-    $group = $this->_createTestGroupWithoutChildren();
-    return $group->getLabel();
-  }
-
-  function init()
-  {
-    if(file_exists($this->dir . '/.init.php'))
-      include_once($this->dir . '/.init.php');
-  }
-
-  //TODO: why having $test_group as a property?
-  function createTestGroup()
-  {
-    if(is_object($this->test_group))
-      return $this->test_group;
-
-    $this->test_group = $this->_createTestGroupWithoutChildren();
-    $this->_addChildrenTestCases($this->test_group);
-
-    return $this->test_group;
-  }
-
-  protected function _createTestGroupWithoutChildren()
-  {
-    $label = $this->_getDirectoryLabel();
-    $group = new lmbTestGroup($label);
-    $fixture = new lmbDetachedFixture($this->dir . '/.setup.php',
-                                      $this->dir . '/.teardown.php');
-    $group->useFixture($fixture);
-    return $group;
-  }
-
-  protected function _addChildrenTestCases($group)
-  {
-    foreach($this->getChildren() as $child)
-    {
-      if(!$child->isSkipped())
-      {
-        $child->init();
-        $group->addTestCase($child->createTestGroup());
-      }
-    }
-  }
-
-  protected function _getDirectoryLabel()
-  {
-    if(file_exists($this->dir . '/.description'))
-      return file_get_contents($this->dir . '/.description');
+    if(is_object(self :: $file_filter))
+      return self :: $file_filter;
+    elseif(is_array(self :: $file_filter))
+      return new lmbTestFileFilter(self :: $file_filter);
     else
-      return 'Group test in "' . $this->dir . '"';
+      return new lmbTestFileFilter(explode(';', self :: $file_filter));
   }
 
-  protected function _createFileFilter($file_filter)
+  static function setFileFilter($filter)
   {
-    if(is_object($file_filter))
-      return $file_filter;
-    elseif(is_array($file_filter))
-      return new lmbTestFileFilter($file_filter);
-    else
-      return new lmbTestFileFilter(explode(';', $file_filter));
+    $prev = self :: getFileFilter();
+    self :: $file_filter = $filter;
+    return $prev;
   }
 
-  function _loadLazyChildren()
+  static function getClassFormat()
+  {
+    return self :: $class_format;
+  }
+
+  static function setClassFormat($format)
+  {
+    $prev = self :: $class_format;
+    self :: $class_format = $format;
+    return $prev;
+  }
+
+  function _loadChildren()
   {
     if(!is_null($this->loaded) && $this->loaded)
       return;
@@ -126,7 +68,7 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     foreach($dir_items as $item)
     {
       if(is_dir($item))
-        $this->addChild(new lmbTestTreeDirNode($item, $this->file_filter, $this->class_format));
+        $this->addChild(new lmbTestTreeDirNode($item));
       else
         $this->addChild(new lmbTestTreeFileNode($item, $this->_extractClassName($item)));
     }
@@ -149,31 +91,18 @@ class lmbTestTreeDirNode extends lmbTestTreeNode
     return $clean_and_sorted;
   }
 
-  function isSkipped()
-  {
-    if(!is_null($this->skipped))
-      return $this->skipped;
-
-    if(file_exists($this->dir . '/.skipif.php'))
-      $this->skipped = (bool)include($this->dir . '/.skipif.php');
-    elseif(file_exists($this->dir . '/.ignore.php'))
-      $this->skipped = (bool)include($this->dir . '/.ignore.php');
-    else
-      $this->skipped = false;
-
-    return $this->skipped;
-  }
-
   protected function _isFileAllowed($file)
   {
-    if($this->file_filter && !$this->file_filter->match($file))
+    $filter = self :: getFileFilter();
+
+    if($filter && !$filter->match($file))
       return false;
     return true;
   }
 
   protected function _extractClassName($file)
   {
-    $regex = preg_quote($this->class_format);
+    $regex = preg_quote(self :: $class_format);
     $regex = '~^' . str_replace('%s', '(.*)', $regex) . '$~';
 
     if(preg_match($regex, basename($file), $m))

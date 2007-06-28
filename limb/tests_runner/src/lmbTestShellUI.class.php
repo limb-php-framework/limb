@@ -7,13 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
-require_once(dirname(__FILE__) . '/lmbTestFileRunner.class.php');
+require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
+require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
 
 /**
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6020 2007-06-27 15:12:32Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6021 2007-06-28 13:18:44Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -185,7 +186,7 @@ EOD;
     if(!$cover_report_dir && defined('LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR'))
       $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
 
-    $runner = new lmbTestFileRunner();
+    $runner = new lmbTestRunner();
 
     if($this->reporter)
       $runner->setReporter($this->reporter);
@@ -193,11 +194,15 @@ EOD;
     if($cover_include)
       $runner->useCoverage($cover_include, $cover_exclude, $cover_report_dir);
 
-    $found = false;
-    $res = $runner->runForFiles($options[1]);
-
-    if(!$runner->testsFound())
-      $this->_error("No tests were found\n");
+    try
+    {
+      $node = new lmbTestTreeGlobNode($options[1]);
+      $res = $runner->run($node);
+    }
+    catch(Exception $e)
+    {
+      $this->_error($e->getMessage());
+    }
 
     echo $runner->getRuntime() . " sec.\n";
 

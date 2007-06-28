@@ -6,12 +6,13 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
 
 /**
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6020 2007-06-27 15:12:32Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
  */
 class lmbTestTreeNode
 {
@@ -36,19 +37,11 @@ class lmbTestTreeNode
 
   function getChildren()
   {
+    $this->_loadChildren();
     return $this->children;
   }
 
-  function objectifyPath($path)
-  {
-    if($this->_traverseArrayPath(lmbTestTreePath :: toArray($path), $nodes))
-    {
-      $tree_path = new lmbTestTreePath();
-      foreach($nodes as $node)
-        $tree_path->addNode($node);
-      return $tree_path;
-    }
-  }
+  protected function _loadChildren(){}
 
   function findChildByPath($path)
   {
@@ -98,22 +91,30 @@ class lmbTestTreeNode
     return false;
   }
 
-  function createTestGroup()
-  {
-    $group = new TestSuite();
-    foreach($this->children as $child)
-      $group->addTestCase($child->createTestGroup());
-    return $group;
-  }
-
-  function init()
-  {
-    return true;
-  }
+  function init(){}
 
   function getTestLabel()
   {
-    return $this->createTestGroup()->getLabel();
+    return $this->_doCreateTestCase()->getLabel();
+  }
+
+  function createTestCase()
+  {
+    $test = $this->_doCreateTestCase();
+    $children = $this->getChildren();//getter instead of raw property, since child classes may need customization
+    foreach($children as $child)
+    {
+      if($child->isSkipped())
+        continue;
+      $child->init();
+      $test->addTestCase($child->createTestCase());
+    }
+    return $test;
+  }
+
+  protected function _doCreateTestCase()
+  {
+    return new TestSuite();
   }
 }
 

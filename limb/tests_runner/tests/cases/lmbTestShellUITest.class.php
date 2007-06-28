@@ -82,18 +82,18 @@ class lmbTestShellUITest extends lmbTestRunnerBase
 
   function testPerformMultipleArgs()
   {
-    $foo = $this->_createTestCase($f1 = LIMB_VAR_DIR . '/cases/foo_test.php');
-    $bar = $this->_createTestCase($f2 = LIMB_VAR_DIR . '/cases/a/bar_test.php');
-    $zoo = $this->_createTestCase($f3 = LIMB_VAR_DIR . '/cases/a/z/zoo_test.php');
+    $foo = $this->_createTestCase($foo_file = LIMB_VAR_DIR . '/cases/foo_test.php');
+    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/a/bar_test.php');
+    $zoo = $this->_createTestCase($zoo_file = LIMB_VAR_DIR . '/cases/a/z/zoo_test.php');
 
-    $ret = $this->_execScript("$f2 $f1 $f3", $screen);
+    $ret = $this->_execScript("$bar_file $foo_file $zoo_file", $screen);
     if(!$this->assertEqual($ret, 0))
       echo $screen;
 
-    $this->assertPattern('~1\s+of\s+1\s+done\(' . $foo->getClass() . '\)~', $screen);
-    $this->assertPattern('~1\s+of\s+1\s+done\(' . $bar->getClass() . '\)~', $screen);
-    $this->assertPattern('~1\s+of\s+1\s+done\(' . $zoo->getClass() . '\)~', $screen);
-    $this->assertPattern('~(Test cases run:\s*1\/1.*){3}~si', $screen);
+    $this->assertPattern('~1\s+of\s+3\s+done\(' . $bar->getClass() . '\)~', $screen);
+    $this->assertPattern('~2\s+of\s+3\s+done\(' . $foo->getClass() . '\)~', $screen);
+    $this->assertPattern('~3\s+of\s+3\s+done\(' . $zoo->getClass() . '\)~', $screen);
+    $this->assertPattern('~Test cases run:\s*3\/3.*~si', $screen);
     $this->assertNoPattern('~Error~i', $screen);
   }
 

@@ -32,7 +32,6 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
   {
     mkdir($this->var_dir . '/a');
     mkdir($this->var_dir . '/a/b');
-
     touch($this->var_dir . '/a/b/bar_test.php');
     touch($this->var_dir . '/a/b/foo_test.php');
 
@@ -62,11 +61,15 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     touch($this->var_dir . '/junk.php');
     touch($this->var_dir . '/FooYo.class.php');
 
-    $node = new lmbTestTreeDirNode($this->var_dir, array('*test.php', '*Yo.class.php'));
+    $prev_filter = lmbTestTreeDirNode :: setFileFilter(array('*test.php', '*Yo.class.php'));
+
+    $node = new lmbTestTreeDirNode($this->var_dir);
     $nodes = $node->getChildren();
     $this->assertEqual(sizeof($nodes), 2);
     $this->assertEqual($nodes[0]->getFile(), $this->var_dir . '/FooYo.class.php');
     $this->assertEqual($nodes[1]->getFile(), $this->var_dir . '/bar_test.php');
+
+    lmbTestTreeDirNode :: setFileFilter($prev_filter);
   }
 
   function testUseFileFilterAndClassFormat()
@@ -75,61 +78,17 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     touch($this->var_dir . '/junk.php');
     touch($this->var_dir . '/' . $foo->getFileName());
 
+    $prev_filter = lmbTestTreeDirNode :: setFileFilter('*.class.php');
+    $prev_format = lmbTestTreeDirNode :: setClassFormat('%s.class.php');
+
     $node = new lmbTestTreeDirNode($this->var_dir, array('*.class.php'), '%s.class.php');
     $nodes = $node->getChildren();
     $this->assertEqual(sizeof($nodes), 1);
     $this->assertEqual($nodes[0]->getFile(), $this->var_dir . '/' . $foo->getFileName());
     $this->assertEqual($nodes[0]->getClass(), $foo->getClass());
-  }
 
-  function testFileFilterIsInherited()
-  {
-    mkdir($this->var_dir . '/a');
-    touch($this->var_dir . '/a/BarTest.class.php');
-    touch($this->var_dir . '/a/garbage.php');
-    touch($this->var_dir . '/bar_test.php');
-    touch($this->var_dir . '/bah.php');
-    touch($this->var_dir . '/junk.php');
-    touch($this->var_dir . '/FooTest.class.php');
-
-    $node = new lmbTestTreeDirNode($this->var_dir, array('*test.php', '*Test.class.php'));
-    $nodes = $node->getChildren();
-    $this->assertEqual(sizeof($nodes), 3);
-
-    $this->assertEqual($nodes[0]->getDir(), $this->var_dir . '/a');
-
-    $a_nodes = $nodes[0]->getChildren();
-    $this->assertEqual(sizeof($a_nodes), 1);
-    $this->assertEqual($a_nodes[0]->getFile(), $this->var_dir . '/a/BarTest.class.php');
-
-    $this->assertEqual($nodes[1]->getFile(), $this->var_dir . '/FooTest.class.php');
-    $this->assertEqual($nodes[2]->getFile(), $this->var_dir . '/bar_test.php');
-  }
-
-  function testFileFilterAndClassFormatAreInherited()
-  {
-    mkdir($this->var_dir . '/a');
-    touch($this->var_dir . '/a/BarTest.klass.php');
-    touch($this->var_dir . '/a/garbage.php');
-    touch($this->var_dir . '/bar_test.php');
-    touch($this->var_dir . '/bah.php');
-    touch($this->var_dir . '/junk.php');
-    touch($this->var_dir . '/FooTest.klass.php');
-
-    $node = new lmbTestTreeDirNode($this->var_dir, array('*test.php', '*Test.klass.php'), '%s.klass.php');
-    $nodes = $node->getChildren();
-    $this->assertEqual(sizeof($nodes), 3);
-
-    $this->assertEqual($nodes[0]->getDir(), $this->var_dir . '/a');
-
-    $a_nodes = $nodes[0]->getChildren();
-    $this->assertEqual(sizeof($a_nodes), 1);
-    $this->assertEqual($a_nodes[0]->getFile(), $this->var_dir . '/a/BarTest.klass.php');
-    $this->assertEqual($a_nodes[0]->getClass(), 'BarTest');
-
-    $this->assertEqual($nodes[1]->getFile(), $this->var_dir . '/FooTest.klass.php');
-    $this->assertEqual($nodes[1]->getClass(), 'FooTest');
-    $this->assertEqual($nodes[2]->getFile(), $this->var_dir . '/bar_test.php');
+    lmbTestTreeDirNode :: setFileFilter($prev_filter);
+    lmbTestTreeDirNode :: setClassFormat($prev_format);
   }
 
   function testFindChildByPath()
@@ -149,7 +108,6 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
   {
     mkdir($this->var_dir . '/a');
     mkdir($this->var_dir . '/a/b');
-
     touch($this->var_dir . '/a/b/bar_test.php');
     touch($this->var_dir . '/a/b/foo_test.php');
 
@@ -183,7 +141,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
 
     //we check for any possible garbage during php includes
     ob_start();
-    $group = $node->createTestGroup();
+    $group = $node->createTestCase();
 
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
@@ -197,7 +155,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
 
     $node = new lmbTestTreeDirNode($this->var_dir);
     $this->assertEqual($node->getTestLabel(), 'Foo');
-    $group = $node->createTestGroup();
+    $group = $node->createTestCase();
     $this->assertEqual($group->getLabel(), 'Foo');
   }
 
@@ -205,7 +163,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
   {
     $node = new lmbTestTreeDirNode($this->var_dir);
     $this->assertEqual($node->getTestLabel(), 'Group test in "' . $this->var_dir . '"');
-    $group = $node->createTestGroup();
+    $group = $node->createTestCase();
     $this->assertEqual($group->getLabel(), 'Group test in "' . $this->var_dir . '"');
   }
 
@@ -235,7 +193,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/b/.skipif.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestGroup();
+    $group = $root_node->createTestCase();
 
     ob_start();
     $group->run(new SimpleReporter());
@@ -258,7 +216,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/b/.skipif.php', '<?php return false; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestGroup();
+    $group = $root_node->createTestCase();
 
     ob_start();
     $group->run(new SimpleReporter());
@@ -282,7 +240,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/b/.skipif.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestGroup();
+    $group = $root_node->createTestCase();
 
     ob_start();
     $group->run(new SimpleReporter());
@@ -302,7 +260,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/.skipif.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestGroup();
+    $group = $root_node->createTestCase();
 
     ob_start();
     $group->run(new SimpleReporter());

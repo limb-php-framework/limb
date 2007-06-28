@@ -36,7 +36,7 @@ class lmbTestRunner
     $this->coverage_report_dir = $coverage_report_dir;
   }
 
-  function run($root_node, $path)
+  function run($root_node, $path='/')
   {
     require_once(dirname(__FILE__) . '/../simpletest.inc.php');
 
@@ -60,18 +60,10 @@ class lmbTestRunner
 
   protected function _doRun($node, $path)
   {
-    if(!$tree_path = $node->objectifyPath($path))
+    if(!$sub_node = $node->findChildByPath($path))
       throw new Exception("Test node '$path' not found!");
 
-    if($node = $tree_path->getSkippedNode())
-    {
-      echo "(There's a skipped test node in a path, skipping execution)\n";
-      return true;
-    }
-
-    $tree_path->init();
-
-    $test = $tree_path->createTestGroup();
+    $test = $sub_node->createTestCase();
     return $test->run($this->_getReporter());
   }
 

@@ -32,7 +32,7 @@ class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
     $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/module.php');
 
     ob_start();
-    $group = $node->createTestGroup();
+    $group = $node->createTestCase();
 
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
@@ -51,7 +51,7 @@ class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
     $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/unique_module_name.php', $foo->getClass());
 
     ob_start();
-    $group = $node->createTestGroup();
+    $group = $node->createTestCase();
 
     $group->run(new SimpleReporter());
     $str = ob_get_contents();
@@ -66,7 +66,7 @@ class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
 
     $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/foo.php');
     $this->assertEqual($node->getTestLabel(), 'foo.php');
-    $group = $node->createTestGroup();
+    $group = $node->createTestCase();
     $this->assertEqual($group->getLabel(), 'foo.php');
   }
 }

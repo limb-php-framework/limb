@@ -12,11 +12,10 @@ require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6016 2007-06-26 13:31:54Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
-  protected $test_group;
   protected $file;
   protected $class;
 
@@ -36,12 +35,9 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     return $this->class;
   }
 
-  function createTestGroup()
+  protected function _doCreateTestCase()
   {
-    if($this->test_group)
-      return $this->test_group;
-
-    $this->test_group = new TestSuite(basename($this->file));
+    $suite = new TestSuite(basename($this->file));
 
     if(!is_null($this->class))
     {
@@ -50,12 +46,12 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
         throw new Exception("Class '{$this->class}' not found in '{$this->file}' file!");
 
       $test = new $this->class();
-      $this->test_group->addTestCase($test);
+      $suite->addTestCase($test);
     }
     else
-      $this->test_group->addFile($this->file);
+      $suite->addFile($this->file);
 
-    return $this->test_group;
+    return $suite;
   }
 }
 ?>
