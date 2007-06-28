@@ -43,15 +43,7 @@ class lmbTestRunner
     $this->_startTimer();
     $this->_startCoverage();
 
-    try
-    {
-      $res = $this->_doRun($root_node, $path);
-    }
-    catch(Exception $e)
-    {
-      $this->_showException($e);
-      return false;
-    }
+    $res = $this->_doRun($root_node, $path);
 
     $this->_endCoverage();
     $this->_stopTimer();
@@ -65,11 +57,6 @@ class lmbTestRunner
 
     $test = $sub_node->createTestCase();
     return $test->run($this->_getReporter());
-  }
-
-  protected function _showException($e)
-  {
-    echo $e->__toString();
   }
 
   protected function _startTimer()

@@ -13,7 +13,7 @@ require_once(dirname(__FILE__). '/lmbTestTreeFilePathNode.class.php');
  * class lmbTestTreeGlobNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeGlobNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
+ * @version $Id: lmbTestTreeGlobNode.class.php 6023 2007-06-28 14:01:23Z pachanga $
  */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
@@ -28,11 +28,18 @@ class lmbTestTreeGlobNode extends lmbTestTreeNode
 
   protected function _loadChildren()
   {
+    $found = false;
     foreach($this->paths as $path)
     {
       foreach(glob($path) as $item)
+      {
+        $found = true;
         $this->addChild(new lmbTestTreeFilePathNode($item));
+      }
     }
+
+    if(!$found)
+      throw new Exception("No tests were found for path '" . implode(';', $this->paths) . "'!");
   }
 
   function getTestLabel()
