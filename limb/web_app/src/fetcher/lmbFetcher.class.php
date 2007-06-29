@@ -2,18 +2,17 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/src/modifier/lmbOrderQueryModifier.class.php');
 lmb_require('limb/core/src/lmbCollection.class.php');
 
 /**
  * abstract class lmbFetcher.
  *
  * @package web_app
- * @version $Id: lmbFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFetcher.class.php 6025 2007-06-29 08:49:08Z serega $
  */
 abstract class lmbFetcher
 {
@@ -45,7 +44,7 @@ abstract class lmbFetcher
       return;
     }
     else
-      $this->order_params = lmbOrderQueryModifier :: extractOrderPairsFromString($order);
+      $this->order_params = self :: extractOrderPairsFromString($order);
   }
 
   function addDecorator($decorator, $params = array())
@@ -126,6 +125,29 @@ abstract class lmbFetcher
   function getFirstRecord()
   {
     return $this->fetchOne();
+  }
+
+  static function extractOrderPairsFromString($order_string)
+  {
+    $order_items = explode(',', $order_string);
+    $order_pairs = array();
+    foreach($order_items as $order_pair)
+    {
+      $arr = explode('=', $order_pair);
+
+      if(isset($arr[1]))
+      {
+        if(strtolower($arr[1]) == 'asc' || strtolower($arr[1]) == 'desc'
+           || strtolower($arr[1]) == 'rand()')
+          $order_pairs[$arr[0]] = strtoupper($arr[1]);
+        else
+          throw new lmbException('Wrong order type', array('order' => $arr[1]));
+      }
+      else
+        $order_pairs[$arr[0]] = 'ASC';
+    }
+
+    return $order_pairs;
   }
 }
 ?>

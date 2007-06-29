@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
@@ -119,6 +119,32 @@ class lmbFetcherTest extends UnitTestCase
     $this->assertEqual($dataset->sort_params, array('title' => 'ASC',
                                                     'name' => 'ASC',
                                                     'last_name' => 'DESC'));
+  }
+
+  function testExtractOrderPairsFromStringSimpleCase()
+  {
+    $order = lmbFetcher :: extractOrderPairsFromString('title=DESC,name=ASC');
+    $this->assertEqual($order, array('title' => 'DESC',
+                                     'name' => 'ASC'));
+  }
+
+  function testExtractOrderPairsFromStringSimpleRandom()
+  {
+    $order = lmbFetcher :: extractOrderPairsFromString('title=rand()');
+    $this->assertEqual($order, array('title' => 'RAND()'));
+  }
+
+  function testExtractOrderPairsFromStringSimpleError()
+  {
+    try
+    {
+      lmbFetcher :: extractOrderPairsFromString('title=error');
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e)
+    {
+      $this->assertWantedPattern('/Wrong order type/', $e->getMessage());
+    }
   }
 }
 ?>

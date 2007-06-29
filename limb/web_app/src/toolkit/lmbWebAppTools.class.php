@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbWebAppTools.class.php 6025 2007-06-29 08:49:08Z serega $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -128,7 +128,7 @@ class lmbWebAppTools extends lmbAbstractTools
     $class_name = lmb_camel_case($controller_name) . 'Controller';
     if(!class_exists($class_name))
     {
-      $file = $this->toolkit->findFileAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
+      $file = $this->toolkit->findFileByAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
       lmb_require($file);
     }
     return new $class_name;
