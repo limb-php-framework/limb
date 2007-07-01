@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 6025 2007-06-29 08:49:08Z serega $
+ * @version $Id: lmbWebAppTools.class.php 6030 2007-07-01 19:17:44Z alex433 $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -128,7 +128,7 @@ class lmbWebAppTools extends lmbAbstractTools
     $class_name = lmb_camel_case($controller_name) . 'Controller';
     if(!class_exists($class_name))
     {
-      $file = $this->toolkit->findFileByAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
+      $file = $this->toolkit->findFileAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
       lmb_require($file);
     }
     return new $class_name;
