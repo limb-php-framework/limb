@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 //code is based on MockGenerator class from SimpleTest test suite
-lmb_require('limb/core/src/lmbReflection.class.php');
+lmb_require('limb/core/src/lmbReflectionHelper.class.php');
 
 /**
  * class lmbDecoratorGenerator.
@@ -20,7 +20,6 @@ class lmbDecoratorGenerator
   protected $_class;
   protected $_decorator_class;
   protected $_decorator_base;
-  protected $_reflection;
 
   function generate($class, $decorator_class = null, $decorator_base = 'lmbDecorator')
   {
@@ -36,8 +35,6 @@ class lmbDecoratorGenerator
     if(class_exists($this->_decorator_class))
       return false;
 
-    $this->_reflection = new lmbReflection($this->_class);
-
     $methods = array();
 
     return eval($this->_createClassCode() . " return true;");
@@ -46,7 +43,7 @@ class lmbDecoratorGenerator
   protected function _createClassCode()
   {
     $implements = '';
-    $interfaces = $this->_reflection->getInterfaces();
+    $interfaces = lmbReflectionHelper :: getInterfaces($this->_class);
     if(function_exists('spl_classes'))
       $interfaces = array_diff($interfaces, array('Traversable'));
 
@@ -65,17 +62,17 @@ class lmbDecoratorGenerator
   protected function _createHandlerCode()
   {
     $code = '';
-    $methods = $this->_reflection->getMethods();
-    $base_reflection = new lmbReflection($this->_decorator_base);
+    $methods = lmbReflectionHelper :: getMethods($this->_class);
+    $base_methods = lmbReflectionHelper :: getMethods($this->_decorator_base);
     foreach($methods as $method)
     {
       if($this->_isMagicMethod($method))
         continue;
 
-      if(in_array($method, $base_reflection->getMethods()))
+      if(in_array($method, $base_methods))
         continue;
 
-      $code .= "    " . $this->_reflection->getSignature($method) . " {\n";
+      $code .= "    " . lmbReflectionHelper :: getSignature($this->_class, $method) . " {\n";
       $code .= "        \$args = func_get_args();\n";
       $code .= "        return \$this->___invoke(\"$method\", \$args);\n";
       $code .= "    }\n";
