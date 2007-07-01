@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6021 2007-06-28 13:18:44Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6032 2007-07-01 21:59:53Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -201,7 +201,7 @@ EOD;
     }
     catch(Exception $e)
     {
-      $this->_error($e->getMessage());
+      $this->_error($e->__toString());
     }
 
     echo $runner->getRuntime() . " sec.\n";
