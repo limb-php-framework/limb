@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -17,7 +17,7 @@ class lmbUpdateQueryTest extends UnitTestCase
 
   function setUp()
   {
-    $toolkit = lmbToolkit :: save();
+    $toolkit = lmbToolkit :: instance();
     $this->conn = $toolkit->getDefaultDbConnection();
     $this->db = new lmbSimpleDb($this->conn);
 
@@ -109,7 +109,7 @@ class lmbUpdateQueryTest extends UnitTestCase
 
     $rs = $this->db->select('test_db_table');
     $rs->rewind();
-    $record = $rs->current();
+    $record = $rs->current(); //this one is not changed
     $this->assertEqual($record->get('id'), 100);
     $this->assertEqual($record->get('title'), '');
     $this->assertEqual($record->get('description'), '');
@@ -117,6 +117,35 @@ class lmbUpdateQueryTest extends UnitTestCase
     $rs->next();
     $record = $rs->current();
     $this->assertEqual($record->get('id'), 101);
+    $this->assertEqual($record->get('title'), $title);
+    $this->assertEqual($record->get('description'), $description);
+  }
+
+  function testChaining()
+  {
+    $this->db->insert('test_db_table', array('id' => 100));
+    $this->db->insert('test_db_table', array('id' => 101));
+
+    $description = 'Some description';
+    $title = 'Some title';
+
+    $query = new lmbUpdateQuery('test_db_table', $this->conn);
+    $query->set(array('description' => $description))->
+            field('title', $title)->
+            rawField('id = id + 10')->
+            where('id=101')->
+            execute();
+
+    $rs = $this->db->select('test_db_table');
+    $rs->rewind();
+    $record = $rs->current(); //this one is not changed
+    $this->assertEqual($record->get('id'), 100);
+    $this->assertEqual($record->get('title'), '');
+    $this->assertEqual($record->get('description'), '');
+
+    $rs->next();
+    $record = $rs->current();
+    $this->assertEqual($record->get('id'), 111);
     $this->assertEqual($record->get('title'), $title);
     $this->assertEqual($record->get('description'), $description);
   }

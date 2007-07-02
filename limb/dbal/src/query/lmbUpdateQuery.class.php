@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
 
@@ -14,7 +14,7 @@ define('LIMB_UPDATE_QUERY_NON_VALUE', uniqid());
  * class lmbUpdateQuery.
  *
  * @package dbal
- * @version $Id: lmbUpdateQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
+ * @version $Id: lmbUpdateQuery.class.php 6039 2007-07-02 12:51:09Z pachanga $
  */
 class lmbUpdateQuery extends lmbCriteriaQuery
 {
@@ -29,14 +29,48 @@ class lmbUpdateQuery extends lmbCriteriaQuery
     parent :: __construct("UPDATE %table% SET %fields% %where%", $conn);
   }
 
+  function getTable()
+  {
+    return $this->_table;
+  }
+
   function addField($field, $value = LIMB_UPDATE_QUERY_NON_VALUE)
   {
     $this->_fields[$field] = $value;
+    return $this;
+  }
+
+  function field($field, $value = LIMB_UPDATE_QUERY_NON_VALUE)
+  {
+    return $this->addField($field, $value);
+  }
+
+  function getFields()
+  {
+    return $this->_fields;
+  }
+
+  function set($values)
+  {
+    foreach($values as $field => $value)
+      $this->addField($field, $value);
+    return $this;
   }
 
   function addRawField($field)
   {
     $this->_raw_fields[] = $field;
+    return $this;
+  }
+
+  function rawField($field)
+  {
+    return $this->addRawField($field);
+  }
+
+  function getRawFields()
+  {
+    return $this->_raw_fields;
   }
 
   protected function _getTableHint()

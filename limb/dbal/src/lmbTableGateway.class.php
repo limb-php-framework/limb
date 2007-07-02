@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
@@ -18,7 +18,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTableGateway.class.php 6039 2007-07-02 12:51:09Z pachanga $
  */
 class lmbTableGateway
 {
@@ -44,7 +44,6 @@ class lmbTableGateway
     elseif(!$this->_db_table_name)
       $this->_db_table_name = $this->_guessDbTableName();
 
-    $this->_table_info = $this->_loadTableInfo();
     $this->_constraints = $this->_defineConstraints();
     $this->_primary_key_name = $this->_definePrimaryKeyName();
   }
@@ -70,25 +69,38 @@ class lmbTableGateway
     return array();
   }
 
+  function getTableName()
+  {
+    return $this->_db_table_name;
+  }
+
   function getTableInfo()
   {
+    if(!$this->_table_info)
+      $this->_table_info = $this->_loadTableInfo();
+
     return $this->_table_info;
+  }
+
+  function getConnection()
+  {
+    return $this->_conn;
   }
 
   function getColumnInfo($name)
   {
     if($this->hasColumn($name))
-      return $this->_table_info->getColumn($name);
+      return $this->getTableInfo()->getColumn($name);
   }
 
   function hasColumn($name)
   {
-    return $this->_table_info->hasColumn($name);
+    return $this->getTableInfo()->hasColumn($name);
   }
 
   function getColumnNames()
   {
-    return $this->_table_info->getColumnList();
+    return $this->getTableInfo()->getColumnList();
   }
 
   function getConstraints()
@@ -101,7 +113,7 @@ class lmbTableGateway
     if(!$this->hasColumn($column_name))
       return false;
 
-    return $this->_table_info->getColumn($column_name)->getType();
+    return $this->getTableInfo()->getColumn($column_name)->getType();
   }
 
   function getPrimaryKeyName()
@@ -111,7 +123,7 @@ class lmbTableGateway
 
   function isAutoIncrement($field)
   {
-    return $this->_table_info->getColumn($field)->isAutoIncrement();
+    return $this->getTableInfo()->getColumn($field)->isAutoIncrement();
   }
 
   function getStatement()
@@ -169,13 +181,13 @@ class lmbTableGateway
 
       $this->_stmt = $query->getStatement();
       $this->_bindValuesToStatement($this->_stmt, $set);
-      return $this->_stmt->execute();
+      $this->_stmt->execute();
     }
     else
     {
       $query->addRawField($set);
       $this->_stmt = $query->getStatement();
-      return $this->_stmt->execute();
+      $this->_stmt->execute();
     }
   }
 
@@ -242,8 +254,7 @@ class lmbTableGateway
 
   function getSelectQuery($fields = array())
   {
-    $query = new lmbSelectQuery(null, $this->_conn);
-    $query->addTable($this->_db_table_name);
+    $query = new lmbSelectQuery($this->_db_table_name, $this->_conn);
 
     if(!$fields)
       $fields = $this->getColumnsForSelect();
@@ -270,11 +281,6 @@ class lmbTableGateway
     return $this->delete(new lmbSQLFieldCriteria($this->_primary_key_name, $id));
   }
 
-  function getTableName()
-  {
-    return $this->_db_table_name;
-  }
-
   protected function _mapTableNameToClass($table_name)
   {
     return lmb_camel_case($table_name);
@@ -292,7 +298,6 @@ class lmbTableGateway
       if(!in_array($name, $exclude_columns))
         $fields[$table_name . '.' . $name] = $prefix . $name;
     }
-
     return $fields;
   }
 

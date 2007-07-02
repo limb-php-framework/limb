@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -12,12 +12,12 @@ lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 
 class lmbDeleteQueryTest extends UnitTestCase
 {
-  var $query;
-  var $db;
+  protected $query;
+  protected $db;
 
   function setUp()
   {
-    $toolkit = lmbToolkit :: save();
+    $toolkit = lmbToolkit :: instance();
     $this->conn = $toolkit->getDefaultDbConnection();
     $this->db = new lmbSimpleDb($this->conn);
 
@@ -47,7 +47,7 @@ class lmbDeleteQueryTest extends UnitTestCase
     $this->assertEqual($rs->count(), 0);
   }
 
-  function testDeleteFiltered()
+  function testDeleteWithCondition()
   {
     $this->db->insert('test_db_table', array('id' => 100));
     $this->db->insert('test_db_table', array('id' => 101));
@@ -63,6 +63,20 @@ class lmbDeleteQueryTest extends UnitTestCase
     $this->assertEqual($arr[0]['id'], 101);
     $this->assertEqual($arr[1]['id'], 102);
     $this->assertEqual(sizeof($arr), 2);
+  }
+
+  function testChaining()
+  {
+    $this->db->insert('test_db_table', array('id' => 100));
+    $this->db->insert('test_db_table', array('id' => 101));
+
+    $query = new lmbDeleteQuery('test_db_table', $this->conn);
+    $query->where('id=100')->execute();
+
+    $rs = $this->db->select('test_db_table');
+    $arr = $rs->getArray();
+    $this->assertEqual($arr[0]['id'], 101);
+    $this->assertEqual(sizeof($arr), 1);
   }
 }
 ?>

@@ -2,29 +2,35 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
-lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
+lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
 /**
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSimpleDb.class.php 6039 2007-07-02 12:51:09Z pachanga $
  */
 class lmbSimpleDb
 {
   protected $conn;
+  protected $stmt;
 
   function __construct($conn)
   {
     $this->conn = $conn;
+  }
+
+  function getConnection()
+  {
+    return $this->conn;
   }
 
   function getType()
@@ -67,11 +73,17 @@ class lmbSimpleDb
     return $rs->count();
   }
 
+  function countAffected()
+  {
+    if($this->stmt)
+      return $this->stmt->getAffectedRowCount();
+    else
+      return 0;
+  }
+
   function getSelectQuery($table)
   {
-    $query = new lmbSelectQuery(null, $this->conn);
-    $query->addTable($table);
-    return $query;
+    return new lmbSelectQuery($table, $this->conn);
   }
 
   function insert($table, $values, $primary_key = 'id')
@@ -107,9 +119,9 @@ class lmbSimpleDb
     foreach($values as $key => $value)
       $query->addField($key, $value);
 
-    $stmt = $query->getStatement($this->conn);
-    $stmt->execute();
-    return $stmt->getAffectedRowCount();
+    $this->stmt = $query->getStatement($this->conn);
+    $this->stmt->execute();
+    return $this;
   }
 
   function delete($table, $criteria = null)
@@ -119,9 +131,9 @@ class lmbSimpleDb
     if($criteria)
       $query->addCriteria(lmbSQLCriteria :: objectify($criteria));
 
-    $stmt = $query->getStatement($this->conn);
-    $stmt->execute();
-    return $stmt->getAffectedRowCount();
+    $this->stmt = $query->getStatement($this->conn);
+    $this->stmt->execute();
+    return $this;
   }
 
   function truncateDb()
@@ -129,26 +141,31 @@ class lmbSimpleDb
     $info = $this->conn->getDatabaseInfo();
     foreach($info->getTableList() as $table)
       $this->conn->newStatement("DELETE FROM $table")->execute();
+    return $this;
   }
 
   function disconnect()
   {
     $this->conn->disconnect();
+    return $this;
   }
 
   function begin()
   {
     $this->conn->beginTransaction();
+    return $this;
   }
 
   function commit()
   {
     $this->conn->commitTransaction();
+    return $this;
   }
 
   function rollback()
   {
     $this->conn->rollbackTransaction();
+    return $this;
   }
 }
 

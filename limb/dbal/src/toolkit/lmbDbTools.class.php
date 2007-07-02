@@ -10,12 +10,13 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/dbal/src/lmbDBAL.class.php');
 lmb_require('limb/dbal/src/lmbDbDSN.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
+lmb_require('limb/dbal/src/lmbTableGateway.class.php');
 
 /**
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 5996 2007-06-18 12:20:00Z pachanga $
+ * @version $Id: lmbDbTools.class.php 6039 2007-07-02 12:51:09Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {

@@ -2,12 +2,12 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/dbal/tests/common.inc.php');
-lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 
 class lmbSQLFieldCriteriaTest extends UnitTestCase
@@ -18,7 +18,7 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
   function setUp()
   {
     $this->conn = new ConnectionTestStub();
-    $this->query = new lmbSelectQuery('SELECT * FROM any_table WHERE %where%', $this->conn);
+    $this->query = new lmbSelectRawQuery('SELECT * FROM any_table WHERE %where%', $this->conn);
   }
 
   function testEqual()

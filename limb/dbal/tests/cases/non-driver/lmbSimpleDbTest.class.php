@@ -74,7 +74,9 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->db->insert('test_db_table', array('title' =>  'wow', 'description' => 'description'));
     $this->db->insert('test_db_table', array('title' =>  'wow', 'description' => 'description2'));
 
-    $this->assertEqual($this->db->update('test_db_table', array('description' =>  'new_description')), 2);
+    $this->assertEqual($this->db->countAffected(), 0);
+    $this->db->update('test_db_table', array('description' =>  'new_description'));
+    $this->assertEqual($this->db->countAffected(), 2);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
@@ -94,11 +96,11 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->db->insert('test_db_table', array('title' =>  'wow', 'description' => 'description2'));
     $this->db->insert('test_db_table', array('title' =>  'yo', 'description' => 'description3'));
 
-    $res = $this->db->update('test_db_table',
-                              array('description' =>  'new_description', 'title' => 'wow2'),
-                              new lmbSQLFieldCriteria('title', 'wow'));
-
-    $this->assertEqual($res, 2);
+    $this->assertEqual($this->db->countAffected(), 0);
+    $this->db->update('test_db_table',
+                      array('description' =>  'new_description', 'title' => 'wow2'),
+                      new lmbSQLFieldCriteria('title', 'wow'));
+    $this->assertEqual($this->db->countAffected(), 2);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table ORDER BY id");
     $records = $stmt->getRecordSet();
@@ -147,7 +149,9 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->db->insert('test_db_table', $data[0]);
     $this->db->insert('test_db_table', $data[1]);
 
-    $this->assertEqual($this->db->delete('test_db_table'), 2);
+    $this->assertEqual($this->db->countAffected(), 0);
+    $this->db->delete('test_db_table');
+    $this->assertEqual($this->db->countAffected(), 2);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
@@ -165,8 +169,9 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->db->insert('test_db_table', $data[0]);
     $this->db->insert('test_db_table', $data[1]);
 
-    $this->assertEqual($this->db->delete('test_db_table',
-                                         new lmbSQLFieldCriteria('description', 'description')), 1);
+    $this->assertEqual($this->db->countAffected(), 0);
+    $this->db->delete('test_db_table',new lmbSQLFieldCriteria('description', 'description'));
+    $this->assertEqual($this->db->countAffected(), 1);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();

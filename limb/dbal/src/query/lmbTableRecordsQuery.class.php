@@ -2,19 +2,19 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
 
 /**
  * class lmbTableRecordsQuery.
  *
  * @package dbal
- * @version $Id: lmbTableRecordsQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
+ * @version $Id: lmbTableRecordsQuery.class.php 6039 2007-07-02 12:51:09Z pachanga $
  */
-class lmbTableRecordsQuery extends lmbSelectQuery
+class lmbTableRecordsQuery extends lmbSelectRawQuery
 {
   function __construct($table, $conn)
   {

@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class lmbTemplateQuery.
  *
  * @package dbal
- * @version $Id: lmbTemplateQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
+ * @version $Id: lmbTemplateQuery.class.php 6039 2007-07-02 12:51:09Z pachanga $
  */
 class lmbTemplateQuery
 {
@@ -20,10 +20,17 @@ class lmbTemplateQuery
   protected $_conn;
   protected $_hints;
 
-  function __construct($template_sql, $conn)
+  function __construct($template_sql, $conn=null)
   {
     $this->_template_sql = $template_sql;
+    if(!is_object($conn))
+      $conn = lmbToolkit :: instance()->getDefaultDbConnection();
     $this->_conn = $conn;
+  }
+
+  function getConnection()
+  {
+    return $this->_conn;
   }
 
   protected function _declareHints()
@@ -69,6 +76,11 @@ class lmbTemplateQuery
   function getStatement()
   {
     return $this->_conn->newStatement($this->toString());
+  }
+
+  function execute()
+  {
+    $this->getStatement()->execute();
   }
 
   protected function _getNoHintsSQL()
