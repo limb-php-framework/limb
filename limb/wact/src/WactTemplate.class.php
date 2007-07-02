@@ -13,7 +13,7 @@ require_once('limb/wact/src/components/components.inc.php');
  * class WactTemplate.
  *
  * @package wact
- * @version $Id: WactTemplate.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactTemplate.class.php 6038 2007-07-02 06:34:26Z serega $
  */
 class WactTemplate extends WactDatasourceRuntimeComponent
 {
@@ -129,7 +129,7 @@ class WactTemplate extends WactDatasourceRuntimeComponent
     return $this->locator->locateSourceTemplate($this->template_path);
   }
 
-  function toStudlyCaps($str)
+  static function toStudlyCaps($str)
   {
     return preg_replace('~([a-zA-Z])?_([a-zA-Z])~e', "'\\1'.strtoupper('\\2')", $str);
   }
@@ -142,6 +142,14 @@ class WactTemplate extends WactDatasourceRuntimeComponent
 
     fclose($fh);
     return true;
+  }
+
+  static function escape($string)
+  {
+    $string = htmlspecialchars($string, ENT_QUOTES);
+    if(strpos($string, '&amp;#') !== FALSE)
+      $string = preg_replace('/&amp;#([^;]*);/', '&#$1;', $string);
+    return $string;
   }
 }
 
