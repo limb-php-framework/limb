@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -140,6 +140,7 @@ class lmbToolkitTest extends UnitTestCase
     $this->assertReference($toolkit1, $toolkit2);
     $toolkit3 = lmbToolkit :: save();
     $this->assertReference($toolkit1, $toolkit3);
+    lmbToolkit :: restore();
   }
 
   function testExtendToolkit()
