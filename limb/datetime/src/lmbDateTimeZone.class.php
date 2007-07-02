@@ -2,11 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-//inspired by PEAR::lmbDate package
+//inspired by PEAR::Date package
 
 /**
  * time_zone representation class, along with time zone information data.
@@ -24,7 +24,7 @@
  *
  * This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
  * @package datetime
- * @version $Id: lmbDateTimeZone.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDateTimeZone.class.php 6037 2007-07-02 06:32:28Z serega $
  */
 class lmbDateTimeZone
 {
