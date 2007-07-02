@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/i18n/src/locale/lmbLocale.class.php');
@@ -16,7 +16,7 @@ lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
  * class lmbI18NTools.
  *
  * @package i18n
- * @version $Id: lmbI18NTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbI18NTools.class.php 6035 2007-07-02 06:31:13Z serega $
  */
 class lmbI18NTools extends lmbAbstractTools
 {
@@ -79,7 +79,7 @@ class lmbI18NTools extends lmbAbstractTools
 
   function createLocaleObject($locale)
   {
-    $file = $this->toolkit->findFileAlias($locale . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n');
+    $file = $this->toolkit->findFileByAlias($locale . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n');
 
     if(defined('LIMB_VAR_DIR'))
       return new lmbLocale($locale, new lmbCachedIni($file, LIMB_VAR_DIR . '/locale/'));

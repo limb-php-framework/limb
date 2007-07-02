@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
@@ -77,7 +77,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
   function mapToFile($locale, $domain)
   {
-    return lmbToolkit :: instance()->findFileAlias($domain . '.' . $locale . '.ts', $this->search_path, 'i18n');
+    return lmbToolkit :: instance()->findFileByAlias($domain . '.' . $locale . '.ts', $this->search_path, 'i18n');
   }
 
   function getDOMDocument($dictionary)
