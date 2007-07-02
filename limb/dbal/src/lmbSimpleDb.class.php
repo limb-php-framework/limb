@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6039 2007-07-02 12:51:09Z pachanga $
+ * @version $Id: lmbSimpleDb.class.php 6045 2007-07-02 14:02:25Z pachanga $
  */
 class lmbSimpleDb
 {
@@ -40,7 +40,7 @@ class lmbSimpleDb
 
   function select($table, $criteria = null, $order = '')
   {
-    $query = $this->getSelectQuery($table);
+    $query = new lmbSelectQuery($table);
 
     if($criteria)
       $query->addCriteria(lmbSQLCriteria :: objectify($criteria));
@@ -79,11 +79,6 @@ class lmbSimpleDb
       return $this->stmt->getAffectedRowCount();
     else
       return 0;
-  }
-
-  function getSelectQuery($table)
-  {
-    return new lmbSelectQuery($table, $this->conn);
   }
 
   function insert($table, $values, $primary_key = 'id')

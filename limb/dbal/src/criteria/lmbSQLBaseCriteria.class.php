@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 6044 2007-07-02 13:39:54Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 6045 2007-07-02 14:02:25Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {
@@ -92,9 +92,9 @@ abstract class lmbSQLBaseCriteria
 
   function getAttachedCriterias()
   {
-      $crits = array();
-      $this->_traverseCriteria($this, $crits);
-      return $crits;
+    $crits = array();
+    $this->_traverseCriteria($this, $crits);
+    return $crits;
   }
 
   protected function _traverseCriteria($c, &$a)
