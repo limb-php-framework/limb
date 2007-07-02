@@ -2,19 +2,19 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
 
 /**
  * class lmbMySQL4FullTextSearchQuery.
  *
  * @package search
- * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 6041 2007-07-02 12:53:01Z pachanga $
  */
-class lmbMySQL4FullTextSearchQuery extends lmbSelectQuery
+class lmbMySQL4FullTextSearchQuery extends lmbSelectRawQuery
 {
   function __construct($table, $words, $use_boolean_mode = true, $conn)
   {

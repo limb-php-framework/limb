@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
  * class lmbFullTextSearchIndexer.
  *
  * @package search
- * @version $Id: lmbFullTextSearchIndexer.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFullTextSearchIndexer.class.php 6041 2007-07-02 12:53:01Z pachanga $
  */
 class lmbFullTextSearchIndexer
 {
@@ -101,8 +101,7 @@ class lmbFullTextSearchIndexer
 
   function findIndexRecordByUri($uri)
   {
-    $query = new lmbSelectQuery(null, $this->conn);
-    $query->addTable(FULL_TEXT_SEARCH_INDEXER_TABLE);
+    $query = new lmbSelectQuery(FULL_TEXT_SEARCH_INDEXER_TABLE, $this->conn);
     $query->addCriteria(new lmbSQLFieldCriteria('uri', $uri->toString()));
     $rs = $query->getRecordSet();
     $rs->rewind();
