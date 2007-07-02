@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/fs/src/lmbFileLocator.class.php');
@@ -21,27 +21,27 @@ class lmbFsTools extends lmbAbstractTools
 {
   protected $file_locators = array();
 
-  function findFileAlias($name, $paths, $files_group)
+  function findFileByAlias($alias, $paths, $locator_name)
   {
-    $locator = $this->toolkit->getFileLocator($paths, $files_group);
-    return $locator->locate($name);
+    $locator = $this->toolkit->getFileLocator($paths, $locator_name);
+    return $locator->locate($alias);
   }
 
-  function getFileLocator($path, $files_group)
+  function getFileLocator($paths, $locator_name)
   {
-    if(isset($this->file_locators[$path][$files_group]))
-       return $this->file_locators[$path][$files_group];
+    if(isset($this->file_locators[$locator_name]))
+       return $this->file_locators[$locator_name];
 
-    $file_locations = new lmbIncludePathFileLocations(explode(';', $path));
+    $file_locations = new lmbIncludePathFileLocations(explode(';', $paths));
 
     if(defined('LIMB_VAR_DIR'))
       $locator = new lmbCachingFileLocator(new lmbFileLocator($file_locations),
                                            LIMB_VAR_DIR . '/locators/',
-                                           $files_group);
+                                           $locator_name);
     else
-      $locator = new lmbFileLocator($file_locations);
+      $locator = new lmbFileLocator($locator_name);
 
-    $this->file_locators[$path][$files_group] = $locator;
+    $this->file_locators[$locator_name] = $locator;
     return $locator;
   }
 }
