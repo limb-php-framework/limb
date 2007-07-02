@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLTrueCriteria.class.php');
  * class lmbSQLFieldCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLFieldCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSQLFieldCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
  */
 class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
 {
@@ -56,6 +56,11 @@ class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
   function getValue()
   {
     return $this->value;
+  }
+
+  protected function _makePlaceHolder($holder)
+  {
+    return 'p' . str_replace('.', '_', $holder);
   }
 
   protected function _appendExpressionToStatement(&$str, &$values, $conn)

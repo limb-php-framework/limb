@@ -122,7 +122,7 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
     $c->addAnd(new lmbSQLFieldCriteria('count2', 'test'));
 
     $values = array();
-    $this->assertEqual($c->toStatementString($values, $this->conn), "('count'=:p0count: AND 'count2'=:p1count2:)");
+    $this->assertEqual($c->toStatementString($values, $this->conn), "'count'=:p0count: AND 'count2'=:p1count2:");
     $this->assertEqual($values, array('p0count' => 4, 'p1count2' => 'test'));
   }
 
@@ -132,7 +132,7 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
     $c->addOr(new lmbSQLFieldCriteria('count', 5));
 
     $values = array();
-    $this->assertEqual($c->toStatementString($values, $this->conn), "('count'=:p0count: OR 'count'=:p1count:)");
+    $this->assertEqual($c->toStatementString($values, $this->conn), "'count'=:p0count: OR 'count'=:p1count:");
     $this->assertEqual($values, array('p0count' => 4, 'p1count' => 5));
   }
 
@@ -146,7 +146,7 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
     $c1->addOr($c2->addAnd($c3));
 
     $this->assertEqual($c1->toStatementString($values, $this->conn),
-                       "('name'=:p0name: OR ('last_name' IN (:p0_p1last_name:,:p1_p1last_name:,:p2_p1last_name:) AND 'age'=:p4age:))");
+                       "'name'=:p0name: OR ('last_name' IN (:p0_p1last_name:,:p1_p1last_name:,:p2_p1last_name:) AND 'age'=:p4age:)");
 
     $this->assertEqual($values, array('p0name' => "Leo",
                                       'p0_p1last_name' => "Tolstoy",
@@ -162,7 +162,7 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
     $c1->addOr($c2);
 
     $this->assertEqual($c1->toStatementString($values, $this->conn),
-                       "('name'=:p0name: OR 'name'=:p1name:)");
+                       "'name'=:p0name: OR 'name'=:p1name:");
 
     $this->assertEqual($values, array('p0name' => "Leo",
                                       'p1name' => "Ivan"));

@@ -110,7 +110,7 @@ class lmbSQLTableFieldCriteriaTest extends UnitTestCase
     $c->addAnd(new lmbSQLTableFieldCriteria('t.name', 'test'));
 
     $values = array();
-    $this->assertEqual($c->toStatementString($values, $this->conn), "('t.id'=:p0t_id: AND 't.name'=:p1t_name:)");
+    $this->assertEqual($c->toStatementString($values, $this->conn), "'t.id'=:p0t_id: AND 't.name'=:p1t_name:");
     $this->assertEqual($values, array('p0t_id' => 4, 'p1t_name' => 'test'));
   }
 
@@ -120,7 +120,7 @@ class lmbSQLTableFieldCriteriaTest extends UnitTestCase
     $c->addOr(new lmbSQLTableFieldCriteria('t.id', 5));
 
     $values = array();
-    $this->assertEqual($c->toStatementString($values, $this->conn), "('t.id'=:p0t_id: OR 't.id'=:p1t_id:)");
+    $this->assertEqual($c->toStatementString($values, $this->conn), "'t.id'=:p0t_id: OR 't.id'=:p1t_id:");
     $this->assertEqual($values, array('p0t_id' => 4, 'p1t_id' => 5));
   }
 

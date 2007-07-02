@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
  * class lmbSQLFieldBetweenCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLFieldBetweenCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSQLFieldBetweenCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
  */
 class lmbSQLFieldBetweenCriteria extends lmbSQLBaseCriteria
 {
@@ -25,6 +25,11 @@ class lmbSQLFieldBetweenCriteria extends lmbSQLBaseCriteria
     $this->column = $column;
     $this->value_from = $value_from;
     $this->value_to = $value_to;
+  }
+
+  protected function _makePlaceHolder($holder)
+  {
+    return 'p' . str_replace('.', '_', $holder);
   }
 
   protected function _appendExpressionToStatement(&$str, &$values, $conn)

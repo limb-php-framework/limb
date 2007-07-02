@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 6045 2007-07-02 14:02:25Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {
@@ -43,6 +43,11 @@ abstract class lmbSQLBaseCriteria
     return $this;
   }
 
+  function isComplex()
+  {
+    return sizeof($this->clauses) > 0;
+  }
+
   protected function _getClauses()
   {
     return $this->clauses;
@@ -65,50 +70,23 @@ abstract class lmbSQLBaseCriteria
     if(!is_object($conn))
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
 
-    $this->_appendOpeningParenthesisToStatement($str, $values, $conn);
-
     $this->_appendExpressionToStatement($str, $values, $conn);
 
-    $this->_appendClosingParenthesisToStatement($str, $values, $conn);
-  }
-
-  protected function _appendExpressionToStatement(&$str, &$values, $conn){}
-
-  protected function _appendOpeningParenthesisToStatement(&$str, &$values, $conn)
-  {
-    for($j = 0; $j < count($this->clauses); $j++)
-      $str .= '(';
-  }
-
-  protected function _appendClosingParenthesisToStatement(&$str, &$values, $conn)
-  {
     for($i=0; $i < count($this->clauses); $i++)
     {
+      $criteria = $this->clauses[$i];
       $str .= $this->conjunctions[$i];
-      $this->clauses[$i]->appendStatementTo($str, $values, $conn);
-      $str .= ')';
+
+      if($criteria->isComplex())
+        $str .= '(';
+
+      $criteria->appendStatementTo($str, $values, $conn);
+
+      if($criteria->isComplex())
+        $str .= ')';
     }
   }
 
-  function getAttachedCriterias()
-  {
-    $crits = array();
-    $this->_traverseCriteria($this, $crits);
-    return $crits;
-  }
-
-  protected function _traverseCriteria($c, &$a)
-  {
-    $a[] = $c;
-    $clauses = $c->_getClauses();
-    $clausesLength = count($clauses);
-    for($i=0; $i < $clausesLength; $i++)
-      $this->_traverseCriteria($clauses[$i], $a);
-  }
-
-  protected function _makePlaceHolder($holder)
-  {
-    return 'p' . str_replace('.', '_', $holder);
-  }
+  protected function _appendExpressionToStatement(&$str, &$values, $conn){}
 }
 ?>

@@ -10,6 +10,51 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 
 class lmbSQLCriteriaTest extends UnitTestCase
 {
+  function testBuildCriteriaFromString()
+  {
+    $c = new lmbSQLCriteria('a=1');
+
+    $this->assertEqual($c->toStatementString(), 'a=1');
+  }
+
+  function testBuildCriteriaFromStringWithNamedValues()
+  {
+    $c = new lmbSQLCriteria('a=:id:', array('id' => 2));
+
+    $this->assertEqual($c->toStatementString($values), 'a=:id:');
+    $this->assertEqual($values, array('id' => 2));
+  }
+
+  function testBuildCriteriaFromStringWithNonNamedValues()
+  {
+    $c = new lmbSQLCriteria('a=? OR b=?', array(2, 3));
+
+    $str = $c->toStatementString($values);
+
+    $key1 = key($values);
+    next($values);
+    $key2 = key($values);
+
+    $this->assertEqual($str, 'a=:' . $key1 . ': OR b=:' . $key2 . ':');
+
+    $this->assertEqual($values[$key1], 2);
+    $this->assertEqual($values[$key2], 3);
+  }
+
+  function testChaining()
+  {
+    $a = new lmbSQLCriteria('a');
+    $b = new lmbSQLCriteria('b');
+    $c = new lmbSQLCriteria('c');
+    $d = new lmbSQLCriteria('d');
+    $e = new lmbSQLCriteria('e');
+    $g = new lmbSQLCriteria('g');
+
+    $a->addOr($b->addAnd($c))->addAnd($d->addOr($e)->addAnd($g));
+
+    $this->assertEqual($a->toStatementString(), 'a OR (b AND c) AND (d OR e AND g)');
+  }
+
   function testObjectifyString()
   {
     $criteria = lmbSQLCriteria :: objectify("id = 1");
@@ -18,7 +63,7 @@ class lmbSQLCriteriaTest extends UnitTestCase
 
   function testObjectifyObject()
   {
-    $criteria = lmbSQLCriteria :: objectify(new lmbSQLRawCriteria("id = 1"));
+    $criteria = lmbSQLCriteria :: objectify(new lmbSQLCriteria("id = 1"));
     $this->assertEqual($criteria->toStatementString(), "id = 1");
   }
 
@@ -42,7 +87,7 @@ class lmbSQLCriteriaTest extends UnitTestCase
 
   function testNot()
   {
-    $criteria = lmbSQLCriteria :: not(new lmbSQLRawCriteria("id = 1"));
+    $criteria = lmbSQLCriteria :: not(new lmbSQLCriteria("id = 1"));
     $this->assertEqual($criteria->toStatementString(), "!(id = 1)");
   }
 

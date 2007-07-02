@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require(dirname(__FILE__) . '/lmbSQLRawCriteria.class.php');
+lmb_require(dirname(__FILE__) . '/lmbSQLBaseCriteria.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSQLFieldBetweenCriteria.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
 
@@ -14,24 +14,43 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6044 2007-07-02 13:39:54Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
  */
-class lmbSQLCriteria extends lmbSQLRawCriteria
+class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
-  function __construct($raw_criteria = '', $values = array())
+  protected $sql;
+  protected $values;
+
+  function __construct($raw_sql = '1=1', $values = array())
   {
-    if(!$raw_criteria)
-      $raw_criteria = '1 = 1';
-
-    parent :: __construct($raw_criteria, $values);
+    $this->sql = $raw_sql;
+    $this->values = $values;
   }
-
   /**
    * Used for chaining
    */
-  static function create($raw_criteria = '', $values = array())
+  static function create($raw_sql = '', $values = array())
   {
-    return new lmbSQLCriteria($raw_criteria, $values);
+    return new lmbSQLCriteria($raw_sql, $values);
+  }
+
+  protected function _appendExpressionToStatement(&$str, &$values, $conn)
+  {
+    $sql = $this->sql;
+
+    foreach($this->values as $key => $value)
+    {
+      if(is_numeric($key))
+      {
+        $random_key = 'p' . mt_rand();
+        $values[$random_key] = $value;
+        $sql = preg_replace('~\?~', ':' . $random_key . ':', $sql, $limit = 1);
+      }
+      else
+        $values[$key] = $value;
+    }
+
+    $str .= $sql;
   }
 
   static function not($criteria)
@@ -67,33 +86,33 @@ class lmbSQLCriteria extends lmbSQLRawCriteria
   static function objectify($args)
   {
     if(is_null($args))
-      return new lmbSQLRawCriteria("1 = 1");
+      return new lmbSQLCriteria("1 = 1");
 
     if(is_array($args))
     {
-      //array(new lmbSQLRawCriteria(..))
+      //array(new lmbSQLCriteria(..))
       if(is_object($args[0]))
         return $args[0];
 
       //array('id=1')
       if(!isset($args[1]) && isset($args[0]))
-        return new lmbSQLRawCriteria($args[0]);
+        return new lmbSQLCriteria($args[0]);
       //array('id=?', array(1))
       elseif(isset($args[0]) && is_array($args[1]))
-        return new lmbSQLRawCriteria($args[0], $args[1]);
+        return new lmbSQLCriteria($args[0], $args[1]);
       //array('id=?', 1)
       elseif(isset($args[0]))
       {
         $sql = array_shift($args);
-        return new lmbSQLRawCriteria($sql, $args);
+        return new lmbSQLCriteria($sql, $args);
       }
     }
     //id=1
     elseif(is_string($args))
     {
-      return new lmbSQLRawCriteria($args);
+      return new lmbSQLCriteria($args);
     }
-    //new lmbSQLRawCriteria(..)
+    //new lmbSQLCriteria(..)
     elseif(is_object($args))
     {
       return $args;
