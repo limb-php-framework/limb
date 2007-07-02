@@ -12,7 +12,7 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6017 2007-06-27 08:19:09Z serega $
+ * @version $Id: lmbARManyToManyCollection.class.php 6040 2007-07-02 12:51:54Z pachanga $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -30,7 +30,7 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
             WHERE {$table}.id={$join_table}.$foreign_field AND
             {$join_table}.{$field}=" . $this->owner->getId() . ' %where%';
 
-    $query = new lmbSelectQuery($sql, $this->conn);
+    $query = new lmbSelectRawQuery($sql, $this->conn);
     if($criteria)
       $query->addCriteria($criteria);
     return $query->getRecordSet();
@@ -50,7 +50,7 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
             WHERE $table.id=$join_table.$foreign_field AND
             $join_table.$field=" . $this->owner->getId() . ' %where%';
 
-    $query = new lmbSelectQuery($sql, $this->conn);
+    $query = new lmbSelectRawQuery($sql, $this->conn);
     if($criteria)
       $query->addCriteria($criteria);
     return $query->getRecordSet();
