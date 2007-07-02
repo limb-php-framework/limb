@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -17,7 +17,7 @@ lmb_require('limb/config/src/lmbConf.class.php');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbConfTools.class.php 6034 2007-07-02 06:30:10Z serega $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -57,7 +57,7 @@ class lmbConfTools extends lmbAbstractTools
 
   protected function _locateFile($name)
   {
-    return $this->toolkit->findFileAlias($name, LIMB_CONF_INCLUDE_PATH, 'config');
+    return $this->toolkit->findFileByAlias($name, LIMB_CONF_INCLUDE_PATH, 'config');
   }
 
   protected function _normalizeConfName($name)
