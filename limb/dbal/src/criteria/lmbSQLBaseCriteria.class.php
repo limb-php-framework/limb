@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 //inspired by Propel Criteria(http://propel.phpdb.org)
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 6044 2007-07-02 13:39:54Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {
@@ -29,6 +29,11 @@ abstract class lmbSQLBaseCriteria
     $this->clauses[] = lmbSQLCriteria :: objectify($criteria);
     $this->conjunctions[] = self::_AND_;
     return $this;
+  }
+
+  function add($criteria)
+  {
+    return $this->addAnd($criteria);
   }
 
   function addOr($criteria)

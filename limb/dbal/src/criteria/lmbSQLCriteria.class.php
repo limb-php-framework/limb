@@ -7,12 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require(dirname(__FILE__) . '/lmbSQLRawCriteria.class.php');
+lmb_require(dirname(__FILE__) . '/lmbSQLFieldBetweenCriteria.class.php');
+lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
 
 /**
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6007 2007-06-20 06:31:15Z serega $
+ * @version $Id: lmbSQLCriteria.class.php 6044 2007-07-02 13:39:54Z pachanga $
  */
 class lmbSQLCriteria extends lmbSQLRawCriteria
 {
@@ -22,6 +24,44 @@ class lmbSQLCriteria extends lmbSQLRawCriteria
       $raw_criteria = '1 = 1';
 
     parent :: __construct($raw_criteria, $values);
+  }
+
+  /**
+   * Used for chaining
+   */
+  static function create($raw_criteria = '', $values = array())
+  {
+    return new lmbSQLCriteria($raw_criteria, $values);
+  }
+
+  static function not($criteria)
+  {
+    return new lmbSQLCriteria('!(' . self :: objectify($criteria)->toStatementString() . ')');
+  }
+
+  static function between($column, $value_from, $value_to)
+  {
+    return new lmbSQLFieldBetweenCriteria($column, $value_from, $value_to);
+  }
+
+  static function in($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: IN);
+  }
+
+  static function equal($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: EQUAL);
+  }
+
+  static function like($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: LIKE);
+  }
+
+  static function isNull($column)
+  {
+    return new lmbSQLFieldCriteria($column, null, lmbSQLFieldCriteria :: IS_NULL);
   }
 
   static function objectify($args)
