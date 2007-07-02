@@ -31,8 +31,12 @@ class lmbTestRunner
 
   function useCoverage($coverage_include, $coverage_exclude, $coverage_report_dir)
   {
-    $this->coverage_include = $coverage_include;
-    $this->coverage_exclude = $coverage_exclude;
+    if(is_string($coverage_include))
+      $this->coverage_include = explode(';', $this->coverage_include);
+
+    if(is_string($coverage_exclude))
+      $this->coverage_exclude = explode(';', $this->coverage_exclude);
+
     $this->coverage_report_dir = $coverage_report_dir;
   }
 
@@ -86,9 +90,7 @@ class lmbTestRunner
     $this->coverage_reporter = new HtmlCoverageReporter("Code Coverage Report", "",
                                                         $this->coverage_report_dir);
 
-    $include_paths = explode(';', $this->coverage_include);
-    $exclude_paths = explode(';', $this->coverage_exclude);
-    $this->coverage = new CoverageRecorder($include_paths, $exclude_paths, $this->coverage_reporter);
+    $this->coverage = new CoverageRecorder($this->coverage_include, $this->coverage_exclude, $this->coverage_reporter);
     $this->coverage->startInstrumentation();
   }
 
