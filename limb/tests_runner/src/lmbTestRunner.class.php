@@ -32,10 +32,10 @@ class lmbTestRunner
   function useCoverage($coverage_include, $coverage_exclude, $coverage_report_dir)
   {
     if(is_string($coverage_include))
-      $this->coverage_include = explode(';', $this->coverage_include);
+      $this->coverage_include = explode(';', $coverage_include);
 
     if(is_string($coverage_exclude))
-      $this->coverage_exclude = explode(';', $this->coverage_exclude);
+      $this->coverage_exclude = explode(';', $coverage_exclude);
 
     $this->coverage_report_dir = $coverage_report_dir;
   }
@@ -99,7 +99,8 @@ class lmbTestRunner
     if($this->coverage)
     {
       $this->coverage->stopInstrumentation();
-      $this->coverage->generateReport();
+      if($this->coverage_report_dir)
+        $this->coverage->generateReport();
       $this->coverage_reporter->printTextSummary();
     }
   }

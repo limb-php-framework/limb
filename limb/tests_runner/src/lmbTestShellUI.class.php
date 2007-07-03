@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6057 2007-07-03 11:31:22Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6060 2007-07-03 11:51:30Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -62,7 +62,7 @@ Usage:
 Options:
   -c, --config=/file.php        PHP configuration file path
   -h, --help                    Displays this help and exit
-  --cover=path1;path2           Sets paths delimitered with ';' which should be analyzed for coverage
+  -C, --cover=path1;path2       Sets paths delimitered with ';' which should be analyzed for coverage
   --cover-report=dir            Sets coverage report directory
   --cover-exclude=path1;path2   Sets paths delimitered with ';' which should be excluded from coverage analysis
 
@@ -100,7 +100,7 @@ EOD;
 
   static function getShortOpts()
   {
-    return 'hvt:b:c:';
+    return 'hvt:b:c:C:';
   }
 
   static function getLongOpts()
@@ -165,6 +165,7 @@ EOD;
             $this->_error("Could not include configuration file '{$option[1]}'\n");
           $configured = true;
           break;
+        case 'C':
         case '--cover':
           $cover_include = $option[1];
           break;
@@ -180,8 +181,10 @@ EOD;
     if(!$configured && $config = getenv('LIMB_TESTS_RUNNER_CONFIG'))
       include_once($config);
 
-    if(!is_array($options[1]))
-      $this->_help(1);
+    if(!is_array($options[1]) || !count($options[1]))
+      $paths = array('.');
+    else
+      $paths = $options[1];
 
     if(!$cover_report_dir && defined('LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR'))
       $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
@@ -196,7 +199,7 @@ EOD;
 
     try
     {
-      $node = new lmbTestTreeGlobNode($options[1]);
+      $node = new lmbTestTreeGlobNode($paths);
       $res = $runner->run($node);
     }
     //it's an exception which is used to pass user errors up to the interface,
