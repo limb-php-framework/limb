@@ -1,5 +1,5 @@
 <?php
-require_once('limb/dbal/src/lmbTestDbDump.class.php');
-
-$this->dump = new lmbTestDbDump(dirname(__FILE__) . '/.fixtures/init_tests.mysql');
+require_once('limb/dbal/src/lmbDbDump.class.php');
+$this->dump = new lmbDbDump(dirname(__FILE__) . '/.fixtures/init_tests.mysql');
+$this->dump->load();
 ?>

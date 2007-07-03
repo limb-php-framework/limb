@@ -1,3 +1,3 @@
 <?php
-$this->dbal_dump->clean();
+$this->dump->clean();
 ?>

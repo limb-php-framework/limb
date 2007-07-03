@@ -2,35 +2,35 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/dump/lmbSQLDumpLoader.class.php');
 
 /**
- * class lmbTestDbDump.
+ * class lmbDbDump.
  *
  * @package dbal
- * @version $Id: lmbTestDbDump.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDbDump.class.php 6055 2007-07-03 10:52:01Z pachanga $
  */
-class lmbTestDbDump
+class lmbDbDump
 {
+  protected $file;
   protected $loader;
   protected $connection;
 
-  function __construct($file = null, $connection = null)
+  function __construct($file, $connection = null)
   {
+    $this->file = $file;
+
     if($connection)
       $this->connection = $connection;
     else
       $this->connection = lmbToolkit :: instance()->getDefaultDbConnection();
-
-    if(!is_null($file))
-      $this->_load($file);
   }
 
-  function _load($file)
+  function load()
   {
     $type = $this->connection->getType();
 
@@ -42,7 +42,7 @@ class lmbTestDbDump
     else
       $loader = $default_loader;
 
-    $this->loader = new $loader($file);
+    $this->loader = new $loader($this->file);
     $this->loader->execute($this->connection);
   }
 

@@ -2,18 +2,21 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/dump/lmbMysqlDumpLoader.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSQLDumpLoaderTestBase.class.php');
 
-if(!lmbToolkit :: instance()->getDefaultDbConnection() instanceof lmbMysqlConnection)
-  SimpleTest :: ignore('lmbMysqlDumpLoaderTest');
-
 class lmbMysqlDumpLoaderTest extends lmbSQLDumpLoaderTestBase
 {
+  function skip()
+  {
+    $this->skipIf(!lmbToolkit :: instance()->getDefaultDbConnection() instanceof lmbMysqlConnection,
+                  "lmbMysqlDumpLoader tests skipped, mysql connection required");
+  }
+
   function _createLoader($file=null)
   {
     return new lmbMysqlDumpLoader($file);
