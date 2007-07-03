@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6060 2007-07-03 11:51:30Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6061 2007-07-03 11:57:30Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -62,7 +62,7 @@ Usage:
 Options:
   -c, --config=/file.php        PHP configuration file path
   -h, --help                    Displays this help and exit
-  -C, --cover=path1;path2       Sets paths delimitered with ';' which should be analyzed for coverage
+  -C, --cover=path1;path2       Sets paths delimitered with ';' which should be analyzed for test coverage(requires XDebug extension!)
   --cover-report=dir            Sets coverage report directory
   --cover-exclude=path1;path2   Sets paths delimitered with ';' which should be excluded from coverage analysis
 
