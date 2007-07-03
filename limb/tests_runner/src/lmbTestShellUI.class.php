@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6032 2007-07-01 21:59:53Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6053 2007-07-03 10:49:06Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -56,9 +56,6 @@ class lmbTestShellUI
     $version = $this->_getVersion();
 
     $usage = <<<EOD
-
-$version
-
 Usage:
   limb_unit OPTIONS <file|dir> [<file|dir>, <file|dir>, ...]
   Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
@@ -68,6 +65,8 @@ Options:
   --cover=path1;path2           Sets paths delimitered with ';' which should be analyzed for coverage
   --cover-report=dir            Sets coverage report directory
   --cover-exclude=path1;path2   Sets paths delimitered with ';' which should be excluded from coverage analysis
+
+$version
 
 EOD;
     return $usage;
@@ -81,8 +80,9 @@ EOD;
 
   protected function _error($message, $code = 1)
   {
-    echo "ERROR: $message";
-    echo $this->help();
+    echo "ERROR: $message\n";
+    echo $this->_getVersion();
+    echo "\n";
     exit($code);
   }
 
