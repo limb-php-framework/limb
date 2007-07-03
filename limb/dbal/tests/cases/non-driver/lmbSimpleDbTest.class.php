@@ -116,33 +116,10 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->assertEqual($record->get('title'), 'wow2');
   }
 
-  function testSelectAll()
-  {
-    $data = array(
-      0 => array('title' =>  'wow', 'description' => 'description'),
-      1 => array('title' =>  'wow', 'description' => 'description2')
-    );
-
-    $this->db->insert('test_db_table', $data[0]);
-    $this->db->insert('test_db_table', $data[1]);
-
-    $result = $this->db->select('test_db_table');
-
-    $this->assertEqual($result->count(), 2);
-
-    $result->rewind();
-    $record = $result->current();
-    $this->assertEqual($record->get('description'), 'description');
-
-    $result->next();
-    $record = $result->current();
-    $this->assertEqual($record->get('description'), 'description2');
-  }
-
   function testSelectWithOrder()
   {
     $data = array(
-      0 => array('title' =>  'aaa', 'description' => 'description'),
+      0 => array('title' =>  'aaa', 'description' => 'description1'),
       1 => array('title' =>  'zzz', 'description' => 'description2'),
       2 => array('title' =>  'kkk', 'description' => 'description3')
     );
@@ -160,7 +137,7 @@ class lmbSimpleDbTest extends UnitTestCase
   function testDeleteAll()
   {
     $data = array(
-      0 => array('title' =>  'wow', 'description' => 'description'),
+      0 => array('title' =>  'wow', 'description' => 'description1'),
       1 => array('title' =>  'wow!', 'description' => 'description2')
     );
 

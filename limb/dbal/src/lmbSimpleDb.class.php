@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6056 2007-07-03 10:54:53Z serega $
+ * @version $Id: lmbSimpleDb.class.php 6059 2007-07-03 11:38:15Z serega $
  */
 class lmbSimpleDb
 {
@@ -56,14 +56,9 @@ class lmbSimpleDb
   function selectRecord($table, $criteria = null, $order = array())
   {
     $rs = $this->select($table, $criteria, $order)->paginate(0, 1);
+    $rs->rewind();
     if($rs->valid())
       return $rs->current();
-  }
-
-  function selectAsArray($table, $criteria = null, $order = array(), $key_field = '')
-  {
-    $rs = $this->select($table, $criteria, $order);
-    return $rs->getArray($key_field);
   }
 
   /**
