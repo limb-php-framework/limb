@@ -151,7 +151,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
     $this->assertEqual($this->db->count('test_one_table_object'), 1);
 
-    $record = $this->db->getFirstRecordFrom('test_one_table_object');
+    $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('id'), $id);
     $this->assertEqual($record->get('annotation'), $annotation);
     $this->assertEqual($record->get('content'), $content);
@@ -214,7 +214,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
     $this->assertEqual($this->db->count('test_one_table_object'), 1);
 
-    $record = $this->db->getFirstRecordFrom('test_one_table_object');
+    $record = $this->db->selectRecord('test_one_table_object');
 
     $this->assertEqual($record->get('annotation'), $annotation);
     $this->assertEqual($record->get('content'), $content);

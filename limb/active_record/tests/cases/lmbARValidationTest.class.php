@@ -234,7 +234,7 @@ class lmbARValidationTest extends UnitTestCase
       $this->assertEqual($e->getErrorList()->export(), $error_list->getReadable()->export());
     }
 
-    $record = $this->db->getFirstRecordFrom('test_one_table_object');
+    $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $old_annotation);
   }
 
@@ -255,7 +255,7 @@ class lmbARValidationTest extends UnitTestCase
 
     $object->save($error_list);
 
-    $record = $this->db->getFirstRecordFrom('test_one_table_object');
+    $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $annotation);
   }
 
@@ -272,7 +272,7 @@ class lmbARValidationTest extends UnitTestCase
 
     $object->saveSkipValidation();
 
-    $record = $this->db->getFirstRecordFrom('test_one_table_object');
+    $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $annotation);
   }
 
