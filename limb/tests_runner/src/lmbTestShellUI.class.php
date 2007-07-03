@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6053 2007-07-03 10:49:06Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6057 2007-07-03 11:31:22Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -80,7 +80,7 @@ EOD;
 
   protected function _error($message, $code = 1)
   {
-    echo "ERROR: $message\n";
+    echo "ERROR: $message\n\n";
     echo $this->_getVersion();
     echo "\n";
     exit($code);
@@ -198,6 +198,12 @@ EOD;
     {
       $node = new lmbTestTreeGlobNode($options[1]);
       $res = $runner->run($node);
+    }
+    //it's an exception which is used to pass user errors up to the interface,
+    //we don't need to show backtrace in this case, only error message
+    catch(lmbTestUserException $e)
+    {
+      $this->_error($e->getMessage());
     }
     catch(Exception $e)
     {

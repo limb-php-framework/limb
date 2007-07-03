@@ -7,12 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
+require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
 
 /**
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6022 2007-06-28 13:35:51Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6057 2007-07-03 11:31:22Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -65,7 +66,7 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     {
       require_once($this->file);
       if(!class_exists($this->class))
-        throw new Exception("Class '{$this->class}' not found in '{$this->file}' file!");
+        throw new lmbTestUserException("Class '{$this->class}' not found in '{$this->file}' file!");
 
       $test = new $this->class();
       $suite->addTestCase($test);
