@@ -179,5 +179,10 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->assertEqual($records->count(), 1);
   }
 
+  function testQuote()
+  {
+     $this->assertEqual($this->db->quote('foo'), $this->conn->quoteIdentifier('foo'));
+  }
+
 }
 ?>

@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6045 2007-07-02 14:02:25Z pachanga $
+ * @version $Id: lmbSimpleDb.class.php 6049 2007-07-03 08:45:17Z pachanga $
  */
 class lmbSimpleDb
 {
@@ -161,6 +161,11 @@ class lmbSimpleDb
   {
     $this->conn->rollbackTransaction();
     return $this;
+  }
+
+  function quote($id)
+  {
+    return $this->conn->quoteIdentifier($id);
   }
 }
 
