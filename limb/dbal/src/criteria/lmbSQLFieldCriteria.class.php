@@ -2,20 +2,17 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
-lmb_require('limb/dbal/src/criteria/lmbSQLFalseCriteria.class.php');
-lmb_require('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
-lmb_require('limb/dbal/src/criteria/lmbSQLTrueCriteria.class.php');
 
 /**
  * class lmbSQLFieldCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLFieldCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
+ * @version $Id: lmbSQLFieldCriteria.class.php 6048 2007-07-03 08:41:58Z pachanga $
  */
 class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
 {
@@ -94,7 +91,7 @@ class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
     {
       // null VALUES need special treatment because the SQL syntax is different
       // i.e. column IS null rather than column = null
-      if ($this->value !== null)
+      if($this->value !== null)
       {
         $str .= $field . $this->comparison . ':' . $stmt_placeholder . ':';
         $values[$stmt_placeholder] = $this->value;
@@ -103,11 +100,11 @@ class lmbSQLFieldCriteria extends lmbSQLBaseCriteria
       {
         // value is null, which means it was either not specified or specifically
         // set to null.
-        if ($this->comparison === self::EQUAL || $this->comparison === self::IS_NULL)
+        if($this->comparison === self::EQUAL || $this->comparison === self::IS_NULL)
         {
           $str .= $field . self::IS_NULL;
         }
-        elseif ($this->comparison === self::NOT_EQUAL || $this->comparison === self::IS_NOT_NULL)
+        elseif($this->comparison === self::NOT_EQUAL || $this->comparison === self::IS_NOT_NULL)
         {
           $str .= $field . self::IS_NOT_NULL;
         }

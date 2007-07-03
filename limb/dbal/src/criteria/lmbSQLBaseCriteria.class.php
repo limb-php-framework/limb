@@ -13,20 +13,22 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 6048 2007-07-03 08:41:58Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {
   const _AND_ = " AND ";
   const _OR_ = " OR ";
 
-  protected $clauses = array();
+  protected $criteria = array();
   protected $conjunctions = array();
+  protected $not = false;
+  protected $not_all = false;
 
   //'and' & 'or' are keywords in php :(
   function addAnd($criteria)
   {
-    $this->clauses[] = lmbSQLCriteria :: objectify($criteria);
+    $this->criteria[] = lmbSQLCriteria :: objectify($criteria);
     $this->conjunctions[] = self::_AND_;
     return $this;
   }
@@ -38,19 +40,31 @@ abstract class lmbSQLBaseCriteria
 
   function addOr($criteria)
   {
-    $this->clauses[] = lmbSQLCriteria :: objectify($criteria);
+    $this->criteria[] = lmbSQLCriteria :: objectify($criteria);
     $this->conjunctions[] = self::_OR_;
+    return $this;
+  }
+
+  function not()
+  {
+    $this->not = !$this->not;
+    return $this;
+  }
+
+  function notAll()
+  {
+    $this->not_all = !$this->not_all;
     return $this;
   }
 
   function isComplex()
   {
-    return sizeof($this->clauses) > 0;
+    return sizeof($this->criteria) > 0;
   }
 
   protected function _getClauses()
   {
-    return $this->clauses;
+    return $this->criteria;
   }
 
   protected function _getConjunctions()
@@ -70,11 +84,20 @@ abstract class lmbSQLBaseCriteria
     if(!is_object($conn))
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
 
+    if($this->not_all)
+      $str .= 'NOT(';
+
+    if($this->not)
+      $str .= 'NOT(';
+
     $this->_appendExpressionToStatement($str, $values, $conn);
 
-    for($i=0; $i < count($this->clauses); $i++)
+    if($this->not)
+      $str .= ')';
+
+    for($i=0; $i < count($this->criteria); $i++)
     {
-      $criteria = $this->clauses[$i];
+      $criteria = $this->criteria[$i];
       $str .= $this->conjunctions[$i];
 
       if($criteria->isComplex())
@@ -85,6 +108,9 @@ abstract class lmbSQLBaseCriteria
       if($criteria->isComplex())
         $str .= ')';
     }
+
+    if($this->not_all)
+      $str .= ')';
   }
 
   protected function _appendExpressionToStatement(&$str, &$values, $conn){}

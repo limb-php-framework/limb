@@ -359,7 +359,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $conn->setReturnReference('newStatement', $stmt);
 
     $sql = new lmbSelectRawQuery('SELECT * FROM test %where%', $conn);
-    $sql->addCriteria(new lmbSQLTableFieldCriteria('t.id', 5));
+    $sql->addCriteria(new lmbSQLFieldCriteria('t.id', 5));
 
     $sql->getStatement();
   }

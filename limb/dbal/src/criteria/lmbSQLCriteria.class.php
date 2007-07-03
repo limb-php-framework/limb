@@ -14,29 +14,29 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6048 2007-07-03 08:41:58Z pachanga $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
-  protected $sql;
+  protected $raw_sql;
   protected $values;
 
-  function __construct($raw_sql = '1=1', $values = array())
+  function __construct($raw_sql = '1 = 1', $values = array())
   {
-    $this->sql = $raw_sql;
+    $this->raw_sql = $raw_sql;
     $this->values = $values;
   }
   /**
    * Used for chaining
    */
-  static function create($raw_sql = '', $values = array())
+  static function create($raw_sql = '1 = 1', $values = array())
   {
     return new lmbSQLCriteria($raw_sql, $values);
   }
 
   protected function _appendExpressionToStatement(&$str, &$values, $conn)
   {
-    $sql = $this->sql;
+    $sql = $this->raw_sql;
 
     foreach($this->values as $key => $value)
     {
@@ -53,19 +53,14 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     $str .= $sql;
   }
 
-  static function not($criteria)
-  {
-    return new lmbSQLCriteria('!(' . self :: objectify($criteria)->toStatementString() . ')');
-  }
-
   static function between($column, $value_from, $value_to)
   {
     return new lmbSQLFieldBetweenCriteria($column, $value_from, $value_to);
   }
 
-  static function in($column, $value)
+  static function in($column, $values)
   {
-    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: IN);
+    return new lmbSQLFieldCriteria($column, $values, lmbSQLFieldCriteria :: IN);
   }
 
   static function equal($column, $value)
@@ -86,7 +81,7 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
   static function objectify($args)
   {
     if(is_null($args))
-      return new lmbSQLCriteria("1 = 1");
+      return new lmbSQLCriteria();
 
     if(is_array($args))
     {
