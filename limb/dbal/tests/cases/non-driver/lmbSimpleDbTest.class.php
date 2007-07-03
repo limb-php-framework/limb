@@ -139,6 +139,24 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->assertEqual($record->get('description'), 'description2');
   }
 
+  function testSelectWithOrder()
+  {
+    $data = array(
+      0 => array('title' =>  'aaa', 'description' => 'description'),
+      1 => array('title' =>  'zzz', 'description' => 'description2'),
+      2 => array('title' =>  'kkk', 'description' => 'description3')
+    );
+
+    $this->db->insert('test_db_table', $data[0]);
+    $this->db->insert('test_db_table', $data[1]);
+    $this->db->insert('test_db_table', $data[2]);
+
+    $result = $this->db->select('test_db_table', null, array('title' => 'DESC'))->getArray();
+    $this->assertEqual($result[0]->get('title'), 'zzz');
+    $this->assertEqual($result[1]->get('title'), 'kkk');
+    $this->assertEqual($result[2]->get('title'), 'aaa');
+  }
+
   function testDeleteAll()
   {
     $data = array(

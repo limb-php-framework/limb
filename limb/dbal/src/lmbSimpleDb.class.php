@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6049 2007-07-03 08:45:17Z pachanga $
+ * @version $Id: lmbSimpleDb.class.php 6051 2007-07-03 10:32:53Z serega $
  */
 class lmbSimpleDb
 {
@@ -38,20 +38,22 @@ class lmbSimpleDb
     return $this->conn->getType();
   }
 
-  function select($table, $criteria = null, $order = '')
+  function select($table, $criteria = null, $order = array())
   {
     $query = new lmbSelectQuery($table);
 
     if($criteria)
       $query->addCriteria(lmbSQLCriteria :: objectify($criteria));
 
-    if($order)
-      $query->addOrder($order);
+    $rs = $query->getRecordSet($this->conn);
 
-    return $query->getRecordSet($this->conn);
+    if(is_array($order) && sizeof($order))
+      $rs->sort($order);
+
+    return $rs;
   }
 
-  function selectAsArray($table, $criteria = null, $order = '', $key_field = '')
+  function selectAsArray($table, $criteria = null, $order = array(), $key_field = '')
   {
     $rs = $this->select($table, $criteria, $order);
     return $rs->getArray($key_field);
