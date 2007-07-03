@@ -50,15 +50,21 @@ class lmbCollection implements lmbCollectionInterface
     return $result;
   }
 
-  static function toFlatArray($iterator)
+  static function toFlatArray($iterator, $key_field = '')
   {
     $result = array();
     foreach($iterator as $record)
     {
+      $data = null;
       if(is_object($record) && method_exists($record, 'export'))
-        $result[] = $record->export();
+        $data = $record->export();
       else
-        $result[] = $record;
+        $data = $record;
+
+      if($key_field && isset($data[$key_field]) && ($key = $data[$key_field]))
+        $result[$key] = $data;
+      else
+        $result[] = $data;
     }
     return $result;
   }

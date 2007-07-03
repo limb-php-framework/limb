@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');
@@ -154,5 +154,25 @@ class lmbCollectionTest extends UnitTestCase
     $this->assertEqual(lmbCollection :: concat($col1, $col2, $col3),
                        new lmbCollection(array($item1, $item2, $item3, $item4)));
   }
+
+  function testToFlatArrayWithKeyField()
+  {
+    $data = array (array('x' => 'C'),
+                   array('x' => 'A'),
+                   array('x' => 'B'));
+
+    $iterator = new lmbCollection($data);
+
+    $arr = lmbCollection :: toFlatArray($iterator, 'x');
+    $this->assertTrue(isset($arr['A']));
+    $this->assertEqual($arr['A'], array('x' => 'A'));
+
+    $this->assertTrue(isset($arr['B']));
+    $this->assertEqual($arr['B'], array('x' => 'B'));
+
+    $this->assertTrue(isset($arr['C']));
+    $this->assertEqual($arr['C'], array('x' => 'C'));
+  }
+
 }
 ?>
