@@ -115,6 +115,10 @@ class lmbRequireTest extends UnitTestCase
     if(!function_exists('xdebug_start_code_coverage'))
       return;
 
+    //we need to prevent collisions with external code coverage analyzing tools
+    if(xdebug_get_code_coverage())
+      return;
+
     $name = $this->_rndName();
     $path = $this->_writeModule("$name.inc.php", "<?php class $name {} ?>");
 
