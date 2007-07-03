@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
  * class lmbCmsNode.
  *
  * @package cms
- * @version $Id: lmbCmsNode.class.php 5998 2007-06-18 12:28:49Z pachanga $
+ * @version $Id: lmbCmsNode.class.php 6054 2007-07-03 10:50:44Z pachanga $
  */
 class lmbCmsNode extends lmbActiveRecord
 {
@@ -166,7 +166,7 @@ class lmbCmsNode extends lmbActiveRecord
   function getRelativeUrlPath()
   {
     if(isset($this->url_path))
-      return $this->url_path;
+      return ltrim($this->url_path, '/');
 
     if(!($parent_path = $this->_tree->getPathToNode($this->getId())))
       $this->url_path = $this->getIdentifier();
