@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6051 2007-07-03 10:32:53Z serega $
+ * @version $Id: lmbSimpleDb.class.php 6056 2007-07-03 10:54:53Z serega $
  */
 class lmbSimpleDb
 {
@@ -40,17 +40,24 @@ class lmbSimpleDb
 
   function select($table, $criteria = null, $order = array())
   {
-    $query = new lmbSelectQuery($table);
+    $query = new lmbSelectQuery($table, $this->conn);
 
     if($criteria)
       $query->addCriteria(lmbSQLCriteria :: objectify($criteria));
 
-    $rs = $query->getRecordSet($this->conn);
+    $rs = $query->getRecordSet();
 
     if(is_array($order) && sizeof($order))
       $rs->sort($order);
 
     return $rs;
+  }
+
+  function selectRecord($table, $criteria = null, $order = array())
+  {
+    $rs = $this->select($table, $criteria, $order)->paginate(0, 1);
+    if($rs->valid())
+      return $rs->current();
   }
 
   function selectAsArray($table, $criteria = null, $order = array(), $key_field = '')
@@ -59,14 +66,12 @@ class lmbSimpleDb
     return $rs->getArray($key_field);
   }
 
-  function getFirstRecordFrom($table_name, $criteria = null, $order = '')
+  /**
+   * @deprecated
+   */
+  function getFirstRecordFrom($table_name, $criteria = null, $order = array())
   {
-    $rs = $this->select($table_name, $criteria, $order);
-    $rs->rewind();
-    if($rs->valid())
-      return $rs->current();
-    else
-      return new lmbSet();
+    return $this->selectRecord($table_name, $criteria, $order);
   }
 
   function count($table_name, $criteria = null)
