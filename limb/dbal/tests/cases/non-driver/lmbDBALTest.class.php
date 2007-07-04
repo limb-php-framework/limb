@@ -37,6 +37,12 @@ class lmbDBALTest extends UnitTestCase
     $this->assertEqual($this->toolkit->getDefaultDbDSN(), $boo);
   }
 
+  function testDefaultConnection()
+  {
+    $this->assertIdentical($this->toolkit->getDefaultDbConnection(),
+                           lmbDBAL :: defaultConnection());
+  }
+
   function testNewConnection()
   {
     $conn = lmbDBAL :: newConnection($this->dsn);

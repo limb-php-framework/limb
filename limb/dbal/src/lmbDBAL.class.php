@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 6052 2007-07-03 10:34:19Z serega $
+ * @version $Id: lmbDBAL.class.php 6069 2007-07-04 13:39:57Z pachanga $
  */
 class lmbDBAL
 {
@@ -33,6 +33,11 @@ class lmbDBAL
   static function newConnection($dsn)
   {
     return lmbToolkit :: instance()->createDbConnection($dsn);
+  }
+
+  static function defaultConnection()
+  {
+    return lmbToolkit :: instance()->getDefaultDbConnection();
   }
 
   static function newStatement($sql, $conn = null)
