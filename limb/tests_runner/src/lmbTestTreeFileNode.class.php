@@ -9,15 +9,17 @@
 require_once(dirname(__FILE__). '/lmbTestTreeTerminalNode.class.php');
 require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
 
+@define('LIMB_TESTS_RUNNER_FILE_CLASS_FORMAT', '%s.class.php');
+
 /**
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6057 2007-07-03 11:31:22Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6064 2007-07-04 08:58:58Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
-  protected static $class_format = '%s.class.php';
+  protected static $class_format;
   protected $file;
   protected $class;
 
@@ -29,6 +31,8 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 
   static function getClassFormat()
   {
+    if(!self :: $class_format)
+      self :: $class_format = LIMB_TESTS_RUNNER_FILE_CLASS_FORMAT;
     return self :: $class_format;
   }
 

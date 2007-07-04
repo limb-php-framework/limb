@@ -11,15 +11,17 @@ require_once(dirname(__FILE__) . '/lmbTestTreeFileNode.class.php');
 require_once(dirname(__FILE__) . '/lmbDetachedFixture.class.php');
 require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
 
+@define('LIMB_TESTS_RUNNER_FILE_FILTER', '*Test.class.php;*test.php;*Test.php');
+
 /**
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6022 2007-06-28 13:35:51Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6064 2007-07-04 08:58:58Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
-  protected static $file_filter = '*Test.class.php;*.test.php;*_test.php';
+  protected static $file_filter;
   protected $loaded;
 
   function createTestCase()
@@ -30,18 +32,23 @@ class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 
   static function getFileFilter()
   {
-    if(is_object(self :: $file_filter))
-      return self :: $file_filter;
-    elseif(is_array(self :: $file_filter))
-      return new lmbTestFileFilter(self :: $file_filter);
-    else
-      return new lmbTestFileFilter(explode(';', self :: $file_filter));
+    if(!is_object(self :: $file_filter))
+      self :: setFileFilter(LIMB_TESTS_RUNNER_FILE_FILTER);
+    return self :: $file_filter;
   }
 
   static function setFileFilter($filter)
   {
-    $prev = self :: getFileFilter();
-    self :: $file_filter = $filter;
+    $prev = self :: $file_filter;
+
+    if(is_object($filter))
+      $obj = $filter;
+    elseif(is_array($filter))
+      $obj = new lmbTestFileFilter($filter);
+    else
+      $obj = new lmbTestFileFilter(explode(';', $filter));
+
+    self :: $file_filter = $obj;
     return $prev;
   }
 
