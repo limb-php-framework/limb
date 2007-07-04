@@ -38,13 +38,8 @@ class lmbTestTreeGlobNodeTest extends lmbTestRunnerBase
     file_put_contents(LIMB_VAR_DIR . '/b/junk_test.php', $junk->generate()); //should be ignored
 
     $root_node = new lmbTestTreeGlobNode(LIMB_VAR_DIR . '/*/tests');
-    $group = $root_node->createTestCase();
 
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $test1->getOutput() . $test2->getOutput());
+    $this->_runNodeAndAssertOutput($root_node, $test1->getOutput() . $test2->getOutput());
   }
 
   function testNotAGlobMatch()
@@ -59,13 +54,7 @@ class lmbTestTreeGlobNodeTest extends lmbTestRunnerBase
 
     $root_node = new lmbTestTreeGlobNode(LIMB_VAR_DIR . '/a');
 
-    $group = $root_node->createTestCase();
-
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $test1->getOutput() . $test2->getOutput());
+    $this->_runNodeAndAssertOutput($root_node, $test1->getOutput() . $test2->getOutput());
   }
 }
 

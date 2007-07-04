@@ -108,5 +108,15 @@ abstract class lmbTestRunnerBase extends UnitTestCase
     file_put_contents($file, "<?php\n" . $generated->generateClassFailing() . $extra . "\n?>");
     return $generated;
   }
+
+  function _runNodeAndAssertOutput($node, $expected)
+  {
+    ob_start();
+    $group = $node->createTestCase();
+    $group->run(new SimpleReporter());
+    $str = ob_get_contents();
+    ob_end_clean();
+    $this->assertEqual($str, $expected);
+  }
 }
 ?>

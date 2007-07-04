@@ -79,16 +79,13 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     touch($this->var_dir . '/' . $foo->getFileName() . '.yo');
 
     $prev_filter = lmbTestTreeDirNode :: setFileFilter('*.class.php.yo');
-    $prev_format = lmbTestTreeFileNode :: setClassFormat('%s.class.php.yo');
 
     $node = new lmbTestTreeDirNode($this->var_dir);
     $nodes = $node->getChildren();
     $this->assertEqual(sizeof($nodes), 1);
     $this->assertEqual($nodes[0]->getFile(), $this->var_dir . '/' . $foo->getFileName() . '.yo');
-    $this->assertEqual($nodes[0]->getClass(), $foo->getClass());
 
     lmbTestTreeDirNode :: setFileFilter($prev_filter);
-    lmbTestTreeFileNode :: setClassFormat($prev_format);
   }
 
   function testFindChildByPath()
@@ -124,7 +121,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     $this->assertEqual($child_node, $node);
   }
 
-  function testCreateTestGroup()
+  function testCreateTestCase()
   {
     mkdir($this->var_dir . '/a');
 
@@ -139,13 +136,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
 
     $node = new lmbTestTreeDirNode($this->var_dir);
 
-    //we check for any possible garbage during php includes
-    ob_start();
-    $group = $node->createTestCase();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, "wow" . $test1->getOutput() . $test2->getOutput() . "hey");
+    $this->_runNodeAndAssertOutput($node, "wow" . $test1->getOutput() . $test2->getOutput() . "hey");
   }
 
   function testUseExternalTestLabel()
@@ -171,6 +162,7 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/.init.php', '<?php echo "hey!"; ?>');
 
     $node = new lmbTestTreeDirNode($this->var_dir);
+
     ob_start();
     $group = $node->init();
     $str = ob_get_contents();
@@ -192,13 +184,8 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/b/.skipif.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestCase();
 
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $test1->getOutput());
+    $this->_runNodeAndAssertOutput($root_node, $test1->getOutput());
   }
 
   function testDontSkipTestsDirectory()
@@ -215,13 +202,8 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/b/.skipif.php', '<?php return false; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestCase();
 
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $test2->getOutput() . $test1->getOutput());
+    $this->_runNodeAndAssertOutput($root_node, $test2->getOutput() . $test1->getOutput());
   }
 
   function testInitDoesntHappenIfDirIsSkipped()
@@ -239,13 +221,8 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/b/.skipif.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestCase();
 
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $test1->getOutput());
+    $this->_runNodeAndAssertOutput($root_node, $test1->getOutput());
   }
 
   function testSkippedDirFixtureSkippedToo()
@@ -259,13 +236,8 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
     file_put_contents($this->var_dir . '/a/.skipif.php', '<?php return true; ?>');
 
     $root_node = new lmbTestTreeDirNode($this->var_dir);
-    $group = $root_node->createTestCase();
 
-    ob_start();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, '');
+    $this->_runNodeAndAssertOutput($root_node, '');
   }
 }
 

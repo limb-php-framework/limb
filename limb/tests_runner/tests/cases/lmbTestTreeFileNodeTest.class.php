@@ -22,39 +22,50 @@ class lmbTestTreeFileNodeTest extends lmbTestRunnerBase
     $this->_rmdir(LIMB_VAR_DIR);
   }
 
-  function testCreateTestGroupUsingFileModule()
+  function testCreateTestCase()
   {
     $foo = new GeneratedTestClass();
     $bar = new GeneratedTestClass();
-    file_put_contents(LIMB_VAR_DIR . '/module.php',
+    file_put_contents(LIMB_VAR_DIR . '/module1.php',
     "<?php\n" . $foo->generateClass() . "\n" . $bar->generateClass() . "\n?>");
 
-    $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/module.php');
+    $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/module1.php');
 
-    ob_start();
-    $group = $node->createTestCase();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $foo->getOutput() . $bar->getOutput());
+    $this->_runNodeAndAssertOutput($node, $foo->getOutput() . $bar->getOutput());
   }
 
-  function testCreateTestGroupUsingClass()
+  function testCreateTestCaseIgnoreJunkClasses()
   {
     $foo = new GeneratedTestClass();
     $bar = new GeneratedTestClass();
-    //module must be unique across test cases since require_once is used
-    file_put_contents(LIMB_VAR_DIR . '/unique_module_name.php',
-    "<?php\n" . $foo->generateClass() . "\n" . $bar->generateClass() . "\n?>");
+    file_put_contents(LIMB_VAR_DIR . '/module2.php',
+    "<?php\n" .
+    "//class Foo extends UnitTestCase\n" .
+    "\$a = 'class Junky';\n" .
+    $foo->generateClass() . "\n" .
+    $bar->generateClass() . "\n?>");
 
-    $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/unique_module_name.php');
+    $node = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/module2.php');
 
-    ob_start();
-    $group = $node->createTestCase();
-    $group->run(new SimpleReporter());
-    $str = ob_get_contents();
-    ob_end_clean();
-    $this->assertEqual($str, $foo->getOutput() . $bar->getOutput());
+    $this->_runNodeAndAssertOutput($node, $foo->getOutput() . $bar->getOutput());
+  }
+
+  function testCreateTestClassesWithSomeClassesAlreadyIncluded()
+  {
+    $foo = new GeneratedTestClass();
+    $bar = new GeneratedTestClass();
+    file_put_contents($foo_file = LIMB_VAR_DIR . '/foo.php', $foo->generate());
+    file_put_contents($bar_file = LIMB_VAR_DIR . '/bar.php',
+    "<?php\n" .
+    "require_once('$foo_file');\n" .
+    $bar->generateClass() .
+    "\n?>");
+
+    $node_bar = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/bar.php');
+    $this->_runNodeAndAssertOutput($node_bar, $bar->getOutput());
+
+    $node_foo = new lmbTestTreeFileNode(LIMB_VAR_DIR . '/foo.php');
+    $this->_runNodeAndAssertOutput($node_foo, $foo->getOutput());
   }
 
   function testGetTestLabel()
