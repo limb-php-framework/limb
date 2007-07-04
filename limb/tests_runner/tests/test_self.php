@@ -10,7 +10,7 @@
 if(isset($argv[1]))
   define('SIMPLE_TEST', $argv[1]);
 
-require_once(dirname(__FILE__) . '/cases/.init.php');
+require_once(dirname(__FILE__) . '/cases/.setup.php');
 
 $group = new TestSuite();
 foreach(glob(dirname(__FILE__) . '/cases/*Test.class.php') as $file)

@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6021 2007-06-28 13:18:44Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6066 2007-07-04 11:19:58Z pachanga $
  */
 class lmbTestTreeNode
 {
@@ -101,7 +101,7 @@ class lmbTestTreeNode
   function createTestCase()
   {
     $test = $this->_doCreateTestCase();
-    $children = $this->getChildren();//getter instead of raw property, since child classes may need customization
+    $children = $this->getChildren();//using getter instead of raw property, since child classes may need customization
     foreach($children as $child)
     {
       if($child->isSkipped())

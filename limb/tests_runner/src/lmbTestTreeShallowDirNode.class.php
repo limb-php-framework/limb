@@ -43,15 +43,14 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
     return false;
   }
 
-
   function getDir()
   {
     return $this->dir;
   }
 
-
   function init()
   {
+    //deprecated
     if(file_exists($this->dir . '/.init.php'))
       include_once($this->dir . '/.init.php');
   }
@@ -83,7 +82,7 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
 
     if(file_exists($this->dir . '/.skipif.php'))
       $this->skipped = (bool)include($this->dir . '/.skipif.php');
-    elseif(file_exists($this->dir . '/.ignore.php'))
+    elseif(file_exists($this->dir . '/.ignore.php'))//deprecated
       $this->skipped = (bool)include($this->dir . '/.ignore.php');
     else
       $this->skipped = false;
