@@ -3,10 +3,8 @@ set_time_limit(0);
 
 $packages = array(
 "active_record",
-"cache",
 "calendar",
 "cli",
-//"cms",
 "config",
 "core",
 "datetime",
@@ -14,12 +12,10 @@ $packages = array(
 "filter_chain",
 "fs",
 "i18n",
-"imagekit",
 "js",
 "log",
 "mail",
 "net",
-//"search",
 "session",
 "tests_runner",
 "toolkit",
@@ -29,7 +25,6 @@ $packages = array(
 "wact",
 "web_app",
 "web_cache",
-"web_spider",
 "wysiwyg",
 );
 
@@ -42,46 +37,28 @@ if($argc < 2)
 $name = $argv[1];
 $root = $argv[2];
 
-mkdir($name);
-mkdir($name . '/limb');
-$changelog = fopen("$name/limb/CHANGELOG", 'a');
+$build_dir = dirname(__FILE__) . '/build';
+$release_dir = $build_dir . '/' . $name;
+@mkdir($build_dir);
+mkdir($release_dir);
+mkdir($release_dir . '/limb');
 
 foreach($packages as $pkg)
 {
   echo "Bundling '$pkg'...";
 
   $dir = $root . '/' . $pkg;
-  $dst = $name . '/limb/' . $pkg;
-
-  if(is_file("$dir/CHANGELOG"))
-  {
-    fwrite($changelog, "\n################### Package '$pkg' ###################\n\n");
-    fwrite($changelog, trim(file_get_contents("$dir/CHANGELOG")) . "\n");
-  }
+  $dst = $release_dir . '/limb/' . $pkg;
   `svn export $dir $dst`;
 
   echo "done.\n";
 }
 
-fclose($changelog);
+`svn export $root/CHANGELOG $release_dir/CHANGELOG`;
+`svn export $root/README $release_dir/README`;
+`svn export $root/LICENSE $release_dir/LICENSE`;
 
-gzip($name, $name . '.tgz');
-
-function zip($file, $archive)
-{
-  echo "zipping $file => $archive\n";
-  if(is_dir($file))
-  {
-    $old = getcwd();
-    $dir = dirname($file);
-    $name = basename($file);
-    chdir($dir);
-    `zip -r -9 -q $archive $name`;
-    chdir($old);
-  }
-  else
-    `cat $file | zip -9 -q > $archive`;
-}
+gzip($release_dir, $build_dir . '/' . $name . '.tgz');
 
 function gzip($file, $archive)
 {
@@ -97,6 +74,22 @@ function gzip($file, $archive)
   }
   else
     `cat $file | gzip -9 -c > $archive`;
+}
+
+function zip($file, $archive)
+{
+  echo "zipping $file => $archive\n";
+  if(is_dir($file))
+  {
+    $old = getcwd();
+    $dir = dirname($file);
+    $name = basename($file);
+    chdir($dir);
+    `zip -r -9 -q $archive $name`;
+    chdir($old);
+  }
+  else
+    `cat $file | zip -9 -q > $archive`;
 }
 
 ?>

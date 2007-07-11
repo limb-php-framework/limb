@@ -4,7 +4,7 @@ $dir = $argv[1];
 $pkg = isset($argv[2]) ? $argv[2] : 'foo';
 $files = explode("\n", trim(`find $dir -type f -name "*.php" | grep -v /lib/ | grep -v /settings/ | grep -v /shared/ | grep -v /www/ | grep -v /tests/`));
 
-$class_regex = '~((?:\n|\r\n|\r)\s*(?:(?:abstract|final)\s+)?class\s+\w+)~';
+$class_regex = '~((?:\n|\r\n|\r)\s*(?:(?:abstract|final)\s+)?(?:class|interface)\s+\w+)~';
 $doc_regex = '~(\/\*\*.*?\*\/)~s';
 
 foreach($files as $file)
