@@ -77,7 +77,7 @@ $package->setPearinstallerDep('1.4.99');
 $package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', '0.2.0');
 $package->addPackageDepWithChannel('required', 'toolkit', 'pear.limb-project.com', '0.2.1');
 $package->addPackageDepWithChannel('required', 'cli', 'pear.limb-project.com', '0.2.1');
-$package->addPackageDepWithChannel('required', 'test_runner', 'pear.limb-project.com', '0.8.3');
+$package->addPackageDepWithChannel('required', 'tests_runner', 'pear.limb-project.com', '0.8.3');
 $package->addPackageDepWithChannel('required', 'fs', 'pear.limb-project.com', '0.1.1');
 $package->addPackageDepWithChannel('required', 'config', 'pear.limb-project.com', '0.3.1');
 $package->addPackageDepWithChannel('required', 'net', 'pear.limb-project.com', '0.2.0');
