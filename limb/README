@@ -7,8 +7,8 @@ distributed via Limb3 PEAR channel(http://pear.limb-project.com).
 
 Here is the list of the most notable packages at the moment:
 
-    * core: the base package which provides lazy loading of PHP code
-    * classkit: advanced OO tools(automatic decorators genarators, transparent object proxies, etc)
+    * core: the base system package which provides lazy loading of PHP code, iterators support,
+            generic object containers, decorators generators, transparent object proxies, etc
     * toolkit: dependency injection tools
     * filter_chain: InterceptingFilter design pattern implementation
     * wact: a forked and a bit patched version of the brilliant template WACT subsystem(http://phpwact.org)
@@ -18,5 +18,6 @@ Here is the list of the most notable packages at the moment:
     * tests_runner: unit testing tools built around excellent SimpleTest library(http://simpletest.org)
     * session: transparent PHP session wrappers with painless persistence of objects
     * ..see more packages on Limb3 PEAR channel!
-    
-If you have any questions and need support, don't hesitate contacting us(http://limb-project.com/support)! 
+
+If you have any questions and need support, don't hesitate contacting us at forum(http://limb-project.com/support)
+or one of the mailing lists(http://lists.limb-project.com).

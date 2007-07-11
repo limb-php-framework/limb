@@ -1,3 +1,2 @@
-This package allows you to store hierarhies in database usingmaterialized path tree algorithm.
-
-The package also supports tree caching using CACHE package.
+This package allows you to store hierarchies in database using materialized path tree and
+nested sets algorithms.

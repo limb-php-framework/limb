@@ -7,14 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
-require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
-require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
 
 /**
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6061 2007-07-03 11:57:30Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6151 2007-07-11 11:07:01Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -57,14 +55,21 @@ class lmbTestShellUI
 
     $usage = <<<EOD
 Usage:
-  limb_unit OPTIONS <file|dir> [<file|dir>, <file|dir>, ...]
+  limb_unit [OPTIONS] <file|dir> [<file1|dir1>, ... <fileN|dirN>]
   Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
+Arguments:
+  <file|dir> [<file1|dir1>, ... <fileN|dirN>] - a list of files/directories, globs are supported(e.g. '*')
 Options:
-  -c, --config=/file.php        PHP configuration file path
-  -h, --help                    Displays this help and exit
-  -C, --cover=path1;path2       Sets paths delimitered with ';' which should be analyzed for test coverage(requires XDebug extension!)
-  --cover-report=dir            Sets coverage report directory
-  --cover-exclude=path1;path2   Sets paths delimitered with ';' which should be excluded from coverage analysis
+  -h, --help                      Displays this help and exit
+  -c, --config=/file.php          PHP configuration file path
+  -I, --include='filter1;filter2' Sets file filters used for including test files during
+                                  recursive traversal of directories.
+                                  '*Test.class.php;*test.php;*Test.php' by default.
+  -C, --cover=path1;path2         Sets paths delimitered with ';' which should be analyzed
+                                  for test coverage(requires XDebug extension!)
+  --cover-report=dir              Sets coverage report directory
+  --cover-exclude=path1;path2     Sets paths delimitered with ';' which should be excluded
+                                  from coverage analysis
 
 $version
 
@@ -100,12 +105,12 @@ EOD;
 
   static function getShortOpts()
   {
-    return 'hvt:b:c:C:';
+    return 'hvI:c:C:';
   }
 
   static function getLongOpts()
   {
-    return array('help', 'version', 'config=', 'cover=', 'cover-report=', 'cover-exclude=');
+    return array('help', 'version', 'include=', 'config=', 'cover=', 'cover-report=', 'cover-exclude=');
   }
 
   function run()
@@ -142,7 +147,7 @@ EOD;
 
     lmbTestGetopt :: defineConstants($this->argv);
 
-    $configured = false;
+    $config_file = null;
     $cover_include = '';
     $cover_exclude = '';
     $cover_report_dir = null;
@@ -161,9 +166,11 @@ EOD;
           break;
         case 'c':
         case '--config':
-          if(!@include_once(realpath($option[1])))
-            $this->_error("Could not include configuration file '{$option[1]}'\n");
-          $configured = true;
+          $config_file = $option[1];
+          break;
+        case 'I':
+        case '--include':
+          @define('LIMB_TESTS_RUNNER_FILE_FILTER', $option[1]);
           break;
         case 'C':
         case '--cover':
@@ -178,8 +185,16 @@ EOD;
       }
     }
 
-    if(!$configured && $config = getenv('LIMB_TESTS_RUNNER_CONFIG'))
-      include_once($config);
+    if($config_file)
+    {
+      if(!@include_once(realpath($config_file)))
+        $this->_error("Could not include configuration file '$config_file'\n");
+    }
+    else if($config_file = getenv('LIMB_TESTS_RUNNER_CONFIG'))
+    {
+      if(!@include_once($config_file))
+        $this->_error("Could not include configuration file specified in LIMB_TESTS_RUNNER_CONFIG env. variable as '$config_file'\n");
+    }
 
     if(!is_array($options[1]) || !count($options[1]))
       $paths = array('.');
@@ -189,6 +204,7 @@ EOD;
     if(!$cover_report_dir && defined('LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR'))
       $cover_report_dir = LIMB_TESTS_RUNNER_COVERAGE_REPORT_DIR;
 
+    require_once(dirname(__FILE__) . '/lmbTestRunner.class.php');
     $runner = new lmbTestRunner();
 
     if($this->reporter)
@@ -199,6 +215,7 @@ EOD;
 
     try
     {
+      require_once(dirname(__FILE__) . '/lmbTestTreeGlobNode.class.php');
       $node = new lmbTestTreeGlobNode($paths);
       $res = $runner->run($node);
     }

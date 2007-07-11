@@ -39,7 +39,7 @@ class lmbFsTools extends lmbAbstractTools
                                            LIMB_VAR_DIR . '/locators/',
                                            $locator_name);
     else
-      $locator = new lmbFileLocator($locator_name);
+      $locator = new lmbFileLocator($file_locations);
 
     $this->file_locators[$locator_name] = $locator;
     return $locator;

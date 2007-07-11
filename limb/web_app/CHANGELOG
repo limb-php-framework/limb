@@ -1,3 +1,45 @@
+0.6.1-alpha - 9 July 2007 (r6119)
+==================================================
+-- lmbRequestExtractor.interface.php removed since we not use it anymore
+
+0.6.0-alpha - 6 July 2007 (r6097)
+==================================================
+-- lmbErrorHandlingFilter added instead of lmbUncaughtExceptionHandlingFilter
+-- lmbUncaughtExceptionHandlingFilter extends lmbErrorHandlingFilter, it's deprecated and will be removed someday
+-- lmbQueryBasedFetcher, lmbTableRecordsFetcher, lmbTableRowFetcher and lmbSimpleFetcher removed since we don't really need them.
+-- lmbFetcher :: extractOrderPairsFromString() added from removed lmbOrdersQueryModifier
+-- lmbUncaughtExceptionHandlingFilter now accepts $error500_page parameter in constructor. Using this parameter you can pass the path to .html page with 500 error description. This should be an absolute path to static html page.
+-- lmbUncaughtExceptionHandlingFilter also takes into account LIMB_APP_MODE constant to set it's mode. LIMB_APP_MODE constant should have 'devel' or 'production' value. On 'devel' mode all errors and uncaught exceptions will be displayed with backtrace but in 'production' mode - the contents of error500_page will be displayed instead.
+-- better tests isolation in case when there's no compatible db test dump
+-- lmbController::closePopup() writes code in response only if $in_popup is set to true
+-- added new property to lmbController `in_popup` (true by default)
+-- adding phpdoc header to modules
+-- adding dummy phpdoc block to each class
+-- lmbController :: forwardTo500() added, it forwards to ServerErrorController
+-- ServerErrorController class and server_error.html template added
+-- experimental lmbController :: forward($controller, $action) added, locates $controller object, invokes its performAction() and returns result
+-- lmbController :: forwardTo404() added, it forwards to NotFoundController
+-- lmbWebAppTools :: createController() checks if such a class already exists
+-- fixed <find:params> tag
+-- lmbController passes its local attributes to view automatically
+-- <route_url> tag now can optionally accepts "skip_controller" attribute. If this attribute has "true" value then dispatched controller will not be attached to params array what passed to lmbToolkit :: instance()->getRouteUrl() method.
+-- initial mixins support added into lmbAbstractController, mixed instance can be accessed via $mixed attribute
+-- lmbController :: closePopup() javascript better window.opener checks
+-- added skip_controller argument flag to getRoutesUrl() method which prevent trowing exception when controller name not specified
+-- added skip_controller attribute to tag <route_url_set>
+-- a bit more optimal LIMB_HTTP* constant checks
+-- invalid declaration of LIMB_HTTP_OFFSET now yields exception
+-- lmbErrorGuard uses more general way for registering callbacks
+-- lmbDelegateHaltException moved to WEB_APP package
+-- lmbUncaughtExceptionHandlingFilter uses new lmbErrorGuard for fatal errors and exceptions tracking
+-- using lmbDelegate instead of removed lmbDelegateList
+-- added an alias <ar:fetch> for <active_record:fetch> tag
+-- lmbDefaultLocaleFilter fixed(WAP-4)
+-- weird $code->registerInclude(..) fix in ip.filter.php
+-- adding LOG package dependency
+-- lmbUncaughtExceptionHandlingFilter uses getLog() toolkit facility from LOG package
+-- lmbWebAppTools :: getView() uses LIMB_VAR_DIR . '/compiled/' cache dir
+
 0.5.0-alpha - 9 April 2007 (r5578)
 ==================================================
 -- changes due to datasource package cleanup and unification(DS-1)

@@ -1,3 +1,16 @@
+0.5.0-beta - 6 July 2007 (r6104)
+==================================================
+-- lmbRequiredRule trims string content for validation
+-- obsolete lmbSimpleUrlRule removed
+-- upload rules removed
+-- adding phpdoc header to modules
+-- russian translation fixes
+-- using lmbDate :: isValidDateString($str)
+-- lmbAtleastOneFieldRequiredRule now accepts fields only as array since passing custom error was not possible otherwise
+-- lmbValidationException minor fixes
+-- passing both min and max values in lmbSizeRangeRule like in lmbI18NSizeRangeRule
+-- validation stuff moved from I18N package to VALIDATION
+
 0.4.0-alpha - 9 April 2007 (r5586)
 ==================================================
 -- all validation rules now accepts optional $custom_error message as the last constructor parameter. This $custom_error will be used instead of default messages in all error cases (VLD-2)

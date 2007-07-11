@@ -8,7 +8,7 @@
  */
 
 /**
- * @package tree
+ * @package fs
  * @version $Id$
  */
 require_once 'PEAR/PackageFileManager2.php';
@@ -75,7 +75,6 @@ $package->setPhpDep('5.1.4');
 $package->setPearinstallerDep('1.4.99');
 
 $package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', '0.2.0');
-$package->addPackageDepWithChannel('required', 'dbal', 'pear.limb-project.com', '0.1.0');
 
 $package->generateContents();
 

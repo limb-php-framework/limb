@@ -1,3 +1,18 @@
+0.4.0-alpha - 6 July 2007 (r6106)
+==================================================
+-- adding phpdoc header to modules
+-- DBE support added to i18n.filter.php;
+-- string.filter.php renamed to i18n.filter.php
+-- locale files have Sunday as a first day of a week(lmbDate :: getDayOfWeek() returns zero based index, where Sunday is at zero index).
+-- lmbLocaleDate fixes due to lmbDate changes
+-- i18n - added function of a transliteration lmb_translit_russian().
+-- lmbDateFormat removed, its functionality moved into new lmbLocaleDate :: localeStrftime(..)
+-- never really used lmbInvalidArgumentException, lmbInvalidValueException removed
+-- fixing tests and lmbI18NSizeRangeRule error message
+-- fixing IN-6
+-- lmbQtDictionaryBackend isolated from LIMB_VAR_DIR, cache dir must be explicitly set with lmbQtDictionaryBackend :: setCacheDir(..)
+-- Qt dictionary is enabled in lmbI18NTools if LIMB_VAR_DIR is defined
+
 0.3.0-alpha - 9 April 2007 (r5577)
 ==================================================
 -- lmbLocale :: __construct() reverted back to lmbLocale :: __construct($code, $container = null)

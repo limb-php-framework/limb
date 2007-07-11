@@ -1,3 +1,11 @@
+0.3.0-alpha - 6 July 2007 (r6101)
+==================================================
+-- adding phpdoc header to modules
+-- lmbWactTemplate uses LIMB_VAR_DIR / compiled as cache dir if none is sent to constructor
+-- lmbWactView :: __construct() now accepts template path not cache dir, cache dir should be passed via setCacheDir()
+-- lmbWactTemplateLocator requires cache dir to be passed explicitly in constructor
+-- better LIMB_VAR_DIR isolation: lmbWactView, lmbWactTemplateConfig, lmbWactTemplate require cache_dir in constructor
+
 0.2.0-alpha - 9 April 2007 (r5585)
 ==================================================
 -- lmbWactView sets explicitly WactFormFieldNameDictionary into error list

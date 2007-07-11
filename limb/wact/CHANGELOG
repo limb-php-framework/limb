@@ -1,3 +1,67 @@
+0.5.1-beta - 9 July 2007 (r6089)
+==================================================
+-- version bump and beta status of a package
+
+0.5.0-alpha - 6 July 2007 (r6088)
+==================================================
+-- PHP-5.2 tests fixes
+-- WACT heavy refactoring and BC breaks:
+ * WactCompileTreeNode :: preGenerate(), postGenerate() removed.
+ * WactCompilerTag :: preGenerate(), postGenerate() removed. There are empty generateBeforeContent() and generateAfterContent() methods that child classes can override.
+ * Now WactCompilerTag automatically calls preGenerateStatement() and postGenerateStatement() for all dynamic attributes.
+ * WactRuntimeComponentHTMLTag now have empty generateBeforeOpenTag(), generateAfterOpenTag(), generateBeforeCloseTag(), generateAfterCloseTag() methods what child classes can override.
+ * Greatly simplified versions of new expression parser and expression filter parser.
+ * WACT expressions now support local variables in expressions. Just specify an extra $ symbol. {$$var} will output $var variable from template generated code.
+ * Now WACT supports php-native operators in expressions. Instead of "and" you should use "&&", instead of "or" - "||", intead of "not" - "!"
+ * Greatly symplified version of WactHTMLParser and all related to it classes. The parser now only nofity listeners about open and close tags, about comments (<!-- -->), code blocks (<?php ?>) and characters (all other cases).
+ * limb/wact/src/compiler/saxfilters/ removed. We never use them anyway.
+ * WactNodeBuilder removed. Part of it's functionality moved to WactTreeBuilder and the rest of the functionality was extracted in the form of WactBlockAnalizer class with WactBlockAnalizerListener interface. There are two classes: WactAttributeBlockAnalizerListener and WactContentBlockAnalizerListener that are used to subscribe for WactBlockAnalizer events. These classes used in WactTreeBuilder.
+ * Much more clear version of WactTreeBuilder that correctly balances tags (both wact and regular html tag).
+ * select_time and select_date tags removed since we never used them.
+ * many other small fixes and improvements
+-- WactTemplate :: escape() static method added. But it's not used anywhere in WACT yet.
+-- adding phpdoc header to modules
+-- new Key property for <list:item> tag added
+-- WactFormComponent calls WactTemplate :: makeObject() in registerDataSource() instead of wrapping $datasource into WactArrayObject every time.
+-- WactDatasourceRuntimeComponent and WactRuntimeDatasourceComponentHTMLTag now generates variables that point not to components but to datasources.
+-- better exception message formating in WactException
+-- new syntax for any dynamic attributes what were use to point at variables in runtime.
+ For example: instead of <core:datasource from='var'> you should write <core:datasource from={$var}>
+ The old syntax is supported for BC in almost all cases except complex cases with <list:list> like <list:list from='[data]var'> (should be <list:list from='{$#[date]var}'>
+-- now it's possible to have dynamic "id" and "name" attribute for form elements.
+-- now all datasource tags generates a php variable that referencing to themself. You can use this variables in php-blocks inside tags. For
+example:
+   <list:LIST id="test"><list:ITEM id="father"><?php echo $father->get("First"); ?></list:ITEM></list:LIST>
+ This variable has a name of tag ID.
+-- WactCompilerTag :: hasConstantAttribute() added
+-- WactCompilerTag :: generateAttributeList() removed since it should be in other class (WactRuntimeComponentHTMLTag)
+-- WACT_STRICT_MODE constant removed
+-- new tag <datasource:push> added. This tags works almost like <iterator:transfer> tag that is accepts from and to attribute. Note: for <datasource:push> from tag should have a form of regular outpur expression, e.g.: <datasource:push from='{$var}' target='target_component'>
+-- now WACT allows to use tag attribute without any value. Like <input type='checkbox' checked>
+-- select.inc.php files splitted into WactSelectMultipleComponent, WactSelectSingleComponent and WactOptionRenderer.
+-- select_date.inc.php and select_time.inc.php removed
+-- WactDataBindingExpressionNode moved to /limb/wact/src/compiler/expression/node/ folder
+-- <select:options_source> caches prepared options list. This helps improve performance a bit in case if one use multiple targets in "target" attribute
+-- now you can control how default options inside <select> tag should be attached to choice list: prepended or appended. Use <option> tag with "prepend" attribute, e.g. <select><option value='0' prepend='true' selected='true'>--select something--</option><option value='all'>Select all</option></select>.
+-- WactSelectSingleComponent casts key to string before comparison since in PHP 0 == 'bar'
+-- WactNewExpressionFilterParser -> WactExpressionFilterParser
+-- new architecture of filter parser. Lexer stuff removed and simple regexp based parser added instead. The new parser requires some refactoring though.
+-- now WACT requires balancing in template only for wact tags or for general tag with wact:id or runat='server' attributes.
+-- added tags annotations for simple html tags like <img>, <br>, <hr>, etc. This allows no to trigger compiler errors for unclosed tags in WACT_STRICT_MODE == false
+-- fixed a typo in WactDataBindingExpression
+-- WactBaseIteratorComponent now proceed directly to _passRecordToBuffer() if getDataset() returns an object that does not supports "count()" method.
+-- modified WactComponentParsingState in order to prevent compiler errors for unclosed tags that runat client in WACT_STRICT_MODE == false
+-- removed old WactExpressionValueParser
+-- form control tags now can use new attribute "given_value". Using this attribute you can specify real value the element should have. Given value overrides form value. As a sequence now you can use form controls without form with runat="server" attribute - just give write down "given_value" attribute.
+-- better tests for form elements. Split elements.inc.php into separate files with 1 class in each
+-- title attribute now rendered in checkbox also
+-- WactTemplate :: makeObject($obj) doesn't wrap $obj with WactArrayObject if $obj has 'get' method
+-- ported new expression stuff from original WACT SVN: now expressions can contain mathematical operators, logical operators and mixins of DBEs and constant values.
+-- new <core:if> tag that outputs a portion of template if "exp" attribute expression has true value
+-- fixed a bug with <list:separator> tag in case if one used this tag in nested <list:list> tag
+-- <core:SET> tag has "runtime='TRUE'" attribute by default
+-- better isolation from Limb framework
+
 0.4.0-alpha - 9 April 2007 (r5583)
 ==================================================
 -- WACT compiler processed <![CDATA[ as a regular text now WACT tags are processed inside <![CDATA[.

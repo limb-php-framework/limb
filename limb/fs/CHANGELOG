@@ -1,0 +1,7 @@
+0.1.1-alpha - 9 July 2007 (r6120)
+==================================================
+-- typo fixed in lmbFsTools - not valid locations object passed to lmbFileLocator
+
+0.1.0-alpha - 6 July 2007 (r6088)
+==================================================
+-- initial release of this package.

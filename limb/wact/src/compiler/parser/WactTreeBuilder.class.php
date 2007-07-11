@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -21,7 +21,7 @@
  * or addWactTextNode().
  *
  * @package wact
- * @version $Id: WactTreeBuilder.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactTreeBuilder.class.php 6151 2007-07-11 11:07:01Z pachanga $
  */
 
 
@@ -315,7 +315,7 @@ define ('WACT_EXPECTED_PLAIN_TAG',	2);class WactTreeBuilder
   }
 
   // this code added to support old form of DBE expressions in some attributes
-  // like <core:optional for='var'> should actually be <core:optional
+  // like <core:optional for='var'> should actually be <core:optional for={$ var }>
   protected function _convertAttributesToExpressionIfRequired($tag_node, $tag_info, &$attributes)
   {
     foreach($tag_info->getConvertAttributesToExpressions() as $name)
@@ -328,7 +328,8 @@ define ('WACT_EXPECTED_PLAIN_TAG',	2);class WactTreeBuilder
       if(strpos($value, '{$') !== FALSE)
         continue;
 
-      if($tag_node->isDataSource() && (strpos($value, '#') === FALSE))
+
+      if($tag_node->isDataSource() && (strpos($value, '#') === FALSE) && strpos($value, '$') === FALSE)
         $attributes[$name] = '{$^' . $value . '}';
       else
         $attributes[$name] = '{$' . $value . '}';

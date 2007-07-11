@@ -1,11 +1,37 @@
-This package is a SimpleTest test suite wrapper which
-allows to browse and run test cases located in the
-file system.
+This packages provides advanced tools for running SimpleTest(http://www.lastcraft.com/simple_test.php)
+based tests within the file system.
 
-Every directory is considered to be a test group and
-can contain its own test fixtures. There're 2 test
-runners present at the moment for CLI and WEB
-environments
+If you simply grabbed archive with this package without installing it via PEAR installer, most probably
+you want to setup convenient script for running tests(PEAR installer makes it for you).
 
-See further usage docs in examples directory.
+Here's how you can do that:
 
+unit bash script(*nix):
+
+  #/bin/bash
+  php /path/to/tests_runner/bin/limb_unit.php $@
+
+unit.bat(Windows)
+
+  @echo off
+  php /path/to/tests_runner/bin/limb_unit.php %*
+
+Try running in you shell:
+
+unit -h
+
+If everything installed properly you should see a help message.
+
+Some quick shell usage examples using this script:
+
+  $ unit my_test.php      #running all test cases defined in my_test.php
+  $ unit *_test.php       #running all test cases contained in *_test.php files
+  $ unit tests            #running recursively all tests from test directory
+  $ find -name tests -type d | xargs -i unit "{}" #running all tests from any directories called tests
+
+See more documentation on-line:
+
+http://wiki.limb-project.com/doku.php?id=limb3:en:packages:tests_runner:limb_unit
+
+There's also example on how you can use TESTS_RUNNER API to create your own runners. See examples
+directory.

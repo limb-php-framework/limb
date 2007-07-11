@@ -1,3 +1,40 @@
+0.2.0-beta - 6 July 2007 (r6082)
+==================================================
+-- CLASSKIT, DATASOURCE packages merged into CORE
+-- lmbRequireTest tests now play nicely with external code coverage tools
+-- lmbCollection :: toFlatArray now accepts optional $key_field parameter. This parameter allows to get array with $key_field values as keys in result array
+-- renaming lmbReflection into lmbReflectionHelper and making it static
+-- making lmbCollection :: _setupIteratedDataset() protected
+-- a bit more optimal versions of lmb_camel_case, lmb_under_scores added with tests
+-- lmbArrayHelper :: arrayMerge(..) now can accept many arguments
+-- adding phpdoc header to modules
+-- lmb_require_optional($file_path) it includes files only if they exist and if not it doesn't throw an exception(actually it's just a wrapper around lmb_require)
+-- lmb_php_object_id removed since there's spl_object_hash
+-- lmbCollection :: concat($iter1, $iter2, ...) added, it returns new collection made from concatenation of all passed arguments
+-- lmbException :: getParam($name) added
+-- lmb_var_dump(..) now has second optional argument $echo which controls whether dumped value should be echoed or returned(returned by default)
+-- pretty printing with <pre> added in lmb_var_dump when not in cli mode
+-- experimental mixin emulation lmbMixable class added, it allows to dynamically extend behavior of the mixed object with mixins
+-- removing not really used anywhere lmbProxyable interface
+-- lmbClassPath :: include() now include_once file if $class_name class in not exists. If include_once returns false value lmbClassPath :: generates an exception
+-- lmbDelegateHaltException moved to WEB_APP package
+-- never really used lmbInvalidArgumentException, lmbInvalidValueException removed
+-- experimental lmbErrorGuard added, it should make error handling of fatal errors more friendly
+-- lmbDelegate :: invokeArray($args) added, it passes $args directly into call_user_func_array
+-- lmbDelegate :: invoke() uses func_get_args() in order to collect passed arguments
+-- deprecated lmbBaseDelegate removed
+-- merging lmbFunctionDelegate, lmbStaticDelegate, lmbDelegateList into one class lmbDelegate
+-- lmbDelegate :: objectify($delegate) added, it wraps $delegate with lmbDelegate object
+-- lmbDelegate tests added
+-- lmbException appends params to message in constructor making reading exceptions with params more convenient
+-- lmbCollection does not sort dataset if it empty
+-- removing obsolete lmbProxyResolver
+-- moving util/src/lmbPHPTokenizer => core/src
+-- moving util/src/system/lmbSys => core/src
+-- src/util.inc.php moved into common.inc.php
+-- lmbIterator => lmbCollection
+-- lmbComplexArray => lmbArrayHelper
+
 0.1.4-alpha - 9 April 2007 (r5587)
 ==================================================
 -- bumping version

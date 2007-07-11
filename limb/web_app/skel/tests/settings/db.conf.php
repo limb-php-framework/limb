@@ -1,5 +1,5 @@
 <?php
 
-$conf = array('dsn' => 'mysql://root:secret@localhost/limb_application_tests?charset=utf8');
+$conf = array('dsn' => 'mysql://root:secret@localhost/limbapp?charset=utf8');
 
 ?>
