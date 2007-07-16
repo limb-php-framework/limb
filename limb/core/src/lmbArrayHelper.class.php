@@ -15,14 +15,14 @@
  */
 class lmbArrayHelper
 {
-  function map($map_array, $src_array, &$dest_array)
+  static function map($map_array, $src_array, &$dest_array)
   {
     foreach($map_array as $src => $dest)
       if(isset($src_array[$src]))
         $dest_array[$dest] = $src_array[$src];
   }
 
-  function arrayMerge($a1, $a2)//we need at least two args and we specify them explicitly
+  static function arrayMerge($a1, $a2)//we need at least two args and we specify them explicitly
   {
     $args = func_get_args();
     $res = $a1;
@@ -31,7 +31,7 @@ class lmbArrayHelper
     return $res;
   }
 
-  function _arrayMerge($a1, $a2)
+  static function _arrayMerge($a1, $a2)
   {
     $n = $a1;
     foreach($a2 as $k => $v)
@@ -42,7 +42,7 @@ class lmbArrayHelper
     return $n;
   }
 
-  function explode($pairs_delim, $values_delim, $string)
+  static function explode($pairs_delim, $values_delim, $string)
   {
     $res = array();
     foreach(explode($pairs_delim, $string) as $pair)
@@ -53,7 +53,7 @@ class lmbArrayHelper
     return $res;
   }
 
-  function & arrayGet($arr_def, &$res_array, $default_value='')
+  static function & arrayGet($arr_def, &$res_array, $default_value='')
   {
     if($size = sizeof($arr_def))
     {
@@ -69,7 +69,7 @@ class lmbArrayHelper
     return $default_value;
   }
 
-  function arraySet($arr_def, &$res_array, $value)
+  static function arraySet($arr_def, &$res_array, $value)
   {
     if($size = sizeof($arr_def))
     {
@@ -87,7 +87,7 @@ class lmbArrayHelper
     }
   }
 
-  function getColumnValues($column_name, $array)
+  static function getColumnValues($column_name, $array)
   {
     $result = array();
     foreach($array as $item)
@@ -96,7 +96,7 @@ class lmbArrayHelper
     return $result;
   }
 
-  function getMaxColumnValue($column_name, $array, &$index)
+  static function getMaxColumnValue($column_name, $array, &$index)
   {
     $index = 0;
 
@@ -108,7 +108,7 @@ class lmbArrayHelper
     return $max;
   }
 
-  function getMinColumnValue($column_name, $array, &$index)
+  static function getMinColumnValue($column_name, $array, &$index)
   {
     $index = 0;
 
@@ -120,7 +120,7 @@ class lmbArrayHelper
     return $min;
   }
 
-  function toFlatArray($array, &$result, $prefix='')
+  static function toFlatArray($array, &$result, $prefix='')
   {
     foreach($array as $key => $value)
     {
@@ -133,13 +133,13 @@ class lmbArrayHelper
     }
   }
 
-  function arrayMapRecursive($in_func, &$in_array)
+  static function arrayMapRecursive($in_func, &$in_array)
   {
-    foreach (array_keys($in_array) as $key)
+    foreach(array_keys($in_array) as $key)
     {
       $value =& $in_array[$key];
 
-      if (is_array($value))
+      if(is_array($value))
         lmbArrayHelper :: arrayMapRecursive($in_func, $value);
       else
         $value = call_user_func_array($in_func, array($value));
@@ -148,7 +148,7 @@ class lmbArrayHelper
   }
 
   //e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
-  function & sortArray($array, $sort_params, $preserve_keys = true)
+  static function & sortArray($array, $sort_params, $preserve_keys = true)
   {
     $array_mod = array();
     foreach ($array as $key => $value)
