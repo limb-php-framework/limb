@@ -7,12 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
+lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
 
 /**
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6040 2007-07-02 12:51:54Z pachanga $
+ * @version $Id: lmbARManyToManyCollection.class.php 6168 2007-07-18 05:51:16Z pachanga $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
