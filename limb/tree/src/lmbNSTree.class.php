@@ -299,7 +299,7 @@ class lmbNSTree implements lmbTree
     {
       $c=$i+1;
       $t.=",\n{$this->_node_table} t".$c;
-      $w.=" AND t".$c.".{$this->_identifier}='".addslashes($path_array[$i])."'
+      $w.=" AND t".$c.".{$this->_identifier}='".$this->_conn->escape($path_array[$i])."'
             AND t".$c.".{$this->_left} BETWEEN t".$i.".{$this->_left}+1 AND t".$i.".{$this->_right}
             AND t".$c.".{$this->_level}=t".$i.".{$this->_level}+1";
     }

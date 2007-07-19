@@ -308,8 +308,7 @@ class lmbMPTree implements lmbTree
 
     $level = sizeof($path_array);
 
-    $in_condition = $this->_dbIn($this->_identifier, array_unique($path_array));
-
+    $in_condition = $this->_dbIn($this->_identifier, array_map(array($this->_conn, 'escape'), array_unique($path_array)));
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table}
             WHERE

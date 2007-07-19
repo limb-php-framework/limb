@@ -326,6 +326,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertNull($this->imp->getNodeByPath('/blah'));
     $this->assertNull($this->imp->getNodeByPath('/\'\''));
     $this->assertNull($this->imp->getNodeByPath('/""'));
+    $this->assertNull($this->imp->getNodeByPath('/foo/bar\''));
   }
 
   function testGetRootNodeByPath()
