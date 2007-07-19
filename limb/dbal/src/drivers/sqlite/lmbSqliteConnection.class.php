@@ -170,6 +170,11 @@ class lmbSqliteConnection implements lmbDbConnection
     return $quoted;
   }
 
+  function escape($string)
+  {
+    return sqlite_escape_string($string);
+  }
+
   function getSequenceValue($table, $colname)
   {
     return sqlite_last_insert_rowid($this->connectionId);//???

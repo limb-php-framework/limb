@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMysqlConnection.class.php 6176 2007-07-19 08:25:31Z pachanga $
  */
 class lmbMysqlConnection implements lmbDbConnection
 {
@@ -183,6 +183,11 @@ class lmbMysqlConnection implements lmbDbConnection
     if(isset($pieces[1]))
        $quoted .= '.`' . $pieces[1] . '`';
     return $quoted;
+  }
+
+  function escape($string)
+  {
+    return mysql_escape_string($string);
   }
 
   function getSequenceValue($table, $colname)

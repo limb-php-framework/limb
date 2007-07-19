@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbPgsqlConnection.class.php 6176 2007-07-19 08:25:31Z pachanga $
  */
 class lmbPgsqlConnection implements lmbDbConnection
 {
@@ -194,6 +194,11 @@ class lmbPgsqlConnection implements lmbDbConnection
     if(isset($pieces[1]))
        $quoted .= '."' . $pieces[1] . '"';
     return $quoted;
+  }
+
+  function escape($string)
+  {
+    return pg_escape_string($string);
   }
 
   function getSequenceValue($table, $colname)

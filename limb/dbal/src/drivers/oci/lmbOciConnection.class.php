@@ -21,7 +21,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
  * class lmbOciConnection.
  *
  * @package dbal
- * @version $Id: lmbOciConnection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbOciConnection.class.php 6176 2007-07-19 08:25:31Z pachanga $
  */
 class lmbOciConnection implements lmbDbConnection
 {
@@ -204,6 +204,11 @@ class lmbOciConnection implements lmbDbConnection
     if(isset($pieces[1]))
        $quoted .= '."' . strtoupper($pieces[1]) . '"';
     return $quoted;
+  }
+
+  function escape($string)
+  {
+    throw new Exception('Not implemented');
   }
 
   function getSequenceValue($table, $colname)

@@ -11,7 +11,7 @@
  * interface lmbDbConnection.
  *
  * @package dbal
- * @version $Id: lmbDbConnection.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbDbConnection.interface.php 6176 2007-07-19 08:25:31Z pachanga $
  */
 interface lmbDbConnection
 {
@@ -29,6 +29,7 @@ interface lmbDbConnection
   function getDatabaseInfo();
   function getSequenceValue($table, $colname);
   function quoteIdentifier($id);
+  function escape($string);
 }
 
 ?>
