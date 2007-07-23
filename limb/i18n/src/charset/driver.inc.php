@@ -9,7 +9,7 @@
 
 /**
  * @package i18n
- * @version $Id: driver.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: driver.inc.php 6190 2007-07-23 14:15:18Z pachanga $
  */
 lmb_require('limb/i18n/src/charset/lmbSingleByteCharsetDriver.class.php');
 
@@ -40,23 +40,9 @@ function lmb_strlen($string)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_strlen($string);
 }
 /**
- * @deprecated
- */
-function _strlen($string)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_strlen($string);
-}
-/**
  * Multibyte aware replacement for substr()
  */
 function lmb_substr($str, $start, $length=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_substr($str, $start, $length);
-}
-/**
- * @deprecated
- */
-function _substr($str, $start, $length=null)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_substr($str, $start, $length);
 }
@@ -68,13 +54,6 @@ function lmb_str_replace($s, $r, $str)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_str_replace($s, $r, $str);
 }
 /**
- * @deprecated
- */
-function _str_replace($s, $r, $str)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_str_replace($s, $r, $str);
-}
-/**
  * Multibyte aware replacement for ltrim()
  */
 function lmb_ltrim($str, $charlist = '')
@@ -82,23 +61,9 @@ function lmb_ltrim($str, $charlist = '')
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_ltrim($str, $charlist);
 }
 /**
- * @deprecated
- */
-function _ltrim($str, $charlist = '')
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_ltrim($str, $charlist);
-}
-/**
  * Multibyte aware replacement for ltrim()
  */
 function lmb_rtrim($str, $charlist = '')
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_rtrim($str, $charlist);
-}
-/**
- * @deprecated
- */
-function _rtrim($str, $charlist = '')
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_rtrim($str, $charlist);
 }
@@ -113,26 +78,9 @@ function lmb_trim($str, $charlist = '')
     return $GLOBALS['LIMB_CHARSET_DRIVER']->_trim($str, $charlist);
 }
 /**
- * @deprecated
- */
-function _trim($str, $charlist = '')
-{
-  if($charlist == '')
-    return $GLOBALS['LIMB_CHARSET_DRIVER']->_trim($str);
-  else
-    return $GLOBALS['LIMB_CHARSET_DRIVER']->_trim($str, $charlist);
-}
-/**
  * This is a unicode aware replacement for strtolower()
  */
 function lmb_strtolower($string)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_strtolower($string);
-}
-/**
- * @deprecated
- */
-function _strtolower($string)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_strtolower($string);
 }
@@ -144,23 +92,9 @@ function lmb_strtoupper($string)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_strtoupper($string);
 }
 /**
- * @deprecated
- */
-function _strtoupper($string)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_strtoupper($string);
-}
-/**
  * Multibyte aware replacement for strpos
  */
 function lmb_strpos($haystack, $needle, $offset=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_strpos($haystack, $needle, $offset);
-}
-/**
- * @deprecated
- */
-function _strpos($haystack, $needle, $offset=null)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_strpos($haystack, $needle, $offset);
 }
@@ -172,23 +106,9 @@ function lmb_strrpos($haystack, $needle, $offset=null)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_strrpos($haystack, $needle, $offset);
 }
 /**
- * @deprecated
- */
-function _strrpos($haystack, $needle, $offset=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_strrpos($haystack, $needle, $offset);
-}
-/**
  * Multibyte aware replacement for ucfirst
  */
 function lmb_ucfirst($str)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_ucfirst($str);
-}
-/**
- * @deprecated
- */
-function _ucfirst($str)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_ucfirst($str);
 }
@@ -200,23 +120,9 @@ function lmb_strcasecmp($strX, $strY)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_strcasecmp($strX, $strY);
 }
 /**
- * @deprecated
- */
-function _strcasecmp($strX, $strY)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_strcasecmp($strX, $strY);
-}
-/**
  * Multibyte aware replacement for substr_count
  */
 function lmb_substr_count($haystack, $needle)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_substr_count($haystack, $needle);
-}
-/**
- * @deprecated
- */
-function _substr_count($haystack, $needle)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_substr_count($haystack, $needle);
 }
@@ -228,23 +134,9 @@ function lmb_str_split($str, $split_len=1)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_str_split($strX, $strY);
 }
 /**
- * @deprecated
- */
-function _str_split($str, $split_len=1)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_str_split($strX, $strY);
-}
-/**
  * This is multibyte aware alternative to preg_match
  */
 function lmb_preg_match($pattern, $subject, &$matches, $flags=null, $offset=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_match($pattern, $subject, $matches, $flags, $offset);
-}
-/**
- * @deprecated
- */
-function _preg_match($pattern, $subject, &$matches, $flags=null, $offset=null)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_match($pattern, $subject, $matches, $flags, $offset);
 }
@@ -256,23 +148,9 @@ function lmb_preg_match_all($pattern, $subject, &$matches, $flags=null, $offset=
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_match_all($pattern, $subject, $matches, $flags, $offset);
 }
 /**
- * @deprecated
- */
-function _preg_match_all($pattern, $subject, &$matches, $flags=null, $offset=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_match_all($pattern, $subject, $matches, $flags, $offset);
-}
-/**
  * This is multibyte aware alternative to preg_replace
  */
 function lmb_preg_replace($pattern, $replacement, $subject, $limit=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_replace($pattern, $replacement, $subject, $limit);
-}
-/**
- * @deprecated
- */
-function _preg_replace($pattern, $replacement, $subject, $limit=null)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_replace($pattern, $replacement, $subject, $limit);
 }
@@ -284,23 +162,9 @@ function lmb_preg_replace_callback($pattern, $callback, $subject, $limit=null)
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_replace_callback($pattern, $callback, $subject, $limit);
 }
 /**
- * @deprecated
- */
-function _preg_replace_callback($pattern, $callback, $subject, $limit=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_replace_callback($pattern, $callback, $subject, $limit);
-}
-/**
  * This is multibyte aware alternative to preg_split
  */
 function lmb_preg_split($pattern, $subject, $limit=null, $flags=null)
-{
-  return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_split($pattern, $subject, $limit, $flags);
-}
-/**
- * @deprecated
- */
-function _preg_split($pattern, $subject, $limit=null, $flags=null)
 {
   return $GLOBALS['LIMB_CHARSET_DRIVER']->_preg_split($pattern, $subject, $limit, $flags);
 }

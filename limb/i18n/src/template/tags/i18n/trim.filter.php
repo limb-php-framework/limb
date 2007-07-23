@@ -10,7 +10,7 @@
  * @filter i18n_trim
  * @max_attributes 1
  * @package i18n
- * @version $Id: trim.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: trim.filter.php 6190 2007-07-23 14:15:18Z pachanga $
  */
 class lmbI18NTrimFilter extends WactCompilerFilter
 {
@@ -25,14 +25,14 @@ class lmbI18NTrimFilter extends WactCompilerFilter
       $this->raiseUnresolvedBindingError();
 
     if($characters)
-      return _trim($this->base->getValue(), $characters);
+      return lmb_trim($this->base->getValue(), $characters);
     else
-      return _trim($this->base->getValue());
+      return lmb_trim($this->base->getValue());
   }
 
   function generateExpression($code)
   {
-    $code->writePHP('_trim(');
+    $code->writePHP('lmb_trim(');
     $this->base->generateExpression($code);
 
     if(isset($this->parameters[0]) && $this->parameters[0]->getValue())
