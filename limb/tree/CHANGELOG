@@ -1,3 +1,7 @@
+0.3.2-beta - 23 July 2007 (r6187)
+==================================================
+-- lmbMPTree, lmbNSTree :: getNodeByPath() now use lmbDbConnection :: escape(..) in order to escape input strings
+
 0.3.1-beta - 6 July 2007 (r6110)
 ==================================================
 -- removing CACHE package dependency
