@@ -1,3 +1,7 @@
+0.4.1-beta - 23 July 2007 (r6186)
+==================================================
+-- lmbDbConnection :: escape($string) added, it escapes string making it safe to use with db queries
+
 0.4.0-beta - 6 July 2007 (r6090)
 ==================================================
 -- sqlite database support added
