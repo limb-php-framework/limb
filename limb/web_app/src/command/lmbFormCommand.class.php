@@ -16,7 +16,7 @@ lmb_require('limb/core/src/lmbDelegate.class.php');
  * class lmbFormCommand.
  *
  * @package web_app
- * @version $Id: lmbFormCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFormCommand.class.php 6191 2007-07-24 09:12:50Z pachanga $
  */
 class lmbFormCommand extends lmbActionCommand
 {
@@ -105,14 +105,6 @@ class lmbFormCommand extends lmbActionCommand
   function setFormDatasource($datasource)
   {
     $this->toolkit->getView()->setFormDatasource($this->form_id, $datasource);
-  }
-
-  /**
-   * @deprecated
-   */
-  function setViewFormDatasource($datasource)
-  {
-    $this->setFormDatasource($datasource);
   }
 
   function getViewFormDatasource()
