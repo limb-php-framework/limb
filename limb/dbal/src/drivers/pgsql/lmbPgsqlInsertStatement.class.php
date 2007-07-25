@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlManipulationStatement.class.php');
  * class lmbPgsqlInsertStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlInsertStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbPgsqlInsertStatement.class.php 6194 2007-07-25 10:42:31Z pachanga $
  */
 class lmbPgsqlInsertStatement extends lmbPgsqlManipulationStatement implements lmbDbInsertStatement
 {
@@ -30,6 +30,8 @@ class lmbPgsqlInsertStatement extends lmbPgsqlManipulationStatement implements l
   function _retriveTableName($sql)
   {
     preg_match('/INSERT\s+INTO\s+(\S+)/i', $sql, $m);
+    //removing possible quotes
+    $m[1] = str_replace('"','',$m[1]);
     return $m[1];
   }
 }
