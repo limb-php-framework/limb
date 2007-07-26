@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 /**
- * @tag find:params
+ * @tag find:params, find:param
  * @forbid_end_tag
  * @parent_tag_class lmbActiveRecordFetchTag
  * @package web_app
