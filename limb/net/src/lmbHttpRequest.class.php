@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 5985 2007-06-11 09:39:42Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 6201 2007-07-30 14:13:38Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -197,11 +197,11 @@ class lmbHttpRequest extends lmbSet
     $flat = array();
     $query = '';
 
-    lmbArrayHelper :: toFlatArray($this->export(), $flat);
+    lmbArrayHelper :: toFlatArray($this->request, $flat);
 
     foreach($flat as $key => $value)
     {
-      if(is_object($value)) //skippping uploaded files
+      if(is_object($value))
         continue;
       $query .= $key . '=' . $value . '&';
     }

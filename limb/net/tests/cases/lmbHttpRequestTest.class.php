@@ -167,7 +167,7 @@ class lmbHttpRequestTest extends UnitTestCase
     $request = new lmbHttpRequest('http://test.com?z=1',
                                 array('b' => array('c' => 1)),
                                 array('d' => 2),
-                                //only get & post data gets into string, cookies and files are ignored
+                                //only request data(post, get) should be present in result string
                                 array('cookie' => 2),
                                 $files);
     $this->assertEqual($request->toString(), 'http://test.com?b[c]=1&z=1&d=2');

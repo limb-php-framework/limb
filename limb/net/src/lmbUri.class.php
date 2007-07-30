@@ -6,15 +6,16 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
+lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
 
 /**
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUri.class.php 6201 2007-07-30 14:13:38Z pachanga $
  */
-class lmbUri
+class lmbUri extends lmbSet
 {
   protected $_protocol = '';
   protected $_user = '';
