@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6151 2007-07-11 11:07:01Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6198 2007-07-30 11:31:37Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -93,7 +93,7 @@ EOD;
 
   protected function _version()
   {
-    echo $this->_getVersion();
+    echo $this->_getVersion() . "\n";
     exit();
   }
 
