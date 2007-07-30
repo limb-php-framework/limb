@@ -16,20 +16,16 @@ lmb_require('limb/core/src/lmbSetInterface.interface.php');
  */
 class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of lmbSetInterface?
 {
-  protected $properties = array();
-
   function __construct($properties = array())
   {
     if(is_array($properties))
-      $this->properties = $properties;
-    else
-      $this->properties = array();
+      $this->import($properties);
   }
 
   function get($name)
   {
-    if(isset($this->properties[$name]))
-      return $this->properties[$name];
+    if(isset($this->$name) && !$this->_isGuarded($name))
+      return $this->$name;
   }
 
   function getInteger($name)
@@ -52,18 +48,20 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
 
   function set($name, $value)
   {
-    $this->properties[$name] = $value;
+    if(!$this->_isGuarded($name))
+      $this->$name = $value;
   }
 
   function remove($name)
   {
-    if(isset($this->properties[$name]))
-      unset($this->properties[$name]);
+    if(isset($this->$name))
+      unset($this->$name);
   }
 
   function removeAll()
   {
-    $this->properties = array();
+    foreach($this->_getUnguardedVars($this) as $name => $var)
+      $this->remove($name);
   }
 
   function reset()
@@ -71,38 +69,62 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
     return $this->removeAll();
   }
 
-  function import($property_list)
+  function import($values)
   {
-    $this->properties = $property_list;
+    if(!is_array($values))
+      return;
+
+    foreach($values as $name => $value)
+      $this->set($name, $value);
   }
 
-  function merge($property_list)
+  function merge($values)
   {
-    if(is_array($property_list) || is_a($property_list, 'ArrayAccess'))
+    if(is_array($values) || is_a($values, 'ArrayAccess'))
     {
-      foreach($property_list as $name => $value)
+      foreach($values as $name => $value)
         $this->set($name, $value);
     }
   }
 
   function export()
   {
-    return $this->properties;
+    $exported = array();
+    foreach($this->_getUnguardedVars($this) as $name => $var)
+      $exported[$name] = $var;
+    return $exported;
   }
 
   function has($name)
   {
-    return isset($this->properties[$name]);
+    if(!$this->_isGuarded($name))
+      return isset($this->$name);
   }
 
   function isEmpty()
   {
-    return sizeof($this->properties) == 0;
+    return sizeof($this->_getUnguardedVars($this)) == 0;
   }
 
   function getPropertyList()
   {
-    return array_keys($this->properties);
+    return array_keys($this->_getUnguardedVars());
+  }
+
+  protected function _getUnguardedVars()
+  {
+    $vars = array();
+    foreach(get_object_vars($this) as $name => $var)
+    {
+      if(!$this->_isGuarded($name))
+        $vars[$name] = $var;
+    }
+    return $vars;
+  }
+
+  protected function _isGuarded($property)
+  {
+    return $property && $property{0} == '_';
   }
 
   //ArrayAccess interface
@@ -129,29 +151,38 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
   //Iterator interface
   function valid()
   {
-    return $this->valid;
+    if(!$this->__valid)
+    {
+      //removing temporary helpers
+      unset($this->__valid);
+      unset($this->__properties);
+      unset($this->__current);
+      return false;
+    }
+    return true;
   }
 
   function current()
   {
-    return $this->current;
+    return $this->__current;
   }
 
   function next()
   {
-    $this->current = next($this->properties);
-    $this->valid = $this->current !== false;
+    $this->__current = next($this->__properties);
+    $this->__valid = $this->__current !== false;
   }
 
   function rewind()
   {
-    $this->current = reset($this->properties);
-    $this->valid = $this->current !== false;
+    $this->__properties = $this->_getUnguardedVars($this);
+    $this->__current = reset($this->__properties);
+    $this->__valid = $this->__current !== false;
   }
 
   function key()
   {
-    return key($this->properties);
+    return key($this->__properties);
   }
 }
 
