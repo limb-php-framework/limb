@@ -14,7 +14,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeGlobNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeGlobNode.class.php 6057 2007-07-03 11:31:22Z pachanga $
+ * @version $Id: lmbTestTreeGlobNode.class.php 6202 2007-07-30 14:13:58Z pachanga $
  */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
@@ -40,7 +40,7 @@ class lmbTestTreeGlobNode extends lmbTestTreeNode
     }
 
     if(!$found)
-      throw new lmbTestUserException("No files were found for path '" . implode(';', $this->paths) . "'");
+      throw new lmbTestUserException("No test files were found for path '" . implode(';', $this->paths) . "'");
   }
 
   function getTestLabel()

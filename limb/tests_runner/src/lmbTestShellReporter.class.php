@@ -11,7 +11,7 @@
  * class lmbTestShellReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellReporter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestShellReporter.class.php 6202 2007-07-30 14:13:58Z pachanga $
  */
 class lmbTestShellReporter extends TextReporter
 {
