@@ -13,16 +13,16 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbCachedIni.
  *
  * @package config
- * @version $Id: lmbCachedIni.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCachedIni.class.php 6200 2007-07-30 14:12:27Z pachanga $
  */
 class lmbCachedIni extends lmbIni
 {
-  protected $cache_dir;
+  protected $_cache_dir;
 
   function __construct($file, $cache_dir)
   {
-    $this->file_path = $file;
-    $this->cache_dir = $cache_dir;
+    $this->_file_path = $file;
+    $this->_cache_dir = $cache_dir;
 
     if(!$this->_loadCache())
     {
@@ -44,7 +44,7 @@ class lmbCachedIni extends lmbIni
 
   function getCacheFile()
   {
-    return $this->cache_dir . md5($this->file_path) . '.cache';
+    return $this->_cache_dir . md5($this->_file_path) . '.cache';
   }
 
   protected function _loadCache()
@@ -52,7 +52,7 @@ class lmbCachedIni extends lmbIni
     if(!$this->isCacheEnabled())
       return false;
 
-    $cache_dir = $this->cache_dir;
+    $cache_dir = $this->_cache_dir;
 
     lmbFs :: mkdir($cache_dir);
 
@@ -80,7 +80,7 @@ class lmbCachedIni extends lmbIni
   protected function _getIniLastModificationTime()
   {
     if(!$override = $this->getOverrideFile())
-      return filemtime($this->file_path);
+      return filemtime($this->_file_path);
 
     return filemtime($override);
   }

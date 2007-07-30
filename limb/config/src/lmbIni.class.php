@@ -13,21 +13,21 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbIni.
  *
  * @package config
- * @version $Id: lmbIni.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbIni.class.php 6200 2007-07-30 14:12:27Z pachanga $
  */
 class lmbIni extends lmbSet
 {
-  protected $file_path;
+  protected $_file_path;
 
   function __construct($file)
   {
-    $this->file_path = $file;
+    $this->_file_path = $file;
     $this->_load();
   }
 
   function getOverrideFile()
   {
-    $file_name = substr($this->file_path, 0, strpos($this->file_path, '.ini'));
+    $file_name = substr($this->_file_path, 0, strpos($this->_file_path, '.ini'));
     $override_file_name = $file_name . '.override' . '.ini';
 
     if(file_exists($override_file_name))
@@ -39,19 +39,19 @@ class lmbIni extends lmbSet
   // returns the file_path
   function getOriginalFile()
   {
-    return $this->file_path;
+    return $this->_file_path;
   }
 
   protected function _load()
   {
-    if(!file_exists($this->file_path))
-      throw new lmbFileNotFoundException($this->file_path, 'ini file not found');
-    $this->_parse($this->file_path);
+    if(!file_exists($this->_file_path))
+      throw new lmbFileNotFoundException($this->_file_path, 'ini file not found');
+    $this->_parse($this->_file_path);
   }
 
   protected function _parse()
   {
-    $this->_parseFileContents($this->file_path);
+    $this->_parseFileContents($this->_file_path);
 
     if($override_file = $this->getOverrideFile())
       $this->_parseFileContents($override_file);
@@ -65,7 +65,7 @@ class lmbIni extends lmbSet
   protected function _parseLines($lines)
   {
     if($lines === false)
-      throw new lmbException('lmbIni file is not found or could not be loaded', array('path' => $this->file_path));
+      throw new lmbException('lmbIni file is not found or could not be loaded', array('path' => $this->_file_path));
 
     $current_group = null;
 
