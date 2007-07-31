@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: lmbDate.class.php 6206 2007-07-31 09:42:09Z pachanga $
  */
 class lmbDate extends lmbObject
 {
@@ -261,14 +261,6 @@ class lmbDate extends lmbObject
   function getIsoShortTime()
   {
     return $this->getIsoTime(false);
-  }
-
-  /**
-   * @deprecated
-   */
-  function toTimestamp()
-  {
-    return $this->getStamp();
   }
 
   function toString()
