@@ -29,6 +29,15 @@ class lmbSetTest extends UnitTestCase
     $this->assertEqual($ds->get('test'), 'value');
   }
 
+  function testSetAndGetForGuardedProperty()
+  {
+    $ds = new lmbSet();
+    $ds->_test = 10;
+    $ds->set('_test', 100);
+    $this->assertNull($ds->get('_test'));
+    $this->assertEqual($ds->_test, 10);
+  }
+
   function testGetInteger()
   {
     $ds = new lmbSet();
@@ -65,11 +74,29 @@ class lmbSetTest extends UnitTestCase
     $this->assertEqual($ds->getPropertyList(), array('test'));
   }
 
+  function testGetPropertyListWithGuardedProps()
+  {
+    $ds = new lmbSet();
+    $ds->test = 'value';
+    $ds->_test = 'value2';
+    $this->assertEqual(count($ds->getPropertyList()), 1);
+    $this->assertEqual($ds->getPropertyList(), array('test'));
+  }
+
   function testImportExport()
   {
     $ds = new lmbSet();
     $ds->import($value = array('test' => 'value'));
     $this->assertEqual($ds->export(), $value);
+  }
+
+  function testImportExportWithGuardedProps()
+  {
+    $ds = new lmbSet();
+    $ds->_test = 'value2';
+    $ds->import(array('test' => 'value', '_test' => 'junk'));
+    $this->assertEqual($ds->export(), array('test' => 'value'));
+    $this->assertEqual($ds->_test, 'value2');
   }
 
   function testRemove()
@@ -82,12 +109,28 @@ class lmbSetTest extends UnitTestCase
     $ds->remove('junk');//shouldn't produce notice
   }
 
+  function testRemoveGuardedProperty()
+  {
+    $ds = new lmbSet();
+    $ds->_test = 1;
+    $ds->remove('_test');
+    $this->assertEqual($ds->_test, 1);
+  }
+
   function testReset()
   {
     $ds = new lmbSet(array('test' => 'value'));
     $this->assertEqual($ds->getPropertyList(), array('test'));
     $ds->reset();
     $this->assertEqual($ds->getPropertyList(), array());
+  }
+
+  function testResetWithGuardedProps()
+  {
+    $ds = new lmbSet();
+    $ds->_test = 10;
+    $ds->reset();
+    $this->assertEqual($ds->_test, 10);
   }
 
   function testMerge()
@@ -97,6 +140,17 @@ class lmbSetTest extends UnitTestCase
     $this->assertEqual($ds->getPropertyList(), array('test', 'foo'));
     $this->assertEqual($ds->get('test'), 'value');
     $this->assertEqual($ds->get('foo'), 'bar');
+  }
+
+  function testMergeWithGuardedProps()
+  {
+    $ds = new lmbSet(array('test' => 'value'));
+    $ds->_test = 100;
+    $ds->merge(array('foo' => 'bar', '_test' => 10));
+    $this->assertEqual($ds->getPropertyList(), array('test', 'foo'));
+    $this->assertEqual($ds->get('test'), 'value');
+    $this->assertEqual($ds->get('foo'), 'bar');
+    $this->assertEqual($ds->_test, 100);
   }
 
   function testImplementsArrayAccessInterface()

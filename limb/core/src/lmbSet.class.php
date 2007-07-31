@@ -54,7 +54,7 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
 
   function remove($name)
   {
-    if(isset($this->$name))
+    if(isset($this->$name) && !$this->_isGuarded($name))
       unset($this->$name);
   }
 

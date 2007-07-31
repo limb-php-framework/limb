@@ -11,7 +11,6 @@ lmb_require('limb/core/src/lmbObject.class.php');
 class ObjectTestVersion extends lmbObject
 {
   public $bar;
-  public $_guarded = 'yeah';
   protected $protected = 'me';
 
   function getBar()
@@ -61,6 +60,7 @@ class lmbObjectTest extends UnitTestCase
   function testHasAttributeForGuardedProperty()
   {
     $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
     $this->assertFalse($object->hasAttribute('_guarded'));
   }
 
@@ -87,6 +87,7 @@ class lmbObjectTest extends UnitTestCase
   function testCallGetterForGuardedProperty()
   {
     $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
     $this->assertNull($object->get('_guarded'));
   }
 
@@ -149,6 +150,7 @@ class lmbObjectTest extends UnitTestCase
   function testImportIgnoresGuardedProperties()
   {
     $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
     $object->import(array('_guarded' => 'no'));
     $this->assertEqual($object->_guarded, 'yeah');
   }
@@ -193,6 +195,7 @@ class lmbObjectTest extends UnitTestCase
   function testRemoveForGuardedProperty()
   {
     $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
     $object->remove('_guarded');
 
     $this->assertEqual($object->_guarded, 'yeah');
@@ -212,6 +215,7 @@ class lmbObjectTest extends UnitTestCase
   function testRemoveAllExceptGuardedProperties()
   {
     $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
     $object->removeAll();
     $this->assertEqual($object->_guarded, 'yeah');
   }
