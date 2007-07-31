@@ -13,19 +13,19 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 6201 2007-07-30 14:13:38Z pachanga $
+ * @version $Id: lmbUri.class.php 6205 2007-07-31 09:40:18Z pachanga $
  */
 class lmbUri extends lmbSet
 {
-  protected $_protocol = '';
-  protected $_user = '';
-  protected $_password = '';
-  protected $_host = '';
-  protected $_port = '';
-  protected $_path = '';
-  protected $_anchor = '';
-  protected $_query_items = array();
-  protected $_path_elements = array();
+  protected $protocol = '';
+  protected $user = '';
+  protected $password = '';
+  protected $host = '';
+  protected $port = '';
+  protected $path = '';
+  protected $anchor = '';
+  protected $query_items = array();
+  protected $path_elements = array();
 
   function __construct($str='')
   {
@@ -67,14 +67,14 @@ class lmbUri extends lmbSet
 
   function reset($str = null)
   {
-    $this->_user        = '';
-    $this->_password    = '';
-    $this->_host        = '';
-    $this->_port        = '';
-    $this->_path        = '';
-    $this->_query_items = array();
-    $this->_anchor      = '';
-    $this->_path_elements = array();
+    $this->user        = '';
+    $this->password    = '';
+    $this->host        = '';
+    $this->port        = '';
+    $this->path        = '';
+    $this->query_items = array();
+    $this->anchor      = '';
+    $this->path_elements = array();
 
     if(!$str)
       return;
@@ -123,81 +123,81 @@ class lmbUri extends lmbSet
 
   function getProtocol()
   {
-    return $this->_protocol;
+    return $this->protocol;
   }
 
   function getUser()
   {
-    return $this->_user;
+    return $this->user;
   }
 
   function getPassword()
   {
-    return $this->_password;
+    return $this->password;
   }
 
   function getHost()
   {
-    return $this->_host;
+    return $this->host;
   }
 
   function getPort()
   {
-    return $this->_port;
+    return $this->port;
   }
 
   function getPath()
   {
-    return $this->_path;
+    return $this->path;
   }
 
   function getAnchor()
   {
-    return $this->_anchor;
+    return $this->anchor;
   }
 
   function setProtocol($protocol)
   {
-    $this->_protocol = $protocol;
+    $this->protocol = $protocol;
   }
 
   function setUser($user)
   {
-    $this->_user = $user;
+    $this->user = $user;
   }
 
   function setPassword($password)
   {
-    $this->_password = $password;
+    $this->password = $password;
   }
 
   function setHost($host)
   {
-    $this->_host = $host;
+    $this->host = $host;
   }
 
   function setPort($port)
   {
-    $this->_port = $port;
+    $this->port = $port;
   }
 
   function setPath($path)
   {
-    $this->_path = $path;
-    $this->_path_elements = explode('/',$this->_path);
+    $this->path = $path;
+    $this->path_elements = explode('/',$this->path);
   }
 
   function setAnchor($anchor)
   {
-    $this->_anchor = $anchor;
+    $this->anchor = $anchor;
   }
 
   function isAbsolute()
   {
-    if(!strlen($this->_path))
+    if(!strlen($this->path))
       return true;
 
-    return ('/' == $this->_path{0});
+    return ('/' == $this->path{0});
   }
 
   function isRelative()
@@ -207,22 +207,22 @@ class lmbUri extends lmbSet
 
   function countPath()
   {
-    return sizeof($this->_path_elements);
+    return sizeof($this->path_elements);
   }
 
   function countQueryItems()
   {
-    return sizeof($this->_query_items);
+    return sizeof($this->query_items);
   }
 
   function compare($uri)
   {
     return (
-          $this->_protocol == $uri->getProtocol() &&
-          $this->_host == $uri->getHost() &&
-          $this->_port == $uri->getPort() &&
-          $this->_user === $uri->getUser() &&
-          $this->_password === $uri->getPassword() &&
+          $this->protocol == $uri->getProtocol() &&
+          $this->host == $uri->getHost() &&
+          $this->port == $uri->getPort() &&
+          $this->user === $uri->getUser() &&
+          $this->password === $uri->getPassword() &&
           $this->compareQuery($uri) &&
           $this->comparePath($uri) === 0
         );
@@ -233,7 +233,7 @@ class lmbUri extends lmbSet
     if ($this->countQueryItems() != $uri->countQueryItems())
       return false;
 
-    foreach($this->_query_items as $name => $value)
+    foreach($this->query_items as $name => $value)
     {
       if( (($item = $uri->getQueryItem($name)) === false) ||
           $item != $value)
@@ -262,30 +262,30 @@ class lmbUri extends lmbSet
     $string = '';
 
     if(in_array('protocol', $parts))
-      $string .= !empty($this->_protocol) ? $this->_protocol . '://' : '';
+      $string .= !empty($this->protocol) ? $this->protocol . '://' : '';
 
     if(in_array('user', $parts))
     {
-      $string .=  $this->_user;
+      $string .=  $this->user;
 
       if(in_array('password', $parts))
-        $string .= (!empty($this->_password) ? ':' : '') . $this->_password;
+        $string .= (!empty($this->password) ? ':' : '') . $this->password;
 
-      $string .= (!empty($this->_user) ? '@' : '');
+      $string .= (!empty($this->user) ? '@' : '');
     }
 
     if(in_array('host', $parts))
     {
-      $string .= $this->_host;
+      $string .= $this->host;
 
       if(in_array('port', $parts))
-        $string .= (empty($this->_port) ||  ($this->_port == '80') ? '' : ':' . $this->_port);
+        $string .= (empty($this->port) ||  ($this->port == '80') ? '' : ':' . $this->port);
     }
     else
       $string = '';
 
     if(in_array('path', $parts))
-      $string .= $this->_path;
+      $string .= $this->path;
 
     if(in_array('query', $parts))
     {
@@ -294,29 +294,29 @@ class lmbUri extends lmbSet
     }
 
     if(in_array('anchor', $parts))
-      $string .= !empty($this->_anchor) ? '#' . $this->_anchor : '';
+      $string .= !empty($this->anchor) ? '#' . $this->anchor : '';
 
      return $string;
   }
 
   function getPathElement($level)
   {
-    return isset($this->_path_elements[$level]) ? $this->_path_elements[$level] : '';
+    return isset($this->path_elements[$level]) ? $this->path_elements[$level] : '';
   }
 
   function getPathElements()
   {
-    return $this->_path_elements;
+    return $this->path_elements;
   }
 
   function getPathToLevel($level)
   {
-    if(!$this->_path_elements || $level >= sizeof($this->_path_elements))
+    if(!$this->path_elements || $level >= sizeof($this->path_elements))
       return '';
 
     $items = array();
     for($i = 0; $i <= $level; $i++)
-      $items[] = $this->_path_elements[$i];
+      $items[] = $this->path_elements[$i];
 
     return implode('/', $items);
   }
@@ -324,15 +324,15 @@ class lmbUri extends lmbSet
   function getPathFromLevel($level)
   {
     if($level <= 0)
-      return $this->_path;
+      return $this->path;
 
-    if(!$this->_path_elements || $level >= sizeof($this->_path_elements))
+    if(!$this->path_elements || $level >= sizeof($this->path_elements))
       return '/';
 
     $items[] = '';
 
-    for($i = $level; $i < sizeof($this->_path_elements); $i++)
-      $items[] = $this->_path_elements[$i];
+    for($i = $level; $i < sizeof($this->path_elements); $i++)
+      $items[] = $this->path_elements[$i];
 
     return implode('/', $items);
   }
@@ -340,32 +340,32 @@ class lmbUri extends lmbSet
 
   function addEncodedQueryItem($name, $value)
   {
-    $this->_query_items[$name] = $value;
+    $this->query_items[$name] = $value;
   }
 
   function addQueryItem($name, $value)
   {
-    $this->_query_items[$name] = is_array($value) ?
+    $this->query_items[$name] = is_array($value) ?
       lmbArrayHelper :: arrayMapRecursive('urlencode', $value) :
       urlencode($value);
   }
 
   function getQueryItem($name)
   {
-    if (isset($this->_query_items[$name]))
-      return $this->_query_items[$name];
+    if (isset($this->query_items[$name]))
+      return $this->query_items[$name];
 
     return false;
   }
 
   function getQueryItems()
   {
-    return $this->_query_items;
+    return $this->query_items;
   }
 
   function setQueryItems($items)
   {
-    $this->_query_items = $items;
+    $this->query_items = $items;
   }
 
   /**
@@ -374,8 +374,8 @@ class lmbUri extends lmbSet
   */
   function removeQueryItem($name)
   {
-    if (isset($this->_query_items[$name]))
-      unset($this->_query_items[$name]);
+    if (isset($this->query_items[$name]))
+      unset($this->query_items[$name]);
   }
 
   /**
@@ -383,7 +383,7 @@ class lmbUri extends lmbSet
   */
   function setQueryString($query_string)
   {
-    $this->_query_items = $this->_parseQueryString($query_string);
+    $this->query_items = $this->_parseQueryString($query_string);
   }
 
   /**
@@ -391,7 +391,7 @@ class lmbUri extends lmbSet
   */
   function removeQueryItems()
   {
-    $this->_query_items = array();
+    $this->query_items = array();
   }
 
   /**
@@ -404,11 +404,11 @@ class lmbUri extends lmbSet
     $query_items = array();
     $flat_array = array();
 
-    lmbArrayHelper :: toFlatArray($this->_query_items, $flat_array);
+    lmbArrayHelper :: toFlatArray($this->query_items, $flat_array);
     ksort($flat_array);
     foreach($flat_array as $key => $value)
     {
-      if ($value != '' ||  is_null($value))
+      if($value != '' ||  is_null($value))
         $query_items[] = $key . '=' . $value;
       else
         $query_items[] = $key;
@@ -447,7 +447,7 @@ class lmbUri extends lmbSet
   */
   function normalizePath()
   {
-    $path = $this->_path;
+    $path = $this->path;
     $path = explode('/', preg_replace('~[\/]+~', '/', $path));
 
     for ($i=0; $i < sizeof($path); $i++)
@@ -475,8 +475,8 @@ class lmbUri extends lmbSet
         continue;
     }
 
-    $this->_path = implode('/', $path);
-    $this->_path_elements = explode('/',$this->_path);
+    $this->path = implode('/', $path);
+    $this->path_elements = explode('/',$this->path);
   }
 }
 ?>
