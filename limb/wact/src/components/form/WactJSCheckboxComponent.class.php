@@ -11,14 +11,17 @@
  * class WactJSCheckboxComponent.
  *
  * @package wact
- * @version $Id: WactJSCheckboxComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactJSCheckboxComponent.class.php 6203 2007-07-31 07:17:36Z pachanga $
  */
 class WactJSCheckboxComponent extends WactCheckableInputComponent
 {
   function renderAttributes()
   {
-    unset($this->attributes['value']);
     $this->setAttribute('id', '_' . $this->getId());
+
+    if($this->isChecked())
+      $this->setAttribute('value', "1");
+
     parent :: renderAttributes();
   }
 
