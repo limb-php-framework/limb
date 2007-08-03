@@ -100,7 +100,7 @@ class lmbMacroCodeWriterTest extends UnitTestCase
 
   function testGetTempVariablesMany()
   {
-    for ($i = 1; $i <= 30; $i++)
+    for($i = 1; $i <= 300; $i++)
     {
       $var = $this->writer->getTempVariable();
       $this->assertWantedPattern('/[a-z][a-z0-9]*/i', $var);
