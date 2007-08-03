@@ -31,21 +31,13 @@ class lmbMacroTokenizerMalformedTest extends UnitTestCase
     $this->parser->parse('stuff<%tag attribute=\'value\'/%morestuff');
   }
 
-  /*function testOpenElementMalformedClose2()
-  {
-    $this->listener->expectOnce('characters', array('stuff'));
-    $this->listener->expectOnce('invalidEntitySyntax', array('<tag attribute=\'value\'/morestuff>'));
-    $this->listener->expectNever('startElement');
-    $this->parser->parse('stuff<tag attribute=\'value\'/morestuff>');
-  }
-
   function testElementNestedSingleQuote()
   {
     $this->listener->expectOnce('startElement', array('tag', array('attribute' => '', "'" => NULL)));
     $this->listener->expectOnce('invalidAttributeSyntax');
     $this->listener->expectNever('characters');
     $this->listener->expectNever('endElement');
-    $this->parser->parse('<tag attribute=\'\'\'>');
+    $this->parser->parse('<%tag attribute=\'\'\'%>');
   }
 
   function testElementNestedDoubleQuote()
@@ -54,7 +46,7 @@ class lmbMacroTokenizerMalformedTest extends UnitTestCase
     $this->listener->expectOnce('invalidAttributeSyntax');
     $this->listener->expectNever('characters');
     $this->listener->expectNever('endElement');
-    $this->parser->parse('<tag attribute=""">');
+    $this->parser->parse('<%tag attribute="""%>');
   }
 
   function testElementMalformedAttribute()
@@ -63,8 +55,8 @@ class lmbMacroTokenizerMalformedTest extends UnitTestCase
     $this->listener->expectOnce('invalidAttributeSyntax');
     $this->listener->expectNever('characters');
     $this->listener->expectNever('endElement');
-    $this->parser->parse('<tag attribute="test"extra>');
-  }*/
+    $this->parser->parse('<%tag attribute="test"extra%>');
+  }
 }
 
 ?>

@@ -22,7 +22,7 @@ class lmbMacroNode
   protected $parent;  
   /**
   * @var lmbMacroSourceLocation
-  **/
+  */
   protected $location;    
 
   function __construct($location = null)

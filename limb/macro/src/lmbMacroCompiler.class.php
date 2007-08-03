@@ -98,7 +98,7 @@ class lmbMacroCompiler
 
   /**
   * @return lmbMacroConfig
-  **/
+  */
   function getConfig()
   {
     return $this->config;
@@ -106,7 +106,7 @@ class lmbMacroCompiler
 
   /**
   * @return lmbMacroTemplateLocator
-  **/
+  */
   function getTemplateLocator()
   {
     return $this->template_locator;
@@ -114,7 +114,7 @@ class lmbMacroCompiler
 
   /**
   * @return lmbMacroTreeBuilder
-  **/
+  */
   function getTreeBuilder()
   {
     return $this->tree_builder;
