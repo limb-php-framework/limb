@@ -1,20 +1,7 @@
 <?php
-/*
- * Limb PHP Framework
- *
- * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
- */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/cms/src/lmbCmsTreeBrowser.class.php');
 
-/**
- * class AdminTreeController.
- *
- * @package cms
- * @version $Id: AdminTreeController.class.php 5945 2007-06-06 08:31:43Z pachanga $
- */
 class AdminTreeController extends lmbController
 {
  function doCreateNode()
@@ -121,7 +108,7 @@ class AdminTreeController extends lmbController
     $current_folder = $this->request->get('CurrentFolder');
     $command = $this->request->get('Command');
 
-    $browser = new TreeBrowser();
+    $browser = new lmbCmsTreeBrowser();
     $browser->setCurrentFolderPath($current_folder);
 
     $this->_setXmlHeaders();
@@ -147,7 +134,6 @@ class AdminTreeController extends lmbController
     $this->response->header('Pragma: no-cache') ;
     $this->response->header( 'Content-Type:text/xml; charset=utf-8' ) ;
   }
-
 }
 
 ?>
