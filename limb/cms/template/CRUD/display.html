@@ -1,0 +1,30 @@
+<core:set title='Elements'/>
+<core:wrap file="_cms/admin_page.html" in="content">
+
+  <route_url params='action:create'>Add new element</route_url>;
+
+  <list:list from='CRUD_list'>
+    <table class='listtable'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Actions</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <list:item>
+          <tr class='{$Parity} item'>
+            <td>{$id}</td>
+            <td>{$title}</td> 
+            <td>
+              <route_url params='action:edit,id:{$id}'>Edit</route_url> | 
+              <route_url params='action:delete,id:{$id}'>Delete</route_url>
+            </td>
+          </tr>
+        </list:item>
+      </tbody>
+    </table>
+  </list:list>
+
+</core:wrap>
