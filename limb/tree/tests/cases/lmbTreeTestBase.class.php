@@ -431,6 +431,7 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $node_1 = $this->imp->createNode($root_id, array('identifier'=>'node_1'));
     $node_2 = $this->imp->createNode($root_id, array('identifier'=>'node_2'));
     $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'node_1_1'));
+    $node_1_1_1 = $this->imp->createNode($node_1_1, array('identifier'=>'node_1_1_1'));
 
     $arr = $this->imp->getParents($node_1);
     $this->assertEqual(sizeof($arr), 1);
@@ -440,6 +441,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual(sizeof($arr), 2);
     $this->assertEqual($arr[0]['id'], $root_id);
     $this->assertEqual($arr[1]['id'], $node_1);
+
+    $arr = $this->imp->getParents($node_1_1_1);
+    $this->assertEqual(sizeof($arr), 3);
+    $this->assertEqual($arr[0]['id'], $root_id);
+    $this->assertEqual($arr[1]['id'], $node_1);
+    $this->assertEqual($arr[2]['id'], $node_1_1);
 
     $arr = $this->imp->getParents($node_2);
     $this->assertEqual(sizeof($arr), 1);
