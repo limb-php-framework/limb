@@ -1,34 +1,34 @@
-<core:wrap file="_cms/popup.html" in="content_zone">
+<core:wrap file="_cp/popup.html" in="content_zone">
 
-<h1>Delete nodes</h1>
-
-<form id='delete_form' name='delete_form' method='post' runat='server'>
+  <h1 class='delete'>Удалить объект</h1>
 
   <active_record:fetch class_path='limb/cms/src/model/lmbCmsNode' target="items_to_delete">
     <fetch:param record_ids="{$#request.ids}">
   </active_record:fetch>
 
-  <list:list id='items_to_delete'>
-  <table cellpadding="0" cellspacing="0" class="list">
-  <thead>
-  <tr>
-    <th><core:include file='_cms/selector.html'/></th>
-    <th>Title</th>
-  </tr>
-  </thead>
-  <tbody>
-    <list:ITEM>
-    <tr>
-      <td><input type='checkbox' name='ids[]' value='{$id}' class='input'/></td>
-      <td>{$title}</td>
-    </tr>
-    </list:ITEM>
-  </tbody>
-  </table>
-  </list:LIST>
+  <div class="list">
 
-  <core:include file='_cms/delete_common_elements.html'/>
+    <form id='delete_form' name='delete_form' method='post' runat='server'>
 
-</form>
+      <table>
+      <tr>
+        <th class='selector'><core:include file='_cp/selector.html'/></th>
+        <th>Заголовок</th>
+      </tr>
+      <list:list id='items_to_delete'>
+        <list:ITEM>
+        <tr class='{$Parity}'>
+          <td><input type='checkbox' name='ids[]' value='{$id}' checked='true' /></td>
+          <td>{$title}</td>
+        </tr>
+        </list:ITEM>
+      </list:LIST>
+      </table>
+
+      <core:include file='_cp/delete_common_elements.html'/>
+
+    </form>
+
+  </div>
 
 </core:wrap>

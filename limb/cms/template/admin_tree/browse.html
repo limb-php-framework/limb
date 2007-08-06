@@ -41,7 +41,7 @@ oConnector.CurrentFolder	= '/' ;
 var sConnUrl = GetUrlParam( 'Connector' ) ;
 
 // Gecko has some problems when using relative URLs (not starting with slash).
-oConnector.ConnectorUrl = '/admin/tree/process_command';
+oConnector.ConnectorUrl = '/admin_tree/process_command';
 
 oConnector.SendCommand = function( command, params, callBackFunction )
 {
@@ -119,7 +119,7 @@ oIcons.GetIcon = function( fileName )
     </script>
   </head>
   <frameset cols="150,*" class="Frame" framespacing="3" bordercolor="#f1f1e3" frameborder="1">
-    <frame name="frmFolders" src="/admin/tree/folders" scrolling="auto" frameborder="1" />
-    <frame name="frmResourcesList" src="/admin/tree/resources_list" scrolling="auto" frameborder="1" />
+    <frame name="frmFolders" src="/admin_tree/folders" scrolling="auto" frameborder="1" />
+    <frame name="frmResourcesList" src="/admin_tree/resources_list" scrolling="auto" frameborder="1" />
   </frameset>
 </html>

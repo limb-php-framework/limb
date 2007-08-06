@@ -1,0 +1,70 @@
+<core:wrap file="_cp/page.html" in="content_zone">
+
+  <div class="header_context">
+
+        <ar:fetch using='lmbCmsNode' find='by_id_or_path' target='node' first='true' >
+          <find:params node_id='{$#request.id}' path='/navigation' />
+        </ar:fetch>
+
+        <core:datasource id='node'>
+
+        <h1>Список элементов навигации</h1>
+
+        <div class="actions">
+          <route_url params="action:create" extra='?popup=1&parent={$id}' alt='Создать элемент навигации' title='Создать элемент навигации' class='create'>Создать элемент навигации</route_url>
+        </div>
+
+        <core:INCLUDE file='_cp/notify_zone.html'/>
+
+        <core:include file='_cp/node_breadcrumbs.html'>
+
+  </div>
+
+  <active_record:fetch using='lmbCmsNode' find='children' target='subfolders' order='priority=ASC'>
+    <find:params parent_id='{$id}' />
+  </active_record:fetch>
+
+  <div class="list">
+
+    <form name='list_form' method='post'>
+
+        <table>
+        <thead>
+         <tr>
+           <th class='selector'><input type='checkbox' onclick='MarkAll(checked);' name='mark_all' /></th>
+           <th>#ID</th>
+           <th  class='orders'>Порядок</th>
+           <th width='100%'>Заголовок</th>
+           <th>Ссылка</th>
+           <th>Действия</th>
+         </tr>
+        </thead>
+
+        <list:list id='subfolders'>
+        <list:item>
+          <tr class='{$Parity}'>
+            <td><input type='checkbox' name='ids[]' value='{$id}' runat='client'/></td>
+            <td>#{$id}</td>
+            <td><input type='text' name='priority[{$id}]' value='{$priority}' class='order' runat='client' size='5'/></td>
+            <td><route_url params="id:{$id}">{$title}</route_url></td>
+            <td>{$object.url}</td>
+            <td class='actions'>
+              <route_url params="action:edit,id:{$id}" extra='?popup=1' alt='Редактировать элемент навигации' title='Редактировать элемент навигации'><img src='/images/_cp/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
+              <route_url params="action:delete" extra='?popup=1&ids[]={$id}' alt='Удалить элемент навигации' title='Удалить элемент навигации'><img src='/images/_cp/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
+            </td>
+          </tr>
+        </list:item>
+        </list:list>
+        </table>
+
+        <div class='list_actions'>
+          <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/images/_cp/button/change_order.gif" width='101' height='19' alt='Сментить порядок' onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
+        </div>
+
+    </form>
+
+  </div>
+
+</core:datasource>
+
+</core:wrap>

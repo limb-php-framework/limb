@@ -1,6 +1,4 @@
-<fetch using='src/fetcher/UserFetcher' target='user_data' first='true' />
-
-<core:datasource id='user_data'>
+<core:datasource from='#toolkit.user'>
 
 <div id='user_data'>
     <b>{$login}</b>[{$full_name}][<a href='/user/logout'>logout</a>]

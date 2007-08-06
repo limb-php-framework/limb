@@ -1,6 +1,5 @@
-  <br/>
-  <input name='move' type='hidden' value='1'  runat='client'/>
-  <div class='form-buttons'>
-    <input id='cancel' type='button' value='Отменить' onclick='window.close();return false;'  runat='client'/>
-    <input type='submit' value='Переместить' class='action'  runat='client'/>
-  </div>
+<input name='move' type='hidden' value='1'  runat='client'/>
+<div  class='list_actions' style='text-align:right'>
+  <input type="image" src="/images/_cp/button/move.gif" width='81' height='19' alt='Переместить' class='action'  runat='client'/>
+  <input id='cancel' type="image" src="/images/_cp/button/cancel.gif" width='64' height='19' alt='Отменить' onclick='if(confirm("Вы уверены?")){window.close();}return false;'  runat='client'/>
+</div>

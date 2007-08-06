@@ -1,0 +1,37 @@
+<core:wrap file="_cp/popup.html" in="content_zone">
+
+  <h1 class='delete'>Удалить элементы навигации</h1>
+
+  <active_record:fetch class_path='limb/cms/src/model/lmbCmsNode' target="items_to_delete">
+    <fetch:param record_ids="{$#request.ids}">
+  </active_record:fetch>
+
+<div class='list'>
+
+  <form id='delete_form' name='delete_form' method='post' runat='server'>
+
+    <table>
+    <tr>
+      <th>Выбор</th>
+      <th>Заголовок</th>
+    </tr>
+    <list:list id='items_to_delete'>
+      <list:ITEM>
+      <tr class='{$Parity}'>
+        <td><input type='checkbox' name='ids[]' value='{$id}' checked='true'/></td>
+        <td>{$title}</td>
+      </tr>
+      </list:ITEM>
+    </list:LIST>
+    </table>
+
+    <core:include file='_cp/delete_common_elements.html'>
+
+  </form>
+
+
+</div>
+
+
+
+</core:wrap>

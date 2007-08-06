@@ -1,0 +1,33 @@
+
+  <div class='required fields'>
+    <label for="login">Логин:</label>
+    <input name="login" type="text" title="Логин" />
+  </div>
+
+  <div class='required fields'>
+    <label for="last_name">Фамилия:</label>
+    <input name="last_name" type="text" title="Фамилия"/>
+  </div>
+
+  <div class='required fields'>
+    <label for="first_name">Имя:</label>
+    <input name="first_name" type="text" title="Имя" />
+  </div>
+
+  <div class='required fields'>
+    <label for="middle_name">Отчество:</label>
+    <input name="middle_name" type="text" title="Отчество" />
+  </div>
+
+  <div class='required fields'>
+    <label for="email">Email:</label>
+    <input name="email" type="text" title="Email"/>
+  </div>
+
+  <div class='fields'>
+    <label for="group">Роль:</label>
+    <fetch using='src/model/rtRoles' target='select_source'/>
+    <select:options_source id='select_source' target='role_id' use_as_name="name" use_as_id="id" />
+    <select name="role_id" id='role_id' title="Роль"></select>
+  </div>
+

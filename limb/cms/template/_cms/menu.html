@@ -1,12 +1,13 @@
-<dl id='main-menu'>
-  <dt>Admin</dt>
+<fetch using='src/fetcher/AdminNavigationFetcher' target='navigation' />
+
+<dl id='main_menu'>
+  <list:list id='navigation'>
+  <list:item>
+  <dt class='{$id}'><span>{$title}</span></dt>
   <dd>
-    <ul>
-      <li><a href='/admin_news'>News</a></li>
-      <li><a href='/admin_documents'>Documents</a></li>
-      <li><a href='/admin_image_folder'>Images</a></li>
-      <li><a href='/admin_file_folder'>Files</a></li>
-      <li><a href='/admin_tree'>Nodes management</a></li>
-    </ul>
+    <list:list from='children'>
+    <ul><list:item><li><a href='{$url}'>{$title}</a></li></list:item></ul></list:list>
   </dd>
+  </list:item>
+  </list:list>
 </dl>

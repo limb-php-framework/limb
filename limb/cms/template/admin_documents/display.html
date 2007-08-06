@@ -1,102 +1,89 @@
-<core:wrap file="_cms/page.html" in="content_zone">
+<core:wrap file="_cp/page.html" in="content_zone">
 
-<ar:fetch using='limb/cms/src/model/lmbCmsNode' find='requested'/>
+  <div class="header_context">
 
-<core:datasource id='node'>
+        <active_record:fetch using='limb/cms/src/model/lmbCmsNode' target='node' one='true'>
+         <fetch:param record_id='{$#request.id}'/>
+        </active_record:fetch>
 
-<core:optional for='title'>
-<h1>Document "{$title}"</h1>
-</core:optional>
-<core:default for='title'>
-<h1>Documents list</h1>
-</core:default>
+        <core:datasource id='node'>
 
-<div class='breadcrumbs'>
-  <core:optional for='id'>
-    <iterator:transfer from='parents' target='breadcrumbs' />
-    You are here:<route_url params='controller:admin_documents'>Documents</route_url>&gt;&gt;
-    <list:list id='breadcrumbs'>
-      <list:item><route_url params='id:{$id}'>{$title}</route_url>&gt;&gt;</list:item>
-    </list:list>
-    <span>{$title}</span>
-  </core:optional>
-</div>
+          <core:optional for='object_id'>
+            <h1>Страница "{$title}"</h1>
+          </core:optional>
+          <core:default for='id'>
+            <h1>Список страниц</h1>
+          </core:default>
 
-<div class='actions'>
-<span>
-<core:optional for='object_id'>
-  <route_url params="action:edit,id:{$id}" extra='?popup=1'>
-    <img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='edit'/>
-  </route_url>
-</core:optional>
-</span>
-</div>
+          <div class='actions'>
+            <core:optional for='node.id'>
+              <route_url params="action:edit,id:{$id}" extra='?popup=1' title='Редактировать'>Редактировать</route_url>
+            </core:optional>
 
-<h2>Child documents</h2>
+            <route_url params="action:create" extra='?popup=1&parent={$id}' class='create'>Добавить страницу</route_url>
 
-<div class='actions'>
-<span>
-<route_url params="action:create" extra='?popup=1&parent={$id}'>
- <img src='/shared/cms/images/icons/create_object.gif' width='24' height='24' alt='create new document here'/>
-</route_url>
-</span>
-</div>
+          </div>
 
-<active_record:fetch using='limb/cms/src/model/lmbCmsDocument' target='kids' navigator='pager' find='kids_for_parent'>
-  <find:params parent_id='{$id}'/>
-  <fetch:params order='node.priority=DESC'/>
-</active_record:fetch>
+          <active_record:fetch using='src/model/rtDocument' target='kids' navigator='pager' find='kids_for_parent'>
+            <find:params parent_id='{$id}'/>
+            <fetch:params order='node.priority=DESC'/>
+          </active_record:fetch>
 
-<core:include file='_cms/pager.html'/>
+          <core:include file='_cp/node_breadcrumbs.html'>
 
-<form name='list_form' method='post'>
-<list:list id='kids'>
-<table class='list'>
+          <core:include file='_cp/pager.html'/>
 
-  <thead>
-    <tr>
-      <th><input type='checkbox' onclick='MarkAll(checked);' name='mark_all' /></th>
-      <th>Order</th>
-      <th>Document</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <list:item>
-    <tr>
-      <td><input type='checkbox' name='ids[]' value='{$node.id}' class='input'/></td>
-      <td><input type='text' name='priority[{$node.id}]' value='{$node.priority}' class='input' size='3'/></td>
-      <td>
-        <ul>
-          <li><route_url params="id:{$node.id}">{$node.title}</route_url></li>
-          <core:optional for='is_published'><li class='published'>Published</li></core:optional>
-          <core:default for='is_published'><li class='unpublished'>Unpublished</li></core:default>
-        <li>Path (URL): <a href='{$node.url_path}' target='_blank'>{$node.url_path}</a></li>
-      </ul>
-      </td>
-      <td>
-        <route_url params="action:edit,id:{$node.id}" extra='?popup=1'><img src='/shared/cms/images/icons/edit.gif' width='24' height='24' alt='edit'/></route_url>
-        <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}'><img src='/shared/cms/images/icons/delete.gif' width='24' height='24'  alt='delete'/></route_url>
-      </td>
-    </tr>
-  </list:item>
-</table>
+          <core:INCLUDE file='_cp/notify_zone.html'/>
 
-  <div class='list_actions'>
-    <route_url_set field='delete_url' params="action:delete" />
-    <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          <core:include file='admin_documents/filter_form.html' />
 
-    <route_url_set field='publish_url' params="action:publish" />
-    <input type='submit' value='Publish' onclick='Limb.Form.submitPopup(this.form, "{$publish_url}");return false;'/>
-
-    <route_url_set field='unpublish_url' params="action:unpublish" />
-    <input type='submit' value='Unpublish' onclick='Limb.Form.submitPopup(this.form, "{$unpublish_url}");return false;'/>
-
-    <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" />
-    <input type='submit' value='Save order' onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
   </div>
-</list:list>
 
-</form>
+
+  <div class="list">
+
+    <form name='list_form' method='post'>
+
+      <div class='list_actions_top'>
+        <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/images/_cp/button/change_order.gif" width='101' height='19' alt='Сментить порядок'  onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
+      </div>
+
+      <table>
+        <tr>
+          <th class='selector'><core:INCLUDE file='_cp/selector.html'></th>
+          <th>#ID</th>
+          <th class='orders'>Порядок</th>
+          <th width='100%'>Страница</th>
+          <th>Действия</th>
+        </tr>
+        <list:list id='kids'>
+          <list:item>
+            <tr class='{$Parity}'>
+              <td class='selector'><input type='checkbox' name='ids[]' value='{$node.id}'/></td>
+              <td>#{$id}</td>
+              <td><input type='text' name='priority[{$node.id}]' value='{$node.priority}' class='order' size='3'/></td>
+              <td>
+                <ul>
+                  <li><route_url params="id:{$node.id}">{$node.title}</route_url></li>
+                  <li>Путь (URL): <a href='{$node.url_path}' target='_blank'>{$node.absolute_url_path}</a></li>
+                </ul>
+              </td>
+              <td class='actions'>
+                <route_url params="action:edit,id:{$node.id}" extra='?popup=1'><img src='/images/_cp/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
+                <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}'><img src='/images/_cp/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
+              </td>
+            </tr>
+          </list:item>
+        </list:list>
+      </table>
+
+      <div class='list_actions'>
+        <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/images/_cp/button/change_order.gif" width='101' height='19' alt='Сментить порядок'  onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
+      </div>
+
+    </form>
+
+  </div>
 
 </core:datasource>
 

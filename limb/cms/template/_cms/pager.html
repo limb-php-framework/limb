@@ -1,27 +1,3 @@
-<pager:navigator id="pager" items="10">
-
-<core:optional for='HasMoreThanOnePage'>
-Shown: from <b>{$BeginItemNumber}</b> to <b>{$EndItemNumber}</b>
-&nbsp; &nbsp;
-
-<pager:first><a href="{$href}" title="first page">&#60;&#60;</a></pager:first>
-&nbsp;
-<pager:prev><a href="{$href}" title="previous page">&#60;</a></pager:prev>
-
-<pager:list>
-
-<pager:current>&nbsp;<b>[&nbsp;{$number}&nbsp;]</b>&nbsp;</pager:current>
-<pager:number><a href="{$href}">&nbsp;{$number}&nbsp;</a></pager:number>
-
-</pager:list>
-
-&nbsp;
-<pager:next><a href="{$href}" title="next page">&#62;</a></pager:next>
-&nbsp;
-<pager:last><a href="{$href}" title="last page">&#62;&#62;</a></pager:last>
-
-&nbsp; &nbsp;
-Total: <b>{$TotalItems}</b>
-</core:optional>
-</pager:navigator>
-
+<pager:NAVIGATOR id="pager" items="20">
+<core:INCLUDE file="_cp/pager_contents.html"/>
+</pager:NAVIGATOR>

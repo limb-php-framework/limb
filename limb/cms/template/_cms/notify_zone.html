@@ -1,12 +1,11 @@
-<fetch using='limb/web_app/src/fetcher/lmbSessionMessageBoxFetcher' target='session_messages' />
-<list:list id='session_messages'>
-<div id='notify_zone' class='notify_zone' onclick='Effect.Fade("notify_zone")'>
+<flash_box target='flashbox'/>
+<list:list id='flashbox'>
+<div class='attention'>
+  <span onclick='jQuery(".attention").fadeOut()'>Закрыть</span>
   <list:ITEM >
-  <core:OPTIONAL for='is_error'><div class='error'>{$text}</div></core:OPTIONAL>
-  <core:OPTIONAL for='is_message'><div class='message'>{$text}</div></core:OPTIONAL>
-  <script>
-    setTimeout('Effect.Fade("notify_zone")', 10000);
-  </script>
+    <core:OPTIONAL for='is_error'>{$message}</core:OPTIONAL>
+    <core:OPTIONAL for='is_message'>{$message}</core:OPTIONAL>
+    <list:SEPARATOR><br/></list:SEPARATOR>
   </list:ITEM>
 </div>
 </list:list>

@@ -1,13 +1,15 @@
-<core:wrap file="_cms/popup.html" in="content_zone">
+<core:wrap file="_cp/popup.html" in="content_zone">
 
-<h1>Edit node</h1>
-
-<form id='node_form' name='node_form' method='post' runat='server'>
-   <core:include file='_cms/form_errors.html'/>
-   <core:include file='admin_tree/form_fields.html'/>
-
-   <core:include file='_cms/edit_common_elements.html'/>
-
-</form>
+  <h1>Изменить объект</h1>
+  
+  <form id='node_form' name='node_form' method='post' runat='server'>
+     
+     <core:include file='_cp/form_errors.html'/>
+     
+     <core:include file='admin_tree/form_fields.html'/>
+  
+     <core:include file='_cp/edit_common_elements.html'/>
+  
+  </form>
 
 </core:wrap>

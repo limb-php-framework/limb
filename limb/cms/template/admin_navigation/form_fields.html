@@ -1,0 +1,51 @@
+  <core:INCLUDE file='_cp/form_errors.html'>
+
+  <ul class="bookmarks">
+    <li id='properties_link'><a>Свойства</a></li>
+  </ul>
+
+  <div id="bookmark_properties" class='bookmarks_content'>
+
+    <div style='width:400px'>
+
+      <core:default for='id'>
+        <span class='border_h'><span class='l'></span><span class='r'></span></span>
+        <div class="border_c">
+          <div class="content required">
+            <label for="auto_identifier" runat="server" class='title'>Генерировать идентификатор</label><br />
+            <input type="checkbox" name="auto_identifier" id='auto_identifier' title='Генерировать идентификатор' value='1'/>
+          </div>
+        </div>
+        <span class='border_b'><span class='l'></span><span class='r'></span></span>
+      </core:default>
+
+      <span class='border_h'><span class='l'></span><span class='r'></span></span>
+      <div class="border_c">
+        <div class="content">
+          <label for="identifier" runat="server" class='title'>Идентификатор</label>
+          <input type="text" name="identifier" title='Идентификатор' class='width100'/>
+        </div>
+      </div>
+      <span class='border_b'><span class='l'></span><span class='r'></span></span>
+
+      <span class='border_h'><span class='l'></span><span class='r'></span></span>
+      <div class="border_c">
+        <div class="content">
+          <label for="title" runat="server" class='title'>Заголовок</label>
+          <input type="text" name="title" size="40" title='Заголовок' class='width100'/>
+        </div>
+      </div>
+      <span class='border_b'><span class='l'></span><span class='r'></span></span>
+
+      <span class='border_h'><span class='l'></span><span class='r'></span></span>
+      <div class="border_c">
+        <div class="content">
+          <label for="url" runat="server" class='title'>URL</label>
+          <input type="text" name="url" size="40" title='URL' class='width100'/>
+        </div>
+      </div>
+      <span class='border_b'><span class='l'></span><span class='r'></span></span>
+
+    </div>
+
+  </div>

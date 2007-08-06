@@ -1,24 +1,15 @@
-<core:wrap file="_cms/popup.html" in="content_zone">
+<core:wrap file="_cp/popup.html" in="content_zone">
 
-<h1>Create document</h1>
-
-<form id='document_form' name='document_form' method='post' runat='server'>
-
-<core:include file='_cms/form_errors.html'/>
-
-<div class="fields">
-
-<div class="field">
-  <label for="auto_identifier">Generate identifier</label>
-  <input type="checkbox" name="auto_identifier" id='auto_identifier' title='Generate identifier' value='1'/>
-</div>
-
-<core:include file='admin_documents/form_fields.html'/>
-
-</div>
-
-<core:include file='_cms/create_common_elements.html'/>
-
-</form>
+  <form id='document_form' name='document_form' method='post' enctype="multipart/form-data" runat='server'>
+  
+    <h1>Создать страницу</h1>
+  
+    <core:include file='_cp/form_errors.html'/>
+    
+    <core:include file='admin_documents/form_fields.html'/>
+    
+    <core:include file='_cp/create_common_elements.html'/>
+    
+  </form>
 
 </core:wrap>

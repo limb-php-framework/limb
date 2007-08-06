@@ -1,0 +1,38 @@
+<core:wrap file="_cp/popup.html" in="content_zone">
+
+  <h1 class='delete'>Удалить пользователей</h1>
+
+  <div class="list">
+
+    <form id='delete_form' name='delete_form' method='post' runat='server'>
+
+
+      <active_record:fetch class_path='src/model/rtUser' target="items_to_delete">
+        <fetch:param record_ids="{$#request.ids}">
+      </active_record:fetch>
+
+      <table>
+      <tr>
+        <th class="selector"><core:INCLUDE file='_cp/selector.html'></th>
+        <th>Логин</th>
+        <th>ФИО</th>
+      </tr>
+      <list:list id='items_to_delete'>
+        <list:ITEM>
+          <tr class='{$Parity}'>
+            <td><input type='checkbox' name='ids[]' value='{$id}' checked='true'/></td>
+            <td>{$login}</td>
+            <td>{$full_name}</td>
+          </tr>
+        </list:ITEM>
+      </list:LIST>
+      </table>
+
+      <core:include file='_cp/delete_common_elements.html'>
+
+    </form>
+
+  </div>
+
+</core:wrap>
+

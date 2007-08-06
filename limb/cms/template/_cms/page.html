@@ -1,56 +1,65 @@
 <!-- Powered by LIMB | http://www.limb-project.com/ -->
 <!-- Designed by BIT | http://www.bit-creative.com/ -->
+<core:SET title="Панель управления">
 <html>
 <head>
-  <title><core:include file='_cms/title_crumbs.html'/></title>
+  <title>{$#title}</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 
-  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/yui/reset-min.css" />
-  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/yui/tabs.css"/>
-  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/yui/layout.css"/>
-  <link rel=stylesheet type="text/css" href="/shared/cms/styles/cp.css" />
-
-  <core:include file='_cms/js.html'/>
+  <core:INCLUDE file='_cp/styles.html'/>
+  <core:INCLUDE file='_cp/js.html'/>
+  <core:INCLUDE file='_cp/extjs.html'/>
+  <script type="text/javascript" src="/js/accordion.js"></script>
   <script type="text/javascript">
-  cpLayout = function(){
+    cpLayout = function(){
           return {
               init : function(){
-                 var layout = new YAHOO.ext.BorderLayout(document.body, {
-                      west: { split:true, initialSize: 200, titlebar: true, collapsible: true, minSize: 100, maxSize: 400},
-                      north:{ split:false, initialSize: 40, collapsible:false, titlebar: false},
-                      center: { autoScroll: true, titlebar: false }
+                 var layout = new Ext.BorderLayout(document.body, {
+                      west: { split:false, initialSize: 210, titlebar: true, collapsible: true},
+                      north: { split:false, initialSize: 38, collapsible:false, titlebar: false },
+                      center: { autoScroll: true, titlebar: false, fitToFrame: false}
                   });
+
                   layout.beginUpdate();
-                  layout.add('west', new YAHOO.ext.ContentPanel('left', {title: 'Navigation', fitToFrame:true, closable:false}));
-                  layout.add('center', new YAHOO.ext.ContentPanel('center'));
-                  layout.add('north', new YAHOO.ext.ContentPanel('top'));
+                  layout.add('west', new Ext.ContentPanel('left', {title: 'Навигация', fitToFrame:true, closable:false}));
+                  layout.add('center', new Ext.ContentPanel('center'));
+                  layout.add('north', new Ext.ContentPanel('top'));
                   layout.endUpdate();
                   layout.restoreState();
-                  document.body.className = 'ytheme-gray';
              }
-       }
+       };
 
   }();
 
-  YAHOO.ext.state.Manager.setProvider(new YAHOO.ext.state.CookieProvider());
-  YAHOO.ext.EventManager.onDocumentReady(cpLayout.init, cpLayout, true);
+  Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+  Ext.EventManager.onDocumentReady(cpLayout.init, cpLayout, true);
   </script>
 </head>
 <body>
 
 <!--BEGIN: header-->
 <div id='top'>
-  <div id='logo'></div>
+  <img src="/images/_cp/limb_admin.gif"  width='94' height='25' alt='LIMB' id='logo'/>
+  <core:datasource from='#toolkit.user'>
+    <core:default for='is_admin'>
+      <route_url params='controller:admin_publishing,action:main_page' class="jip_button">Редактировать на сайте</route_url>
+    </core:default>
+
+    <div id='user_data'>
+      <span class='name'>{$login} [ {$full_name} ]</span> <a href="#" class='profile'>Мой профиль</a> <a href='/user/logout' class='logout'>Выйти</a>
+    </div>
+  </core:datasource>
 </div>
 <!--END: header-->
+
 <!--BEGIN:[ body ]-->
 <div id='center'>
-  <core:include file='_cms/notify_zone.html'/>
-  <core:placeholder id='content_zone'/>
+  <core:PLACEHOLDER id='content_zone'/>
 </div>
 <!--END:[ body ]-->
+
 <div id='left'>
-  <core:include file='_cms/menu.html'/>
+  <core:INCLUDE file='_cp/menu.html'/>
 </div>
 </body>
 </html>

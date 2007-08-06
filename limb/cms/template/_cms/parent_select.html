@@ -2,7 +2,7 @@
 <tr>
   <td width=120>
     <label>Родительский элемент</label><br/>
-    <div id='parent_name' style='font-weight: bold'><core:optional for='parent'> {$parent.title} ( {$parent.url_path} )</core:optional></div>
+    <div id='parent_name' style='font-weight: bold;white-space:nowrap'><core:optional for='parent'> {$parent.title} ( {$parent.url_path} )</core:optional></div>
   </td>
   <td align=left>
     <input type='hidden' name='parent_id' id='parent' />
@@ -15,7 +15,7 @@
 <script type="text/javascript">
 function onButtonClick()
 {
-  new Limb.Window('/admin/tree/browse', 'parent_select');
+  new Limb.Window('/admin_tree/browse', 'parent_select');
   return false;
 }
 
