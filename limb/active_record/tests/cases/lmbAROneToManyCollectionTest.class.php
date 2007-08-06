@@ -6,9 +6,9 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
-lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
-lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
+require_once('limb/active_record/src/lmbAROneToManyCollection.class.php');
+require_once('limb/core/src/lmbCollectionDecorator.class.php');
+require_once('limb/dbal/src/lmbSimpleDb.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');

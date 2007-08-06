@@ -6,8 +6,8 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
-lmb_require('limb/core/src/lmbCollection.class.php');
+require_once('limb/active_record/src/lmbARRecordSetDecorator.class.php');
+require_once('limb/core/src/lmbCollection.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
 class lmbARRecordSetDecoratorTest extends UnitTestCase
