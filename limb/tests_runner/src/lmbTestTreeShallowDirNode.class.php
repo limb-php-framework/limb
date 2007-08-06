@@ -61,10 +61,15 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
 
     $label = $this->_getDirectoryLabel();
     $test = new lmbTestGroup($label);
+    return $test;
+  }
+
+  protected function _prepareTestCase($test)
+  {
     $fixture = new lmbDetachedFixture($this->dir . '/.setup.php',
                                       $this->dir . '/.teardown.php');
-    $test->useFixture($fixture);
-    return $test;
+    //set this fixture to be the first one
+    $test->addFixture($fixture);
   }
 
   protected function _getDirectoryLabel()

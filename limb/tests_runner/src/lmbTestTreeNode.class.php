@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6066 2007-07-04 11:19:58Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6218 2007-08-06 12:16:32Z pachanga $
  */
 class lmbTestTreeNode
 {
@@ -40,6 +40,18 @@ class lmbTestTreeNode
     $this->_loadChildren();
     return $this->children;
   }
+
+  function getParents()
+  {
+    $parents = array();
+    $node = $this->parent;
+    while($node)
+    {
+      array_unshift($parents, $node);
+      $node = $node->getParent();
+    }
+    return $parents;
+  }  
 
   protected function _loadChildren(){}
 
@@ -98,24 +110,56 @@ class lmbTestTreeNode
     return $this->_doCreateTestCase()->getLabel();
   }
 
-  function createTestCase()
+  function createTestCase($is_first = true)
   {
+    if($is_first && $this->_hasSkippedParents())
+      return null;
+
     $test = $this->_doCreateTestCase();
-    $children = $this->getChildren();//using getter instead of raw property, since child classes may need customization
+
+    //all parents are traversed in case some test customization is required
+    if($is_first)
+    {
+      foreach($this->getParents() as $node)
+        $node->_prepareTestCase($test);
+    }
+
+    $this->_prepareTestCase($test);
+    //using getter instead of raw property, since child classes may need lazy loading 
+    $children = $this->getChildren();
     foreach($children as $child)
     {
       if($child->isSkipped())
         continue;
-      $child->init();
-      $test->addTestCase($child->createTestCase());
+      $child->init();//obsolete stuff
+      $test->addTestCase($child->createTestCase(false));
     }
     return $test;
   }
 
+  protected function _hasSkippedParents()
+  {
+    if(!$this->parent)
+      return false;
+
+    $parent = $this->parent;
+    while($parent)
+    {
+      if($parent->isSkipped())
+        return true;
+      $parent = $parent->getParent();
+    }
+    return false;
+  }
+
   protected function _doCreateTestCase()
   {
-    return new TestSuite();
+    //we need to delay inclusion of SimpleTest as much as possible
+    require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
+    return new lmbTestGroup();
   }
+
+  protected function _prepareTestCase($test){}
 }
 
 ?>

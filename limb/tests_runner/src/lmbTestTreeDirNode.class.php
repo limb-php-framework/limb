@@ -17,17 +17,17 @@ require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6064 2007-07-04 08:58:58Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6218 2007-08-06 12:16:32Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
   protected static $file_filter;
   protected $loaded;
 
-  function createTestCase()
+  function createTestCase($is_first = true)
   {
     $this->_loadChildren();
-    return parent :: createTestCase();
+    return parent :: createTestCase($is_first);
   }
 
   static function getFileFilter()

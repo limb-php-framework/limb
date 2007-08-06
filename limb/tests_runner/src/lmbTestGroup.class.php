@@ -11,17 +11,18 @@
  * class lmbTestGroup.
  *
  * @package tests_runner
- * @version $Id: lmbTestGroup.class.php 6066 2007-07-04 11:19:58Z pachanga $
+ * @version $Id: lmbTestGroup.class.php 6218 2007-08-06 12:16:32Z pachanga $
  */
 class lmbTestGroup extends TestSuite
 {
-  protected $_fixture;
-  protected $_container = array();
+  protected $_fixtures = array();
 
-  function useFixture($fixture)
+  function addFixture($fixture)
   {
-    $this->_fixture = $fixture;
-    $this->_setUpFixture();
+    $this->_fixtures[] = $fixture;
+    //fixture is setup once added, since fixture may contain some stuff 
+    //required even before actual tests execution
+    $fixture->setup();
   }
 
   function run($reporter)
@@ -33,16 +34,10 @@ class lmbTestGroup extends TestSuite
     return $res;
   }
 
-  protected function _setUpFixture()
-  {
-    if($this->_fixture)
-      $this->_fixture->setUp();
-  }
-
   protected function _tearDownFixture()
   {
-    if($this->_fixture)
-      $this->_fixture->tearDown();
+    foreach(array_reverse($this->_fixtures) as $fixture)
+      $fixture->tearDown();
   }
 }
 ?>

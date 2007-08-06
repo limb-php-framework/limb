@@ -239,6 +239,28 @@ class lmbTestTreeDirNodeTest extends lmbTestRunnerBase
 
     $this->_runNodeAndAssertOutput($root_node, '');
   }
+
+  function testParentFixturesAreExecuted()
+  {
+    mkdir($this->var_dir . '/a');
+    mkdir($this->var_dir . '/a/b');
+
+    file_put_contents($this->var_dir . '/a/.setup.php', '<?php echo "setup"; ?>');
+    file_put_contents($this->var_dir . '/a/.teardown.php', '<?php echo "teardown"; ?>');
+
+    file_put_contents($this->var_dir . '/a/b/.setup.php', '<?php echo "setup2"; ?>');
+    file_put_contents($this->var_dir . '/a/b/.teardown.php', '<?php echo "teardown2"; ?>');
+
+    $test1 = new GeneratedTestClass();
+    $test2 = new GeneratedTestClass();
+
+    file_put_contents($this->var_dir . '/a/b/bar_test.php', $test1->generate());
+    file_put_contents($this->var_dir . '/a/b/foo_test.php', $test2->generate());
+
+    $node = new lmbTestTreeDirNode($this->var_dir);
+    $child = $node->findChildByPath('/0/0/1');
+    $this->_runNodeAndAssertOutput($child, "setupsetup2" . $test2->getOutput() . "teardown2teardown");
+  }
 }
 
 ?>

@@ -9,7 +9,6 @@
 
 if(isset($argv[1]))
   define('SIMPLE_TEST', $argv[1]);
-
 require_once(dirname(__FILE__) . '/cases/.setup.php');
 
 $group = new TestSuite();

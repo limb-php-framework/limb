@@ -11,7 +11,7 @@
  * class lmbDetachedFixture.
  *
  * @package tests_runner
- * @version $Id: lmbDetachedFixture.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDetachedFixture.class.php 6218 2007-08-06 12:16:32Z pachanga $
  */
 class lmbDetachedFixture
 {
