@@ -14,14 +14,14 @@ lmb_require('limb/fs/src/exception/lmbFsException.class.php');
  * @package fs
  * @version $Id$
  */
-class lmbFsRecursiveIterator
+class lmbFsRecursiveIterator implements Iterator
 {
   protected $start_dir;
   protected $open_dirs = array();
-  protected $look_ahead_buffer;
   protected $valid;
   protected $dir;
   protected $item;
+  protected $counter = 0;
 
   function __construct($dir)
   {
@@ -31,8 +31,8 @@ class lmbFsRecursiveIterator
   function rewind()
   {
     $this->open_dirs = array();
-    $this->look_ahead_buffer = null;
     $this->valid = true;
+    $this->counter = 0;
     $this->_openDir($this->start_dir);
 
     $this->next();
@@ -91,6 +91,7 @@ class lmbFsRecursiveIterator
     $this->dir = $this->_getLastOpenDir();
 
     $this->item = readdir($handle);
+    $this->counter++;
 
     if($this->item !== false)
       $this->_openDirIfNeccessary();
@@ -100,7 +101,12 @@ class lmbFsRecursiveIterator
 
   function current()
   {
-    return $this;//???
+    return $this->getPath();
+  }
+
+  function key()
+  {
+    return $this->counter;
   }
 
   function valid()

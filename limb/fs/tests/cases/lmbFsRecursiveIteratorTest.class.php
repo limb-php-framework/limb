@@ -74,51 +74,28 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
 
     $it = new lmbFsRecursiveIterator($this->dir);
     $res = array();
-    for($it->rewind(); $it->valid(); $it->next())
-    {
-      $res[] = $it->getPath();
-    }
+    foreach($it as $path)
+      $res[] = $path;
 
+    asort($res);
     $res = array_map(array('lmbFs', 'normalizePath'), $res);
 
-    if(lmbSys :: isWin32())
-    {
-      $this->assertEqual($res,
-                         array(lmbFs :: normalizePath($this->dir . '/.'),
-                               lmbFs :: normalizePath($this->dir . '/..'),
-                               lmbFs :: normalizePath($this->dir . '/a'),
-                               lmbFs :: normalizePath($this->dir . '/nested'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.'),
-                               lmbFs :: normalizePath($this->dir . '/nested/..'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/.'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/..'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/d'),
-                               lmbFs :: normalizePath($this->dir . '/nested/b'),
-                               lmbFs :: normalizePath($this->dir . '/nested/b/.'),
-                               lmbFs :: normalizePath($this->dir . '/nested/b/..'),
-                               lmbFs :: normalizePath($this->dir . '/nested/c'),
-                         ));
-    }
-    else
-    {
-      $this->assertEqual($res,
-                         array(lmbFs :: normalizePath($this->dir . '/.'),
-                               lmbFs :: normalizePath($this->dir . '/..'),
-                               lmbFs :: normalizePath($this->dir . '/a'),
-                               lmbFs :: normalizePath($this->dir . '/nested'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.'),
-                               lmbFs :: normalizePath($this->dir . '/nested/..'),
-                               lmbFs :: normalizePath($this->dir . '/nested/b'),
-                               lmbFs :: normalizePath($this->dir . '/nested/b/.'),
-                               lmbFs :: normalizePath($this->dir . '/nested/b/..'),
-                               lmbFs :: normalizePath($this->dir . '/nested/c'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/.'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/..'),
-                               lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/d'),
-                         ));
-    }
+    $this->assertEqual($res,
+                        array(lmbFs :: normalizePath($this->dir . '/.'),
+                              lmbFs :: normalizePath($this->dir . '/..'),
+                              lmbFs :: normalizePath($this->dir . '/a'),
+                              lmbFs :: normalizePath($this->dir . '/nested'),
+                              lmbFs :: normalizePath($this->dir . '/nested/.'),
+                              lmbFs :: normalizePath($this->dir . '/nested/..'),
+                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested'),
+                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/.'),
+                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/..'),
+                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/d'),
+                              lmbFs :: normalizePath($this->dir . '/nested/b'),
+                              lmbFs :: normalizePath($this->dir . '/nested/b/.'),
+                              lmbFs :: normalizePath($this->dir . '/nested/b/..'),
+                              lmbFs :: normalizePath($this->dir . '/nested/c'),
+                        ));
 
     $this->_removeFileSystem();
   }
