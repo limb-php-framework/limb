@@ -73,96 +73,13 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
     $this->_createFileSystem();
 
     $it = new lmbFsRecursiveIterator($this->dir);
-
-    $it->rewind();
-    $this->_assertDotDir($it, $this->dir . '/.', __LINE__);
-
-    $it->next();
-    $this->_assertDotDir($it, $this->dir . '/..', __LINE__);
-
-    $it->next();
-    $this->_assertFile($it, $this->dir . '/a', __LINE__);
-
-    $it->next();
-    $this->_assertDir($it, $this->dir . '/nested', __LINE__);
-
-    $it->next();
-    $this->_assertDotDir($it, $this->dir . '/nested/.', __LINE__);
-
-    $it->next();
-    $this->_assertDotDir($it, $this->dir . '/nested/..', __LINE__);
-
-    if(lmbSys :: isWin32())
-    {
-      $it->next();
-      $this->_assertDir($it, $this->dir . '/nested/.sub-nested', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/.sub-nested/.', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/.sub-nested/..', __LINE__);
-
-      $it->next();
-      $this->_assertFile($it, $this->dir . '/nested/.sub-nested/d', __LINE__);
-
-      $it->next();
-      $this->_assertDir($it, $this->dir . '/nested/b', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/b/.', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/b/..', __LINE__);
-
-      $it->next();
-      $this->_assertFile($it, $this->dir . '/nested/c', __LINE__);
-    }
-    else
-    {
-      $it->next();
-      $this->_assertDir($it, $this->dir . '/nested/b', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/b/.', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/b/..', __LINE__);
-
-      $it->next();
-      $this->_assertFile($it, $this->dir . '/nested/c', __LINE__);
-
-      $it->next();
-      $this->_assertDir($it, $this->dir . '/nested/.sub-nested', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/.sub-nested/.', __LINE__);
-
-      $it->next();
-      $this->_assertDotDir($it, $this->dir . '/nested/.sub-nested/..', __LINE__);
-
-      $it->next();
-      $this->_assertFile($it, $this->dir . '/nested/.sub-nested/d', __LINE__);
-    }
-
-    $it->next();
-    $this->assertFalse($it->valid());
-
-    $this->_removeFileSystem();
-  }
-
-  function testLoop()
-  {
-    $this->_removeFileSystem();
-    $this->_createFileSystem();
-
-    $it = new lmbFsRecursiveIterator($this->dir);
     $res = array();
     for($it->rewind(); $it->valid(); $it->next())
     {
-      $res[] = $it->getPathName();
+      $res[] = $it->getPath();
     }
 
+    var_dump($res);
     $res = array_map(array('lmbFs', 'normalizePath'), $res);
 
     if(lmbSys :: isWin32())
@@ -213,7 +130,7 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
     $this->assertFalse($it->isDot(), '%s ' . $line);
     $this->assertTrue($it->isDir(), '%s ' . $line);
     $this->assertFalse($it->isFile(), '%s ' . $line);
-    $this->assertEqual(lmbFs :: normalizePath($it->getPathName()),
+    $this->assertEqual(lmbFs :: normalizePath($it->getPath()),
                        lmbFs :: normalizePath($path), '%s ' . $line);
   }
 
@@ -223,7 +140,7 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
     $this->assertTrue($it->isDot(), '%s ' . $line);
     $this->assertTrue($it->isDir(), '%s ' . $line);
     $this->assertFalse($it->isFile(), '%s ' . $line);
-    $this->assertEqual(lmbFs :: normalizePath($it->getPathName()),
+    $this->assertEqual(lmbFs :: normalizePath($it->getPath()),
                        lmbFs :: normalizePath($path), '%s ' . $line);
   }
 
@@ -233,7 +150,7 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
     $this->assertFalse($it->isDot(), '%s ' . $line);
     $this->assertFalse($it->isDir(), '%s ' . $line);
     $this->assertTrue($it->isFile(), '%s ' . $line);
-    $this->assertEqual(lmbFs :: normalizePath($it->getPathName()),
+    $this->assertEqual(lmbFs :: normalizePath($it->getPath()),
                        lmbFs :: normalizePath($path), '%s ' . $line);
   }
 }

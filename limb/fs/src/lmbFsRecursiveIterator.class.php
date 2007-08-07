@@ -50,7 +50,7 @@ class lmbFsRecursiveIterator
   protected function _openDirIfNeccessary()
   {
     if(!$this->isDot() && $this->isDir())
-      $this->_openDir($this->getPathName());
+      $this->_openDir($this->getPath());
   }
 
   protected function _closeTerminalDirs()
@@ -128,17 +128,25 @@ class lmbFsRecursiveIterator
 
   function isDir()
   {
-    return is_dir($this->getPathName());
+    return is_dir($this->getPath());
   }
 
   function isFile()
   {
-    return is_file($this->getPathName()) && !is_dir($this->getPathName());
+    return is_file($this->getPath()) && !is_dir($this->getPath());
   }
 
-  function getPathName()
+  function getPath()
   {
     return $this->dir . $this->item;
+  }
+
+  /**
+   * @deprecated
+   */
+  function getPathName()
+  {
+    return $this->getPath();
   }
 
   function getCurrentDirectoryName()
