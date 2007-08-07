@@ -1,3 +1,12 @@
+0.8.4-beta - 7 August 2007 (r6222)
+==================================================
+-- removing trailing ?> for PHP modules
+-- parent test fixtures are setup in a more proper way, before this fixtures were setup only down from the current node while parent ones were ignored. The fix is a bit hackish yet it fixes quite a serious bug, some refactoring may be applied in the future
+-- lmbTestGroup allows to have many nested fixtures
+-- lmbTestTreeNode splits test case creation and test case preparation into 2 methods: _doCreateTestCase() and _prepareTestCase($test)
+-- a bit better error message
+-- better version output
+
 0.8.3-beta - 6 July 2007 (r6079)
 ==================================================
 -- even better help message
