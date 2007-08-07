@@ -9,4 +9,4 @@ if($ignore)
   echo "\nDBAL package '$test_dir' tests are skipped!(no compatible database fixture found for '$type' connection)\n\n";
 
 return $ignore;
-?>
+

@@ -16,7 +16,7 @@
  * @restrict_self_nesting
  * @parent_tag_class WactListItemTag
  * @package wact
- * @version $Id: separator.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: separator.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactListSeparatorTag extends WactRuntimeComponentTag
 {
@@ -66,4 +66,4 @@ class WactListSeparatorTag extends WactRuntimeComponentTag
     $code->writePhp('}'. "\n");
   }
 }
-?>
+

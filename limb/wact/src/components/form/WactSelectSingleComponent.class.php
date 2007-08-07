@@ -121,4 +121,4 @@ class WactSelectSingleComponent extends WactFormElementComponent
   }
 }
 
-?>
+

@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbClassPath.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 5997 2007-06-18 12:27:21Z pachanga $
+ * @version $Id: lmbARRecordSetDecorator.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -73,4 +73,4 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
   }
 }
 
-?>
+

@@ -15,7 +15,7 @@ require_once 'limb/wact/src/compiler/expression/WactExpressionValueParser.class.
  * Responsibly for parsing the expression and building a filter chain
  * for the expression (if expression contained filter syntax)
  * @package wact
- * @version $Id: WactExpression.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactExpression.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactExpression implements WactExpressionInterface
 {
@@ -193,4 +193,4 @@ class WactExpression implements WactExpressionInterface
     return $this->filter_dictionary;
   }
 }
-?>
+

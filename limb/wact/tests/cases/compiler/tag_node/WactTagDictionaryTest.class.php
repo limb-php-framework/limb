@@ -103,4 +103,4 @@ class WactTagDictionaryTest extends UnitTestCase
   }
 
 }
-?>
+

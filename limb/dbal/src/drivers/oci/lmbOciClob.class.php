@@ -12,7 +12,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciLob.class.php');
  * class lmbOciClob.
  *
  * @package dbal
- * @version $Id: lmbOciClob.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbOciClob.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbOciClob extends lmbOciLob
 {
@@ -32,4 +32,4 @@ class lmbOciClob extends lmbOciLob
   }
 }
 
-?>
+

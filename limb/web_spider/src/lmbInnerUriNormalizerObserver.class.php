@@ -11,7 +11,7 @@
  * class lmbInnerUriNormalizerObserver.
  *
  * @package web_spider
- * @version $Id: lmbInnerUriNormalizerObserver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbInnerUriNormalizerObserver.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbInnerUriNormalizerObserver
 {
@@ -38,4 +38,4 @@ class lmbInnerUriNormalizerObserver
   }
 }
 
-?>
+

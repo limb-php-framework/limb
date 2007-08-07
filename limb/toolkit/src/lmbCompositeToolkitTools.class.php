@@ -12,7 +12,7 @@
  * Doesn't check if tools have any intersecting methods. Method of the latter tools always wins.
  * @see lmbToolkit :: merge()
  * @package toolkit
- * @version $Id: lmbCompositeToolkitTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCompositeToolkitTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCompositeToolkitTools implements lmbToolkitTools
 {
@@ -54,4 +54,4 @@ class lmbCompositeToolkitTools implements lmbToolkitTools
     return $result;
   }
 }
-?>
+

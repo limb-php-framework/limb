@@ -151,4 +151,4 @@ class WactGenericHTMLTagTestCase extends WactTemplateTestCase
     $this->assertEqual($output, '<DiV id="runtime">Test</DiV>');
   }
 }
-?>
+

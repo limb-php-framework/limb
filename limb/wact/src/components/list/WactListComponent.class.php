@@ -10,7 +10,7 @@
 /**
  * Represents list tags at runtime, providing an API for preparing the data set
  * @package wact
- * @version $Id: WactListComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactListComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactListComponent extends WactRuntimeComponent
 {
@@ -81,4 +81,4 @@ class WactListComponent extends WactRuntimeComponent
     return $this->dataset->getOffset();
   }
 }
-?>
+

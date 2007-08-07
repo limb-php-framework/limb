@@ -768,4 +768,4 @@ class WactHTMLParserTest extends UnitTestCase
       $this->assertEqual($event[3], $location);
   }
 }
-?>
+

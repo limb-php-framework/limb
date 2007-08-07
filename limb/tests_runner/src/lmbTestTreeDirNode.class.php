@@ -17,7 +17,7 @@ require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6218 2007-08-06 12:16:32Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
@@ -104,4 +104,4 @@ class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
   }
 }
 
-?>
+

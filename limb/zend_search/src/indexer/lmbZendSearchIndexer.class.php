@@ -65,4 +65,4 @@ class lmbZendSearchIndexer
     return preg_replace($regex, ' ', $content);
   }
 }
-?>
+

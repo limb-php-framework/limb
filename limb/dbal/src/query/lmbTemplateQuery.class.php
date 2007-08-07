@@ -11,7 +11,7 @@
  * class lmbTemplateQuery.
  *
  * @package dbal
- * @version $Id: lmbTemplateQuery.class.php 6039 2007-07-02 12:51:09Z pachanga $
+ * @version $Id: lmbTemplateQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTemplateQuery
 {
@@ -96,4 +96,4 @@ class lmbTemplateQuery
     return $this->_no_hints_sql;
   }
 }
-?>
+

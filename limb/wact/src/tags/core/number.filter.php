@@ -11,7 +11,7 @@
  * @filter number
  * @max_attributes 3
  * @package wact
- * @version $Id: number.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: number.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactNumberFilter extends WactCompilerFilter {
 
@@ -65,4 +65,4 @@ class WactNumberFilter extends WactCompilerFilter {
 
 }
 
-?>
+

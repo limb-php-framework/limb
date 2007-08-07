@@ -2,4 +2,4 @@
 
 $conf = array('foo' => 3);
 
-?>
+

@@ -30,4 +30,4 @@ class WactFormFieldErrorsTag extends WactCompilerTag
                     $form->getComponentRefCode() . '->getFieldErrorsDataSet("' . $for. '"));');
   }
 }
-?>
+

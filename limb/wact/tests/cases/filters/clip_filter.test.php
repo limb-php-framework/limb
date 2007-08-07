@@ -213,4 +213,4 @@ class WactTemplateClipFilterTestCase extends WactTemplateTestCase
     $this->assertEqual($output, '<img src="img.gif" alt=\'abcde...\' title=\'abcde...\' />');
   }
 }
-?>
+

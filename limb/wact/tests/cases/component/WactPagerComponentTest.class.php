@@ -254,4 +254,4 @@ class WactPagerComponentTest extends UnitTestCase
   }
 }
 
-?>
+

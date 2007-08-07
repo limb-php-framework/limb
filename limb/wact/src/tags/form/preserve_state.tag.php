@@ -12,7 +12,7 @@
  * @forbid_end_tag
  * @req_const_attributes name
  * @package wact
- * @version $Id: preserve_state.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: preserve_state.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactFormPreserveStateTag extends WactCompilerTag
 {
@@ -21,4 +21,4 @@ class WactFormPreserveStateTag extends WactCompilerTag
     $code->writePHP($this->getComponentRefCode() . '->preserveState("' . $this->getAttribute('name') . '");');
   }
 }
-?>
+

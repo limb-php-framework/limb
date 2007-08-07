@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlStatement.class.php');
  * class lmbPgsqlDropStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlDropStatement.class.php 5979 2007-06-09 12:33:19Z pachanga $
+ * @version $Id: lmbPgsqlDropStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbPgsqlDropStatement extends lmbPgsqlStatement
 {
@@ -30,4 +30,4 @@ class lmbPgsqlDropStatement extends lmbPgsqlStatement
   }
 }
 
-?>
+

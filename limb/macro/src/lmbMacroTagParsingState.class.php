@@ -140,4 +140,4 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     $this->tree_builder->addTextNode($text);
   }
 }
-?>
+

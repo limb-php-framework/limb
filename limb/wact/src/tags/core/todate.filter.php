@@ -11,7 +11,7 @@
  * @filter todate
  * @max_attributes 1
  * @package wact
- * @version $Id: todate.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: todate.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactToDateFilter extends WactCompilerFilter
 {
@@ -49,4 +49,4 @@ class WactToDateFilter extends WactCompilerFilter
   }
 }
 
-?>
+

@@ -37,4 +37,4 @@ class lmbSqliteManipulationStatement extends lmbSqliteStatement implements lmbDb
   }
 }
 
-?>
+

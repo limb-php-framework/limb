@@ -11,7 +11,7 @@
  * @property Parity
  * @tag_class WactListItemTag
  * @package wact
- * @version $Id: parity.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: parity.prop.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactParityProperty extends WactCompilerProperty
 {
@@ -45,4 +45,4 @@ class WactParityProperty extends WactCompilerProperty
   }
 
 }
-?>
+

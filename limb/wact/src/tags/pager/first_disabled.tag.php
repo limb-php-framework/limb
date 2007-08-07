@@ -11,7 +11,7 @@
  * @tag pager:first:DISABLED
  * @parent_tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: first_disabled.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: first_disabled.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactPagerFirstDisabledTag extends WactCompilerTag
 {
@@ -25,4 +25,4 @@ class WactPagerFirstDisabledTag extends WactCompilerTag
   }
 }
 
-?>
+

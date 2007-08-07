@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/dump/lmbSQLDumpLoader.class.php');
  * class lmbDbDump.
  *
  * @package dbal
- * @version $Id: lmbDbDump.class.php 6055 2007-07-03 10:52:01Z pachanga $
+ * @version $Id: lmbDbDump.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDbDump
 {
@@ -52,4 +52,4 @@ class lmbDbDump
   }
 }
 
-?>
+

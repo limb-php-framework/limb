@@ -22,4 +22,4 @@ class WactListItemKeyProperty extends WactCompilerProperty
   }
 
 }
-?>
+

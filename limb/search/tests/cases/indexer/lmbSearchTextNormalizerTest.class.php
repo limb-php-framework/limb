@@ -27,4 +27,4 @@ class lmbSearchTextNormalizerTest extends UnitTestCase
     $this->assertEqual($result, "привет растения");
   }
 }
-?>
+

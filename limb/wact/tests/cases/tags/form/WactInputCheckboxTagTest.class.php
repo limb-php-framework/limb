@@ -85,4 +85,4 @@ class WactInputCheckboxTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 }
-?>
+

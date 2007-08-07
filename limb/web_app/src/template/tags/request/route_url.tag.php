@@ -10,7 +10,7 @@
  * @tag route_url
  * @suppress_attributes params route extra skip_controller
  * @package web_app
- * @version $Id: route_url.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: route_url.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
 {
@@ -66,4 +66,4 @@ class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
   }
 }
 
-?>
+

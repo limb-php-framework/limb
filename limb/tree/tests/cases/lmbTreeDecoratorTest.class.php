@@ -35,4 +35,4 @@ class lmbTreeDecoratorTest extends lmbTreeTestBase
     $this->db->delete($this->_node_table);
   }
 }
-?>
+

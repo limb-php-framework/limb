@@ -11,7 +11,7 @@
  * @property ListRowOdd
  * @tag_class WactListItemTag
  * @package wact
- * @version $Id: rowodd.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: rowodd.prop.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactListRowOddProperty extends WactCompilerProperty
 {
@@ -44,4 +44,4 @@ class WactListRowOddProperty extends WactCompilerProperty
     $code_writer->writePHP('(Boolean) ( $' . $this->temp_var . ' % 2)');
   }
 }
-?>
+

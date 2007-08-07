@@ -11,7 +11,7 @@
 /**
  * Interface for filter classes to be used with lmbFilterChain
  *
- * @version $Id: lmbInterceptingFilter.interface.php 5965 2007-06-08 09:50:55Z pachanga $
+ * @version $Id: lmbInterceptingFilter.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package filter_chain
  */
 interface lmbInterceptingFilter
@@ -27,4 +27,4 @@ interface lmbInterceptingFilter
   function run($filter_chain);
 }
 
-?>
+

@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: package.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: package.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once 'PEAR/PackageFileManager2.php';
 require_once 'PEAR/PackageFileManager/Svn.php';
@@ -83,4 +83,4 @@ if(PEAR::isError($result))
   echo $result->getMessage();
   exit(1);
 }
-?>
+

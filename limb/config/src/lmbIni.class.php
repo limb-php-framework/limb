@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbIni.
  *
  * @package config
- * @version $Id: lmbIni.class.php 6200 2007-07-30 14:12:27Z pachanga $
+ * @version $Id: lmbIni.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbIni extends lmbSet
 {
@@ -225,4 +225,4 @@ class lmbIni extends lmbSet
   }
 }
 
-?>
+

@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbCollection.class.php');
  * class lmbTreeHelper.
  *
  * @package tree
- * @version $Id: lmbTreeHelper.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTreeHelper.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTreeHelper
 {
@@ -77,4 +77,4 @@ class lmbTreeHelper
   }
 }
 
-?>
+

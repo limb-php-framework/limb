@@ -31,4 +31,4 @@ class lmbStaticToolsTest extends UnitTestCase
   }
 }
 
-?>
+

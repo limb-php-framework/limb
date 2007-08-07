@@ -20,4 +20,4 @@ class lmbPgsqlDbInfoTest extends DriverDatabaseInfoTestBase
   }
 }
 
-?>
+

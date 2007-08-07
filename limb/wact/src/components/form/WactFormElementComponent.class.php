@@ -135,4 +135,4 @@ class WactFormElementComponent extends WactRuntimeTagComponent
       return $form_component->setValue($this->getName(), $value);
   }
 }
-?>
+

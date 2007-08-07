@@ -9,7 +9,7 @@
 
 /**
  * @package search
- * @version $Id: indexer.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: indexer.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 if(!isset($argv[1]))
   die("index starting uri not specified!\n");
@@ -52,4 +52,4 @@ $spider->registerObserver($observer);
 
 $spider->crawl($uri);
 
-?>
+

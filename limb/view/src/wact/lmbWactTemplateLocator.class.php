@@ -63,4 +63,4 @@ class lmbWactTemplateLocator implements WactTemplateLocator
       return file_get_contents($fileName);
   }
 }
-?>
+

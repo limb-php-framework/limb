@@ -99,4 +99,4 @@ class lmbShowWactTemplateSourceCommand extends lmbActionCommand
   }
 }
 
-?>
+

@@ -137,4 +137,4 @@ class lmbStaticCommandControllerTest extends UnitTestCase
   }
 }
 
-?>
+

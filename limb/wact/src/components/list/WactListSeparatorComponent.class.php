@@ -83,4 +83,4 @@ class WactListSeparatorComponent extends WactRuntimeComponent
     $this->skip_next = true;
   }
 }
-?>
+

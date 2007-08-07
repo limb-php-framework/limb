@@ -337,4 +337,4 @@ class lmbARValidationTest extends UnitTestCase
     return $object;
   }
 }
-?>
+

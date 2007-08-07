@@ -28,4 +28,4 @@ class WactIteratorTransferComponent extends WactBaseIteratorComponent
     $this->dataset = WactTemplate :: castToIterator($dataset);
   }
 }
-?>
+

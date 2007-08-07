@@ -46,4 +46,4 @@ class lmbSQLFieldBetweenCriteriaTest extends UnitTestCase
   }
 }
 
-?>
+

@@ -332,4 +332,4 @@ class WactComponentParsingStateTest extends WactBaseParsingStateTestCase
   }
   */
 }
-?>
+

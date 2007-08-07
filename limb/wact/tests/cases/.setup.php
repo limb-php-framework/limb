@@ -11,4 +11,4 @@ set_include_path(dirname(__FILE__) . '/../../../' . PATH_SEPARATOR . get_include
 require_once(dirname(__FILE__) . '/../../common.inc.php');
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');
 
-?>
+

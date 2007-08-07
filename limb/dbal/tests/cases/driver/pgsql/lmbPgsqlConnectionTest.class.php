@@ -26,4 +26,4 @@ class lmbPgsqlConnectionTest extends DriverConnectionTestBase
   }
 }
 
-?>
+

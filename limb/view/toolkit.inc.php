@@ -18,4 +18,4 @@ lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/view/src/toolkit/lmbViewTools.class.php');
 lmbToolkit :: merge(new lmbViewTools());
 
-?>
+

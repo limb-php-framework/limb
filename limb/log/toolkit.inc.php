@@ -15,4 +15,4 @@ lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/log/src/lmbLogTools.class.php');
 lmbToolkit :: merge(new lmbLogTools());
 
-?>
+

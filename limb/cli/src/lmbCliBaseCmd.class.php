@@ -37,4 +37,4 @@ abstract class lmbCliBaseCmd
     exit(1);
   }
 }
-?>
+

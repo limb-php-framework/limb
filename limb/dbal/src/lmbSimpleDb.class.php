@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6059 2007-07-03 11:38:15Z serega $
+ * @version $Id: lmbSimpleDb.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbSimpleDb
 {
@@ -171,4 +171,4 @@ class lmbSimpleDb
   }
 }
 
-?>
+

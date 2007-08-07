@@ -12,7 +12,7 @@ require_once('limb/wact/src/compiler/tag_node/WactCompilerTag.class.php');
  * Runtime component tags have a corresponding WactRuntimeComponent which represents
  * an API which can be used to manipulate the marked up portion of the template.
  * @package wact
- * @version $Id: WactRuntimeComponentTag.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactRuntimeComponentTag.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactRuntimeComponentTag extends WactCompilerTag
 {
@@ -56,4 +56,4 @@ class WactRuntimeComponentTag extends WactCompilerTag
     $this->unique_var = '$' . $this->unique_id;
   }
 }
-?>
+

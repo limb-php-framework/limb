@@ -127,4 +127,4 @@ class lmbMonth
     return new lmbMonth($date->getYear(), $date->getMonth());
   }
 }
-?>
+

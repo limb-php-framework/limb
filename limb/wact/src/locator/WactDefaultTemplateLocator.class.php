@@ -13,7 +13,7 @@ require_once('limb/wact/src/locator/WactTemplateLocator.interface.php');
  * class WactDefaultTemplateLocator.
  *
  * @package wact
- * @version $Id: WactDefaultTemplateLocator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactDefaultTemplateLocator.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactDefaultTemplateLocator implements WactTemplateLocator
 {
@@ -51,4 +51,4 @@ class WactDefaultTemplateLocator implements WactTemplateLocator
       return file_get_contents($file_name, 1);
   }
 }
-?>
+

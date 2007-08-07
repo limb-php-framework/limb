@@ -18,4 +18,4 @@ class lmbFakeSession extends lmbSession
 {
   function start($storage = null){}
 }
-?>
+

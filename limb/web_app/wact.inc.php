@@ -9,10 +9,10 @@
 
 /**
  * @package web_app
- * @version $Id: wact.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: wact.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 @define('WACT_CACHE_DIR', LIMB_VAR_DIR . '/limb/wact/');
 
 require_once('limb/wact/common.inc.php');
 
-?>
+

@@ -82,4 +82,4 @@ class ParamGenericTag extends WactGenericHTMLTag{}
  */
 class MetaGenericTag extends WactGenericHTMLTag{}
 
-?>
+

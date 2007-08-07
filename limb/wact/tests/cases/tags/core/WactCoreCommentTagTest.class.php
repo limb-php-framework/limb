@@ -18,4 +18,4 @@ class WactCoreCommentTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), '');
   }
 }
-?>
+

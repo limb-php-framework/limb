@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDbDSN.
  *
  * @package dbal
- * @version $Id: lmbDbDSN.class.php 6002 2007-06-19 21:09:36Z pachanga $
+ * @version $Id: lmbDbDSN.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDbDSN extends lmbObject
 {
@@ -93,4 +93,4 @@ class lmbDbDSN extends lmbObject
   }
 }
 
-?>
+

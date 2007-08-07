@@ -47,4 +47,4 @@ class lmbUriNormalizerTest extends UnitTestCase
   }
 }
 
-?>
+

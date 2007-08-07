@@ -25,7 +25,7 @@ lmb_require('limb/session/src/lmbSession.class.php');
  * @see lmbSessionNativeStorage
  * @see lmbSessionDbStorage
  *
- * @version $Id: lmbSessionStartupFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSessionStartupFilter.class.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package web_app
  */
 class lmbSessionStartupFilter implements lmbInterceptingFilter
@@ -71,4 +71,4 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
     return new lmbSessionDbStorage($db_connection, $max_life_time);
   }
 }
-?>
+

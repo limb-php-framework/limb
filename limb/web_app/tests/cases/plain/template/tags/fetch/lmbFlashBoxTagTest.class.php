@@ -70,4 +70,4 @@ class lmbFlashBoxTagTest extends lmbWactTestCase
     $this->assertEqual($page->capture(), 'Message1|Message2|');
   }
 }
-?>
+

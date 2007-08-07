@@ -13,7 +13,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6218 2007-08-06 12:16:32Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -48,4 +48,4 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     return $suite;
   }
 }
-?>
+

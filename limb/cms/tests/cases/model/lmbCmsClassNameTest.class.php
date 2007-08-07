@@ -62,4 +62,4 @@ class lmbCmsClassNameTest extends UnitTestCase
 
 }
 
-?>
+

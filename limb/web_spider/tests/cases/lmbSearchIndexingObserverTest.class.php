@@ -41,4 +41,4 @@ class lmbSearchIndexingObserverTest extends UnitTestCase
   }
 }
 
-?>
+

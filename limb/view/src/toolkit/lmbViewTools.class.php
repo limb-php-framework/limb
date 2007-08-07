@@ -39,4 +39,4 @@ class lmbViewTools extends lmbAbstractTools
     $this->wact_locator = $wact_locator;
   }
 }
-?>
+

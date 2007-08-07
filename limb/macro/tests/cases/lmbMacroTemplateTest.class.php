@@ -62,4 +62,4 @@ class lmbMacroTemplateTest extends UnitTestCase
   }
 }
 
-?>
+

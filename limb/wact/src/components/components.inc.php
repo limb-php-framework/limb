@@ -9,11 +9,11 @@
 
 /**
  * @package wact
- * @version $Id: components.inc.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: components.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once(dirname(__FILE__) . '/WactRuntimeComponent.class.php');
 require_once(dirname(__FILE__) . '/WactDatasourceRuntimeComponent.class.php');
 require_once(dirname(__FILE__) . '/WactRuntimeTagComponent.class.php');
 require_once(dirname(__FILE__) . '/WactArrayObject.class.php');
 require_once(dirname(__FILE__) . '/WactArrayIterator.class.php');
-?>
+

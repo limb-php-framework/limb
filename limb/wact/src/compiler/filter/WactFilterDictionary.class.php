@@ -15,7 +15,7 @@ require_once('limb/wact/src/compiler/WactCompilerArtifactDictionary.class.php');
  * class WactFilterDictionary.
  *
  * @package wact
- * @version $Id: WactFilterDictionary.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactFilterDictionary.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactFilterDictionary extends WactCompilerArtifactDictionary
 {
@@ -44,4 +44,4 @@ class WactFilterDictionary extends WactCompilerArtifactDictionary
       return $this->filter_information[$name];
   }
 }
-?>
+

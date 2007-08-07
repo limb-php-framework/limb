@@ -9,4 +9,4 @@ if($skip)
   echo "\nACTIVE_RECORD package '$test_dir' tests are skipped!(no compatible database fixture found for '$type' connection)\n\n";
 
 return $skip;
-?>
+

@@ -172,4 +172,4 @@ class lmbSingleByteCharsetDriverTest extends UnitTestCase
   }
 }
 
-?>
+

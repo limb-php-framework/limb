@@ -209,4 +209,4 @@ class WactExpressionFilterParserTest extends UnitTestCase
                                                          'params' => array('arg3'))));
   }
 }
-?>
+

@@ -22,4 +22,4 @@ class lmbTestReporterDecorator extends SimpleReporterDecorator
     echo $this->_reporter->getTestCaseProgress() . " of " . $this->_reporter->getTestCaseCount() . " done({$test_name})\n";
   }
 }
-?>
+

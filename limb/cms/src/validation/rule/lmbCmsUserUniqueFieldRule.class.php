@@ -33,4 +33,4 @@ class lmbCmsUserUniqueFieldRule extends lmbSingleFieldRule
   }
 }
 
-?>
+

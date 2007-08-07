@@ -9,7 +9,7 @@
 
 /**
  * @package wact
- * @version $Id: form.inc.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: form.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once 'limb/wact/src/components/form/error.inc.php';
 require_once 'limb/wact/src/components/form/WactFormComponent.class.php';
@@ -19,4 +19,4 @@ require_once 'limb/wact/src/components/form/WactLabelComponent.class.php';
 require_once 'limb/wact/src/components/form/WactTextAreaComponent.class.php';
 require_once 'limb/wact/src/components/form/WactCheckableInputComponent.class.php';
 
-?>
+

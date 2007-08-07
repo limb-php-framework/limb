@@ -122,4 +122,4 @@ class WactFormMultipleTagTest extends WactTemplateTestCase
     $this->assertEqual($input->getValue(), 'Hello');
   }
 }
-?>
+

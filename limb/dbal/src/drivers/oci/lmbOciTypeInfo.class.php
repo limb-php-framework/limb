@@ -11,7 +11,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 /**
  * class lmbOciTypeInfo.
  * @package dbal
- * @version $Id: lmbOciTypeInfo.class.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: lmbOciTypeInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbOciTypeInfo extends lmbDbTypeInfo
 {
@@ -78,4 +78,4 @@ class lmbOciTypeInfo extends lmbDbTypeInfo
         );
   }
 }
-?>
+

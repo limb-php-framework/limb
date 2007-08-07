@@ -13,7 +13,7 @@ lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
  * class lmbFlashBoxFetcher.
  *
  * @package web_app
- * @version $Id: lmbFlashBoxFetcher.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFlashBoxFetcher.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbFlashBoxFetcher extends lmbFetcher
 {
@@ -38,4 +38,4 @@ class lmbFlashBoxFetcher extends lmbFetcher
     return new lmbCollection($result);
   }
 }
-?>
+

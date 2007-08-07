@@ -24,4 +24,4 @@ interface lmbMacroTokenizerListener
   function invalidAttributeSyntax();
   function setTemplateLocator($locator);
 }
-?>
+

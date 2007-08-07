@@ -135,4 +135,4 @@ class lmbLocaleTest extends UnitTestCase
     $this->assertEqual($locale->getMeridiemName(22), 'pm');
   }
 }
-?>
+

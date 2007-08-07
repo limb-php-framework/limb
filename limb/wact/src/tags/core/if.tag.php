@@ -27,4 +27,4 @@ class WactCoreIfTag extends WactCompilerTag
     $code->writePHP('}');
   }
 }
-?>
+

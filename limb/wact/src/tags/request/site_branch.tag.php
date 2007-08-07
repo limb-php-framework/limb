@@ -42,4 +42,4 @@ class WactSiteBranchTag extends WactSilentCompilerTag
   }
 }
 
-?>
+

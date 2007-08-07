@@ -65,4 +65,4 @@ class lmbRegistryTest extends UnitTestCase
   }
 }
 
-?>
+

@@ -11,7 +11,7 @@
  * @filter date
  * @max_attributes 1
  * @package wact
- * @version $Id: date.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: date.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactDateFilter extends WactCompilerFilter
 {
@@ -36,4 +36,4 @@ class WactDateFilter extends WactCompilerFilter
     $code_writer->writePHP(')');
   }
 }
-?>
+

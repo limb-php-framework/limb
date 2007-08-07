@@ -250,4 +250,4 @@ abstract class lmbImageLibraryTestBase extends UnitTestCase
     clearstatcache();
   }
 }
-?>
+

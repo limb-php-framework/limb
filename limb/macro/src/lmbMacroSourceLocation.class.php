@@ -41,4 +41,4 @@ class lmbMacroSourceLocation
     return $this->line;
   }
 }
-?>
+

@@ -56,4 +56,4 @@ class lmbErrorGuard
       self :: $fatal_error_delegate->invoke($error);
   }
 }
-?>
+

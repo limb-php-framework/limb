@@ -55,4 +55,4 @@ class WactOutputExpressionNodeTest extends WactCompileTreeNodeTest
     $this->assertEqual($code_writer->renderCode(), 'value');
   }
 }
-?>
+

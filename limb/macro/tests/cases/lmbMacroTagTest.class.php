@@ -349,4 +349,4 @@ class lmbMacroTagTest extends UnitTestCase
     }
   }  
 }
-?>
+

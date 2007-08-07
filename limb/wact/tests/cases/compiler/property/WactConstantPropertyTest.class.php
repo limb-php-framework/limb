@@ -24,4 +24,4 @@ class WactConstantPropertyTest extends UnitTestCase
   }
 }
 
-?>
+

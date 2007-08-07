@@ -59,4 +59,4 @@ class lmbLocaleSpecTest extends UnitTestCase
   }
 }
 
-?>
+

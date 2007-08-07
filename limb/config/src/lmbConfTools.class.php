@@ -17,7 +17,7 @@ lmb_require('limb/config/src/lmbConf.class.php');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 6034 2007-07-02 06:30:10Z serega $
+ * @version $Id: lmbConfTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -67,4 +67,4 @@ class lmbConfTools extends lmbAbstractTools
     return "$name.conf.php";
   }
 }
-?>
+

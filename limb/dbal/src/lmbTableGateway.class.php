@@ -18,7 +18,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 6039 2007-07-02 12:51:09Z pachanga $
+ * @version $Id: lmbTableGateway.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTableGateway
 {
@@ -318,4 +318,4 @@ class lmbTableGateway
   }
 }
 
-?>
+

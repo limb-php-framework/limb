@@ -562,4 +562,4 @@ class WactListTagsTest extends WactTemplateTestCase
     $this->assertEqual($output, "Ivan-Ivanov|Peter-Petrov|");
   }
 }
-?>
+

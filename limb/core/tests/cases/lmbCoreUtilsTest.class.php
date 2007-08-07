@@ -42,4 +42,4 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_under_scores('_FooBarZoo_'), '_foo_bar_zoo_');
   }
 }
-?>
+

@@ -11,7 +11,7 @@
  * Compile time component for block tags
  * @tag core:BLOCK
  * @package wact
- * @version $Id: block.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: block.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactCoreBlockTag extends WactRuntimeComponentTag
 {
@@ -37,4 +37,4 @@ class WactCoreBlockTag extends WactRuntimeComponentTag
     $code_writer->writePHP('}');
   }
 }
-?>
+

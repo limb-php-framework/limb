@@ -34,4 +34,4 @@ class WactConstantFilterTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'value');
   }
 }
-?>
+

@@ -20,4 +20,4 @@ class lmbPgsqlStatementTest extends DriverStatementTestBase
   }
 }
 
-?>
+

@@ -446,4 +446,4 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
   }
 }
 
-?>
+

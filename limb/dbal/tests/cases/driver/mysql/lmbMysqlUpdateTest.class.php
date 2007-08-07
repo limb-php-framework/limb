@@ -26,4 +26,4 @@ class lmbMysqlUpdateTest extends DriverUpdateTestBase
   }
 }
 
-?>
+

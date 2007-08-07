@@ -34,4 +34,4 @@ class WactSilentCompilerTagTest extends WactCompilerTagTest
     $component->generateNow($code_writer);
   }
 }
-?>
+

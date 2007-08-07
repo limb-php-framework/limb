@@ -152,4 +152,4 @@ abstract class AdminNodeWithObjectController extends lmbController
   protected function _onAfterValidate() {}
 }
 
-?>
+

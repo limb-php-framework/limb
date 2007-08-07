@@ -19,4 +19,4 @@ class lmbUTF8MbstringDriverTest extends lmbMultiByteStringDriverTestBase
     }
 }
 
-?>
+

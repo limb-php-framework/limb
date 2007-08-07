@@ -61,4 +61,4 @@ class WactPerformComponent extends WactRuntimeComponent
     return $class_path->createObject(array($template, $this->parent));
   }
 }
-?>
+

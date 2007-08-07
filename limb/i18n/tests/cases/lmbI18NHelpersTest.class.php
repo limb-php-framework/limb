@@ -40,4 +40,4 @@ class lmbI18NHelpersTest extends UnitTestCase
     $this->assertEqual(lmb_translit_russian($str, $encoding), $expect);
   }  
 }
-?>
+

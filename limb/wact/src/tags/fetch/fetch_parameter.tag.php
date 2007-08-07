@@ -29,4 +29,4 @@ class WactFetchParametersTag extends WactCompilerTag
   }
 }
 
-?>
+

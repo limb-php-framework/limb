@@ -186,4 +186,4 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
   }
 }
 
-?>
+

@@ -52,4 +52,4 @@ class lmbSqliteTypeInfo extends lmbDbTypeInfo
       );
   }
 }
-?>
+

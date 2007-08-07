@@ -19,4 +19,4 @@ class lmbMysqlColumnInfoTest extends DriverColumnInfoTestBase
   }
 }
 
-?>
+

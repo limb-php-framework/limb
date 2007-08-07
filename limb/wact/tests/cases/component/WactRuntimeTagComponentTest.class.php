@@ -108,4 +108,4 @@ class WactRuntimeTagComponentTest extends WactRuntimeComponentTest
   }
 }
 
-?>
+

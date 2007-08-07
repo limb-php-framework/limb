@@ -30,4 +30,4 @@ class WactHtmlFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, '&lt;hello&gt;');
   }
 }
-?>
+

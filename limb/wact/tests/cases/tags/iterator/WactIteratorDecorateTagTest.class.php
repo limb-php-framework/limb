@@ -78,4 +78,4 @@ class WactIteratorDecorateTagTest extends WactTemplateTestCase
     $this->assertEqual(trim($page->capture()), 'joe:+++enny,+++harry,|ivan:+++ann,+++boris,|');
   }
 }
-?>
+

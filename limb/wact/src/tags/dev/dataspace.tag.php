@@ -8,7 +8,7 @@
  */
 
 /**
- * @version $Id: dataspace.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: dataspace.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 
 /**
@@ -16,7 +16,7 @@
  * @tag dev:DATASPACE
  * @forbid_end_tag
  * @package wact
- * @version $Id: dataspace.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: dataspace.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactDevDataSpaceTag extends WactCompilerTag
 {
@@ -65,4 +65,4 @@ class WactDevDataSpaceTag extends WactCompilerTag
     $code_writer->writeHTML('<div aligh="left"><hr /><h3>End '.ucfirst($context).' DataSpace</h3><hr /></div>');
   }
 }
-?>
+

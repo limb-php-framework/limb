@@ -6,4 +6,4 @@ $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
 $this->dump = new lmbDbDump(dirname(__FILE__) . '/.fixture/init_tests.' . $type);
 $this->dump->load();
 
-?>
+

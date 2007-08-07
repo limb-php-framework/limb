@@ -13,7 +13,7 @@ require_once('limb/wact/src/annotation/WactClassAnnotationParser.class.php');
  * abstract class WactCompilerArtifactDictionary.
  *
  * @package wact
- * @version $Id: WactCompilerArtifactDictionary.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactCompilerArtifactDictionary.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 abstract class WactCompilerArtifactDictionary
 {
@@ -84,4 +84,4 @@ abstract class WactCompilerArtifactDictionary
       $this->extractItems($path, $extension);
   }
 }
-?>
+

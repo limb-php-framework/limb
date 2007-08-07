@@ -32,4 +32,4 @@ class WactPerformTag extends WactRuntimeComponentTag
 
 }
 
-?>
+

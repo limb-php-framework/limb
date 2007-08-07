@@ -11,7 +11,7 @@
  * @tag form:REFERER
  * @forbid_end_tag
  * @package wact
- * @version $Id: form_referer.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: form_referer.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactFormRefererTag extends WactCompilerTag
 {
@@ -33,4 +33,4 @@ class WactFormRefererTag extends WactCompilerTag
     $code->writePHP('echo "<input type=\'hidden\' name=\'referer\' value=\'' . $ref . '\'>";');
   }
 }
-?>
+

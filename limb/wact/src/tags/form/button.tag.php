@@ -17,11 +17,11 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @restrict_self_nesting
  * @suppress_attributes errorclass errorstyle displayname
  * @package wact
- * @version $Id: button.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: button.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactButtonTag extends WactControlTag
 {
   protected $runtimeIncludeFile = 'limb/wact/src/components/form/form.inc.php';
   protected $runtimeComponentName = 'WactFormElementComponent';
 }
-?>
+

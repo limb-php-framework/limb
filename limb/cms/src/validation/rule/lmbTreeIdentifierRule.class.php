@@ -28,4 +28,4 @@ class lmbTreeIdentifierRule extends lmbSingleFieldRule
   }
 }
 
-?>
+

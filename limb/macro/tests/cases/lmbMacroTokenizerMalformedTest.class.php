@@ -59,4 +59,4 @@ class lmbMacroTokenizerMalformedTest extends UnitTestCase
   }
 }
 
-?>
+

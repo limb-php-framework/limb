@@ -48,4 +48,4 @@ class WactTextAreaComponentTest extends WactTemplateTestCase
     $this->assertEqual($out, 'x &lt; y &gt; z &amp; a');
   }
 }
-?>
+

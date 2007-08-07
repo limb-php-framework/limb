@@ -55,4 +55,4 @@ class lmbFlashBoxErrorsFetcherTest extends lmbWebAppTestCase
     $this->assertFalse($rs->valid());
   }
 }
-?>
+

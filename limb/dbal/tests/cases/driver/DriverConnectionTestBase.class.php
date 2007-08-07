@@ -78,4 +78,4 @@ abstract class DriverConnectionTestBase extends UnitTestCase
   }
 }
 
-?>
+

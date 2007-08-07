@@ -124,4 +124,4 @@ class WactTemplateExpressionsTest extends WactTemplateTestCase
     $this->assertEqual($output, 'IVAN');
   }
 }
-?>
+

@@ -13,7 +13,7 @@
  * wrap tag exists.
  * @tag core:WRAP
  * @package wact
- * @version $Id: wrap.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: wrap.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactCoreWrapTag extends WactRuntimeComponentTag
 {
@@ -99,4 +99,4 @@ class WactCoreWrapTag extends WactRuntimeComponentTag
     $tree_builder->pushCursor($insertionPoint, $this->location_in_template);
   }
 }
-?>
+

@@ -16,7 +16,7 @@
  * @runat client
  * @parent_tag_class WactFormTag
  * @package wact
- * @version $Id: label.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: label.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactLabelTag extends WactRuntimeComponentHTMLTag
 {
@@ -45,4 +45,4 @@ class WactLabelTag extends WactRuntimeComponentHTMLTag
     }
   }
 }
-?>
+

@@ -129,4 +129,4 @@ EOD;
     return "<?php \$this->$method_name(array($args)); ?>";
   }
 }
-?>
+

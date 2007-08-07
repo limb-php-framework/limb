@@ -39,4 +39,4 @@ abstract class lmbDbBaseRecord implements lmbDbRecord
   //end
 }
 
-?>
+

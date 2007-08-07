@@ -4,7 +4,7 @@
  * class SomeZooTest.
  *
  * @package tests_runner
- * @version $Id: zoo_test.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: zoo_test.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class SomeZooTest extends UnitTestCase
 {
@@ -14,4 +14,4 @@ class SomeZooTest extends UnitTestCase
   }
 }
 
-?>
+

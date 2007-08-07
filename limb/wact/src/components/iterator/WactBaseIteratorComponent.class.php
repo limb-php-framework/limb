@@ -242,4 +242,4 @@ abstract class WactBaseIteratorComponent extends WactRuntimeComponent
     return $order_pairs;
   }
 }
-?>
+

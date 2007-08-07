@@ -69,4 +69,4 @@ abstract class lmbDbBaseRecordSet implements lmbDbRecordSet
   //end
 }
 
-?>
+

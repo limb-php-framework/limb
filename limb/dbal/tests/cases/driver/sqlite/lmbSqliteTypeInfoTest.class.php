@@ -26,4 +26,4 @@ class lmbSqliteTypeInfoTest extends DriverTypeInfoTestBase
   }
 }
 
-?>
+

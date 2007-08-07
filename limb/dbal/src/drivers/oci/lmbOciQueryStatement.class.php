@@ -16,7 +16,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciArraySet.class.php');
  * class lmbOciQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbOciQueryStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbOciQueryStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatement
 {
@@ -103,4 +103,4 @@ class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatemen
   }
 }
 
-?>
+

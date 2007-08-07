@@ -94,4 +94,4 @@ class WactFormElementComponentTest extends WactTemplateTestCase
     $this->assertEqual($form_element->getAttribute('style'),'ErrorStyle');
   }
 }
-?>
+

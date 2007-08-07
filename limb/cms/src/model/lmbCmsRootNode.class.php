@@ -40,4 +40,4 @@ class lmbCmsRootNode extends lmbCmsNode
   }
 }
 
-?>
+

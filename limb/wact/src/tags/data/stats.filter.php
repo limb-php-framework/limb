@@ -12,7 +12,7 @@
  * @min_attributes 1
  * @max_attributes 2
  * @package wact
- * @version $Id: stats.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: stats.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactStatsFilter extends WactCompilerFilter {
 
@@ -57,4 +57,4 @@ class WactStatsFilter extends WactCompilerFilter {
 
 }
 
-?>
+

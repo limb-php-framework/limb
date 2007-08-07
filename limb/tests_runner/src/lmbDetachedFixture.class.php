@@ -11,7 +11,7 @@
  * class lmbDetachedFixture.
  *
  * @package tests_runner
- * @version $Id: lmbDetachedFixture.class.php 6218 2007-08-06 12:16:32Z pachanga $
+ * @version $Id: lmbDetachedFixture.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDetachedFixture
 {
@@ -48,4 +48,4 @@ class lmbDetachedFixture
       return $this->_container[$name];
   }
 }
-?>
+

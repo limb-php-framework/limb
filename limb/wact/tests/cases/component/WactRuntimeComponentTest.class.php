@@ -65,4 +65,4 @@ class WactRuntimeComponentTest extends WactTemplateTestCase
 }
 
 }
-?>
+

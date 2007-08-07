@@ -47,4 +47,4 @@ class lmbFullPageCachePolicyTest extends UnitTestCase
   }
 }
 
-?>
+

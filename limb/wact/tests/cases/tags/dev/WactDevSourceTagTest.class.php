@@ -20,4 +20,4 @@ class WactDevSourceTagTest extends WactTemplateTestCase
     $this->assertWantedPattern('~\$root-&gt;get\(\'var\'\)~', $page->capture());
   }
 }
-?>
+

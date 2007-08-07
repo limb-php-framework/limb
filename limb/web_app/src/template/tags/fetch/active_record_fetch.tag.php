@@ -12,7 +12,7 @@ require_once('limb/wact/src/tags/fetch/fetch.tag.php');
  * @tag active_record:FETCH,ar:FETCH
  * @req_const_attributes class_path
  * @package web_app
- * @version $Id: active_record_fetch.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: active_record_fetch.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbActiveRecordFetchTag extends WactFetchTag
 {
@@ -45,4 +45,4 @@ class lmbActiveRecordFetchTag extends WactFetchTag
   }
 }
 
-?>
+

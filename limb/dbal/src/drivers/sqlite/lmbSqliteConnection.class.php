@@ -182,4 +182,4 @@ class lmbSqliteConnection implements lmbDbConnection
   }
 }
 
-?>
+

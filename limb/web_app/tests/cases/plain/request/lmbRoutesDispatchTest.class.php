@@ -222,4 +222,4 @@ class lmbRoutesDispatchTest extends UnitTestCase
       $dispatched['controller'] = lmb_camel_case($dispatched['controller']);
   }
 }
-?>
+

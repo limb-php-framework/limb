@@ -53,4 +53,4 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
     $this->assertFalse($this->dictionary->findTagInfo($tag, $attrs, FALSE, $parent));
   }
 }
-?>
+

@@ -18,4 +18,4 @@ class lmbCmsAdminNavigationFetcher extends lmbFetcher
   }
 }
 
-?>
+

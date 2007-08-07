@@ -90,4 +90,4 @@ class WactIteratorTransferTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), '');
   }
 }
-?>
+

@@ -64,4 +64,4 @@ class WactSiteBranchTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'Default');
   }
 }
-?>
+

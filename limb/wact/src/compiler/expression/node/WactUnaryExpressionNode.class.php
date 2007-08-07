@@ -45,4 +45,4 @@ class WactUnaryExpressionNode extends WactTemplateExpressionNode
     $this->operand->prepare();
   }
 }
-?>
+

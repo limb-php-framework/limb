@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlStatement.class.php');
  * class lmbPgsqlManipulationStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlManipulationStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbPgsqlManipulationStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbPgsqlManipulationStatement extends lmbPgsqlStatement implements lmbDbManipulationStatement
 {
@@ -33,4 +33,4 @@ class lmbPgsqlManipulationStatement extends lmbPgsqlStatement implements lmbDbMa
   }
 }
 
-?>
+

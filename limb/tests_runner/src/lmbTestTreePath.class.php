@@ -11,7 +11,7 @@
  * class lmbTestTreePath.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreePath.class.php 6021 2007-06-28 13:18:44Z pachanga $
+ * @version $Id: lmbTestTreePath.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestTreePath
 {
@@ -41,4 +41,4 @@ class lmbTestTreePath
   }
 }
 
-?>
+

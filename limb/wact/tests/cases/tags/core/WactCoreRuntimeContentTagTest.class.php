@@ -25,4 +25,4 @@ class WactCoreRuntimeContentTagTest extends WactTemplateTestCase
     $this->assertEqual($output, '-inserted-');
   }
 }
-?>
+

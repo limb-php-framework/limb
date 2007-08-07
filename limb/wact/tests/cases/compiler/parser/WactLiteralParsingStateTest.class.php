@@ -80,4 +80,4 @@ class WactLiteralParsingStateTest extends WactBaseParsingStateTestCase
     $this->state->instruction($target, $instruction, $this->location);
   }
 }
-?>
+

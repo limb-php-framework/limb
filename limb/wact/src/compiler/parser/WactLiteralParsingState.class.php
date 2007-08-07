@@ -14,7 +14,7 @@ require_once('limb/wact/src/compiler/parser/WactBaseParsingState.class.php');
  * class WactLiteralParsingState.
  *
  * @package wact
- * @version $Id: WactLiteralParsingState.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactLiteralParsingState.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactLiteralParsingState extends WactBaseParsingState  implements WactHTMLParserListener
 {
@@ -65,4 +65,4 @@ class WactLiteralParsingState extends WactBaseParsingState  implements WactHTMLP
     $this->tree_builder->addWactTextNode('<?' . $target . ' ' . $instruction . '?>');
   }
 }
-?>
+

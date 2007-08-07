@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlColumnInfo.class.php');
  * class lmbMysqlTableInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlTableInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMysqlTableInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbMysqlTableInfo extends lmbDbTableInfo
 {
@@ -86,4 +86,4 @@ class lmbMysqlTableInfo extends lmbDbTableInfo
   }
 }
 
-?>
+

@@ -15,4 +15,4 @@ $runner = new lmbTestRunner();
 $res = $runner->run(new lmbTestTreeFilePathNode(dirname(__FILE__) . '/cases/'));
 exit($res ? 0 : 1);
 
-?>
+

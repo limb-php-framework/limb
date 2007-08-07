@@ -60,4 +60,4 @@ class WactCoreBlockTagTest extends WactTemplateTestCase
     $this->assertEqual($output, 'Before-Block-After');
   }
 }
-?>
+

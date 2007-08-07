@@ -87,4 +87,4 @@ class lmbARAttributesLazyLoadingTest extends UnitTestCase
     return $object;
   }
 }
-?>
+

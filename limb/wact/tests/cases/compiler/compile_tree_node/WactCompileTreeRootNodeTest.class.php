@@ -26,4 +26,4 @@ class WactCompileTreeRootNodeTest extends WactCompileTreeNodeTest
     $this->assertIsA($this->component->getDataSource(), 'WactCompileTreeRootNode');
   }
 }
-?>
+

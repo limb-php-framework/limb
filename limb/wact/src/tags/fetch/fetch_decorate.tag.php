@@ -19,4 +19,4 @@ require_once('limb/wact/src/tags/iterator/iterator_decorate.tag.php');class Wact
 {
 }
 
-?>
+

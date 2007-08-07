@@ -344,4 +344,4 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $this->assertEqual($output, $expected_template);
   }
 }
-?>
+

@@ -11,7 +11,7 @@
  * class WactPHPNode.
  *
  * @package wact
- * @version $Id: WactPHPNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactPHPNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactPHPNode extends WactCompileTreeNode
 {
@@ -34,4 +34,4 @@ class WactPHPNode extends WactCompileTreeNode
     return $this->contents;
   }
 }
-?>
+

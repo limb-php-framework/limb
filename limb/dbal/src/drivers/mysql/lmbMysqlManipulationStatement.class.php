@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlStatement.class.php');
  * class lmbMysqlManipulationStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlManipulationStatement.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMysqlManipulationStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbMysqlManipulationStatement extends lmbMysqlStatement implements lmbDbManipulationStatement
 {
@@ -24,4 +24,4 @@ class lmbMysqlManipulationStatement extends lmbMysqlStatement implements lmbDbMa
   }
 }
 
-?>
+

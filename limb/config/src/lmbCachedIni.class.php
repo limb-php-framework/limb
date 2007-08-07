@@ -13,7 +13,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbCachedIni.
  *
  * @package config
- * @version $Id: lmbCachedIni.class.php 6200 2007-07-30 14:12:27Z pachanga $
+ * @version $Id: lmbCachedIni.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCachedIni extends lmbIni
 {
@@ -98,4 +98,4 @@ class lmbCachedIni extends lmbIni
   }
 }
 
-?>
+

@@ -34,4 +34,4 @@ class WactPaginateTag extends WactCompilerTag
   }
 }
 
-?>
+

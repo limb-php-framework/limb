@@ -11,7 +11,7 @@
  * @filter trim
  * @max_attributes 1
  * @package wact
- * @version $Id: trim.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: trim.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactTrimFilter extends WactCompilerFilter
 {
@@ -46,4 +46,4 @@ class WactTrimFilter extends WactCompilerFilter
   }
 }
 
-?>
+

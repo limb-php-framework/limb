@@ -58,4 +58,4 @@ class lmbLocaleDateTest extends UnitTestCase
     $this->assertFalse(lmbLocaleDate :: isLocalStringValid($locale, '02-29-2003', '%a %d %b %Y'));
   }
 }
-?>
+

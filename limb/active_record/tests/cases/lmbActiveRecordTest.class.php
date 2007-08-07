@@ -747,4 +747,4 @@ class lmbActiveRecordTest extends UnitTestCase
     return $object;
   }
 }
-?>
+

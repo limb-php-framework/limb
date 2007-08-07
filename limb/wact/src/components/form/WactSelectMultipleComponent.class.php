@@ -146,4 +146,4 @@ class WactSelectMultipleComponent extends WactFormElementComponent
   }
 }
 
-?>
+

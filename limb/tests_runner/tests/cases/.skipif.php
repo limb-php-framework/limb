@@ -9,4 +9,4 @@ if(class_exists('lmbTestRunner') && !in_array($file, get_included_files()))
 }
 
 return false;
-?>
+

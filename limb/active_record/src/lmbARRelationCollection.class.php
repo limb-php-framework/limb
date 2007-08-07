@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 5997 2007-06-18 12:27:21Z pachanga $
+ * @version $Id: lmbARRelationCollection.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -320,4 +320,4 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   }
 }
 
-?>
+

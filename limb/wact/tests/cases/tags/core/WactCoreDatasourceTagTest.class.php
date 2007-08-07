@@ -147,4 +147,4 @@ class WactCoreDatasourceTagTest extends WactTemplateTestCase
     $this->assertEqual($output, 'middle:outer:outer');
   }
 }
-?>
+

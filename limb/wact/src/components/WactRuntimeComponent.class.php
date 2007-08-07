@@ -15,7 +15,7 @@
  * refer to the given components relative position in a template's
  * hierarchy, not to the PHP class hierarchy
  * @package wact
- * @version $Id: WactRuntimeComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactRuntimeComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactRuntimeComponent
 {
@@ -154,4 +154,4 @@ class WactRuntimeComponent
       $this->children[$key]->render();
   }
 }
-?>
+

@@ -57,4 +57,4 @@ function DriverMysqlExec($conn, $sql)
     throw new lmbDbException('MySQL execute error happened: ' . mysql_error($conn));
 }
 
-?>
+

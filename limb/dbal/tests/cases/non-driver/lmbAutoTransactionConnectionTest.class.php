@@ -140,4 +140,4 @@ class lmbAutoTransactionConnectionTest extends UnitTestCase
     $this->assertEqual($this->connection->newStatement($sql), $stmt);
   }
 }
-?>
+

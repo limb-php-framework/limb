@@ -11,7 +11,7 @@
  * @forbid_end_tag
  * @req_const_attributes field
  * @package web_app
- * @version $Id: route_url_set.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: route_url_set.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbRouteUrlSetTag extends WactCompilerTag
 {
@@ -46,4 +46,4 @@ class lmbRouteUrlSetTag extends WactCompilerTag
   }
 }
 
-?>
+

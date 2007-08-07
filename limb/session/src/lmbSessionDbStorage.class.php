@@ -17,7 +17,7 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
  * @todo Check client ip while reading session.
  * @todo Allow to set any db table name to store session data in.
  * @see lmbSessionStartupFilter
- * @version $Id: lmbSessionDbStorage.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSessionDbStorage.class.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package session
  */
 class lmbSessionDbStorage implements lmbSessionStorage
@@ -143,4 +143,4 @@ class lmbSessionDbStorage implements lmbSessionStorage
                       new lmbSQLFieldCriteria('last_activity_time', time() - $max_life_time, lmbSQLFieldCriteria::LESS));
   }
 }
-?>
+

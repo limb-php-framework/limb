@@ -234,4 +234,4 @@ class WactExpressionTest extends UnitTestCase
     $this->assertEqual(WactExpressionTestingFilter :: $calls['prepare'], 1);
   }
 }
-?>
+

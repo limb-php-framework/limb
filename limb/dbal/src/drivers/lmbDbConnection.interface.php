@@ -11,7 +11,7 @@
  * interface lmbDbConnection.
  *
  * @package dbal
- * @version $Id: lmbDbConnection.interface.php 6176 2007-07-19 08:25:31Z pachanga $
+ * @version $Id: lmbDbConnection.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 interface lmbDbConnection
 {
@@ -32,4 +32,4 @@ interface lmbDbConnection
   function escape($string);
 }
 
-?>
+

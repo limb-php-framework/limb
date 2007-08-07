@@ -12,7 +12,7 @@
  * @min_attributes 1
  * @max_attributes 9999
  * @package wact
- * @version $Id: math.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: math.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 
 
@@ -65,4 +65,4 @@ require_once('limb/wact/src/components/data/math_filter.inc.php');class WactMath
       $code_writer->writePHP(')');
     }
 }
-?>
+

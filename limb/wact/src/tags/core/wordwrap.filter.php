@@ -12,7 +12,7 @@
  * @min_attributes 1
  * @max_attributes 1
  * @package wact
- * @version $Id: wordwrap.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: wordwrap.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactWordWrapFilter extends WactCompilerFilter {
 
@@ -44,4 +44,4 @@ class WactWordWrapFilter extends WactCompilerFilter {
 
 }
 
-?>
+

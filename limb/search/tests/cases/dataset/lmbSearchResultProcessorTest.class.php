@@ -152,4 +152,4 @@ class lmbSearchResultProcessorTest extends UnitTestCase
   }
 }
 
-?>
+

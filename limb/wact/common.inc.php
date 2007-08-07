@@ -9,7 +9,7 @@
 
 /**
  * @package wact
- * @version $Id: common.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once(dirname(__FILE__) . '/error.inc.php');
 
@@ -20,4 +20,4 @@ if(!defined('WACT_CACHE_DIR'))
   define('WACT_CACHE_DIR', dirname(__FILE__) . '/cache/');
 
 set_magic_quotes_runtime(0);
-?>
+

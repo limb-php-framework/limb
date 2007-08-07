@@ -72,4 +72,4 @@ class WactArrayIteratorDecorator implements Iterator, Countable
     return $this->iterator->count();
   }
 }
-?>
+

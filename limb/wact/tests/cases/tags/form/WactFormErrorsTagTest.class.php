@@ -78,4 +78,4 @@ class WactFormErrorsTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), '<form id="my_form">Error1 textError2 text</form>');
   }
 }
-?>
+

@@ -26,4 +26,4 @@ class lmbMysqlConnectionTest extends DriverConnectionTestBase
   }
 }
 
-?>
+

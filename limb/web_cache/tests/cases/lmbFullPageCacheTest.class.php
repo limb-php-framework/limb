@@ -121,4 +121,4 @@ class lmbFullPageCacheTest extends UnitTestCase
   }
 }
 
-?>
+

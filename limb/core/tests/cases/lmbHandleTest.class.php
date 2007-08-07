@@ -82,4 +82,4 @@ class lmbHandleTest extends UnitTestCase
     $this->assertEqual($handle->bar(), 'bar');
   }
 }
-?>
+

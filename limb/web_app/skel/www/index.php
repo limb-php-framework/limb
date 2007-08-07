@@ -13,4 +13,4 @@ require_once('src/LimbApplication.class.php');
 $application = new LimbApplication();
 $application->process();
 
-?>
+

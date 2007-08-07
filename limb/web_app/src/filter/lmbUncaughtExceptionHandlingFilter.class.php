@@ -14,8 +14,8 @@ lmb_require('limb/web_app/src/filter/lmbErrorHandlingFilter.class.php');
  * @package web_app
  * @deprecated
  * @see lmbErrorHandlingFilter
- * @version $Id: lmbUncaughtExceptionHandlingFilter.class.php 6028 2007-06-29 09:21:24Z pachanga $
+ * @version $Id: lmbUncaughtExceptionHandlingFilter.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbUncaughtExceptionHandlingFilter extends lmbErrorHandlingFilter{}
 
-?>
+

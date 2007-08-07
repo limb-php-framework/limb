@@ -255,4 +255,4 @@ class lmbMacroTokenizer
     while ($this->position < $this->length);
   }
 }
-?>
+

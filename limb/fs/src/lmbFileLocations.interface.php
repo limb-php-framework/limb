@@ -18,4 +18,4 @@ interface lmbFileLocations
   function getLocations($params = array());
 }
 
-?>
+

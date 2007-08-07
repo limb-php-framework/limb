@@ -5,4 +5,4 @@ $conf = array(
                        #for debugging templates when developing template generation code
 
 );
-?>
+

@@ -13,7 +13,7 @@ require_once('limb/wact/src/WactTemplateConfig.interface.php');
  * class WactDefaultTemplateConfig.
  *
  * @package wact
- * @version $Id: WactDefaultTemplateConfig.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactDefaultTemplateConfig.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactDefaultTemplateConfig implements WactTemplateConfig
 {
@@ -85,4 +85,4 @@ class WactDefaultTemplateConfig implements WactTemplateConfig
   }
 }
 
-?>
+

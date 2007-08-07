@@ -68,4 +68,4 @@ class WactPropertyDictionaryTest extends UnitTestCase
                                                                  'name2' => $info2));
   }
 }
-?>
+

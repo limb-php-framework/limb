@@ -251,4 +251,4 @@ class WactCompileTreeNodeTest extends UnitTestCase
 }
 
 }
-?>
+

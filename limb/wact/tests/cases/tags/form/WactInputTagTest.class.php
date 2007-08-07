@@ -133,4 +133,4 @@ class WactInputTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 }
-?>
+

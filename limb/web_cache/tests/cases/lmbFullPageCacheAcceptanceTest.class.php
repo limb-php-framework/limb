@@ -115,4 +115,4 @@ class lmbFullPageCacheAcceptanceTest extends UnitTestCase
   }
 }
 
-?>
+

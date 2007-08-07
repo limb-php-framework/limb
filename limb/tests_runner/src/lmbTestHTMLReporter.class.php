@@ -11,8 +11,8 @@
  * class lmbTestHTMLReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestHTMLReporter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTestHTMLReporter.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestHTMLReporter extends HTMLReporter{}
 
-?>
+

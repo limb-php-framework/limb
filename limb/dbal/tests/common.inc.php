@@ -78,4 +78,4 @@ function parseTestingCriteria($criteria)
   else
     return $str;
 }
-?>
+

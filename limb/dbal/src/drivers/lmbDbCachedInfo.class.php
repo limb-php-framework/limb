@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbDbCachedInfo.
  *
  * @package dbal
- * @version $Id: lmbDbCachedInfo.class.php 6003 2007-06-19 21:11:23Z pachanga $
+ * @version $Id: lmbDbCachedInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDbCachedInfo extends lmbProxy
 {
@@ -102,4 +102,4 @@ class lmbDbCachedInfo extends lmbProxy
   }
 }
 
-?>
+

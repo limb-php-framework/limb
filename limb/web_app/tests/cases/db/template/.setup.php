@@ -5,4 +5,4 @@ require_once('limb/wact/src/compiler/templatecompiler.inc.php');
 
 WactDictionaryHolder :: resetInstance();
 
-?>
+

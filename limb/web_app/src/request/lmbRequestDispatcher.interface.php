@@ -11,11 +11,11 @@
  * interface lmbRequestDispatcher.
  *
  * @package web_app
- * @version $Id: lmbRequestDispatcher.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbRequestDispatcher.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 interface lmbRequestDispatcher
 {
   function dispatch($request);
 }
 
-?>
+

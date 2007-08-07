@@ -148,4 +148,4 @@ class WactCoreDefaultTagTest extends WactTemplateTestCase
     $this->assertEqual($output, 'optional');
   }
 }
-?>
+

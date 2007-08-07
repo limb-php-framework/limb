@@ -23,4 +23,4 @@ class lmbOciTypeInfoTest extends DriverTypeInfoTestBase
   }
 }
 
-?>
+

@@ -78,4 +78,4 @@ class WactSelectWithGroupedOptionsTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 }
-?>
+

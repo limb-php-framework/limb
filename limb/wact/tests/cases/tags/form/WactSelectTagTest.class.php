@@ -63,4 +63,4 @@ class WactSelectTagTest extends WactTemplateTestCase
     }
   }
 }
-?>
+

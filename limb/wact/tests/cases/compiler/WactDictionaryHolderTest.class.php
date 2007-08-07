@@ -72,4 +72,4 @@ class WactDictionaryHolderTest extends UnitTestCase
     }
   }
 }
-?>
+

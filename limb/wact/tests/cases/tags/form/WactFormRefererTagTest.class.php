@@ -115,4 +115,4 @@ class WactFormRefererTagTest extends WactTemplateTestCase
   }
 
 }
-?>
+

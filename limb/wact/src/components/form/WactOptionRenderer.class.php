@@ -46,4 +46,4 @@ class WactOptionRenderer
     echo '</option>';
   }
 }
-?>
+

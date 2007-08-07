@@ -11,7 +11,7 @@
  * class WactJSCheckboxComponent.
  *
  * @package wact
- * @version $Id: WactJSCheckboxComponent.class.php 6203 2007-07-31 07:17:36Z pachanga $
+ * @version $Id: WactJSCheckboxComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactJSCheckboxComponent extends WactCheckableInputComponent
 {
@@ -45,4 +45,4 @@ class WactJSCheckboxComponent extends WactCheckableInputComponent
     echo "<input type='checkbox' id='{$box_id}' {$checked} {$js} {$title}>";
   }
 }
-?>
+

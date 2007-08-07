@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/command/lmbFormCommand.class.php');
  * class lmbPrefixedFormCommand.
  *
  * @package web_app
- * @version $Id: lmbPrefixedFormCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbPrefixedFormCommand.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbPrefixedFormCommand extends lmbFormCommand
 {
@@ -32,4 +32,4 @@ class lmbPrefixedFormCommand extends lmbFormCommand
     $this->validator->validate(new lmbSet($this->getRequestData()));
   }
 }
-?>
+

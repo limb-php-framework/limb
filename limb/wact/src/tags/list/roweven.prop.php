@@ -11,7 +11,7 @@
  * @property ListRowEven
  * @tag_class WactListItemTag
  * @package wact
- * @version $Id: roweven.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: roweven.prop.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactListRowEvenProperty extends WactCompilerProperty
 {
@@ -44,4 +44,4 @@ class WactListRowEvenProperty extends WactCompilerProperty
     $code_writer->writePHP('(( $' . $this->temp_var . ' % 2) == 0)');
   }
 }
-?>
+

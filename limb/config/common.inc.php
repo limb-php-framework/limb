@@ -9,9 +9,9 @@
 
 /**
  * @package config
- * @version $Id: common.inc.php 6192 2007-07-24 09:23:15Z pachanga $
+ * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once('limb/core/common.inc.php');
 require_once(dirname(__FILE__) . '/toolkit.inc.php');
 
-?>
+

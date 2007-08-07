@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * class lmbDbColumnInfo.
  *
  * @package dbal
- * @version $Id: lmbDbColumnInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDbColumnInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDbColumnInfo
 {
@@ -130,4 +130,4 @@ class lmbDbColumnInfo
   }
 }
 
-?>
+

@@ -52,7 +52,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  *  $chain->process();
  *  </code>
  *
- * @version $Id: lmbFilterChain.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFilterChain.class.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package filter_chain
  */
 class lmbFilterChain implements lmbInterceptingFilter
@@ -124,4 +124,4 @@ class lmbFilterChain implements lmbInterceptingFilter
   }
 }
 
-?>
+

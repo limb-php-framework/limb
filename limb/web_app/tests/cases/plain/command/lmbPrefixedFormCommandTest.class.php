@@ -62,4 +62,4 @@ class lmbPrefixedFormCommandTest extends UnitTestCase
   }
 }
 
-?>
+

@@ -12,7 +12,7 @@
  * @tag list:ITEM
  * @parent_tag_class WactListListTag
  * @package wact
- * @version $Id: item.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: item.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactListItemTag extends WactRuntimeDatasourceComponentTag
 {
@@ -45,4 +45,4 @@ class WactListItemTag extends WactRuntimeDatasourceComponentTag
     $code_writer->writePHP('} while (' . $list->getComponentRefCode() . '->valid());' . "\n");
   }
 }
-?>
+

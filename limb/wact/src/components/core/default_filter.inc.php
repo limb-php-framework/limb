@@ -9,7 +9,7 @@
 
 /**
  * @package wact
- * @version $Id: default_filter.inc.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: default_filter.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 function WactApplyDefault($value, $default)
 {
@@ -18,4 +18,4 @@ function WactApplyDefault($value, $default)
   else
     return $value;
 }
-?>
+

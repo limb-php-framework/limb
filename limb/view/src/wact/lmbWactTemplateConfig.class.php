@@ -54,4 +54,4 @@ class lmbWactTemplateConfig implements WactTemplateConfig
     return array();
   }
 }
-?>
+

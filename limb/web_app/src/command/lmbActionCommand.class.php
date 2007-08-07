@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/command/lmbBaseCommand.class.php');
  * class lmbActionCommand.
  *
  * @package web_app
- * @version $Id: lmbActionCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbActionCommand.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbActionCommand extends lmbBaseCommand
 {
@@ -66,4 +66,4 @@ class lmbActionCommand extends lmbBaseCommand
     $this->response->write('<html><script>window.opener.focus();window.opener.location.reload();window.close();</script></html>');
   }
 }
-?>
+

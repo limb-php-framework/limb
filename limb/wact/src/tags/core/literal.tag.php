@@ -13,9 +13,9 @@
  * @tag core:LITERAL
  * @forbid_parsing
  * @package wact
- * @version $Id: literal.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: literal.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactCoreLiteralTag extends WactCompilerTag
 {
 }
-?>
+

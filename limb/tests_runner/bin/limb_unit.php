@@ -9,7 +9,7 @@
 
 /**
  * @package tests_runner
- * @version $Id: limb_unit.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: limb_unit.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once(dirname(__FILE__) . '/../src/lmbTestShellUI.class.php');
 
@@ -19,4 +19,4 @@ error_reporting(E_ALL);
 $ui = new lmbTestShellUI();
 $ui->run();
 
-?>
+

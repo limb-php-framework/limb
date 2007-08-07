@@ -12,7 +12,7 @@ require_once('limb/wact/src/tags/form/control.inc.php');
  * @tag select_with_grouped_options
  * @known_parent WactFormTag
  * @package wact
- * @version $Id: select_with_grouped_options.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: select_with_grouped_options.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactGroupedOptionsSelectTag extends WactControlTag
 {
@@ -29,4 +29,4 @@ class WactGroupedOptionsSelectTag extends WactControlTag
     $code->writePHP($this->getComponentRefCode() . '->renderContents();');
   }
 }
-?>
+

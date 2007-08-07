@@ -25,4 +25,4 @@ class lmbGdLibraryTest extends lmbImageLibraryTestBase
     parent :: __construct();
   }
 }
-?>
+

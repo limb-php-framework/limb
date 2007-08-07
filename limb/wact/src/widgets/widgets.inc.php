@@ -18,7 +18,7 @@
  * Widgets are runtime components which have no compile time template tag.
  * They can be created and added by the PHP script controlling the template.
  * @package wact
- * @version $Id: widgets.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: widgets.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactTextWidget extends WactRuntimeComponent
 {
@@ -60,7 +60,7 @@ class WactTextWidget extends WactRuntimeComponent
 /**
  * Allows a tag to be created, which cannot contain children e.g. img
  * @package wact
- * @version $Id: widgets.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: widgets.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactTagWidget extends WactRuntimeTagComponent
 {
@@ -116,7 +116,7 @@ class WactTagWidget extends WactRuntimeTagComponent
 /**
  * Allows a tag to be created, which can contain children
  * @package wact
- * @version $Id: widgets.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: widgets.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactTagContainerWidget extends WactRuntimeTagComponent
 {
@@ -148,4 +148,4 @@ class WactTagContainerWidget extends WactRuntimeTagComponent
     echo ( '</'.$this->tag.'>' );
   }
 }
-?>
+

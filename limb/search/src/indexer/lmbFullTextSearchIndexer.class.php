@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
  * class lmbFullTextSearchIndexer.
  *
  * @package search
- * @version $Id: lmbFullTextSearchIndexer.class.php 6041 2007-07-02 12:53:01Z pachanga $
+ * @version $Id: lmbFullTextSearchIndexer.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbFullTextSearchIndexer
 {
@@ -110,4 +110,4 @@ class lmbFullTextSearchIndexer
   }
 }
 
-?>
+

@@ -63,4 +63,4 @@ class WactAttributeLiteralFragment implements WactExpressionInterface
   {
   }
 }
-?>
+

@@ -11,7 +11,7 @@
  * class WactSourceFileParser.
  *
  * @package wact
- * @version $Id: WactSourceFileParser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactSourceFileParser.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactSourceFileParser implements WactHTMLParserListener
 {
@@ -143,4 +143,4 @@ class WactSourceFileParser implements WactHTMLParserListener
   }
 }
 
-?>
+

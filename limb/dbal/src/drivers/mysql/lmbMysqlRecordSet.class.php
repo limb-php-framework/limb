@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecord.class.php');
  * class lmbMysqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbMysqlRecordSet.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMysqlRecordSet.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbMysqlRecordSet extends lmbDbBaseRecordSet
 {
@@ -155,4 +155,4 @@ class lmbMysqlRecordSet extends lmbDbBaseRecordSet
   }
 }
 
-?>
+

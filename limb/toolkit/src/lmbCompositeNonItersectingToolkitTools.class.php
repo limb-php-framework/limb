@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbCompositeToolkitTools.class.php');
  * Checks if tools have intersecting methods. Throws an exception if two separate tools have the same method.
  * @see lmbToolkit :: extend()
  * @package toolkit
- * @version $Id: lmbCompositeNonItersectingToolkitTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCompositeNonItersectingToolkitTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCompositeNonItersectingToolkitTools extends lmbCompositeToolkitTools
 {
@@ -34,4 +34,4 @@ class lmbCompositeNonItersectingToolkitTools extends lmbCompositeToolkitTools
     return $result;
   }
 }
-?>
+

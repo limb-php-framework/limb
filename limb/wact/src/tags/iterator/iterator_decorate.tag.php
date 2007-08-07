@@ -39,4 +39,4 @@ class WactIteratorDecorateTag extends WactCompilerTag
   }
 }
 
-?>
+

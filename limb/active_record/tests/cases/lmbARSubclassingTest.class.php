@@ -182,4 +182,4 @@ class lmbARSubclassingTest extends UnitTestCase
   }
 }
 
-?>
+

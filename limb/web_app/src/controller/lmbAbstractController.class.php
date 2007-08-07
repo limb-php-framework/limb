@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbMixable.class.php');
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbAbstractController.class.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package web_app
  */
 abstract class lmbAbstractController
@@ -117,4 +117,4 @@ abstract class lmbAbstractController
   }
 }
 
-?>
+

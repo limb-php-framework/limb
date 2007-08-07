@@ -21,7 +21,7 @@
  * or addWactTextNode().
  *
  * @package wact
- * @version $Id: WactTreeBuilder.class.php 6151 2007-07-11 11:07:01Z pachanga $
+ * @version $Id: WactTreeBuilder.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 
 
@@ -343,4 +343,4 @@ define ('WACT_EXPECTED_PLAIN_TAG',	2);class WactTreeBuilder
     $analizer->parse($text, $listener);
   }
 }
-?>
+

@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lmbTestHTMLReporter.class.php');
  * class lmbTestWebUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestWebUI.class.php 6218 2007-08-06 12:16:32Z pachanga $
+ * @version $Id: lmbTestWebUI.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestWebUI
 {
@@ -189,4 +189,4 @@ EOD;
   }
 }
 
-?>
+

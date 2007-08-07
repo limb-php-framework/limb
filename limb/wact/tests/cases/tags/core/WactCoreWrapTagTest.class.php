@@ -138,4 +138,4 @@ class WactCoreWrapTagTest extends WactTemplateTestCase
     }
   }
 }
-?>
+

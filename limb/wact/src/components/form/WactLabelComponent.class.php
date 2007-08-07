@@ -39,4 +39,4 @@ class WactLabelComponent extends WactRuntimeTagComponent
       $this->setAttribute('style', $this->errorstyle);
   }
 }
-?>
+

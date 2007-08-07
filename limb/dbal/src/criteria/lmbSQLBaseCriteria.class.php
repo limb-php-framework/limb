@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 6048 2007-07-03 08:41:58Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {
@@ -115,4 +115,4 @@ abstract class lmbSQLBaseCriteria
 
   protected function _appendExpressionToStatement(&$str, &$values, $conn){}
 }
-?>
+

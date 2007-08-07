@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 6176 2007-07-19 08:25:31Z pachanga $
+ * @version $Id: lmbPgsqlConnection.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbPgsqlConnection implements lmbDbConnection
 {
@@ -208,4 +208,4 @@ class lmbPgsqlConnection implements lmbDbConnection
   }
 }
 
-?>
+

@@ -65,4 +65,4 @@ class WactListFillTag extends WactCompilerTag
     $code->writePhp('}'. "\n");
   }
 }
-?>
+

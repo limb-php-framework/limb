@@ -14,7 +14,7 @@ define('LIMB_INSERT_QUERY_NON_VALUE', uniqid());
  * class lmbInsertQuery.
  *
  * @package dbal
- * @version $Id: lmbInsertQuery.class.php 6005 2007-06-19 21:14:49Z pachanga $
+ * @version $Id: lmbInsertQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbInsertQuery extends lmbTemplateQuery
 {
@@ -67,4 +67,4 @@ class lmbInsertQuery extends lmbTemplateQuery
   }
 
 }
-?>
+

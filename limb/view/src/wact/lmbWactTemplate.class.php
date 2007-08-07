@@ -28,4 +28,4 @@ class lmbWactTemplate extends WactTemplate
     parent :: __construct($template_path, $config, $locator);
   }
 }
-?>
+

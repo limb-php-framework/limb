@@ -60,4 +60,4 @@ class WactTestTemplateConfig implements WactTemplateConfig
 
 }
 
-?>
+

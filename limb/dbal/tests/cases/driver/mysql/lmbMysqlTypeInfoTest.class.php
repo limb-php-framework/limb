@@ -26,4 +26,4 @@ class lmbMysqlTypeInfoTest extends DriverTypeInfoTestBase
   }
 }
 
-?>
+

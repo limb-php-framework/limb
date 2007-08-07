@@ -39,4 +39,4 @@ class lmbMacroTemplateLocator
     return file_get_contents($file_name, 1);
   }
 }
-?>
+

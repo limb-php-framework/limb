@@ -9,10 +9,10 @@
 
 /**
  * @package cms
- * @version $Id: toolkit.inc.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: toolkit.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/cms/src/toolkit/lmbCmsTools.class.php');
 lmbToolkit :: merge(new lmbCmsTools());
 
-?>
+

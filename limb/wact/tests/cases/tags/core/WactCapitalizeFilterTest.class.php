@@ -30,4 +30,4 @@ class WactCapitalizeFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, 'Testing');
   }
 }
-?>
+

@@ -122,4 +122,4 @@ class lmbReflectionHelper
     return str_replace(array('[', ']', ' '), '', $name);
   }
 }
-?>
+

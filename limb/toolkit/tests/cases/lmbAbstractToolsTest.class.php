@@ -24,4 +24,4 @@ class lmbAbstractToolsTest extends UnitTestCase
   }
 }
 
-?>
+

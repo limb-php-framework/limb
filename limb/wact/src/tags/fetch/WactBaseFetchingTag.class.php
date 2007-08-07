@@ -117,4 +117,4 @@ class WactBaseFetchingTag extends WactRuntimeComponentTag
   }
 }
 
-?>
+

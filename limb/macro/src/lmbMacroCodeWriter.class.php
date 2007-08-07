@@ -181,4 +181,4 @@ class lmbMacroCodeWriter
     return '$' . $this->getTempVariable();
   }
 }
-?>
+

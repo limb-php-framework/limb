@@ -18,4 +18,4 @@ foreach(glob(dirname(__FILE__) . '/cases/*Test.class.php') as $file)
 if(!$res = $group->run(new TextReporter()))
   exit(1);
 
-?>
+

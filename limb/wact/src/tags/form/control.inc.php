@@ -11,7 +11,7 @@
  * Ancester tag class for input controls
  * @access protected
  * @package wact
- * @version $Id: control.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: control.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactControlTag extends WactRuntimeComponentHTMLTag
 {
@@ -104,4 +104,4 @@ class WactControlTag extends WactRuntimeComponentHTMLTag
   }
 }
 
-?>
+

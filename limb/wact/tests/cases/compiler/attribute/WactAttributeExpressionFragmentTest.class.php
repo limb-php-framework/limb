@@ -74,4 +74,4 @@ class WactAttributeExpressionFragmentTest extends UnitTestCase
     $this->assertEqual($code_writer->renderCode(), '');
   }
 }
-?>
+

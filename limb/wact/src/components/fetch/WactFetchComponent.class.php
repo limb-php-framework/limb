@@ -75,4 +75,4 @@ class WactFetchComponent extends WactBaseIteratorComponent
     return $fetcher;
   }
 }
-?>
+

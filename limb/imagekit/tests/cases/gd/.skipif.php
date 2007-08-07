@@ -5,4 +5,4 @@ if(!extension_loaded('gd'))
   return true;
 }
 return false;
-?>
+

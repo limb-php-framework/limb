@@ -110,4 +110,4 @@ class lmbActiveRecordFetchTagTest extends lmbWactTestCase
     return $object;
   }
 }
-?>
+

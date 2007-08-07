@@ -63,4 +63,4 @@ class WactPaginateTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 }
-?>
+

@@ -37,4 +37,4 @@ class lmbMacroTagDictionary
       return $this->info[$tag];
   }
 }
-?>
+

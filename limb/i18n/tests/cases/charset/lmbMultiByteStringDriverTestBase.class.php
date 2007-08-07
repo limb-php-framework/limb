@@ -227,4 +227,4 @@ abstract class lmbMultiByteStringDriverTestBase extends UnitTestCase
     }
 }
 
-?>
+

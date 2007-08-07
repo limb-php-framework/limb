@@ -85,4 +85,4 @@ class lmbSwishSearch
     return $query;
   }
 }
-?>
+

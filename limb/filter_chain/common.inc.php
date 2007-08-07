@@ -9,8 +9,8 @@
 
 /**
  * @package filter_chain
- * @version $Id: common.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 require_once('limb/core/common.inc.php');
 
-?>
+

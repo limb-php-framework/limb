@@ -52,4 +52,4 @@ class WactBinaryExpressionNode extends WactTemplateExpressionNode
   }
 }
 
-?>
+

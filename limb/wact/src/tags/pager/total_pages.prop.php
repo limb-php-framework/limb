@@ -11,7 +11,7 @@
  * @property TotalPages
  * @tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: total_pages.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: total_pages.prop.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactPagerTotalPagesProperty extends WactCompilerProperty
 {
@@ -22,4 +22,4 @@ class WactPagerTotalPagesProperty extends WactCompilerProperty
   }
 }
 
-?>
+

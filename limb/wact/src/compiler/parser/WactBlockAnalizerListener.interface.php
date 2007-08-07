@@ -18,4 +18,4 @@ interface WactBlockAnalizerListener
   function addLiteralFragment($text);
   function addExpressionFragment($text);
 }
-?>
+

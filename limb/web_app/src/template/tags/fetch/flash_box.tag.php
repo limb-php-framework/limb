@@ -29,4 +29,4 @@ class lmbFlashBoxTag extends WactFetchTag
 
 }
 
-?>
+

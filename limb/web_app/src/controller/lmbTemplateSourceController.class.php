@@ -25,4 +25,4 @@ class lmbTemplateSourceController extends lmbController
   }
 }
 
-?>
+

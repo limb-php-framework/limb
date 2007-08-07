@@ -181,4 +181,4 @@ class WactCoreIncludeTagTest extends WactTemplateTestCase
     $this->assertEqual($output, '<b>a</b>value');
   }
 }
-?>
+

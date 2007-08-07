@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbHandle.class.php');
  * class lmbWebApplication.
  *
  * @package web_app
- * @version $Id: lmbWebApplication.class.php 6028 2007-06-29 09:21:24Z pachanga $
+ * @version $Id: lmbWebApplication.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbWebApplication extends lmbFilterChain
 {
@@ -29,4 +29,4 @@ class lmbWebApplication extends lmbFilterChain
   }
 }
 
-?>
+

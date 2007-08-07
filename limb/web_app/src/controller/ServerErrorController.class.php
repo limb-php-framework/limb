@@ -25,4 +25,4 @@ class ServerErrorController extends lmbController
   }
 }
 
-?>
+

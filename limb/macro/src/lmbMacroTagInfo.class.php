@@ -96,4 +96,4 @@ class lmbMacroTagInfo
       require_once($this->file);
   }
 }
-?>
+

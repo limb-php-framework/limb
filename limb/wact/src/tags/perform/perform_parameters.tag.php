@@ -29,4 +29,4 @@ class WactPerformParametersTag extends WactCompilerTag
   }
 }
 
-?>
+

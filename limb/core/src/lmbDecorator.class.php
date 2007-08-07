@@ -34,4 +34,4 @@ class lmbDecorator
     return call_user_func_array(array($this->original, $method), $args);
   }
 }
-?>
+

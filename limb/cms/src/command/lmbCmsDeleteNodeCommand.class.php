@@ -13,7 +13,7 @@ lmb_require('limb/cms/src/model/lmbCmsNode.class.php');
  * class lmbCmsDeleteNodeCommand.
  *
  * @package cms
- * @version $Id: lmbCmsDeleteNodeCommand.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCmsDeleteNodeCommand.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCmsDeleteNodeCommand extends lmbFormCommand
 {
@@ -36,4 +36,4 @@ class lmbCmsDeleteNodeCommand extends lmbFormCommand
   }
 }
 
-?>
+

@@ -88,4 +88,4 @@ class WactDefaultFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, 'default');
   }
 }
-?>
+

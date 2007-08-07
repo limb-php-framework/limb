@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 6036 2007-07-02 06:31:54Z serega $
+ * @version $Id: lmbWebAppTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -144,4 +144,4 @@ class lmbWebAppTools extends lmbAbstractTools
       $toolkit->getResponse()->redirect($params_or_url . $append);
   }
 }
-?>
+

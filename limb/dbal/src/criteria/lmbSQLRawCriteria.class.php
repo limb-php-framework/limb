@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSQLRawCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLRawCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
+ * @version $Id: lmbSQLRawCriteria.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbSQLRawCriteria extends lmbSQLCriteria{}
-?>
+

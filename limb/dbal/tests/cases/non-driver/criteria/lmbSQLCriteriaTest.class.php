@@ -206,4 +206,4 @@ class lmbSQLCriteriaTest extends UnitTestCase
   }
 }
 
-?>
+

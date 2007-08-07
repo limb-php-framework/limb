@@ -34,4 +34,4 @@ class WactBaseParsingStateTestCase extends UnitTestCase
 
 SimpleTestOptions :: ignore('WactBaseParsingStateTestCase');
 
-?>
+

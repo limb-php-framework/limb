@@ -50,4 +50,4 @@ class WactCheckableInputComponent extends WactFormElementComponent
     return false;
   }
 }
-?>
+

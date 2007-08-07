@@ -10,7 +10,7 @@
 /**
  * Base class for runtime components that hold data
  * @package wact
- * @version $Id: WactDatasourceRuntimeComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactDatasourceRuntimeComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactDatasourceRuntimeComponent extends WactRuntimeComponent implements ArrayAccess
 {
@@ -69,4 +69,4 @@ class WactDatasourceRuntimeComponent extends WactRuntimeComponent implements Arr
   }
 }
 
-?>
+

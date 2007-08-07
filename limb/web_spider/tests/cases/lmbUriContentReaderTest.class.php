@@ -30,4 +30,4 @@ class lmbUriContentReaderTest extends UnitTestCase
   }
 }
 
-?>
+

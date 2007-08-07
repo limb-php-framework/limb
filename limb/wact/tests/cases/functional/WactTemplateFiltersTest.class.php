@@ -234,4 +234,4 @@ class WactTemplateFiltersTest extends WactTemplateTestCase
     $this->assertEqual($output, '&#x75;&#x73;&#x65;&#x72;&#x40;&#x64;&#x6f;&#x6d;&#x61;&#x69;&#x6e;&#x2e;&#x63;&#x6f;&#x6d;');
   }
 }
-?>
+

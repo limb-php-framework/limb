@@ -29,4 +29,4 @@ class WactFormPreserveStateTagTest extends WactTemplateTestCase
                        '</form>');
   }
 }
-?>
+

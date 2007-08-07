@@ -78,4 +78,4 @@ class lmbInsertQueryTest extends UnitTestCase
 
   }
 }
-?>
+

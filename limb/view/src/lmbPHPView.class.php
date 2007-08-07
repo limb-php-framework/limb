@@ -38,4 +38,4 @@ class lmbPHPView
     return $res;
   }
 }
-?>
+

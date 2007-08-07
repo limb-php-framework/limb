@@ -61,4 +61,4 @@ class lmbNSTreeTest extends lmbTreeTestBase
     $this->assertEqual($this->imp->getNode($node_2)->export(), $moved_node);
   }
 }
-?>
+

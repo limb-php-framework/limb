@@ -322,4 +322,4 @@ class lmbCmsNodeTest extends UnitTestCase
   }
 }
 
-?>
+

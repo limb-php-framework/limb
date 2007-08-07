@@ -82,4 +82,4 @@ class lmbCmsNodeBasedRequestDispatcherTest extends UnitTestCase
   }
 }
 
-?>
+

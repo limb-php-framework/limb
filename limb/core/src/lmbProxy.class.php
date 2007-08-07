@@ -89,4 +89,4 @@ abstract class lmbProxy
     $this->original->$attr = $val;
   }
 }
-?>
+

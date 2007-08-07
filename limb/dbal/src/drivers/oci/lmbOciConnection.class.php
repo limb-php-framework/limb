@@ -21,7 +21,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
  * class lmbOciConnection.
  *
  * @package dbal
- * @version $Id: lmbOciConnection.class.php 6178 2007-07-19 10:10:48Z pachanga $
+ * @version $Id: lmbOciConnection.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbOciConnection implements lmbDbConnection
 {
@@ -217,4 +217,4 @@ class lmbOciConnection implements lmbDbConnection
     return (int)$this->newStatement("SELECT $seq.CURRVAL FROM DUAL")->getOneValue();
   }
 }
-?>
+

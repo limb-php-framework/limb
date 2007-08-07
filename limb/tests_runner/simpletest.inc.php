@@ -21,4 +21,4 @@ if(!@include_once(SIMPLE_TEST . '/unit_tester.php'))
 
 require_once(SIMPLE_TEST . '/mock_objects.php');
 require_once(SIMPLE_TEST . '/reporter.php');
-?>
+

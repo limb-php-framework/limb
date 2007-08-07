@@ -171,4 +171,4 @@ class lmbClassPathTest extends UnitTestCase
     unlink(LIMB_VAR_DIR . '/FooBarZooTest2.class.php');
   }
 }
-?>
+

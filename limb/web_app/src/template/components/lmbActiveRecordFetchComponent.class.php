@@ -35,4 +35,4 @@ class lmbActiveRecordFetchComponent extends WactFetchComponent
     return $fetcher;
   }
 }
-?>
+

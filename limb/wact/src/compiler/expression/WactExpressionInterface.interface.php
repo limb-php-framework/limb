@@ -21,4 +21,4 @@ interface WactExpressionInterface
   function generateExpression($code_writer);
   function generatePostStatement($code_writer);
 }
-?>
+

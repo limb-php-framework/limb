@@ -28,4 +28,4 @@ class WactPasswordInputTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 }
-?>
+

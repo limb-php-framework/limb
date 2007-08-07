@@ -130,4 +130,4 @@ class lmbSwishFocus
     return $items;
   }
 }
-?>
+

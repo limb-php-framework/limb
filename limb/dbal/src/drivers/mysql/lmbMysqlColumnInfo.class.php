@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
  * class lmbMysqlColumnInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlColumnInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMysqlColumnInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbMysqlColumnInfo extends lmbDbColumnInfo
 {
@@ -67,4 +67,4 @@ class lmbMysqlColumnInfo extends lmbDbColumnInfo
   }
 }
 
-?>
+

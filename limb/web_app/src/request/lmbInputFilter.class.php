@@ -11,7 +11,7 @@
  * class lmbInputFilter.
  *
  * @package web_app
- * @version $Id: lmbInputFilter.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbInputFilter.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbInputFilter
 {
@@ -32,4 +32,4 @@ class lmbInputFilter
     return $result;
   }
 }
-?>
+

@@ -11,7 +11,7 @@
  * class lmbARMetaInfo.
  *
  * @package active_record
- * @version $Id: lmbARMetaInfo.class.php 5997 2007-06-18 12:27:21Z pachanga $
+ * @version $Id: lmbARMetaInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbARMetaInfo
 {
@@ -90,4 +90,4 @@ class lmbARMetaInfo
   }
 }
 
-?>
+

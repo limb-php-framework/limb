@@ -90,4 +90,4 @@ class AdminUserController extends lmbController
     $validator->validate($this->request);
   }
 }
-?>
+

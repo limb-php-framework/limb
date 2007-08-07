@@ -36,4 +36,4 @@ class lmbConfTest extends UnitTestCase
   }
 }
 
-?>
+

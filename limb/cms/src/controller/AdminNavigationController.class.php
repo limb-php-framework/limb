@@ -8,4 +8,4 @@ class AdminNavigationController extends AdminNodeWithObjectController
   protected $_form_name = 'navigation_form';
 }
 
-?>
+

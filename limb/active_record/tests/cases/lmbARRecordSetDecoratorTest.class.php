@@ -124,4 +124,4 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
     return $course;
   }
 }
-?>
+

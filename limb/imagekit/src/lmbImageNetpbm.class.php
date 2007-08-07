@@ -46,7 +46,7 @@ lmb_require('limb/imagekit/src/lmbImageLibrary.class.php');
  * class lmbImageNetpbm.
  *
  * @package imagekit
- * @version $Id: lmbImageNetpbm.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbImageNetpbm.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbImageNetpbm extends lmbImageLibrary
 {
@@ -320,4 +320,4 @@ class lmbImageNetpbm extends lmbImageLibrary
     $this->current_input_file_type = $this->current_output_file_type;
   }
 }
-?>
+

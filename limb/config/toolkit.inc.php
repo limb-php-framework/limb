@@ -9,11 +9,11 @@
 
 /**
  * @package config
- * @version $Id: toolkit.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: toolkit.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/fs/toolkit.inc.php');
 lmb_require('limb/config/src/lmbConfTools.class.php');
 lmbToolkit :: merge(new lmbConfTools());
 
-?>
+

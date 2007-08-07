@@ -26,4 +26,4 @@ class WactInputComponent extends WactFormElementComponent
    parent :: renderAttributes();
   }
 }
-?>
+

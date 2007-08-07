@@ -16,7 +16,7 @@ require_once('limb/wact/src/tags/form/form.tag.php');
  * @suppress_attributes children_reuse_runat
  * @restrict_self_nesting
  * @package wact
- * @version $Id: form_multiple.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: form_multiple.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactFormMultipleTag extends WactFormTag
 {
@@ -56,4 +56,4 @@ class WactFormMultipleTag extends WactFormTag
   }
 
 }
-?>
+

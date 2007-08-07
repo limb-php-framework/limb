@@ -181,4 +181,4 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
   }
 
 }
-?>
+

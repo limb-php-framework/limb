@@ -18,7 +18,7 @@ define('LOCATION_CLIENT', 'client');
  * class WactTagDictionary.
  *
  * @package wact
- * @version $Id: WactTagDictionary.class.php 5989 2007-06-13 13:08:11Z pachanga $
+ * @version $Id: WactTagDictionary.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactTagDictionary extends WactCompilerArtifactDictionary
 {
@@ -106,4 +106,4 @@ class WactTagDictionary extends WactCompilerArtifactDictionary
       return NULL;
   }
 }
-?>
+

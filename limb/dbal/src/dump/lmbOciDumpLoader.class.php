@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/dump/lmbSQLDumpLoader.class.php');
  * class lmbOciDumpLoader.
  *
  * @package dbal
- * @version $Id: lmbOciDumpLoader.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbOciDumpLoader.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbOciDumpLoader extends lmbSQLDumpLoader
 {
@@ -42,4 +42,4 @@ class lmbOciDumpLoader extends lmbSQLDumpLoader
       return $sql;
   }
 }
-?>
+

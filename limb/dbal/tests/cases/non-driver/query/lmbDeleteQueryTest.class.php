@@ -79,4 +79,4 @@ class lmbDeleteQueryTest extends UnitTestCase
     $this->assertEqual(sizeof($arr), 1);
   }
 }
-?>
+

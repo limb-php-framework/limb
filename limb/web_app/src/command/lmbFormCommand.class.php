@@ -16,7 +16,7 @@ lmb_require('limb/core/src/lmbDelegate.class.php');
  * class lmbFormCommand.
  *
  * @package web_app
- * @version $Id: lmbFormCommand.class.php 6191 2007-07-24 09:12:50Z pachanga $
+ * @version $Id: lmbFormCommand.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbFormCommand extends lmbActionCommand
 {
@@ -217,4 +217,4 @@ class lmbFormCommand extends lmbActionCommand
     throw new lmbDelegateHaltException('Delegate was halted');
   }
 }
-?>
+

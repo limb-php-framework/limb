@@ -11,7 +11,7 @@
  * @property ListRowNumber
  * @tag_class WactListItemTag
  * @package wact
- * @version $Id: rownumber.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: rownumber.prop.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactListRowNumberProperty extends WactCompilerProperty
 {
@@ -39,4 +39,4 @@ class WactListRowNumberProperty extends WactCompilerProperty
 
 }
 
-?>
+

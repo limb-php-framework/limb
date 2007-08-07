@@ -168,4 +168,4 @@ class lmbDBALTest extends UnitTestCase
     $this->assertEqual($query->getTable(), 'test_db_table');
   }
 }
-?>
+

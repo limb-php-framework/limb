@@ -55,4 +55,4 @@ class WactTrimFilterTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), ':value:');
   }
 }
-?>
+

@@ -33,4 +33,4 @@ class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
   }
 }
 
-?>
+

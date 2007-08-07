@@ -55,4 +55,4 @@ class WactSiteBranchSelectorTag extends WactCompilerTag
     return '~^' . strtr(preg_quote($path, '~'), $trans) . '~';
   }
 }
-?>
+

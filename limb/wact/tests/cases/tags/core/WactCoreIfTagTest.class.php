@@ -74,4 +74,4 @@ class WactCoreIfTagTest extends WactTemplateTestCase
     $this->assertEqual($output, 'here');
   }
 }
-?>
+

@@ -52,4 +52,4 @@ class WactTestTemplateLocatorCase extends WactTemplateTestCase {
                        $templateContent);
   }
 }
-?>
+

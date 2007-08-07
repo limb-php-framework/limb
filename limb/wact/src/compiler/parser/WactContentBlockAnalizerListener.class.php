@@ -41,4 +41,4 @@ class WactContentBlockAnalizerListener implements WactBlockAnalizerListener
     $this->tree_builder->addNode($output_expression);
   }
 }
-?>
+

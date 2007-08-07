@@ -182,4 +182,4 @@ class WactCoreSetTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'green');
   }
 }
-?>
+

@@ -183,4 +183,4 @@ class lmbDelegateTest extends UnitTestCase
     $this->assertNull($s3->instance_arg);
   }
 }
-?>
+

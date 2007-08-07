@@ -20,4 +20,4 @@ interface WactFetcher
   */
   function fetch();
 }
-?>
+

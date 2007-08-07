@@ -256,4 +256,4 @@ class lmbObjectTest extends UnitTestCase
     $this->assertFalse(isset($o['bar']));
   }
 }
-?>
+

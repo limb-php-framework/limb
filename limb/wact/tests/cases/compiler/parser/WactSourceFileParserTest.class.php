@@ -125,4 +125,4 @@ class WactSourceFileParserTest extends UnitTestCase
     $this->parser->instruction($target, $instruction, $location);
   }
 }
-?>
+

@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
  * class lmbDeleteQuery.
  *
  * @package dbal
- * @version $Id: lmbDeleteQuery.class.php 6039 2007-07-02 12:51:09Z pachanga $
+ * @version $Id: lmbDeleteQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDeleteQuery extends lmbCriteriaQuery
 {
@@ -34,4 +34,4 @@ class lmbDeleteQuery extends lmbCriteriaQuery
     return $this->_conn->quoteIdentifier($this->_table);
   }
 }
-?>
+

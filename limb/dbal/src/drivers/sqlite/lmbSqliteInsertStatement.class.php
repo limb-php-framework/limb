@@ -28,4 +28,4 @@ class lmbSqliteInsertStatement extends lmbSqliteManipulationStatement implements
   }
 }
 
-?>
+

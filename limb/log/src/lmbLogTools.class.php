@@ -38,4 +38,4 @@ class lmbLogTools extends lmbAbstractTools
     return $this->log;
   }
 }
-?>
+

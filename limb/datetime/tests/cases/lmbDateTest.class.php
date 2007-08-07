@@ -616,4 +616,4 @@ class lmbDateTest extends UnitTestCase
     $this->assertFalse($date2->isEqualDate($date1));
   }
 }
-?>
+

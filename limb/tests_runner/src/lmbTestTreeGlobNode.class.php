@@ -14,7 +14,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeGlobNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeGlobNode.class.php 6202 2007-07-30 14:13:58Z pachanga $
+ * @version $Id: lmbTestTreeGlobNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
@@ -49,4 +49,4 @@ class lmbTestTreeGlobNode extends lmbTestTreeNode
   }
 }
 
-?>
+

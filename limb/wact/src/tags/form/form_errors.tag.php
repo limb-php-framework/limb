@@ -11,7 +11,7 @@
  * @tag form:ERRORS
  * @parent_tag_class WactFormTag
  * @package wact
- * @version $Id: form_errors.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: form_errors.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactFormErrorsTag extends WactCompilerTag
 {
@@ -41,4 +41,4 @@ class WactFormErrorsTag extends WactCompilerTag
                     $form->getComponentRefCode() . '->getErrorsDataSet("' . $for. '"));');
   }
 }
-?>
+

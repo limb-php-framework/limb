@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6218 2007-08-06 12:16:32Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestTreeNode
 {
@@ -162,4 +162,4 @@ class lmbTestTreeNode
   protected function _prepareTestCase($test){}
 }
 
-?>
+

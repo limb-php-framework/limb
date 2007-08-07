@@ -150,4 +150,4 @@ class lmbUpdateQueryTest extends UnitTestCase
     $this->assertEqual($record->get('description'), $description);
   }
 }
-?>
+

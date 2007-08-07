@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLBaseCriteria.class.php');
  * class lmbSQLFieldBetweenCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLFieldBetweenCriteria.class.php 6047 2007-07-02 22:30:59Z pachanga $
+ * @version $Id: lmbSQLFieldBetweenCriteria.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbSQLFieldBetweenCriteria extends lmbSQLBaseCriteria
 {
@@ -45,4 +45,4 @@ class lmbSQLFieldBetweenCriteria extends lmbSQLBaseCriteria
   }
 }
 
-?>
+

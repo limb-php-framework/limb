@@ -66,4 +66,4 @@ abstract class lmbView
     return $this->variables;
   }
 }
-?>
+

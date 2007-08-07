@@ -127,4 +127,4 @@ class WactTemplateMathFilterTestCase extends WactTemplateTestCase {
     $this->assertWantedPattern('/98[.]95$/', $output);
   }
 }
-?>
+

@@ -59,4 +59,4 @@ class lmbDetachedFixtureTest extends lmbTestRunnerBase
     $this->assertEqual($str, 'test');
   }
 }
-?>
+

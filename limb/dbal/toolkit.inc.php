@@ -9,11 +9,11 @@
 
 /**
  * @package dbal
- * @version $Id: toolkit.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: toolkit.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 lmb_require('limb/config/toolkit.inc.php');
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/dbal/src/toolkit/lmbDbTools.class.php');
 lmbToolkit :: merge(new lmbDbTools());
 
-?>
+

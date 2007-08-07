@@ -20,4 +20,4 @@ $conf = array(
   lmbCmsUserRoles :: EDITOR  => $editor,
   lmbCmsUserRoles :: ADMIN  => $admin,
 );
-?>
+

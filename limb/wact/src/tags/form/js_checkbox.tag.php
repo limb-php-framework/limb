@@ -14,7 +14,7 @@ require_once('limb/wact/src/tags/form/control.inc.php');
  * @suppress_attributes errorclass errorstyle displayname
  * @forbid_end_tag
  * @package wact
- * @version $Id: js_checkbox.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: js_checkbox.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactJSCheckboxTag extends WactControlTag
 {
@@ -39,4 +39,4 @@ class WactJSCheckboxTag extends WactControlTag
   }
 }
 
-?>
+

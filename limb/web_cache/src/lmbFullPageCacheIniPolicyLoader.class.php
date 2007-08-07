@@ -17,7 +17,7 @@ lmb_require('limb/config/toolkit.inc.php');
  * class lmbFullPageCacheIniPolicyLoader.
  *
  * @package web_cache
- * @version $Id: lmbFullPageCacheIniPolicyLoader.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFullPageCacheIniPolicyLoader.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbFullPageCacheIniPolicyLoader
 {
@@ -70,4 +70,4 @@ class lmbFullPageCacheIniPolicyLoader
   }
 }
 
-?>
+

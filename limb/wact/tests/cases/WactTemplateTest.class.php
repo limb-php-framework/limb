@@ -30,4 +30,4 @@ class WactTemplateTest extends UnitTestCase
   }
 }
 
-?>
+

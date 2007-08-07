@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6008 2007-06-20 08:32:14Z serega $
+ * @version $Id: lmbActiveRecord.class.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1935,4 +1935,4 @@ class lmbActiveRecord extends lmbObject
   }
 }
 
-?>
+

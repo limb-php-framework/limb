@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6048 2007-07-03 08:41:58Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
@@ -114,4 +114,4 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     }
   }
 }
-?>
+

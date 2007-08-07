@@ -59,4 +59,4 @@ class ZendSearchController extends lmbController
     return htmlspecialchars($query);
   }
 }
-?>
+

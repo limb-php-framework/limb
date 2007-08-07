@@ -15,4 +15,4 @@ require_once('limb/core/common.inc.php');
 lmb_require(dirname(__FILE__) . '/wact.inc.php');
 lmb_require(dirname(__FILE__) . '/toolkit.inc.php');
 
-?>
+

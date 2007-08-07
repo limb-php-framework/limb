@@ -64,4 +64,4 @@ class WactCoreLiteralTagTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form></form>');
   }
 }
-?>
+

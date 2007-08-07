@@ -121,4 +121,4 @@ class lmbDynamicCommandControllerTest extends UnitTestCase
   }
 }
 
-?>
+

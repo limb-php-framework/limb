@@ -11,7 +11,7 @@
  * class lmbSearchTextNormalizer.
  *
  * @package search
- * @version $Id: lmbSearchTextNormalizer.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSearchTextNormalizer.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbSearchTextNormalizer
 {
@@ -70,4 +70,4 @@ class lmbSearchTextNormalizer
 }
 
 
-?>
+

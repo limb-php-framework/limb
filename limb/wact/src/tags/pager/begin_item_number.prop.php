@@ -11,7 +11,7 @@
  * @property BeginItemNumber
  * @tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: begin_item_number.prop.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: begin_item_number.prop.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactPagerBeginItemNumberProperty extends WactCompilerProperty
 {
@@ -22,4 +22,4 @@ class WactPagerBeginItemNumberProperty extends WactCompilerProperty
   }
 }
 
-?>
+

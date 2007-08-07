@@ -35,4 +35,4 @@ class WactDatasourcePushTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'joe');
   }
 }
-?>
+

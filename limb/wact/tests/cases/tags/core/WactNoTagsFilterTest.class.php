@@ -30,4 +30,4 @@ class WactNoTagsFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, 'dude!');
   }
 }
-?>
+

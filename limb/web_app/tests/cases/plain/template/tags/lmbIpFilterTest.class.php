@@ -32,4 +32,4 @@ class lmbIpFilterTest extends lmbWactTestCase
   }
 
 }
-?>
+

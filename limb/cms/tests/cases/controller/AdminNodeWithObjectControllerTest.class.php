@@ -179,4 +179,4 @@ class AdminNodeWithObjectControllerTest extends UnitTestCase
   }
 }
 
-?>
+

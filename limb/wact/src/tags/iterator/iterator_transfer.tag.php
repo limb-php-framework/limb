@@ -30,4 +30,4 @@ class WactIteratorTransferTag extends WactBaseFetchingTag
   }
 }
 
-?>
+

@@ -117,4 +117,4 @@ class lmbCollectionDecorator implements lmbCollectionInterface
   }
   //end
 }
-?>
+

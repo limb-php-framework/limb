@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbCollection.class.php');
  * abstract class lmbFetcher.
  *
  * @package web_app
- * @version $Id: lmbFetcher.class.php 6025 2007-06-29 08:49:08Z serega $
+ * @version $Id: lmbFetcher.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 abstract class lmbFetcher
 {
@@ -150,4 +150,4 @@ abstract class lmbFetcher
     return $order_pairs;
   }
 }
-?>
+

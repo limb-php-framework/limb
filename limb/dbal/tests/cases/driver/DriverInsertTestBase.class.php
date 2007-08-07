@@ -53,4 +53,4 @@ abstract class DriverInsertTestBase extends DriverManipTestBase
     $this->checkRecord(4);
   }
 }
-?>
+

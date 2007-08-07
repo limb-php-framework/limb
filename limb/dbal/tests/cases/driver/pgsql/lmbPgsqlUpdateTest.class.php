@@ -26,4 +26,4 @@ class lmbPgsqlUpdateTest extends DriverUpdateTestBase
   }
 }
 
-?>
+

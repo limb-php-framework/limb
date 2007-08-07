@@ -53,4 +53,4 @@ class WactProcessingInstructionTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), '<b>foo</b><b>bar</b>');
   }
 }
-?>
+

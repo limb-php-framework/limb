@@ -12,7 +12,7 @@
  * @restrict_self_nesting
  * @parent_tag_class WactPagerListTag
  * @package wact
- * @version $Id: current.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: current.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactPagerDisplayedTag extends WactCompilerTag
 {
@@ -31,4 +31,4 @@ class WactPagerDisplayedTag extends WactCompilerTag
   }
 }
 
-?>
+

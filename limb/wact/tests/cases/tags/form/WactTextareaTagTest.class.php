@@ -31,4 +31,4 @@ class WactTextAreaTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 }
-?>
+

@@ -117,4 +117,4 @@ class lmbSwishShellSearch
     return $out;
   }
 }
-?>
+

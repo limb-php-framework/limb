@@ -113,4 +113,4 @@ class WactTagInfoExtractorTest extends UnitTestCase
     unlink(WACT_CACHE_DIR . '/tag_extractor_file.tag.php');
   }
 }
-?>
+

@@ -12,7 +12,7 @@
  * @tag core:COMMENT
  * @forbid_parsing
  * @package wact
- * @version $Id: comment.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: comment.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactCoreCommentTag extends WactCompilerTag
 {
@@ -27,4 +27,4 @@ class WactCoreCommentTag extends WactCompilerTag
     $this->removeChildren();
   }
 }
-?>
+

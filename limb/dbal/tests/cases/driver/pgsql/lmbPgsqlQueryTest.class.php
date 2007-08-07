@@ -26,4 +26,4 @@ class lmbPgsqlQueryTest extends DriverQueryTestBase
   }
 }
 
-?>
+

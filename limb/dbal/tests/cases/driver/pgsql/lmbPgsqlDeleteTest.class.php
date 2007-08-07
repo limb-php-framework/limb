@@ -20,4 +20,4 @@ class lmbPgsqlDeleteTest extends DriverDeleteTestBase
   }
 }
 
-?>
+

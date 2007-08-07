@@ -11,7 +11,7 @@
  * interface WactTemplateLocator.
  *
  * @package wact
- * @version $Id: WactTemplateLocator.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: WactTemplateLocator.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 interface WactTemplateLocator
 {
@@ -20,4 +20,4 @@ interface WactTemplateLocator
 
   public function readTemplateFile($fileName);
 }
-?>
+

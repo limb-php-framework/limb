@@ -165,4 +165,4 @@ TEMPLATE;
     $this->assertEqual($output, $template);
   }
 }
-?>
+

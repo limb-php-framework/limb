@@ -13,7 +13,7 @@
  * @req_const_attributes file
  * @forbid_end_tag
  * @package wact
- * @version $Id: include.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: include.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactCoreIncludeTag extends WactCompilerTag
 {
@@ -89,4 +89,4 @@ class WactCoreIncludeTag extends WactCompilerTag
     $this->addChild($this->new_datasource_tag);
   }
 }
-?>
+

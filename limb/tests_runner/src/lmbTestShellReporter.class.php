@@ -11,7 +11,7 @@
  * class lmbTestShellReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellReporter.class.php 6202 2007-07-30 14:13:58Z pachanga $
+ * @version $Id: lmbTestShellReporter.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestShellReporter extends TextReporter
 {
@@ -22,4 +22,4 @@ class lmbTestShellReporter extends TextReporter
     echo $this->getTestCaseProgress() . " of " . $this->getTestCaseCount() . " done({$test_name})\n";
   }
 }
-?>
+

@@ -12,4 +12,4 @@
  * @version $Id$
  */
 require_once('limb/core/common.inc.php');
-?>
+

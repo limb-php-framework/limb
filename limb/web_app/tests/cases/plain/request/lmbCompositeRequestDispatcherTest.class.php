@@ -70,4 +70,4 @@ class lmbCompositeRequestDispatcherTest extends UnitTestCase
   }
 }
 
-?>
+

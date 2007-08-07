@@ -41,4 +41,4 @@ class WactAttributeBlockAnalizerListener implements WactBlockAnalizerListener
     $this->attribute->addFragment($fragment);
   }
 }
-?>
+

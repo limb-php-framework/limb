@@ -12,7 +12,7 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbAROneToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbAROneToManyCollection.class.php 5997 2007-06-18 12:27:21Z pachanga $
+ * @version $Id: lmbAROneToManyCollection.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbAROneToManyCollection extends lmbARRelationCollection
 {
@@ -82,4 +82,4 @@ class lmbAROneToManyCollection extends lmbARRelationCollection
   }
 }
 
-?>
+

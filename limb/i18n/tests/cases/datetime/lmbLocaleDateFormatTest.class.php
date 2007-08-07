@@ -31,4 +31,4 @@ class lmbLocaleDateFormatTest extends UnitTestCase
     $this->assertEqual($res, $expected);
   }
 }
-?>
+

@@ -117,4 +117,4 @@ class lmbCachingFileLocatorTest extends UnitTestCase
   }
 }
 
-?>
+

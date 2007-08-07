@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbFullPageCacheRequest.
  *
  * @package web_cache
- * @version $Id: lmbFullPageCacheRequest.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFullPageCacheRequest.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbFullPageCacheRequest
 {
@@ -76,4 +76,4 @@ class lmbFullPageCacheRequest
   }
 }
 
-?>
+

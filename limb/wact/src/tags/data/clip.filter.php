@@ -20,7 +20,7 @@
  * @min_attributes 1
  * @max_attributes 4
  * @package wact
- * @version $Id: clip.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: clip.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactClipFilter extends WactCompilerFilter
 {
@@ -176,4 +176,4 @@ class WactClipFilter extends WactCompilerFilter
 
 }
 
-?>
+

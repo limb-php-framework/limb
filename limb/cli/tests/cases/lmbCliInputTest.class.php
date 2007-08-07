@@ -207,4 +207,4 @@ class lmbCliInputTest extends UnitTestCase
     $this->assertEqual($cli->getArguments(), array('arg1', 'arg2', 'arg3'));
   }
 }
-?>
+

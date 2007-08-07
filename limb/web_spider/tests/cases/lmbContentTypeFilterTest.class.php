@@ -28,4 +28,4 @@ class lmbContentTypeFilterTest extends UnitTestCase
   }
 }
 
-?>
+

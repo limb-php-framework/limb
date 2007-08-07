@@ -35,4 +35,4 @@ class WactFetchTag extends WactBaseFetchingTag
   }
 }
 
-?>
+

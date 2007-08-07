@@ -47,4 +47,4 @@ class lmbTableGatewayMetadataTest extends UnitTestCase
     $this->assertEqual($table->getColumnNames(), $expected);
   }
 }
-?>
+

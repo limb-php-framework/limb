@@ -391,4 +391,4 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->assertEqual($rs[0], true);
   }
 }
-?>
+

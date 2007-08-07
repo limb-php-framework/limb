@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6039 2007-07-02 12:51:09Z pachanga $
+ * @version $Id: lmbDbTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -147,4 +147,4 @@ class lmbDbTools extends lmbAbstractTools
     return $db_table;
   }
 }
-?>
+

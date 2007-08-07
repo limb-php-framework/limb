@@ -11,7 +11,7 @@
  * class WactPropertyInfo.
  *
  * @package wact
- * @version $Id: WactPropertyInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactPropertyInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactPropertyInfo
 {
@@ -33,4 +33,4 @@ class WactPropertyInfo
       require_once $this->File;
   }
 }
-?>
+

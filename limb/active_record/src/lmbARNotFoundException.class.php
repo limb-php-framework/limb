@@ -11,7 +11,7 @@
  * class lmbARNotFoundException.
  *
  * @package active_record
- * @version $Id: lmbARNotFoundException.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbARNotFoundException.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbARNotFoundException extends lmbARException
 {
@@ -37,4 +37,4 @@ class lmbARNotFoundException extends lmbARException
   }
 }
 
-?>
+

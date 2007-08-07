@@ -30,4 +30,4 @@ class WactWordWrapFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, "The quick\nbrown fox\njumped\nover the\nlazy dog.");
   }
 }
-?>
+

@@ -11,7 +11,7 @@
  * interface lmbTree.
  *
  * @package tree
- * @version $Id: lmbTree.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbTree.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 interface lmbTree
 {
@@ -36,4 +36,4 @@ interface lmbTree
   function getPathToNode($node);
 }
 
-?>
+

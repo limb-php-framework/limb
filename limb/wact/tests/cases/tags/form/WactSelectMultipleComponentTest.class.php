@@ -242,4 +242,4 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     $this->assertEqual($output, $expected_template);
   }
 }
-?>
+

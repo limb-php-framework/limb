@@ -16,7 +16,7 @@ lmb_require('limb/fs/src/lmbFs.class.php', false);
  * class lmbCacheFilePersister.
  *
  * @package cache
- * @version $Id: lmbCacheFilePersister.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCacheFilePersister.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCacheFilePersister implements lmbCachePersister
 {
@@ -101,4 +101,4 @@ class lmbCacheFilePersister implements lmbCachePersister
     return $this->cache_dir . '/' . $this->_getCacheFileName($group, $key);
   }
 }
-?>
+

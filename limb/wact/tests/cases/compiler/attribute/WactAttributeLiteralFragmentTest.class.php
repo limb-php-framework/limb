@@ -48,4 +48,4 @@ class WactAttributeLiteralFragmentTest extends UnitTestCase
     $this->assertEqual($code_writer->renderCode(), "<?php 'value' ?>");
   }
 }
-?>
+

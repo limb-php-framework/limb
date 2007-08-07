@@ -28,4 +28,4 @@ class lmbCachedIniTest extends lmbIniTest
   }
 }
 
-?>
+

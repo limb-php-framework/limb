@@ -11,7 +11,7 @@
  * class lmbTestGroup.
  *
  * @package tests_runner
- * @version $Id: lmbTestGroup.class.php 6218 2007-08-06 12:16:32Z pachanga $
+ * @version $Id: lmbTestGroup.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTestGroup extends TestSuite
 {
@@ -40,4 +40,4 @@ class lmbTestGroup extends TestSuite
       $fixture->tearDown();
   }
 }
-?>
+

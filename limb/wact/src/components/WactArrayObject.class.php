@@ -11,7 +11,7 @@
  * class WactArrayObject.
  *
  * @package wact
- * @version $Id: WactArrayObject.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactArrayObject.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactArrayObject implements ArrayAccess
 {
@@ -101,4 +101,4 @@ class WactArrayObject implements ArrayAccess
     return call_user_func_array(array($this->innerObject, $methodName), $arguments);
   }
 }
-?>
+

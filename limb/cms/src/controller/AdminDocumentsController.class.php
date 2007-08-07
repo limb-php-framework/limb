@@ -82,4 +82,4 @@ class AdminDocumentsController extends AdminNodeWithObjectController
   }
 }
 
-?>
+

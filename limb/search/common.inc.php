@@ -9,9 +9,9 @@
 
 /**
  * @package search
- * @version $Id: common.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 @define('FULL_TEXT_SEARCH_INDEXER_TABLE', 'full_text_uri_content_index');
 require_once('limb/core/common.inc.php');
 
-?>
+

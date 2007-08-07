@@ -69,4 +69,4 @@ class lmbFullPageCacheUserRuleTest extends UnitTestCase
   }
 }
 
-?>
+

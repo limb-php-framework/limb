@@ -421,4 +421,4 @@ class WactTagAttributesTest extends WactTemplateTestCase
     catch(WactException $e){}
   }
 }
-?>
+

@@ -54,4 +54,4 @@ abstract class DriverTypeInfoTestBase extends UnitTestCase
   }
 }
 
-?>
+

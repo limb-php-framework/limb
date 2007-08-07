@@ -12,7 +12,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  * class lmbUniqueTableFieldRule.
  *
  * @package web_app
- * @version $Id: lmbUniqueTableFieldRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUniqueTableFieldRule.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbUniqueTableFieldRule extends lmbSingleFieldRule
 {
@@ -51,4 +51,4 @@ class lmbUniqueTableFieldRule extends lmbSingleFieldRule
                    array('Value' => $value));
   }
 }
-?>
+

@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbMySQL4FullTextSearchQuery.
  *
  * @package search
- * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 6041 2007-07-02 12:53:01Z pachanga $
+ * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbMySQL4FullTextSearchQuery extends lmbSelectRawQuery
 {
@@ -61,4 +61,4 @@ class lmbMySQL4FullTextSearchQuery extends lmbSelectRawQuery
       return implode(' ', $words);
   }
 }
-?>
+

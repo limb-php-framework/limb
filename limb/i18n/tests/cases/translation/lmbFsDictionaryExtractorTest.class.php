@@ -54,4 +54,4 @@ class lmbFsDictionaryExtractorTest extends UnitTestCase
   }
 }
 
-?>
+

@@ -428,4 +428,4 @@ class WactFormTagTest extends WactTemplateTestCase
     $this->assertEqual($output, '<form id="test" action="my_action"></form>');
   }
 }
-?>
+

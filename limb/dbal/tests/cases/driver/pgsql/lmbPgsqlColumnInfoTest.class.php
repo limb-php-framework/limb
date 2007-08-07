@@ -19,4 +19,4 @@ class lmbPgsqlColumnInfoTest extends DriverColumnInfoTestBase
   }
 }
 
-?>
+

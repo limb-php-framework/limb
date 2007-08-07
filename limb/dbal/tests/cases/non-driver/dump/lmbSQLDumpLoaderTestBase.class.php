@@ -154,4 +154,4 @@ EOD;
     $this->assertEqual($rs2->count(), 0);
   }
 }
-?>
+

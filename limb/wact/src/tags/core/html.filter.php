@@ -9,7 +9,7 @@
 
 /**
  * @filter html
- * @version $Id: html.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: html.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  * @package wact
  */
 class WactHtmlFilter extends WactCompilerFilter
@@ -29,4 +29,4 @@ class WactHtmlFilter extends WactCompilerFilter
   }
 }
 
-?>
+

@@ -43,4 +43,4 @@ class WactCoreRepeatTagTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'hello!hello!hello!hello!');
   }
 }
-?>
+

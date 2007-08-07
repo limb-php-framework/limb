@@ -9,7 +9,7 @@
 /**
  * @filter ip
  * @package web_app
- * @version $Id: ip.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: ip.filter.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbIpFilter extends WactCompilerFilter
 {
@@ -32,4 +32,4 @@ class lmbIpFilter extends WactCompilerFilter
   }
 }
 
-?>
+

@@ -68,4 +68,4 @@ class WactPerformTagTest extends WactTemplateTestCase
   }
 
 }
-?>
+

@@ -51,4 +51,4 @@ class WactConstantExpressionNode extends WactTemplateExpressionNode
   }
 }
 
-?>
+

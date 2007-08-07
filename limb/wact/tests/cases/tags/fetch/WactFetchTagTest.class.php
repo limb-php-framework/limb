@@ -452,4 +452,4 @@ class WactFetchTagTest extends WactTemplateTestCase
     $this->assertEqual(trim($page->capture()), 'joe|ivan|');
   }
 }
-?>
+

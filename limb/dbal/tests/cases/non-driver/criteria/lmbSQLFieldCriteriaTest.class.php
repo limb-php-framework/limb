@@ -170,4 +170,4 @@ class lmbSQLFieldCriteriaTest extends UnitTestCase
 
 }
 
-?>
+

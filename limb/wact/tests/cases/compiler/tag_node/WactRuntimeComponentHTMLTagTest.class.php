@@ -68,4 +68,4 @@ class WactRuntimeComponentHTMLTagTest extends WactRuntimeComponentTagTest
     $this->component->generateConstructor($Code);
   }
 }
-?>
+

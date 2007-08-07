@@ -10,7 +10,7 @@
 /**
  * Empty tools. Supports no methods.
  * @package toolkit
- * @version $Id: lmbEmptyToolkitTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbEmptyToolkitTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbEmptyToolkitTools implements lmbToolkitTools
 {
@@ -22,4 +22,4 @@ class lmbEmptyToolkitTools implements lmbToolkitTools
     return array();
   }
 }
-?>
+

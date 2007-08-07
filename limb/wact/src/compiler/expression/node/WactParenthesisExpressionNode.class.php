@@ -45,4 +45,4 @@ class WactParenthesisExpressionNode extends WactTemplateExpressionNode
   }
 }
 
-?>
+

@@ -17,4 +17,4 @@ class lmbCacheMemoryPersisterTest extends lmbCacheTestBase
   }
 }
 
-?>
+

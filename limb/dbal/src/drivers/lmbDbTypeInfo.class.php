@@ -29,7 +29,7 @@ define('LIMB_DB_TYPE_CLOB',       70);
  * class lmbDbTypeInfo.
  *
  * @package dbal
- * @version $Id: lmbDbTypeInfo.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDbTypeInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbDbTypeInfo
 {
@@ -132,4 +132,4 @@ class lmbDbTypeInfo
     );
   }
 }
-?>
+

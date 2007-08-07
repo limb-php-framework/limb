@@ -25,4 +25,4 @@ class lmbMysqlRecordSetTest extends DriverRecordSetTestBase
   }
 }
 
-?>
+

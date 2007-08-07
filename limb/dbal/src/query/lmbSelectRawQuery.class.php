@@ -326,4 +326,4 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     return false;
   }
 }
-?>
+

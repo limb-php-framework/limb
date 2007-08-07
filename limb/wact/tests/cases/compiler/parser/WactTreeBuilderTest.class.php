@@ -393,4 +393,4 @@ class WactTreeBuilderTest extends UnitTestCase
     $this->assertEqual($children[2]->getText(), 'my other text');
   }
 }
-?>
+

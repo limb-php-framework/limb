@@ -107,4 +107,4 @@ class WactCodeWriterTest extends UnitTestCase
     }
   }
 }
-?>
+

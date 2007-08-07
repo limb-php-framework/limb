@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 5994 2007-06-15 10:54:41Z pachanga $
+ * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -184,4 +184,4 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
 
 spl_autoload_register('lmb_autoload');
 
-?>
+

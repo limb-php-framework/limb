@@ -34,4 +34,4 @@ class lmbCmsNodeBasedRequestDispatcher implements lmbRequestDispatcher
   }
 }
 
-?>
+

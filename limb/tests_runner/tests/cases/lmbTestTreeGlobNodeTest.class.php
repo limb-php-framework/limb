@@ -58,4 +58,4 @@ class lmbTestTreeGlobNodeTest extends lmbTestRunnerBase
   }
 }
 
-?>
+

@@ -83,4 +83,4 @@ class WactRuntimeComponentTagTest extends WactCompilerTagTest
   }
 }
 
-?>
+

@@ -519,4 +519,4 @@ class WactPagerTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), $result . $result);
   }
 }
-?>
+

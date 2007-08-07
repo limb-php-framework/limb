@@ -11,7 +11,7 @@
  * interface WactHTMLParserListener.
  *
  * @package wact
- * @version $Id: WactHTMLParserListener.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: WactHTMLParserListener.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 interface WactHTMLParserListener
 {
@@ -21,4 +21,4 @@ interface WactHTMLParserListener
   function characters($data, $location);
   function instruction($type, $data, $location);
 }
-?>
+

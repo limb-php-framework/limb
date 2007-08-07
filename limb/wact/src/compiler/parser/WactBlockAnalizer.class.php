@@ -83,4 +83,4 @@ class WactBlockAnalizer
       $observer->addLiteralFragment($text);
   }
 }
-?>
+

@@ -31,4 +31,4 @@ class lmbActionCommandTest extends UnitTestCase
   }
 }
 
-?>
+

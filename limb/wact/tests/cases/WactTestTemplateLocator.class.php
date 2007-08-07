@@ -64,4 +64,4 @@ class WactTestTemplateLocator implements WactTemplateLocator
     $this->templates = array();
   }
 }
-?>
+

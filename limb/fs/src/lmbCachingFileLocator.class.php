@@ -87,4 +87,4 @@ class lmbCachingFileLocator extends lmbFileLocatorDecorator
   }
 }
 
-?>
+

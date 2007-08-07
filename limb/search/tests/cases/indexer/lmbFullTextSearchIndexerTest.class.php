@@ -212,4 +212,4 @@ class lmbFullTextSearchIndexerTest extends UnitTestCase
   }
 }
 
-?>
+

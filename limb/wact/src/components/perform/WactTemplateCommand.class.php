@@ -26,4 +26,4 @@ class WactTemplateCommand
 
   function doPerform(){}
 }
-?>
+

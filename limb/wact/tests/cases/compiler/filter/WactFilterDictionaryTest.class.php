@@ -34,4 +34,4 @@ class WactFilterDictionaryTest extends UnitTestCase
     $this->assertEqual($dictionary->getFilterInfo('test'), $info1);
   }
 }
-?>
+

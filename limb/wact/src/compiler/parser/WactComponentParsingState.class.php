@@ -16,7 +16,7 @@ define ('WACT_PARSER_FORBID_PARSING', 10);
  * class WactComponentParsingState.
  *
  * @package wact
- * @version $Id: WactComponentParsingState.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactComponentParsingState.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactComponentParsingState extends WactBaseParsingState implements WactHTMLParserListener
 {
@@ -137,4 +137,4 @@ class WactComponentParsingState extends WactBaseParsingState implements WactHTML
     $this->tree_builder->addProcessingInstruction($target, $instruction, $location);
   }
 }
-?>
+

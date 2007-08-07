@@ -59,4 +59,4 @@ class lmbARTransactionTest extends UnitTestCase
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
   }
 }
-?>
+

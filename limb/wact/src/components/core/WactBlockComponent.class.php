@@ -12,7 +12,7 @@
  * The WactBlockComponent provides an API which allows the block to be shown
  * or hidden at runtime.
  * @package wact
- * @version $Id: WactBlockComponent.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactBlockComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactBlockComponent extends WactRuntimeComponent
 {
@@ -33,4 +33,4 @@ class WactBlockComponent extends WactRuntimeComponent
     $this->is_visible = FALSE;
   }
 }
-?>
+

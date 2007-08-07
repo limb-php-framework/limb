@@ -30,4 +30,4 @@ class WactUppercaseFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, 'TESTING');
   }
 }
-?>
+

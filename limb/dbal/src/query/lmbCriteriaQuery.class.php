@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbCriteriaQuery.
  *
  * @package dbal
- * @version $Id: lmbCriteriaQuery.class.php 6039 2007-07-02 12:51:09Z pachanga $
+ * @version $Id: lmbCriteriaQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCriteriaQuery extends lmbTemplateQuery
 {
@@ -83,4 +83,4 @@ class lmbCriteriaQuery extends lmbTemplateQuery
     return false;
   }
 }
-?>
+

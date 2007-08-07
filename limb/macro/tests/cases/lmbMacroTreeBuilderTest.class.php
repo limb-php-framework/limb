@@ -231,4 +231,4 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
     $this->assertEqual($this->tree_builder->getExpectedTagCount(), 0);
   }
 }
-?>
+

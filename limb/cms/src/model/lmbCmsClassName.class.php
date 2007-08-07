@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
  * class lmbCmsClassName.
  *
  * @package cms
- * @version $Id: lmbCmsClassName.class.php 6010 2007-06-21 09:46:14Z pachanga $
+ * @version $Id: lmbCmsClassName.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbCmsClassName extends lmbActiveRecord
 {
@@ -42,4 +42,4 @@ class lmbCmsClassName extends lmbActiveRecord
   }
 }
 
-?>
+

@@ -24,7 +24,7 @@ function wact_stats_filter($value, $id, $mode='acc')
  * class WactStatFilterFinder.
  *
  * @package wact
- * @version $Id: stats_filter.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: stats_filter.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactStatFilterFinder
 {
@@ -55,7 +55,7 @@ class WactStatFilterFinder
  * class WactStatFilter.
  *
  * @package wact
- * @version $Id: stats_filter.inc.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: stats_filter.inc.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactStatFilter
 {
@@ -114,4 +114,4 @@ class WactStatFilter
   }
 }
 
-?>
+

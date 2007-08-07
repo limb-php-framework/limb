@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbClassPath.class.php');
  * class lmbStaticCommandController.
  *
  * @package web_app
- * @version $Id: lmbStaticCommandController.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbStaticCommandController.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbStaticCommandController extends lmbAbstractController
 {
@@ -100,4 +100,4 @@ class lmbStaticCommandController extends lmbAbstractController
   }
 }
 
-?>
+

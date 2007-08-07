@@ -74,4 +74,4 @@ class WactCheckableInputComponentTest extends WactTemplateTestCase
     $this->assertFalse($this->checkbox->isChecked());
   }
 }
-?>
+

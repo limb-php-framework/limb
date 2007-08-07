@@ -20,4 +20,4 @@ class WactNL2BRFilterTest extends WactTemplateTestCase
     $this->assertEqual($output, "Hello<br />\nSailor!");
   }
 }
-?>
+

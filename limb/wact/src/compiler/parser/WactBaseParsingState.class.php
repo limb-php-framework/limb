@@ -10,7 +10,7 @@
 /**
  * Base state handler for the WactSourceFileParser.
  * @package wact
- * @version $Id: WactBaseParsingState.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactBaseParsingState.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 abstract class WactBaseParsingState
 {
@@ -50,4 +50,4 @@ abstract class WactBaseParsingState
     return $attrib_str;
   }
 }
-?>
+

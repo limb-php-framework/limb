@@ -26,4 +26,4 @@ class lmbMysqlQueryTest extends DriverQueryTestBase
   }
 }
 
-?>
+

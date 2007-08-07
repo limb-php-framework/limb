@@ -54,4 +54,4 @@ class WactTemplateCaseInsensivityTest extends WactTemplateTestCase
     $this->assertEqual($output, $template);
   }
 }
-?>
+

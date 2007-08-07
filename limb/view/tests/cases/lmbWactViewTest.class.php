@@ -69,4 +69,4 @@ class lmbWactViewTest extends lmbWactTestCase
   }
 }
 
-?>
+

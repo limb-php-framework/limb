@@ -64,4 +64,4 @@ class WactOptionRendererTest extends UnitTestCase
     $this->assertEqual($out,'<option value="foo" selected="true">bar</option>');
   }
 }
-?>
+

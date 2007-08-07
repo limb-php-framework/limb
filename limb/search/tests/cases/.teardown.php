@@ -1,3 +1,3 @@
 <?php
 $this->dump->clean();
-?>
+

@@ -11,7 +11,7 @@
  * interface lmbDbStatement.
  *
  * @package dbal
- * @version $Id: lmbDbStatement.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbDbStatement.interface.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 interface lmbDbStatement
 {
@@ -35,4 +35,4 @@ interface lmbDbStatement
   function execute();
 }
 
-?>
+

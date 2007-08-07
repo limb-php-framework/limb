@@ -24,4 +24,4 @@ class WactHtmlBBCodeComponentTestCase extends WactTemplateTestCase
     $this->assertNoUnwantedPattern('~javascript~',$res);
   }
 }
-?>
+

@@ -78,4 +78,4 @@ class lmbTestGroupTest extends lmbTestRunnerBase
     $this->assertEqual($str, 'setup 1setup 2teardown 2teardown 1');
   }
 }
-?>
+

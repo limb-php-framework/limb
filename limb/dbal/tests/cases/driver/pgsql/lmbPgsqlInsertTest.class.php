@@ -47,4 +47,4 @@ class lmbPgsqlInsertTest extends DriverInsertTestBase
   }
 }
 
-?>
+

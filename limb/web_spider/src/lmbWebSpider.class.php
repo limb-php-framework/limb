@@ -16,7 +16,7 @@ lmb_require('limb/web_spider/src/lmbUriContentReader.class.php');
  * class lmbWebSpider.
  *
  * @package web_spider
- * @version $Id: lmbWebSpider.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbWebSpider.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbWebSpider
 {
@@ -187,4 +187,4 @@ class lmbWebSpider
   }
 }
 
-?>
+

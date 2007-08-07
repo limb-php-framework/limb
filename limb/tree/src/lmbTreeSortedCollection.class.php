@@ -12,7 +12,7 @@ lmb_require('limb/tree/src/lmbTreeHelper.class.php');
  * class lmbTreeSortedCollection.
  *
  * @package tree
- * @version $Id: lmbTreeSortedCollection.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTreeSortedCollection.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbTreeSortedCollection extends lmbCollectionDecorator
 {
@@ -69,4 +69,4 @@ class lmbTreeSortedCollection extends lmbCollectionDecorator
   }
 }
 
-?>
+

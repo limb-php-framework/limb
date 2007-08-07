@@ -234,4 +234,4 @@ class lmbAREventHandlersTest extends UnitTestCase
                        '|onBeforeDestroy TestOneTableObject||onAfterDestroy TestOneTableObject|');
   }
 }
-?>
+

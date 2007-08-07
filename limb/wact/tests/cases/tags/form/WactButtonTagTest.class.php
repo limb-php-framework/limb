@@ -174,4 +174,4 @@ class WactButtonTagTest extends WactTemplateTestCase
     $this->assertEqual('my Button3',$button->getDisplayName());
   }
 }
-?>
+

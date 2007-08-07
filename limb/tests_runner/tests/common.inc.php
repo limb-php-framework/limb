@@ -119,4 +119,4 @@ abstract class lmbTestRunnerBase extends UnitTestCase
     $this->assertEqual($str, $expected);
   }
 }
-?>
+

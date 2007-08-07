@@ -62,4 +62,4 @@ class WactLabelTagTest extends WactTemplateTestCase {
 
 
 }
-?>
+

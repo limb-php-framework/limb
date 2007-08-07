@@ -24,4 +24,4 @@ class WactTextAreaComponent extends WactFormElementComponent
   }
 }
 
-?>
+

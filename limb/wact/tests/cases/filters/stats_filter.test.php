@@ -123,4 +123,4 @@ class WactTemplateStatsFilterTestCase extends WactTemplateTestCase {
     $this->assertEqual($output, '10 of 6020 of 6030 of 60');
   }
 }
-?>
+

@@ -476,4 +476,4 @@ class WactBadHtmlTest extends WactTemplateTestCase
     }
   }
 }
-?>
+

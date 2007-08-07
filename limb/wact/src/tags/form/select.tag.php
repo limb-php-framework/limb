@@ -17,7 +17,7 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @restrict_self_nesting
  * @runat client
  * @package wact
- * @version $Id: select.tag.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: select.tag.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class WactSelectTag extends WactControlTag
 {
@@ -82,4 +82,4 @@ class WactSelectTag extends WactControlTag
     $code_writer->writePHP($this->getComponentRefCode() . '->renderContents();');
   }
 }
-?>
+

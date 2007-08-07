@@ -15,7 +15,7 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
  * Completely static class
  * @link http://www.phppatterns.com/docs/design/the_registry
  * @package toolkit
- * @version $Id: lmbRegistry.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbRegistry.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 class lmbRegistry
 {
@@ -68,4 +68,4 @@ class lmbRegistry
       throw new lmbException('no such registry entry', array('name' => $name));
   }
 }
-?>
+

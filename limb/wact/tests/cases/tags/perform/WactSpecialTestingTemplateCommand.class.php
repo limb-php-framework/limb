@@ -16,4 +16,4 @@ class WactSpecialTestingTemplateCommand extends WactTemplateCommand
     $this->context_component->getDatasourceComponent()->set('my_var', $value2);
   }
 }
-?>
+

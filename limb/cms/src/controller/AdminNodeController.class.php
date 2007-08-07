@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/controller/lmbController.class.php');
  * abstract class AdminNodeController.
  *
  * @package cms
- * @version $Id: AdminNodeController.class.php 5991 2007-06-13 14:00:24Z tony $
+ * @version $Id: AdminNodeController.class.php 6221 2007-08-07 07:24:35Z pachanga $
  */
 abstract class AdminNodeController extends lmbController
 {
@@ -126,4 +126,4 @@ abstract class AdminNodeController extends lmbController
   }
 }
 
-?>
+

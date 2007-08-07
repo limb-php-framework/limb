@@ -39,4 +39,4 @@ class lmbFileLocatorDecorator extends lmbFileLocator
   }
 }
 
-?>
+
