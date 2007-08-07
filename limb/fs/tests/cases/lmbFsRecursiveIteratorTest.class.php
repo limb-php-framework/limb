@@ -79,7 +79,6 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
       $res[] = $it->getPath();
     }
 
-    var_dump($res);
     $res = array_map(array('lmbFs', 'normalizePath'), $res);
 
     if(lmbSys :: isWin32())
