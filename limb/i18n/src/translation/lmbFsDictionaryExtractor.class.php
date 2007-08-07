@@ -11,7 +11,7 @@
  * class lmbFsDictionaryExtractor.
  *
  * @package i18n
- * @version $Id: lmbFsDictionaryExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbFsDictionaryExtractor.class.php 6226 2007-08-07 21:38:18Z pachanga $
  */
 class lmbFsDictionaryExtractor
 {
@@ -24,12 +24,10 @@ class lmbFsDictionaryExtractor
 
   function traverse($iterator, &$dictionaries = array(), $response = null)
   {
-    for($iterator->rewind(); $iterator->valid(); $iterator->next())
+    foreach($iterator as $file)
     {
-      $item = $iterator->current();
-      if($item->isFile())
+      if($iterator->isFile())
       {
-        $file = $item->getPathName();
         $ext = strrchr(basename($file), '.');
         if(isset($this->parsers[$ext]))
           $this->parsers[$ext]->extractFromFile($file, $dictionaries, $response);

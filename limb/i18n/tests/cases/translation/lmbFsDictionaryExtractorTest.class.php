@@ -24,21 +24,19 @@ class lmbFsDictionaryExtractorTest extends UnitTestCase
     $m2 = new MockBaseDictionaryParser();
 
     $it->setReturnValueAt(0, 'valid', true);
-    $it->setReturnValueAt(0, 'current', $it);
     $it->setReturnValueAt(0, 'isFile', false);
+    $it->setReturnValueAt(0, 'current', 'junky');
 
     $file_path1 = 'some.php';
     $file_path2 = 'some.html';
 
     $it->setReturnValueAt(1, 'valid', true);
-    $it->setReturnValueAt(1, 'current', $it);
+    $it->setReturnValueAt(1, 'current', $file_path1);
     $it->setReturnValueAt(1, 'isFile', true);
-    $it->setReturnValueAt(0, 'getPathName', $file_path1);
 
     $it->setReturnValueAt(2, 'valid', true);
-    $it->setReturnValueAt(2, 'current', $it);
+    $it->setReturnValueAt(2, 'current', $file_path2);
     $it->setReturnValueAt(2, 'isFile', true);
-    $it->setReturnValueAt(1, 'getPathName', $file_path2);
 
     $loader = new lmbFsDictionaryExtractor();
     $loader->registerFileParser('.php', $m1);
@@ -53,5 +51,4 @@ class lmbFsDictionaryExtractorTest extends UnitTestCase
     $loader->traverse($it, $dictionaries, $response);
   }
 }
-
 

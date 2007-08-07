@@ -19,7 +19,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbDictionaryUpdater.
  *
  * @package i18n
- * @version $Id: lmbDictionaryUpdater.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDictionaryUpdater.class.php 6226 2007-08-07 21:38:18Z pachanga $
  */
 class lmbDictionaryUpdater
 {
