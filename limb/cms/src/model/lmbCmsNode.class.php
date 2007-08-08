@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
  * class lmbCmsNode.
  *
  * @package cms
- * @version $Id: lmbCmsNode.class.php 6227 2007-08-08 19:07:30Z 3dmax $
+ * @version $Id: lmbCmsNode.class.php 6228 2007-08-08 20:00:14Z 3dmax $
  */
 class lmbCmsNode extends lmbActiveRecord
 {
@@ -72,7 +72,7 @@ class lmbCmsNode extends lmbActiveRecord
 
   protected function _onAfterUpdate()
   {
-    if($this->isDirtyProperty('parent_id'))
+    if($this->isDirtyProperty('parent'))
     {
       $this->_tree->moveNode($this->getId(), $this->getParent()->getId());
     }
