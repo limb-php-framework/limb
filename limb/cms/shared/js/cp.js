@@ -1,14 +1,13 @@
 var LIMB_WINDOW_DEFAULT_PARAMS = { width: 890, height:500, resizable: true, noautoresize: true };
 
-function MarkAll(mark)
+function toggle_selected(toggle_obj)
 {
-  var objects = document.getElementsByName('ids[]');
+  var parent_form = toggle_obj.form;
+  var mark = toggle_obj.checked;
 
-  if(objects != null)
-  {
-    for(i = 0; i < objects.length; i++)
-      objects[i].checked = mark;
-  }
+  jQuery(parent_form.elements).filter("input:checkbox[@name='ids[]']").each(function(){
+                                      jQuery(this).attr("checked", mark);
+                                  });
 }
 
 function control_filter()
