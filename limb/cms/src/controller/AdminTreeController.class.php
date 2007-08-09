@@ -94,9 +94,8 @@ class AdminTreeController extends lmbController
       $parent_id = $this->request->get('parent_id');
       foreach($this->request->getArray('ids') as $id)
       {
-        $node = lmbActiveRecord :: findById('lmbCmsNode', $id);
-        $node->setParentId($parent_id);
-        $node->save();
+        $tree = lmbToolkit :: instance()->getCmsTree();  
+        $tree->moveNode($id, $parent_id); 
       }
       $this->closePopup();
     }
