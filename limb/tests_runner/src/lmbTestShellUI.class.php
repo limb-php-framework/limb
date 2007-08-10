@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6230 2007-08-10 06:03:04Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6231 2007-08-10 06:08:05Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -100,7 +100,12 @@ EOD;
   protected function _getVersion()
   {
     list(, $number, $status) = explode('-', trim(file_get_contents(dirname(__FILE__) . '/../VERSION')));
-    return "limb_unit-$number-$status";
+    $version = "limb_unit-$number-$status";
+    
+    if(is_dir(dirname(__FILE__) . '/.svn'))
+      $version .= "-dev";
+
+    return $version;
   }
 
   static function getShortOpts()
