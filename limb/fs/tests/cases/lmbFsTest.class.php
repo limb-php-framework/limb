@@ -202,12 +202,9 @@ class lmbFsTest extends UnitTestCase
     $this->_createFileSystem();
 
     $a1 = array('test1_1', 'test1_2', 'test1_3', 'wow');
-    sort($a1);
     $a2 =  lmbFs :: ls(LIMB_VAR_DIR . '/tmp/');
-    sort($a2);
 
-    $this->assertEqual($a1, $a2);
-    $this->assertEqual(array('hey', 'test2_1', 'test2_2', 'test2_3'), lmbFs :: ls(LIMB_VAR_DIR . '/tmp/wow'));
+    $this->assertEqual($this->_sort($a1), $this->_sort($a2));
 
     $this->_removeFileSystem();
   }
@@ -335,11 +332,10 @@ class lmbFsTest extends UnitTestCase
 
     $res = lmbFs :: cp(LIMB_VAR_DIR . '/tmp/wow',
                        LIMB_VAR_DIR . '/tmp/cp');
-    sort($res);
 
     $this->assertEqual(
-      $res,
-      array(
+      $this->_sort($res),
+      $this->_sort(array(
       'hey',
       lmbFs :: normalizePath('hey/test3_1'),
       lmbFs :: normalizePath('hey/test3_2'),
@@ -347,7 +343,7 @@ class lmbFsTest extends UnitTestCase
       'test2_1',
       'test2_2',
       'test2_3',
-      )
+      ))
     );
 
     $this->assertEqual(
@@ -384,17 +380,16 @@ class lmbFsTest extends UnitTestCase
     $this->_createFileSystem();
 
     $res = lmbFs :: cp(LIMB_VAR_DIR . '/tmp/wow',
-                       LIMB_VAR_DIR . '/tmp/cp', '/hey/');
-    sort($res);
-
+                       LIMB_VAR_DIR . '/tmp/cp',
+                       '/hey/');
     $this->assertEqual(
-      $res,
-      array('test2_1', 'test2_2', 'test2_3')
+      $this->_sort($res),
+      $this->_sort(array('test2_1', 'test2_2', 'test2_3'))
     );
 
     $this->assertEqual(
-      $res,
-      lmbFs :: ls(LIMB_VAR_DIR . '/tmp/cp/')
+      $this->_sort($res),
+      $this->_sort(lmbFs :: ls(LIMB_VAR_DIR . '/tmp/cp/'))
     );
 
     $this->assertFalse(is_dir(LIMB_VAR_DIR . '/tmp/cp/hey'));
@@ -410,13 +405,13 @@ class lmbFsTest extends UnitTestCase
                        LIMB_VAR_DIR . '/tmp/cp', null, '/test2/');
 
     $this->assertEqual(
-      $res,
-      array('test2_1', 'test2_2', 'test2_3')
+      $this->_sort($res),
+      $this->_sort(array('test2_1', 'test2_2', 'test2_3'))
     );
 
     $this->assertEqual(
-      $res,
-      lmbFs :: ls(LIMB_VAR_DIR . '/tmp/cp/')
+      $this->_sort($res),
+      $this->_sort(lmbFs :: ls(LIMB_VAR_DIR . '/tmp/cp/'))
     );
 
     $this->assertFalse(is_dir(LIMB_VAR_DIR . '/tmp/cp/hey'));
@@ -471,26 +466,24 @@ class lmbFsTest extends UnitTestCase
     $this->_createFileSystem();
 
     $res = lmbFs :: find(LIMB_VAR_DIR . '/tmp/wow/hey');
-    sort($res);
 
     $this->assertEqual(
-      $res,
-      array(
+      $this->_sort($res),
+      $this->_sort(array(
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/hey/test3_1'),
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/hey/test3_2'),
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/hey/test3_3')
-      )
+      ))
     );
 
     $res = lmbFs :: find(LIMB_VAR_DIR . '/tmp/wow/', 'f', null, '/^test2_1$/');
-    sort($res);
 
     $this->assertEqual(
-      $res,
-      array(
+      $this->_sort($res),
+      $this->_sort(array(
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/test2_2'),
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/test2_3'),
-      )
+      ))
     );
 
     $this->_removeFileSystem();
@@ -501,18 +494,23 @@ class lmbFsTest extends UnitTestCase
     $this->_createFileSystem();
 
     $res = lmbFs :: findRecursive(LIMB_VAR_DIR . '/tmp/', 'fd', '~test\d_1~');
-    sort($res);
 
     $this->assertEqual(
-      $res,
-      array(
+      $this->_sort($res),
+      $this->_sort(array(
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/test1_1'),
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/hey/test3_1'),
         lmbFs :: normalizePath(LIMB_VAR_DIR . '/tmp/wow/test2_1'),
-      )
+      ))
     );
 
     $this->_removeFileSystem();
+  }
+
+  protected function _sort($a)
+  {
+    sort($a);
+    return $a;
   }
 }
 

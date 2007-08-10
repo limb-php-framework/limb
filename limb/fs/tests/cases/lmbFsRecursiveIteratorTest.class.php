@@ -77,25 +77,28 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
     foreach($it as $path)
       $res[] = $path;
 
-    asort($res);
     $res = array_map(array('lmbFs', 'normalizePath'), $res);
+    $expected = 
+      array(lmbFs :: normalizePath($this->dir . '/.'),
+          lmbFs :: normalizePath($this->dir . '/..'),
+          lmbFs :: normalizePath($this->dir . '/a'),
+          lmbFs :: normalizePath($this->dir . '/nested'),
+          lmbFs :: normalizePath($this->dir . '/nested/.'),
+          lmbFs :: normalizePath($this->dir . '/nested/..'),
+          lmbFs :: normalizePath($this->dir . '/nested/.sub-nested'),
+          lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/.'),
+          lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/..'),
+          lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/d'),
+          lmbFs :: normalizePath($this->dir . '/nested/b'),
+          lmbFs :: normalizePath($this->dir . '/nested/b/.'),
+          lmbFs :: normalizePath($this->dir . '/nested/b/..'),
+          lmbFs :: normalizePath($this->dir . '/nested/c'),
+          );
+    sort($res);
+    sort($expected);
 
-    $this->assertEqual($res,
-                        array(lmbFs :: normalizePath($this->dir . '/.'),
-                              lmbFs :: normalizePath($this->dir . '/..'),
-                              lmbFs :: normalizePath($this->dir . '/a'),
-                              lmbFs :: normalizePath($this->dir . '/nested'),
-                              lmbFs :: normalizePath($this->dir . '/nested/.'),
-                              lmbFs :: normalizePath($this->dir . '/nested/..'),
-                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested'),
-                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/.'),
-                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/..'),
-                              lmbFs :: normalizePath($this->dir . '/nested/.sub-nested/d'),
-                              lmbFs :: normalizePath($this->dir . '/nested/b'),
-                              lmbFs :: normalizePath($this->dir . '/nested/b/.'),
-                              lmbFs :: normalizePath($this->dir . '/nested/b/..'),
-                              lmbFs :: normalizePath($this->dir . '/nested/c'),
-                        ));
+    //make this test more bullet proof
+    $this->assertEqual($res, $expected);
 
     $this->_removeFileSystem();
   }
