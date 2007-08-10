@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6230 2007-08-10 06:03:04Z pachanga $
  */
 class lmbTestTreeNode
 {
@@ -107,7 +107,7 @@ class lmbTestTreeNode
 
   function getTestLabel()
   {
-    return $this->_doCreateTestCase()->getLabel();
+    return 'Test Group';
   }
 
   function createTestCase($is_first = true)
@@ -156,7 +156,7 @@ class lmbTestTreeNode
   {
     //we need to delay inclusion of SimpleTest as much as possible
     require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
-    return new lmbTestGroup();
+    return new lmbTestGroup($this->getTestLabel());
   }
 
   protected function _prepareTestCase($test){}

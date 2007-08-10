@@ -28,6 +28,7 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
     $this->dir = $dir;
   }
 
+  //move this one to a better place, lmbTestDirArtifacts?  
   static function hasArtifacts($dir)
   {
     $artifacts = array('.init.php',
@@ -55,13 +56,12 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
       include_once($this->dir . '/.init.php');
   }
 
-  protected function _doCreateTestCase()
+  function getTestLabel()
   {
-    require_once(dirname(__FILE__) . '/lmbTestGroup.class.php');
-
-    $label = $this->_getDirectoryLabel();
-    $test = new lmbTestGroup($label);
-    return $test;
+    if(file_exists($this->dir . '/.description'))
+      return file_get_contents($this->dir . '/.description');
+    else
+      return 'Group test in "' . $this->dir . '"';
   }
 
   protected function _prepareTestCase($test)
@@ -70,14 +70,6 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
                                       $this->dir . '/.teardown.php');
     //set this fixture to be the first one
     $test->addFixture($fixture);
-  }
-
-  protected function _getDirectoryLabel()
-  {
-    if(file_exists($this->dir . '/.description'))
-      return file_get_contents($this->dir . '/.description');
-    else
-      return 'Group test in "' . $this->dir . '"';
   }
 
   function isSkipped()

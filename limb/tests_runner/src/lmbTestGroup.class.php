@@ -11,7 +11,7 @@
  * class lmbTestGroup.
  *
  * @package tests_runner
- * @version $Id: lmbTestGroup.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbTestGroup.class.php 6230 2007-08-10 06:03:04Z pachanga $
  */
 class lmbTestGroup extends TestSuite
 {

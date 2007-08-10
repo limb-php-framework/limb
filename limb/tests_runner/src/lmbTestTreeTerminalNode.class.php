@@ -11,7 +11,7 @@
  * abstract class lmbTestTreeTerminalNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeTerminalNode.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbTestTreeTerminalNode.class.php 6230 2007-08-10 06:03:04Z pachanga $
  */
 class lmbTestTreeTerminalNode extends lmbTestTreeNode
 {
