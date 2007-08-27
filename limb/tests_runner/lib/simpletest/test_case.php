@@ -3,7 +3,7 @@
      *	Base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: test_case.php 5999 2007-06-18 13:13:08Z pachanga $
+     *	@version	$Id: test_case.php 6235 2007-08-27 09:39:42Z pachanga $
      */
 
     /**#@+
@@ -410,7 +410,9 @@
                     if ($reflection->isAbstract()) {
                         SimpleTest::ignore($class);
                     }
-                    $classes[] = $class;
+                    else {
+                      $classes[] = $class;
+                    }
                 }
             }
             return $classes;
