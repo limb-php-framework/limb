@@ -13,7 +13,7 @@ lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
  * Base class for most real applications tools
  * @see lmbToolkit
  * @package toolkit
- * @version $Id: lmbAbstractTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbAbstractTools.class.php 6238 2007-08-28 13:13:39Z pachanga $
  */
 abstract class lmbAbstractTools implements lmbToolkitTools
 {

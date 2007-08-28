@@ -20,7 +20,7 @@
  * lmbToolkit :: merge($tools);
  * </code>
  * @package toolkit
- * @version $Id: lmbMockToolsWrapper.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbMockToolsWrapper.class.php 6238 2007-08-28 13:13:39Z pachanga $
  */
 class lmbMockToolsWrapper implements lmbToolkitTools
 {

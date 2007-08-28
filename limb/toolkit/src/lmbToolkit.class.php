@@ -38,7 +38,7 @@ lmb_require(dirname(__FILE__) . '/lmbCompositeNonItersectingToolkitTools.class.p
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6238 2007-08-28 13:13:39Z pachanga $
  */
 class lmbToolkit
 {
@@ -303,6 +303,5 @@ class lmbToolkit
     if(isset($this->tools_signatures[$method]))
       return $method;
   }
-
 }
 

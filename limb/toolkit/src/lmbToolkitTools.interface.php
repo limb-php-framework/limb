@@ -11,7 +11,7 @@
  * Interface for defining toolkit tools that extends lmbToolkit
  * @see lmbToolkit
  * @package toolkit
- * @version $Id: lmbToolkitTools.interface.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbToolkitTools.interface.php 6238 2007-08-28 13:13:39Z pachanga $
  */
 interface lmbToolkitTools
 {

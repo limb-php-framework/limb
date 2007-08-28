@@ -15,7 +15,7 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
  * Completely static class
  * @link http://www.phppatterns.com/docs/design/the_registry
  * @package toolkit
- * @version $Id: lmbRegistry.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbRegistry.class.php 6238 2007-08-28 13:13:39Z pachanga $
  */
 class lmbRegistry
 {

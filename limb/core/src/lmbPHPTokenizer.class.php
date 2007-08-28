@@ -65,7 +65,7 @@ class lmbPHPTokenizer
    * Constructor
    * @param string input content
    */
-  public function __construct($input = '') {
+  function __construct($input = '') {
       if (!empty($input)) {
           $this->input($input);
       }
@@ -76,7 +76,7 @@ class lmbPHPTokenizer
    * @param string input content
    * @return string|bool
    */
-  public function input($input = false) {
+  function input($input = false) {
 
       // if input is false, return
       if ($input === false) {
@@ -104,7 +104,7 @@ class lmbPHPTokenizer
    * token position and line number
    * @return void
    */
-  public function reset() {
+  function reset() {
       $this->tokens = @token_get_all($this->input);
       $this->pos = 0;
       $this->line = 0;
@@ -153,7 +153,7 @@ class lmbPHPTokenizer
    * Go back one token (reverse of {@link next()})
    * @return false|string|array
    */
-  public function back() {
+  function back() {
 
       $this->pos --;
 
@@ -180,7 +180,7 @@ class lmbPHPTokenizer
    * Get the current line number
    * @return integer
    */
-  public function line() {
+  function line() {
       return $this->line;
   }
 }
