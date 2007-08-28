@@ -204,9 +204,8 @@
           #main_menu .interactive.current span{background: url(../images/_cp/menu/interactive_current.gif) no-repeat 7px center;}
         #main_menu .guests span{background: url(../images/_cp/menu/guests.gif) no-repeat 8px center;}
           #main_menu .guests.current span{background: url(../images/_cp/menu/guests_current.gif) no-repeat 8px center;}
-        #main_menu .programs span{background: url(../images/_cp/menu/programs.gif) no-repeat 7px center;}
-        #main_menu .subscribe span{background: url(../images/_cp/menu/subscribe.gif) no-repeat 7px center;}
-          #main_menu .subscribe.current span{background: url(../images/_cp/menu/subscribe_current.gif) no-repeat 7px center;}
+        #main_menu .other span{background: url(../images/_cp/menu/other.gif) no-repeat 7px center;}
+          #main_menu .other.current span{background: url(../images/_cp/menu/other_current.gif) no-repeat 7px center;}
         #main_menu .banners span{background: url(../images/_cp/menu/banners.gif) no-repeat 7px center;}
       #main_menu ul {list-style-type:none;margin:0 0 0 21px;padding:0;}
         #main_menu li {margin-bottom:3px}
