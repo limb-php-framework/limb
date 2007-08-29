@@ -15,26 +15,26 @@
  */
 class lmbMacroTemplateLocator
 {
-  protected $config;
-  protected $templates_dir;
+  protected $cache_dir;
 
-  public function __construct($config)
+  function __construct()
   {
-    $this->config = $config;
-    $this->templates_dir = 'templates/';//fix it
+    $this->cache_dir = LIMB_VAR_DIR . '/compiled';
   }
 
-  public function locateCompiledTemplate($file_name)
+  function locateCompiledTemplate($file_name)
   {
-    return $this->config->getCacheDir() . '/' . md5($file_name) . '.php';
+    return $this->cache_dir . '/' . md5($file_name) . '.php';
   }
 
-  public function locateSourceTemplate($file_name)
+  function locateSourceTemplate($file_name)
   {    
-    return $this->templates_dir . '/' . $file_name;
+    //fix this later
+    if(lmbFs :: isPathAbsolute($file_name))
+      return $file_name;
   }
 
-  public function readTemplateFile($file_name)
+  function readTemplateFile($file_name)
   {    
     return file_get_contents($file_name, 1);
   }

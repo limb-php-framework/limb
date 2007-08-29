@@ -7,6 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
+lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
+lmb_require('limb/macro/src/lmbMacroTreeBuilder.class.php');
+lmb_require('limb/macro/src/lmbMacroNode.class.php');
+lmb_require('limb/macro/src/lmbMacroParser.class.php');
+
 /**
  * class lmbMacroCompiler.
  *
@@ -19,11 +25,6 @@ class lmbMacroCompiler
   * @var lmbMacroTreeBuilder
   */
   protected $tree_builder;
-
-  /**
-  * @var lmbMacroConfig
-  */
-  protected $config;
 
   /**
   * @var lmbMacroTemplateLocator
@@ -41,12 +42,16 @@ class lmbMacroCompiler
   protected $tag_dictionary;
 
 
-  function __construct($config, $tag_dictionary, $template_locator)
+  function __construct($tag_dictionary = null, $template_locator = null)
   {
-    $this->config = $config;
     $this->template_locator = $template_locator;
+    if(!$this->template_locator)
+      $this->template_locator = new lmbMacroTemplateLocator();
 
     $this->tag_dictionary = $tag_dictionary;
+    if(!$this->tag_dictionary)
+      $this->tag_dictionary = lmbMacroTagDictionary :: instance();
+
     $this->tree_builder = new lmbMacroTreeBuilder($this);
   }
 
@@ -55,53 +60,30 @@ class lmbMacroCompiler
     if(!$source_file_path = $this->template_locator->locateSourceTemplate($file_name))    
      throw new lmbMacroException('Template source file not found', array('file_name' => $file_name));
 
-    $root_node = new lmbMacroRootNode(new lmbMacroSourceLocation($source_file_path, ''));
-
+    $root_node = new lmbMacroNode(new lmbMacroSourceLocation($source_file_path, ''));
     $this->parseTemplate($file_name, $root_node);
-
     $root_node->prepare();
 
     $compiled_file_path = $this->template_locator->locateCompiledTemplate($file_name);
-    $generated_code = $this->_generateTemplateCode(md5($compiled_file_path), $root_node);
+    list($render_func, $generated_code) = $this->_generateTemplateCode(md5($compiled_file_path), $root_node);
     self :: writeFile($compiled_file_path, $generated_code);
+    return array($render_func, $compiled_file_path);
   }
 
   function _generateTemplateCode($prefix, $root_node)
   {
     $code_writer = new lmbMacroCodeWriter();
     $code_writer->setFunctionPrefix($prefix);
-
-    $constructor_func = $code_writer->beginFunction('($root, $components)');
-    $root_node->generateConstructor($code_writer);
-    $code_writer->endFunction();
-
-    $render_func = $code_writer->beginFunction('($root, $components)');
-    $code_writer->writePHP('$template = $root;' . "\n");
+    $render_func = $code_writer->beginFunction('($root)');
     $root_node->generate($code_writer);
     $code_writer->endFunction();
-
-    $code_writer->writePHP('$GLOBALS[\'TemplateRender\'][$compiled_template_path] = \'' . $render_func . '\';');
-    $code_writer->writePHP('$GLOBALS[\'TemplateConstruct\'][$compiled_template_path] = \'' . $constructor_func . '\';');
-
-    return $code_writer->renderCode();
+    return array($render_func, $code_writer->renderCode());
   }
 
   function parseTemplate($source_file_path, $root_node)
   {
-    $parser = new lmbMacroParser($this->tree_builder,                                           
-                                 $this->config,
-                                 $this->template_locator,
-                                 $this->tag_dictionary);
-
+    $parser = new lmbMacroParser($this->tree_builder, $this->template_locator, $this->tag_dictionary);
     $parser->parse($source_file_path, $root_node);
-  }
-
-  /**
-  * @return lmbMacroConfig
-  */
-  function getConfig()
-  {
-    return $this->config;
   }
 
   /**

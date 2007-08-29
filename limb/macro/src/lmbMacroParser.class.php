@@ -7,6 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
+lmb_require('limb/macro/src/lmbMacroLiteralParsingState.class.php');
+lmb_require('limb/macro/src/lmbMacroTagParsingState.class.php');
+
 /**
  * class lmbMacroParser.
  *
@@ -20,12 +24,7 @@ class lmbMacroParser implements lmbMacroTokenizerListener
   protected $literal_parsing_state;
 
   /**
-   * @var lmbMacroConfig
-   */
-  protected $config;
-
-  /**
-   * @var lmbMacrotree_builder
+   * @var lmbMacroTreebuilder
    */
   protected $tree_builder;
 
@@ -34,11 +33,9 @@ class lmbMacroParser implements lmbMacroTokenizerListener
    */
   protected $template_locator;
 
-  function __construct($tree_builder, $config, $template_locator, $tag_dictionary)
+  function __construct($tree_builder, $template_locator, $tag_dictionary)
   {
     $this->tree_builder = $tree_builder;
-
-    $this->config = $config;
     $this->template_locator = $template_locator;
 
     $this->component_parsing_state = $this->_createComponentParsingState($tag_dictionary);
@@ -69,7 +66,7 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $source_file_path = $this->template_locator->locateSourceTemplate($file_name);
 
     if(empty($source_file_path))
-        throw new lmbMacroException('Template source file not found', array('file_name' => $file_name));
+      throw new lmbMacroException('Template source file not found', array('file_name' => $file_name));
 
     $tags_before_parse = $this->tree_builder->getExpectedTagCount();
 

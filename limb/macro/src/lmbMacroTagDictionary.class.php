@@ -18,6 +18,16 @@ lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 class lmbMacroTagDictionary
 {
   protected $info = array();
+  static protected $instance;
+
+  static function instance()
+  {
+    if(self :: $instance)
+      return self :: $instance;
+
+    self :: $instance = new lmbMacroTagDictionary();
+    return self :: $instance;
+  }
 
   function register($taginfo, $file)
   {
