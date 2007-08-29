@@ -11,7 +11,7 @@
  * class lmbFsDictionaryExtractor.
  *
  * @package i18n
- * @version $Id: lmbFsDictionaryExtractor.class.php 6226 2007-08-07 21:38:18Z pachanga $
+ * @version $Id: lmbFsDictionaryExtractor.class.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 class lmbFsDictionaryExtractor
 {
@@ -36,4 +36,4 @@ class lmbFsDictionaryExtractor
   }
 }
 
-?>
+

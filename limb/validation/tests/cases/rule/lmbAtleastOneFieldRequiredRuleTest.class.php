@@ -76,4 +76,4 @@ class lmbAtleastOneFieldRequiredRuleTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

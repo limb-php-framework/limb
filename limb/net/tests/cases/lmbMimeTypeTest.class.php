@@ -49,4 +49,4 @@ class lmbMimeTypeTest extends UnitTestCase
     $this->assertEqual(lmbMimeType :: getFileMimeType('test.rtf'), 'text/rtf');
   }
 }
-?>
+

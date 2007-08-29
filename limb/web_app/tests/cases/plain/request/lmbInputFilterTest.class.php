@@ -38,4 +38,4 @@ class lmbInputFilterTest extends UnitTestCase
   }
 }
 
-?>
+

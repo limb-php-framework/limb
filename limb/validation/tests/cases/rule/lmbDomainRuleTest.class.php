@@ -172,4 +172,4 @@ class lmbDomainRuleTest extends lmbValidationRuleTestCase
     $rule->validate($dataspace, $this->error_list);
   }
 }
-?>
+

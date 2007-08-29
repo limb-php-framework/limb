@@ -83,4 +83,4 @@ class lmbARAutoTimesTest extends UnitTestCase
     $this->assertEqual($object2->getUpdateTime(), $utime2);
   }
 }
-?>
+

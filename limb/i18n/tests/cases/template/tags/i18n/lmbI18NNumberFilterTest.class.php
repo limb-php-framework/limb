@@ -147,4 +147,4 @@ class lmbI18NNumberFilterTest extends lmbWactTestCase
     $this->assertEqual($page->capture(), '100 000.00');
   }
 }
-?>
+

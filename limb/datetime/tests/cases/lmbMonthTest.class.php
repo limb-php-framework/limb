@@ -198,4 +198,4 @@ class lmbMonthTest extends UnitTestCase
     $this->assertEqual(new lmbMonth(2006, 12), $prev);
   }
 }
-?>
+

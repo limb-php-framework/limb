@@ -60,4 +60,4 @@ class lmbI18NCapitalizeFilterTest extends lmbWactTestCase
     $this->assertEqual($page->capture(), 'Тест');
   }
 }
-?>
+

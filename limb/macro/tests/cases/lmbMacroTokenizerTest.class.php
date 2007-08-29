@@ -166,4 +166,4 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->parser->parse("<%tag\ta=\"A\"\rb='B'\nc = \"C\"\n%>");
   }
 }
-?>
+

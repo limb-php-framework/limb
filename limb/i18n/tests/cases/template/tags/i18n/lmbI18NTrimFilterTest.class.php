@@ -56,4 +56,4 @@ class lmbI18NTrimFilterTest extends lmbWactTestCase
   }
 
 }
-?>
+

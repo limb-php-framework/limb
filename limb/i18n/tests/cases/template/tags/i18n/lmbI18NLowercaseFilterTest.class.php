@@ -48,4 +48,4 @@ class lmbI18NLowercaseFilterTest extends lmbWactTestCase
   }
 
 }
-?>
+

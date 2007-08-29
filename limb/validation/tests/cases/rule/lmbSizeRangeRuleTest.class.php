@@ -129,4 +129,4 @@ class lmbSizeRangeRuleTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

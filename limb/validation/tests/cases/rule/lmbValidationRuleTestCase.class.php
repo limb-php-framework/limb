@@ -20,4 +20,4 @@ abstract class lmbValidationRuleTestCase extends UnitTestCase
     $this->error_list = new MockErrorList();
   }
 }
-?>
+

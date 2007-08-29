@@ -83,4 +83,4 @@ class lmbNumericValueRangeRuleTest extends lmbValidationRuleTestCase
     $rule->validate($dataspace, $this->error_list);
   }
 }
-?>
+

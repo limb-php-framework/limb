@@ -12,7 +12,7 @@ lmb_require('limb/i18n/src/translation/lmbSourceDictionaryExtractor.class.php');
  * class lmbWACTDictionaryExtractor.
  *
  * @package i18n
- * @version $Id: lmbWACTDictionaryExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbWACTDictionaryExtractor.class.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 class lmbWACTDictionaryExtractor extends lmbSourceDictionaryExtractor
 {
@@ -41,4 +41,4 @@ class lmbWACTDictionaryExtractor extends lmbSourceDictionaryExtractor
   }
 }
 
-?>
+

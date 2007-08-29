@@ -13,7 +13,7 @@ lmb_require('limb/datetime/src/lmbDate.class.php');
  * class lmbLocaleDate.
  *
  * @package i18n
- * @version $Id: lmbLocaleDate.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbLocaleDate.class.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 class lmbLocaleDate extends lmbDate
 {
@@ -356,4 +356,4 @@ class lmbLocaleDate extends lmbDate
   }
 }
 
-?>
+

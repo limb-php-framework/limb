@@ -123,4 +123,4 @@ class lmbRequiredRuleTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

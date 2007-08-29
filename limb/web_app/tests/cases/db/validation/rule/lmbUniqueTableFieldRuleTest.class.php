@@ -88,4 +88,4 @@ class lmbUniqueTableFieldRuleTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

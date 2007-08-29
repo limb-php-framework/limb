@@ -35,4 +35,4 @@ class lmbCurrentLocaleTagTest extends lmbWactTestCase
     $this->assertEqual($page->capture(), 'Some text');
   }
 }
-?>
+

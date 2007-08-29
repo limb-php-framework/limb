@@ -75,4 +75,4 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

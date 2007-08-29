@@ -90,4 +90,4 @@ class lmbI18NSizeRangeTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

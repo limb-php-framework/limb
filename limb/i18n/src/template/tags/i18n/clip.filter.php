@@ -11,7 +11,7 @@
  * @min_attributes 1
  * @max_attributes 4
  * @package i18n
- * @version $Id: clip.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: clip.filter.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 class I18NClipFilter extends WactCompilerFilter
 {
@@ -157,4 +157,3 @@ class I18NClipFilter extends WactCompilerFilter
   }
 }
 
-?>

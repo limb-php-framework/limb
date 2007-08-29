@@ -20,4 +20,4 @@ class lmbValidationExceptionTest extends UnitTestCase
     $this->assertEqual($exception->getMessage(), 'Message. Errors list : error1, error2');
   }
 }
-?>
+

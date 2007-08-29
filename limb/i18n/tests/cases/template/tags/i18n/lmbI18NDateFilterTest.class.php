@@ -189,4 +189,4 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
     $this->assertEqual($page->capture(), '2005 01 20');
   }
 }
-?>
+

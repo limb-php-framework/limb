@@ -143,4 +143,4 @@ class lmbI18NClipFilterTest extends lmbWactTestCase
   }
 
 }
-?>
+

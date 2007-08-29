@@ -10,7 +10,7 @@
  * @filter i18n_number
  * @max_attributes 5
  * @package i18n
- * @version $Id: number.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: number.filter.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 class lmbI18NNumberFilter extends WactCompilerFilter
 {
@@ -95,4 +95,4 @@ class lmbI18NNumberFilter extends WactCompilerFilter
   }
 }
 
-?>
+

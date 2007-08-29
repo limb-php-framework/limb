@@ -81,4 +81,4 @@ class lmbI18NStringFilterTest extends lmbWactTestCase
   }
 
 }
-?>
+

@@ -93,4 +93,4 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
   }
 }
 
-?>
+

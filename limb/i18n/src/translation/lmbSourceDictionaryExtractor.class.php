@@ -11,7 +11,7 @@
  * abstract class lmbSourceDictionaryExtractor.
  *
  * @package i18n
- * @version $Id: lmbSourceDictionaryExtractor.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSourceDictionaryExtractor.class.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 abstract class lmbSourceDictionaryExtractor
 {
@@ -23,4 +23,4 @@ abstract class lmbSourceDictionaryExtractor
   }
 }
 
-?>
+

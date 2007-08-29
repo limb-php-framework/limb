@@ -30,4 +30,4 @@ class WactPHPNodeTest extends WactCompileTreeNodeTest
     $this->assertEqual($code_writer->renderCode(), '<?php test ?>');
   }
 }
-?>
+

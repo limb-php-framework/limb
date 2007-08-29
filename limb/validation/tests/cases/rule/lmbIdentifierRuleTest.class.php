@@ -67,4 +67,4 @@ class lmbIdentifierRuleTest extends lmbValidationRuleTestCase
     $rule->validate($data, $this->error_list);
   }
 }
-?>
+

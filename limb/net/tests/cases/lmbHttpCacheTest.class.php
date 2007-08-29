@@ -258,4 +258,4 @@ class lmbHttpCacheTest extends UnitTestCase
     $this->assertTrue($this->cache->checkAndWrite($this->response));
   }
 }
-?>
+

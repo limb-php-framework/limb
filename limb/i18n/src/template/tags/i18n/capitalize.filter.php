@@ -9,7 +9,7 @@
 /**
  * @filter i18n_capitalize
  * @package i18n
- * @version $Id: capitalize.filter.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: capitalize.filter.php 6241 2007-08-29 05:46:06Z pachanga $
  */
 class lmbI18NCapitalizeFilter extends WactCompilerFilter
 {
@@ -37,4 +37,4 @@ class lmbI18NCapitalizeFilter extends WactCompilerFilter
   }
 }
 
-?>
+

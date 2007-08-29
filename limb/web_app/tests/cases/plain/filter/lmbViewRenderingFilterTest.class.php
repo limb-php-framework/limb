@@ -73,4 +73,4 @@ class lmbViewRenderingFilterTest extends UnitTestCase
   }
 }
 
-?>
+

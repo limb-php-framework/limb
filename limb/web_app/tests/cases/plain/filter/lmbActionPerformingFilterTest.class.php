@@ -57,4 +57,4 @@ class lmbActionPerformingFilterTest extends UnitTestCase
     $filter->run($fc);
   }
 }
-?>
+

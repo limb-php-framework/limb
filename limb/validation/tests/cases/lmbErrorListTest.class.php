@@ -27,4 +27,4 @@ class lmbErrorListTest extends UnitTestCase
     $this->assertEqual($errors[0]->getValues(), array('FOO'));
   }
 }
-?>
+

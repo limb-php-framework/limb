@@ -93,4 +93,4 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
 
 }
 
-?>
+
