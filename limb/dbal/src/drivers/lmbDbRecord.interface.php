@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbSetInterface.interface.php');
  * interface lmbDbRecord.
  *
  * @package dbal
- * @version $Id: lmbDbRecord.interface.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDbRecord.interface.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 interface lmbDbRecord extends lmbSetInterface
 {

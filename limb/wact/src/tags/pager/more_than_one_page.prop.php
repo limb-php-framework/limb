@@ -11,7 +11,7 @@
  * @property HasMoreThanOnePage
  * @tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: more_than_one_page.prop.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: more_than_one_page.prop.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactPagerHasMoreThanOnePageProperty extends WactCompilerProperty
 {

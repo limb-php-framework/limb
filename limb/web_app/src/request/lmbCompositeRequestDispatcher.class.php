@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
  * class lmbCompositeRequestDispatcher.
  *
  * @package web_app
- * @version $Id: lmbCompositeRequestDispatcher.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbCompositeRequestDispatcher.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbCompositeRequestDispatcher implements lmbRequestDispatcher
 {

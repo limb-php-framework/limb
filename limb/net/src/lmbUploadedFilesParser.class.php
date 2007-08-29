@@ -13,7 +13,7 @@ lmb_require('limb/net/src/lmbUploadedFile.class.php');
  * class lmbUploadedFilesParser.
  *
  * @package net
- * @version $Id: lmbUploadedFilesParser.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUploadedFilesParser.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbUploadedFilesParser
 {
@@ -87,4 +87,4 @@ class lmbUploadedFilesParser
   }
 }
 
-?>
+

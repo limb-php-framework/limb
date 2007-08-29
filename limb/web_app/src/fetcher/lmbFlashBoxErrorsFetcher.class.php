@@ -13,7 +13,7 @@ lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
  * class lmbFlashBoxErrorsFetcher.
  *
  * @package web_app
- * @version $Id: lmbFlashBoxErrorsFetcher.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbFlashBoxErrorsFetcher.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbFlashBoxErrorsFetcher extends lmbFetcher
 {

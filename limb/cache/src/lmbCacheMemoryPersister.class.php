@@ -12,7 +12,7 @@ lmb_require('limb/cache/src/lmbCachePersister.interface.php');
  * class lmbCacheMemoryPersister.
  *
  * @package cache
- * @version $Id: lmbCacheMemoryPersister.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbCacheMemoryPersister.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbCacheMemoryPersister implements lmbCachePersister
 {

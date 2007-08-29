@@ -12,7 +12,7 @@ define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 /**
  * @tag richedit,wysiwyg
  * @package wysiwyg
- * @version $Id: wysiwyg.tag.php 6009 2007-06-21 09:19:18Z serega $
+ * @version $Id: wysiwyg.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbWysiwygTag extends WactControlTag
 {
@@ -64,4 +64,4 @@ class lmbWysiwygTag extends WactControlTag
     $code->writePhp($this->getComponentRefCode() . '->renderContents();' . "\n");
   }
 }
-?>
+

@@ -11,7 +11,7 @@
  * class lmbSingleByteCharsetDriver.
  *
  * @package i18n
- * @version $Id: lmbSingleByteCharsetDriver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSingleByteCharsetDriver.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbSingleByteCharsetDriver
 {

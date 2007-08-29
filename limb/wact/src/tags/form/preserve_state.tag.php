@@ -12,7 +12,7 @@
  * @forbid_end_tag
  * @req_const_attributes name
  * @package wact
- * @version $Id: preserve_state.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: preserve_state.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactFormPreserveStateTag extends WactCompilerTag
 {

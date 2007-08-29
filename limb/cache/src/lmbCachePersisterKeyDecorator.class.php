@@ -12,7 +12,7 @@ lmb_require('limb/cache/src/lmbCachePersister.interface.php');
  * class lmbCachePersisterKeyDecorator.
  *
  * @package cache
- * @version $Id: lmbCachePersisterKeyDecorator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCachePersisterKeyDecorator.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbCachePersisterKeyDecorator implements lmbCachePersister
 {
@@ -64,4 +64,4 @@ class lmbCachePersisterKeyDecorator implements lmbCachePersister
       return md5(serialize($key));
   }
 }
-?>
+

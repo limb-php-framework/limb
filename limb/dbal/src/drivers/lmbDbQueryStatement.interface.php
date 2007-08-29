@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * interface lmbDbQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbDbQueryStatement.interface.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDbQueryStatement.interface.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 interface lmbDbQueryStatement extends lmbDbStatement
 {

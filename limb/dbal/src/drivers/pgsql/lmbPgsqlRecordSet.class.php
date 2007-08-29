@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlRecord.class.php');
  * class lmbPgsqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecordSet.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbPgsqlRecordSet.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 {

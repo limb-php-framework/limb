@@ -18,7 +18,7 @@ require_once 'limb/wact/src/compiler/expression/node/WactDataBindingExpressionNo
  * class WactExpressionValueParser.
  *
  * @package wact
- * @version $Id: WactExpressionValueParser.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactExpressionValueParser.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactExpressionValueParser
 {

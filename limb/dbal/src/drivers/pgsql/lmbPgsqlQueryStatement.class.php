@@ -17,7 +17,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlArraySet.class.php');
  * class lmbPgsqlQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlQueryStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbPgsqlQueryStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStatement
 {

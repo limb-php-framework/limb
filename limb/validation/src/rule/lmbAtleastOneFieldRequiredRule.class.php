@@ -16,7 +16,7 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
  * $validator->addRule(new lmbAtleastOneFieldRequiredRule(array('name', 'nickname', 'fullname')));
  * </code>
  * @package validation
- * @version $Id: lmbAtleastOneFieldRequiredRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbAtleastOneFieldRequiredRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
 {
@@ -68,4 +68,4 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
                     'validation');
   }
 }
-?>
+

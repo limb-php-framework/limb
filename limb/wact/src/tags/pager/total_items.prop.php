@@ -11,7 +11,7 @@
  * @property TotalItems
  * @tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: total_items.prop.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: total_items.prop.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactPagerTotalItemsProperty extends WactCompilerProperty
 {

@@ -10,7 +10,7 @@
 /**
  * HTML/XHTML/XML parser
  * @package wact
- * @version $Id: WactHTMLParser.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactHTMLParser.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactHTMLParser
 {

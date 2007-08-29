@@ -13,7 +13,7 @@ lmb_require('limb/datetime/src/lmbDatePeriod.class.php');
  * class lmbTimePeriod.
  *
  * @package datetime
- * @version $Id: lmbTimePeriod.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbTimePeriod.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbTimePeriod extends lmbDatePeriod
 {
@@ -43,4 +43,4 @@ class lmbTimePeriod extends lmbDatePeriod
   }
 }
 
-?>
+

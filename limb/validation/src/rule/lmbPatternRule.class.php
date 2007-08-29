@@ -17,7 +17,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  * $validator->addRule(new lmbPatternRule("title", "/^[a-zA-Z0-9.-]+$/i"));
  * </code>
  * @package validation
- * @version $Id: lmbPatternRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbPatternRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbPatternRule extends lmbSingleFieldRule
 {
@@ -39,4 +39,4 @@ class lmbPatternRule extends lmbSingleFieldRule
       $this->error('{Field} value is wrong');
   }
 }
-?>
+

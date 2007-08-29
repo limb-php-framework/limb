@@ -10,7 +10,7 @@
 /**
  * Interface for defining rules to validate against
  * @package validation
- * @version $Id: lmbValidationRule.interface.php 5959 2007-06-07 13:47:57Z pachanga $
+ * @version $Id: lmbValidationRule.interface.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 interface lmbValidationRule
 {
@@ -24,4 +24,4 @@ interface lmbValidationRule
   */
   function validate($datasource, $error_list);
 }
-?>
+

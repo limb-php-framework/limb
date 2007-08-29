@@ -17,7 +17,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  * $validator->addRule(new lmbExcludePatternRule("title", "/[^a-zA-Z0-9.-]+/i"));
  * </code>
  * @package validation
- * @version $Id: lmbExcludePatternRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbExcludePatternRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbExcludePatternRule extends lmbSingleFieldRule
 {
@@ -45,4 +45,4 @@ class lmbExcludePatternRule extends lmbSingleFieldRule
     }
   }
 }
-?>
+

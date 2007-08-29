@@ -13,7 +13,7 @@ lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
  * class lmbHttpResponse.
  *
  * @package net
- * @version $Id: lmbHttpResponse.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbHttpResponse.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbHttpResponse
 {
@@ -255,4 +255,4 @@ class lmbHttpResponse
       $this->start();
   }
 }
-?>
+

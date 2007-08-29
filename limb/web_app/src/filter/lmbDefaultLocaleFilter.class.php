@@ -13,7 +13,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbDefaultLocaleFilter.
  *
  * @package web_app
- * @version $Id: lmbDefaultLocaleFilter.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDefaultLocaleFilter.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbDefaultLocaleFilter implements lmbInterceptingFilter
 {

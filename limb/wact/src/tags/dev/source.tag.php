@@ -15,7 +15,7 @@
  * result in an error. It may also result in a mess in terms of HTML
  * @tag dev:SOURCE
  * @package wact
- * @version $Id: source.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: source.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactDevSourceTag extends WactCompilerTag {
 

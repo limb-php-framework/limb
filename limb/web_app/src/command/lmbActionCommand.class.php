@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/command/lmbBaseCommand.class.php');
  * class lmbActionCommand.
  *
  * @package web_app
- * @version $Id: lmbActionCommand.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbActionCommand.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbActionCommand extends lmbBaseCommand
 {

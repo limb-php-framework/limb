@@ -9,7 +9,7 @@
 
 /**
  * @package i18n
- * @version $Id: common.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: common.inc.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 require_once('limb/core/common.inc.php');
 require_once(dirname(__FILE__) . '/toolkit.inc.php');
@@ -52,4 +52,4 @@ function lmb_translit_russian($input, $encoding = 'utf-8')
     return $result;
 }
 
-?>
+

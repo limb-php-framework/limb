@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbConf.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbConf extends lmbSet
 {

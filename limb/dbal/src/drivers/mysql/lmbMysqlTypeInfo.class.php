@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
  * class lmbMysqlTypeInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlTypeInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbMysqlTypeInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbMysqlTypeInfo extends lmbDbTypeInfo
 {

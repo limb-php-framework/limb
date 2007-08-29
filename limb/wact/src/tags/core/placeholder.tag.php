@@ -12,7 +12,7 @@
  * @tag core:PLACEHOLDER
  * @forbid_end_tag
  * @package wact
- * @version $Id: placeholder.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: placeholder.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactCorePlaceHolderTag extends WactCompilerTag
 {

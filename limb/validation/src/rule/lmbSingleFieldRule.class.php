@@ -12,7 +12,7 @@ lmb_require('limb/i18n/common.inc.php');
 /**
  * A base class for rules responsbile for validating a single field should inherit this class.
  * @package validation
- * @version $Id: lmbSingleFieldRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbSingleFieldRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 abstract class lmbSingleFieldRule implements lmbValidationRule
 {
@@ -86,4 +86,4 @@ abstract class lmbSingleFieldRule implements lmbValidationRule
   */
   abstract function check($value);
 }
-?>
+

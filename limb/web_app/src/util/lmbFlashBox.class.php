@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/util/lmbMessageBox.class.php');
  * class lmbFlashBox.
  *
  * @package web_app
- * @version $Id: lmbFlashBox.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbFlashBox.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbFlashBox extends lmbMessageBox
 {

@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/command/lmbActionCommand.class.php');
  * class lmbClosePopupDialogCommand.
  *
  * @package web_app
- * @version $Id: lmbClosePopupDialogCommand.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbClosePopupDialogCommand.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbClosePopupDialogCommand extends lmbActionCommand
 {

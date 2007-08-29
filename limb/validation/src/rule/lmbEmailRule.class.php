@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 /**
  * Checks that field value is a valid Email address.
  * @package validation
- * @version $Id: lmbEmailRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbEmailRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbEmailRule extends lmbDomainRule
 {
@@ -38,4 +38,4 @@ class lmbEmailRule extends lmbDomainRule
     parent :: check($value);
   }
 }
-?>
+

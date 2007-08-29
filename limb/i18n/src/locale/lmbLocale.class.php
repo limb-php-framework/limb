@@ -26,7 +26,7 @@ lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
  * currency/funds are specified by the ISO 4217
  * http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90.xalter
  * @package i18n
- * @version $Id: lmbLocale.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbLocale.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbLocale
 {
@@ -368,4 +368,4 @@ class lmbLocale
       return $this->long_month_names[$num];
   }
 }
-?>
+

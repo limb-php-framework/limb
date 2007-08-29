@@ -15,7 +15,7 @@ require_once 'limb/wact/src/compiler/property/WactPropertyInfoExtractor.class.ph
  * class WactPropertyDictionary.
  *
  * @package wact
- * @version $Id: WactPropertyDictionary.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactPropertyDictionary.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactPropertyDictionary extends WactCompilerArtifactDictionary
 {

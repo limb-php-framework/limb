@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciColumnInfo.class.php');
  * class lmbOciTableInfo.
  *
  * @package dbal
- * @version $Id: lmbOciTableInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbOciTableInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbOciTableInfo extends lmbDbTableInfo
 {

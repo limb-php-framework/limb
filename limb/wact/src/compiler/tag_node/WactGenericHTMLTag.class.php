@@ -14,7 +14,7 @@
  * at runtime.
  * WactGenericHTMLTag is for tags with no children or content
  * @package wact
- * @version $Id: WactGenericHTMLTag.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactGenericHTMLTag.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactGenericHTMLTag extends WactRuntimeComponentHTMLTag
 {

@@ -24,7 +24,7 @@
  *
  * This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
  * @package datetime
- * @version $Id: lmbDateTimeZone.class.php 6037 2007-07-02 06:32:28Z serega $
+ * @version $Id: lmbDateTimeZone.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbDateTimeZone
 {
@@ -3477,4 +3477,4 @@ if (isset($_DATE_TIMEZONE_DEFAULT) &&  lmbDateTimeZone::isValidId($_DATE_TIMEZON
 else
   lmbDateTimeZone::setDefault('UTC');
 
-?>
+

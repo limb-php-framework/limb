@@ -14,7 +14,7 @@ require_once('limb/wact/src/compiler/parser/WactBaseParsingState.class.php');
  * class WactLiteralParsingState.
  *
  * @package wact
- * @version $Id: WactLiteralParsingState.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactLiteralParsingState.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactLiteralParsingState extends WactBaseParsingState  implements WactHTMLParserListener
 {

@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciManipulationStatement.class.php');
  * class lmbOciInsertStatement.
  *
  * @package dbal
- * @version $Id: lmbOciInsertStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbOciInsertStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbOciInsertStatement extends lmbOciManipulationStatement implements lmbDbInsertStatement
 {

@@ -10,7 +10,7 @@
 /**
  * @filter utf8encode
  * @package wact
- * @version $Id: utf8encode.filter.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: utf8encode.filter.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactUtf8EncodeFilter extends WactCompilerFilter {
 

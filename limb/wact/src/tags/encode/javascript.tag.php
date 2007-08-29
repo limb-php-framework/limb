@@ -12,7 +12,7 @@
  * @tag encode:JAVASCRIPT
  * @restrict_self_nesting
  * @package wact
- * @version $Id: javascript.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: javascript.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactEncodeJavascriptTag extends WactCompilerTag
 {

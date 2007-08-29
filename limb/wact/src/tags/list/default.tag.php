@@ -12,7 +12,7 @@
  * @tag list:DEFAULT
  * @parent_tag_class WactListListTag
  * @package wact
- * @version $Id: default.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: default.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactListDefaultTag extends WactSilentCompilerTag
 {

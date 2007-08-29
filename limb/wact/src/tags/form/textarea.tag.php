@@ -17,7 +17,7 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @runat client
  * @restrict_self_nesting
  * @package wact
- * @version $Id: textarea.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: textarea.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactTextAreaTag extends WactControlTag
 {

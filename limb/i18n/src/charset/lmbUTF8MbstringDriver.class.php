@@ -14,7 +14,7 @@ lmb_require('limb/i18n/src/charset/lmbUTF8BaseDriver.class.php');
  * class lmbUTF8MbstringDriver.
  *
  * @package i18n
- * @version $Id: lmbUTF8MbstringDriver.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUTF8MbstringDriver.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbUTF8MbstringDriver extends lmbUTF8BaseDriver {
     function _strlen($string) {

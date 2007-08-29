@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * abstract class lmbDbInfo.
  *
  * @package dbal
- * @version $Id: lmbDbInfo.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDbInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 abstract class lmbDbInfo
 {

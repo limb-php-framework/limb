@@ -12,7 +12,7 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
  * class lmbCliException.
  *
  * @package cli
- * @version $Id: lmbCliException.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbCliException.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbCliException extends lmbException{}
 

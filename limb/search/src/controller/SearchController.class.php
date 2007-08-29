@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/controller/lmbController.class.php');
  * class SearchController.
  *
  * @package search
- * @version $Id: SearchController.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: SearchController.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class SearchController extends lmbController
 {

@@ -12,7 +12,7 @@ lmb_require('limb/wact/src/components/form/form.inc.php');
  * class lmbWysiwygComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbWysiwygComponent.class.php 6009 2007-06-21 09:19:18Z serega $
+ * @version $Id: lmbWysiwygComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbWysiwygComponent extends WactTextAreaComponent
 {
@@ -53,4 +53,4 @@ class lmbWysiwygComponent extends WactTextAreaComponent
       $this->setAttribute('height', $this->getIniOption('height'));
   }
 }
-?>
+

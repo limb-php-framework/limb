@@ -10,7 +10,7 @@
 /**
  * Outputs the result of an expression like {$var} or {$'var'}
  * @package wact
- * @version $Id: WactOutputExpressionNode.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactOutputExpressionNode.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactOutputExpressionNode extends WactCompileTreeNode
 {
@@ -46,4 +46,4 @@ class WactOutputExpressionNode extends WactCompileTreeNode
     }
   }
 }
-?>
+

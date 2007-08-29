@@ -11,7 +11,7 @@
  * @min_attributes 1
  * @max_attributes 100
  * @package i18n
- * @version $Id: i18n.filter.php 6190 2007-07-23 14:15:18Z pachanga $
+ * @version $Id: i18n.filter.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbI18NStringFilter extends WactCompilerFilter
 {
@@ -73,4 +73,4 @@ class lmbI18NStringFilter extends WactCompilerFilter
   }
 }
 
-?>
+

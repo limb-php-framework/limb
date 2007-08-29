@@ -13,7 +13,7 @@ require_once('limb/wact/src/components/components.inc.php');
  * class WactTemplate.
  *
  * @package wact
- * @version $Id: WactTemplate.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactTemplate.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactTemplate extends WactDatasourceRuntimeComponent
 {

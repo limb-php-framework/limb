@@ -12,7 +12,7 @@
  * @restrict_self_nesting
  * @parent_tag_class WactPagerListTag
  * @package wact
- * @version $Id: separator.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: separator.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactPagerSeparatorTag extends WactSilentCompilerTag
 {

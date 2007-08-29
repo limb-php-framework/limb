@@ -37,4 +37,4 @@ class lmbLocaleDateRule extends lmbSingleFieldRule
   }
 }
 
-?>
+

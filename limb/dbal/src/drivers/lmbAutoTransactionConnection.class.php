@@ -15,7 +15,7 @@ lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
  * class lmbAutoTransactionConnection.
  *
  * @package dbal
- * @version $Id: lmbAutoTransactionConnection.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbAutoTransactionConnection.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbAutoTransactionConnection extends lmbDbConnectionDecorator
 {

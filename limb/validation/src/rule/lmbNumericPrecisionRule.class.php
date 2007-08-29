@@ -18,7 +18,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  *  // 100.2 with match this rule, 100.300 or 100000 - not.
  * </code>
  * @package validation
- * @version $Id: lmbNumericPrecisionRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbNumericPrecisionRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbNumericPrecisionRule extends lmbSingleFieldRule
 {
@@ -68,4 +68,4 @@ class lmbNumericPrecisionRule extends lmbSingleFieldRule
     }
   }
 }
-?>
+

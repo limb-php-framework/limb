@@ -17,7 +17,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  *  $validator->addRule(new lmbNumericValueRangeRule('length', 10.5, 50));
  * </code>
  * @package validation
- * @version $Id: lmbNumericValueRangeRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbNumericValueRangeRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbNumericValueRangeRule extends lmbSingleFieldRule
 {
@@ -57,4 +57,4 @@ class lmbNumericValueRangeRule extends lmbSingleFieldRule
     }
   }
 }
-?>
+

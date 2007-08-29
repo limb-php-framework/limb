@@ -11,7 +11,7 @@
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbIp.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbIp
 {
@@ -84,4 +84,4 @@ class lmbIp
   }
 }
 
-?>
+

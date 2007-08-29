@@ -12,7 +12,7 @@ lmb_require('limb/cache/src/lmbCachePersister.interface.php');
  * class lmbCacheCompositePersister.
  *
  * @package cache
- * @version $Id: lmbCacheCompositePersister.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbCacheCompositePersister.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbCacheCompositePersister implements lmbCachePersister
 {
@@ -71,4 +71,4 @@ class lmbCacheCompositePersister implements lmbCachePersister
       $this->persisters[$i]->put($key, $value, $group);
   }
 }
-?>
+

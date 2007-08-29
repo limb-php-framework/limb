@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * Holds a list of validation errors
  * @see lmbErrorMessage
  * @package validation
- * @version $Id: lmbErrorList.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbErrorList.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbErrorList extends lmbCollection
 {

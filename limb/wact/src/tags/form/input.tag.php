@@ -19,7 +19,7 @@ require_once 'limb/wact/src/tags/form/control.inc.php';
  * @restrict_self_nesting
  * @suppress_attributes errorclass errorstyle displayname
  * @package wact
- * @version $Id: input.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: input.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactInputTag extends WactControlTag
 {

@@ -16,7 +16,7 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
  *  $validator->addRule(new lmbMatchRule('password', 'repeat_password'));
  * </code>
  * @package validation
- * @version $Id: lmbMatchRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbMatchRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbMatchRule implements lmbValidationRule
 {
@@ -63,4 +63,4 @@ class lmbMatchRule implements lmbValidationRule
     }
   }
 }
-?>
+

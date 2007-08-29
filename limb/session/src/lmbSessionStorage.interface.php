@@ -9,7 +9,7 @@
 
 /**
  * Very simple interface for session storage driver classes.
- * @version $Id: lmbSessionStorage.interface.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSessionStorage.interface.php 6243 2007-08-29 11:53:10Z pachanga $
  * @package session
  */
 interface lmbSessionStorage

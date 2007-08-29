@@ -12,7 +12,7 @@ lmb_require('limb/imagekit/src/lmbImageLibrary.class.php');
  * class lmbImageGd.
  *
  * @package imagekit
- * @version $Id: lmbImageGd.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbImageGd.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbImageGd extends lmbImageLibrary
 {

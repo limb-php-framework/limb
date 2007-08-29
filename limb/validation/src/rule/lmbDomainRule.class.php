@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 /**
  * Checks that field value is a valid domain name.
  * @package validation
- * @version $Id: lmbDomainRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbDomainRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbDomainRule extends lmbSingleFieldRule
 {
@@ -59,4 +59,4 @@ class lmbDomainRule extends lmbSingleFieldRule
     }
   }
 }
-?>
+

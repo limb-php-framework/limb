@@ -13,7 +13,7 @@ lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
  * class lmbSearchFetcher.
  *
  * @package search
- * @version $Id: lmbSearchFetcher.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSearchFetcher.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbSearchFetcher extends lmbFetcher
 {

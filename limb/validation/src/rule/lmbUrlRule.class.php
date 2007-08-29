@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 /**
  * Checks that field value is a valid Url.
  * @package validation
- * @version $Id: lmbUrlRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbUrlRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbUrlRule extends lmbDomainRule
 {
@@ -54,4 +54,4 @@ class lmbUrlRule extends lmbDomainRule
       $this->error('{Field} may not use {scheme}.', array('scheme' => $url['scheme']));
   }
 }
-?>
+

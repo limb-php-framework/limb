@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlManipulationStatement.class.php');
  * class lmbMysqlInsertStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlInsertStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbMysqlInsertStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbMysqlInsertStatement extends lmbMysqlManipulationStatement implements lmbDbInsertStatement
 {

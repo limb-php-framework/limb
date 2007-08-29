@@ -10,7 +10,7 @@
 /**
  * Used to store complex expressions like "{$var1}_my_{$var2}" found inside tag attributes
  * @package wact
- * @version $Id: WactAttribute.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactAttribute.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactAttribute implements WactExpressionInterface
 {

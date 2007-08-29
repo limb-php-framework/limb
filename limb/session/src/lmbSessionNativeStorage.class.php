@@ -11,7 +11,7 @@ lmb_require('limb/session/src/lmbSessionStorage.interface.php');
 /**
  * lmbSessionNativeStorage does nothing thus keeping native file-based php session storage to be used.
  * @see lmbSessionStartupFilter
- * @version $Id: lmbSessionNativeStorage.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSessionNativeStorage.class.php 6243 2007-08-29 11:53:10Z pachanga $
  * @package session
  */
 class lmbSessionNativeStorage implements lmbSessionStorage

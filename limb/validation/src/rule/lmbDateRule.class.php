@@ -36,4 +36,4 @@ class lmbDateRule extends lmbSingleFieldRule
     }
   }
 }
-?>
+

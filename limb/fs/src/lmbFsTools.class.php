@@ -21,14 +21,17 @@ class lmbFsTools extends lmbAbstractTools
 {
   protected $file_locators = array();
 
-  function findFileByAlias($alias, $paths, $locator_name)
+  function findFileByAlias($alias, $paths, $locator_name = null)
   {
     $locator = $this->toolkit->getFileLocator($paths, $locator_name);
     return $locator->locate($alias);
   }
 
-  function getFileLocator($paths, $locator_name)
+  function getFileLocator($paths, $locator_name = null)
   {
+    if(!$locator_name)
+      $locator_name = md5($paths);
+
     if(isset($this->file_locators[$locator_name]))
        return $this->file_locators[$locator_name];
 

@@ -10,7 +10,7 @@
 /**
  * Represents list tags at runtime, providing an API for preparing the data set
  * @package wact
- * @version $Id: WactListComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactListComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactListComponent extends WactRuntimeComponent
 {

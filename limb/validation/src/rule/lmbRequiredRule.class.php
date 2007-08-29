@@ -22,7 +22,7 @@ lmb_require('limb/i18n/common.inc.php');
  * </code>
  * @see lmbValidator :: addRequiredRule()
  * @package validation
- * @version $Id: lmbRequiredRule.class.php 5986 2007-06-13 06:25:43Z pachanga $
+ * @version $Id: lmbRequiredRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbRequiredRule implements lmbValidationRule
 {
@@ -59,4 +59,4 @@ class lmbRequiredRule implements lmbValidationRule
     }
   }
 }
-?>
+

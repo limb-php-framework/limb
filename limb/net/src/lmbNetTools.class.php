@@ -12,7 +12,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbNetTools.
  *
  * @package net
- * @version $Id: lmbNetTools.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbNetTools.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbNetTools extends lmbAbstractTools
 {
@@ -51,4 +51,4 @@ class lmbNetTools extends lmbAbstractTools
     $this->response = $response;
   }
 }
-?>
+

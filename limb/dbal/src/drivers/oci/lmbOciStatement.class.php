@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbOciStatement.
  *
  * @package dbal
- * @version $Id: lmbOciStatement.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbOciStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbOciStatement implements lmbDbStatement
 {

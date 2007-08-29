@@ -12,7 +12,7 @@
  * not have a corresponding WactRuntimeComponent, nor do they normally generate
  * output into the compiled template.
  * @package wact
- * @version $Id: WactSilentCompilerTag.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactSilentCompilerTag.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactSilentCompilerTag extends WactCompilerTag
 {

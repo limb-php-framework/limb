@@ -21,4 +21,4 @@ class lmbFakeHttpResponse extends lmbHttpResponse
   protected function _sendString($string){}
   protected function _sendFile($file_path){}
 }
-?>
+

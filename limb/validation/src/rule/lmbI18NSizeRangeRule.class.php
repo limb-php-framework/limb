@@ -57,4 +57,4 @@ class lmbI18NSizeRangeRule extends lmbSingleFieldRule
     }
   }
 }
-?>
+

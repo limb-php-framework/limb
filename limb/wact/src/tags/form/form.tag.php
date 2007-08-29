@@ -15,7 +15,7 @@
  * @restrict_self_nesting
  * @convert_to_expression from
  * @package wact
- * @version $Id: form.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: form.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactFormTag extends WactRuntimeDatasourceComponentHTMLTag
 {

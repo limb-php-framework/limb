@@ -11,7 +11,7 @@
  * @tag pager:prev:DISABLED
  * @parent_tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: prev_disabled.tag.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: prev_disabled.tag.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactPagerPrevTagDisabled extends WactCompilerTag
 {

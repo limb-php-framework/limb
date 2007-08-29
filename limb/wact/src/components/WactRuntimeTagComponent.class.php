@@ -10,7 +10,7 @@
 /**
  * Base class for runtime components that output XML tags
  * @package wact
- * @version $Id: WactRuntimeTagComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactRuntimeTagComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactRuntimeTagComponent extends WactRuntimeComponent
 {

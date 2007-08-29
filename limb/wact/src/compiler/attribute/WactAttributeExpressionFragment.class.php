@@ -73,4 +73,4 @@ class WactAttributeExpressionFragment implements WactExpressionInterface
     return $this->expression;
   }
 }
-?>
+

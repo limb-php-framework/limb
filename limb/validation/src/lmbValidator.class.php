@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbHandle.class.php');
  * Holds the list of validation rules along with errors happened during validation.
  * Validates a datasource against added validation rules.
  * @package validation
- * @version $Id: lmbValidator.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbValidator.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbValidator
 {
@@ -127,4 +127,4 @@ class lmbValidator
   }
 }
 
-?>
+

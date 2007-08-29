@@ -12,7 +12,7 @@
  * Could be usefull with java script sometimes
  * @filter safe_js_text
  * @package wact
- * @version $Id: safejstext.filter.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: safejstext.filter.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactSafeJsTextFilter extends WactCompilerFilter
 {

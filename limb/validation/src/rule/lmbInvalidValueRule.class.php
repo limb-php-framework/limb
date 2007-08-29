@@ -16,7 +16,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  * $validator->addRule(new lmbInvalidValueRule("region", -1));
  * </code>
  * @package validation
- * @version $Id: lmbInvalidValueRule.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: lmbInvalidValueRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbInvalidValueRule extends lmbSingleFieldRule
 {
@@ -42,4 +42,4 @@ class lmbInvalidValueRule extends lmbSingleFieldRule
   }
 }
 
-?>
+

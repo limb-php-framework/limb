@@ -12,7 +12,7 @@ lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
  * class lmbUniqueTableFieldRule.
  *
  * @package web_app
- * @version $Id: lmbUniqueTableFieldRule.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbUniqueTableFieldRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbUniqueTableFieldRule extends lmbSingleFieldRule
 {

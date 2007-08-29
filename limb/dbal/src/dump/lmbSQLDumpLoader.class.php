@@ -13,7 +13,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * class lmbSQLDumpLoader.
  *
  * @package dbal
- * @version $Id: lmbSQLDumpLoader.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSQLDumpLoader.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbSQLDumpLoader
 {

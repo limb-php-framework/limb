@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
  * class lmbSearchResultProcessor.
  *
  * @package search
- * @version $Id: lmbSearchResultProcessor.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSearchResultProcessor.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbSearchResultProcessor extends lmbCollectionDecorator
 {

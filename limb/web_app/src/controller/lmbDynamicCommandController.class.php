@@ -13,7 +13,7 @@ lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
  * class lmbDynamicCommandController.
  *
  * @package web_app
- * @version $Id: lmbDynamicCommandController.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDynamicCommandController.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbDynamicCommandController extends lmbAbstractController
 {

@@ -11,7 +11,7 @@
  * class lmbMimeType.
  *
  * @package net
- * @version $Id: lmbMimeType.class.php 5953 2007-06-06 16:28:38Z wiliam $
+ * @version $Id: lmbMimeType.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class lmbMimeType
 {
@@ -77,4 +77,4 @@ class lmbMimeType
     }
   }
 }
-?>
+

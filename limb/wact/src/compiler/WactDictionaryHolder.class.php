@@ -16,7 +16,7 @@ require_once 'limb/wact/src/compiler/WactCompiler.class.php';
  * class WactDictionaryHolder.
  *
  * @package wact
- * @version $Id: WactDictionaryHolder.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactDictionaryHolder.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactDictionaryHolder
 {

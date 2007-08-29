@@ -13,7 +13,7 @@ require_once('limb/wact/src/compiler/tag_node/WactRuntimeComponentTag.class.php'
  * class WactRuntimeDatasourceComponentTag.
  *
  * @package wact
- * @version $Id: WactRuntimeDatasourceComponentTag.class.php 5945 2007-06-06 08:31:43Z pachanga $
+ * @version $Id: WactRuntimeDatasourceComponentTag.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
 class WactRuntimeDatasourceComponentTag extends WactRuntimeComponentTag
 {
@@ -42,4 +42,4 @@ class WactRuntimeDatasourceComponentTag extends WactRuntimeComponentTag
     return TRUE;
   }
 }
-?>
+
