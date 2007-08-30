@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/macro/src/lmbMacroTreeBuilder.class.php');
 lmb_require('limb/macro/src/lmbMacroNode.class.php');
 lmb_require('limb/macro/src/lmbMacroParser.class.php');
+lmb_require('limb/macro/src/lmbMacroCodeWriter.class.php');
 
 /**
  * class lmbMacroCompiler.

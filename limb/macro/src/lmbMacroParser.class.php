@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/macro/src/lmbMacroTokenizer.class.php');
 lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
 lmb_require('limb/macro/src/lmbMacroLiteralParsingState.class.php');
 lmb_require('limb/macro/src/lmbMacroTagParsingState.class.php');
@@ -20,7 +21,7 @@ lmb_require('limb/macro/src/lmbMacroTagParsingState.class.php');
 class lmbMacroParser implements lmbMacroTokenizerListener
 {
   protected $active_parsing_state;
-  protected $component_parsing_state;
+  protected $tag_parsing_state;
   protected $literal_parsing_state;
 
   /**
@@ -38,14 +39,14 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->tree_builder = $tree_builder;
     $this->template_locator = $template_locator;
 
-    $this->component_parsing_state = $this->_createComponentParsingState($tag_dictionary);
+    $this->tag_parsing_state = $this->_createTagParsingState($tag_dictionary);
     $this->literal_parsing_state = $this->_createLiteralParsingState();
 
-    $this->changeToComponentParsingState();
+    $this->changeToTagParsingState();
   }
 
   // for testing purposes
-  protected function _createComponentParsingState($tag_dictionary)
+  protected function _createTagParsingState($tag_dictionary)
   {
     return new lmbMacroTagParsingState($this, $this->tree_builder, $tag_dictionary);
   }
@@ -72,11 +73,11 @@ class lmbMacroParser implements lmbMacroTokenizerListener
 
     $this->tree_builder->setCursor($root_node);
 
-    $this->changeToComponentParsingState();
+    $this->changeToTagParsingState();
 
     $tokenizer = new lmbMacroTokenizer($this);
 
-    $this->setTemplateLocator($parser);
+    $this->setTemplateLocator($this->template_locator);
 
     $content = $this->template_locator->readTemplateFile($source_file_path);
 
@@ -97,9 +98,9 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     return $this->active_parsing_state;
   }
   
-  function changeToComponentParsingState()
+  function changeToTagParsingState()
   {
-    $this->active_parsing_state = $this->component_parsing_state;
+    $this->active_parsing_state = $this->tag_parsing_state;
   }  
 
   function changeToLiteralParsingState($tag)
@@ -111,7 +112,7 @@ class lmbMacroParser implements lmbMacroTokenizerListener
   function setTemplateLocator($template_locator)
   {
     $this->literal_parsing_state->setTemplateLocator($template_locator);
-    $this->component_parsing_state->setTemplateLocator($template_locator);
+    $this->tag_parsing_state->setTemplateLocator($template_locator);
   }  
 
   function startElement($tag, $attrs)
