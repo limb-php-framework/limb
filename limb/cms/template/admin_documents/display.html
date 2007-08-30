@@ -1,4 +1,4 @@
-<core:wrap file="_cp/page.html" in="content_zone">
+<core:wrap file="_cms/page.html" in="content_zone">
 
   <div class="header_context">
 
@@ -45,7 +45,7 @@
     <form name='list_form' method='post'>
 
       <div class='list_actions_top'>
-        <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/images/_cp/button/change_order.gif" width='101' height='19' alt='Сментить порядок'  onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
+        <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/shared/cms/images/button/change_order.gif" width='101' height='19' alt='Сментить порядок'  onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
       </div>
 
       <table>
@@ -69,8 +69,8 @@
                 </ul>
               </td>
               <td class='actions'>
-                <route_url params="action:edit,id:{$node.id}" extra='?popup=1'><img src='/images/_cp/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
-                <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}'><img src='/images/_cp/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
+                <route_url params="action:edit,id:{$node.id}" extra='?popup=1'><img src='/shared/cms/images/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
+                <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}'><img src='/shared/cms/images/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
               </td>
             </tr>
           </list:item>
@@ -78,7 +78,7 @@
       </table>
 
       <div class='list_actions'>
-        <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/images/_cp/button/change_order.gif" width='101' height='19' alt='Сментить порядок'  onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
+        <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/shared/cms/images/button/change_order.gif" width='101' height='19' alt='Сментить порядок'  onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
       </div>
 
     </form>

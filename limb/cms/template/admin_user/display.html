@@ -1,4 +1,4 @@
-<core:wrap file="_cp/page.html" in="content_zone">
+<core:wrap file="_cms/page.html" in="content_zone">
 
    <div class="header_context">
 
@@ -19,7 +19,7 @@
 
         <div class='list_actions_top'>
           <route_url_set field='delete_url' params="action:delete" />
-          <input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          <input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
         </div>
         <table>
           <tr>
@@ -41,9 +41,9 @@
               <td><a href='mailto:{$email}'>{$email}</a></td>
               <td>{$current_role.name}</td>
               <td class='actions'>
-                  <route_url params='action:change_password,id:{$id}' extra='?popup=1' title="Сменить пароль"><img src='/images/_cp/icon/action/password.gif' width='14' height='16' alt='Сменить пароль'/></route_url>
-                  <route_url params="action:edit,id:{$id}" extra='?popup=1' title="Редактировать"><img src='/images/_cp/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
-                  <route_url params="action:delete" extra='?ids[]={$id}&popup=1' title="Удалить"><img src='/images/_cp/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
+                  <route_url params='action:change_password,id:{$id}' extra='?popup=1' title="Сменить пароль"><img src='/shared/cms/images/icon/action/password.gif' width='14' height='16' alt='Сменить пароль'/></route_url>
+                  <route_url params="action:edit,id:{$id}" extra='?popup=1' title="Редактировать"><img src='/shared/cms/images/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
+                  <route_url params="action:delete" extra='?ids[]={$id}&popup=1' title="Удалить"><img src='/shared/cms/images/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
               </td>
             </tr>
             </list:ITEM>
@@ -52,7 +52,7 @@
 
         <div class='list_actions'>
           <route_url_set field='delete_url' params="action:delete" />
-          <input type="image" src="/images/_cp/button/delete.gif" width='54' height='19' alt='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          <input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
         </div>
 
       </form>
