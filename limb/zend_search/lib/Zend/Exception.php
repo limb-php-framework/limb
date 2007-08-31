@@ -14,5 +14,6 @@
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
+//quite a dirty hack, probably this should be made more isolated from Limb3...
 class Zend_Exception extends lmbException {}
 ?>
