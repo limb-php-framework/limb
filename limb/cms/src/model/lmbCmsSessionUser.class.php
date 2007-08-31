@@ -8,6 +8,7 @@
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
+lmb_require('limb/cms/src/model/lmbCmsUser.class.php');
 
 /**
  * class lmbCmsClassName.
@@ -33,7 +34,7 @@ class lmbCmsSessionUser extends lmbObject
       $this->user->setLoggedIn($this->is_logged_in);
     }
     else
-      $this->user = new rtUser();
+      $this->user = new lmbCmsUser();
 
     return $this->user;
   }

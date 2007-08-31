@@ -6,10 +6,10 @@
   <title>{$#title}</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 
-  <core:INCLUDE file='_cp/styles.html'/>
-  <core:INCLUDE file='_cp/js.html'/>
-  <core:INCLUDE file='_cp/extjs.html'/>
-  <script type="text/javascript" src="/js/accordion.js"></script>
+  <core:INCLUDE file='_cms/styles.html'/>
+  <core:INCLUDE file='_cms/js.html'/>
+  <core:INCLUDE file='_cms/extjs.html'/>
+  <script type="text/javascript" src="/shared/cms/js/accordion.js"></script>
   <script type="text/javascript">
     cpLayout = function(){
           return {
@@ -21,7 +21,7 @@
                   });
 
                   layout.beginUpdate();
-                  layout.add('west', new Ext.ContentPanel('left', {title: 'Навигация', fitToFrame:true, closable:false}));
+                  layout.add('west', new Ext.ContentPanel('left', {title: 'Navigation', fitToFrame:true, closable:false}));
                   layout.add('center', new Ext.ContentPanel('center'));
                   layout.add('north', new Ext.ContentPanel('top'));
                   layout.endUpdate();
@@ -41,9 +41,6 @@
 <div id='top'>
   <img src="/shared/cms/images/limb_admin.gif"  width='94' height='25' alt='LIMB' id='logo'/>
   <core:datasource from='#toolkit.user'>
-    <core:default for='is_admin'>
-      <route_url params='controller:admin_publishing,action:main_page' class="jip_button">Редактировать на сайте</route_url>
-    </core:default>
 
     <div id='user_data'>
       <span class='name'>{$login} [ {$full_name} ]</span> <a href="#" class='profile'>Мой профиль</a> <a href='/user/logout' class='logout'>Выйти</a>
@@ -59,7 +56,7 @@
 <!--END:[ body ]-->
 
 <div id='left'>
-  <core:INCLUDE file='_cp/menu.html'/>
+  <core:INCLUDE file='_cms/menu.html'/>
 </div>
 </body>
 </html>

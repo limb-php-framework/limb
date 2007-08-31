@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('src/model/rtRoles.class.php');
+lmb_require('limb/cms/src/model/lmbCmsUserRoles.class.php');
 
 /**
  * class lmbCmsUser.
@@ -129,7 +129,13 @@ class lmbCmsUser extends lmbActiveRecord
 
   function getCurrentRole()
   {
-    return lmbCmsUserRoles :: createRole($this->getRoleId());
+    if($role_id = $this->getRoleId())
+      return lmbCmsUserRoles :: createRole($role_id);
+    else
+    {
+      $this->setRoleId(lmbCmsUserRoles :: ADMIN);
+      return lmbCmsUserRoles :: createRole(lmbCmsUserRoles :: ADMIN);
+    }
   }
 
   function getIsAdmin()

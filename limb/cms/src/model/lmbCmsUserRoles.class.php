@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
+lmb_require('limb/cms/src/model/lmbCmsUserRole.class.php');
 /**
  * class lmbCmsUserRoles.
  *
@@ -36,12 +37,12 @@ class lmbCmsUserRoles
 
   function createAdminRole()
   {
-    return new rtRole(self :: ADMIN, 'Администратор', 'Админ');
+    return new lmbCmsUserRole(self :: ADMIN, 'Администратор', 'Админ');
   }
 
   function createEditorRole()
   {
-    return new rtRole(self :: EDITOR, 'Редактор', 'Ред');
+    return new lmbCmsUserRole(self :: EDITOR, 'Редактор', 'Ред');
   }
 
   function getRoles()

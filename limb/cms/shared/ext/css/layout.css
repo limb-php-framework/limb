@@ -2,7 +2,7 @@
  * Ext JS Library 1.0.1
  * Copyright(c) 2006-2007, Ext JS, LLC.
  * licensing@extjs.com
- * 
+ *
  * http://www.extjs.com/license
  */
 
@@ -12,7 +12,7 @@
     overflow:hidden;
 }
 .x-layout-container .x-layout-tabs-body{
-	border:0 none;
+  border:0 none;
 }
 .x-layout-collapsed{
     position:absolute;
@@ -23,8 +23,8 @@
     width:20px;
     height:20px;
     overflow:hidden;
-	  z-index:20;
-	  border:1px solid #bbb;
+    z-index:20;
+    border:1px solid #bbb;
 }
 .ext-border-box .x-layout-collapsed{
     width:22px;
@@ -32,17 +32,17 @@
 }
 .x-layout-collapsed-over{
     cursor:pointer;
-	 background-color:#eee;
+   background-color:#eee;
 }
 .x-layout-collapsed-west .x-layout-collapsed-tools, .x-layout-collapsed-east .x-layout-collapsed-tools{
-	position:absolute;
+  position:absolute;
     top:0;
     left:0;
     width:20px;
     height:20px;
 }
 .x-layout-collapsed-north .x-layout-collapsed-tools, .x-layout-collapsed-south .x-layout-collapsed-tools{
-	position:absolute;
+  position:absolute;
     top:0;
     right:0;
     width:20px;
@@ -102,7 +102,7 @@
     padding: 4px;
     padding-left: 4px;
     display:block;
-	 white-space:nowrap;
+   white-space:nowrap;
 }
 .x-layout-panel-hd-tools{
     position:absolute;
@@ -136,10 +136,10 @@
     background-image:url(../images/default/layout/stick.gif);
 }
 .x-layout-collapse-west,.x-layout-expand-east{
-    background-image:url(../../images/_cp/icon/collapse.gif);
+    background-image:url(../images/default/layout/collapse.gif);
 }
 .x-layout-expand-west,.x-layout-collapse-east{
-    background-image:url(../../images/_cp/icon/expand.gif);
+    background-image:url(../images/default/layout/expand.gif);
 }
 .x-layout-collapse-north,.x-layout-expand-south{
     background-image:url(../images/default/layout/ns-collapse.gif);
@@ -163,21 +163,21 @@
     overflow:auto;height:100%;
 }
 .x-layout-component-panel, .x-layout-nested-layout {
-	position:relative;
+  position:relative;
    padding:0;
-	overflow:hidden;
-	width:200px;
-	height:200px;
+  overflow:hidden;
+  width:200px;
+  height:200px;
 }
 .x-layout-nested-layout .x-layout-panel {
-	  border:0 none;
+    border:0 none;
 }
 .x-layout-nested-layout .x-layout-panel-north {
 }
 .x-layout-nested-layout .x-layout-panel-south {
 }
 .x-layout-nested-layout .x-layout-panel-east {
-	  border-left:1px solid #98c0f4;
+    border-left:1px solid #98c0f4;
 }
 .x-layout-nested-layout .x-layout-panel-west {
 }
@@ -185,34 +185,34 @@
 .x-layout-panel-dragover {
 }
 .x-layout-panel-proxy {
-	background-image: url(../images/default/layout/gradient-bg.gif);
-	z-index:10001;
-	overflow:hidden;
-	position:absolute;
-	left:0;top:0;
+  background-image: url(../images/default/layout/gradient-bg.gif);
+  z-index:10001;
+  overflow:hidden;
+  position:absolute;
+  left:0;top:0;
 }
 .x-layout-slider {
-	z-index:15;
-	overflow:hidden;
-	position:absolute;
+  z-index:15;
+  overflow:hidden;
+  position:absolute;
 }
 
 .x-scroller-up, .x-scroller-down {
-	cursor:pointer;
-	overflow:hidden;
-	line-height:16px;
+  cursor:pointer;
+  overflow:hidden;
+  line-height:16px;
 }
 .x-scroller-down {
 }
 .x-scroller-btn-over {
-	background-color: #d9e8f8;
+  background-color: #d9e8f8;
 }
 .x-scroller-btn-click {
-	background-color: #AECEF7;
+  background-color: #AECEF7;
 }
 .x-scroller-btn-disabled {
-	cursor:default;
-	-moz-opacity: 0.3;
+  cursor:default;
+  -moz-opacity: 0.3;
    opacity:.30;
    filter: alpha(opacity=30);
 }

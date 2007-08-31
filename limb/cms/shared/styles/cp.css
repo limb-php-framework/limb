@@ -60,10 +60,10 @@
 
 /*Misc*/
   .attention {background: #dff6dd;border:1px solid #c4e4b1;margin:10px 0 25px;padding:13px 16px;position:relative;clear:both}
-    .attention span {background: url(../images/_cp/icon/close.gif) no-repeat right center;position:absolute;right:16px;padding:0 16px 0 0;}
+    .attention span {background: url(../images/icon/close.gif) no-repeat right center;position:absolute;right:16px;padding:0 16px 0 0;}
   .breadcrumbs {clear:both;margin:5px 0;}
   .clearing {height:0;clear: both;padding:0;font-size:0;}
-  .create {background: url(../images/_cp/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;float:left}
+  .create {background: url(../images/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;float:left}
     .popup .create {float:none;margin:10px 0 0;display:block}
   .edit_mode {float:left;}
     .edit_mode label {vertical-align:top}
@@ -71,10 +71,10 @@
   .right_col {float:right;width:50%}
   .line {margin:3px 0;}
   .liquid_right {float:left;margin:0 10px 3px 0;}
-  .no {background: url(../images/_cp/marker/no.gif) no-repeat left bottom;padding:0 0 3px 20px;}
+  .no {background: url(../images/marker/no.gif) no-repeat left bottom;padding:0 0 3px 20px;}
   .magnifier {background: #fff;display:block;position:relative;width:13px;height:13px;padding:3px;margin:0 0 -16px 0;opacity:.70;filter: alpha(opacity=70); -moz-opacity: 0.7;}
   .width100 {width:100%}
-  .yes {background: url(../images/_cp/marker/yes.gif) no-repeat left top;padding:3px 0 0 20px;}
+  .yes {background: url(../images/marker/yes.gif) no-repeat left top;padding:3px 0 0 20px;}
 
   /*MESSAGE ERROR*/
    .message_error {margin:0 15px -40px;}
@@ -86,25 +86,25 @@
 
   /*BOOKMARKS*/
     .bookmarks {list-style:none;margin:0 0 0 24px;padding:10px 0 0 0;}
-      .bookmarks li {background:#eeeeee url(../images/_cp/bgr/bookmarks/left.gif) no-repeat left top;float:left;margin:0 2px 0 0;padding:0;height:23px;cursor:pointer}
-      .bookmarks a {background:url(../images/_cp/bgr/bookmarks/right.gif) no-repeat right top;padding:3px 15px 4px;display:block;}
-      .bookmarks .active {background:#7d7d7d url(../images/_cp/bgr/bookmarks/current_left.gif) no-repeat left top;}
-      .bookmarks .active a {background:url(../images/_cp/bgr/bookmarks/current_right.gif) no-repeat right top;}
+      .bookmarks li {background:#eeeeee url(../images/bgr/bookmarks/left.gif) no-repeat left top;float:left;margin:0 2px 0 0;padding:0;height:23px;cursor:pointer}
+      .bookmarks a {background:url(../images/bgr/bookmarks/right.gif) no-repeat right top;padding:3px 15px 4px;display:block;}
+      .bookmarks .active {background:#7d7d7d url(../images/bgr/bookmarks/current_left.gif) no-repeat left top;}
+      .bookmarks .active a {background:url(../images/bgr/bookmarks/current_right.gif) no-repeat right top;}
     .bookmarks_content {border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;min-height:320px;clear:both;margin:0 15px 0;padding:10px 10px 1px;overflow:hidden}
       *html .bookmarks_content {height:335px;}
       .bookmarks_content .left_side {width:400px;float:left;}
       .bookmarks_content .right_side {width:400px;float:right;}
 
   /*BORDER*/
-    .border_h {background: url(../images/_cp/bgr/border/hor.gif) repeat-x left top;display:block;height:4px;font-size:0;margin-top:5px;}
-      .border_h .l {background: url(../images/_cp/bgr/border/lt.gif) no-repeat left top;float:left;width:4px;height:4px}
-      .border_h .r {background: url(../images/_cp/bgr/border/rt.gif) no-repeat left top;float:right;width:4px;height:4px}
-    .border_c {background: url(../images/_cp/bgr/border/ver.gif) repeat-y left top;padding-left: 9px;}
-      .border_c .content {background: url(../images/_cp/bgr/border/ver.gif) repeat-y right top;padding: 0 9px 14px 0;;}
+    .border_h {background: url(../images/bgr/border/hor.gif) repeat-x left top;display:block;height:4px;font-size:0;margin-top:5px;}
+      .border_h .l {background: url(../images/bgr/border/lt.gif) no-repeat left top;float:left;width:4px;height:4px}
+      .border_h .r {background: url(../images/bgr/border/rt.gif) no-repeat left top;float:right;width:4px;height:4px}
+    .border_c {background: url(../images/bgr/border/ver.gif) repeat-y left top;padding-left: 9px;}
+      .border_c .content {background: url(../images/bgr/border/ver.gif) repeat-y right top;padding: 0 9px 14px 0;;}
       .border_c .content .title {background: #fff;position:relative;top:-11px;display:inline;padding:0 3px;color:#0c4ea6}
-    .border_b {background: url(../images/_cp/bgr/border/hor.gif) repeat-x left bottom;display:block;height:4px;font-size:0;margin-bottom:20px}
-      .border_b .l {background: url(../images/_cp/bgr/border/lb.gif) no-repeat left top;float:left;width:4px;height:4px;}
-      .border_b .r {background: url(../images/_cp/bgr/border/rb.gif) no-repeat left top;float:right;width:4px;height:4px}
+    .border_b {background: url(../images/bgr/border/hor.gif) repeat-x left bottom;display:block;height:4px;font-size:0;margin-bottom:20px}
+      .border_b .l {background: url(../images/bgr/border/lb.gif) no-repeat left top;float:left;width:4px;height:4px;}
+      .border_b .r {background: url(../images/bgr/border/rb.gif) no-repeat left top;float:right;width:4px;height:4px}
 
   /*PAGER*/
     .pager {height:19px;font:1.1em Arial;color:#7d7d7d;margin:10px 0;float:right}
@@ -116,20 +116,20 @@
 /*layout*/
 
   /*TOP*/
-    #top {background: url(../images/_cp/bgr/header.gif) repeat left top;width:100%;float:left;}
+    #top {background: url(../images/bgr/header.gif) repeat left top;width:100%;float:left;}
       #top #logo {margin:5px 0 8px 60px;float:left;}
-      #top .jip_button {background: url(../images/_cp/marker/jip.gif) no-repeat left center;float:left;margin:7px 0 0 75px;padding:2px 0 4px 22px}
+      #top .jip_button {background: url(../images/marker/jip.gif) no-repeat left center;float:left;margin:7px 0 0 75px;padding:2px 0 4px 22px}
       #top #user_data {float:right;margin:0 15px 0;}
-      #top #user_data .name, #top #user_data .profile {background: url(../images/_cp/bgr/user_data.gif) repeat-y right top;float:left;margin:0 5px;padding:8px 14px 10px;}
+      #top #user_data .name, #top #user_data .profile {background: url(../images/bgr/user_data.gif) repeat-y right top;float:left;margin:0 5px;padding:8px 14px 10px;}
       #top #user_data .logout {float:left;padding:8px 0 10px 0;}
 
 
    /*DASHBOARD*/
      #dashboard {border:1px solid #ddd;border-top:3px solid #7d7d7d;margin:25px 15px 20px 20px;padding:1px 10px 1px;overflow:hidden}
-     #dashboard h2 {background: url(../images/_cp/bgr/dashboard.section.gif) repeat left top;padding:0;margin:0 0 0 0;}
-     #dashboard h2 span {background: url(../images/_cp/bgr/dashboard.section.right.gif) no-repeat right top;display:block;margin:0;padding:10px 7px 5px;}
+     #dashboard h2 {background: url(../images/bgr/dashboard.section.gif) repeat left top;padding:0;margin:0 0 0 0;}
+     #dashboard h2 span {background: url(../images/bgr/dashboard.section.right.gif) no-repeat right top;display:block;margin:0;padding:10px 7px 5px;}
       #dashboard .section {border:1px solid #e4e2e2;border-top:0 none;padding:10px 7px 20px;margin:0 0 20px 0}
-      #dashboard .add {background: url(../images/_cp/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;margin-bottom:10px;display:block}
+      #dashboard .add {background: url(../images/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;margin-bottom:10px;display:block}
 
 
   /*HEADER CONTEXT*/
@@ -139,8 +139,8 @@
   /*FILTER*/
     #filter {overflow:hidden;clear:both;margin:0 -10px;}
       *html #filter {height:1%}
-    .active_filter {background: url(../images/_cp/bgr/filter_border.gif) no-repeat left top;float:right;margin-right:10px;cursor:pointer;}
-    .active_filter span {background: url(../images/_cp/bgr/filter_arrow.gif) no-repeat right top;padding:.2em 17px 0.2em 6px;display:block}
+    .active_filter {background: url(../images/bgr/filter_border.gif) no-repeat left top;float:right;margin-right:10px;cursor:pointer;}
+    .active_filter span {background: url(../images/bgr/filter_arrow.gif) no-repeat right top;padding:.2em 17px 0.2em 6px;display:block}
     .filter {border-top:1px solid #ddd;margin:0;padding:15px 10px 0;display:none;clear:both}
       *html .filter {height:1%}
     .filter .input {width:12em;margin-right:3px}
@@ -170,18 +170,18 @@
 
 
   /*LOGIN FORM*/
-    #login_form {background:#d9d9d9 url(../images/_cp/bgr/admin.gif) repeat-x left top;}
+    #login_form {background:#d9d9d9 url(../images/bgr/admin.gif) repeat-x left top;}
      #login_wrapper {position:absolute;left:50%;top:30%;margin:0 0 0 -200px;height:270px}
-        #login_form .shadow_l {background: url(../images/_cp/bgr/shadow/login_l.png) no-repeat left top;width:19px}
-          *html #login_form .shadow_l {background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='../images/_cp/bgr/shadow/login_l.png');}
-        #login_form .shadow_r {background: url(../images/_cp/bgr/shadow/login_r.png) no-repeat left top;width:19px;}
-          *html   #login_form .shadow_r {background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='../images/_cp/bgr/shadow/login_r.png');}
-        #login_form .shadow_b {background: url(../images/_cp/bgr/shadow/login_b.png) repeat-x right top;height:13px;width:19px}
-          *html #login_form .shadow_b {background-image:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=scale,src='../images/_cp/bgr/shadow/login_b.png');}
-        #login_form .shadow_rb {background: url(../images/_cp/bgr/shadow/login_rb.png) no-repeat right top;height:13px;width:19px}
-          *html #login_form .shadow_rb {background-image:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=image,src='../images/_cp/bgr/shadow/login_rb.png');}
-        #login_form .shadow_lb {background: url(../images/_cp/bgr/shadow/login_lb.png) no-repeat;background-position:right top;width:19px;}
-         *html   #login_form .shadow_lb {background-image:none;background-position:right top;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='../images/_cp/bgr/shadow/login_lb.png');}
+        #login_form .shadow_l {background: url(../images/bgr/shadow/login_l.png) no-repeat left top;width:19px}
+          *html #login_form .shadow_l {background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='../images/bgr/shadow/login_l.png');}
+        #login_form .shadow_r {background: url(../images/bgr/shadow/login_r.png) no-repeat left top;width:19px;}
+          *html   #login_form .shadow_r {background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='../images/bgr/shadow/login_r.png');}
+        #login_form .shadow_b {background: url(../images/bgr/shadow/login_b.png) repeat-x right top;height:13px;width:19px}
+          *html #login_form .shadow_b {background-image:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=scale,src='../images/bgr/shadow/login_b.png');}
+        #login_form .shadow_rb {background: url(../images/bgr/shadow/login_rb.png) no-repeat right top;height:13px;width:19px}
+          *html #login_form .shadow_rb {background-image:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=image,src='../images/bgr/shadow/login_rb.png');}
+        #login_form .shadow_lb {background: url(../images/bgr/shadow/login_lb.png) no-repeat;background-position:right top;width:19px;}
+         *html   #login_form .shadow_lb {background-image:none;background-position:right top;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='../images/bgr/shadow/login_lb.png');}
           #login_form .content {background:#fff;padding:1px 10px 0 10px;vertical-align:top;}
             #login_form label {display:block;float:none}
             #login_form .input {background:#f3f4f5;border:1px solid #717171;width:10em;height:21px;vertical-align:bottom;font:bold 1.3em Arial;letter-spacing:0.5px}
@@ -195,23 +195,23 @@
 
   /*MENU*/
     #main_menu {margin:20px 0 0 15px;}
-      #main_menu dt {background: url(../images/_cp/menu/bg.gif) no-repeat left top;margin-bottom:2px;cursor:pointer;}
-      #main_menu dt.current {background: url(../images/_cp/menu/current.gif) no-repeat left top;}
+      #main_menu dt {background: url(../images/menu/bg.gif) no-repeat left top;margin-bottom:2px;cursor:pointer;}
+      #main_menu dt.current {background: url(../images/menu/current.gif) no-repeat left top;}
         #main_menu span {display:block;padding:4px 10px 4px  28px}
-        #main_menu .content span{background: url(../images/_cp/menu/content.gif) no-repeat 7px center;}
-          #main_menu .content.current span{background: url(../images/_cp/menu/content_current.gif) no-repeat 7px center;}
-        #main_menu .interactive span{background: url(../images/_cp/menu/interactive.gif) no-repeat 7px center;}
-          #main_menu .interactive.current span{background: url(../images/_cp/menu/interactive_current.gif) no-repeat 7px center;}
-        #main_menu .guests span{background: url(../images/_cp/menu/guests.gif) no-repeat 8px center;}
-          #main_menu .guests.current span{background: url(../images/_cp/menu/guests_current.gif) no-repeat 8px center;}
-        #main_menu .other span{background: url(../images/_cp/menu/other.gif) no-repeat 7px center;}
-          #main_menu .other.current span{background: url(../images/_cp/menu/other_current.gif) no-repeat 7px center;}
-        #main_menu .banners span{background: url(../images/_cp/menu/banners.gif) no-repeat 7px center;}
+        #main_menu .content span{background: url(../images/menu/content.gif) no-repeat 7px center;}
+          #main_menu .content.current span{background: url(../images/menu/content_current.gif) no-repeat 7px center;}
+        #main_menu .interactive span{background: url(../images/menu/interactive.gif) no-repeat 7px center;}
+          #main_menu .interactive.current span{background: url(../images/menu/interactive_current.gif) no-repeat 7px center;}
+        #main_menu .guests span{background: url(../images/menu/guests.gif) no-repeat 8px center;}
+          #main_menu .guests.current span{background: url(../images/menu/guests_current.gif) no-repeat 8px center;}
+        #main_menu .other span{background: url(../images/menu/other.gif) no-repeat 7px center;}
+          #main_menu .other.current span{background: url(../images/menu/other_current.gif) no-repeat 7px center;}
+        #main_menu .banners span{background: url(../images/menu/banners.gif) no-repeat 7px center;}
       #main_menu ul {list-style-type:none;margin:0 0 0 21px;padding:0;}
         #main_menu li {margin-bottom:3px}
         #main_menu li a {display:block;padding:3px 0 4px 7px;}
-        #main_menu li.current {background: url(../images/_cp/menu/sub_current.gif) no-repeat left top;}
-        #main_menu li.current a {background: url(../images/_cp/menu/sub_current_bottom.gif) no-repeat left bottom;}
+        #main_menu li.current {background: url(../images/menu/sub_current.gif) no-repeat left top;}
+        #main_menu li.current a {background: url(../images/menu/sub_current_bottom.gif) no-repeat left bottom;}
 
 
 
@@ -229,11 +229,11 @@
   .fields .calendar {margin:0 25px 0 5px;}
 
 
-  input[type='text'], .input{background:#fff url(../images/_cp/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 3px 0;}
+  input[type='text'], .input{background:#fff url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 3px 0;}
   .req {font:8pt Tahoma, sans;text-align:right;padding: 12px 10px 0 0 ; height:35px}
-  select {background: url(../images/_cp/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 0 0 0;}
+  select {background: url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 0 0 0;}
   select option {background:#fff;}
-  textArea {background:#fff url(../images/_cp/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;}
+  textArea {background:#fff url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;}
   .form-errors .title {color:#bd1a01;font-weight:bold}
 
 
