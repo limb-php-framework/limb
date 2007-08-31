@@ -1,22 +1,22 @@
 
   <div class='required fields'>
-    <label for="login">Логин:</label>
-    <input name="login" type="text" title="Логин" />
+    <label for="login">Login:</label>
+    <input name="login" type="text" title="Login" />
   </div>
 
   <div class='required fields'>
-    <label for="last_name">Фамилия:</label>
-    <input name="last_name" type="text" title="Фамилия"/>
+    <label for="first_name">First name:</label>
+    <input name="first_name" type="text" title="First name" />
   </div>
 
   <div class='required fields'>
-    <label for="first_name">Имя:</label>
-    <input name="first_name" type="text" title="Имя" />
+    <label for="last_name">Last name:</label>
+    <input name="last_name" type="text" title="Last name"/>
   </div>
 
-  <div class='required fields'>
-    <label for="middle_name">Отчество:</label>
-    <input name="middle_name" type="text" title="Отчество" />
+  <div class='required'>
+    <label for="middle_name">Middle name:</label>
+    <input name="middle_name" type="text" title="Middle name" />
   </div>
 
   <div class='required fields'>
@@ -25,8 +25,8 @@
   </div>
 
   <div class='fields'>
-    <label for="group">Роль:</label>
-    <fetch using='src/model/rtRoles' target='select_source'/>
+    <label for="group">Role:</label>
+    <fetch using='limb/cms/src/model/lmbCmsUserRoles' target='select_source'/>
     <select:options_source id='select_source' target='role_id' use_as_name="name" use_as_id="id" />
     <select name="role_id" id='role_id' title="Роль"></select>
   </div>

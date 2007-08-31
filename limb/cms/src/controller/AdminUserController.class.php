@@ -8,7 +8,7 @@ class AdminUserController extends lmbController
 
   function doCreate()
   {
-    $item = new rtUser();
+    $item = new lmbCmsUser();
     $this->useForm($this->_form_id);
     $this->setFormDatasource($item);
 
@@ -24,7 +24,7 @@ class AdminUserController extends lmbController
 
   function doEdit()
   {
-    $item = new rtUser((int)$this->request->get('id'));
+    $item = new lmbCmsUser((int)$this->request->get('id'));
     $this->useForm($this->_form_id);
     $this->setFormDatasource($item);
 
@@ -74,7 +74,7 @@ class AdminUserController extends lmbController
     if(!$this->error_list->isValid())
       return;
 
-    $user = new rtUser($this->request->getInteger('id'));
+    $user = new lmbCmsUser($this->request->getInteger('id'));
     $user->setPassword($this->request->get('password'));
 
     if($user->trySave($this->error_list))
