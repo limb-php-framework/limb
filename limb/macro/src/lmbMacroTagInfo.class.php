@@ -15,8 +15,8 @@
  */
 class lmbMacroTagInfo
 {
-  protected $tag = '';
-  protected $class = '';
+  protected $tag;
+  protected $class;
   protected $file;
   protected $req_attributes = array();
   protected $parent_class;
@@ -33,6 +33,11 @@ class lmbMacroTagInfo
   function getTag()
   {
     return $this->tag;
+  }
+
+  function getClass()
+  {
+    return $this->class;
   }
   
   function setFile($file)

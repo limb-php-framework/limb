@@ -32,13 +32,13 @@ class lmbMacroLiteralParsingState extends lmbMacroBaseParsingState  implements l
 
   function startElement($tag, $attrs)
   {
-    $location = $this->locator->getCurrentLocation();
+    $location = $this->parser->getCurrentLocation();
     $this->tree_builder->addTextNode('<%' . $tag . $this->getAttributeString($attrs) . '%>');
   }
 
   function endElement($tag)
   {
-    $location = $this->locator->getCurrentLocation();
+    $location = $this->parser->getCurrentLocation();
     if ($this->literal_tag == $tag)
       $this->_closeLiteralState($location);
     else

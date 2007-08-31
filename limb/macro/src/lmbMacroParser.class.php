@@ -34,15 +34,22 @@ class lmbMacroParser implements lmbMacroTokenizerListener
    */
   protected $template_locator;
 
+  protected $tokenizer;
+
   function __construct($tree_builder, $template_locator, $tag_dictionary)
   {
+    $this->tokenizer = new lmbMacroTokenizer($this);
+
     $this->tree_builder = $tree_builder;
     $this->template_locator = $template_locator;
 
     $this->tag_parsing_state = $this->_createTagParsingState($tag_dictionary);
     $this->literal_parsing_state = $this->_createLiteralParsingState();
+  }
 
-    $this->changeToTagParsingState();
+  function getCurrentLocation()
+  {
+    return $this->tokenizer->getCurrentLocation();
   }
 
   // for testing purposes
@@ -75,13 +82,11 @@ class lmbMacroParser implements lmbMacroTokenizerListener
 
     $this->changeToTagParsingState();
 
-    $tokenizer = new lmbMacroTokenizer($this);
-
     $this->setTemplateLocator($this->template_locator);
 
     $content = $this->template_locator->readTemplateFile($source_file_path);
 
-    $tokenizer->parse($content, $source_file_path);
+    $this->tokenizer->parse($content, $source_file_path);
 
     if($tags_before_parse != $this->tree_builder->getExpectedTagCount())
     {

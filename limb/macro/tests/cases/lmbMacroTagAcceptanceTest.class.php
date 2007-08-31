@@ -40,7 +40,7 @@ class lmbMacroTagAcceptanceTest extends UnitTestCase
   function setUp()
   {
     lmbFs :: rm(LIMB_VAR_DIR . '/tpl');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl');
+    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
   }
 
   function testTemplateRendering()
@@ -54,6 +54,7 @@ class lmbMacroTagAcceptanceTest extends UnitTestCase
   protected function _createTemplate($code)
   {
     $file = LIMB_VAR_DIR . '/tpl/' . mt_rand() . '.html';
+    file_put_contents($file, $code);
     $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
     $tpl = new lmbMacroTemplate($file, $cache_dir);
     return $tpl;

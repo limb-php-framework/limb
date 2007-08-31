@@ -25,7 +25,7 @@ class lmbMacroTextNode extends lmbMacroNode
 
   function generateContents($code_writer)
   {
-    $code_writer->writeRaw($this->contents);
+    $code_writer->writeHtml($this->contents);
     parent :: generateContents($code_writer);
   }
 

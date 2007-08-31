@@ -28,7 +28,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
   function startElement($tag, $attrs)
   {
-    $location = $this->locator->getCurrentLocation();
+    $location = $this->parser->getCurrentLocation();
 
     $lower_attributes = $this->normalizeAttributes($attrs, $location);
 
@@ -52,7 +52,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
   function endElement($tag)
   {
     $tag_info = $this->tag_dictionary->getTagInfo($tag);
-    $location = $this->locator->getCurrentLocation();
+    $location = $this->parser->getCurrentLocation();
 
     if($tag_info->isEndTagForbidden())
     {
@@ -68,7 +68,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
   function emptyElement($tag, $attrs)
   {
-    $location = $this->locator->getCurrentLocation();
+    $location = $this->parser->getCurrentLocation();
     $lower_attributes = $this->normalizeAttributes($attrs, $location);
 
     $tag_info = $this->tag_dictionary->findTagInfo($tag);
@@ -102,7 +102,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     {
       if($value === null)
       {
-        $location = $this->locator->getCurrentLocation();
+        $location = $this->parser->getCurrentLocation();
         throw new lmbMacroException('Attribute should have a value',
                               array('file' => $location->getFile(),
                                     'line' => $location->getLine(),
@@ -116,7 +116,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
   protected function _createTagNode($tag_info, $tag)
   {
     $class = $tag_info->getClass();
-    $tag_node = new $class($this->locator->getCurrentLocation(), $tag, $tag_info);
+    $tag_node = new $class($this->parser->getCurrentLocation(), $tag, $tag_info);
     return $tag_node;
   }    
 
