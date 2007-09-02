@@ -22,12 +22,9 @@ class lmbMacroCodeWriter
 
   protected $code = '';
 
-  protected $function_prefix = '';
-  protected $function_suffix = 1;
-
   protected $include_list = array();
 
-  protected $tempVarName = 1;
+  protected $temp_var_name = 1;
 
   function reset()
   {
@@ -137,16 +134,10 @@ class lmbMacroCodeWriter
     return $this->include_list;
   }
 
-  /**
-  * Begins writing a PHP function to the compiled template, using the
-  * function_prefix and the function_suffix, the latter being post incremented
-  * by one.
-  */
-  function beginFunction($param_list)
+  function beginFunction($name, $param_list = array())
   {
-      $func_name = 'tpl' . $this->function_prefix . $this->function_suffix++;
-      $this->writePHP('function ' . $func_name . $param_list ." {\n");
-      return $func_name;
+      $this->writePHP('function ' . $name . '(' . implode(',', $param_list) .") {\n");
+      return $name;
   }
 
   function endFunction()
@@ -154,9 +145,15 @@ class lmbMacroCodeWriter
     $this->writePHP(" }\n");
   }
 
-  function setFunctionPrefix($prefix)
+  function beginClass($name, $parent = null)
   {
-    $this->function_prefix = $prefix;
+    $this->writePHP("class $name " . ($parent ? "extends $parent " : '') . "{\n");
+    return $name;
+  }
+
+  function endClass()
+  {
+    $this->writePHP(" }\n");
   }
 
   /**
@@ -164,7 +161,7 @@ class lmbMacroCodeWriter
   */
   function getTempVariable()
   {
-    $var = $this->tempVarName++;
+    $var = $this->temp_var_name++;
     if($var > 675)
       return chr(65 + ($var/26)/26) . chr(65 + ($var/26)%26) . chr(65 + $var%26);
     elseif($var > 26)

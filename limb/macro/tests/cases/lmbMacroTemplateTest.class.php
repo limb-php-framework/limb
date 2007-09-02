@@ -21,30 +21,9 @@ class lmbMacroTemplateTest extends UnitTestCase
 
   function testRenderTemplateVar()
   {
-    $view = $this->_createView('Hello, <?$name = "Jack"?><?=@$name?>');
+    $view = $this->_createView('Hello, <?=$this->name?>');
     $view->set('name', 'Bob');
     $this->assertEqual($view->render(), 'Hello, Bob');
-  }
-
-  function testRenderLocalVar()
-  {
-    $view = $this->_createView('Hello, <?$name = "Jack"?><?=$name?>');
-    $view->set('name', 'Bob');
-    $this->assertEqual($view->render(), 'Hello, Jack');
-  }
-
-  function testEchoVarSyntaxSugar()
-  {
-    $view = $this->_createView('Hello, <?$name = "Jack"?>{$name}');
-    $view->set('name', 'Bob');
-    $this->assertEqual($view->render(), 'Hello, Jack');
-  }
-
-  function testEchoFunctionSyntaxSugar()
-  {
-    $rnd = mt_rand();
-    $view = $this->_createView("Hello, <?function f_$rnd(){return 'Jack';}?>{f_$rnd()}");
-    $this->assertEqual($view->render(), 'Hello, Jack');
   }
 
   function _createView($tpl)

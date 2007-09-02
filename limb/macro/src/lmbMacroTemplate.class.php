@@ -9,6 +9,7 @@
 
 lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/macro/src/lmbMacroCompiler.class.php');
+lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 
 /**
  * class lmbMacroTemplate.
@@ -40,19 +41,24 @@ class lmbMacroTemplate
   {
     ob_start();
 
-    $compiler = new lmbMacroCompiler();
-    list($func, $compiled_file) = $compiler->compile($this->file);
+    $compiler = $this->_createCompiler();
+    list($class, $func, $compiled_file) = $compiler->compile($this->file);
 
     include_once($compiled_file);
-    $func($this);
+    $executor = new $class($this->vars);
+    $executor->$func();
 
     $out = ob_get_contents();
     ob_end_clean();
     return $out;
   }
 
-  function createCompiler()
+  protected function _createCompiler()
   {
+    $template_locator = new lmbMacroTemplateLocator();
+    $tag_dictionary = lmbMacroTagDictionary :: instance();
+    $compiler = new lmbMacroCompiler($tag_dictionary, $template_locator);
+    return $compiler;
   }
 }
 

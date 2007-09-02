@@ -64,25 +64,29 @@ class lmbMacroCodeWriterTest extends UnitTestCase
     $this->assertEqual($this->writer->renderCode(), '');
   }
 
+  function testBeginClass()
+  {
+    $this->writer->beginClass('Foo', 'Bar');
+    $this->assertEqual($this->writer->renderCode(), "<?php class Foo extends Bar {\n ?>");
+  }
+
+  function testEndClass()
+  {
+    $this->writer->endClass();
+    $this->assertEqual($this->writer->renderCode(),'<?php '." }\n".' ?>');
+  }
+
   function testBeginFunction()
   {
-    $params = '($a,$b,$c)';
-    $this->writer->beginFunction($params);
-    $this->assertEqual($this->writer->renderCode(),'<?php function tpl1'.$params ." {\n ?>");
+    $params = array('$a', '$b', '$c');
+    $this->writer->beginFunction('tpl1', $params);
+    $this->assertEqual($this->writer->renderCode(),"<?php function tpl1(\$a,\$b,\$c) {\n ?>");
   }
 
   function testEndFunction()
   {
     $this->writer->endFunction();
     $this->assertEqual($this->writer->renderCode(),'<?php '." }\n".' ?>');
-  }
-
-  function testSetFunctionPrefix()
-  {
-    $this->writer->setFunctionPrefix('Test');
-    $params = '($a,$b,$c)';
-    $this->writer->beginFunction($params);
-    $this->assertEqual($this->writer->renderCode(),'<?php function tplTest1'.$params ." {\n ?>");
   }
 
   function testGetTempVariable()
