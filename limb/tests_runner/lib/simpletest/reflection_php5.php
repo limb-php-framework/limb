@@ -3,7 +3,7 @@
  *	base include file for SimpleTest
  *	@package	SimpleTest
  *	@subpackage	UnitTester
- *	@version	$Id: reflection_php5.php 5999 2007-06-18 13:13:08Z pachanga $
+ *	@version	$Id: reflection_php5.php 6257 2007-09-03 10:41:32Z pachanga $
  */
 
 /**
@@ -214,7 +214,6 @@ class SimpleReflection {
 
     /**
      * Checks whether a method is abstract or not.
-     *
      * @param   string   $name  Method name.
      * @return  bool            true if method is abstract, else false
      * @access  private
@@ -228,26 +227,28 @@ class SimpleReflection {
 	}
 
     /**
-     * Checks whether a method is abstract in parent or not.
-     *
+     * Checks whether a method is abstract in all parents or not.
      * @param   string   $name  Method name.
      * @return  bool            true if method is abstract in parent, else false
      * @access  private
      */
-    function _isAbstractMethodInParent($name) {
+    function _isAbstractMethodInParents($name) {
         $interface = new ReflectionClass($this->_interface);
-        if (! $parent = $interface->getParentClass()) {
-            return false;
+        $parent = $interface->getParentClass();
+        while($parent) {
+            if (! $parent->hasMethod($name)) {
+                return false;
+            }
+            if ($parent->getMethod($name)->isAbstract()) {
+                return true;
+            }
+            $parent = $parent->getParentClass();
         }
-        if (! $parent->hasMethod($name)) {
-            return false;
-        }
-        return $parent->getMethod($name)->isAbstract();
+        return false;
 	}
 
 	/**
 	 * Checks whether a method is static or not.
-	 *
 	 * @param	string	$name	Method name
 	 * @return	bool			true if method is static, else false
 	 * @access	private
@@ -280,15 +281,15 @@ class SimpleReflection {
 				return "function {$name}(\$key)";
 			}
 		}
-		// second check is required because methods can be protected abstract
-		// which means they are not callable, but need a complete signature
-		if (! is_callable(array($this->_interface, $name)) && ! $this->_isAbstractMethod($name)) {
+		if (! is_callable(array($this->_interface, $name)) && 
+        ! $this->_isAbstractMethod($name) && 
+        ! $this->_isAbstractMethodInParents($name)) {
 			return "function $name()";
 		}
 		if ($this->_isInterfaceMethod($name) ||
-            $this->_isAbstractMethod($name) ||
-            $this->_isAbstractMethodInParent($name) ||
-            $this->_isStaticMethod($name)) {
+				$this->_isAbstractMethod($name) ||
+				$this->_isAbstractMethodInParents($name) ||
+				$this->_isStaticMethod($name)) {
 			return $this->_getFullSignature($name);
 		}
 		return "function $name()";
