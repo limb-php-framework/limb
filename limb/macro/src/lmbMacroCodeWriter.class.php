@@ -18,19 +18,41 @@ class lmbMacroCodeWriter
   const MODE_PHP = 1;
   const MODE_HTML = 2;
 
-  protected $current_mode = self :: MODE_HTML;
+  protected $class;
+
+  protected $parent;
+
+  protected $current_mode = self :: MODE_PHP;
+
+  protected $current_method;
 
   protected $code = '';
+
+  protected $methods = array();
+
+  protected $methods_stack = array();
 
   protected $include_list = array();
 
   protected $temp_var_name = 1;
 
-  function reset()
+  function __construct($class, $parent = 'lmbMacroTemplateExecutor')
   {
-    $this->code = '';
-    $this->current_mode = self :: MODE_HTML;
-    $this->include_list = array();
+    $this->class = $class;
+    $this->parent = $parent;
+
+    $this->registerInclude('limb/macro/src/lmbMacroTemplateExecutor.class.php');
+    $this->beginMethod('render');
+  }
+
+  function getClass()
+  {
+    return $this->class;
+  }
+
+  function getRenderMethod()
+  {
+    return 'render';
   }
 
   protected function switchToPHP()
@@ -38,7 +60,7 @@ class lmbMacroCodeWriter
     if($this->current_mode == self :: MODE_HTML)
     {
       $this->current_mode = self :: MODE_PHP;
-      $this->code .= '<?php ';
+      $this->_append('<?php ');
     }
   }
 
@@ -48,16 +70,16 @@ class lmbMacroCodeWriter
     {
       $this->current_mode = self :: MODE_HTML;
       if($context === "\n")
-        $this->code .= " ?>\n";
+        $this->_append(" ?>\n");
       else
-        $this->code .= ' ?>';
+        $this->_append(' ?>');
     }
   }
 
   function writePHP($text)
   {
     $this->switchToPHP();
-    $this->code .= $text;
+    $this->_append($text);
   }
 
   function writePHPLiteral($text, $escape_text = true)
@@ -65,9 +87,9 @@ class lmbMacroCodeWriter
     $this->switchToPHP();
 
     if($escape_text)
-      $this->code .= "'" . $this->escapeLiteral($text) . "'";
+      $this->_append("'" . $this->escapeLiteral($text) . "'");
     else
-      $this->code .= "'" . $text . "'";
+      $this->_append("'" . $text . "'");
   }
 
   function escapeLiteral($text)
@@ -81,41 +103,28 @@ class lmbMacroCodeWriter
   function writeHTML($text)
   {
     $this->switchToHTML(substr($text,0,1));
-    $this->code .= $text;
+    $this->_append($text);
   }
   
   function writeRaw($text)
   {
-    $this->code .= $text;
+    $this->_append($text);
   }
 
   function renderCode()
   {
-    $this->switchToHTML();
+    $this->endMethod();
 
-    $this->_prependIncludeListToCode();
-
-    return $this->code;
+    return "<?php\n" .
+           $this->_renderIncludeList() . 
+           "class {$this->class} " . ($this->parent ? "extends {$this->parent} " : '') . "{\n" .
+           $this->_renderMethods() . 
+           "\n}";
   }
 
   function getCode()
   {
     return $this->code;
-  }
-
-  function setCode($code)
-  {
-    $this->code = $code;
-  }
-
-  protected function _prependIncludeListToCode()
-  {
-    $include_code = '';
-    foreach($this->include_list as $include_file)
-      $include_code .= "require_once('$include_file');\n";
-
-    if(!empty($include_code))
-      $this->code = '<?php ' . $include_code . '?>' . $this->code;
   }
 
   function getMode()
@@ -136,8 +145,8 @@ class lmbMacroCodeWriter
 
   function beginFunction($name, $param_list = array())
   {
-      $this->writePHP('function ' . $name . '(' . implode(',', $param_list) .") {\n");
-      return $name;
+    $this->writePHP('function ' . $name . '(' . implode(',', $param_list) .") {\n");
+    return $name;
   }
 
   function endFunction()
@@ -145,15 +154,18 @@ class lmbMacroCodeWriter
     $this->writePHP(" }\n");
   }
 
-  function beginClass($name, $parent = null)
+  function beginMethod($name, $param_list = array())
   {
-    $this->writePHP("class $name " . ($parent ? "extends $parent " : '') . "{\n");
-    return $name;
+    $this->methods_stack[] = array($this->current_method, $this->current_mode);
+    $this->current_method = $name;
+
+    return $this->beginFunction($name, $param_list);
   }
 
-  function endClass()
+  function endMethod()
   {
     $this->writePHP(" }\n");
+    list($this->current_method, $this->current_mode) = array_pop($this->methods_stack);
   }
 
   /**
@@ -176,6 +188,33 @@ class lmbMacroCodeWriter
   function getTempVarRef()
   {
     return '$' . $this->getTempVariable();
+  }
+
+  protected function _append($code)
+  {
+    if(!$this->current_method)
+    {
+      $this->code .= $code;
+      return;
+    }
+
+    if(!isset($this->methods[$this->current_method]))
+      $this->methods[$this->current_method] = '';
+
+    $this->methods[$this->current_method] .= $code;
+  }
+
+  protected function _renderMethods()
+  {
+    return implode("\n", $this->methods);
+  }
+
+  protected function _renderIncludeList()
+  {
+    $include_code = '';
+    foreach($this->include_list as $include_file)
+      $include_code .= "require_once('$include_file');\n";
+    return $include_code;
   }
 }
 

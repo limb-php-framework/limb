@@ -15,7 +15,7 @@
  */
 class lmbMacroTemplateExecutor
 {
-  function __construct($vars)
+  function __construct($vars = array())
   {
     foreach($vars as $name => $value)
       $this->name = $value;

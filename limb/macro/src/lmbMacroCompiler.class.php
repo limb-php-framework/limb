@@ -63,16 +63,11 @@ class lmbMacroCompiler
     return array($class, $render_func, $compiled_file_path);
   }
 
-  function _generateTemplateCode($prefix, $root_node)
+  function _generateTemplateCode($hash, $root_node)
   {
-    $code_writer = new lmbMacroCodeWriter();
-    $code_writer->registerInclude('limb/macro/src/lmbMacroTemplateExecutor.class.php');
-    $class = $code_writer->beginClass('TemplateExecutor' . $prefix, 'lmbMacroTemplateExecutor');
-    $render_func = $code_writer->beginFunction('render');
+    $code_writer = new lmbMacroCodeWriter($class = 'TemplateExecutor' . $hash);
     $root_node->generate($code_writer);
-    $code_writer->endFunction();
-    $code_writer->endClass();
-    return array($class, $render_func, $code_writer->renderCode());
+    return array($class, $code_writer->getRenderMethod(), $code_writer->renderCode());
   }
 
   function parseTemplate($source_file_path, $root_node)

@@ -15,30 +15,28 @@ class lmbMacroCodeWriterTest extends UnitTestCase
 
   function setUp()
   {
-    $this->writer = new lmbMacroCodeWriter();
+    $this->class = 'Foo' . mt_rand();
+    $this->writer = new lmbMacroCodeWriter($this->class);
   }
 
-  function testGetCode()
+  function testRenderEmpty()
   {
-    $this->assertEqual($this->writer->renderCode(),'');
-  }
-
-  function testGetSetCode()
-  {
-    $this->writer->setCode($code = 'code');
-    $this->assertEqual($code, $this->writer->getCode());
+    $object = $this->_instantiate();
+    $this->assertIsA($object, 'lmbMacroTemplateExecutor');
+    $this->assertNull($object->render());
   }
 
   function testWritePHP()
   {
-    $this->writer->writePHP('echo ("Hello World!");');
-    $this->assertEqual($this->writer->renderCode(),'<?php echo ("Hello World!"); ?>');
+    $this->writer->writePHP('return "Hello World!";');
+    $object = $this->_instantiate();
+    $this->assertEqual($object->render(), 'Hello World!');
   }
 
   function testWriteHTML()
   {
     $this->writer->writeHTML('<p>Hello World!</p>');
-    $this->assertEqual($this->writer->renderCode(),'<p>Hello World!</p>');
+    $this->assertEqual($this->_render(),'<p>Hello World!</p>');
   }
 
   function testSwithBetweenPHPAndHTML()
@@ -46,47 +44,50 @@ class lmbMacroCodeWriterTest extends UnitTestCase
     $this->writer->writePHP('echo ("Hello World!");');
     $this->writer->writeHTML('<p>Hello World!</p>');
     $this->writer->writePHP('echo ("Hello World!");');
-    $this->assertEqual($this->writer->renderCode(),
-                       '<?php echo ("Hello World!"); ?><p>Hello World!</p><?php echo ("Hello World!"); ?>');
+
+    $this->assertEqual($this->_render(), "Hello World!<p>Hello World!</p>Hello World!");
   }
 
-  function testRegisterInclude()
+  function testFunction()
   {
-    $this->writer->registerInclude('test.php');
-    $this->assertEqual($this->writer->renderCode(),'<?php '."require_once('test.php');\n".'?>');
-  }
-
-  function testReset()
-  {
-    $this->writer->writePHP('echo ("Hello World!");');
-    $this->writer->registerInclude('test.php');
-    $this->writer->reset();
-    $this->assertEqual($this->writer->renderCode(), '');
-  }
-
-  function testBeginClass()
-  {
-    $this->writer->beginClass('Foo', 'Bar');
-    $this->assertEqual($this->writer->renderCode(), "<?php class Foo extends Bar {\n ?>");
-  }
-
-  function testEndClass()
-  {
-    $this->writer->endClass();
-    $this->assertEqual($this->writer->renderCode(),'<?php '." }\n".' ?>');
-  }
-
-  function testBeginFunction()
-  {
-    $params = array('$a', '$b', '$c');
-    $this->writer->beginFunction('tpl1', $params);
-    $this->assertEqual($this->writer->renderCode(),"<?php function tpl1(\$a,\$b,\$c) {\n ?>");
-  }
-
-  function testEndFunction()
-  {
+    $params = array('$a', '$b');
+    $func = $this->writer->beginFunction('tpl' . mt_rand(), $params);
+    $this->writer->writePHP('echo $a . $b;');
     $this->writer->endFunction();
-    $this->assertEqual($this->writer->renderCode(),'<?php '." }\n".' ?>');
+    $this->writer->writePHP("$func('a', 'b');");
+
+    $this->assertEqual($this->_render(), 'ab');
+  }
+
+  function testMethod()
+  {
+    $params = array('$a', '$b');
+    $func = $this->writer->beginMethod('tpl' . mt_rand(), $params);
+    $this->writer->writePHP('echo $a . $b;');
+    $this->writer->endMethod();
+    $this->writer->writePHP("\$this->$func('a', 'b');");
+
+    $this->assertEqual($this->_render(), 'ab');
+  }
+
+  function testNestedMethods()
+  {
+    $params = array('$a', '$b');
+    //inside fooxxx method
+    $foo = $this->writer->beginMethod('foo' . mt_rand(), $params);
+
+    //inside barxxx method, note, we're inside fooxxx as well
+    $bar = $this->writer->beginMethod('bar' . mt_rand(), $params);
+    $this->writer->writePHP('return $b . $a;');
+    $this->writer->endMethod();
+
+    $this->writer->writePHP('return $a . $b . ');//contecanating with barxxx method
+    $this->writer->writePHP("\$this->$bar(\$a, \$b);");
+    $this->writer->endMethod();
+
+    $this->writer->writePHP("echo \$this->$foo('a', 'b');");
+
+    $this->assertEqual($this->_render(), 'abba');
   }
 
   function testGetTempVariable()
@@ -109,6 +110,31 @@ class lmbMacroCodeWriterTest extends UnitTestCase
       $var = $this->writer->getTempVariable();
       $this->assertWantedPattern('/[a-z][a-z0-9]*/i', $var);
     }
+  }
+
+  function _render()
+  {
+    $object = $this->_instantiate();
+    ob_start();
+    $object->render();
+    $out = ob_get_contents();
+    ob_end_clean();
+    return $out;
+  }
+
+  function _instantiate()
+  {
+    $this->_writeAndInclude($this->writer->renderCode());
+    $class = $this->class;
+    $object = new $class();
+    return $object;
+  }
+
+  function _writeAndInclude($code)
+  {
+    file_put_contents($file = LIMB_VAR_DIR . '/' . mt_rand() . '.php', $code);
+    include($file);
+    unlink($file);
   }
 }
 
