@@ -37,7 +37,7 @@ class AdminUserController extends lmbController
 
   function doDetail()
   {
-    $this->view->set('user', new rtUser((int)$this->request->get('id')));
+    $this->view->set('user', new lmbCmsUser((int)$this->request->get('id')));
   }
 
   protected function _import($item)
@@ -58,7 +58,7 @@ class AdminUserController extends lmbController
 
   function doDelete()
   {
-    $this->performCommand('limb/cms/src/command/lmbCmsDeleteObjectCommand', 'rtUser');
+    $this->performCommand('limb/cms/src/command/lmbCmsDeleteObjectCommand', 'lmbCmsUser');
   }
 
   function doChangePassword()

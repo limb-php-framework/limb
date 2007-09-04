@@ -7,7 +7,7 @@
     <form id='delete_form' name='delete_form' method='post' runat='server'>
 
 
-      <active_record:fetch class_path='src/model/rtUser' target="items_to_delete">
+      <active_record:fetch class_path='limb/cms/src/model/lmbCmsUser' target="items_to_delete">
         <fetch:param record_ids="{$#request.ids}">
       </active_record:fetch>
 
