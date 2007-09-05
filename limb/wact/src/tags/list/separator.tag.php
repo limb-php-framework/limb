@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -16,32 +16,28 @@
  * @restrict_self_nesting
  * @parent_tag_class WactListItemTag
  * @package wact
- * @version $Id: separator.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: separator.tag.php 6261 2007-09-05 08:30:37Z serega $
  */
 class WactListSeparatorTag extends WactRuntimeComponentTag
 {
   protected $runtimeIncludeFile = 'limb/wact/src/components/list/WactListSeparatorComponent.class.php';
   protected $runtimeComponentName = 'WactListSeparatorComponent';
 
-  protected $step;
-
   function preParse($compiler)
   {
-    if($step = $step = $this->getAttribute('every'))
-      $this->setAttribute('step', $step);
-
-    if ($step = $this->getAttribute('step'))
-      $this->step = $step;
-    else
-      $this->step = 1;
-
     if ($this->getBoolAttribute('literal'))
       return WACT_PARSER_FORBID_PARSING;
   }
 
   function generateTagContent($code)
   {
-    $code->writePhp($this->getComponentRefCode($code) . '->setStep(' . $this->step .');' . "\n");
+    $step_var = $code->getTempVarRef();
+    $code->writePHP($step_var . ' = ');
+
+    $this->generateStepAttributeValue($code);
+    $code->writePhp(";\n");
+
+    $code->writePhp($this->getComponentRefCode($code) . '->setStep(' . $step_var . ");\n");
 
     $ListList = $this->findParentByClass('WactListListTag');
 
@@ -56,14 +52,26 @@ class WactListSeparatorTag extends WactRuntimeComponentTag
     {
       foreach($separators as $separator)
       {
-        if($separator->getAttribute('step') < $this->getAttribute('step'))
-          $code->writePhp($separator->getComponentRefCode($code) . "->skipNext();\n");
+        $code->writePhp('if (');
+        $separator->generateStepAttributeValue($code);
+        $code->writePhp(' < ' . $step_var . ') ');
+        $code->writePhp($separator->getComponentRefCode($code) . "->skipNext();\n");
       }
     }
 
     parent :: generateTagContent($code);
 
     $code->writePhp('}'. "\n");
+  }
+
+  function generateStepAttributeValue($code)
+  {
+    if($this->hasAttribute('every'))
+      $this->attributeNodes['every']->generateExpression($code);
+    elseif($this->hasAttribute('step'))
+      $this->attributeNodes['step']->generateExpression($code);
+    else
+      $code->writePhp("1");
   }
 }
 

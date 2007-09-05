@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');
@@ -179,6 +179,21 @@ class WactListTagsTest extends WactTemplateTestCase
     $this->assertEqual($output, 'George{$var}Alexander{$var}Benjamin');
   }
 
+  function testSeparatorWithDynamicStepValue()
+  {
+    $template = '<list:LIST id="test">'.
+                '<list:ITEM>{$First}<list:SEPARATOR every="{$#step}">|</list:SEPARATOR></list:ITEM>'.
+                '</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/separator_dynamic_step.html', $template);
+
+    $page = $this->initTemplate('/tags/list/separator_dynamic_step.html');
+    $page->setChildDataset('test', $this->founding_fathers);
+    $page->set('step', 2);
+
+    $this->assertEqual($page->capture(), 'GeorgeAlexander|Benjamin');
+  }
+
   function testListDefaultWithDataNotOutput()
   {
     $template = '<list:LIST id="test"><list:ITEM>{$First}-</list:ITEM>'.
@@ -286,6 +301,19 @@ class WactListTagsTest extends WactTemplateTestCase
     $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "odd:George-even:Alexander-odd:Benjamin-");
+  }
+
+  function testListTotalItemsProperty()
+  {
+    $template = '<list:LIST id="test">{$:TotalItems}</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list-total-items.html', $template);
+    $page = $this->initTemplate('/tags/list/list-total-items.html');
+
+    $list = $page->getChild('test');
+    $list->registerDataSet($this->founding_fathers);
+    $output = $page->capture();
+    $this->assertEqual($output, "3");
   }
 
   function testListFrom()
