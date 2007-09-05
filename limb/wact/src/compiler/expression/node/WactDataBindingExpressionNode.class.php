@@ -11,7 +11,7 @@
  * class WactDataBindingExpressionNode.
  *
  * @package wact
- * @version $Id: WactDataBindingExpressionNode.class.php 6262 2007-09-05 13:14:39Z serega $
+ * @version $Id: WactDataBindingExpressionNode.class.php 6263 2007-09-05 13:33:22Z serega $
  */
 class WactDataBindingExpressionNode
 {
@@ -109,7 +109,7 @@ class WactDataBindingExpressionNode
       // parent context
       if ($modifier == "^")
       {
-        if($this->is_property)
+        if(!$this->is_property)
           $this->datasource_context = $this->datasource_context->getParentDataSource();
         else
           $this->datasource_context = $this->datasource_context->getParent();

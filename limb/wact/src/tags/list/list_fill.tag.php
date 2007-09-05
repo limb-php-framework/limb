@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -26,11 +26,6 @@ class WactListFillTag extends WactCompilerTag
 
   function preParse($compiler)
   {
-    if (!$ratio = $this->getAttribute('upto'))
-      $this->ratio = 1;
-    else
-      $this->ratio = $ratio;
-
     if($var_name = $this->getAttribute('var'))
       $this->var_name = $var_name;
     else
@@ -42,6 +37,11 @@ class WactListFillTag extends WactCompilerTag
 
   function generateTagContent($code)
   {
+    $ratio_var = $code->getTempVarRef();
+    $code->writePHP($ratio_var . ' = ');
+    $this->generateRatioAttributeValue($code);
+    $code->writePhp(";\n");
+
     $ListList = $this->findParentByClass('WactListListTag');
 
     $code->writePhp('if (!' . $ListList->getComponentRefCode($code) . '->valid()){' . "\n");
@@ -50,8 +50,8 @@ class WactListFillTag extends WactCompilerTag
     $items_left_var = $code->getTempVarRef();
     $code->writePhp($count_var .' = '. $ListList->getComponentRefCode($code) . '->countPaginated();');
 
-    $code->writePhp("if ({$count_var}/{$this->ratio} > 1) \n");
-    $code->writePhp($items_left_var . " = ceil({$count_var}/{$this->ratio})*{$this->ratio} - {$count_var}; \n");
+    $code->writePhp("if ({$count_var}/{$ratio_var} > 1) \n");
+    $code->writePhp($items_left_var . " = ceil({$count_var}/{$ratio_var})*{$ratio_var} - {$count_var}; \n");
     $code->writePhp("else \n");
     $code->writePhp($items_left_var . " = 0;\n");
 
@@ -63,6 +63,14 @@ class WactListFillTag extends WactCompilerTag
 
     $code->writePhp('}'. "\n");
     $code->writePhp('}'. "\n");
+  }
+
+  function generateRatioAttributeValue($code)
+  {
+    if($this->hasAttribute('upto'))
+      $this->attributeNodes['upto']->generateExpression($code);
+    else
+      $code->writePhp("1");
   }
 }
 

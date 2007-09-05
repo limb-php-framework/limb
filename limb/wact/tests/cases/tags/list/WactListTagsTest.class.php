@@ -305,7 +305,7 @@ class WactListTagsTest extends WactTemplateTestCase
 
   function testListTotalItemsProperty()
   {
-    $template = '<list:LIST id="test"><list:item>{$:TotalItems}</list:item></list:LIST>';
+    $template = '<list:LIST id="test"><list:item>{$^:TotalItems}</list:item></list:LIST>';
 
     $this->registerTestingTemplate('/tags/list/list-total-items.html', $template);
     $page = $this->initTemplate('/tags/list/list-total-items.html');
@@ -314,7 +314,6 @@ class WactListTagsTest extends WactTemplateTestCase
     $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
     $this->assertEqual($output, "333");
-    die();
   }
 
   function testListFrom()
