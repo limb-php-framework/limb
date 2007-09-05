@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once 'limb/wact/src/compiler/templatecompiler.inc.php';
@@ -74,6 +74,19 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
     $DBE = new WactDataBindingExpressionNode('^Test', $context);
     $DBE->prepare();
     $this->assertEqual($DBE->getFieldName(), 'Test');
+  }
+
+  function testAnalizeExpressionWithTagPropertySymbolAndParentModifier()
+  {
+    $root = new WactCompileTreeRootNode();
+    $root->registerProperty('Test', $property = new WactConstantProperty('value'));
+
+    $context = new WactCompileTreeRootNode();
+    $context->parent = $root;
+
+    $DBE = new WactDataBindingExpressionNode('^:Test', $context);
+    $DBE->prepare();
+    $this->assertEqual($DBE->getValue(), 'value');
   }
 
   function testAnalizePathExpression()

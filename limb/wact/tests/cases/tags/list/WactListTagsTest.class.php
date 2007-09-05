@@ -305,7 +305,7 @@ class WactListTagsTest extends WactTemplateTestCase
 
   function testListTotalItemsProperty()
   {
-    $template = '<list:LIST id="test">{$:TotalItems}</list:LIST>';
+    $template = '<list:LIST id="test"><list:item>{$:TotalItems}</list:item></list:LIST>';
 
     $this->registerTestingTemplate('/tags/list/list-total-items.html', $template);
     $page = $this->initTemplate('/tags/list/list-total-items.html');
@@ -313,7 +313,8 @@ class WactListTagsTest extends WactTemplateTestCase
     $list = $page->getChild('test');
     $list->registerDataSet($this->founding_fathers);
     $output = $page->capture();
-    $this->assertEqual($output, "3");
+    $this->assertEqual($output, "333");
+    die();
   }
 
   function testListFrom()
@@ -543,6 +544,29 @@ class WactListTagsTest extends WactTemplateTestCase
     $this->assertEqual($page->capture(), 'John:Pavel');
   }
 
+  function testListFillTagWithDynamicUpToAttribute()
+  {
+    $template = '<list:LIST id="test">'.
+                '<list:ITEM>{$name}'.
+                '<list:SEPARATOR every="{$#step}">++</list:SEPARATOR>'.
+                '<list:SEPARATOR>:</list:SEPARATOR>'.
+                '</list:ITEM>'.
+                '<list:FILL upto="{$#step}">{$items_left}</list:FILL>'.
+                '</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_fill_tag_with_dynamic_upto.html', $template);
+
+    $page = $this->initTemplate('/tags/list/list_fill_tag_with_dynamic_upto.html');
+    $page->set('step', 3);
+
+    $list = $page->getChild('test');
+    $list->registerDataSet(array(array('name' => 'John'), array('name' => 'Pavel'),
+                                 array('name' => 'Peter'), array('name' => 'Harry')));
+
+    $this->assertEqual($page->capture(), 'John:Pavel:Peter++Harry2');
+  }
+
+
   function testListSeparatorInNestedList()
   {
     $template = '<list:LIST id="base">'.
@@ -588,6 +612,30 @@ class WactListTagsTest extends WactTemplateTestCase
 
     $output = $page->capture();
     $this->assertEqual($output, "Ivan-Ivanov|Peter-Petrov|");
+  }
+
+  function testListFirstRowProperty()
+  {
+    $template = '<list:LIST id="test"><list:ITEM>{$FirstRow}:{$First}-</list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_first_row_property.html', $template);
+    $page = $this->initTemplate('/tags/list/list_first_row_property.html');
+    $page->setChildDataset('test', $this->founding_fathers);
+
+    $output = $page->capture();
+    $this->assertEqual($output, "1:George-0:Alexander-0:Benjamin-");
+  }
+
+  function testListLastRowProperty()
+  {
+    $template = '<list:LIST id="test"><list:ITEM>{$LastRow}:{$First}-</list:ITEM></list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/list_last_row_property.html', $template);
+    $page = $this->initTemplate('/tags/list/list_last_row_property.html');
+    $page->setChildDataset('test', $this->founding_fathers);
+
+    $output = $page->capture();
+    $this->assertEqual($output, "0:George-0:Alexander-1:Benjamin-");
   }
 }
 

@@ -13,7 +13,7 @@
  * @package wact
  * @version $Id$
  */
-class WactPagerTotalItemsProperty extends WactCompilerProperty
+class WactListTotalItemsProperty extends WactCompilerProperty
 {
   function generateExpression($code)
   {

@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactDataBindingExpressionNode.
  *
  * @package wact
- * @version $Id: WactDataBindingExpressionNode.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactDataBindingExpressionNode.class.php 6262 2007-09-05 13:14:39Z serega $
  */
 class WactDataBindingExpressionNode
 {
@@ -27,6 +27,7 @@ class WactDataBindingExpressionNode
 
   protected $expression_analyzed = FALSE;
 
+  protected $is_property = false;
   protected $property;
   protected $php_variable = false;
 
@@ -74,6 +75,10 @@ class WactDataBindingExpressionNode
   protected function _findRealContext()
   {
     $this->processed_expression = $this->original_expression;
+
+    if(strpos($this->processed_expression, ":") !== false)
+      $this->is_property = true;
+
     do
     {
       $modifier = $this->processed_expression{0};
@@ -104,7 +109,11 @@ class WactDataBindingExpressionNode
       // parent context
       if ($modifier == "^")
       {
-        $this->datasource_context = $this->datasource_context->getParentDataSource();
+        if($this->is_property)
+          $this->datasource_context = $this->datasource_context->getParentDataSource();
+        else
+          $this->datasource_context = $this->datasource_context->getParent();
+
         $this->processed_expression = substr($this->processed_expression, 1);
         continue;
       }

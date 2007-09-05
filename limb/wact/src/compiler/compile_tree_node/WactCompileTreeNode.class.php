@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactCompileTreeNode.
  *
  * @package wact
- * @version $Id: WactCompileTreeNode.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactCompileTreeNode.class.php 6262 2007-09-05 13:14:39Z serega $
  */
 class WactCompileTreeNode
 {
@@ -284,6 +284,11 @@ class WactCompileTreeNode
       $result = $DataSource->parent->getDataSource();
 
     return $result;
+  }
+
+  function getParent()
+  {
+    return $this->parent;
   }
 
   /**
