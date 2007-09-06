@@ -379,6 +379,26 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $this->assertEqual($node['id'], $node_1_1);
   }
 
+  function testGetNodeByPathWithSameIdentifiersInTree()
+  {
+    $root_id = $this->imp->initTree();
+    $node_1 = $this->imp->createNode($root_id, array('identifier'=>'foo'));
+    $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'bar'));
+    $node_1_2 = $this->imp->createNode($node_1, array('identifier'=>'foo'));
+
+    $node = $this->imp->getNodeByPath('/');
+    $this->assertEqual($node['id'], $root_id);
+
+    $node = $this->imp->getNodeByPath('/foo');
+    $this->assertEqual($node['id'], $node_1);
+
+    $node = $this->imp->getNodeByPath('/foo/bar');
+    $this->assertEqual($node['id'], $node_1_1);
+
+    $node = $this->imp->getNodeByPath('/foo/foo');
+    $this->assertEqual($node['id'], $node_1_2);
+  }
+
   function testGetPathToNodeFailed()
   {
     try
