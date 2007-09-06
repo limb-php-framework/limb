@@ -11,7 +11,7 @@
  * class WactCompileTreeNode.
  *
  * @package wact
- * @version $Id: WactCompileTreeNode.class.php 6262 2007-09-05 13:14:39Z serega $
+ * @version $Id: WactCompileTreeNode.class.php 6264 2007-09-06 06:42:53Z serega $
  */
 class WactCompileTreeNode
 {
@@ -210,9 +210,7 @@ class WactCompileTreeNode
     if (array_key_exists($name, $this->properties))
         return $this->properties[$name];
 
-    if ($this->isDataSource())
-      return null;
-    elseif($this->parent)
+    if($this->parent)
       return $this->parent->getProperty($name);
   }
 
