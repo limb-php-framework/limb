@@ -306,42 +306,23 @@ class lmbMPTree implements lmbTree
     if(!$path_array)
       return null;
 
-    $level = sizeof($path_array);
+    if(!$root = $this->getRootNode())
+      return null;
 
-    $in_condition = $this->_dbIn($this->_identifier, array_map(array($this->_conn, 'escape'), array_unique($path_array)));
-    $sql = "SELECT " . $this->_getSelectFields() . "
-            FROM {$this->_node_table}
-            WHERE
-            {$in_condition}
-            AND {$this->_level} <= {$level}
-            ORDER BY {$this->_path}";
-
-    $stmt = $this->_conn->newStatement($sql);
-    $rs = $stmt->getRecordSet();
-
-    $curr_level = 0;
-    $parent_id = null;
-    $path_to_node = '';
-
-    foreach($rs as $node)
+    $parent_id = $root['id'];
+    foreach($path_array as $path)
     {
-      if($node['level'] < $curr_level)
-        continue;
-
-      if($node['identifier'] == $path_array[$curr_level] &&
-         (!$parent_id ||
-         $node['parent_id'] == $parent_id))
-      {
-        $parent_id = $node['id'];
-
-        $curr_level++;
-        $path_to_node .= '/' . $node['identifier'];
-
-        if($curr_level == $level)
-          return $node;
-      }
+      $path = $this->_conn->escape($path);
+      $sql = "SELECT " . $this->_getSelectFields() . "
+              FROM {$this->_node_table}
+              WHERE {$this->_parent_id}=$parent_id AND
+                    {$this->_identifier}='$path'"; 
+      $stmt = $this->_conn->newStatement($sql);
+      if(!$node = $stmt->getOneRecord())
+        return null;
+      $parent_id = $node['id'];
     }
-    return null;
+    return $node;
   }
 
   function getPathToNode($node)

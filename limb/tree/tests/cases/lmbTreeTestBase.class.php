@@ -385,6 +385,8 @@ abstract class lmbTreeTestBase extends UnitTestCase
     $node_1 = $this->imp->createNode($root_id, array('identifier'=>'foo'));
     $node_1_1 = $this->imp->createNode($node_1, array('identifier'=>'bar'));
     $node_1_2 = $this->imp->createNode($node_1, array('identifier'=>'foo'));
+    $node_2 = $this->imp->createNode($root_id, array('identifier'=>'bar'));
+    $node_2_2 = $this->imp->createNode($node_2, array('identifier'=>'foo'));
 
     $node = $this->imp->getNodeByPath('/');
     $this->assertEqual($node['id'], $root_id);
@@ -397,6 +399,12 @@ abstract class lmbTreeTestBase extends UnitTestCase
 
     $node = $this->imp->getNodeByPath('/foo/foo');
     $this->assertEqual($node['id'], $node_1_2);
+
+    $node = $this->imp->getNodeByPath('/bar');
+    $this->assertEqual($node['id'], $node_2);
+
+    $node = $this->imp->getNodeByPath('/bar/foo');
+    $this->assertEqual($node['id'], $node_2_2);
   }
 
   function testGetPathToNodeFailed()
