@@ -150,9 +150,9 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->active_parsing_state->invalidEntitySyntax($text);
   }
 
-  function invalidAttributeSyntax()
+  function invalidAttributeSyntax($text)
   {
-    $this->active_parsing_state->invalidAttributeSyntax();
+    $this->active_parsing_state->invalidAttributeSyntax($text);
   }
 }
 

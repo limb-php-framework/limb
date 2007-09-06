@@ -86,7 +86,6 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->parser->parse('<%tag attribute=\'"\'%>');
   }
 
-
   function testEmptyClose()
   {
     $this->listener->expectOnce('endElement', array(''));
@@ -117,10 +116,18 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->parser->parse('<%br/%>{$str}');
   }
 
+  function testSelfClosingTagWithArgumentsAndNoSpaceBeforeClosing()
+  {
+    $this->listener->expectOnce('emptyElement', array('tag', array('str' => 'abcdefgh')));
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->parser->parse('<%tag str="abcdefgh"/%>');
+  }
+
   function testExpressionAfterTagWithArguments()
   {
     $this->listener->expectOnce('emptyElement', array('tag', array('str' => 'abcdefgh')));
     $this->listener->expectOnce('characters', array('{$str}'));
+    $this->listener->expectNever('invalidAttributeSyntax');
     $this->parser->parse('<%tag str="abcdefgh" /%>{$str}');
   }
 

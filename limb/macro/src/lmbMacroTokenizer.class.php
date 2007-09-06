@@ -181,9 +181,8 @@ class lmbMacroTokenizer
                   return;
                 }
 
-                if(strpos("% \n\r\t", $this->rawtext{$this->position}) === false)
-                  $this->observer->invalidAttributeSyntax();
-
+                if(strpos("/% \n\r\t", $this->rawtext{$this->position}) === false)
+                  $this->observer->invalidAttributeSyntax(substr($this->rawtext, $this->position));
               }
               else
               {

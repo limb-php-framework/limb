@@ -151,7 +151,7 @@ class lmbMacroCodeWriter
 
   function endFunction()
   {
-    $this->writePHP(" }\n");
+    $this->writePHP("\n}\n");
   }
 
   function beginMethod($name, $param_list = array())
@@ -159,12 +159,15 @@ class lmbMacroCodeWriter
     $this->methods_stack[] = array($this->current_method, $this->current_mode);
     $this->current_method = $name;
 
-    return $this->beginFunction($name, $param_list);
+    //we don't need to switch to PHP, since methods can be declared inside PHP only
+    $this->writeRaw('function ' . $name . '(' . implode(',', $param_list) .") {\n");
+    $this->current_mode = self :: MODE_PHP;
+    return $name;
   }
 
   function endMethod()
   {
-    $this->writePHP(" }\n");
+    $this->writePHP("\n}\n");
     list($this->current_method, $this->current_mode) = array_pop($this->methods_stack);
   }
 

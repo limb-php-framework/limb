@@ -36,9 +36,9 @@ class lmbMacroBaseParsingState
     $this->locator = $locator;
   }
 
-  function invalidAttributeSyntax()
+  function invalidAttributeSyntax($data)
   {
-    throw Exception('Fix this...');
+    throw new lmbException('Invalid attribute syntax starting from: ' . $data);
   }
 
   function getAttributeString($attrs)

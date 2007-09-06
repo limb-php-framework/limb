@@ -55,9 +55,8 @@ class lmbMacroTemplate
 
   protected function _createCompiler()
   {
-    $template_locator = new lmbMacroTemplateLocator();
     $tag_dictionary = lmbMacroTagDictionary :: instance();
-    $compiler = new lmbMacroCompiler($tag_dictionary, $template_locator);
+    $compiler = new lmbMacroCompiler($tag_dictionary, $this->locator);
     return $compiler;
   }
 }

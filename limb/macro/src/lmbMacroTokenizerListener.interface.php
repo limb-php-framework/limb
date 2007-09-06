@@ -21,7 +21,7 @@ interface lmbMacroTokenizerListener
   function characters($data);
   function unexpectedEOF($data);
   function invalidEntitySyntax($data);
-  function invalidAttributeSyntax();
+  function invalidAttributeSyntax($data);
   function setTemplateLocator($locator);
 }
 

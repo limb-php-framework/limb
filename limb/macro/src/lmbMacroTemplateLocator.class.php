@@ -16,10 +16,15 @@
 class lmbMacroTemplateLocator
 {
   protected $cache_dir;
+  protected $base_dir;
 
-  function __construct()
+  function __construct($base_dir = null, $cache_dir = null)
   {
-    $this->cache_dir = LIMB_VAR_DIR . '/compiled';
+    if(!$cache_dir)
+      $cache_dir = LIMB_VAR_DIR . '/compiled';
+
+    $this->cache_dir = $cache_dir;
+    $this->base_dir = $base_dir;
   }
 
   function locateCompiledTemplate($file_name)
@@ -32,11 +37,13 @@ class lmbMacroTemplateLocator
     //fix this later
     if(lmbFs :: isPathAbsolute($file_name))
       return $file_name;
+    else
+      return $this->base_dir . '/' . $file_name;
   }
 
   function readTemplateFile($file_name)
   {    
-    return file_get_contents($file_name, 1);
+    return file_get_contents($file_name);
   }
 }
 
