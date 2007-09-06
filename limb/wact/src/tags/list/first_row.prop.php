@@ -21,8 +21,7 @@ class WactListRowFirstRowProperty extends WactCompilerProperty
   function generateScopeEntry($code)
   {
     $this->temp_var = $code->getTempVarRef();
-    $ListList = $this->context->findParentByClass('WactListListTag');
-    $code->writePHP($this->temp_var . ' = ' . $ListList->getComponentRefCode() . '->getOffset();' . "\n");
+    $code->writePHP($this->temp_var . " = 0; \n");
   }
 
    function generatePreStatement($code_writer)

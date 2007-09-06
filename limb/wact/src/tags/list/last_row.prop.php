@@ -26,8 +26,8 @@ class WactListRowLastRowProperty extends WactCompilerProperty
 
     $ListList = $this->context->findParentByClass('WactListListTag');
 
-    $code->writePHP($this->temp_var . ' = ' . $ListList->getComponentRefCode() . '->getOffset();' . "\n");
-    $code->writePHP($this->count_var . ' = ' . $ListList->getComponentRefCode() . '->count();' . "\n");
+    $code->writePHP($this->temp_var . " = 0; \n");
+    $code->writePHP($this->count_var . ' = ' . $ListList->getComponentRefCode() . '->countPaginated();' . "\n");
   }
 
   function generatePreStatement($code_writer)
