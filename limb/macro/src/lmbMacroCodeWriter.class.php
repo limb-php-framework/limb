@@ -36,13 +36,14 @@ class lmbMacroCodeWriter
 
   protected $temp_var_name = 1;
 
-  function __construct($class, $parent = 'lmbMacroTemplateExecutor')
+  function __construct($class, $render_func = 'render')
   {
     $this->class = $class;
-    $this->parent = $parent;
-
+    $this->render_func = $render_func;
+    $this->parent = 'lmbMacroTemplateExecutor';
     $this->registerInclude('limb/macro/src/lmbMacroTemplateExecutor.class.php');
-    $this->beginMethod('render');
+
+    $this->beginMethod($render_func);
   }
 
   function getClass()

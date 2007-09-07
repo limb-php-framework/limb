@@ -40,7 +40,6 @@ class lmbMacroCompiler
   */
   protected $tag_dictionary;
 
-
   function __construct($tag_dictionary, $template_locator)
   {
     $this->template_locator = $template_locator;
@@ -48,26 +47,22 @@ class lmbMacroCompiler
     $this->tree_builder = new lmbMacroTreeBuilder($this);
   }
 
-  function compile($file_name)
+  function compile($source_file, $compiled_file, $class, $render_func)
   {
-    if(!$source_file_path = $this->template_locator->locateSourceTemplate($file_name))    
-     throw new lmbMacroException('Template source file not found', array('file_name' => $file_name));
+    $root_node = new lmbMacroNode(new lmbMacroSourceLocation($source_file, ''));
+    $this->parseTemplate($source_file, $root_node);
 
-    $root_node = new lmbMacroNode(new lmbMacroSourceLocation($source_file_path, ''));
-    $this->parseTemplate($file_name, $root_node);
     $root_node->prepare();
 
-    $compiled_file_path = $this->template_locator->locateCompiledTemplate($file_name);
-    list($class, $render_func, $generated_code) = $this->_generateTemplateCode(md5($compiled_file_path), $root_node);
-    self :: writeFile($compiled_file_path, $generated_code);
-    return array($class, $render_func, $compiled_file_path);
+    $generated_code = $this->_generateTemplateCode($class, $render_func, $root_node);
+    self :: writeFile($compiled_file, $generated_code);
   }
 
-  function _generateTemplateCode($hash, $root_node)
+  function _generateTemplateCode($class, $render_func, $root_node)
   {
-    $code_writer = new lmbMacroCodeWriter($class = 'TemplateExecutor' . $hash);
+    $code_writer = new lmbMacroCodeWriter($class, $render_func);
     $root_node->generate($code_writer);
-    return array($class, $code_writer->getRenderMethod(), $code_writer->renderCode());
+    return $code_writer->renderCode();
   }
 
   function parseTemplate($source_file_path, $root_node)

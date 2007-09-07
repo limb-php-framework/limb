@@ -39,15 +39,21 @@ class lmbMacroTemplate
 
   function render()
   {
-    ob_start();
+    if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
+     throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
+
+    $compiled_file = $this->locator->locateCompiledTemplate($this->file);
+
+    $class = 'TemplateExecutor' . uniqid();//???
 
     $compiler = $this->_createCompiler();
-    list($class, $func, $compiled_file) = $compiler->compile($this->file);
+    $compiler->compile($source_file, $compiled_file, $class, 'render');
 
-    include_once($compiled_file);
+    include($compiled_file);
     $executor = new $class($this->vars);
-    $executor->$func();
 
+    ob_start();
+    $executor->render();
     $out = ob_get_contents();
     ob_end_clean();
     return $out;

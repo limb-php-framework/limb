@@ -21,7 +21,7 @@ class lmbMacroTemplateTest extends UnitTestCase
 
   function testRenderTemplateVar()
   {
-    $view = $this->_createView('Hello, <?=$this->name?>');
+    $view = $this->_createView('Hello, <?php echo $this->name;?>');
     $view->set('name', 'Bob');
     $this->assertEqual($view->render(), 'Hello, Bob');
   }

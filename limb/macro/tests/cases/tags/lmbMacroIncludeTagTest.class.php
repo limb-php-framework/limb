@@ -38,13 +38,13 @@ class lmbMacroTagIncludeTest extends UnitTestCase
   function testIncludePassVariables()
   {
     $bar = '<body><?php $var2=2;?><%include file="foo.html" var1="1" var2="$var2"/%></body>';
-    $foo = '<p>Numbers: <?=$var1?> <?=$var2?></p>';
+    $foo = '<p>Numbers: <?php echo $var1;?> <?php echo $var2;?></p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
 
     $macro = $this->_createMacro($bar_tpl);
-
+    
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Numbers: 1 2</p></body>');
   }
