@@ -91,8 +91,13 @@ abstract class AdminObjectController extends lmbController
       else
         $this->_onAfterEdit();
 
-      $this->closePopup();
+      $this->_endDialog();
     }
+  }
+
+  protected function _endDialog()
+  {
+    $this->closePopup();
   }
 
   protected function _initCreateForm() {}
