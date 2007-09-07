@@ -1,3 +1,11 @@
+0.8.5-beta - 7 September 2007 (r6271)
+==================================================
+-- ported SimpleTest CVS fix for abstract classes
+-- better version info when run from dev.box
+-- lmbTestTreeNode :: getTestLabel() now simply returns a label without asking the test case, this allows to output more user friendly labels
+-- lmbTetsTreeNode :: _doCreateTestCase() now passes getTestLabel() as a label of the new test case, this allowed to remove code duplication in lmbTestTreeShallowDirNode and lmbTestTreeFileNode
+-- lmbTestTreeFileNode uses _prepareTestCase() to customize the test case instead of _doCreateTestCase
+
 0.8.4-beta - 7 August 2007 (r6222)
 ==================================================
 -- removing trailing ?> for PHP modules
