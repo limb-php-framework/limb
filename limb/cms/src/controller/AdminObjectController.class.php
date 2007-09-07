@@ -64,6 +64,33 @@ abstract class AdminObjectController extends lmbController
     }
   }
 
+  function doDelete()
+  {
+    if($this->request->hasPost())
+      $this->_onBeforeDelete();
+
+    if($this->request->get('delete'))
+    {
+      foreach($this->request->getArray('ids') as $id)
+      {
+        $item = new $this->_object_class_name((int)$id);
+        $item->destroy();
+      }
+      $this->_endDialog();
+      $this->_onAfterDelete();
+    }
+  }
+
+  function performPublishCommand()
+  {
+    $this->performCommand('limb/cms/src/command/lmbCmsPublishObjectCommand', $this->_object_class_name);
+  }
+
+  function performUnpublishCommand()
+  {
+    $this->performCommand('limb/cms/src/command/lmbCmsUnpublishObjectCommand', $this->_object_class_name);
+  }
+
   protected function _import()
   {
     $this->item->import($this->request);
@@ -113,24 +140,6 @@ abstract class AdminObjectController extends lmbController
   protected function _onBeforeValidate() {}
   protected function _onAfterValidate() {}
 
-  function performPublishCommand()
-  {
-    $this->performCommand('limb/cms/src/command/lmbCmsPublishObjectCommand', $this->_object_class_name);
-  }
-
-  function performUnpublishCommand()
-  {
-    $this->performCommand('limb/cms/src/command/lmbCmsUnpublishObjectCommand', $this->_object_class_name);
-  }
-
-  function doDelete()
-  {
-    if($this->request->hasPost())
-      $this->_onBeforeDelete();
-    $this->performCommand('limb/cms/src/command/lmbCmsDeleteObjectCommand', $this->_object_class_name);
-    if($this->request->hasPost())
-      $this->_onAfterDelete();
-  }
 }
 
 
