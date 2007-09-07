@@ -44,7 +44,7 @@ class lmbMacroTemplate
 
     $compiled_file = $this->locator->locateCompiledTemplate($this->file);
 
-    $class = 'TemplateExecutor' . uniqid();//???
+    $class = 'MacroTemplateExecutor' . uniqid();//???
 
     $compiler = $this->_createCompiler();
     $compiler->compile($source_file, $compiled_file, $class, 'render');

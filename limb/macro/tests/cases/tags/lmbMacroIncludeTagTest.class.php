@@ -22,6 +22,20 @@ class lmbMacroTagIncludeTest extends UnitTestCase
   function testSimpleInclude()
   {
     $bar = '<body><%include file="foo.html"/%></body>';
+    $foo = '<p>Hello, Bob</p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
+  }
+
+  function testNestedInclude()
+  {
+    $bar = '<body><%include file="foo.html"/%></body>';
     $foo = '<p>Hello, <%include file="name.html"/%></p>';
     $name = "Bob";
 
@@ -47,6 +61,21 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Numbers: 1 2</p></body>');
+  }
+  
+  function testIncludeMixLocalAndTemplateVariables()
+  {
+    $bar = '<body><?php $var2=2;?><%include file="foo.html" var1="1" var2="$var2"/%></body>';
+    $foo = '<p>Numbers: <?php echo $var1;?> <?php echo $var2;?> <?php echo $this->var3;?></p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    
+    $macro->set('var3', 3);
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Numbers: 1 2 3</p></body>');
   }
 
   protected function _createMacro($file)
