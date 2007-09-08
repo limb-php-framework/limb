@@ -37,7 +37,7 @@ class lmbBlitzView extends lmbView
         $vars = $this->getVariables();
         foreach ($vars as $name => $value) {
             $this->getTemplateInstance()->set(array($name => $value));
-        }        
+        }
     }
 
     function render()

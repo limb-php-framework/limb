@@ -42,28 +42,28 @@ class lmbBlitzViewTest extends UnitTestCase
     {
         $template = 
             '{{ BEGIN outer }}o'
-                .'{{ $outer_var }}'
+                .'{{ $ovar }}'
                 .'{{ BEGIN inner }}i'
-                    .'{{ $inner_var }}'
+                    .'{{ $ivar }}'
                 .'{{ END inner }}'
             .'{{ END }}';
 
         $data = array (
                 array(
-                    'outer_var' => 'a',
+                    'ovar' => 'a',
                     'inner' => array(
-                        array('inner_var' => '1'),
-                        array('inner_var' => '2'),
-                        array('inner_var' => '3'),
+                        array('ivar' => '1'),
+                        array('ivar' => '2'),
+                        array('ivar' => '3'),
                         ),
+                ),
                 array(
-                    'outer_var' => 'b',
+                    'ovar' => 'b',
                     'inner' => array(
-                        array('inner_var' => '4'),
-                        array('inner_var' => '5'),
-                        array('inner_var' => '6'),
+                        array('ivar' => '4'),
+                        array('ivar' => '5'),
+                        array('ivar' => '6'),
                         ),
-                )
                 )
         );
         
