@@ -9,7 +9,8 @@ class lmbBlitzView extends lmbView
     function __call($methodName, $params)
     {
         $tpl = $this->getTemplateInstance();
-        if(!method_exists($tpl, $methodName)) {
+        if(!method_exists($tpl, $methodName))
+        {
             throw new lmbException(
                 'Wrong template method called', 
                 array(
@@ -23,8 +24,10 @@ class lmbBlitzView extends lmbView
 
     function getTemplateInstance()
     {
-        if(!$this->templateInstance) {
-            if(!$this->hasTemplate()) {
+        if(!$this->templateInstance)
+        {
+            if(!$this->hasTemplate())
+            {
                 throw new lmbException('template not defined');
             }
             $this->templateInstance = new Blitz($this->getTemplate());
@@ -34,7 +37,8 @@ class lmbBlitzView extends lmbView
     
     function render()
     {
-        foreach ($this->getVariables() as $name => $value) {
+        foreach ($this->getVariables() as $name => $value)
+        {
             $this->getTemplateInstance()->set(array($name => $value));
         }
         return $this->getTemplateInstance()->parse();
