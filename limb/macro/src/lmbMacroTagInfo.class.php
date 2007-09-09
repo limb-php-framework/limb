@@ -24,10 +24,11 @@ class lmbMacroTagInfo
   protected $forbid_parsing = false;
   protected $forbid_endtag = false;
 
-  function __construct($tag, $class)
+  function __construct($tag, $class, $forbid_endtag = false)
   {
     $this->tag = $tag;
     $this->class = $class;
+    $this->forbid_endtag = $forbid_endtag;
   }
   
   function getTag()
