@@ -46,7 +46,8 @@ class lmbMacroTemplateExecutor
   function includeTemplate($file, $vars = array())
   {
     $template = new lmbMacroTemplate($file, $this->cache_dir, $this->locator);
-    echo $template->render($vars);
+    $template->setVars(get_object_vars($this));//global template vars
+    echo $template->render($vars);//local template vars
   }
 }
 

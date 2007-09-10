@@ -108,6 +108,22 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $this->assertEqual($out, '<body><p>Hello, Fred!</p></body>');
   } 
 
+  function testDynamicIncludeMixLocalAndTemplateVars()
+  {
+    $bar = '<body><?php $name = "Fred";?><%include file="$this->file" name="$name"/%></body>';
+    $foo = '<p>Hello, <?php echo $name . " " . $this->lastname;?>!</p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('file', 'foo.html');
+    $macro->set('lastname', 'Atkins');
+    
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Hello, Fred Atkins!</p></body>');
+  } 
+
   protected function _createMacro($file)
   {
     $base_dir = LIMB_VAR_DIR . '/tpl';
