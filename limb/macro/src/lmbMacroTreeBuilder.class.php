@@ -171,7 +171,7 @@ class lmbMacroTreeBuilder
   function getExpectedTagLocation()
   {
     $item = end($this->expected_tags);
-    return $item[2];
+    return $item[1];
   }
 }
 
