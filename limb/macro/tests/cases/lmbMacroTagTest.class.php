@@ -12,12 +12,14 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroSourceLocation.class.php');
 lmb_require('limb/macro/src/lmbMacroCodeWriter.class.php'); 
+lmb_require('limb/macro/src/lmbMacroCompiler.class.php'); 
  
 class MacroTagClass1CompilerTest extends lmbMacroTag{}
 class MacroTagClass2CompilerTest extends lmbMacroTag{}
 
 Mock::generate('lmbMacroNode', 'MockMacroNode');
 Mock::generate('lmbMacroCodeWriter', 'MockMacroCodeWriter');
+Mock::generate('lmbMacroCompiler', 'MockMacroCompiler');
 
 class lmbMacroTagTest extends UnitTestCase
 {
@@ -276,7 +278,7 @@ class lmbMacroTagTest extends UnitTestCase
   {
     $this->tag_info->setRequiredAttributes(array('bar'));
     $this->node->set('bar', null);
-    $this->node->preParse();
+    $this->node->preParse(new MockMacroCompiler());
   }
 
   function testPreparseAndCheckForMissedRequiredAttributes()
@@ -285,7 +287,7 @@ class lmbMacroTagTest extends UnitTestCase
 
     try
     {
-      $this->node->preParse();
+      $this->node->preParse(new MockMacroCompiler());
       $this->assertTrue(false);
     }
     catch(lmbMacroException $e)
@@ -307,7 +309,7 @@ class lmbMacroTagTest extends UnitTestCase
 
     try
     {
-      $node->preParse();
+      $node->preParse(new MockMacroCompiler());
       $this->assertTrue(false);
     }
     catch(lmbMacroException $e)
@@ -325,7 +327,7 @@ class lmbMacroTagTest extends UnitTestCase
     $parent = new MacroTagClass1CompilerTest(null, null, null);
     $this->node->setParent($parent);
 
-    $this->node->preParse();
+    $this->node->preParse(new MockMacroCompiler());
   }
 
   function testCheckParentTagClassException()
@@ -337,7 +339,7 @@ class lmbMacroTagTest extends UnitTestCase
 
     try
     {
-      $this->node->preParse();
+      $this->node->preParse(new MockMacroCompiler());
       $this->assertTrue(false);
     }
     catch(lmbMacroException $e)

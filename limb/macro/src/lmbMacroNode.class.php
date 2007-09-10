@@ -93,9 +93,8 @@ class lmbMacroNode
 
   function removeChild($id)
   {
-    foreach(array_keys($this->children) as $key)
+    foreach($this->children as $key => $child)
     {
-      $child = $this->children[$key];
       if($child->getId() == $id)
       {
         unset($this->children[$key]);
@@ -111,10 +110,10 @@ class lmbMacroNode
 
   function removeChildren()
   {
-    foreach (array_keys($this->children) as $key)
+    foreach($this->children as $child)
     {
-      $this->children[$key]->removeChildren();
-      unset($this->children[$key]);
+      $child->removeChildren();
+      unset($child);
     }
   }
 
@@ -128,24 +127,24 @@ class lmbMacroNode
 
   function findChild($id)
   {
-    foreach(array_keys($this->children) as $key)
+    foreach($this->children as $child)
     {
-      if($this->children[$key]->getId() == $id)
-        return $this->children[$key];
+      if($child->getId() == $id)
+        return $child;
       else
-        return $this->children[$key]->findChild($id);          
+        return $child->findChild($id);          
     }
   }
 
   function findChildByClass($class)
   {
-    foreach(array_keys($this->children) as $key)
+    foreach($this->children as $child)
     {
-      if(is_a($this->children[$key], $class))
-        return $this->children[$key];
+      if(is_a($child, $class))
+        return $child;
       else
       {
-        if($result = $this->children[$key]->findChildByClass($class))
+        if($result = $child->findChildByClass($class))
           return $result;
       }
     }
@@ -154,13 +153,13 @@ class lmbMacroNode
   function findChildrenByClass($class)
   {
     $ret = array();
-    foreach(array_keys($this->children) as $key)
+    foreach($this->children as $child)
     {
-      if(is_a($this->children[$key], $class))
-        $ret[] = $this->children[$key];
+      if(is_a($child, $class))
+        $ret[] = $child;
       else
       {
-        $more_children = $this->children[$key]->findChildrenByClass($class);
+        $more_children = $child->findChildrenByClass($class);
         if(count($more_children))
           $ret = array_merge($ret, $more_children);
       }
@@ -170,20 +169,20 @@ class lmbMacroNode
 
   function findImmediateChildByClass($class)
   {
-    foreach(array_keys($this->children) as $key)
+    foreach($this->children as $child)
     {
-      if(is_a($this->children[$key], $class))
-        return $this->children[$key];
+      if(is_a($child, $class))
+        return $child;
     }
   }
 
   function findImmediateChildrenByClass($class)
   {
     $result = array();
-    foreach(array_keys($this->children) as $key)
+    foreach($this->children as $child)
     {
-      if(is_a($this->children[$key], $class))
-        $result[] = $this->children[$key];
+      if(is_a($child, $class))
+        $result[] = $child;
     }
     return $result;
   }  
@@ -200,22 +199,22 @@ class lmbMacroNode
   
   function prepare()
   {
-    foreach(array_keys($this->children) as $key)
-      $this->children[$key]->prepare();
+    foreach($this->children as $child)
+      $child->prepare();
   }  
 
   function preParse(){}
   
   function generateConstructor($code_writer)
   {
-    foreach(array_keys($this->children) as $key)
-      $this->children[$key]->generateConstructor($code_writer);
+    foreach($this->children as $child)
+      $child->generateConstructor($code_writer);
   }
 
   function generateContents($code_writer)
   {
-    foreach(array_keys($this->children) as $key)
-      $this->children[$key]->generate($code_writer);
+    foreach($this->children as $child)
+      $child->generate($code_writer);
   }
   
   function generate($code_writer)
@@ -234,7 +233,7 @@ class lmbMacroNode
     foreach($this->getChildren() as $key => $child)
     {
       $id = $child->getId();
-      if (in_array($id, $child_ids))
+      if(in_array($id, $child_ids))
       {
         $duplicate_child = $checked_children[$id];
         $child->raise('Duplicate "id" attribute',
