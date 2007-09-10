@@ -31,27 +31,55 @@ class lmbMacroIncludeTag extends lmbMacroTag
     if(!$file = $this->get('file'))
       $this->raiseRequiredAttributeError($file);
 
-    $source_file = $locator->locateSourceTemplate($file);
-    if(empty($source_file))
-      $this->raise('Template source file not found', array('file_name' => $file));
+    if(!$this->_isDynamic())
+    {
+      $source_file = $locator->locateSourceTemplate($file);
+      if(empty($source_file))
+        $this->raise('Template source file not found', array('file_name' => $file));
 
-    $compiler->parseTemplate($file, $this);
+      $compiler->parseTemplate($file, $this);
+    }
+  }
+
+  function _isDynamic()
+  {
+    return strpos($this->get('file'), '$') === 0;
   }
 
   function generateContents($code)
   {
+    if($this->_isDynamic())
+      $this->_generateDynamicContents($code);
+    else
+      $this->_generateStaticContents($code);
+  }
+
+  function _generateDynamicContents($code)
+  {
+    $args = $this->_attributesIntoArray();
+
+    $arg_str = 'array(';
+    foreach($args as $key => $value)
+      $arg_str .= "'$key' => $value,";
+    $arg_str .= ')';
+
+    $code->writePHP('$this->includeTemplate(' . $this->get('file') . ',' . $arg_str . ');');
+  }
+
+  function _generateStaticContents($code)
+  {
     static $counter = 1;
 
-    list($keys, $vals) = $this->_getLocalVars();
+    list($keys, $vals) = $this->_attributesIntoArgs();
 
-    $method = $code->beginMethod('__include' . ($counter++), $keys);
+    $method = $code->beginMethod('__staticInclude' . ($counter++), $keys);
     parent :: generateContents($code);
     $code->endMethod();
 
     $code->writePHP('$this->' . $method . '(' . implode(', ', $vals) . ');');
   }
 
-  protected function _getLocalVars()
+  protected function _attributesIntoArgs()
   {
     $keys = array();
     $vals = array();
@@ -61,6 +89,14 @@ class lmbMacroIncludeTag extends lmbMacroTag
       $vals[] = $this->_sanitizeValue($v);
     }
     return array($keys, $vals);
+  }
+
+  protected function _attributesIntoArray()
+  {
+    $arr = array();
+    foreach($this->attributes as $k => $v)
+      $arr[$k] = $this->_sanitizeValue($v);
+    return $arr;
   }
 
   protected function _sanitizeValue($v)

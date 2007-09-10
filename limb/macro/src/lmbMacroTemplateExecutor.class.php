@@ -15,10 +15,16 @@
  */
 class lmbMacroTemplateExecutor
 {
-  function __construct($vars = array())
+  protected $cache_dir;
+  protected $locator;
+
+  function __construct($vars = array(), $cache_dir = null, $locator = null)
   {
     foreach($vars as $name => $value)
       $this->$name = $value;
+
+    $this->cache_dir = $cache_dir;
+    $this->locator = $locator;
   }
 
   function set($name, $value)
@@ -32,6 +38,15 @@ class lmbMacroTemplateExecutor
     return '';
   }
 
-  function render(){}
+  function render($args = array())
+  {
+    extract($args);
+  }
+
+  function includeTemplate($file, $vars = array())
+  {
+    $template = new lmbMacroTemplate($file, $this->cache_dir, $this->locator);
+    echo $template->render($vars);
+  }
 }
 

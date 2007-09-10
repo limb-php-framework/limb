@@ -23,13 +23,22 @@ class lmbMacroTemplate
   protected $cache_dir;
   protected $vars = array();
 
-  function __construct($file, $cache_dir, $locator = null)
+  function __construct($file, $cache_dir = null, $locator = null)
   {
     $this->file = $file;
+
+    if(!$cache_dir)
+      $cache_dir = LIMB_VAR_DIR . '/compiled';
     $this->cache_dir = $cache_dir;
+
+    if(!$locator)
+      $locator = new lmbMacroTemplateLocator();
     $this->locator = $locator;
-    if(!$this->locator)
-      $this->locator = new lmbMacroTemplateLocator();
+  }
+
+  function setVars($vars)
+  {
+    $this->vars = $vars;
   }
 
   function set($name, $value)
@@ -37,7 +46,7 @@ class lmbMacroTemplate
     $this->vars[$name] = $value;
   }
 
-  function render()
+  function render($vars = array())
   {
     if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
      throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
@@ -50,10 +59,10 @@ class lmbMacroTemplate
     $compiler->compile($source_file, $compiled_file, $class, 'render');
 
     include($compiled_file);
-    $executor = new $class($this->vars);
+    $executor = new $class($this->vars, $this->cache_dir, $this->locator);
 
     ob_start();
-    $executor->render();
+    $executor->render($vars);
     $out = ob_get_contents();
     ob_end_clean();
     return $out;

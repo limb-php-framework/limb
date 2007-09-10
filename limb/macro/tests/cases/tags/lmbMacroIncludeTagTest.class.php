@@ -19,7 +19,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
   }
 
-  function testSimpleInclude()
+  function testSimpleStaticInclude()
   {
     $bar = '<body><%include file="foo.html"/%></body>';
     $foo = '<p>Hello, Bob</p>';
@@ -33,7 +33,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
 
-  function testNestedInclude()
+  function testNestedStaticInclude()
   {
     $bar = '<body><%include file="foo.html"/%></body>';
     $foo = '<p>Hello, <%include file="name.html"/%></p>';
@@ -49,7 +49,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
 
-  function testIncludePassVariables()
+  function testStaticIncludePassVariables()
   {
     $bar = '<body><?php $var2=2;?><%include file="foo.html" var1="1" var2="$var2"/%></body>';
     $foo = '<p>Numbers: <?php echo $var1;?> <?php echo $var2;?></p>';
@@ -63,7 +63,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $this->assertEqual($out, '<body><p>Numbers: 1 2</p></body>');
   }
   
-  function testIncludeMixLocalAndTemplateVariables()
+  function testStaticIncludeMixLocalAndTemplateVariables()
   {
     $bar = '<body><?php $var2=2;?><%include file="foo.html" var1="1" var2="$var2"/%></body>';
     $foo = '<p>Numbers: <?php echo $var1;?> <?php echo $var2;?> <?php echo $this->var3;?></p>';
@@ -77,6 +77,36 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Numbers: 1 2 3</p></body>');
   }
+
+  function testDynamicInclude()
+  {
+    $bar = '<body><%include file="$this->file"/%></body>';
+    $foo = '<p>Hello!</p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('file', 'foo.html');
+    
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Hello!</p></body>');
+  } 
+
+  function testDynamicIncludePassLocalVars()
+  {
+    $bar = '<body><?php $name = "Fred";?><%include file="$this->file" name="$name"/%></body>';
+    $foo = '<p>Hello, <?php echo $name;?>!</p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('file', 'foo.html');
+    
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Hello, Fred!</p></body>');
+  } 
 
   protected function _createMacro($file)
   {
