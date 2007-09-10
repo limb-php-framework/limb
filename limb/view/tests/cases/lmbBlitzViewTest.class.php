@@ -10,6 +10,12 @@ lmb_require('limb/view/src/lmbBlitzView.class.php');
 
 class lmbBlitzViewTest extends UnitTestCase
 {
+    function skip()
+    {
+        $this->skipIf(!extension_loaded('blitz'), 'Blitz extension not found. Test skipped.');
+        $this->skipIf(!class_exists('Blitz'), 'Blitz class not found. Test skipped.');
+    }
+
     private function _createTemplateFile($name, $source)
     {
         file_put_contents($path = LIMB_VAR_DIR . $name, $source);
@@ -27,20 +33,20 @@ class lmbBlitzViewTest extends UnitTestCase
 
         $this->assertEqual($view->render(), 'Hello message!Hello again!');
     }
-    
+
     function testManualTemplateFunctionCall()
     {
         $template = '{{BEGIN foo}}{{END}}';
         $path = $this->_createTemplateFile('/simple.bhtml', $template);
 
-        $view = new lmbBlitzView($path);        
+        $view = new lmbBlitzView($path);
         $this->assertTrue($view->hasContext('foo'));
         $this->assertFalse($view->hasContext('bar'));
     }
 
     function testRenderIteratedTemplates()
     {
-        $template = 
+        $template =
             '{{ BEGIN outer }}o'
                 .'{{ $ovar }}'
                 .'{{ BEGIN inner }}i'
@@ -66,9 +72,9 @@ class lmbBlitzViewTest extends UnitTestCase
                         ),
                 )
         );
-        
+
         $out = 'oai1i2i3obi4i5i6';
-        
+
         $path = $this->_createTemplateFile('/iteration.bhtml', $template);
 
         $view = new lmbBlitzView($path);
@@ -76,5 +82,5 @@ class lmbBlitzViewTest extends UnitTestCase
 
         $this->assertEqual($view->render(), $out);
     }
-    
+
 }
