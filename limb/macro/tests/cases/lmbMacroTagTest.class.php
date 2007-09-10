@@ -56,7 +56,18 @@ class lmbMacroTagTest extends UnitTestCase
     $mock = new MockMacroNode();
     $mock->setReturnValue('getId', 'Test');
     $this->node->addChild($mock);
-    $this->assertIsA($this->node->findChild('Test'), 'MockMacroNode');
+    $this->assertEqual($this->node->findChild('Test')->getId(), 'Test');
+  }
+
+  function testFindChildInMany()
+  {
+    $node1 = new MockMacroNode();
+    $node1->setReturnValue('getId', 'foo');
+    $node2 = new MockMacroNode();
+    $node2->setReturnValue('getId', 'bar');
+    $this->node->addChild($node1);
+    $this->node->addChild($node2);
+    $this->assertEqual($this->node->findChild('bar')->getId(), 'bar');
   }
 
   function testFindChildNotFound()
@@ -76,7 +87,7 @@ class lmbMacroTagTest extends UnitTestCase
     $this->assertFalse($this->node->findChildByClass('Booo'));
   }
 
-  function testFindParentByChilld()
+  function testFindParentByChild()
   {
     $parent = new lmbMacroNode;
     $parent->addChild($this->node);

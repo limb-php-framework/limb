@@ -51,7 +51,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
   function endElement($tag)
   {
-    $tag_info = $this->tag_dictionary->getTagInfo($tag);
+    $tag_info = $this->tag_dictionary->findTagInfo($tag);
     $location = $this->parser->getCurrentLocation();
 
     if($tag_info->isEndTagForbidden())

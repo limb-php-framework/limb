@@ -72,7 +72,7 @@ class lmbMacroWrapTag extends lmbMacroTag
     if($replace)
       $insertionPoint->removeChildren();
 
-    $tree_builder->pushCursor($insertionPoint, $this->location_in_template);
+    $tree_builder->pushCursor($insertionPoint, $this->location);
   }
 }
 

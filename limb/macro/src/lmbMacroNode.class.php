@@ -132,7 +132,10 @@ class lmbMacroNode
       if($child->getId() == $id)
         return $child;
       else
-        return $child->findChild($id);          
+      {
+        if($result = $child->findChild($id))
+          return $result;
+      }
     }
   }
 
