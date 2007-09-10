@@ -122,7 +122,7 @@ class lmbMacroTag extends lmbMacroNode
     $this->raise('Missing required attribute', array('attribute' => $attribute_name));
   }
   
-  function preParse()
+  function preParse($compiler)
   {
     foreach($this->tag_info->getRequiredAttributes() as $attr_name)
     {

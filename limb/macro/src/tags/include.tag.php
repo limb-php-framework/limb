@@ -12,7 +12,7 @@ lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
 
-lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('include', 'lmbMacroIncludeTag'), __FILE__);
+lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('include', 'lmbMacroIncludeTag', true), __FILE__);
 
 /**
  * class lmbMacroIncludeTag.

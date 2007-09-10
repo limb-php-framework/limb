@@ -23,8 +23,9 @@
  * @version $Id$
  */
 
+lmb_require('limb/macro/src/lmbMacroTextNode.class.php');
 
-lmb_require('limb/macro/src/lmbMacroTextNode.class.php');class lmbMacroTreeBuilder
+class lmbMacroTreeBuilder
 {
   protected $compiler;
   protected $node;

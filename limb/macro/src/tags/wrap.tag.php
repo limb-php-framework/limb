@@ -12,7 +12,7 @@ lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
 
-lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('wrap', 'lmbMacroWrapTag'), __FILE__);
+lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('wrap', 'lmbMacroWrapTag', false), __FILE__);
 
 /**
  * class lmbMacroWrapTag.
@@ -24,6 +24,8 @@ class lmbMacroWrapTag extends lmbMacroTag
 {
   function preParse($compiler)
   {
+    parent :: preParse($compiler);
+
     $tree_builder = $compiler->getTreeBuilder();
 
     $file = $this->get('with');
@@ -57,14 +59,14 @@ class lmbMacroWrapTag extends lmbMacroTag
     $insertionPoint = $wrapper->findChild($point);
     if(empty($insertionPoint))
     {
-      $params = array('placeholder' => $point);
+      $params = array('slot' => $point);
       if($wrapper !== $this)
       {
         $params['parent_wrap_tag_file'] = $wrapper->getTemplateFile();
         $params['parent_wrap_tag_line'] = $wrapper->getTemplateLine();
       }
 
-      $this->raise('Wrap placeholder not found', $params);
+      $this->raise('Wrap slot not found', $params);
     }
 
     if($replace)

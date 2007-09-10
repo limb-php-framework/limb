@@ -9,6 +9,7 @@
 
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/macro/src/tags/wrap.tag.php');
+lmb_require('limb/macro/src/tags/slot.tag.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbMacroWrapTagTest extends UnitTestCase
@@ -21,7 +22,7 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testSimpleWrap()
   {
-    $bar = '<%wrap with="foo.html into="slot1"%>Bob<%/wrap%>';
+    $bar = '<%wrap with="foo.html" into="slot1"%>Bob<%/wrap%>';
     $foo = '<p>Hello, <%slot id="slot1"/%></p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
