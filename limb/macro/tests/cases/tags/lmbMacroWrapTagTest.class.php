@@ -7,10 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/macro/src/tags/wrap.tag.php');
 lmb_require('limb/macro/src/tags/slot.tag.php');
-lmb_require('limb/fs/src/lmbFs.class.php');
+lmb_require('limb/macro/src/tags/into.tag.php');
 
 class lmbMacroWrapTagTest extends UnitTestCase
 {
@@ -64,6 +65,20 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
+  }
+
+  function testMultiWrap()
+  {
+    $bar = '<%wrap with="foo.html"%><%into slot="slot1"%>Bob<%/into%><%into slot="slot2"%>Thorton<%/into%><%/wrap%>';
+    $foo = '<p>Hello, <%slot id="slot2"/%> <%slot id="slot1"/%></p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<p>Hello, Thorton Bob</p>');
   }
 
   protected function _createMacro($file)

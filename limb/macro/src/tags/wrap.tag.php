@@ -30,7 +30,27 @@ class lmbMacroWrapTag extends lmbMacroTag
 
     $file = $this->get('with');
     $this->_compileSourceFileName($file, $compiler);
-    $this->_makeInsertion($this, $tree_builder);
+
+    if($includes = $this->_collectIncludes())
+    {
+      var_dump($includes);
+      foreach($includes as $include)
+      {
+        $this->_insert($include, $tree_builder, $include->get('slot'));
+      }
+    }
+    else
+      $this->_insert($this, $tree_builder, $this->get('into'));
+  }
+
+  protected function _isMultiWrap()
+  {
+    return sizeof($this->_collectIncludes()) !== 0;
+  }
+
+  protected function _collectIncludes()
+  {
+    return $this->findImmediateChildrenByClass('lmbMacroIntoTag');
   }
 
   protected function _compileSourceFileName($file, $compiler)
@@ -41,12 +61,6 @@ class lmbMacroWrapTag extends lmbMacroTag
       $this->raise('Template source file not found', array('file_name' => $file));
 
     $compiler->parseTemplate($file, $this);
-  }
-
-  protected function _makeInsertion($wrapper, $tree_builder)
-  {
-    if($insertionId = $this->get('into'))
-      $this->_insert($wrapper, $tree_builder, $insertionId);
   }
 
   function _insert($wrapper, $tree_builder, $point)
