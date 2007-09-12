@@ -18,6 +18,8 @@ abstract class AdminObjectController extends lmbController
 {
   protected $_form_name = 'object_form';
   protected $_object_class_name = '';
+  protected $_popup = true;
+  protected $_back_url = array();
 
   protected $item = null;
 
@@ -27,6 +29,17 @@ abstract class AdminObjectController extends lmbController
 
     if(!$this->_object_class_name)
       throw new lmbException('Object class name is not specified');
+  }
+
+  protected function _passLocalAttributesToView()
+  {
+    //passing back_url string into view
+    if(is_array($this->_back_url))
+      $this->back_url = $this->toolkit->getRoutesUrl($this->_back_url);
+    else
+      $this->back_url = $this->_back_url;
+
+    parent :: _passLocalAttributesToView();
   }
 
   function doCreate()
@@ -124,7 +137,10 @@ abstract class AdminObjectController extends lmbController
 
   protected function _endDialog()
   {
-    $this->closePopup();
+    if($this->_popup)
+      $this->closePopup();
+    else
+      $this->redirect($this->_back_url);
   }
 
   protected function _initCreateForm() {}
