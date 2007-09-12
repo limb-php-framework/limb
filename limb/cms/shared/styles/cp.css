@@ -220,7 +220,7 @@
   .fields .calendar {margin:0 25px 0 5px;}
 
   .form_body {border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;;clear:both;margin:0 15px 0;padding:10px 10px 1px;}
-  .form_body input, .form_body textarea {width:100%}
+  .form_body .input, .form_body textarea {width:100%}
   .form_body label {display: block}
 
   input[type='text'], .input{background:#fff url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 3px 0;}
