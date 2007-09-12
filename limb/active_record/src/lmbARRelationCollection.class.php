@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbARRelationCollection.class.php 6294 2007-09-12 12:27:57Z serega $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -204,6 +204,11 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     foreach($this as $record)
       $result[] = $record;
     return $result;
+  }
+
+  function export()
+  {
+    return $this->getArray();
   }
 
   function getIds()
