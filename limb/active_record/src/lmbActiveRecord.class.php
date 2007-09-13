@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6297 2007-09-13 20:38:57Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -260,6 +260,11 @@ class lmbActiveRecord extends lmbObject
   function getErrorList()
   {
     return $this->_error_list;
+  }
+
+  function setErrorList($error_list)
+  {
+    $this->_error_list = $error_list;
   }
 
   protected function _defineRelations(){}
@@ -1060,6 +1065,8 @@ class lmbActiveRecord extends lmbObject
 
   protected function _onValidate(){}
 
+  protected function _onAfterImport(){}
+
   protected function _validateInsert()
   {
     return $this->_validate($this->_createInsertValidator());
@@ -1524,6 +1531,14 @@ class lmbActiveRecord extends lmbObject
     $this->_is_being_destroyed = false;
   }
 
+  function remove($name)
+  {
+    parent :: remove($name);
+
+    if(isset($this->raw_value_objects[$name]))
+      unset($this->raw_value_objects[$name]);
+  }
+
   protected function _deleteDbRecord()
   {
     $this->_db_table->deleteById($this->getId());
@@ -1677,7 +1692,7 @@ class lmbActiveRecord extends lmbObject
    *  </code>
    *  @param array|object
    */
-  function import($source)
+  function import($source, $error_list = null)
   {
     if(is_object($source))
     {
@@ -1685,29 +1700,42 @@ class lmbActiveRecord extends lmbObject
       {
         $this->importRaw($source->exportRaw());
         $this->setIsNew($source->isNew());
+        return true;//is this assumption correct?
       }
       else
-        $this->import($source->export());
-      return;
+        return $this->import($source->export(), $error_list);
     }
 
-    foreach($source as $property => $value)
+    if($error_list)
+      $this->_error_list = $error_list;
+
+    try
     {
-      if(isset($this->_composed_of[$property]))
-        $this->_importValueObject($property, $value);
-      elseif(isset($this->_has_many[$property]))
-        $this->_importCollection($property, $value, $this->_has_many[$property]['class']);
-      elseif(isset($this->_has_many_to_many[$property]))
-        $this->_importCollection($property, $value, $this->_has_many_to_many[$property]['class']);
-      elseif(isset($this->_belongs_to[$property]))
-        $this->_importEntity($property, $value, $this->_belongs_to[$property]['class']);
-      elseif(isset($this->_many_belongs_to[$property]))
-        $this->_importEntity($property, $value, $this->_many_belongs_to[$property]['class']);
-      elseif(isset($this->_has_one[$property]))
-        $this->_importEntity($property, $value, $this->_has_one[$property]['class']);
-      elseif($this->_canImportProperty($property))
-        $this->set($property, $value);
+      foreach($source as $property => $value)
+      {
+        if(isset($this->_composed_of[$property]))
+          $this->_importValueObject($property, $value);
+        elseif(isset($this->_has_many[$property]))
+          $this->_importCollection($property, $value, $this->_has_many[$property]['class']);
+        elseif(isset($this->_has_many_to_many[$property]))
+          $this->_importCollection($property, $value, $this->_has_many_to_many[$property]['class']);
+        elseif(isset($this->_belongs_to[$property]))
+          $this->_importEntity($property, $value, $this->_belongs_to[$property]['class']);
+        elseif(isset($this->_many_belongs_to[$property]))
+          $this->_importEntity($property, $value, $this->_many_belongs_to[$property]['class']);
+        elseif(isset($this->_has_one[$property]))
+          $this->_importEntity($property, $value, $this->_has_one[$property]['class']);
+        elseif($this->_canImportProperty($property))
+          $this->set($property, $value);
+      }
+      $this->_onAfterImport();
     }
+    catch(Exception $e)
+    {
+      $this->_error_list->addError($e->getMessage());
+    }
+
+    return $this->_error_list->isValid();
   }
   /**
    *  Plain import of data into object
@@ -1762,7 +1790,10 @@ class lmbActiveRecord extends lmbObject
   protected function _importValueObject($property, $obj)
   {
     if(!is_object($obj))
-      $this->set($property, $this->_createValueObject($this->_composed_of[$property]['class'], $obj));
+    {
+      $class = $this->_composed_of[$property]['class'];
+      $this->set($property, $this->_createValueObject($class, $obj));
+    }
     else
       $this->set($property, $obj);
   }
