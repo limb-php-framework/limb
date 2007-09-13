@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6295 2007-09-13 08:31:33Z pachanga $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
@@ -58,8 +58,10 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     return new lmbSQLFieldBetweenCriteria($column, $value_from, $value_to);
   }
 
-  static function in($column, $values)
+  static function in($column, $values, $handler = null)
   {
+    if($handler)
+      $values = array_map($handler, $values);
     return new lmbSQLFieldCriteria($column, $values, lmbSQLFieldCriteria :: IN);
   }
 
