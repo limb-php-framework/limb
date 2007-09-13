@@ -187,6 +187,12 @@ class lmbSQLCriteriaTest extends UnitTestCase
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', array(1, 2), lmbSQLFieldCriteria :: IN));
   }
 
+  function testInWithArrayProcessor()
+  {
+    $criteria = lmbSQLCriteria :: in('id', array("10foo", "20bar"), 'intval');
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', array(10, 20), lmbSQLFieldCriteria :: IN));
+  }
+
   function testEqual()
   {
     $criteria = lmbSQLCriteria :: equal('id', 1);
