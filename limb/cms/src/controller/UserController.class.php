@@ -77,7 +77,7 @@ class UserController extends lmbController
       if($user->login($login, $password))
         $this->toolkit->redirect($redirect_url);
       else
-        $this->mixed->flashAndLogError("Wrond login or password");
+        $this->flashError("Wrond login or password");
 
     }
   }
