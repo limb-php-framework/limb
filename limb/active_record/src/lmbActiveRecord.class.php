@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6297 2007-09-13 20:38:57Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6298 2007-09-14 07:08:02Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1692,7 +1692,7 @@ class lmbActiveRecord extends lmbObject
    *  </code>
    *  @param array|object
    */
-  function import($source, $error_list = null)
+  function import($source)
   {
     if(is_object($source))
     {
@@ -1700,42 +1700,30 @@ class lmbActiveRecord extends lmbObject
       {
         $this->importRaw($source->exportRaw());
         $this->setIsNew($source->isNew());
-        return true;//is this assumption correct?
       }
       else
-        return $this->import($source->export(), $error_list);
+        $this->import($source->export());
+      return;
     }
 
-    if($error_list)
-      $this->_error_list = $error_list;
-
-    try
+    foreach($source as $property => $value)
     {
-      foreach($source as $property => $value)
-      {
-        if(isset($this->_composed_of[$property]))
-          $this->_importValueObject($property, $value);
-        elseif(isset($this->_has_many[$property]))
-          $this->_importCollection($property, $value, $this->_has_many[$property]['class']);
-        elseif(isset($this->_has_many_to_many[$property]))
-          $this->_importCollection($property, $value, $this->_has_many_to_many[$property]['class']);
-        elseif(isset($this->_belongs_to[$property]))
-          $this->_importEntity($property, $value, $this->_belongs_to[$property]['class']);
-        elseif(isset($this->_many_belongs_to[$property]))
-          $this->_importEntity($property, $value, $this->_many_belongs_to[$property]['class']);
-        elseif(isset($this->_has_one[$property]))
-          $this->_importEntity($property, $value, $this->_has_one[$property]['class']);
-        elseif($this->_canImportProperty($property))
-          $this->set($property, $value);
-      }
-      $this->_onAfterImport();
+      if(isset($this->_composed_of[$property]))
+        $this->_importValueObject($property, $value);
+      elseif(isset($this->_has_many[$property]))
+        $this->_importCollection($property, $value, $this->_has_many[$property]['class']);
+      elseif(isset($this->_has_many_to_many[$property]))
+        $this->_importCollection($property, $value, $this->_has_many_to_many[$property]['class']);
+      elseif(isset($this->_belongs_to[$property]))
+        $this->_importEntity($property, $value, $this->_belongs_to[$property]['class']);
+      elseif(isset($this->_many_belongs_to[$property]))
+        $this->_importEntity($property, $value, $this->_many_belongs_to[$property]['class']);
+      elseif(isset($this->_has_one[$property]))
+        $this->_importEntity($property, $value, $this->_has_one[$property]['class']);
+      elseif($this->_canImportProperty($property))
+        $this->set($property, $value);
     }
-    catch(Exception $e)
-    {
-      $this->_error_list->addError($e->getMessage());
-    }
-
-    return $this->_error_list->isValid();
+    $this->_onAfterImport();
   }
   /**
    *  Plain import of data into object

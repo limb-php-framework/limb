@@ -16,24 +16,15 @@ require_once(dirname(__FILE__) . '/lmbARManyToManyRelationsTest.class.php');
 require_once(dirname(__FILE__) . '/lmbARValueObjectTest.class.php');
 require_once(dirname(__FILE__) . '/lmbARAttributesLazyLoadingTest.class.php');
 
-class LessonForTestWithCustomImporter extends lmbActiveRecord
+class LessonForTestWithCustomImport extends lmbActiveRecord
 {
   protected $_db_table_name = 'lesson_for_test';
-  protected $_composed_of = array('date_start' => array('field' => 'date_start',
-                                                        'class' => 'TestingValueObject',
-                                                        'getter' => 'getValue'),
-                                  'date_end' => array('field' => 'date_end',
-                                                      'class' => 'TestingValueObject',
-                                                      'getter' => 'getValue'));
   public $echo_on_after_import;
-  public $raise;
 
   function _onAfterImport()
   {
     if($this->echo_on_after_import)
       echo $this->echo_on_after_import;
-    if($this->raise)
-      throw new Exception($this->raise);
   }
 }
 
@@ -67,8 +58,7 @@ class lmbARImportTest extends UnitTestCase
   function testImportingObjectCallsItsExportMethod()
   {
     $object = new TestOneTableObject();
-    $res = $object->import(new lmbSet(array('annotation' => 'Some annotation')));
-    $this->assertTrue($res);
+    $object->import(new lmbSet(array('annotation' => 'Some annotation')));
     $this->assertEqual($object->getAnnotation(), 'Some annotation');
   }
 
@@ -79,8 +69,7 @@ class lmbARImportTest extends UnitTestCase
     $object1->setAnnotation($annotation = 'Some annotation');
 
     $object2 = new TestOneTableObject();
-    $res = $object2->import($object1);
-    $this->assertTrue($res);
+    $object2->import($object1);
     $this->assertEqual($object2->getId(), $object1->getId());
     $this->assertEqual($object2->getAnnotation(), $annotation);
     $this->assertTrue($object2->isNew());
@@ -94,8 +83,7 @@ class lmbARImportTest extends UnitTestCase
     $object1->save();
 
     $object2 = new TestOneTableObject();
-    $res = $object2->import($object1);
-    $this->assertTrue($res);
+    $object2->import($object1);
     $this->assertEqual($object2->getId(), $object1->getId());
     $this->assertEqual($object2->getAnnotation(), $annotation);
     $this->assertFalse($object2->isNew());
@@ -125,8 +113,7 @@ class lmbARImportTest extends UnitTestCase
     $object1 = new LazyTestOneTableObject();
     $object2 = new LazyTestOneTableObject($object->getId());
 
-    $res = $object1->import($object2);
-    $this->assertTrue($res);
+    $object1->import($object2);
     $this->assertFalse($object1->hasAttribute('annotation'));
     $this->assertEqual($object1->getAnnotation(), $annotation);
     $this->assertFalse($object1->hasAttribute('content'));
@@ -143,8 +130,7 @@ class lmbARImportTest extends UnitTestCase
                     'content' => 'Some content',
                     );
 
-    $res = $object->import($source);
-    $this->assertTrue($res);
+    $object->import($source);
     $this->assertEqual($object->getId(), 1000);
     $this->assertEqual($object->getAnnotation(), 'Some annotation');
     $this->assertEqual($object->getContent(), 'Some content');
@@ -163,8 +149,7 @@ class lmbARImportTest extends UnitTestCase
                     'content' => 'Some content',
                     );
 
-    $res = $object->import($source);
-    $this->assertTrue($res);
+    $object->import($source);
     $this->assertEqual($object->getId(), $id);
     $this->assertNotEqual($object->getId(), 1000);// just one extra check
     $this->assertEqual($object->getAnnotation(), 'Some annotation');
@@ -203,8 +188,7 @@ class lmbARImportTest extends UnitTestCase
                     'lectures' => array($l1->getId(), $l2->getId()));
 
     $course2 = new CourseForTest();
-    $res = $course2->import($source);
-    $this->assertTrue($res);
+    $course2->import($source);
     $this->assertEqual($course2->getTitle(), $course->getTitle());
     $this->assertEqual($course2->getLectures()->count(), 2);
     $this->assertEqual($course2->getLectures()->at(0)->getTitle(), $l1->getTitle());
@@ -230,8 +214,7 @@ class lmbARImportTest extends UnitTestCase
                     'lectures' => array($l1->getId(), $l2));
 
     $course2 = new CourseForTest();
-    $res = $course2->import($source);
-    $this->assertTrue($res);
+    $course2->import($source);
     $this->assertEqual($course2->getTitle(), $course->getTitle());
     $this->assertEqual($course2->getLectures()->count(), 2);
     $this->assertEqual($course2->getLectures()->at(0)->getTitle(), $l1->getTitle());
@@ -258,8 +241,7 @@ class lmbARImportTest extends UnitTestCase
 
     $course2 = new CourseForTest($course->getId());
 
-    $res = $course2->import($source);
-    $this->assertTrue($res);
+    $course2->import($source);
     $this->assertEqual($course2->getTitle(), $course->getTitle());
     $this->assertEqual($course2->getLectures()->count(), 1);
     $this->assertEqual($course2->getLectures()->at(0)->getTitle(), $l2->getTitle());
@@ -284,8 +266,7 @@ class lmbARImportTest extends UnitTestCase
                     'users' => array($u2->getId()));
 
     $group2 = new GroupForTest($group->getId());
-    $res = $group2->import($source);
-    $this->assertTrue($res);
+    $group2->import($source);
     $this->assertEqual($group2->getTitle(), $group->getTitle());
     $this->assertEqual($group2->getUsers()->count(), 1);
     $this->assertEqual($group2->getUsers()->at(0)->getFirstName(), $u2->getFirstName());
@@ -306,8 +287,7 @@ class lmbARImportTest extends UnitTestCase
                     'course' => $course->getId());
 
     $l2 = new LectureForTest();
-    $res = $l2->import($source);
-    $this->assertTrue($res);
+    $l2->import($source);
 
     $this->assertEqual($l2->getTitle(), $l->getTitle());
     $this->assertEqual($l2->getCourse()->getTitle(), $course->getTitle());
@@ -328,8 +308,7 @@ class lmbARImportTest extends UnitTestCase
                     'course' => $course);
 
     $l2 = new LectureForTest();
-    $res = $l2->import($source);
-    $this->assertTrue($res);
+    $l2->import($source);
     $this->assertEqual($l2->getTitle(), $l->getTitle());
     $this->assertEqual($l2->getCourse()->getTitle(), $course->getTitle());
   }
@@ -352,8 +331,7 @@ class lmbARImportTest extends UnitTestCase
                     'groups' => array($g1->getId(), $g2->getId()));
 
     $user2 = new UserForTest();
-    $res = $user2->import($source);
-    $this->assertTrue($res);
+    $user2->import($source);
     $this->assertEqual($user2->getFirstName(), $user1->getFirstName());
     $this->assertEqual($user2->getGroups()->count(), 2);
     $this->assertEqual($user2->getGroups()->at(0)->getTitle(), $g1->getTitle());
@@ -378,8 +356,7 @@ class lmbARImportTest extends UnitTestCase
                     'groups' => array($g1->getId(), $g2));
 
     $user2 = new UserForTest();
-    $res = $user2->import($source);
-    $this->assertTrue($res);
+    $user2->import($source);
     $this->assertEqual($user2->getFirstName(), $user1->getFirstName());
     $this->assertEqual($user2->getGroups()->count(), 2);
     $this->assertEqual($user2->getGroups()->at(0)->getTitle(), $g1->getTitle());
@@ -399,8 +376,7 @@ class lmbARImportTest extends UnitTestCase
                     'person' => $person->getId());
 
     $number2 = new SocialSecurityForTest();
-    $res = $number2->import($source);
-    $this->assertTrue($res);
+    $number2->import($source);
     $this->assertEqual($number2->getCode(), $number->getCode());
     $this->assertEqual($number2->getPerson()->getName(), $person->getName());
   }
@@ -418,8 +394,7 @@ class lmbARImportTest extends UnitTestCase
                     'person' => $person);
 
     $number2 = new SocialSecurityForTest();
-    $res = $number2->import($source);
-    $this->assertTrue($res);
+    $number2->import($source);
     $this->assertEqual($number2->getCode(), $number->getCode());
     $this->assertEqual($number2->getPerson()->getName(), $person->getName());
   }
@@ -437,8 +412,7 @@ class lmbARImportTest extends UnitTestCase
                     'social_security' => $number->getId());
 
     $person2 = new PersonForTest();
-    $res = $person2->import($source);
-    $this->assertTrue($res);
+    $person2->import($source);
     $this->assertEqual($person2->getName(), $person->getName());
     $this->assertEqual($person2->getSocialSecurity()->getCode(), $number->getCode());
   }
@@ -456,8 +430,7 @@ class lmbARImportTest extends UnitTestCase
                     'social_security' => $number);
 
     $person2 = new PersonForTest();
-    $res = $person2->import($source);
-    $this->assertTrue($res);
+    $person2->import($source);
     $this->assertEqual($person2->getName(), $person->getName());
     $this->assertEqual($person2->getSocialSecurity()->getCode(), $number->getCode());
   }
@@ -475,8 +448,7 @@ class lmbARImportTest extends UnitTestCase
                     'social_security' => null);
 
     $person2 = clone $person;
-    $res = $person2->import($source);
-    $this->assertTrue($res);
+    $person2->import($source);
     $this->assertEqual($person2->getName(), $person->getName());
     $this->assertNull($person2->getSocialSecurity());
   }
@@ -494,8 +466,7 @@ class lmbARImportTest extends UnitTestCase
                     'social_security' => 'null');
 
     $person2 = clone $person;
-    $res = $person2->import($source);
-    $this->assertTrue($res);
+    $person2->import($source);
     $this->assertEqual($person2->getName(), $person->getName());
     $this->assertNull($person2->getSocialSecurity());
   }
@@ -513,8 +484,7 @@ class lmbARImportTest extends UnitTestCase
                     'social_security' => '');
 
     $person2 = clone $person;
-    $res = $person2->import($source);
-    $this->assertTrue($res);
+    $person2->import($source);
     $this->assertEqual($person2->getName(), $person->getName());
     $this->assertNull($person2->getSocialSecurity());
   }
@@ -523,9 +493,8 @@ class lmbARImportTest extends UnitTestCase
   {
     $lesson = new LessonForTest();
 
-    $res = $lesson->import(array('date_start' => $v1 = time() - 100,
+    $lesson->import(array('date_start' => $v1 = time() - 100,
                           'date_end' => $v2 = time() + 100));
-    $this->assertTrue($res);
 
     $this->assertEqual($lesson->getDateStart()->getValue(), $v1);
     $this->assertEqual($lesson->getDateEnd()->getValue(), $v2);
@@ -533,7 +502,7 @@ class lmbARImportTest extends UnitTestCase
 
   function testOnAfterImport()
   {
-    $lesson = new LessonForTestWithCustomImporter();
+    $lesson = new LessonForTestWithCustomImport();
     $lesson->echo_on_after_import = 'Halo!';
 
     ob_start();
@@ -542,21 +511,6 @@ class lmbARImportTest extends UnitTestCase
     ob_end_clean();
 
     $this->assertEqual($what, 'Halo!');
-  }
-
-  function testImportWritesExceptionToErrorList()
-  {
-    $lesson = new LessonForTestWithCustomImporter();
-    $lesson->raise = 'Booo';
-
-    $res = $lesson->import(array('date_start' => 100));
-    $this->assertFalse($res);
-
-    $error_list = $lesson->getErrorList();
-    $this->assertFalse($error_list->isValid());
-    
-    $this->assertEqual($error_list[0]->getMessage(), 'Booo');
-    $this->assertEqual(sizeof($error_list), 1);
   }
 }
 
