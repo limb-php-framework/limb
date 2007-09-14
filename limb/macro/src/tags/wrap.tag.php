@@ -33,7 +33,6 @@ class lmbMacroWrapTag extends lmbMacroTag
 
     if($includes = $this->_collectIncludes())
     {
-      var_dump($includes);
       foreach($includes as $include)
       {
         $this->_insert($include, $tree_builder, $include->get('slot'));
