@@ -31,25 +31,9 @@ class lmbMacroWrapTag extends lmbMacroTag
     $file = $this->get('with');
     $this->_compileSourceFileName($file, $compiler);
 
-    if($includes = $this->_collectIncludes())
-    {
-      foreach($includes as $include)
-      {
-        $this->_insert($include, $tree_builder, $include->get('slot'));
-      }
-    }
-    else
-      $this->_insert($this, $tree_builder, $this->get('into'));
-  }
-
-  protected function _isMultiWrap()
-  {
-    return sizeof($this->_collectIncludes()) !== 0;
-  }
-
-  protected function _collectIncludes()
-  {
-    return $this->findImmediateChildrenByClass('lmbMacroIntoTag');
+    //if there's no 'into' attribute we consider that <%into%> tags used instead
+    if($into = $this->get('into'))
+      $this->_insert($this, $tree_builder, $into);
   }
 
   protected function _compileSourceFileName($file, $compiler)

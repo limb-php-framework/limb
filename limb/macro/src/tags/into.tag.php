@@ -22,5 +22,38 @@ lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('into', 'lmbMa
  */
 class lmbMacroIntoTag extends lmbMacroTag
 {
+  function preParse($compiler)
+  {
+    parent :: preParse($compiler);
+
+    $tree_builder = $compiler->getTreeBuilder();
+    $this->_insert($this->parent, $tree_builder, $this->get('slot'));
+  }
+
+  function _insert($wrapper, $tree_builder, $point)
+  {
+    $this->_insertOrReplace($wrapper, $tree_builder, $point, $replace = false);
+  }
+
+  protected function _insertOrReplace($wrapper, $tree_builder, $point, $replace = false)
+  {
+    $insertionPoint = $wrapper->findChild($point);
+    if(empty($insertionPoint))
+    {
+      $params = array('slot' => $point);
+      if($wrapper !== $this)
+      {
+        $params['parent_wrap_tag_file'] = $wrapper->getTemplateFile();
+        $params['parent_wrap_tag_line'] = $wrapper->getTemplateLine();
+      }
+
+      $this->raise('Wrap slot not found', $params);
+    }
+
+    if($replace)
+      $insertionPoint->removeChildren();
+
+    $tree_builder->pushCursor($insertionPoint, $this->location);
+  }
 }
 
