@@ -32,11 +32,6 @@ class lmbMacroIntoTag extends lmbMacroTag
 
   function _insert($wrapper, $tree_builder, $point)
   {
-    $this->_insertOrReplace($wrapper, $tree_builder, $point, $replace = false);
-  }
-
-  protected function _insertOrReplace($wrapper, $tree_builder, $point, $replace = false)
-  {
     $insertionPoint = $wrapper->findChild($point);
     if(empty($insertionPoint))
     {
@@ -49,9 +44,6 @@ class lmbMacroIntoTag extends lmbMacroTag
 
       $this->raise('Wrap slot not found', $params);
     }
-
-    if($replace)
-      $insertionPoint->removeChildren();
 
     $tree_builder->pushCursor($insertionPoint, $this->location);
   }

@@ -22,5 +22,15 @@ lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('slot', 'lmbMa
  */
 class lmbMacroSlotTag extends lmbMacroTag
 {
+  function generateContents($code)
+  {
+    $slot = $this->getId();
+    //calling slot handler in case of dynamic wrapping
+    $code->writePHP('if(isset($this->__slot_handler_' . $slot . ')) {');
+    $code->writePHP('call_user_func_array($this->__slot_handler_' . $slot . ', array());');
+    $code->writePHP('}');
+
+    parent :: generateContents($code);
+  }
 }
 

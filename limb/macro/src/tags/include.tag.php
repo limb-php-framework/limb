@@ -43,7 +43,7 @@ class lmbMacroIncludeTag extends lmbMacroTag
 
   function _isDynamic()
   {
-    return strpos($this->get('file'), '$') === 0;
+    return $this->isVariable('file');
   }
 
   function generateContents($code)

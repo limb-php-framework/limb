@@ -49,5 +49,13 @@ class lmbMacroTemplateExecutor
     $template->setVars(get_object_vars($this));//global template vars
     echo $template->render($vars);//local template vars
   }
+
+  function wrapTemplate($file, $slots_handlers)
+  {
+    $template = new lmbMacroTemplate($file, $this->cache_dir, $this->locator);
+    foreach($slots_handlers as $name => $handler)
+      $template->set('__slot_handler_' . $name, $handler);
+    echo $template->render();
+  }
 }
 

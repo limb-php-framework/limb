@@ -21,7 +21,7 @@ class lmbMacroWrapTagTest extends UnitTestCase
     lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
   }
 
-  function testSimpleWrap()
+  function testSimpleStaticWrap()
   {
     $bar = '<%wrap with="foo.html" into="slot1"%>Bob<%/wrap%>';
     $foo = '<p>Hello, <%slot id="slot1"/%></p>';
@@ -35,7 +35,7 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, '<p>Hello, Bob</p>');
   }
 
-  function testWrapWithVariables()
+  function testStaticWrapWithVariables()
   {
     $bar = '<%wrap with="foo.html" into="slot1"%><?php echo $this->bob?><%/wrap%>';
     $foo = '<p>Hello, <%slot id="slot1"/%></p>';
@@ -50,7 +50,7 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, '<p>Hello, Bob</p>');
   }
 
-  function testNestedWrap()
+  function testNestedStaticWrap()
   {
     $bar = '<%wrap with="foo.html" into="slot1"%><?php echo $this->bob?><%/wrap%>';
     $foo = '<%wrap with="zoo.html" into="slot2"%><p>Hello, <%slot id="slot1"/%></p><%/wrap%>';
@@ -67,7 +67,7 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
 
-  function testMultiWrap()
+  function testMultiStaticWrap()
   {
     $bar = '<%wrap with="foo.html"%><%into slot="slot1"%>Bob<%/into%><%into slot="slot2"%>Thorton<%/into%><%/wrap%>';
     $foo = '<p>Hello, <%slot id="slot2"/%> <%slot id="slot1"/%></p>';
@@ -79,6 +79,39 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, '<p>Hello, Thorton Bob</p>');
+  }
+
+  function testSimpleDynamicWrap()
+  {    
+    $bar = '<%wrap with="$this->layout" into="slot1"%>Bob<%/wrap%>';
+    $foo = '<p>Hello, <%slot id="slot1"/%></p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('layout', 'foo.html');
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<p>Hello, Bob</p>'); 
+  }
+
+  function testMixStaticAndDynamicWrap()
+  {
+    $bar = '<%wrap with="$this->layout" into="slot1"%><?php echo $this->bob?><%/wrap%>';
+    $foo = '<%wrap with="zoo.html" into="slot2"%><p>Hello, <%slot id="slot1"/%></p><%/wrap%>';
+    $zoo = '<body><%slot id="slot2"/%></body>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+    $zoo_tpl = $this->_createTemplate($zoo, 'zoo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('layout', 'foo.html');
+    $macro->set('bob', 'Bob');
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
 
   protected function _createMacro($file)

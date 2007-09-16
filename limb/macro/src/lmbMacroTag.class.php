@@ -75,6 +75,11 @@ class lmbMacroTag extends lmbMacroNode
     return array_key_exists(strtolower($name), $this->attributes);
   }
 
+  function isVariable($name)
+  {
+    return $this->has($name) && strpos($this->get($name), '$') === 0;
+  }
+
   /**
   * Return the value of a boolean attribute as a boolean.
   * ATTRIBUTE=ANYTHING  (true)

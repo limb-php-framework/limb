@@ -22,18 +22,26 @@ lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('wrap', 'lmbMa
  */
 class lmbMacroWrapTag extends lmbMacroTag
 {
+  protected $is_dynamic = false;
+
   function preParse($compiler)
   {
     parent :: preParse($compiler);
 
-    $tree_builder = $compiler->getTreeBuilder();
+    if(!$this->isVariable('with'))
+    {
+      $file = $this->get('with');
+      $this->_compileSourceFileName($file, $compiler);
 
-    $file = $this->get('with');
-    $this->_compileSourceFileName($file, $compiler);
-
-    //if there's no 'into' attribute we consider that <%into%> tags used instead
-    if($into = $this->get('into'))
-      $this->_insert($this, $tree_builder, $into);
+      //if there's no 'into' attribute we consider that <%into%> tags used instead
+      if($into = $this->get('into'))
+      {
+        $tree_builder = $compiler->getTreeBuilder();
+        $this->_insert($this, $tree_builder, $into);
+      }
+    }
+    else
+      $this->is_dynamic = true;
   }
 
   protected function _compileSourceFileName($file, $compiler)
@@ -48,11 +56,6 @@ class lmbMacroWrapTag extends lmbMacroTag
 
   function _insert($wrapper, $tree_builder, $point)
   {
-    $this->_insertOrReplace($wrapper, $tree_builder, $point, $replace = false);
-  }
-
-  protected function _insertOrReplace($wrapper, $tree_builder, $point, $replace = false)
-  {
     $insertionPoint = $wrapper->findChild($point);
     if(empty($insertionPoint))
     {
@@ -66,10 +69,25 @@ class lmbMacroWrapTag extends lmbMacroTag
       $this->raise('Wrap slot not found', $params);
     }
 
-    if($replace)
-      $insertionPoint->removeChildren();
+    $tree_builder->pushCursor($insertionPoint, $this->location); 
+  }
 
-    $tree_builder->pushCursor($insertionPoint, $this->location);
+  function generateContents($code)
+  {
+    if($this->is_dynamic)
+    {
+      $method = $code->beginMethod('__slotHandler'. mt_rand());
+      parent :: generateContents($code);
+      $code->endMethod();
+
+      $handlers_str = 'array(';
+      $handlers_str .= '"' . $this->get('into') . '"' . ' => array($this, "' . $method . '")';
+      $handlers_str .= ')';
+
+      $code->writePHP('$this->wrapTemplate(' . $this->get('with') . ', ' . $handlers_str . ');');
+    }
+    else
+      parent :: generateContents($code);
   }
 }
 
