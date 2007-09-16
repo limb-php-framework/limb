@@ -114,6 +114,25 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
 
+  function testNestedDynamicWrap()
+  {
+    $bar = '<%wrap with="$this->layout1" into="slot1"%><?php echo $this->bob?><%/wrap%>';
+    $foo = '<%wrap with="$this->layout2" into="slot2"%><p>Hello, <%slot id="slot1"/%></p><%/wrap%>';
+    $zoo = '<body><%slot id="slot2"/%></body>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+    $zoo_tpl = $this->_createTemplate($zoo, 'zoo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('layout1', 'foo.html');
+    $macro->set('layout2', 'zoo.html');
+    $macro->set('bob', 'Bob');
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
+  }
+
   protected function _createMacro($file)
   {
     $base_dir = LIMB_VAR_DIR . '/tpl';
