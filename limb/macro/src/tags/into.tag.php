@@ -26,8 +26,11 @@ class lmbMacroIntoTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    $tree_builder = $compiler->getTreeBuilder();
-    $this->_insert($this->parent, $tree_builder, $this->get('slot'));
+    if(!$this->parent->isDynamic())
+    {
+      $tree_builder = $compiler->getTreeBuilder();
+      $this->_insert($this->parent, $tree_builder, $this->get('slot'));
+    }
   }
 
   function _insert($wrapper, $tree_builder, $point)

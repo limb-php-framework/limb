@@ -96,6 +96,21 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, '<p>Hello, Bob</p>'); 
   }
 
+  function testMultiDynamicWrap()
+  {
+    $bar = '<%wrap with="$this->layout"%><%into slot="slot1"%>Bob<%/into%><%into slot="slot2"%>Thorton<%/into%><%/wrap%>';
+    $foo = '<p>Hello, <%slot id="slot2"/%> <%slot id="slot1"/%></p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('layout', 'foo.html');
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<p>Hello, Thorton Bob</p>');
+  }
+
   function testMixStaticAndDynamicWrap()
   {
     $bar = '<%wrap with="$this->layout" into="slot1"%><?php echo $this->bob?><%/wrap%>';

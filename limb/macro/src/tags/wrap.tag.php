@@ -28,7 +28,10 @@ class lmbMacroWrapTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    if(!$this->isVariable('with'))
+    if($this->isVariable('with'))
+      $this->is_dynamic = true;
+
+    if(!$this->is_dynamic)
     {
       $file = $this->get('with');
       $this->_compileSourceFileName($file, $compiler);
@@ -40,8 +43,11 @@ class lmbMacroWrapTag extends lmbMacroTag
         $this->_insert($this, $tree_builder, $into);
       }
     }
-    else
-      $this->is_dynamic = true;
+  }
+
+  function isDynamic()
+  {
+    return $this->is_dynamic;
   }
 
   protected function _compileSourceFileName($file, $compiler)
@@ -72,16 +78,38 @@ class lmbMacroWrapTag extends lmbMacroTag
     $tree_builder->pushCursor($insertionPoint, $this->location); 
   }
 
+  protected function _collectIntos()
+  {
+    return $this->findImmediateChildrenByClass('lmbMacroIntoTag');
+  }
+
   function generateContents($code)
   {
     if($this->is_dynamic)
     {
-      $method = $code->beginMethod('__slotHandler'. mt_rand());
-      parent :: generateContents($code);
-      $code->endMethod();
-
       $handlers_str = 'array(';
-      $handlers_str .= '"' . $this->get('into') . '"' . ' => array($this, "' . $method . '")';
+      $methods = array();
+
+      //collecting <%into%> tags
+      if($intos = $this->_collectIntos())
+      {
+        foreach($intos as $into)
+        {
+          $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. mt_rand());
+          $into->generateContents($code);
+          $code->endMethod();
+        }
+      }
+      else
+      {
+        $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. mt_rand());
+        parent :: generateContents($code);
+        $code->endMethod();
+      }
+
+      foreach($methods as $slot => $method)
+        $handlers_str .= '"' . $slot . '"' . ' => array($this, "' . $method . '"),';
+
       $handlers_str .= ')';
 
       $code->writePHP('$this->wrapTemplate(' . $this->get('with') . ', ' . $handlers_str . ');');
