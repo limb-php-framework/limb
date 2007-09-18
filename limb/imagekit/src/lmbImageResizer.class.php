@@ -40,7 +40,7 @@ class lmbImageResizer
     return $this->mime_type;
   }
 
-  function resize($max_size)
+  function resize($size)
   {
     $input_file = $this->getFilePath();
     $tmp_file = lmbFs :: generateTmpFile();
@@ -60,7 +60,11 @@ class lmbImageResizer
       $image_library->setOutputFile($output_file);
       $image_library->setOutputType($output_file_type);
 
-      $image_library->resize(array('max_dimension' => $max_size));
+      if(!is_array($size))
+        $image_library->resize(array('max_dimension' => $size));
+      else
+        $image_library->resize($size);
+
       $image_library->commit();
     }
     catch(lmbException $e)
