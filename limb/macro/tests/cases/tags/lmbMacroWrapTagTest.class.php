@@ -162,7 +162,7 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, '<p>Hello, Bob</p>');
   }
 
-  function TODO_testDynamicallyWrappedChildAccessesParentData()
+  function testDynamicallyWrappedChildAccessesParentData()
   {
     $bar = '<%wrap with="$this->layout" into="slot1"%><?php echo $this->bob?><%/wrap%>';
     $foo = '<?php $this->bob = "Bob";?><p>Hello, <%slot id="slot1"/%></p>';
@@ -175,6 +175,35 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, '<p>Hello, Bob</p>');
+  }
+
+  function testStaticallyWrappedChildLocalVarsAreIsolated()
+  {
+    $bar = '<%wrap with="foo.html" into="slot1"%><?php $foo = "Todd";?><%/wrap%>';
+    $foo = '<?php $foo = "Bob";?><%slot id="slot1"/%><?php echo $foo;?>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Bob'); 
+  }
+
+  function testDynamicallyWrappedChildLocalVarsAreIsolated()
+  {
+    $bar = '<%wrap with="$this->layout" into="slot1"%><?php $foo = "Todd";?><%/wrap%>';
+    $foo = '<?php $foo = "Bob";?><%slot id="slot1"/%><?php echo $foo;?>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('layout', 'foo.html');
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Bob'); 
   }
 
   protected function _createMacro($file)

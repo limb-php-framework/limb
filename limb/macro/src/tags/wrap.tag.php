@@ -95,14 +95,14 @@ class lmbMacroWrapTag extends lmbMacroTag
       {
         foreach($intos as $into)
         {
-          $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. mt_rand());
+          $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. uniqid());
           $into->generateContents($code);
           $code->endMethod();
         }
       }
       else
       {
-        $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. mt_rand());
+        $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. uniqid());
         parent :: generateContents($code);
         $code->endMethod();
       }

@@ -17,6 +17,7 @@ class lmbMacroTemplateExecutor
 {
   protected $cache_dir;
   protected $locator;
+  protected $context;
 
   function __construct($vars = array(), $cache_dir = null, $locator = null)
   {
@@ -32,8 +33,18 @@ class lmbMacroTemplateExecutor
     $this->$name = $value;
   }
 
+  function setContext(lmbMacroTemplateExecutor $context)
+  {
+    $this->context = $context;
+  }
+
   function __get($name)
   {
+    //we can have parent variable context which should be consulted for all missing variables
+    //actually, it's quite a dirty hack for a deeper problem which should be addressed later
+    if($this->context)
+      return $this->context->$name;
+
     //we definitely want to supress warnings, make it some sort of a NullObject?
     return '';
   }
@@ -56,6 +67,7 @@ class lmbMacroTemplateExecutor
     $template->setVars(get_object_vars($this));//global template vars
     foreach($slots_handlers as $name => $handler)
       $template->set('__slot_handler_' . $name, $handler);
+    $template->setChildExecutor($this);//from now we consider the wrapper to be a master variable context
     echo $template->render();
   }
 }

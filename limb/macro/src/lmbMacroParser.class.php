@@ -8,6 +8,7 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTokenizer.class.php');
+lmb_require('limb/macro/src/lmbMacroPreprocessor.class.php');
 lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
 lmb_require('limb/macro/src/lmbMacroLiteralParsingState.class.php');
 lmb_require('limb/macro/src/lmbMacroTagParsingState.class.php');
@@ -39,6 +40,7 @@ class lmbMacroParser implements lmbMacroTokenizerListener
   function __construct($tree_builder, $template_locator, $tag_dictionary)
   {
     $this->tokenizer = new lmbMacroTokenizer($this);
+    $this->preprocessor = new lmbMacroPreprocessor();
 
     $this->tree_builder = $tree_builder;
     $this->template_locator = $template_locator;
@@ -85,6 +87,8 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->setTemplateLocator($this->template_locator);
 
     $content = $this->template_locator->readTemplateFile($source_file_path);
+
+    $this->preprocessor->process($content);
 
     $this->tokenizer->parse($content, $source_file_path);
 

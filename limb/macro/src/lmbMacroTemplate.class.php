@@ -22,6 +22,7 @@ class lmbMacroTemplate
   protected $file;
   protected $cache_dir;
   protected $vars = array();
+  protected $child_executor;
 
   function __construct($file, $cache_dir = null, $locator = null)
   {
@@ -46,6 +47,11 @@ class lmbMacroTemplate
     $this->vars[$name] = $value;
   }
 
+  function setChildExecutor($executor)
+  {
+    $this->child_executor = $executor;
+  }
+
   function render($vars = array())
   {
     if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
@@ -53,13 +59,17 @@ class lmbMacroTemplate
 
     $compiled_file = $this->locator->locateCompiledTemplate($this->file);
 
-    $class = 'MacroTemplateExecutor' . uniqid();//???
+    $class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
 
     $compiler = $this->_createCompiler();
     $compiler->compile($source_file, $compiled_file, $class, 'render');
 
     include($compiled_file);
     $executor = new $class($this->vars, $this->cache_dir, $this->locator);
+
+    //in case of dynamic wrapping we need to ask parent for all unknown variables
+    if($this->child_executor)
+      $this->child_executor->setContext($executor);
 
     ob_start();
     $executor->render($vars);

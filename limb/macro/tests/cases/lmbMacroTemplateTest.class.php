@@ -26,6 +26,23 @@ class lmbMacroTemplateTest extends UnitTestCase
     $this->assertEqual($view->render(), 'Hello, Bob');
   }
 
+  function testShortTagsPreprocessor()
+  {
+    if(ini_get('short_open_tag') == 1)
+      echo __METHOD__ . " does not check anything, since short tags are On anyway\n";
+
+    $view = $this->_createView('Hello, <?=$this->name?>');
+    $view->set('name', 'Bob');
+    $this->assertEqual($view->render(), 'Hello, Bob');
+  }
+
+  function testGlobalVarsPreprocessor()
+  {
+    $view = $this->_createView('Hello, <?=$#name?>');
+    $view->set('name', 'Bob');
+    $this->assertEqual($view->render(), 'Hello, Bob');
+  }
+
   function _createView($tpl)
   {
     $file = $this->_createTemplate($tpl);
