@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/active_record/src/lmbActiveRecord.class.php');
+require_once('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
 require_once('limb/dbal/src/lmbSimpleDb.class.php');
 require_once('limb/dbal/src/lmbTableGateway.class.php');
 
@@ -270,7 +271,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $object3 = lmbActiveRecord :: findById($this->class_name, $object2->getId());
+    $object3 = lmbActiveRecord :: findById('TestOneTableObject', $object2->getId());
     $this->assertEqual($object3->export(), $object2->export());
   }
 
@@ -278,7 +279,7 @@ class lmbActiveRecordTest extends UnitTestCase
   {
     try
     {
-      lmbActiveRecord :: findById($this->class_name, -1000);
+      lmbActiveRecord :: findById('TestOneTableObject', -1000);
       $this->assertTrue(false);
     }
     catch(lmbARException $e){}
@@ -286,7 +287,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindByIdReturnsNullIfNotFound()
   {
-    $this->assertNull(lmbActiveRecord :: findById($this->class_name, -1000, false));
+    $this->assertNull(lmbActiveRecord :: findById('TestOneTableObject', -1000, false));
   }
 
   function testLoadById()
@@ -309,56 +310,80 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertFalse($object2->isNew());
   }
 
-  function tesFindFirst()
+  function testFindFirst()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-
-    $object3 = lmbActiveRecord :: findFirst($this->class_name, array('criteria' => 'id=' . $object1->getId()));
-
     $this->assertFalse($object2->isNew());
+
+    $object3 = lmbActiveRecord :: findFirst('TestOneTableObject', array('criteria' => 'id=' . $object1->getId()));
+    $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
+    $this->assertEqual($object3->get('content'), $object1->get('content'));
+    $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
+    $this->assertEqual($object3->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $object3 = TestOneTableObject :: findFirst(array('criteria' => 'id=' . $object1->getId()));
     $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($object3->get('content'), $object1->get('content'));
     $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($object3->get('id'), $object1->getId());
   }
 
-  function tesFindFirstConvertStringToCriteria()
+  function testFindFirstConvertStringToCriteria()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-
-    $object3 = lmbActiveRecord :: findFirst($this->class_name, 'id=' . $object1->getId());
-
     $this->assertFalse($object2->isNew());
+
+    $object3 = lmbActiveRecord :: findFirst('TestOneTableObject', 'id=' . $object1->getId());
+    $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
+    $this->assertEqual($object3->get('content'), $object1->get('content'));
+    $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
+    $this->assertEqual($object3->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $object3 = TestOneTableObject :: findFirst('id=' . $object1->getId());
     $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($object3->get('content'), $object1->get('content'));
     $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($object3->get('id'), $object1->getId());
   }
 
-  function tesFindFirstConvertObjectToCriteria()
+  function testFindFirstConvertObjectToCriteria()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-
-    $object3 = lmbActiveRecord :: findFirst($this->class_name, new lmbSQLRawCriteria('id=' . $object1->getId()));
-
     $this->assertFalse($object2->isNew());
+
+    $object3 = lmbActiveRecord :: findFirst('TestOneTableObject', new lmbSQLRawCriteria('id=' . $object1->getId()));
+    $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
+    $this->assertEqual($object3->get('content'), $object1->get('content'));
+    $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
+    $this->assertEqual($object3->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $object3 = TestOneTableObject :: findFirst(new lmbSQLRawCriteria('id=' . $object1->getId()));
     $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($object3->get('content'), $object1->get('content'));
     $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($object3->get('id'), $object1->getId());
   }
 
-  function tesFindFirstConvertArrayToCriteria()
+  function testFindFirstConvertArrayToCriteria()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-
-    $object3 = lmbActiveRecord :: findFirst($this->class_name, array('id=?', $object1->getId()));
-
     $this->assertFalse($object2->isNew());
+
+    $object3 = lmbActiveRecord :: findFirst('TestOneTableObject', array('id=?', $object1->getId()));
+    $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
+    $this->assertEqual($object3->get('content'), $object1->get('content'));
+    $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
+    $this->assertEqual($object3->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $object3 = TestOneTableObject :: findFirst(array('id=?', $object1->getId()));
     $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($object3->get('content'), $object1->get('content'));
     $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
@@ -370,8 +395,11 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $object3 = lmbActiveRecord :: findFirst($this->class_name, array('sort' => array('id' => 'DESC')));
+    $object3 = lmbActiveRecord :: findFirst('TestOneTableObject', array('sort' => array('id' => 'DESC')));
+    $this->assertEqual($object3->get('id'), $object2->getId());
 
+    //testing convenient alias
+    $object3 = TestOneTableObject :: findFirst(array('sort' => array('id' => 'DESC')));
     $this->assertEqual($object3->get('id'), $object2->getId());
   }
 
@@ -387,16 +415,26 @@ class lmbActiveRecordTest extends UnitTestCase
 
     $object3 = lmbActiveRecord :: findFirst('TestOneTableObjectWithSortParams');
     $this->assertEqual($object3->get('id'), $object2->getId());
+
+    //testing convenient alias
+    $object3 = TestOneTableObjectWithSortParams :: findFirst();
+    $this->assertEqual($object3->get('id'), $object2->getId());
   }
 
   function testFindOneAlias()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-
-    $object3 = lmbActiveRecord :: findOne($this->class_name, 'id=' . $object1->getId());
-
     $this->assertFalse($object2->isNew());
+
+    $object3 = lmbActiveRecord :: findOne('TestOneTableObject', 'id=' . $object1->getId());
+    $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
+    $this->assertEqual($object3->get('content'), $object1->get('content'));
+    $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
+    $this->assertEqual($object3->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $object3 = TestOneTableObject :: findOne('id=' . $object1->getId());
     $this->assertEqual($object3->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($object3->get('content'), $object1->get('content'));
     $this->assertEqual($object3->get('news_date'), $object1->get('news_date'));
@@ -434,7 +472,14 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs = lmbActiveRecord :: find('TestOneTableObject');
+    $rs->rewind();
+    $this->assertEqual($object1->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertEqual($object2->getId(), $rs->current()->getId());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find();
     $rs->rewind();
     $this->assertEqual($object1->getId(), $rs->current()->getId());
     $rs->next();
@@ -446,7 +491,14 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: find($this->class_name, array('criteria' => new lmbSQLFieldCriteria('id', $object2->getId())));
+    $rs = lmbActiveRecord :: find('TestOneTableObject', array('criteria' => new lmbSQLFieldCriteria('id', $object2->getId())));
+    $rs->rewind();
+    $this->assertEqual($object2->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find(array('criteria' => new lmbSQLFieldCriteria('id', $object2->getId())));
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -458,7 +510,14 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: find($this->class_name, new lmbSQLFieldCriteria('id', $object2->getId()));
+    $rs = lmbActiveRecord :: find('TestOneTableObject', new lmbSQLFieldCriteria('id', $object2->getId()));
+    $rs->rewind();
+    $this->assertEqual($object2->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find(new lmbSQLFieldCriteria('id', $object2->getId()));
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -470,7 +529,14 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: find($this->class_name, 'id=' . $object2->getId());
+    $rs = lmbActiveRecord :: find('TestOneTableObject', 'id=' . $object2->getId());
+    $rs->rewind();
+    $this->assertEqual($object2->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find('id=' . $object2->getId());
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -482,7 +548,14 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: find($this->class_name, array('id=?', $object2->getId()));
+    $rs = lmbActiveRecord :: find('TestOneTableObject', array('id=?', $object2->getId()));
+    $rs->rewind();
+    $this->assertEqual($object2->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find(array('id=?', $object2->getId()));
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -494,32 +567,34 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $object = lmbActiveRecord :: find($this->class_name, $object2->getId());
+    $object = lmbActiveRecord :: find('TestOneTableObject', $object2->getId());
+    $this->assertEqual($object2->getId(), $object->getId());
+
+    //testing convenient alias
+    $object = TestOneTableObject :: find($object2->getId());
     $this->assertEqual($object2->getId(), $object->getId());
   }
 
   function testFindWithIntegerDoesNotThrowException()
   {
-    $this->assertNull(lmbActiveRecord :: find($this->class_name, -10000));
-  }
+    $this->assertNull(lmbActiveRecord :: find('TestOneTableObject', -10000));
 
-  function testFindByThrowsExceptionIfMagicParamsIsNull()
-  {
-    try
-    {
-      lmbActiveRecord :: find($this->class_name, null);
-      $this->assertTrue(false);
-    }
-    catch(lmbARException $e){}
+    //testing convenient alias
+    $this->assertNull(TestOneTableObject :: find(-10000));
   }
-
 
   function testFindAllWithSortParams()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: find($this->class_name, array('sort' => array('id' => 'DESC')));
+    $rs = lmbActiveRecord :: find('TestOneTableObject', array('sort' => array('id' => 'DESC')));
+    $arr = $rs->getArray();
+    $this->assertEqual($arr[0]->get('id'), $object2->getId());
+    $this->assertEqual($arr[1]->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find(array('sort' => array('id' => 'DESC')));
     $arr = $rs->getArray();
     $this->assertEqual($arr[0]->get('id'), $object2->getId());
     $this->assertEqual($arr[1]->get('id'), $object1->getId());
@@ -539,6 +614,12 @@ class lmbActiveRecordTest extends UnitTestCase
     $arr = $rs->getArray();
     $this->assertEqual($arr[0]->get('id'), $object2->getId());
     $this->assertEqual($arr[1]->get('id'), $object1->getId());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: find(array('sort' => array('id' => 'DESC')));
+    $arr = $rs->getArray();
+    $this->assertEqual($arr[0]->get('id'), $object2->getId());
+    $this->assertEqual($arr[1]->get('id'), $object1->getId());
   }
 
   function testFindBySql()
@@ -546,7 +627,16 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: findBySql($this->class_name, 'select * from test_one_table_object order by id desc');
+    $rs = lmbActiveRecord :: findBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
+    $rs->rewind();
+    $this->assertEqual($object2->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertEqual($object1->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: findBySql('select * from test_one_table_object order by id desc');
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -560,7 +650,24 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $object = lmbActiveRecord :: findFirstBySql($this->class_name, 'select * from test_one_table_object order by id desc');
+    $object = lmbActiveRecord :: findFirstBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
+    $this->assertEqual($object2->getId(), $object->getId());
+
+    //testing convenient alias
+    $object = TestOneTableObject :: findFirstBySql('select * from test_one_table_object order by id desc');
+    $this->assertEqual($object2->getId(), $object->getId());
+  }
+
+  function testFindOneBySqlAlias()
+  {
+    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+
+    $object = lmbActiveRecord :: findOneBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
+    $this->assertEqual($object2->getId(), $object->getId());
+
+    //testing convenient alias
+    $object = TestOneTableObject :: findOneBySql('select * from test_one_table_object order by id desc');
     $this->assertEqual($object2->getId(), $object->getId());
   }
 
@@ -570,7 +677,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object3 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: findByIds($this->class_name,
+    $rs = lmbActiveRecord :: findByIds('TestOneTableObject',
                                        array($object1->getId(), $object3->getId()),
                                        array('sort' => array('id' => 'asc')));
     $rs->rewind();
@@ -579,14 +686,28 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($object3->getId(), $rs->current()->getId());
     $rs->next();
     $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: findByIds(array($object1->getId(), $object3->getId()), array('sort' => array('id' => 'asc')));
+    $rs->rewind();
+    $this->assertEqual($object1->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertEqual($object3->getId(), $rs->current()->getId());
+    $rs->next();
+    $this->assertFalse($rs->valid());
   }
 
-  function testFetchByIdsReturnEmptyIteratorIfNoIds()
+  function testFindByIdsReturnEmptyIteratorIfNoIds()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    $rs = lmbActiveRecord :: findByIds($this->class_name, array());
+    $rs = lmbActiveRecord :: findByIds('TestOneTableObject', array());
+    $rs->rewind();
+    $this->assertFalse($rs->valid());
+
+    //testing convenient alias
+    $rs = TestOneTableObject :: findByIds(array());
     $rs->rewind();
     $this->assertFalse($rs->valid());
   }
@@ -606,8 +727,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: delete($this->class_name);
-
+    lmbActiveRecord :: delete('TestOneTableObject');
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
   }
 
@@ -631,11 +751,11 @@ class lmbActiveRecordTest extends UnitTestCase
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
     $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
-    lmbActiveRecord :: delete($this->class_name, $criteria);
+    lmbActiveRecord :: delete('TestOneTableObject', $criteria);
 
     $this->assertEqual($this->db->count('test_one_table_object'), 1);
 
-    $object3 = lmbActiveRecord :: findById($this->class_name, $object1->getId());
+    $object3 = lmbActiveRecord :: findById('TestOneTableObject', $object1->getId());
     $this->assertEqual($object3->getContent(), $object1->getContent());
   }
 
@@ -644,7 +764,7 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: deleteRaw($this->class_name);
+    lmbActiveRecord :: deleteRaw('TestOneTableObject');
 
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
   }
@@ -669,11 +789,11 @@ class lmbActiveRecordTest extends UnitTestCase
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
     $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
-    lmbActiveRecord :: deleteRaw($this->class_name, $criteria);
+    lmbActiveRecord :: deleteRaw('TestOneTableObject', $criteria);
 
     $this->assertEqual($this->db->count('test_one_table_object'), 1);
 
-    $object3 = lmbActiveRecord :: findById($this->class_name, $object1->getId());
+    $object3 = lmbActiveRecord :: findById('TestOneTableObject', $object1->getId());
     $this->assertEqual($object3->getContent(), $object1->getContent());
   }
 
@@ -682,9 +802,9 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: updateRaw($this->class_name, array('content' => 'blah'));
+    lmbActiveRecord :: updateRaw('TestOneTableObject', array('content' => 'blah'));
 
-    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs = lmbActiveRecord :: find('TestOneTableObject');
     $rs->rewind();
     $this->assertEqual($rs->current()->getContent(), 'blah');
     $rs->next();
@@ -698,9 +818,9 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: updateRaw($this->class_name, 'ordr=1');
+    lmbActiveRecord :: updateRaw('TestOneTableObject', 'ordr=1');
 
-    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs = lmbActiveRecord :: find('TestOneTableObject');
     $rs->rewind();
     $this->assertEqual($rs->current()->getOrdr(), 1);
     $rs->next();
@@ -714,9 +834,9 @@ class lmbActiveRecordTest extends UnitTestCase
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
     $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
 
-    lmbActiveRecord :: updateRaw($this->class_name, array('content' => 'blah'), 'id=' . $object2->getId());
+    lmbActiveRecord :: updateRaw('TestOneTableObject', array('content' => 'blah'), 'id=' . $object2->getId());
 
-    $rs = lmbActiveRecord :: find($this->class_name);
+    $rs = lmbActiveRecord :: find('TestOneTableObject');
     $rs->rewind();
     $this->assertEqual($rs->current()->getContent(), $object1->getContent());
     $rs->next();

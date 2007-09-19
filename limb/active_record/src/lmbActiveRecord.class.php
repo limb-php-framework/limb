@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6298 2007-09-14 07:08:02Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6315 2007-09-19 11:35:40Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1106,12 +1106,44 @@ class lmbActiveRecord extends lmbObject
     {
       foreach($params as $key => $value)
       {
+        //remove obsolete check for 'first' property
         if(!is_int($key) || $value == 'first')
           return false;
       }
       return true;
     }
     return false;
+  }
+
+  protected static function _isClass($name)
+  {
+    if(!is_scalar($name) || !$name)
+      return false;
+
+    return ctype_alnum("$name") && !ctype_digit("$name");
+  }
+
+  protected function _getCallingClass($method, $at = 1)
+  {
+    //once PHP-5.3 LSB patch is available use a better alternative
+    //currently it's a quite a slow implementation and it doesn't 
+    //recognize multiline function calls
+
+    $trace = debug_backtrace();   
+    $back = $trace[$at];  
+    $fp = fopen($back['file'], 'r');
+
+    for($i=0; $i<$back['line']-1; $i++)
+      fgets($fp);
+
+    $line = fgets($fp); 
+    fclose($fp);
+
+    if(!preg_match('~(\w+)\s*::\s*' . $method . '\s*\(~', $line, $m))
+      throw new lmbARException("Static calling class not found!");
+    if($m[1] == 'lmbActiveRecord')
+      throw new lmbARException("Found static class can't be lmbActiveRecord!");
+    return $m[1]; 
   }
 
   /**
@@ -1122,16 +1154,26 @@ class lmbActiveRecord extends lmbObject
    *  @param object database connection object
    *  @return object|null
    */
-  static function findFirst($class_name, $magic_params = array(), $conn = null)
+  static function findFirst($class_name = null, $magic_params = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $magic_params;
+      $magic_params = $class_name ? $class_name : array();
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
+
     $params = array();
     if(self :: _isCriteria($magic_params))
       $params = array('first', 'criteria' => $magic_params);
+    elseif(is_null($magic_params))
+      $params = array('first');
     elseif(is_array($magic_params))
     {
       $params = $magic_params;
       array_push($params, 'first');
     }
+
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
@@ -1148,8 +1190,14 @@ class lmbActiveRecord extends lmbObject
    *  @param mixed misc magic params
    *  @return object|null
    */
-  static function findOne($class_name, $magic_params = array(), $conn = null)
+  static function findOne($class_name = null, $magic_params = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $magic_params;
+      $magic_params = $class_name ? $class_name : array();
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
     return self :: findFirst($class_name, $magic_params, $conn);
   }
   /**
@@ -1207,8 +1255,16 @@ class lmbActiveRecord extends lmbObject
    *  @param object database connection object
    *  @return iterator
    */
-  static function findByIds($class_name, $ids, $params = array(), $conn = null)
+  static function findByIds($class_name, $ids = null, $params = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $params;
+      $params = $ids;
+      $ids = $class_name;
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
+
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
@@ -1252,10 +1308,18 @@ class lmbActiveRecord extends lmbObject
    *  @param object database connection object
    *  @return iterator
    */
-  static function findBySql($class_name, $sql, $conn = null)
+  static function findBySql($class_name, $sql = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $sql;
+      $sql = $class_name;
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
+
     if(!is_object($conn))
       $conn = self :: getDefaultConnection();
+
     $stmt = $conn->newStatement($sql);
     return self :: decorateRecordSet($stmt->getRecordSet(), $class_name);
   }
@@ -1266,8 +1330,15 @@ class lmbActiveRecord extends lmbObject
    *  @param object database connection object
    *  @return object
    */
-  static function findFirstBySql($class_name, $sql, $conn = null)
+  static function findFirstBySql($class_name, $sql = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $sql;
+      $sql = $class_name;
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
+
     $rs = self :: findBySql($class_name, $sql, $conn);
     $rs->paginate(0, 1);
     $rs->rewind();
@@ -1279,8 +1350,14 @@ class lmbActiveRecord extends lmbObject
    *  @see findFirstBySql()
    *  @return object
    */
-  static function findOneBySql($class_name, $sql, $conn = null)
+  static function findOneBySql($class_name, $sql = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $sql;
+      $sql = $class_name;
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
     return self :: findFirstBySql($class_name, $sql, $conn);
   }
 
@@ -1319,8 +1396,15 @@ class lmbActiveRecord extends lmbObject
    *  @param object database connection object
    *  @return iterator
    */
-  static function find($class_name, $magic_params = array(), $conn = null)
+  static function find($class_name = null, $magic_params = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $magic_params;
+      $magic_params = $class_name ? $class_name : array();
+      $class_name = self :: _getCallingClass(__FUNCTION__);
+    }
+
     if(!is_object($conn))
       $conn = self :: getDefaultConnection();
 
@@ -1328,6 +1412,8 @@ class lmbActiveRecord extends lmbObject
       $params = array('criteria' => $magic_params);
     elseif(is_int($magic_params))
       return self :: findById($class_name, $magic_params, false, $conn);
+    elseif(is_null($magic_params))
+      $params = array();
     elseif(!is_array($magic_params))
       throw new lmbARException("Invalid magic params", array($magic_params));
     else
