@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6315 2007-09-19 11:35:40Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6316 2007-09-19 17:51:10Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1123,14 +1123,15 @@ class lmbActiveRecord extends lmbObject
     return ctype_alnum("$name") && !ctype_digit("$name");
   }
 
-  protected function _getCallingClass($method, $at = 1)
+  protected function _getCallingClass()
   {
-    //once PHP-5.3 LSB patch is available use a better alternative
+    //once PHP-5.3 LSB patch is available we'll use get_called_class
     //currently it's a quite a slow implementation and it doesn't 
     //recognize multiline function calls
 
     $trace = debug_backtrace();   
-    $back = $trace[$at];  
+    $back = $trace[1];  
+    $method = $back['function'];
     $fp = fopen($back['file'], 'r');
 
     for($i=0; $i<$back['line']-1; $i++)
@@ -1140,7 +1141,7 @@ class lmbActiveRecord extends lmbObject
     fclose($fp);
 
     if(!preg_match('~(\w+)\s*::\s*' . $method . '\s*\(~', $line, $m))
-      throw new lmbARException("Static calling class not found!");
+      throw new lmbARException("Static calling class not found!(using multiline static method call?)");
     if($m[1] == 'lmbActiveRecord')
       throw new lmbARException("Found static class can't be lmbActiveRecord!");
     return $m[1]; 
@@ -1160,7 +1161,7 @@ class lmbActiveRecord extends lmbObject
     {
       $conn = $magic_params;
       $magic_params = $class_name ? $class_name : array();
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
 
     $params = array();
@@ -1196,7 +1197,7 @@ class lmbActiveRecord extends lmbObject
     {
       $conn = $magic_params;
       $magic_params = $class_name ? $class_name : array();
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
     return self :: findFirst($class_name, $magic_params, $conn);
   }
@@ -1218,8 +1219,16 @@ class lmbActiveRecord extends lmbObject
    *  @param object database connection object
    *  @return object|null
    */
-  static function findById($class_name, $id, $throw_exception = true, $conn = null)
+  static function findById($class_name, $id = null, $throw_exception = true, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $throw_exception;
+      $throw_exception = $id;
+      $id = $class_name;
+      $class_name = self :: _getCallingClass();
+    }
+
     if(!class_exists($class_name, true))
       throw new lmbARException("Could not find class '$class_name'");
 
@@ -1262,7 +1271,7 @@ class lmbActiveRecord extends lmbObject
       $conn = $params;
       $params = $ids;
       $ids = $class_name;
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
 
     if(!class_exists($class_name, true))
@@ -1314,7 +1323,7 @@ class lmbActiveRecord extends lmbObject
     {
       $conn = $sql;
       $sql = $class_name;
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
 
     if(!is_object($conn))
@@ -1336,7 +1345,7 @@ class lmbActiveRecord extends lmbObject
     {
       $conn = $sql;
       $sql = $class_name;
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
 
     $rs = self :: findBySql($class_name, $sql, $conn);
@@ -1356,7 +1365,7 @@ class lmbActiveRecord extends lmbObject
     {
       $conn = $sql;
       $sql = $class_name;
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
     return self :: findFirstBySql($class_name, $sql, $conn);
   }
@@ -1402,7 +1411,7 @@ class lmbActiveRecord extends lmbObject
     {
       $conn = $magic_params;
       $magic_params = $class_name ? $class_name : array();
-      $class_name = self :: _getCallingClass(__FUNCTION__);
+      $class_name = self :: _getCallingClass();
     }
 
     if(!is_object($conn))
@@ -1635,8 +1644,15 @@ class lmbActiveRecord extends lmbObject
    *  @param string|object search criteria, if not set all objects are removed
    *  @param object database connection object
    */
-  static function delete($class_name, $criteria = null, $conn = null)
+  static function delete($class_name = null, $criteria = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $criteria;
+      $criteria = $class_name;
+      $class_name = self :: _getCallingClass();
+    }
+
     if(!is_object($conn))
       $conn = self :: getDefaultConnection();
 
@@ -1649,8 +1665,15 @@ class lmbActiveRecord extends lmbObject
       $object->destroy();
   }
 
-  static function deleteRaw($class_name, $criteria = null, $conn = null)
+  static function deleteRaw($class_name = null, $criteria = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $criteria;
+      $criteria = $class_name;
+      $class_name = self :: _getCallingClass();
+    }
+
     if(!is_object($conn))
       $conn = self :: getDefaultConnection();
 
@@ -1659,8 +1682,16 @@ class lmbActiveRecord extends lmbObject
     $db_table->delete($criteria);
   }
 
-  static function updateRaw($class_name, $set, $criteria = null, $conn = null)
+  static function updateRaw($class_name, $set = null, $criteria = null, $conn = null)
   {
+    if(!self :: _isClass($class_name))
+    {
+      $conn = $criteria;
+      $criteria = $set;
+      $set = $class_name;
+      $class_name = self :: _getCallingClass();
+    }
+
     if(!is_object($conn))
       $conn = self :: getDefaultConnection();
 
