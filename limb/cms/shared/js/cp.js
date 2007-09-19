@@ -294,11 +294,6 @@ jQuery(window).ready(function(){
   //sliding navigation support
   if(Limb.isFunction(jQuery.fn.accordion_cp))
     jQuery('#main_menu').accordion_cp();
-
-  //changed form items highlight
-  jQuery('input:text').each(changed_field_highlighter);
-  jQuery('select').each(changed_field_highlighter);
-  jQuery('textarea').each(changed_field_highlighter);
 });
 
 Limb.namespace('rt.Util');
