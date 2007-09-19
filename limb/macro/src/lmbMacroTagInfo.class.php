@@ -59,17 +59,17 @@ class lmbMacroTagInfo
 
         $infos[] = self :: createByAnnotations($class, $annotations);
       }
-
       $prev_token = $token;
     }
-
     return $infos;
   }
 
   static function createByAnnotations($class, $annotations)
   {
+    if(!isset($annotations['tag']))
+      throw new lmbMacroException("@tag annotation is missing for class '$class'");
     $tag = $annotations['tag'];
-    return new lmbMacroTagInfo($class, $tag);
+    return new lmbMacroTagInfo($tag, $class);
   }
 
   static protected function _extractAnnotations($content)
@@ -95,6 +95,11 @@ class lmbMacroTagInfo
   function setFile($file)
   {
     $this->file = $file;
+  }
+
+  function getFile()
+  {
+    return $this->file;
   }
 
   function setForbidEndtag($flag = true)

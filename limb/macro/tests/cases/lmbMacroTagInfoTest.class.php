@@ -33,7 +33,7 @@ EOD;
     $info = lmbMacroTagInfo :: extractFromFile($file);
 
     $this->assertEqual(sizeof($info), 1);
-    $this->assertEqual($info[0], new lmbMacroTagInfo("Foo{$rnd}Tag", "foo_$rnd"));
+    $this->assertEqual($info[0], new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag"));
   }
 
   function testExtractSeveralFromFile()
@@ -56,8 +56,8 @@ EOD;
     $info = lmbMacroTagInfo :: extractFromFile($file);
 
     $this->assertEqual(sizeof($info), 2);
-    $this->assertEqual($info[0], new lmbMacroTagInfo("Foo{$rnd}Tag", "foo_$rnd"));
-    $this->assertEqual($info[1], new lmbMacroTagInfo("Bar{$rnd}Tag", "bar_$rnd"));
+    $this->assertEqual($info[0], new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag"));
+    $this->assertEqual($info[1], new lmbMacroTagInfo("bar_$rnd", "Bar{$rnd}Tag"));
   }
 }
 

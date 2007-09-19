@@ -116,6 +116,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
   protected function _createTagNode($tag_info, $tag)
   {
     $class = $tag_info->getClass();
+    require_once($tag_info->getFile());
     $tag_node = new $class($this->parser->getCurrentLocation(), $tag, $tag_info);
     return $tag_node;
   }    

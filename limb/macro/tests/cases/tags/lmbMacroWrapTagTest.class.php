@@ -9,9 +9,11 @@
 
 lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
-lmb_require('limb/macro/src/tags/wrap.tag.php');
-lmb_require('limb/macro/src/tags/slot.tag.php');
-lmb_require('limb/macro/src/tags/into.tag.php');
+lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
+
+lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/wrap.tag.php');
+lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/slot.tag.php');
+lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/into.tag.php');
 
 class lmbMacroWrapTagTest extends UnitTestCase
 {

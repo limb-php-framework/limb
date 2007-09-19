@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
@@ -48,7 +49,7 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
     $this->assertFalse($dictionary->findTagInfo('junk'));
   }
 
-  function _testRegisterFromFile()
+  function testRegisterFromFile()
   {
     $rnd = mt_rand();
     $contents = <<<EOD
@@ -66,7 +67,9 @@ EOD;
     file_put_contents($file = LIMB_VAR_DIR . '/tags/' . $rnd . '.tag.php', $contents);
 
     $tag_info1 = new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag");
+    $tag_info1->setFile($file);
     $tag_info2 = new lmbMacroTagInfo("bar_$rnd", "Bar{$rnd}Tag");
+    $tag_info2->setFile($file);
 
     $dictionary = new lmbMacroTagDictionary();
     $dictionary->registerFromFile($file);

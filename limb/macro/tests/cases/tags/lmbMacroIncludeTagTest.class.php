@@ -8,8 +8,10 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
-lmb_require('limb/macro/src/tags/include.tag.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
+lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
+
+lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/include.tag.php');
 
 class lmbMacroTagIncludeTest extends UnitTestCase
 {

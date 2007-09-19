@@ -7,16 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
-//temporary includes, make it more flexible later
-lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
-lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
-
-lmbMacroTagDictionary :: instance()->register(new lmbMacroTagInfo('slot', 'lmbMacroSlotTag'), __FILE__);
 
 /**
  * class lmbMacroSlotTag.
  *
+ * @tag slot
  * @package macro
  * @version $Id$
  */

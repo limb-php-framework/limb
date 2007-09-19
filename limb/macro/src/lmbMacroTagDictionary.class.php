@@ -40,6 +40,13 @@ class lmbMacroTagDictionary
     $this->info[$tag_to_lower] = $taginfo;
   }
 
+  function registerFromFile($file)
+  {
+    $infos = lmbMacroTagInfo :: extractFromFile($file);
+    foreach($infos as $info)
+      $this->register($info, $file);
+  }
+
   function findTagInfo($tag)
   {
     $tag = strtolower($tag);
