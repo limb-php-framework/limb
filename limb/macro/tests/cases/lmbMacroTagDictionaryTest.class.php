@@ -13,25 +13,19 @@ lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 
 class lmbMacroTagDictionaryTest extends UnitTestCase
 {
-  protected $dictionary;
-  protected $tag_info;
-
   function setUp()
   {
-    $this->tag_info = new lmbMacroTagInfo('testtag', 'SomeTagClass');
-    $this->dictionary = new lmbMacroTagDictionary();
-    $this->dictionary->register($this->tag_info, $file = 'whaever');
-  }
-
-  protected function _createParentTag()
-  {
-    $tag_info = new lmbMacroTagInfo('some_tag', 'SomeTagClass');
-    return new lmbMacroTag(new lmbMacroSourceLocation('file', '10'), 'some_tag', $tag_info);
+    lmbFs :: rm(LIMB_VAR_DIR . '/tags/');
+    lmbFs :: mkdir(LIMB_VAR_DIR . '/tags/');
   }
 
   function testFindTagInfo()
   {
-    $this->assertIsA($this->dictionary->findTagInfo('testtag'), 'lmbMacroTagInfo');
+    $tag_info = new lmbMacroTagInfo('testtag', 'SomeTagClass');
+    $dictionary = new lmbMacroTagDictionary();
+    $dictionary->register($tag_info, $file = 'whatever');
+
+    $this->assertIsA($dictionary->findTagInfo('testtag'), 'lmbMacroTagInfo');
   }
 
   function testRegisterTagInfoOnceOnly()
@@ -39,18 +33,46 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
     $dictionary = new lmbMacroTagDictionary();
     $tag_info1 = new lmbMacroTagInfo('some_tag', 'SomeTagClass');
     $tag_info2 = new lmbMacroTagInfo('some_tag', 'SomeTagClass');
-    $dictionary->register($tag_info1, $file1 = 'whaever1');
-    $dictionary->register($tag_info2, $file2 = 'whaever2');
+    $dictionary->register($tag_info1, $file1 = 'whatever1');
+    $dictionary->register($tag_info2, $file2 = 'whatever2');
 
     $this->assertEqual($dictionary->findTagInfo('some_tag'), $tag_info1);
   }
 
-  function testNotATag()
+  function testTagNotFound()
   {
-    $parent = $this->_createParentTag();
-    $tag = 'notatag';
-    $attrs = array();
-    $this->assertFalse($this->dictionary->findTagInfo($tag, $attrs, FALSE, $parent));
+    $tag_info = new lmbMacroTagInfo('testtag', 'SomeTagClass');
+    $dictionary = new lmbMacroTagDictionary();
+    $dictionary->register($tag_info, $file = 'whatever');
+
+    $this->assertFalse($dictionary->findTagInfo('junk'));
+  }
+
+  function _testRegisterFromFile()
+  {
+    $rnd = mt_rand();
+    $contents = <<<EOD
+<?php
+/**
+ * @tag foo_{$rnd}
+ */
+class Foo{$rnd}Tag extends lmbMacroTag{}
+
+/**
+ * @tag bar_{$rnd}
+ */
+class Bar{$rnd}Tag extends lmbMacroTag{}
+EOD;
+    file_put_contents($file = LIMB_VAR_DIR . '/tags/' . $rnd . '.tag.php', $contents);
+
+    $tag_info1 = new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag");
+    $tag_info2 = new lmbMacroTagInfo("bar_$rnd", "Bar{$rnd}Tag");
+
+    $dictionary = new lmbMacroTagDictionary();
+    $dictionary->registerFromFile($file);
+
+    $this->assertEqual($dictionary->findTagInfo("foo_$rnd"), $tag_info1);
+    $this->assertEqual($dictionary->findTagInfo("bar_$rnd"), $tag_info2);
   }
 }
 
