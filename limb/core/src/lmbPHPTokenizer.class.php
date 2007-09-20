@@ -65,10 +65,10 @@ class lmbPHPTokenizer
    * Constructor
    * @param string input content
    */
-  function __construct($input = '') {
-      if (!empty($input)) {
-          $this->input($input);
-      }
+  function __construct($input = '') 
+  {
+    if(!empty($input)) 
+      $this->input($input);
   }
 
   /**
@@ -76,27 +76,25 @@ class lmbPHPTokenizer
    * @param string input content
    * @return string|bool
    */
-  function input($input = false) {
+  function input($input = false) 
+  {
+    // if input is false, return
+    if($input === false) 
+      return $this->input;
 
-      // if input is false, return
-      if ($input === false) {
-          return $this->input;
-      }
+    // trim the \r\n input content
+    $input = rtrim(ltrim($input, "\r\n"));
+    if(empty($input)) 
+      return false;
 
-      // trim the \r\n input content
-      $input = rtrim(ltrim($input, "\r\n"));
-      if (empty($input)) {
-          return false;
-      }
+    // use reference to save memory
+    $this->input = & $input;
 
-      // use reference to save memory
-      $this->input = & $input;
+    // unset the tokens so when next() is called the frist
+    // time, it will call reset()
+    unset($this->tokens);
 
-      // unset the tokens so when next() is called the frist
-      // time, it will call reset()
-      unset($this->tokens);
-
-      return true;
+    return true;
   }
 
   /**
@@ -104,84 +102,82 @@ class lmbPHPTokenizer
    * token position and line number
    * @return void
    */
-  function reset() {
-      $this->tokens = @token_get_all($this->input);
-      $this->pos = 0;
-      $this->line = 0;
+  function reset() 
+  {
+    $this->tokens = @token_get_all($this->input);
+    $this->pos = 0;
+    $this->line = 0;
   }
 
   /**
    * Fetch the next token
    * @return string|array token from tokenizer
    */
-  function next() {
+  function next() 
+  {
+    // check if we need to reset (tokenize input)
+    if(empty($this->tokens))
+      $this->reset();
 
-      // check if we need to reset (tokenize input)
-      if (empty($this->tokens)) {
-          $this->reset();
-      }
+    // check if token at the cur position set
+    if(!isset($this->tokens[$this->pos])) 
+      return false;
 
-      // check if token at the cur position set
-      if ( !isset($this->tokens[$this->pos]) ) {
-          return false;
-      }
+    // keep track of the old line
+    $oldline = $this->line;
 
-      // keep track of the old line
-      $oldline = $this->line;
+    // now get the current token
+    $word = $this->tokens[$this->pos++];
 
-      // now get the current token
-      $word = $this->tokens[$this->pos++];
+    // correlate line and token
+    if(is_array($word)) 
+    {
+      // count line num for special tokens ({@link $newline_tokens})
+      if(in_array($word[0], lmbPHPTokenizer::$newline_tokens)) 
+        $this->line += substr_count($word[1], "\n");
 
-      // correlate line and token
-      if ( is_array($word) ) {
+      // always skip whitespace
+      if($word[0] == T_WHITESPACE)    
+        return $this->next();
+    }
 
-          // count line num for special tokens ({@link $newline_tokens})
-          if ( in_array($word[0], lmbPHPTokenizer::$newline_tokens) ) {
-              $this->line += substr_count($word[1], "\n");
-          }
-
-          // always skip whitespace
-          if ( $word[0] == T_WHITESPACE )    {
-              return $this->next();
-          }
-      }
-
-      return $word;
+    return $word;
   }
 
   /**
    * Go back one token (reverse of {@link next()})
    * @return false|string|array
    */
-  function back() {
+  function back() 
+  {
+    $this->pos--;
 
-      $this->pos --;
+    // check if it's the beginning
+    if($this->pos < 0) 
+    {
+      $this->pos = 0;
+      return false;
+    }
 
-      // check if it's the beginning
-      if ($this->pos < 0) {
-          $this->pos = 0;
-          return false;
-      }
+    $word = $this->tokens[$this->pos];
 
-      $word = $this->tokens[$this->pos];
+    if(is_array($word)) 
+    {
+      if($word[0] == T_WHITESPACE)
+        return $this->next();
 
-      if ( is_array($word) ) {
-
-          if ( $word[0] == T_WHITESPACE )
-              return $this->next();
-
-          if ( in_array($word[0], lmbPHPTokenizer::$newline_tokens) ) {
-              $this->line -= substr_count($word[1], "\n");
-          }
-      }
+      if(in_array($word[0], lmbPHPTokenizer::$newline_tokens)) 
+        $this->line -= substr_count($word[1], "\n");
+    }
   }
 
   /**
    * Get the current line number
    * @return integer
    */
-  function line() {
-      return $this->line;
+  function line() 
+  {
+    return $this->line;
   }
 }
 
