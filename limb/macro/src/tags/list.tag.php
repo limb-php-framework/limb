@@ -19,25 +19,63 @@ class lmbMacroListTag extends lmbMacroTag
 {
   function generateContents($code)
   {
-    $counter = $code->getTempVarRef();
     $using = $this->get('using');
     $as = $this->get('as');
 
-    $list_item = $this->findImmediateChildByClass('lmbMacroListItemTag');
-    $list_empty = $this->findImmediateChildByClass('lmbMacroListEmptyTag');
-
+    $counter = $code->getTempVarRef();
     $code->writePHP($counter . ' = 0;');
     $code->writePHP('foreach(' . $using . ' as ' . $as . ') {');
-    $list_item->generateContents($code);
+
+    $found_item_tag = false;
+    $postponed_nodes = array();
+
+    //we need to render all nodes before and after <%list:*%> tags
+    foreach($this->children as $child)
+    {
+      //we want to skip all <%list:*%> tags, since they are rendered manually
+      if(!$this->_isOneOfListTags($child))
+      {
+        //tags before <%list:item%> should be rendered only once when counter is 0
+        if(!$found_item_tag)
+        {
+          $code->writePHP('if(' . $counter . ' == 0) {');
+          $child->generateContents($code);
+          $code->writePHP('}');
+        }
+        //otherwise we collect them to display later 
+        else
+          $postponed_nodes[] = $child;
+      }
+      elseif(is_a($child, 'lmbMacroListItemTag'))
+      {
+        $found_item_tag = true;
+        $child->generateContents($code);
+      }
+    }
+
     $code->writePHP($counter . '++;');
     $code->writePHP('}');
 
-    if($list_empty)
+    //tags after <%list:item%> should be rendered only if there were any items
+    foreach($postponed_nodes as $node)
+    {
+      $code->writePHP('if(' . $counter . ' > 0) {');
+      $node->generateContents($code);
+      $code->writePHP('}');
+    }
+
+    if($list_empty = $this->findImmediateChildByClass('lmbMacroListEmptyTag'))
     {
       $code->writePHP('if(' . $counter . ' == 0) {');
       $list_empty->generateContents($code);
       $code->writePHP('}');
     }
+  }
+
+  protected function _isOneOfListTags($node)
+  {
+    return is_a($node, 'lmbMacroListEmptyTag') || 
+           is_a($node, 'lmbMacroListItemTag');
   }
 }
 

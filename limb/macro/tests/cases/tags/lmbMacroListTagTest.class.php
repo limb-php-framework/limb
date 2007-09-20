@@ -50,6 +50,32 @@ class lmbMacroWrapTagTest extends UnitTestCase
     $this->assertEqual($out, 'Nothing');
   }
 
+  function testTextNodesInsideListTag()
+  {
+    $list = '<%list using="$#list" as="$item"%>List: <%list:item%><?=$item?> <%/list:item%> !<%/list%>';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'List: Bob Todd  !');
+  }
+
+  function testTextNodesInsideListTagWithEmptyListTag()
+  {
+    $list = '<%list using="$#list" as="$item"%>List: <%list:item%><?=$item?> <%/list:item%> !<%list:empty%>Nothing<%/list:empty%><%/list%>';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array());
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Nothing');
+  }
+
   protected function _createMacro($file)
   {
     $base_dir = LIMB_VAR_DIR . '/tpl';
