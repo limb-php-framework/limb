@@ -1,0 +1,45 @@
+<?php
+/*
+ * Limb PHP Framework
+ *
+ * @link http://limb-project.com
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
+ */
+
+lmb_require(dirname(__FILE__).'/../../src/lmbImageKit.class.php');
+
+class lmbImageKitTest extends UnitTestCase {
+
+  function _getInputImage()
+  {
+    return dirname(__FILE__).'/../var/input.jpg';
+  }
+
+  function _getOutputImage()
+  {
+    return dirname(__FILE__).'/../var/output.jpg';
+  }
+
+  function testCreateGdConvertor()
+  {
+    $conv = lmbImageKit::create('gd');
+
+    $this->assertIsA($conv, 'lmbGdImageConvertor');
+  }
+
+  function testTraversing()
+  {
+    lmbImageKit::load($this->_getInputImage())->apply('resize', 50, 60, false)->apply('rotate', 90)->save($this->_getOutputImage());
+
+    list($width, $height, $type) = getimagesize($this->_getOutputImage());
+    $this->assertEqual($width, 60);
+    $this->assertEqual($height, 50);
+  }
+
+  function tearDown()
+  {
+    @unlink($this->_getOutputImage());
+  }
+}
+?>
