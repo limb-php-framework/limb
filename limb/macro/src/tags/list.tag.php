@@ -20,18 +20,24 @@ class lmbMacroListTag extends lmbMacroTag
   function generateContents($code)
   {
     $using = $this->get('using');
-    $as = $this->get('as');
 
+    if(!$as = $this->get('as'))
+      $as = '$item';
+
+    //internal list counter
     $counter = $code->getTempVarRef();
     $code->writePHP($counter . ' = 0;');
     $code->writePHP('foreach(' . $using . ' as ' . $as . ') {');
 
+    if($user_counter = $this->get('counter'))
+      $code->writePHP($user_counter . ' = ' . $counter . '+1;');
+
+    //glue tag
     $glue = $this->findImmediateChildByClass('lmbMacroListGlueTag');
 
     $found_item_tag = false;
     $postponed_nodes = array();
 
-    //we need to render all nodes before and after <%list:*%> tags
     foreach($this->children as $child)
     {
       //we want to skip all <%list:*%> tags, since they are rendered manually

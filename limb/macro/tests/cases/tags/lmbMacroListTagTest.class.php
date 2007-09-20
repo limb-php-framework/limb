@@ -37,6 +37,19 @@ class lmbMacroListTagTest extends UnitTestCase
     $this->assertEqual($out, 'Bob Todd ');
   }
 
+  function testListUsingDefaultItem()
+  {
+    $list = '<%list using="$#list"%><%list:item%><?=$item?> <%/list:item%><%/list%>';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Bob Todd ');
+  }
+
   function testEmptyList()
   {
     $list = '<%list using="$#list" as="$item"%><%list:item%><?=$item?><%/list:item%>' . 
@@ -49,6 +62,19 @@ class lmbMacroListTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, 'Nothing');
+  }
+
+  function testShowCounter()
+  {
+    $list = '<%list using="$#list" counter="$ctr"%><%list:item%><?=$ctr?>)<?=$item?> <%/list:item%><%/list%>';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, '1)Bob 2)Todd ');
   }
 
   function testTextNodesInsideListTag()
