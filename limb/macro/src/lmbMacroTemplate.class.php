@@ -23,8 +23,9 @@ class lmbMacroTemplate
   protected $cache_dir;
   protected $vars = array();
   protected $child_executor;
+  protected $tag_dictionary;
 
-  function __construct($file, $cache_dir = null, $locator = null)
+  function __construct($file, $cache_dir = null, $locator = null, $tag_dictionary = null)
   {
     $this->file = $file;
 
@@ -35,6 +36,10 @@ class lmbMacroTemplate
     if(!$locator)
       $locator = new lmbMacroTemplateLocator();
     $this->locator = $locator;
+
+    if(!$tag_dictionary)
+      $tag_dictionary = lmbMacroTagDictionary :: instance();
+    $this->tag_dictionary = $tag_dictionary;
   }
 
   function setVars($vars)
@@ -80,9 +85,7 @@ class lmbMacroTemplate
 
   protected function _createCompiler()
   {
-    $tag_dictionary = lmbMacroTagDictionary :: instance();
-    $compiler = new lmbMacroCompiler($tag_dictionary, $this->locator);
-    return $compiler;
+    return new lmbMacroCompiler($this->tag_dictionary, $this->locator);
   }
 }
 

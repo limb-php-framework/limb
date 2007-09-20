@@ -42,8 +42,8 @@ class lmbMacroCompiler
 
   function __construct($tag_dictionary, $template_locator)
   {
+    $this->tag_dictionary = $tag_dictionary;
     $this->template_locator = $template_locator;
-    $this->tag_dictionary = lmbMacroTagDictionary :: instance();
     $this->tree_builder = new lmbMacroTreeBuilder($this);
   }
 
