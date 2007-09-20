@@ -11,14 +11,11 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 
 /**
  * Compile time component for separators in a list
- * @tag list:separator
+ * @tag list:glue
  * @package macro
  * @version $Id$
  */
-class lmbMacroListSeparatorTag extends lmbMacroTag
+class lmbMacroListGlueTag extends lmbMacroTag
 {
-  function generateContents($code)
-  {
-  }
 }
 

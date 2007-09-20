@@ -26,6 +26,8 @@ class lmbMacroListTag extends lmbMacroTag
     $code->writePHP($counter . ' = 0;');
     $code->writePHP('foreach(' . $using . ' as ' . $as . ') {');
 
+    $glue = $this->findImmediateChildByClass('lmbMacroListGlueTag');
+
     $found_item_tag = false;
     $postponed_nodes = array();
 
@@ -49,6 +51,12 @@ class lmbMacroListTag extends lmbMacroTag
       elseif(is_a($child, 'lmbMacroListItemTag'))
       {
         $found_item_tag = true;
+        if($glue)
+        {
+          $code->writePHP('if('. $counter . ' > 0) {');
+          $glue->generateContents($code);
+          $code->writePHP('}');
+        }
         $child->generateContents($code);
       }
     }
@@ -74,8 +82,16 @@ class lmbMacroListTag extends lmbMacroTag
 
   protected function _isOneOfListTags($node)
   {
-    return is_a($node, 'lmbMacroListEmptyTag') || 
-           is_a($node, 'lmbMacroListItemTag');
+    $classes = array('lmbMacroListEmptyTag',
+                   'lmbMacroListItemTag',
+                   'lmbMacroListGlueTag');
+
+    foreach($classes as $class)
+    {
+      if(is_a($node, $class))
+        return true;
+    }
+    return false;
   }
 }
 

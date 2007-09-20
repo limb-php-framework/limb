@@ -14,8 +14,9 @@ lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/list.tag.php');
 lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/list_item.tag.php');
 lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/list_empty.tag.php');
+lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/list_glue.tag.php');
 
-class lmbMacroWrapTagTest extends UnitTestCase
+class lmbMacroListTagTest extends UnitTestCase
 {
   function setUp()
   {
@@ -65,7 +66,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testTextNodesInsideListTagWithEmptyListTag()
   {
-    $list = '<%list using="$#list" as="$item"%>List: <%list:item%><?=$item?> <%/list:item%> !<%list:empty%>Nothing<%/list:empty%><%/list%>';
+    $list = '<%list using="$#list" as="$item"%>List: <%list:item%><?=$item?> <%/list:item%> !' . 
+            '<%list:empty%>Nothing<%/list:empty%><%/list%>';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -74,6 +76,20 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, 'Nothing');
+  }
+
+  function testListWithGlue()
+  {
+    $list = '<%list using="$#list" as="$item"%>List:<%list:item%><?=$item?><%/list:item%>!' . 
+            '<%list:glue%>||<%/list:glue%><%/list%>';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd', 'Marry'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'List:Bob||Todd||Marry!');
   }
 
   protected function _createMacro($file)
