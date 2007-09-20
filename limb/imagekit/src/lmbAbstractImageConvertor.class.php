@@ -28,7 +28,7 @@ abstract class lmbAbstractImageConvertor
     $this->filters[] = $this->createFilter($name, $params);
   }
 
-  function run($src, $dest, $src_type = '', $dest_type = '')
+  function run($src, $dest = null, $src_type = '', $dest_type = '')
   {
     $container = $this->createImageContainer($src, $src_type);
     foreach($this->filters as $filter) $filter->run($container);
