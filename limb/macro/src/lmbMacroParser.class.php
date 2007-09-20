@@ -10,7 +10,6 @@
 lmb_require('limb/macro/src/lmbMacroTokenizer.class.php');
 lmb_require('limb/macro/src/lmbMacroPreprocessor.class.php');
 lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
-lmb_require('limb/macro/src/lmbMacroLiteralParsingState.class.php');
 lmb_require('limb/macro/src/lmbMacroTagParsingState.class.php');
 
 /**
@@ -22,8 +21,8 @@ lmb_require('limb/macro/src/lmbMacroTagParsingState.class.php');
 class lmbMacroParser implements lmbMacroTokenizerListener
 {
   protected $active_parsing_state;
+
   protected $tag_parsing_state;
-  protected $literal_parsing_state;
 
   /**
    * @var lmbMacroTreebuilder
@@ -46,7 +45,6 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->template_locator = $template_locator;
 
     $this->tag_parsing_state = $this->_createTagParsingState($tag_dictionary);
-    $this->literal_parsing_state = $this->_createLiteralParsingState();
   }
 
   function getCurrentLocation()
@@ -54,16 +52,9 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     return $this->tokenizer->getCurrentLocation();
   }
 
-  // for testing purposes
   protected function _createTagParsingState($tag_dictionary)
   {
     return new lmbMacroTagParsingState($this, $this->tree_builder, $tag_dictionary);
-  }
-
-  // for testing purposes
-  protected function _createLiteralParsingState()
-  {
-    return new lmbMacroLiteralParsingState($this, $this->tree_builder);
   }
 
   /**
@@ -112,15 +103,8 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->active_parsing_state = $this->tag_parsing_state;
   }  
 
-  function changeToLiteralParsingState($tag)
-  {
-    $this->active_parsing_state = $this->literal_parsing_state;
-    $this->active_parsing_state->setLiteralTag($tag);
-  }
-  
   function setTemplateLocator($template_locator)
   {
-    $this->literal_parsing_state->setTemplateLocator($template_locator);
     $this->tag_parsing_state->setTemplateLocator($template_locator);
   }  
 
