@@ -46,22 +46,34 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
   function load($file_name, $type = '')
   {
     $imginfo = @getimagesize($file_name);
-    if(!$imginfo) throw new lmbFileNotFoundException($file_name);
-    if(!$type) $type = self::convertImageType($imginfo[2]);
-    if(!self::supportLoadType($type)) throw new lmbImageTypeNotSupportException($type);
+    if(!$imginfo) 
+      throw new lmbFileNotFoundException($file_name);
+
+    if(!$type) 
+      $type = self::convertImageType($imginfo[2]);
+
+    if(!self::supportLoadType($type)) 
+      throw new lmbImageTypeNotSupportException($type);
+
     $createfunc = 'imagecreatefrom'.$type;
     if(!($this->img = @$createfunc($file_name)))
-        throw new lmbImageCreateFailedException($file_name);
+      throw new lmbImageCreateFailedException($file_name);
+
     $this->img_type = $type;
   }
 
   function save($file_name = null, $type = '')
   {
-    if(!$type) $type = $this->img_type;
-    if(!self::supportSaveType($type)) throw new lmbImageTypeNotSupportException($type);
+    if(!$type)
+      $type = $this->img_type;
+
+    if(!self::supportSaveType($type))
+      throw new lmbImageTypeNotSupportException($type);
+
     $imagefunc = 'image'.$type;
     if(!@$imagefunc($this->img, $file_name))
-        throw new lmbImageSaveFailedException($file_name);
+      throw new lmbImageSaveFailedException($file_name);
+
     $this->destroyImage();
   }
 
@@ -93,7 +105,8 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
 
   function destroyImage()
   {
-    if(!$this->img) return;
+    if(!$this->img)
+      return;
     imagedestroy($this->img);
     $this->img = null;
   }
@@ -110,9 +123,11 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
 
   static function supportType($type)
   {
-    if(!function_exists('imagetypes')) return false;
+    if(!function_exists('imagetypes'))
+      return false;
     $gdtype = self::getGdType($type);
-    if($gdtype === false) return false;
+    if($gdtype === false)
+      return false;
     return (boolean)(imagetypes() & $gdtype);
   }
 
@@ -136,4 +151,4 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
   	$this->destroyImage();
   }
 }
-?>
+
