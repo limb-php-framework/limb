@@ -28,6 +28,18 @@ abstract class lmbAbstractImageConvertor
     $this->filters[] = $this->createFilter($name, $params);
   }
 
+  function __call($name, $params)
+  {
+    return $this->runFilter($name, $params);
+  }
+
+  protected function runFilter($name, $params)
+  {
+    $filter = $this->createFilter($name, $params);
+    $filter->run($this->container);
+    return $this;
+  }
+
   function run($src, $dest = null, $src_type = '', $dest_type = '')
   {
     $container = $this->createImageContainer($src, $src_type);
@@ -45,9 +57,7 @@ abstract class lmbAbstractImageConvertor
   {
     $args = func_get_args();
     $params = array_slice($args, 1);
-    $filter = $this->createFilter($name, $params);
-    $filter->run($this->container);
-    return $this;
+    return $this->runFilter($name, $params);
   }
 
   function save($file_name = null, $type = '')

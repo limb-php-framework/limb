@@ -37,6 +37,15 @@ class lmbImageKitTest extends UnitTestCase {
     $this->assertEqual($height, 50);
   }
 
+  function testOtherTraversing()
+  {
+    lmbImageKit::load($this->_getInputImage())->resize(50, 60, false)->rotate(90)->save($this->_getOutputImage());
+
+    list($width, $height, $type) = getimagesize($this->_getOutputImage());
+    $this->assertEqual($width, 60);
+    $this->assertEqual($height, 50);
+  }
+
   function tearDown()
   {
     @unlink($this->_getOutputImage());
