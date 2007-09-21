@@ -48,24 +48,33 @@ abstract class lmbAbstractImageFilter
       $scale_h = (float)$dst_h / (float)$src_h;
       if($scale_w > 1 && $scale_h > 1)
       {
-        if($save_min_size) $scale = 1;
-        elseif($scale_w > $scale_h) $scale = $scale_h;
-        else $scale = $scale_w;
+        if($save_min_size)
+          $scale = 1;
+        elseif($scale_w > $scale_h)
+          $scale = $scale_h;
+        else
+          $scale = $scale_w;
       }
       elseif($scale_w < 1 && $scale_h < 1)
       {
-        if($scale_w > $scale_h) $scale = $scale_h;
-        else $scale = $scale_w;
+        if($scale_w > $scale_h)
+          $scale = $scale_h;
+        else
+          $scale = $scale_w;
       }
-      elseif($scale_w < 1) $scale = $scale_w;
-      else $scale = $scale_h;
+      elseif($scale_w < 1)
+        $scale = $scale_w;
+      else
+        $scale = $scale_h;
       $w = intval($src_w * $scale);
       $h = intval($src_h * $scale);
     }
     elseif($save_min_size)
     {
-      if($dst_w > $src_w) $w = $src_w;
-      if($dst_h > $src_h) $h = $src_h;
+      if($dst_w > $src_w)
+        $w = $src_w;
+      if($dst_h > $src_h)
+        $h = $src_h;
     }
     return array($w, $h);
   }
@@ -73,8 +82,10 @@ abstract class lmbAbstractImageFilter
   function getParam($name, $num, $default = null)
   {
   	$param = $default;
-    if(isset($this->params[$name])) $param = $this->params[$name];
-    elseif(isset($this->params[$num])) $param = $this->params[$num];
+    if(isset($this->params[$name]))
+      $param = $this->params[$name];
+    elseif(isset($this->params[$num]))
+      $param = $this->params[$num];
     return $param;
   }
 

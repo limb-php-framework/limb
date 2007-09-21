@@ -20,7 +20,6 @@ lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {
-
   function run(lmbAbstractImageContainer $container)
   {
     $src_w = $container->getWidth();

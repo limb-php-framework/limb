@@ -18,11 +18,6 @@ abstract class lmbAbstractImageConvertor
   protected $filters = array();
   protected $container = null;
 
-  function __construct()
-  {
-
-  }
-
   function addFilter($name, $params)
   {
     $this->filters[] = $this->createFilter($name, $params);
@@ -43,7 +38,8 @@ abstract class lmbAbstractImageConvertor
   function run($src, $dest = null, $src_type = '', $dest_type = '')
   {
     $container = $this->createImageContainer($src, $src_type);
-    foreach($this->filters as $filter) $filter->run($container);
+    foreach($this->filters as $filter)
+      $filter->run($container);
     $container->save($dest, $dest_type);
   }
 

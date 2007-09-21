@@ -23,7 +23,6 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  */
 class lmbGdImageConvertor extends lmbAbstractImageConvertor 
 {
-
   protected function createFilter($name, $params)
   {
     $class = $this->loadFilter(dirname(__FILE__).'/filters', $name, 'Gd');
@@ -40,10 +39,12 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
     if(!$src_type) 
     {
       $imginfo = @getimagesize($file);
-      if(!$imginfo) throw new lmbFileNotFoundException($file);
+      if(!$imginfo)
+        throw new lmbFileNotFoundException($file);
       $src_type = lmbGdImageContainer::convertImageType($imginfo[2]);
     }
-    if(!$dest_type) $dest_type = $src_type;
+    if(!$dest_type)
+      $dest_type = $src_type;
     return lmbGdImageContainer::supportLoadType($src_type) &&
            lmbGdImageContainer::supportSaveType($dest_type);
   }
