@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdImageContainer.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageContainer.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportException.class.php');
@@ -21,7 +21,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * GD image container
  *
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdImageContainer.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 class lmbGdImageContainer extends lmbAbstractImageContainer
 {
@@ -42,17 +42,29 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
   protected $img;
   protected $img_type;
   protected $pallete;
+  protected $out_type;
+
+  function setOutputType($type)
+  {
+    if($type)
+      if(!self::supportSaveType($type))
+        throw new lmbImageTypeNotSupportException($type);
+
+    parent::setOutputType($type);
+  }
 
   function load($file_name, $type = '')
   {
+    $this->destroyImage();
+
     $imginfo = @getimagesize($file_name);
-    if(!$imginfo) 
+    if(!$imginfo)
       throw new lmbFileNotFoundException($file_name);
 
-    if(!$type) 
+    if(!$type)
       $type = self::convertImageType($imginfo[2]);
 
-    if(!self::supportLoadType($type)) 
+    if(!self::supportLoadType($type))
       throw new lmbImageTypeNotSupportException($type);
 
     $createfunc = 'imagecreatefrom'.$type;
@@ -62,8 +74,9 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     $this->img_type = $type;
   }
 
-  function save($file_name = null, $type = '')
+  function save($file_name = null)
   {
+    $type = $this->output_type;
     if(!$type)
       $type = $this->img_type;
 
@@ -110,6 +123,8 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     imagedestroy($this->img);
     $this->img = null;
   }
+
+
 
   static function supportLoadType($type)
   {

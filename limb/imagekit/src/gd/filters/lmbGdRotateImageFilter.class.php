@@ -9,22 +9,23 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdRotateImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 
 /**
  * Rotate image filter
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdRotateImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 class lmbGdRotateImageFilter extends lmbAbstractImageFilter
 {
 
-  function run(lmbAbstractImageContainer $container)
+  function apply(lmbAbstractImageContainer $container)
   {
     $angle = $this->getAngle();
-    if(!$angle) return;
+    if(!$angle)
+      return;
     $bgcolor = $this->getBgColor();
     $cur_im = $container->getResource();
     $bg = imagecolorallocate($cur_im, $bgcolor['red'], $bgcolor['green'], $bgcolor['blue']);
@@ -39,7 +40,7 @@ class lmbGdRotateImageFilter extends lmbAbstractImageFilter
 
   function getBgColor()
   {
-    $bgcolor = $this->getParam('bgcolor', 1, 'FFFFFF');
+    $bgcolor = $this->getParam('bgcolor', 'FFFFFF');
     return $this->parseHexColor($bgcolor);
   }
 }

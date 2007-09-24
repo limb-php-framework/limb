@@ -25,7 +25,9 @@ class lmbGdResizeImageFilterTest extends UnitTestCase
 
   function _getContainer()
   {
-    return new lmbGdImageContainer($this->_getInputImage());
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
+    return $cont;
   }
 
   function testSimpleResize()
@@ -33,7 +35,7 @@ class lmbGdResizeImageFilterTest extends UnitTestCase
     $cont = $this->_getContainer();
     $filter = new lmbGdResizeImageFilter(array('width' => 50, 'height' => 70, 'preserve_aspect_ratio' => false));
 
-    $filter->run($cont);
+    $filter->apply($cont);
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 50);
@@ -86,13 +88,6 @@ class lmbGdResizeImageFilterTest extends UnitTestCase
     $this->assertEqual($filter->getHeight(), 100);
     $this->assertFalse($filter->getPreserveAspectRatio());
     $this->assertTrue($filter->getSaveMinSize());
-
-    $filter = new lmbGdResizeImageFilter(array(10, 50, true, false));
-
-    $this->assertEqual($filter->getWidth(), 10);
-    $this->assertEqual($filter->getHeight(), 50);
-    $this->assertTrue($filter->getPreserveAspectRatio());
-    $this->assertFalse($filter->getSaveMinSize());
   }
 
   function tearDown()

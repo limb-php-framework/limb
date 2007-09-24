@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbImageKit.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 class lmbImageKit
 {

@@ -30,7 +30,9 @@ class lmbGdWaterMarkImageFilterTest extends UnitTestCase
 
   function _getContainer()
   {
-    return new lmbGdImageContainer($this->_getInputImage());
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
+    return $cont;
   }
 
   function testWaterMark()
@@ -38,7 +40,7 @@ class lmbGdWaterMarkImageFilterTest extends UnitTestCase
     $cont = $this->_getContainer();
     $filter = new lmbGdWaterMarkImageFilter(array('water_mark' => $this->_getWaterMarkImage(), 'x' => 5, 'y' => 6));
 
-    $filter->run($cont);
+    $filter->apply($cont);
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getInputImage());
     list($width2, $height2, $type2) = getimagesize($this->_getOutputImage());
@@ -55,13 +57,6 @@ class lmbGdWaterMarkImageFilterTest extends UnitTestCase
     $this->assertEqual($filter->getX(), 90);
     $this->assertEqual($filter->getY(), 100);
     $this->assertEqual($filter->getOpacity(), 20);
-
-    $filter = new lmbGdWaterMarkImageFilter(array('input.jpg', 10, 50, 30));
-
-    $this->assertEqual($filter->getWaterMark(), 'input.jpg');
-    $this->assertEqual($filter->getX(), 10);
-    $this->assertEqual($filter->getY(), 50);
-    $this->assertEqual($filter->getOpacity(), 30);
   }
 
   function testCalcPosition()

@@ -11,19 +11,26 @@
  * Abstract image container
  *
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbAbstractImageContainer.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
-abstract class lmbAbstractImageContainer 
+abstract class lmbAbstractImageContainer
 {
 
-  function __construct($file_name, $type = '')
+  protected $output_type = '';
+
+  function setOutputType($type)
   {
-    $this->load($file_name, $type);
+    $this->output_type = $type;
+  }
+
+  function getOutputType()
+  {
+    return $this->output_type;
   }
 
   abstract function load($file_name, $type = '');
 
-  abstract function save($file_name = null, $type = '');
+  abstract function save($file_name = null);
 
 }
 ?>

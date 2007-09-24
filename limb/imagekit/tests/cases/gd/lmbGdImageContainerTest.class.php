@@ -26,9 +26,10 @@ class lmbGdImageContainerTest extends UnitTestCase {
     return dirname(__FILE__).'/../../var/output.jpg';
   }
 
-  function testConstructSave()
+  function testLoadSave()
   {
-  	$cont = new lmbGdImageContainer($this->_getInputImage());
+  	$cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
     $cont->save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getInputImage());
@@ -40,8 +41,10 @@ class lmbGdImageContainerTest extends UnitTestCase {
 
   function testChangeType()
   {
-    $cont = new lmbGdImageContainer($this->_getInputImage(), 'jpeg');
-    $cont->save($this->_getOutputImage(), 'gif');
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage(), 'jpeg');
+    $cont->setOutputType('gif');
+    $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getInputImage());
     list($width2, $height2, $type2) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, $width2);
@@ -53,7 +56,8 @@ class lmbGdImageContainerTest extends UnitTestCase {
 
   function testGetSize()
   {
-    $cont = new lmbGdImageContainer($this->_getInputImage());
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
 
     $this->assertEqual($cont->getWidth(), 100);
     $this->assertEqual($cont->getHeight(), 137);
@@ -61,11 +65,20 @@ class lmbGdImageContainerTest extends UnitTestCase {
 
   function testIsPallete()
   {
-    $cont = new lmbGdImageContainer($this->_getInputImage());
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
     $this->assertFalse($cont->isPallete());
 
-    $cont = new lmbGdImageContainer($this->_getPalleteImage());
+    $cont->load($this->_getPalleteImage());
     $this->assertTrue($cont->isPallete());
+  }
+
+  function testSetGetOutputType()
+  {
+    $cont = new lmbGdImageContainer();
+    $cont->setOutputType('gif');
+
+    $this->assertEqual($cont->getOutputType(), 'gif');
   }
 
   function tearDown()

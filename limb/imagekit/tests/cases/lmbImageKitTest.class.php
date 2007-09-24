@@ -30,16 +30,16 @@ class lmbImageKitTest extends UnitTestCase {
 
   function testTraversing()
   {
-    lmbImageKit::load($this->_getInputImage())->apply('resize', 50, 60, false)->apply('rotate', 90)->save($this->_getOutputImage());
+    lmbImageKit::load($this->_getInputImage())->apply('resize', array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->apply('rotate', array('angle' => 90))->save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 60);
     $this->assertEqual($height, 50);
   }
 
-  function testOtherTraversing()
+  function testTraversingByOverloading()
   {
-    lmbImageKit::load($this->_getInputImage())->resize(50, 60, false)->rotate(90)->save($this->_getOutputImage());
+    lmbImageKit::load($this->_getInputImage())->resize(array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->rotate(array('angle' => 90))->save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 60);

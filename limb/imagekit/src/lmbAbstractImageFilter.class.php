@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbAbstractImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 lmb_require(dirname(__FILE__).'/lmbAbstractImageContainer.class.php');
 
@@ -17,7 +17,7 @@ lmb_require(dirname(__FILE__).'/lmbAbstractImageContainer.class.php');
  * Abstract image filter
  *
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbAbstractImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 abstract class lmbAbstractImageFilter
 {
@@ -79,16 +79,14 @@ abstract class lmbAbstractImageFilter
     return array($w, $h);
   }
 
-  function getParam($name, $num, $default = null)
+  function getParam($name, $default = null)
   {
   	$param = $default;
     if(isset($this->params[$name]))
       $param = $this->params[$name];
-    elseif(isset($this->params[$num]))
-      $param = $this->params[$num];
     return $param;
   }
 
-  abstract function run(lmbAbstractImageContainer $container);
+  abstract function apply(lmbAbstractImageContainer $container);
 }
 ?>

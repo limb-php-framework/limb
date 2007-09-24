@@ -24,7 +24,9 @@ class lmbGdRotateImageFilterTest extends UnitTestCase {
 
   function _getContainer()
   {
-    return new lmbGdImageContainer($this->_getInputImage());
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
+    return $cont;
   }
 
   function testRotate()
@@ -32,7 +34,7 @@ class lmbGdRotateImageFilterTest extends UnitTestCase {
     $cont = $this->_getContainer();
     $filter = new lmbGdRotateImageFilter(array('angle' => 90));
 
-    $filter->run($cont);
+    $filter->apply($cont);
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getInputImage());
     list($width2, $height2, $type2) = getimagesize($this->_getOutputImage());
@@ -49,14 +51,6 @@ class lmbGdRotateImageFilterTest extends UnitTestCase {
     $bgcolor = $filter->getBgColor();
     $this->assertEqual($bgcolor['red'], 255);
     $this->assertEqual($bgcolor['green'], 0);
-    $this->assertEqual($bgcolor['blue'], 0);
-
-    $filter = new lmbGdRotateImageFilter(array(100, 'bgcolor' => '00FF00'));
-
-    $this->assertEqual($filter->getAngle(), 100);
-    $bgcolor = $filter->getBgColor();
-    $this->assertEqual($bgcolor['red'], 0);
-    $this->assertEqual($bgcolor['green'], 255);
     $this->assertEqual($bgcolor['blue'], 0);
   }
 

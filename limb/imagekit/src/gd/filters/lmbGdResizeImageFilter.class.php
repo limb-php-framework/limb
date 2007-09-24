@@ -9,18 +9,18 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdResizeImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdResizeImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {
-  function run(lmbAbstractImageContainer $container)
+  function apply(lmbAbstractImageContainer $container)
   {
     $src_w = $container->getWidth();
     $src_h = $container->getHeight();
@@ -33,31 +33,33 @@ class lmbGdResizeImageFilter extends lmbAbstractImageFilter
   protected function calcNewSize($src_w, $src_h)
   {
     $dst_w = $this->getWidth();
-    if(!$dst_w) $dst_w = $src_w;
+    if(!$dst_w)
+      $dst_w = $src_w;
     $dst_h = $this->getheight();
-    if(!$dst_h) $dst_h = $src_h;
+    if(!$dst_h)
+      $dst_h = $src_h;
     //return array($dst_w, $dst_h);
     return $this->calcSize($src_w, $src_h, $dst_w, $dst_h, $this->getPreserveAspectRatio(), $this->getSaveMinSize());
   }
 
   function getWidth()
   {
-  	return $this->getParam('width', 0);
+  	return $this->getParam('width');
   }
 
   function getHeight()
   {
-    return $this->getParam('height', 1);
+    return $this->getParam('height');
   }
 
   function getPreserveAspectRatio()
   {
-    return $this->getParam('preserve_aspect_ratio', 2, true);
+    return $this->getParam('preserve_aspect_ratio', true);
   }
 
   function getSaveMinSize()
   {
-    return $this->getParam('save_min_size', 3, false);
+    return $this->getParam('save_min_size', false);
   }
 }
 ?>

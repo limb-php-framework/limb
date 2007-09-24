@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdImageConvertor.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageConvertor.class.php');
 lmb_require(dirname(__FILE__).'/lmbGdImageContainer.class.php');
@@ -19,9 +19,9 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * GD image convertor
  *
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdImageConvertor.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
-class lmbGdImageConvertor extends lmbAbstractImageConvertor 
+class lmbGdImageConvertor extends lmbAbstractImageConvertor
 {
   protected function createFilter($name, $params)
   {
@@ -31,12 +31,14 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
 
   protected function createImageContainer($file_name, $type = '')
   {
-    return new lmbGdImageContainer($file_name, $type);
+    $container = new lmbGdImageContainer();
+    $container->load($file_name, $type);
+    return $container;
   }
 
   function isSupportConversion($file, $src_type = '', $dest_type = '')
   {
-    if(!$src_type) 
+    if(!$src_type)
     {
       $imginfo = @getimagesize($file);
       if(!$imginfo)

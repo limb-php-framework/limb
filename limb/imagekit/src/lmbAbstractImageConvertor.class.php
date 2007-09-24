@@ -11,36 +11,23 @@
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbAbstractImageConvertor.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 abstract class lmbAbstractImageConvertor
 {
-  protected $filters = array();
   protected $container = null;
 
-  function addFilter($name, $params)
+  function __call($name, $args)
   {
-    $this->filters[] = $this->createFilter($name, $params);
+    $params = (isset($args[0]) && is_array($args[0])) ? $args[0] : array();
+    return $this->applyFilter($name, $params);
   }
 
-  function __call($name, $params)
-  {
-    return $this->runFilter($name, $params);
-  }
-
-  protected function runFilter($name, $params)
+  protected function applyFilter($name, $params)
   {
     $filter = $this->createFilter($name, $params);
-    $filter->run($this->container);
+    $filter->apply($this->container);
     return $this;
-  }
-
-  function run($src, $dest = null, $src_type = '', $dest_type = '')
-  {
-    $container = $this->createImageContainer($src, $src_type);
-    foreach($this->filters as $filter)
-      $filter->run($container);
-    $container->save($dest, $dest_type);
   }
 
   function load($file_name, $type = '')
@@ -52,14 +39,27 @@ abstract class lmbAbstractImageConvertor
   function apply($name)
   {
     $args = func_get_args();
-    $params = array_slice($args, 1);
-    return $this->runFilter($name, $params);
+    $params = (isset($args[1]) && is_array($args[1])) ? $args[1] : array();
+    return $this->applyFilter($name, $params);
+  }
+
+  function applyBatch($batch)
+  {
+    foreach($batch as $filter)
+    {
+      list($name, $params) = each($filter);
+      $this->applyFilter($name, $params);
+    }
+    return $this;
   }
 
   function save($file_name = null, $type = '')
   {
-    $this->container->save($file_name, $type);
+    if($type)
+      $this->container->setOutputType($type);
+    $this->container->save($file_name);
     $this->container = null;
+    return $this;
   }
 
   protected function loadFilter($dir, $name, $prefix)

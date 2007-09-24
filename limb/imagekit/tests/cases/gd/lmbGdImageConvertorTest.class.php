@@ -26,15 +26,44 @@ class lmbGdImageConvertorTest extends UnitTestCase {
     return new lmbGdImageConvertor();
   }
 
-  function testSimpleResize()
+  function testApply()
   {
     $conv = $this->_getConvertor();
-    $conv->addFilter('resize', array('width' => 50, 'height' => 70, 'preserve_aspect_ratio' => false));
+    $conv->load($this->_getInputImage());
+    $conv->apply('resize', array('width' => 50, 'height' => 70, 'preserve_aspect_ratio' => false));
 
-    $conv->run($this->_getInputImage(), $this->_getOutputImage());
+    $conv->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 50);
     $this->assertEqual($height, 70);
+  }
+
+  function testApplyByOverload()
+  {
+    $conv = $this->_getConvertor();
+    $conv->load($this->_getInputImage());
+    $conv->resize(array('width' => 50, 'height' => 70, 'preserve_aspect_ratio' => false));
+
+    $conv->save($this->_getOutputImage());
+    list($width, $height, $type) = getimagesize($this->_getOutputImage());
+    $this->assertEqual($width, 50);
+    $this->assertEqual($height, 70);
+  }
+
+  function testApplyBatch()
+  {
+    $batch = array(
+      array('resize' => array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false)),
+      array('rotate' => array('angle' => 90))
+    );
+    $conv = $this->_getConvertor();
+    $conv->load($this->_getInputImage());
+    $conv->applyBatch($batch);
+
+    $conv->save($this->_getOutputImage());
+    list($width, $height, $type) = getimagesize($this->_getOutputImage());
+    $this->assertEqual($width, 60);
+    $this->assertEqual($height, 50);
   }
 
   function testCheckSupportConv()

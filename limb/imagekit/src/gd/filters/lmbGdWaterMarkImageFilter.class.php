@@ -9,53 +9,57 @@
 
 /**
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdWaterMarkImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id$
+ * @version $Id: lmbGdWaterMarkImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
  */
 class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
 {
 
-  function run(lmbAbstractImageContainer $container)
+  function apply(lmbAbstractImageContainer $container)
   {
     $width = $container->getWidth();
     $height = $container->getHeight();
-    $wm_cont = new lmbGdImageContainer($this->getWaterMark());
+    $wm_cont = new lmbGdImageContainer();
+    $wm_cont->load($this->getWaterMark());
     list($x, $y) = $this->calcPosition($this->getX(), $this->getY(), $width, $height);
     imagecopymerge($container->getResource(), $wm_cont->getResource(), $x, $y, 0, 0, $wm_cont->getWidth(), $wm_cont->getHeight(), 100 - $this->getOpacity());
   }
 
   function calcPosition($x, $y, $width, $height)
   {
-  	if($x >= 0 && $y >= 0) return array($x, $y);
-    if($x < 0) $x += $width;
-    if($y < 0) $y += $height;
+  	if($x >= 0 && $y >= 0)
+      return array($x, $y);
+    if($x < 0)
+      $x += $width;
+    if($y < 0)
+      $y += $height;
     return array($x, $y);
   }
 
   function getWaterMark()
   {
-  	return $this->getParam('water_mark', 0);
+  	return $this->getParam('water_mark');
   }
 
   function getX()
   {
-    return $this->getParam('x', 1, 0);
+    return $this->getParam('x', 0);
   }
 
   function getY()
   {
-    return $this->getParam('y', 2, 0);
+    return $this->getParam('y', 0);
   }
 
   function getOpacity()
   {
-    return $this->getParam('opacity', 3, 0);
+    return $this->getParam('opacity', 0);
   }
 }
 ?>
