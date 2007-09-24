@@ -22,8 +22,8 @@
   form {margin:0;padding:0;}
   dl, dt, dd, form {margin:0;padding: 0;}
   p {margin: 0;padding:5px 0;}
-  ul {margin: 0;padding: 10px 20px;}
-  table {border-spacing: 0;border-collapse: collapse;}
+  ul {margin:0;padding: 10px 20px;}
+  table {empty-cells:show;border-spacing:0;border-collapse:collapse;}
   table td {padding:0;}
   input {font:1.1em Arial;}
   select {font:1.1em Arial;}
@@ -36,7 +36,7 @@
 
   #top {font:1.3em/1.5 Arial;color:#fff;}
     #top a {color:#fff;}
-  #main_menu dt {font:1.4em Arial;color:#000}
+  #main_menu dt {font:1.5em Arial;color:#000}
     #main_menu dt span.current {color:#fff}
   #main_menu li a{font:1.1em Arial;color:#000;text-decoration:none;}
   #main_menu li a:hover{text-decoration: underline;}
@@ -48,7 +48,7 @@
     .attention span:hover{text-decoration: underline;}
   .bookmarks a {font:bold 12px Arial;color:#666666;text-decoration:none;}
     .bookmarks a:hover {text-decoration:underline;}
-    .bookmarks .active a {color:fff;}
+    .bookmarks .active a {color:#fff;}
     .bookmarks .active a:hover {text-decoration:none;}
   .header_context {font:1.1em Arial;}
   .list td, .list th{font:1.1em Arial}
@@ -60,8 +60,8 @@
 /*MISC*/
   .attention {background: #dff6dd;border:1px solid #c4e4b1;margin:10px 0 25px;padding:13px 16px;position:relative;clear:both}
     .attention span {background: url(../images/icon/close.gif) no-repeat right center;position:absolute;right:16px;padding:0 16px 0 0;}
-  .breadcrumbs {clear:both;margin:5px 0;}
-  .clearing {height:0;clear: both;padding:0;font-size:0;}
+  .breadcrumbs {clear:both; padding:5px 0 5px 0;}
+  .clearing {clear:both;padding:0;}
   .create {background: url(../images/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;float:left}
     .popup .create {float:none;margin:10px 0 0;display:block}
   .edit_mode {float:left;}
@@ -72,7 +72,7 @@
   .liquid_right {float:left;margin:0 10px 3px 0;}
   .no {background: url(../images/marker/no.gif) no-repeat left bottom;padding:0 0 3px 20px;}
   .magnifier {background: #fff;display:block;position:relative;width:13px;height:13px;padding:3px;margin:0 0 -16px 0;opacity:.70;filter: alpha(opacity=70); -moz-opacity: 0.7;}
-  .width100 {width:100%}
+  .width100 {width:98%;}
   .yes {background: url(../images/marker/yes.gif) no-repeat left top;padding:3px 0 0 20px;}
 
 /*MESSAGE ERROR*/
@@ -89,8 +89,8 @@
     .bookmarks a {background:url(../images/bgr/bookmarks/right.gif) no-repeat right top;padding:3px 15px 4px;display:block;}
     .bookmarks .active {background:#7d7d7d url(../images/bgr/bookmarks/current_left.gif) no-repeat left top;}
     .bookmarks .active a {background:url(../images/bgr/bookmarks/current_right.gif) no-repeat right top;}
-  .bookmarks_content {border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;min-height:320px;clear:both;margin:0 15px 0;padding:10px 10px 1px;overflow:hidden}
-    *html .bookmarks_content {height:335px;}
+  .bookmarks_content {border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;min-height:320px;clear:both;margin:0 15px 0;padding:10px 10px 1px;overflow:auto}
+    *html .bookmarks_content {height:320px;overflow:visible}
     .bookmarks_content .left_side {width:400px;float:left;}
     .bookmarks_content .right_side {width:400px;float:right;}
 
@@ -106,7 +106,7 @@
     .border_b .r {background: url(../images/bgr/border/rb.gif) no-repeat left top;float:right;width:4px;height:4px}
 
 /*PAGER*/
-  .pager {height:19px;font:1.1em Arial;color:#7d7d7d;margin:10px 0;float:right}
+  .pager {height:19px;font:1.1em Arial;color:#7d7d7d;margin:10px 0 10px 0;float:right;clear:both;}
   .pager b {background: #7d7d7d;font:bold 1em Arial;color:#fff;padding:1px 4px 1px 5px;vertical-align:middle;float:left;margin:0 3px;}
   .pager a {font:1em Arial;color:#00529b;vertical-align:middle;margin:0 3px;float:left}
   .pager a img {vertical-align:top}
@@ -117,49 +117,49 @@
 /*TOP*/
   #top {background: url(../images/bgr/header.gif) repeat left top;width:100%;float:left;}
     #top #logo {margin:5px 0 8px 60px;float:left;}
-    #top .jip_button {background: url(../images/marker/jip.gif) no-repeat left center;float:left;margin:7px 0 0 75px;padding:2px 0 4px 22px}
+    #top .jip_button {background: url(../images/marker/jip.gif) no-repeat left center;float:left;margin:7px 0 0 75px;padding:2px 0 4px 22px;}
     #top #user_data {float:right;margin:0 15px 0;}
-    #top #user_data .name, #top #user_data .profile {background: url(../images/bgr/user_data.gif) repeat-y right top;float:left;margin:0 5px;padding:8px 14px 10px;}
+    #top #user_data .name, #top #user_data .profile {background: url(../images/bgr/user_data.gif) repeat-y right top;float:left;margin:0 5px;padding:8px 14px 10px 0;}
     #top #user_data .logout {float:left;padding:8px 0 10px 0;}
 
 /*DASHBOARD*/
-  #dashboard {border:1px solid #ddd;border-top:3px solid #7d7d7d;margin:25px 15px 20px 20px;padding:1px 10px 1px;overflow:hidden}
+  #dashboard {border:1px solid #ddd;border-top:3px solid #7d7d7d;margin:25px 15px 20px 20px;padding:1px 10px 1px;overflow:hidden;}
   #dashboard h2 {background: url(../images/bgr/dashboard.section.gif) repeat left top;padding:0;margin:0 0 0 0;}
   #dashboard h2 span {background: url(../images/bgr/dashboard.section.right.gif) no-repeat right top;display:block;margin:0;padding:10px 7px 5px;}
-  #dashboard .section {border:1px solid #e4e2e2;border-top:0 none;padding:10px 7px 20px;margin:0 0 20px 0}
-  #dashboard .add {background: url(../images/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;margin-bottom:10px;display:block}
+  #dashboard .section {border:1px solid #e4e2e2;border-top:0 none;padding:10px 7px 20px;margin:0 0 20px 0;}
+  #dashboard .add {background: url(../images/bgr/create.gif) no-repeat left center;padding:3px 0 0px 25px;margin-bottom:10px;display:block;}
 
 /*HEADER CONTEXT*/
-  .header_context {border:1px solid #ddd;border-bottom:0px;border-top:3px solid #7d7d7d;padding:1px 10px 1px;position:relative;min-height:85px;margin:25px 15px 0 20px;}
-    .header_context .actions {margin-bottom:25px;overflow:hidden}
+  .header_context {border:1px solid #ddd;border-bottom:0px;border-top:3px solid #7d7d7d;padding:10px 10px 0 10px;margin:25px 15px 0 20px;}
+    .header_context .actions { padding:0 0 30px 0; }
 
 /*FILTER*/
-  #filter {overflow:hidden;clear:both;margin:0 -10px;}
-    *html #filter {height:1%}
-  .active_filter {background: url(../images/bgr/filter_border.gif) no-repeat left top;float:right;margin-right:10px;cursor:pointer;}
-  .active_filter span {background: url(../images/bgr/filter_arrow.gif) no-repeat right top;padding:.2em 17px 0.2em 6px;display:block}
-  .filter {border-top:1px solid #ddd;margin:0;padding:15px 10px 0;display:none;clear:both}
-    *html .filter {height:1%}
-  .filter .input {width:12em;margin-right:3px}
+  #filter {margin:0 -10px 0 -10px;clear:both;}
+  .active_filter {margin:0 10px 0 10px;height:1%;}
+  .active_filter div {background: url(../images/bgr/filter_border.gif) no-repeat left top;cursor:pointer;float:right;}
+  .active_filter span {background: url(../images/bgr/filter_arrow.gif) no-repeat right top;padding:.2em 17px 0.2em 6px;display:block;}
+    .filter {border-top:1px solid #ddd;clear:both;display:none;}
+    .filter form {padding:10px;}
+    .filter .input {width:12em;margin-right:3px;}
 
 /*LIST*/
-  .list {clear:both;margin:0 15px 0 20px;}
-  *html .list {height:1%}
+  .list {clear:both;margin:0 15px 0 20px;padding:0;}
+    *html .list {height:1%}
   .popup .list {margin:0 10px;}
   .list tr.odd {background:#ffffff;}
   .list tr.even {background:#f9f9f9;}
-  .list table {width:100%;}
-    .list th {background: #e5e5e5;border:1px solid #bbbbbb;text-align:left;padding:13px 8px;white-space:nowrap;}
-    .list td {border:1px solid #dddddd;text-align:left;padding:5px 8px;}
+  .list table {width:100%;border-right:1px solid #bbbbbb;}
+    .list th {background: #e5e5e5;border:1px solid #bbbbbb;border-bottom:0;border-right:0;text-align:left;padding:13px 8px;white-space:nowrap;}
+    .list td {border:1px solid #dddddd;border-bottom:0;border-right:0;text-align:left;padding:5px 8px;}
       .list td.actions {white-space:nowrap}
       .list td.actions img{vertical-align:middle;margin:5px;white-space:nowrap}
       .list th.selector {width:23px;}
       .list th.orders {width:42px}
-      .list input.order {height:1.8em;width:3.4em;border:1px inset #aaa;padding:2px 3px 0;}
+      .list input.order {height:1.5em;width:3.4em;border:1px inset #aaa;padding:2px 3px 0;}
       .list ul {margin:0;padding:0;}
       .list ul li {list-style-type:none;margin:3px;}
-  .list .list_actions {background: #e5e5e5;border:1px solid #bbb;position:relative;top:-1px;margin-bottom:20px;padding:3px 8px;font-size:0;clear:both}
-  .list .list_actions_top {background: #e5e5e5;border:1px solid #bbb;margin-bottom:-1px;padding:3px 8px;font-size:0;}
+  .list .list_actions {background: #e5e5e5;border:1px solid #bbb;margin-bottom:20px;padding:3px 8px;font-size:0;clear:both}
+  .list .list_actions_top {background: #e5e5e5;border:1px solid #bbb;border-bottom:0;padding:3px 8px 4px;font-size:0;}
     .list .list_actions input, .list_actions_top input {margin:0 10px 0 0;}
 
 /*LOGIN FORM*/
@@ -216,14 +216,14 @@
   .popup .noblock label {display:inline;}
   .popup label {display:block;}
   .popup .edit_mode label {display:inline;}
-  .fields {clear:both;margin:0 0 15px;}
+  .fields {clear:both;padding:0 0 10px 0;}
   .fields .calendar {margin:0 25px 0 5px;}
 
   .form_body {border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;;clear:both;margin:0 15px 0;padding:10px 10px 1px;}
   .form_body .input, .form_body textarea {width:100%}
   .form_body label {display: block}
 
-  input[type='text'], .input{background:#fff url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 3px 0;}
+  input[type='text'], .input{background:#fff url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.5em;padding:2px 3px 0;}
   .req {font:8pt Tahoma, sans;text-align:right;padding: 12px 10px 0 0 ; height:35px}
   select {background: url(../images/bgr/text-bg.gif) repeat-x top left;border: 1px solid #B5B8C8;height:1.9em;padding:2px 0 0 0;}
   select option {background:#fff;}

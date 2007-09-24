@@ -1,7 +1,5 @@
 <core:datasource from='#toolkit.user'>
-
 <div id='user_data'>
-    <b>{$login}</b>[{$full_name}][<a href='/user/logout'>logout</a>]
+  <span class='name'>{$login} [ {$full_name} ]</span> <a href="/admin_user/detail/{$id}" class='profile'>Мой профиль</a> <a href='/user/logout' class='logout'>Выйти</a>
 </div>
-
 </core:datasource>

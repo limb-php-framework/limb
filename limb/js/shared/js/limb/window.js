@@ -34,7 +34,7 @@ Limb.Class('Limb.Window',
       this.window = this._createWindow(arguments[0], arguments[1], arguments[2]);
       jQuery(this.window).ready(this.onOpen.bind(this));
       jQuery(this.window).load(this.onLoad.bind(this));
-      jQuery(this.window).bind(this.window, 'close', this.onClose.bind(this));
+      jQuery(this.window).bind('close', this.onClose.bind(this));
     }
   },
 

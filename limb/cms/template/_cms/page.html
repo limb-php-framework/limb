@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 <!-- Powered by LIMB | http://www.limb-project.com/ -->
 <!-- Designed by BIT | http://www.bit-creative.com/ -->
 <core:SET title="Панель управления">
@@ -40,12 +42,8 @@
 <!--BEGIN: header-->
 <div id='top'>
   <img src="/shared/cms/images/limb_admin.gif"  width='94' height='25' alt='LIMB' id='logo'/>
-  <core:datasource from='#toolkit.user'>
 
-    <div id='user_data'>
-      <span class='name'>{$login} [ {$full_name} ]</span> <a href="#" class='profile'>Мой профиль</a> <a href='/user/logout' class='logout'>Выйти</a>
-    </div>
-  </core:datasource>
+  <core:INCLUDE file='_cms/user_data.html'/>
 </div>
 <!--END: header-->
 

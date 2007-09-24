@@ -1,9 +1,10 @@
 <div id="filter">
-  <a class='active_filter'><span>Скрыть/показать фильтр</span></a>
-  <form id='filter_form' name='filter_form' runat='server' method='post' class='filter'>
-    <div class="fields">
+<div class='active_filter'><div><span>Скрыть/показать фильтр</span></div></div>
+<div class='clearing'></div>
+<div class='filter'>
+  <form id='filter_form' name='filter_form' runat='server' method='post'>
       Раздел: <input type='text' id='parent_path' name='parent_path' runat='server' size='40' given_value='{$#parent_path}'/>
       <input type='submit' name='submitted' value="Фильтровать"  class='button'>
-    </div>
   </form>
+</div>
 </div>

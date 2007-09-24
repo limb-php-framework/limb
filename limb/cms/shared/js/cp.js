@@ -5,26 +5,18 @@ function toggle_selected(toggle_obj)
   var parent_form = toggle_obj.form;
   var mark = toggle_obj.checked;
 
-  jQuery(parent_form.elements).filter("input:checkbox[@name='ids[]']").each(function(){
-                                      jQuery(this).attr("checked", mark);
+  jQuery("input:checkbox[@name='ids[]']", parent_form).each(function(){
+                                        jQuery(this).attr("checked", mark);
                                   });
 }
 
 function control_filter()
 {
-  if(jQuery(this).next().attr('class')!='filter')
-    return;
-
-  if(jQuery('.header_context .filter').css('display')=='none')
-  {
-    jQuery('.header_context .filter').slideDown('fast');
-    Limb.cookie('filter', 1);
-  }
-  else
-  {
-    jQuery('.header_context form.filter').slideUp('fast');
+  jQuery('.filter').animate({height: 'toggle'}, "slow");
+  if(Limb.cookie('filter') == 1)
     Limb.cookie('filter', 0);
-  }
+  else
+    Limb.cookie('filter', 1);
 }
 
 function control_error()
@@ -215,15 +207,14 @@ function changed_field_highlighter()
 jQuery(window).ready(function(){
 
   //filter up/down sliding control
-  jQuery('.header_context .active_filter').bind('click', control_filter);
+  jQuery('.active_filter').bind('click', control_filter);
   jQuery('.message_error .show_hidden').bind('click', control_error);
 
   //cookied filter
   if(Limb.cookie('filter') == 1)
-    jQuery('.header_context .filter').show();
+    jQuery('.filter').show();
 
   //resized images
-
   jQuery('img[@resize]')
     .one('load', function()
     {
