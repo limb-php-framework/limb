@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
 lmb_require('limb/validation/src/rule/lmbRequiredObjectRule.class.php');
@@ -32,7 +32,8 @@ class lmbRequiredObjectRuleTest extends lmbValidationRuleTestCase
     $dataspace = new lmbSet();
 
     $this->error_list->expectOnce('addError', array(lmb_i18n('Object {Field} is required', 'validation'),
-                                                         array('Field'=>'testfield')));
+                                                         array('Field'=>'testfield'),
+                                                         array()));
 
     $rule->validate($dataspace, $this->error_list);
   }
@@ -44,7 +45,8 @@ class lmbRequiredObjectRuleTest extends lmbValidationRuleTestCase
     $dataspace = new lmbSet(array('testfield' => 'whatever_and_not_object'));
 
     $this->error_list->expectOnce('addError', array(lmb_i18n('Object {Field} is required', 'validation'),
-                                                         array('Field'=>'testfield')));
+                                                         array('Field'=>'testfield'),
+                                                         array()));
 
     $rule->validate($dataspace, $this->error_list);
   }
@@ -57,7 +59,8 @@ class lmbRequiredObjectRuleTest extends lmbValidationRuleTestCase
     $dataspace->set('testfield', new TestObjectForThisRule());
 
     $this->error_list->expectOnce('addError', array(lmb_i18n('Object {Field} is required', 'validation'),
-                                                         array('Field'=>'testfield')));
+                                                         array('Field'=>'testfield'),
+                                                         array()));
     $rule->validate($dataspace, $this->error_list);
   }
 
@@ -69,7 +72,8 @@ class lmbRequiredObjectRuleTest extends lmbValidationRuleTestCase
     $dataspace->set('testfield', new TestObjectForThisRule());
 
     $this->error_list->expectOnce('addError', array('Custom_Error',
-                                                    array('Field'=>'testfield')));
+                                                    array('Field'=>'testfield'),
+                                                    array()));
     $rule->validate($dataspace, $this->error_list);
   }
 }

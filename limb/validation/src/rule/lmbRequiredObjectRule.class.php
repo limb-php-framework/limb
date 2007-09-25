@@ -2,12 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
-lmb_require('limb/i18n/common.inc.php');
+lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
 
 /**
  * Checks that field is present in datasource and it's value is an object of some or any class
@@ -20,9 +19,9 @@ lmb_require('limb/i18n/common.inc.php');
  * </code>
  * @see lmbValidator :: addRequiredObjectRule()
  * @package validation
- * @version $Id: lmbRequiredObjectRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbRequiredObjectRule.class.php 6334 2007-09-25 11:39:40Z serega $
  */
-class lmbRequiredObjectRule implements lmbValidationRule
+class lmbRequiredObjectRule extends lmbBaseValidationRule
 {
   /**
   * @var string Field name
@@ -49,16 +48,16 @@ class lmbRequiredObjectRule implements lmbValidationRule
   }
 
   /**
-  * @see lmbValidationRule :: validate()
+  * @see lmbBaseValidationRule :: _doValidate()
   */
-  function validate($datasource, $error_list)
+  protected function _doValidate($datasource)
   {
     $value = $datasource->get($this->field_name);
 
     if(!is_object($value) || ($this->class && get_class($value) != $this->class))
     {
       $error = $this->custom_error ? $this->custom_error : lmb_i18n('Object {Field} is required', 'validation');
-      $error_list->addError($error, array('Field' => $this->field_name));
+      $this->error($error, array('Field' => $this->field_name));
       return;
     }
   }

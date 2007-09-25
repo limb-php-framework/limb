@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
+lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
 lmb_require('limb/i18n/common.inc.php');
 
 /**
@@ -22,9 +22,9 @@ lmb_require('limb/i18n/common.inc.php');
  * </code>
  * @see lmbValidator :: addRequiredRule()
  * @package validation
- * @version $Id: lmbRequiredRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbRequiredRule.class.php 6334 2007-09-25 11:39:40Z serega $
  */
-class lmbRequiredRule implements lmbValidationRule
+class lmbRequiredRule extends lmbBaseValidationRule
 {
   /**
   * @var string Field name
@@ -46,16 +46,15 @@ class lmbRequiredRule implements lmbValidationRule
   }
 
   /**
-  * @see lmbValidationRule :: validate()
+  * @see lmbBaseValidationRule :: _doValidate()
   */
-  function validate($datasource, $error_list)
+  protected function _doValidate($datasource)
   {
     $value = $datasource->get($this->field_name);
     if(is_null($value) || (is_string($value) && trim($value) === ''))
     {
       $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} is required', 'validation');
-      $error_list->addError($error, array('Field' => $this->field_name));
-      return;
+      $this->error($error, array('Field' => $this->field_name));
     }
   }
 }

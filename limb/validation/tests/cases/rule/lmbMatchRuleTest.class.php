@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
 lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
@@ -69,7 +69,8 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
 
     $this->error_list->expectOnce('addError',
                                   array(lmb_i18n('{Field} does not match {MatchField}.', 'validation'),
-                                        array('Field' => 'testfield', 'MatchField' => 'testmatch')));
+                                        array('Field' => 'testfield', 'MatchField' => 'testmatch'),
+                                        array()));
 
     $rule->validate($dataspace, $this->error_list);
   }
@@ -84,7 +85,8 @@ class lmbMatchRuleTest extends lmbValidationRuleTestCase
 
     $this->error_list->expectOnce('addError',
                                   array('Custom_Error',
-                                        array('Field' => 'testfield', 'MatchField' => 'testmatch')));
+                                        array('Field' => 'testfield', 'MatchField' => 'testmatch'),
+                                        array()));
 
     $rule->validate($dataspace, $this->error_list);
   }

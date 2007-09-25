@@ -2,29 +2,24 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
-lmb_require('limb/i18n/common.inc.php');
+lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
 
 /**
  * A base class for rules responsbile for validating a single field should inherit this class.
  * @package validation
- * @version $Id: lmbSingleFieldRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbSingleFieldRule.class.php 6334 2007-09-25 11:39:40Z serega $
  */
-abstract class lmbSingleFieldRule implements lmbValidationRule
+abstract class lmbSingleFieldRule extends lmbBaseValidationRule
 {
   /**
   * @var string Field name
   */
   protected $field_name;
-  /**
-  * @see validate()
-  * @var lmbErrorList List of errors.
-  */
-  protected $error_list;
+
   /**
   * @var string Custom error message
   */
@@ -60,7 +55,7 @@ abstract class lmbSingleFieldRule implements lmbValidationRule
   function error($message, $values = array(), $i18n_params = array())
   {
     $error = $this->custom_error ? $this->custom_error : lmb_i18n($message, $i18n_params, 'validation');
-    $this->error_list->addError($error, array('Field' => $this->field_name), $values);
+    parent :: error($error, array('Field' => $this->field_name), $values);
   }
 
   /**
@@ -69,11 +64,10 @@ abstract class lmbSingleFieldRule implements lmbValidationRule
   * Child classes must implement check($value) method to perform real validation.
   * To check field for existance and having none empty value use {@link lmbRequiredRule}
   * Fills {@link $error_list}
-  * @see lmbValidationRule :: validate
+  * @see lmbBaseValidationRule :: _doValidate()
   */
-  function validate($datasource, $error_list)
+  protected function _doValidate($datasource)
   {
-    $this->error_list = $error_list;
     $value = $datasource->get($this->field_name);
     if(isset($value) && $value !== '')
       $this->check($value);

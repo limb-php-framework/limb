@@ -2,11 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
+lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
 
 /**
  * Checks that field value exactly match a reference field value
@@ -16,9 +16,9 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
  *  $validator->addRule(new lmbMatchRule('password', 'repeat_password'));
  * </code>
  * @package validation
- * @version $Id: lmbMatchRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbMatchRule.class.php 6334 2007-09-25 11:39:40Z serega $
  */
-class lmbMatchRule implements lmbValidationRule
+class lmbMatchRule extends lmbBaseValidationRule
 {
   /**
   * @var string Reference field name to match against
@@ -47,9 +47,9 @@ class lmbMatchRule implements lmbValidationRule
   }
 
   /**
-  * @see lmbValidationRule :: validate()
+  * @see lmbBaseValidationRule :: _doValidate()
   */
-  function validate($datasource, $error_list)
+  protected function _doValidate($datasource)
   {
     $value1 = $datasource->get($this->field_name);
     $value2 = $datasource->get($this->reference_field);
@@ -57,9 +57,7 @@ class lmbMatchRule implements lmbValidationRule
     if(isset($value1) && isset($value2) && strcmp($value1, $value2))
     {
       $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} does not match {MatchField}.', 'validation');
-      $error_list->addError($error,
-                            array('Field' => $this->field_name,
-                                  'MatchField' => $this->reference_field));
+      $this->error($error, array('Field' => $this->field_name, 'MatchField' => $this->reference_field));
     }
   }
 }

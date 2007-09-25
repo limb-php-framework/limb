@@ -2,11 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
+lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
 
 /**
  * Checks that at least one field from a list has not null value
@@ -16,9 +16,9 @@ lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
  * $validator->addRule(new lmbAtleastOneFieldRequiredRule(array('name', 'nickname', 'fullname')));
  * </code>
  * @package validation
- * @version $Id: lmbAtleastOneFieldRequiredRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbAtleastOneFieldRequiredRule.class.php 6334 2007-09-25 11:39:40Z serega $
  */
-class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
+class lmbAtleastOneFieldRequiredRule extends lmbBaseValidationRule
 {
   /**
   * @var array List of fields
@@ -36,14 +36,14 @@ class lmbAtleastOneFieldRequiredRule implements lmbValidationRule
   }
 
   /**
-  * @see lmbValidationRule :: validate()
+  * @see lmbBaseValidationRule :: _doValidate()
   */
-  function validate($datasource, $error_list)
+  protected function _doValidate($datasource)
   {
     if(!$this->_findAtleastOneField($datasource))
     {
       $error = $this->custom_error ? $this->custom_error : $this->_generateErrorMessage();
-      $error_list->addError($error, $this->field_names, array());
+      $this->error($error, $this->field_names, array());
     }
   }
 
