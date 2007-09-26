@@ -29,6 +29,14 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
     $this->assertIsA($dictionary->findTagInfo('testtag'), 'lmbMacroTagInfo');
   }
 
+  function testFindOutputTagInfoSpecialCase()
+  {
+    $dictionary = new lmbMacroTagDictionary();
+    $info = $dictionary->findTagInfo('$var');
+    $this->assertIsA($info, 'lmbMacroTagInfo');
+    $this->assertEqual($info->getClass(), 'lmbMacroOutputTag');
+  }
+
   function testRegisterTagInfoOnceOnly()
   {
     $dictionary = new lmbMacroTagDictionary();

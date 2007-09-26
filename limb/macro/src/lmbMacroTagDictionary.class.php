@@ -18,6 +18,7 @@ lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 class lmbMacroTagDictionary
 {
   protected $info = array();
+  protected $output_tag_info;
   static protected $instance;
 
   static function instance()
@@ -49,9 +50,30 @@ class lmbMacroTagDictionary
 
   function findTagInfo($tag)
   {
-    $tag = strtolower($tag);
-    if(isset($this->info[$tag]))
-      return $this->info[$tag];
+    if($this->_isOutputTag($tag))
+      return $this->_getOutputTagInfo();
+    else
+    {
+      $tag = strtolower($tag);
+      if(isset($this->info[$tag]))
+        return $this->info[$tag];
+    }
+  }
+
+  protected function _isOutputTag($tag)
+  {
+    return $tag{0} == '$';
+  }
+
+  protected function _getOutputTagInfo()
+  {
+    if($this->output_tag_info)
+      return $this->output_tag_info;
+
+    //taking first item
+    $this->output_tag_info = reset(lmbMacroTagInfo :: extractFromFile($file = dirname(__FILE__) . '/tags/output.tag.php'));
+    $this->output_tag_info->setFile($file);
+    return $this->output_tag_info;
   }
 }
 

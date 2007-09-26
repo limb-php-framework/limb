@@ -112,7 +112,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
       $tag_node->set($name, $value);
     }
   }  
-  
+
   protected function _createTagNode($tag_info, $tag)
   {
     $class = $tag_info->getClass();

@@ -68,8 +68,14 @@ class lmbMacroTagInfo
   {
     if(!isset($annotations['tag']))
       throw new lmbMacroException("@tag annotation is missing for class '$class'");
+
     $tag = $annotations['tag'];
-    return new lmbMacroTagInfo($tag, $class);
+    $info = new lmbMacroTagInfo($tag, $class);
+
+    if(isset($annotations['endtag']) && $annotations['endtag'] == 'no')
+      $info->setForbidEndtag(true);
+
+    return $info;
   }
 
   static protected function _extractAnnotations($content)

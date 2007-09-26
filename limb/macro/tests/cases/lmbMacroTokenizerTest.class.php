@@ -93,6 +93,15 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->parser->parse('<%/%>');
   }
 
+  function testOutputTag()
+  {
+    $this->listener->expectOnce('startElement', array('$value', array()));
+    $this->listener->expectNever('characters');
+    $this->listener->expectNever('endElement');
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->parser->parse('<%$value%>');
+  }
+
   function testElementWithPreContent()
   {
     $this->listener->expectOnce('characters', array('stuff'));
