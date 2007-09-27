@@ -8,7 +8,7 @@
  */
 lmb_require('limb/cli/src/lmbCliBaseCmd.class.php');
 
-@define('LIMB_CLI_INCLUDE_PATH', 'cli;limb/*/cli');
+@define('LIMB_CLI_INCLUDE_PATH', 'cli;*/cli;limb/*/cli');
 
 /**
  * class lmbCliRunner.
