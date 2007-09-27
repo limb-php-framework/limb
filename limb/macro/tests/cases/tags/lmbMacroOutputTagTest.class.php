@@ -8,6 +8,7 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 
@@ -32,6 +33,45 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, 'Foo');
+  }
+
+  function testSimpleChainedOutputForArray()
+  {
+    $content = '<%$#var.foo.bar%>';
+
+    $tpl = $this->_createTemplate($content, 'tpl.html');
+
+    $macro = $this->_createMacro($tpl);
+    $macro->set('var', array('foo' => array('bar' => 'Hey')));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Hey');
+  }
+
+  function testSimpleChainedOutputForObject()
+  {
+    $content = '<%$#var.foo.bar%>';
+
+    $tpl = $this->_createTemplate($content, 'tpl.html');
+
+    $macro = $this->_createMacro($tpl);
+    $macro->set('var', new lmbObject(array('foo' => new lmbObject(array('bar' => 'Hey')))));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Hey');
+  }
+
+  function testChainedOutputForMixedArrayAndObjects()
+  {
+    $content = '<%$#var.foo.bar%>';
+
+    $tpl = $this->_createTemplate($content, 'tpl.html');
+
+    $macro = $this->_createMacro($tpl);
+    $macro->set('var', new lmbObject(array('foo' => array('bar' => 'Hey'))));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Hey'); 
   }
 
   protected function _createMacro($file)

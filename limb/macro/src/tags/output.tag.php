@@ -21,7 +21,37 @@ class lmbMacroOutputTag extends lmbMacroTag
 {
   function generateContents($code)
   {
-    $code->writePHP('echo ' . $this->tag . ';');
+    $code->writePHP($this->_compileExpression($code));
+  }
+
+  protected function _compileExpression($code)
+  {
+    if(strpos($this->tag, '.') === false)
+      return 'echo ' . $this->tag . ';';
+
+    $result = '';
+
+    $tmp = $code->getTempVarRef();
+    $code->writePHP($tmp . "='';");
+
+    $items = explode('.', $this->tag);
+    //first item is variable itself
+    $prev = $items[0];
+    for($i=1; $i<sizeof($items); $i++)
+    {
+      $item = $items[$i];
+      $result .= 'if((is_array(' . $prev . ') && isset(' . $prev . '["' . $item . '"])) || ' . 
+                 '(is_object(' . $prev . ') && ' . $tmp . '=' . $prev . '->get("' . $item . '")))' .  
+                 '{ if(is_array(' . $prev . '))' . $tmp . ' = ' . $prev . '["' . $item . '"];';
+      $prev = $tmp;
+    }
+
+    //closing brackets
+    for($i=1; $i<sizeof($items); $i++)
+      $result .= '}';
+
+    $result .= "echo $tmp;";
+    return $result;
   }
 }
 
