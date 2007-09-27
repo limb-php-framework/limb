@@ -61,7 +61,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
     $this->assertEqual($out, 'Hey');
   }
 
-  function testChainedOutputForMixedArrayAndObjects()
+  function testChainedOutputForMixedArraysAndObjects()
   {
     $content = '<%$#var.foo.bar%>';
 
