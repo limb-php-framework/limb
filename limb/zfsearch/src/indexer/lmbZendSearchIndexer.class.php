@@ -9,7 +9,7 @@
  /**
  * class lmbZendSearchIndexer
  *
- * @package zend_search
+ * @package zfsearch
  * @version $Id$
  */
 class lmbZendSearchIndexer

@@ -9,7 +9,7 @@
  /**
  * class ZendSearchCliCmd
  *
- * @package zend_search
+ * @package zfsearch
  * @version $Id$
  */
 class ZendSearchCliCmd extends lmbCliBaseCmd
@@ -38,7 +38,7 @@ class ZendSearchCliCmd extends lmbCliBaseCmd
     require_once('limb/web_spider/src/lmbContentTypeFilter.class.php');
     require_once('limb/web_spider/src/lmbSearchIndexingObserver.class.php');
     require_once('limb/web_spider/src/lmbUriNormalizer.class.php');
-    require_once('limb/zend_search/src/indexer/lmbZendSearchIndexer.class.php');
+    require_once('limb/zfsearch/src/indexer/lmbZendSearchIndexer.class.php');
     
     $uri = new lmbUri($input->getArgument(0));
     

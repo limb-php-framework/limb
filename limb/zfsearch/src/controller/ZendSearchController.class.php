@@ -9,7 +9,7 @@
  /**
  * class ZendSearchController
  *
- * @package zend_search
+ * @package zfsearch
  * @version $Id$
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');

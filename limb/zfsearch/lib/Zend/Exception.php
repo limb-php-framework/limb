@@ -9,7 +9,7 @@
  /**
  * class Zend_Exception
  *
- * @package zend_search
+ * @package zfsearch
  * @version $Id$
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');

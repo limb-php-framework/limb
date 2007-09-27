@@ -8,7 +8,7 @@
  */
  /**
  *
- * @package zend_search
+ * @package zfsearch
  * @version $Id$
  */
 lmb_require('limb/i18n/utf8.inc.php');
