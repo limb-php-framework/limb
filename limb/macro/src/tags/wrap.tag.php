@@ -32,7 +32,7 @@ class lmbMacroWrapTag extends lmbMacroTag
       $file = $this->get('with');
       $this->_compileSourceFileName($file, $compiler);
 
-      //if there's no 'into' attribute we consider that <%into%> tags used instead
+      //if there's no 'into' attribute we consider that {{into}} tags used instead
       if($into = $this->get('into'))
       {
         $tree_builder = $compiler->getTreeBuilder();
@@ -86,7 +86,7 @@ class lmbMacroWrapTag extends lmbMacroTag
       $handlers_str = 'array(';
       $methods = array();
 
-      //collecting <%into%> tags
+      //collecting {{into}} tags
       if($intos = $this->_collectIntos())
       {
         foreach($intos as $into)

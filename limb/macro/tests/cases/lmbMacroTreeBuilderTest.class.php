@@ -156,7 +156,7 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
   function testPushCursor()
   {
     // This test is essentially a test of the functionality that enables the
-    // <%wrap%> implementation.
+    // {{wrap}} implementation.
     // Briefly:
     // 	(1) A tree is set up
     //  (2) A new cursor is pushed

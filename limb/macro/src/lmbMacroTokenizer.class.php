@@ -65,7 +65,7 @@ class lmbMacroTokenizer
     do
     {
       $start = $this->position;
-      $this->position = strpos($this->rawtext, '<%', $start);
+      $this->position = strpos($this->rawtext, '{{', $start);
       if($this->position === false)
       {
         if($start < $this->length)
@@ -78,10 +78,10 @@ class lmbMacroTokenizer
         $this->observer->characters(substr($this->rawtext, $start, $this->position - $start));
       }
 
-      $this->position += 2;   // ignore '<%' string
+      $this->position += 2;   // ignore '{{' string
       if($this->position >= $this->length)
       {
-        $this->observer->unexpectedEOF('<%');
+        $this->observer->unexpectedEOF('{{');
         return;
       }
 
@@ -93,8 +93,8 @@ class lmbMacroTokenizer
         case '/':
           $start = $this->position;
           while($this->position < $this->length &&
-                $this->rawtext{$this->position} != '%' &&
-                $this->rawtext{$this->position+1} != '>')
+                !($this->rawtext{$this->position} == '}' &&
+                  $this->rawtext{$this->position+1} == '}'))
             $this->position++;
 
           if($this->position >= $this->length)
@@ -106,11 +106,11 @@ class lmbMacroTokenizer
           $tag = substr($this->rawtext, $start, $this->position - $start);
 
           $this->observer->endElement($tag);
-          $this->position += 2;   // ignore '%>' string
+          $this->position += 2;   // ignore '}}' string
           break;
 
       default:
-          while($this->position < $this->length && strpos("%/ \n\r\t", $this->rawtext{$this->position}) === false)
+          while($this->position < $this->length && strpos("}/ \n\r\t", $this->rawtext{$this->position}) === false)
             $this->position++;
 
           if($this->position >= $this->length)
@@ -126,11 +126,11 @@ class lmbMacroTokenizer
 
           //tag attributes
           while($this->position < $this->length &&
-                $this->rawtext{$this->position} != '%' &&
+                $this->rawtext{$this->position} != '}' &&
                 $this->rawtext{$this->position} != '/')
           {
             $start = $this->position;
-            while($this->position < $this->length && strpos("%= \n\r\t", $this->rawtext{$this->position}) === false)
+            while($this->position < $this->length && strpos("}= \n\r\t", $this->rawtext{$this->position}) === false)
               $this->position++;
 
             if($this->position >= $this->length)
@@ -181,13 +181,13 @@ class lmbMacroTokenizer
                   return;
                 }
 
-                if(strpos("/% \n\r\t", $this->rawtext{$this->position}) === false)
+                if(strpos("/} \n\r\t", $this->rawtext{$this->position}) === false)
                   $this->observer->invalidAttributeSyntax(substr($this->rawtext, $this->position));
               }
               else
               {
                 $start = $this->position;
-                while($this->position < $this->length && strpos("% \n\r\t", $this->rawtext{$this->position}) === false)
+                while($this->position < $this->length && strpos("} \n\r\t", $this->rawtext{$this->position}) === false)
                   $this->position++;
 
                 if($this->position >= $this->length)
@@ -211,7 +211,7 @@ class lmbMacroTokenizer
           }
 
           //self closing tag check
-          if($this->rawtext{$this->position} == '/' && $this->rawtext{$this->position + 1} == '%')
+          if($this->rawtext{$this->position} == '/' && $this->rawtext{$this->position + 1} == '}')
           {
             $this->position += 2;
             if($this->position >= $this->length)
@@ -220,10 +220,10 @@ class lmbMacroTokenizer
               return;
             }
 
-            if($this->rawtext{$this->position} != '>')
+            if($this->rawtext{$this->position} != '}')
             {
               $start = $this->position;
-              while($this->position < $this->length && $this->rawtext{$this->position} != '>')
+              while($this->position < $this->length && $this->rawtext{$this->position} != '}')
                 $this->position++;
 
               if($this->position >= $this->length)
@@ -242,7 +242,7 @@ class lmbMacroTokenizer
           else
           {
             $this->observer->startElement($tag, $attributes);
-            //skipping %
+            //skipping }
             $this->position += 1;
           }
 

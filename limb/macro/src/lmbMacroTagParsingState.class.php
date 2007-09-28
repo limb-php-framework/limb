@@ -38,7 +38,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     {
       $tag_node = $this->buildTagNode($tag_info, $tag, $attrs, $self_closed_tag = true);
       $tag_node->setHasClosingTag(false);
-      $this->tree_builder->pushNode($tag_node); // for cases like <%include%> we do pushNode() and popNode() here.
+      $this->tree_builder->pushNode($tag_node); // for cases like {{include}} we do pushNode() and popNode() here.
       $this->tree_builder->popNode();      
     }
     else
@@ -76,7 +76,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
     $tag_node = $this->buildTagNode($tag_info, $tag, $attrs, $self_closed_tag = true);
     $tag_node->setHasClosingTag(false);
-    $this->tree_builder->pushNode($tag_node); // for cases like <%include%> we do pushNode() and popNode() here.
+    $this->tree_builder->pushNode($tag_node); // for cases like {{include}} we do pushNode() and popNode() here.
     $this->tree_builder->popNode();
   }
   

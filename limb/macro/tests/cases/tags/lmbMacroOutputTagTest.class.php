@@ -24,7 +24,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testSimpleOutput()
   {
-    $content = '<%$#var%>';
+    $content = '{{$#var}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 
@@ -37,7 +37,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testSimpleChainedOutputForArray()
   {
-    $content = '<%$#var.foo.bar%>';
+    $content = '{{$#var.foo.bar}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 
@@ -50,7 +50,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testBrokenChainOutputForArray()
   {
-    $content = '<%$#var.foo.bar.baz%>';
+    $content = '{{$#var.foo.bar.baz}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 
@@ -71,7 +71,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testSimpleChainedOutputForObject()
   {
-    $content = '<%$#var.foo.bar%>';
+    $content = '{{$#var.foo.bar}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 
@@ -84,7 +84,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testBrokenChainOutputForObject()
   {
-    $content = '<%$#var.foo.bar.baz%>';
+    $content = '{{$#var.foo.bar.baz}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 
@@ -105,7 +105,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testChainedOutputForMixedArraysAndObjects()
   {
-    $content = '<%$#var.foo.bar%>';
+    $content = '{{$#var.foo.bar}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 
@@ -118,7 +118,7 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testBrokenChainOutputForMixedArraysAndObjects()
   {
-    $content = '<%$#var.foo.bar.baz%>';
+    $content = '{{$#var.foo.bar.baz}}';
 
     $tpl = $this->_createTemplate($content, 'tpl.html');
 

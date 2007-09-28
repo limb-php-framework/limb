@@ -40,10 +40,10 @@ class lmbMacroListTag extends lmbMacroTag
 
     foreach($this->children as $child)
     {
-      //we want to skip all <%list:*%> tags, since they are rendered manually
+      //we want to skip all {{list:*}} tags, since they are rendered manually
       if(!$this->_isOneOfListTags($child))
       {
-        //tags before <%list:item%> should be rendered only once when counter is 0
+        //tags before {{list:item}} should be rendered only once when counter is 0
         if(!$found_item_tag)
         {
           $code->writePHP('if(' . $counter . ' == 0) {');
@@ -70,7 +70,7 @@ class lmbMacroListTag extends lmbMacroTag
     $code->writePHP($counter . '++;');
     $code->writePHP('}');
 
-    //tags after <%list:item%> should be rendered only if there were any items
+    //tags after {{list:item}} should be rendered only if there were any items
     foreach($postponed_nodes as $node)
     {
       $code->writePHP('if(' . $counter . ' > 0) {');

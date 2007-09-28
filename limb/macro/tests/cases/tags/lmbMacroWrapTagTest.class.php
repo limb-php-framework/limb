@@ -25,8 +25,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testSimpleStaticWrap()
   {
-    $bar = '<%wrap with="foo.html" into="slot1"%>Bob<%/wrap%>';
-    $foo = '<p>Hello, <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="foo.html" into="slot1"}}Bob{{/wrap}}';
+    $foo = '<p>Hello, {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -39,8 +39,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testStaticWrapWithVariables()
   {
-    $bar = '<%wrap with="foo.html" into="slot1"%><?php echo $this->bob?><%/wrap%>';
-    $foo = '<p>Hello, <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="foo.html" into="slot1"}}<?php echo $this->bob?>{{/wrap}}';
+    $foo = '<p>Hello, {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -54,9 +54,9 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testNestedStaticWrap()
   {
-    $bar = '<%wrap with="foo.html" into="slot1"%><?php echo $this->bob?><%/wrap%>';
-    $foo = '<%wrap with="zoo.html" into="slot2"%><p>Hello, <%slot id="slot1"/%></p><%/wrap%>';
-    $zoo = '<body><%slot id="slot2"/%></body>';
+    $bar = '{{wrap with="foo.html" into="slot1"}}<?php echo $this->bob?>{{/wrap}}';
+    $foo = '{{wrap with="zoo.html" into="slot2"}}<p>Hello, {{slot id="slot1"/}}</p>{{/wrap}}';
+    $zoo = '<body>{{slot id="slot2"/}}</body>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -71,8 +71,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testMultiStaticWrap()
   {
-    $bar = '<%wrap with="foo.html"%><%into slot="slot1"%>Bob<%/into%><%into slot="slot2"%>Thorton<%/into%><%/wrap%>';
-    $foo = '<p>Hello, <%slot id="slot2"/%> <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="foo.html"}}{{into slot="slot1"}}Bob{{/into}}{{into slot="slot2"}}Thorton{{/into}}{{/wrap}}';
+    $foo = '<p>Hello, {{slot id="slot2"/}} {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -85,8 +85,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testSimpleDynamicWrap()
   {    
-    $bar = '<%wrap with="$this->layout" into="slot1"%>Bob<%/wrap%>';
-    $foo = '<p>Hello, <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="$this->layout" into="slot1"}}Bob{{/wrap}}';
+    $foo = '<p>Hello, {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -100,8 +100,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testMultiDynamicWrap()
   {
-    $bar = '<%wrap with="$this->layout"%><%into slot="slot1"%>Bob<%/into%><%into slot="slot2"%>Thorton<%/into%><%/wrap%>';
-    $foo = '<p>Hello, <%slot id="slot2"/%> <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="$this->layout"}}{{into slot="slot1"}}Bob{{/into}}{{into slot="slot2"}}Thorton{{/into}}{{/wrap}}';
+    $foo = '<p>Hello, {{slot id="slot2"/}} {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -115,9 +115,9 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testMixStaticAndDynamicWrap()
   {
-    $bar = '<%wrap with="$this->layout" into="slot1"%><?php echo $this->bob?><%/wrap%>';
-    $foo = '<%wrap with="zoo.html" into="slot2"%><p>Hello, <%slot id="slot1"/%></p><%/wrap%>';
-    $zoo = '<body><%slot id="slot2"/%></body>';
+    $bar = '{{wrap with="$this->layout" into="slot1"}}<?php echo $this->bob?>{{/wrap}}';
+    $foo = '{{wrap with="zoo.html" into="slot2"}}<p>Hello, {{slot id="slot1"/}}</p>{{/wrap}}';
+    $zoo = '<body>{{slot id="slot2"/}}</body>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -133,9 +133,9 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testNestedDynamicWrap()
   {
-    $bar = '<%wrap with="$this->layout1" into="slot1"%><?php echo $this->bob?><%/wrap%>';
-    $foo = '<%wrap with="$this->layout2" into="slot2"%><p>Hello, <%slot id="slot1"/%></p><%/wrap%>';
-    $zoo = '<body><%slot id="slot2"/%></body>';
+    $bar = '{{wrap with="$this->layout1" into="slot1"}}<?php echo $this->bob?>{{/wrap}}';
+    $foo = '{{wrap with="$this->layout2" into="slot2"}}<p>Hello, {{slot id="slot1"/}}</p>{{/wrap}}';
+    $zoo = '<body>{{slot id="slot2"/}}</body>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -152,8 +152,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testStaticallyWrappedChildAccessesParentData()
   {
-    $bar = '<%wrap with="foo.html" into="slot1"%><?php echo $this->bob?><%/wrap%>';
-    $foo = '<?php $this->bob = "Bob";?><p>Hello, <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="foo.html" into="slot1"}}<?php echo $this->bob?>{{/wrap}}';
+    $foo = '<?php $this->bob = "Bob";?><p>Hello, {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -166,8 +166,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testDynamicallyWrappedChildAccessesParentData()
   {
-    $bar = '<%wrap with="$this->layout" into="slot1"%><?php echo $this->bob?><%/wrap%>';
-    $foo = '<?php $this->bob = "Bob";?><p>Hello, <%slot id="slot1"/%></p>';
+    $bar = '{{wrap with="$this->layout" into="slot1"}}<?php echo $this->bob?>{{/wrap}}';
+    $foo = '<?php $this->bob = "Bob";?><p>Hello, {{slot id="slot1"/}}</p>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -181,8 +181,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testStaticallyWrappedChildLocalVarsAreIsolated()
   {
-    $bar = '<%wrap with="foo.html" into="slot1"%><?php $foo = "Todd";?><%/wrap%>';
-    $foo = '<?php $foo = "Bob";?><%slot id="slot1"/%><?php echo $foo;?>';
+    $bar = '{{wrap with="foo.html" into="slot1"}}<?php $foo = "Todd";?>{{/wrap}}';
+    $foo = '<?php $foo = "Bob";?>{{slot id="slot1"/}}<?php echo $foo;?>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
@@ -195,8 +195,8 @@ class lmbMacroWrapTagTest extends UnitTestCase
 
   function testDynamicallyWrappedChildLocalVarsAreIsolated()
   {
-    $bar = '<%wrap with="$this->layout" into="slot1"%><?php $foo = "Todd";?><%/wrap%>';
-    $foo = '<?php $foo = "Bob";?><%slot id="slot1"/%><?php echo $foo;?>';
+    $bar = '{{wrap with="$this->layout" into="slot1"}}<?php $foo = "Todd";?>{{/wrap}}';
+    $foo = '<?php $foo = "Bob";?>{{slot id="slot1"/}}<?php echo $foo;?>';
 
     $bar_tpl = $this->_createTemplate($bar, 'bar.html');
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');

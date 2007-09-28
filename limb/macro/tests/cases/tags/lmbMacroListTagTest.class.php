@@ -26,7 +26,7 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testSimpleList()
   {
-    $list = '<%list using="$#list" as="$item"%><%list:item%><?=$item?> <%/list:item%><%/list%>';
+    $list = '{{list using="$#list" as="$item"}}{{list:item}}<?=$item?> {{/list:item}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -39,7 +39,7 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testListUsingDefaultItem()
   {
-    $list = '<%list using="$#list"%><%list:item%><?=$item?> <%/list:item%><%/list%>';
+    $list = '{{list using="$#list"}}{{list:item}}<?=$item?> {{/list:item}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -52,8 +52,8 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testEmptyList()
   {
-    $list = '<%list using="$#list" as="$item"%><%list:item%><?=$item?><%/list:item%>' . 
-            '<%list:empty%>Nothing<%/list:empty%><%/list%>';
+    $list = '{{list using="$#list" as="$item"}}{{list:item}}<?=$item?>{{/list:item}}' . 
+            '{{list:empty}}Nothing{{/list:empty}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -66,7 +66,7 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testShowCounter()
   {
-    $list = '<%list using="$#list" counter="$ctr"%><%list:item%><?=$ctr?>)<?=$item?> <%/list:item%><%/list%>';
+    $list = '{{list using="$#list" counter="$ctr"}}{{list:item}}<?=$ctr?>)<?=$item?> {{/list:item}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -79,7 +79,7 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testTextNodesInsideListTag()
   {
-    $list = '<%list using="$#list" as="$item"%>List: <%list:item%><?=$item?> <%/list:item%> !<%/list%>';
+    $list = '{{list using="$#list" as="$item"}}List: {{list:item}}<?=$item?> {{/list:item}} !{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -92,8 +92,8 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testTextNodesInsideListTagWithEmptyListTag()
   {
-    $list = '<%list using="$#list" as="$item"%>List: <%list:item%><?=$item?> <%/list:item%> !' . 
-            '<%list:empty%>Nothing<%/list:empty%><%/list%>';
+    $list = '{{list using="$#list" as="$item"}}List: {{list:item}}<?=$item?> {{/list:item}} !' . 
+            '{{list:empty}}Nothing{{/list:empty}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -106,8 +106,8 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testListWithGlue()
   {
-    $list = '<%list using="$#list" as="$item"%>List:<%list:item%><?=$item?><%/list:item%>!' . 
-            '<%list:glue%>||<%/list:glue%><%/list%>';
+    $list = '{{list using="$#list" as="$item"}}List:{{list:item}}<?=$item?>{{/list:item}}!' . 
+            '{{list:glue}}||{{/list:glue}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 

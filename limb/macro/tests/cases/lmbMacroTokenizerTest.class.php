@@ -48,7 +48,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectOnce('startElement', array('tag', array()));
     $this->listener->expectOnce('endElement', array('tag'));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag%><%/tag%>');
+    $this->parser->parse('{{tag}}{{/tag}}');
   }
 
   function testEmptyElementSelfClose()
@@ -56,7 +56,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectOnce('emptyElement', array('tag', array()));
     $this->listener->expectNever('startElement');
     $this->listener->expectNever('endElement');
-    $this->parser->parse('<%tag/%>');
+    $this->parser->parse('{{tag/}}');
   }
 
   function testElementWithContent()
@@ -65,7 +65,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectOnce('characters', array('stuff'));
     $this->listener->expectOnce('endElement', array('tag'));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag%>stuff<%/tag%>');
+    $this->parser->parse('{{tag}}stuff{{/tag}}');
   }
 
   function testElementNestedSingleQuote()
@@ -74,7 +74,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectNever('characters');
     $this->listener->expectNever('endElement');
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag attribute="\'"%>');
+    $this->parser->parse('{{tag attribute="\'"}}');
   }
 
   function testElementNestedDoubleQuote()
@@ -83,14 +83,14 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectNever('characters');
     $this->listener->expectNever('endElement');
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag attribute=\'"\'%>');
+    $this->parser->parse('{{tag attribute=\'"\'}}');
   }
 
   function testEmptyClose()
   {
     $this->listener->expectOnce('endElement', array(''));
     $this->listener->expectNever('characters');
-    $this->parser->parse('<%/%>');
+    $this->parser->parse('{{/}}');
   }
 
   function testOutputTag()
@@ -99,7 +99,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectNever('characters');
     $this->listener->expectNever('endElement');
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%$value%>');
+    $this->parser->parse('{{$value}}');
   }
 
   function testElementWithPreContent()
@@ -107,7 +107,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectOnce('characters', array('stuff'));
     $this->listener->expectOnce('startElement', array('br', array()));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('stuff<%br%>');
+    $this->parser->parse('stuff{{br}}');
   }
 
   function testElementWithPostContent()
@@ -115,21 +115,21 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectOnce('startElement', array('br', array()));
     $this->listener->expectOnce('characters', array('stuff'));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%br%>stuff');
+    $this->parser->parse('{{br}}stuff');
   }
 
   function testExpressionAfterTag()
   {
     $this->listener->expectOnce('emptyElement', array('br', array()));
     $this->listener->expectOnce('characters', array('{$str}'));
-    $this->parser->parse('<%br/%>{$str}');
+    $this->parser->parse('{{br/}}{$str}');
   }
 
   function testSelfClosingTagWithArgumentsAndNoSpaceBeforeClosing()
   {
     $this->listener->expectOnce('emptyElement', array('tag', array('str' => 'abcdefgh')));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag str="abcdefgh"/%>');
+    $this->parser->parse('{{tag str="abcdefgh"/}}');
   }
 
   function testExpressionAfterTagWithArguments()
@@ -137,7 +137,7 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectOnce('emptyElement', array('tag', array('str' => 'abcdefgh')));
     $this->listener->expectOnce('characters', array('{$str}'));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag str="abcdefgh" /%>{$str}');
+    $this->parser->parse('{{tag str="abcdefgh" /}}{$str}');
   }
 
   function testMismatchedElements()
@@ -149,37 +149,37 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->listener->expectCallCount('startElement', 2);
     $this->listener->expectCallCount('endElement', 2);
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%b%><%i%>stuff<%/b%><%/i%>');
+    $this->parser->parse('{{b}}{{i}}stuff{{/b}}{{/i}}');
   }
 
   function testAttributes()
   {
     $this->listener->expectOnce('startElement', array('tag', array("a" => "A", "b" => "B", "c" => "C")));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag a="A" b=\'B\' c = "C"%>');
+    $this->parser->parse('{{tag a="A" b=\'B\' c = "C"}}');
   }
 
   function testEmptyAttributes()
   {
     $this->listener->expectOnce('startElement', array('tag', array("a" => NULL, "b" => NULL, "c" => NULL)));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse('<%tag a b c%>');
+    $this->parser->parse('{{tag a b c}}');
   }
 
   function testNastyAttributes()
   {
-    $this->listener->expectOnce('startElement', array('tag', array("a" => "&%$'?<>",
+    $this->listener->expectOnce('startElement', array('tag', array("a" => "&{\$'?<>",
                                                                    "b" => "\r\n\t\"",
                                                                    "c" => "")));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse("<%tag a=\"&%$'?<>\" b='\r\n\t\"' c = ''%>");
+    $this->parser->parse("{{tag a=\"&{\$'?<>\" b='\r\n\t\"' c = ''}}");
   }
 
   function testAttributesPadding()
   {
     $this->listener->expectOnce('startElement', array('tag', array("a" => "A", "b" => "B", "c" => "C")));
     $this->listener->expectNever('invalidAttributeSyntax');
-    $this->parser->parse("<%tag\ta=\"A\"\rb='B'\nc = \"C\"\n%>");
+    $this->parser->parse("{{tag\ta=\"A\"\rb='B'\nc = \"C\"\n}}");
   }
 }
 

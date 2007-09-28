@@ -45,7 +45,7 @@ class lmbMacroTagAcceptanceTest extends UnitTestCase
 
   function testTemplateRendering()
   {
-    $code = '<h1><%foo/%><%bar/%></h1>';
+    $code = '<h1>{{foo/}}{{bar/}}</h1>';
     $tpl = $this->_createTemplate($code);
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>foo!bar</h1>');
