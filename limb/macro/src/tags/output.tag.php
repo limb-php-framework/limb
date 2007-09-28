@@ -29,29 +29,29 @@ class lmbMacroOutputTag extends lmbMacroTag
     if(strpos($this->tag, '.') === false)
       return 'echo ' . $this->tag . ';';
 
-    $result = '';
-
-    $tmp = $code->getTempVarRef();
-    $code->writePHP($tmp . "='';");
+    $expr = '';
 
     $items = explode('.', $this->tag);
+
     //first item is variable itself
-    $prev = $items[0];
+    $var = $items[0];
+    $tmp = $code->getTempVarRef();
+    $code->writePHP($tmp . "='';");
     for($i=1; $i<sizeof($items); $i++)
     {
       $item = $items[$i];
-      $result .= 'if((is_array(' . $prev . ') && isset(' . $prev . '["' . $item . '"])) || ' . 
-                 '(is_object(' . $prev . ') && ' . $tmp . '=' . $prev . '->get("' . $item . '")))' .  
-                 '{ if(is_array(' . $prev . '))' . $tmp . ' = ' . $prev . '["' . $item . '"];';
-      $prev = $tmp;
+      $expr .= 'if((is_array(' . $var . ') && isset(' . $var . '["' . $item . '"])) || ' . 
+               '(is_object(' . $var . ') && ' . $tmp . '=' . $var . '->get("' . $item . '")))' .  
+               '{if(is_array(' . $var . '))' . $tmp . ' = ' . $var . '["' . $item . '"];';
+      $var = $tmp;
     }
 
     //closing brackets
     for($i=1; $i<sizeof($items); $i++)
-      $result .= '}';
+      $expr .= '}else{' . $tmp . '="";}';
 
-    $result .= "echo $tmp;";
-    return $result;
+    $expr .= "echo $tmp;";
+    return $expr;
   }
 }
 

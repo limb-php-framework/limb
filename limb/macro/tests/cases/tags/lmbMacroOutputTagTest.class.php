@@ -48,6 +48,27 @@ class lmbMacroOutputTagTest extends UnitTestCase
     $this->assertEqual($out, 'Hey');
   }
 
+  function testBrokenChainOutputForArray()
+  {
+    $content = '<%$#var.foo.bar.baz%>';
+
+    $tpl = $this->_createTemplate($content, 'tpl.html');
+
+    $macro = $this->_createMacro($tpl);
+
+    $macro->set('var', null);
+    $out = $macro->render();
+    $this->assertEqual($out, '');
+
+    $macro->set('var', array('foo' => null));
+    $out = $macro->render();
+    $this->assertEqual($out, '');
+
+    $macro->set('var', array('foo' => array('bar' => null)));
+    $out = $macro->render();
+    $this->assertEqual($out, '');
+  }
+
   function testSimpleChainedOutputForObject()
   {
     $content = '<%$#var.foo.bar%>';
@@ -61,6 +82,27 @@ class lmbMacroOutputTagTest extends UnitTestCase
     $this->assertEqual($out, 'Hey');
   }
 
+  function testBrokenChainOutputForObject()
+  {
+    $content = '<%$#var.foo.bar.baz%>';
+
+    $tpl = $this->_createTemplate($content, 'tpl.html');
+
+    $macro = $this->_createMacro($tpl);
+
+    $macro->set('var', null);
+    $out = $macro->render();
+    $this->assertEqual($out, '');
+
+    $macro->set('var', new lmbObject(array('foo' => null)));
+    $out = $macro->render();
+    $this->assertEqual($out, '');
+
+    $macro->set('var', new lmbObject(array('foo' => new lmbObject(array('bar' => null)))));
+    $out = $macro->render();
+    $this->assertEqual($out, '');
+  }
+
   function testChainedOutputForMixedArraysAndObjects()
   {
     $content = '<%$#var.foo.bar%>';
@@ -72,6 +114,19 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
     $out = $macro->render();
     $this->assertEqual($out, 'Hey'); 
+  }
+
+  function testBrokenChainOutputForMixedArraysAndObjects()
+  {
+    $content = '<%$#var.foo.bar.baz%>';
+
+    $tpl = $this->_createTemplate($content, 'tpl.html');
+
+    $macro = $this->_createMacro($tpl);
+
+    $macro->set('var', new lmbObject(array('foo' => array('bar' => null))));
+    $out = $macro->render();
+    $this->assertEqual($out, '');
   }
 
   protected function _createMacro($file)
