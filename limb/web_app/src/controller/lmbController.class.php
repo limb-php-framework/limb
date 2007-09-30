@@ -14,7 +14,7 @@ lmb_require('limb/validation/src/lmbValidator.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbController.class.php 6345 2007-09-30 21:32:22Z pachanga $
  */
 class lmbController extends lmbAbstractController
 {
