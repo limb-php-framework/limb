@@ -20,7 +20,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 {
   protected $tag_dictionary;
 
-  function __construct($parser, $tree_builder, $tag_dictionary)
+  function __construct(lmbMacroParser $parser, lmbMacroTreeBuilder $tree_builder, lmbMacroTagDictionary $tag_dictionary)
   {
     parent :: __construct($parser, $tree_builder);
     $this->tag_dictionary = $tag_dictionary;
@@ -32,7 +32,8 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
     $lower_attributes = $this->normalizeAttributes($attrs, $location);
 
-    $tag_info = $this->tag_dictionary->findTagInfo($tag);
+    if(!$tag_info = $this->tag_dictionary->findTagInfo($tag))
+      throw new lmbMacroException("Tag '$tag' not found in dictionary");
 
     if($tag_info->isEndTagForbidden())
     {
@@ -71,7 +72,8 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     $location = $this->parser->getCurrentLocation();
     $lower_attributes = $this->normalizeAttributes($attrs, $location);
 
-    $tag_info = $this->tag_dictionary->findTagInfo($tag);
+    if(!$tag_info = $this->tag_dictionary->findTagInfo($tag))
+      throw new lmbMacroException("Tag '$tag' not found in dictionary");
     $tag_info->load();
 
     $tag_node = $this->buildTagNode($tag_info, $tag, $attrs, $self_closed_tag = true);

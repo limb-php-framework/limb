@@ -10,6 +10,7 @@
 lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/macro/src/lmbMacroCompiler.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
+lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 
 /**
  * class lmbMacroTemplate.
@@ -20,26 +21,18 @@ lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 class lmbMacroTemplate
 {
   protected $file;
-  protected $cache_dir;
   protected $vars = array();
   protected $child_executor;
-  protected $tag_dictionary;
 
-  function __construct($file, $cache_dir = null, $locator = null, $tag_dictionary = null)
+  function __construct($file, lmbMacroConfig $config = null)
   {
     $this->file = $file;
 
-    if(!$cache_dir)
-      $cache_dir = LIMB_VAR_DIR . '/compiled';
-    $this->cache_dir = $cache_dir;
+    $this->config = $config ? $config : new lmbMacroConfig();
 
-    if(!$locator)
-      $locator = new lmbMacroTemplateLocator();
-    $this->locator = $locator;
+    $this->locator = new lmbMacroTemplateLocator($this->config);
 
-    if(!$tag_dictionary)
-      $tag_dictionary = lmbMacroTagDictionary :: instance();
-    $this->tag_dictionary = $tag_dictionary;
+    $this->tag_dictionary = lmbMacroTagDictionary :: load($this->config);
   }
 
   function setVars($vars)
@@ -70,7 +63,7 @@ class lmbMacroTemplate
     $compiler->compile($source_file, $compiled_file, $class, 'render');
 
     include($compiled_file);
-    $executor = new $class($this->vars, $this->cache_dir, $this->locator);
+    $executor = new $class($this->config, $this->vars);
 
     //in case of dynamic wrapping we need to ask parent for all unknown variables
     if($this->child_executor)

@@ -30,6 +30,20 @@ class lmbMacroTagDictionary
     return self :: $instance;
   }
 
+  static function load(lmbMacroConfig $config)
+  {
+    $dictionary = self :: instance();
+
+    $dirs = $config->getTagsScanDirectories();
+    foreach($dirs as $dir)
+    {
+      foreach(lmb_glob($dir . '/*.tag.php') as $file)
+        $dictionary->registerFromFile($file);
+    }
+
+    return $dictionary;
+  }
+
   function register($taginfo, $file)
   {
     $tag_to_lower = strtolower($taginfo->getTag());

@@ -13,7 +13,7 @@ class lmbMacroTemplateExecutorTest extends UnitTestCase
 {
   function testPassVars()
   {
-    $tpl = new lmbMacroTemplateExecutor(array('foo' => 'foo', 'bar' => 'bar'));
+    $tpl = new lmbMacroTemplateExecutor(new lmbMacroConfig(), array('foo' => 'foo', 'bar' => 'bar'));
     $tpl->set('zoo', 'zoo');
     $this->assertEqual($tpl->foo, 'foo');
     $this->assertEqual($tpl->bar, 'bar');
@@ -22,7 +22,7 @@ class lmbMacroTemplateExecutorTest extends UnitTestCase
 
   function testMissingVarIsEmpty()
   {
-    $tpl = new lmbMacroTemplateExecutor();
+    $tpl = new lmbMacroTemplateExecutor(new lmbMacroConfig());
     $this->assertNoErrors();
     $this->assertIdentical($tpl->junk, '');
   }

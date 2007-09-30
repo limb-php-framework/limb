@@ -77,7 +77,7 @@ class lmbMacroParser implements lmbMacroTokenizerListener
 
     $this->setTemplateLocator($this->template_locator);
 
-    $content = $this->template_locator->readTemplateFile($source_file_path);
+    $content = file_get_contents($source_file_path);
 
     $this->preprocessor->process($content);
 

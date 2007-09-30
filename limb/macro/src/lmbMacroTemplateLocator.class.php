@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/fs/toolkit.inc.php');
+
 /**
  * class lmbMacroTemplateLocator.
  *
@@ -15,35 +17,30 @@
  */
 class lmbMacroTemplateLocator
 {
+  protected $config;
   protected $cache_dir;
-  protected $base_dir;
+  protected $scan_dirs;
+  protected $toolkit;
 
-  function __construct($base_dir = null, $cache_dir = null)
+  function __construct(lmbMacroConfig $config)
   {
-    if(!$cache_dir)
-      $cache_dir = LIMB_VAR_DIR . '/compiled';
+    $this->config = $config;
+    $this->cache_dir = $config->getCacheDir();
+    $this->scan_dirs = $config->getTemplateScanDirectories();
+    $this->toolkit = lmbToolkit :: instance();
+  }
 
-    $this->cache_dir = $cache_dir;
-    $this->base_dir = $base_dir;
+  function locateSourceTemplate($file_name)
+  {    
+    if(!lmbFs :: isPathAbsolute($file_name))
+      return $this->toolkit->findFileByAlias($file_name, $this->scan_dirs, 'macro');
+    else
+      return $file_name;
   }
 
   function locateCompiledTemplate($file_name)
   {
     return $this->cache_dir . '/' . md5($file_name) . '.php';
-  }
-
-  function locateSourceTemplate($file_name)
-  {    
-    //fix this later
-    if(lmbFs :: isPathAbsolute($file_name))
-      return $file_name;
-    else
-      return $this->base_dir . '/' . $file_name;
-  }
-
-  function readTemplateFile($file_name)
-  {    
-    return file_get_contents($file_name);
   }
 }
 

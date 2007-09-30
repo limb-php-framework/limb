@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: common.inc.php 6342 2007-09-30 21:07:11Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 

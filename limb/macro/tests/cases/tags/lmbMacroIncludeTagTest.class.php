@@ -11,8 +11,6 @@ lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 
-lmbMacroTagDictionary :: instance()->registerFromFile(dirname(__FILE__) . '/../../../src/tags/include.tag.php');
-
 class lmbMacroTagIncludeTest extends UnitTestCase
 {
   function setUp()
@@ -130,9 +128,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
   {
     $base_dir = LIMB_VAR_DIR . '/tpl';
     $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $macro = new lmbMacroTemplate($file,
-                                  $cache_dir,
-                                  new lmbMacroTemplateLocator($base_dir, $cache_dir));
+    $macro = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir, true, true, null, array($base_dir)));
     return $macro;
   }
 

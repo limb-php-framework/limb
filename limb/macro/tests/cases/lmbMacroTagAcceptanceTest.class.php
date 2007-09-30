@@ -9,6 +9,7 @@
 
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
+lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -56,7 +57,7 @@ class lmbMacroTagAcceptanceTest extends UnitTestCase
     $file = LIMB_VAR_DIR . '/tpl/' . mt_rand() . '.html';
     file_put_contents($file, $code);
     $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $tpl = new lmbMacroTemplate($file, $cache_dir);
+    $tpl = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir));
     return $tpl;
   }
 }

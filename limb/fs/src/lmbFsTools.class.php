@@ -35,7 +35,10 @@ class lmbFsTools extends lmbAbstractTools
     if(isset($this->file_locators[$locator_name]))
        return $this->file_locators[$locator_name];
 
-    $file_locations = new lmbIncludePathFileLocations(explode(';', $paths));
+    if(is_array($paths))
+      $file_locations = new lmbIncludePathFileLocations($paths);
+    else
+      $file_locations = new lmbIncludePathFileLocations(explode(';', $paths));
 
     if(defined('LIMB_VAR_DIR'))
       $locator = new lmbCachingFileLocator(new lmbFileLocator($file_locations),

@@ -46,7 +46,7 @@ class lmbMacroTemplateTest extends UnitTestCase
   function _createView($tpl)
   {
     $file = $this->_createTemplate($tpl);
-    $view = new lmbMacroTemplate($file, LIMB_VAR_DIR . '/view/compiled');
+    $view = new lmbMacroTemplate($file, new lmbMacroConfig(LIMB_VAR_DIR . '/view/compiled'));
     return $view;
   }
 

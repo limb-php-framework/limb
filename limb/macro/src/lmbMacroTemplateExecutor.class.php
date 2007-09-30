@@ -15,17 +15,17 @@
  */
 class lmbMacroTemplateExecutor
 {
-  protected $cache_dir;
-  protected $locator;
-  protected $context;
+  //we add prefixes in order to avoid possible conflict
+  //since variables are added directly
+  protected $__config;
+  protected $__context;
 
-  function __construct($vars = array(), $cache_dir = null, $locator = null)
+  function __construct(lmbMacroConfig $config = null, $vars = array())
   {
+    $this->__config = $config ? $config : new lmbMacroConfig();
+
     foreach($vars as $name => $value)
       $this->$name = $value;
-
-    $this->cache_dir = $cache_dir;
-    $this->locator = $locator;
   }
 
   function set($name, $value)
@@ -35,15 +35,15 @@ class lmbMacroTemplateExecutor
 
   function setContext(lmbMacroTemplateExecutor $context)
   {
-    $this->context = $context;
+    $this->__context = $context;
   }
 
   function __get($name)
   {
     //we can have parent variable context which should be consulted for all missing variables
     //actually, it's quite a dirty hack for a deeper problem which should be addressed later
-    if($this->context)
-      return $this->context->$name;
+    if($this->__context)
+      return $this->__context->$name;
 
     //we definitely want to supress warnings, make it some sort of a NullObject?
     return '';
@@ -56,14 +56,14 @@ class lmbMacroTemplateExecutor
 
   function includeTemplate($file, $vars = array())
   {
-    $template = new lmbMacroTemplate($file, $this->cache_dir, $this->locator);
+    $template = new lmbMacroTemplate($file, $this->__config);
     $template->setVars(get_object_vars($this));//global template vars
     echo $template->render($vars);//local template vars
   }
 
   function wrapTemplate($file, $slots_handlers)
   {
-    $template = new lmbMacroTemplate($file, $this->cache_dir, $this->locator);
+    $template = new lmbMacroTemplate($file, $this->__config);
     $template->setVars(get_object_vars($this));//global template vars
     foreach($slots_handlers as $name => $handler)
       $template->set('__slot_handler_' . $name, $handler);
