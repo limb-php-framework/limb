@@ -27,6 +27,19 @@ class lmbFsTools extends lmbAbstractTools
     return $locator->locate($alias);
   }
 
+  function tryFindFileByAlias($alias, $paths, $locator_name = null)
+  {
+    try
+    {
+      $file = $this->findFileByAlias($alias, $paths, $locator_name);
+    }
+    catch(lmbFileNotFoundException $e)
+    {
+      return null;
+    }
+    return $file;
+  }
+
   function getFileLocator($paths, $locator_name = null)
   {
     if(!$locator_name)
