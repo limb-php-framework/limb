@@ -38,7 +38,7 @@ lmb_require(dirname(__FILE__) . '/lmbCompositeNonItersectingToolkitTools.class.p
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6238 2007-08-28 13:13:39Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6357 2007-10-01 19:57:10Z pachanga $
  */
 class lmbToolkit
 {
@@ -92,7 +92,7 @@ class lmbToolkit
   }
 
   /**
-  * Ensures that instance of lmbToolkit class is exists.
+  * Ensures that instance of lmbToolkit class exists.
   * If instance is not initialized yet - creates one with empty tools
   * @see lmbRegistry
   * @return void
