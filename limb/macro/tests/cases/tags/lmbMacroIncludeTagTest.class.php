@@ -128,7 +128,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
   {
     $base_dir = LIMB_VAR_DIR . '/tpl';
     $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $macro = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir, true, true, null, array($base_dir)));
+    $macro = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir, true, true, array($base_dir)));
     return $macro;
   }
 

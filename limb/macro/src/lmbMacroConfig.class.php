@@ -22,13 +22,13 @@ class lmbMacroConfig
   protected $tpl_scan_dirs = array();
 
   function __construct($cache_dir = null, $is_force_compile = true, $is_force_scan = true, 
-                      $tags_scan_dirs = null, $tpl_scan_dirs = null)
+                       $tpl_scan_dirs = null, $tags_scan_dirs = null)
   {
     $this->cache_dir = $cache_dir ? $cache_dir : LIMB_VAR_DIR . '/compiled';
     $this->is_force_compile = $is_force_compile;
     $this->is_force_scan = $is_force_scan;
-    $this->tags_scan_dirs = $tags_scan_dirs ? $tags_scan_dirs : array('limb/macro/src/tags');
     $this->tpl_scan_dirs = $tpl_scan_dirs ? $tpl_scan_dirs : array();
+    $this->tags_scan_dirs = $tags_scan_dirs ? $tags_scan_dirs : array('limb/macro/src/tags');
   }
 
   function getCacheDir()

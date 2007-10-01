@@ -119,8 +119,11 @@ class lmbMacroCodeWriter
 
     return "<?php\n" .
            $this->_renderIncludeList() . 
+           //protection from self inclusion
+           "if(!class_exists('{$this->class}', false)){\n" .
            "class {$this->class} " . ($this->parent ? "extends {$this->parent} " : '') . "{\n" .
            $this->_renderMethods() . 
+           "\n}" . 
            "\n}";
   }
 

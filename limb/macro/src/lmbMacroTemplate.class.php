@@ -29,7 +29,6 @@ class lmbMacroTemplate
     $this->file = $file;
     $this->config = $config ? $config : new lmbMacroConfig();
     $this->locator = new lmbMacroTemplateLocator($this->config);
-    $this->tag_dictionary = lmbMacroTagDictionary :: load($this->config);
   }
 
   static function locateTemplateByAlias($alias, lmbMacroConfig $config = null)
@@ -56,18 +55,24 @@ class lmbMacroTemplate
 
   function render($vars = array())
   {
-    if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
-      throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
-
     $compiled_file = $this->locator->locateCompiledTemplate($this->file);
 
-    $class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
+    if($this->config->isForceCompile() || !file_exists($compiled_file))
+    {
+      if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
+        throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
 
-    $compiler = $this->_createCompiler();
-    $compiler->compile($source_file, $compiled_file, $class, 'render');
+      $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
+
+      $compiler = $this->_createCompiler();
+      $compiler->compile($source_file, $compiled_file, $macro_executor_class, 'render');
+      //appending macro executor class
+      file_put_contents($compiled_file, file_get_contents($compiled_file) . 
+                                        "\n\$macro_executor_class='$macro_executor_class';");
+    }
 
     include($compiled_file);
-    $executor = new $class($this->config, $this->vars);
+    $executor = new $macro_executor_class($this->config, $this->vars);
 
     //in case of dynamic wrapping we need to ask parent for all unknown variables
     if($this->child_executor)
@@ -82,7 +87,8 @@ class lmbMacroTemplate
 
   protected function _createCompiler()
   {
-    return new lmbMacroCompiler($this->tag_dictionary, $this->locator);
+    $tag_dictionary = lmbMacroTagDictionary :: load($this->config);
+    return new lmbMacroCompiler($tag_dictionary, $this->locator);
   }
 }
 
