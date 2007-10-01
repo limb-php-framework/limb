@@ -3,7 +3,7 @@
 set_include_path(dirname(__FILE__) . '/../../../../');
 require_once('limb/core/common.inc.php');
 
-for($i=0;$i<100;$i++)
+for($i=0;$i<1000;$i++)
 {
   $name = 'Bob';
   ob_start();

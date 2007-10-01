@@ -6,7 +6,7 @@ require_once('limb/macro/src/lmbMacroTemplate.class.php');
 
 $config = new lmbMacroConfig('/tmp/macro', false, false, array(dirname(__FILE__) . '/tpl'));
 
-for($i=0;$i<100;$i++)
+for($i=0;$i<1000;$i++)
 {
   $tpl = new lmbMacroTemplate('simple.phtml', $config);
   $tpl->set('name', 'Bob');

@@ -1,0 +1,25 @@
+<?php
+
+set_include_path(dirname(__FILE__) . '/../../../../');
+define('WACT_CACHE_DIR', '/tmp/wact');
+define('WACT_TPLS', dirname(__FILE__) . '/tpl');
+require_once('limb/wact/common.inc.php');
+require_once('limb/wact/src/WactTemplate.class.php');
+require_once('limb/wact/src/WactDefaultTemplateConfig.class.php');
+
+for($i=0;$i<1000;$i++)
+{
+  $tpl = new WactTemplate('wact.html', new WactDefaultTemplateConfig(dirname(__FILE__) . '/wact.ini'));
+  $tpl->set('name', 'Bob');
+  $tpl->capture();
+}
+
+$classes = array();
+foreach(get_declared_classes() as $class)
+{
+    $refl = new ReflectionClass($class);
+      if(strpos($refl->getFileName(), 'src/') !== false)
+            $classes[] = $class;
+}
+sort($classes);
+var_dump($classes);

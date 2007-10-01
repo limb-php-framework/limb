@@ -44,7 +44,7 @@ class lmbMacroCodeWriter
     $this->registerInclude('limb/macro/src/lmbMacroTemplateExecutor.class.php');
 
     $this->beginMethod($render_func, array('$args = array()'));
-    $this->writePHP('extract($args);');
+    $this->writePHP('if($args) extract($args);');
   }
 
   function getClass()
@@ -118,9 +118,9 @@ class lmbMacroCodeWriter
     $this->endMethod();
 
     return "<?php\n" .
-           $this->_renderIncludeList() . 
            //protection from self inclusion
            "if(!class_exists('{$this->class}', false)){\n" .
+           $this->_renderIncludeList() . 
            "class {$this->class} " . ($this->parent ? "extends {$this->parent} " : '') . "{\n" .
            $this->_renderMethods() . 
            "\n}" . 
