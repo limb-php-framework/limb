@@ -9,7 +9,7 @@
 
 /**
  * @package i18n
- * @version $Id: common.inc.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: common.inc.php 6354 2007-10-01 18:05:31Z pachanga $
  */
 require_once('limb/core/common.inc.php');
 require_once(dirname(__FILE__) . '/toolkit.inc.php');

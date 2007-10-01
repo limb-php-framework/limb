@@ -9,7 +9,7 @@
 
 /**
  * @package active_record
- * @version $Id: common.inc.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: common.inc.php 6354 2007-10-01 18:05:31Z pachanga $
  */
 require_once('limb/core/common.inc.php');
 require_once('limb/dbal/common.inc.php');
