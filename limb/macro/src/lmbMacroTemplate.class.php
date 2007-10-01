@@ -27,12 +27,16 @@ class lmbMacroTemplate
   function __construct($file, lmbMacroConfig $config = null)
   {
     $this->file = $file;
-
     $this->config = $config ? $config : new lmbMacroConfig();
-
     $this->locator = new lmbMacroTemplateLocator($this->config);
-
     $this->tag_dictionary = lmbMacroTagDictionary :: load($this->config);
+  }
+
+  static function locateTemplateByAlias($alias, lmbMacroConfig $config = null)
+  {
+    $config = $config ? $config : new lmbMacroConfig();
+    $locator = new lmbMacroTemplateLocator($config);
+    return $locator->locateSourceTemplate($alias);
   }
 
   function setVars($vars)
@@ -53,7 +57,7 @@ class lmbMacroTemplate
   function render($vars = array())
   {
     if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
-     throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
+      throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
 
     $compiled_file = $this->locator->locateCompiledTemplate($this->file);
 

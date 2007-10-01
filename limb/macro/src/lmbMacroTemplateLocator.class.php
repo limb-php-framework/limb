@@ -8,6 +8,7 @@
  */
 
 lmb_require('limb/fs/toolkit.inc.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 /**
  * class lmbMacroTemplateLocator.
@@ -33,8 +34,8 @@ class lmbMacroTemplateLocator
   function locateSourceTemplate($file_name)
   {    
     if(!lmbFs :: isPathAbsolute($file_name))
-      return $this->toolkit->findFileByAlias($file_name, $this->scan_dirs, 'macro');
-    else
+      return $this->toolkit->tryFindFileByAlias($file_name, $this->scan_dirs, 'macro');
+    elseif(file_exists($file_name))
       return $file_name;
   }
 
