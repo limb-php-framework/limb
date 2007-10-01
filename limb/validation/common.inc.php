@@ -9,9 +9,7 @@
 
 /**
  * @package validation
- * @version $Id: common.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: common.inc.php 6353 2007-10-01 18:05:02Z pachanga $
  */
 require_once('limb/core/common.inc.php');
-lmb_require('limb/i18n/common.inc.php');
 
-?>

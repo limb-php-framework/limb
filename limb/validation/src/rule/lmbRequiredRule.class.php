@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
-lmb_require('limb/i18n/common.inc.php');
 
 /**
  * Checks that field is present in datasource and has not empty value
@@ -22,7 +21,7 @@ lmb_require('limb/i18n/common.inc.php');
  * </code>
  * @see lmbValidator :: addRequiredRule()
  * @package validation
- * @version $Id: lmbRequiredRule.class.php 6334 2007-09-25 11:39:40Z serega $
+ * @version $Id: lmbRequiredRule.class.php 6353 2007-10-01 18:05:02Z pachanga $
  */
 class lmbRequiredRule extends lmbBaseValidationRule
 {

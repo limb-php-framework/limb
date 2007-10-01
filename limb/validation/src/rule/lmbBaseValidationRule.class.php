@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
+lmb_require('limb/i18n/common.inc.php');
 
 /**
  * A base class for validation rules.
