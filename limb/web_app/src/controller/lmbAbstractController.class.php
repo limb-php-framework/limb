@@ -9,11 +9,12 @@
 
 lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/core/src/lmbMixable.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbAbstractController.class.php 6347 2007-10-01 13:17:18Z pachanga $
  * @package web_app
  */
 abstract class lmbAbstractController
@@ -38,6 +39,18 @@ abstract class lmbAbstractController
    * @var object lmbMixable instance
    */
   protected $mixed;
+  /**
+   * @var object lmbToolkit instance
+   */
+  protected $toolkit;
+  /**
+   * @var array a action to template cached map
+   */
+  protected $action_template_map = array();
+  /**
+   * @var boolean
+   */
+  protected $map_changed = false;
 
   /**
    *  Constructor.
@@ -45,6 +58,8 @@ abstract class lmbAbstractController
    */
   function __construct()
   {
+    $this->toolkit = lmbToolkit :: instance();
+
     if(!$this->name)
      $this->name = $this->_guessName();
 
@@ -52,6 +67,33 @@ abstract class lmbAbstractController
     $this->mixed->setOwner($this);
     foreach($this->mixins as $mixin)
       $this->mixed->mixin($mixin);
+
+    $this->_loadCache();
+  }
+
+  function __destruct()
+  {
+    $this->_saveCache();
+  }
+
+  function isCacheEnabled()
+  {
+    return (defined('LIMB_CONTROLLER_CACHE_ENABLED') && constant('LIMB_CONTROLLER_CACHE_ENABLED'));
+  }
+
+  function _loadCache()
+  {
+    if($this->isCacheEnabled() && file_exists($cache = LIMB_VAR_DIR . '/locators/controller_action2tpl.cache'))
+      $this->action_template_map = unserialize(file_get_contents($cache));
+  }
+
+  function _saveCache()
+  {
+    if($this->map_changed && $this->isCacheEnabled())
+    {
+      lmbFs :: safeWrite(LIMB_VAR_DIR . '/locators/controller_action2tpl.cache', 
+                         serialize($this->action_template_map));
+    }
   }
 
   /**
@@ -96,17 +138,26 @@ abstract class lmbAbstractController
   }
 
   abstract function performAction();
+
   abstract function actionExists($action);
 
   protected function _findTemplateForAction($action)
   {
-    $template_path = $this->getName() . '/' . $action . '.html';
+    if(isset($this->action_template_map[$this->name]) && isset($this->action_template_map[$this->name][$action]))
+      return $this->action_template_map[$this->name][$action];
 
-    $wact_locator = lmbToolkit :: instance()->getWactLocator();
+    $template_format = $this->getName() . '/' . $action . '%s';
 
-    if($wact_locator->locateSourceTemplate($template_path))
-      return $template_path;
-    return null;
+    foreach($this->toolkit->getSupportedViewExtensions() as $ext)
+    {
+      if($template_path = $this->toolkit->locateTemplateByAlias(sprintf($template_format, $ext)))
+      {
+        $this->map_changed = true;
+        $this->action_template_map[$this->name][$action] = $template_path;
+        return $template_path;
+      }
+    }
+    $this->action_template_map[$this->name][$action] = false;
   }
 
   static function performCommand()

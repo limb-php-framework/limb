@@ -9,16 +9,16 @@
 lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
 lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
+lmb_require('limb/view/src/lmbDummyView.class.php');
 
 /**
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6345 2007-09-30 21:32:22Z pachanga $
+ * @version $Id: lmbController.class.php 6347 2007-10-01 13:17:18Z pachanga $
  */
 class lmbController extends lmbAbstractController
 {
-  protected $toolkit;
   protected $request;
   protected $response;
   protected $session;
@@ -32,13 +32,17 @@ class lmbController extends lmbAbstractController
   {
     parent :: __construct();
 
-    $this->toolkit = lmbToolkit :: instance();
     $this->request = $this->toolkit->getRequest();
     $this->response = $this->toolkit->getResponse();
     $this->session = $this->toolkit->getSession();
-    $this->view = $this->toolkit->getView();
+    $this->view = $this->toolkit->getView();//this is a dummy view, which will be replaced with a concrete one
     $this->error_list = new lmbErrorList();
     $this->validator = new lmbValidator($this->error_list);
+  }
+
+  function getView()
+  {
+    return $this->view;
   }
 
   function validate($dataspace)
@@ -63,7 +67,9 @@ class lmbController extends lmbAbstractController
     if(method_exists($this, $this->_mapCurrentActionToMethod()))
     {
       if($template_path = $this->_findTemplateForAction($this->current_action))
+      {
         $this->setTemplate($template_path);
+      }
 
       $method = $this->_mapCurrentActionToMethod($this->_mapCurrentActionToMethod());
       $res = $this->$method();
@@ -72,8 +78,8 @@ class lmbController extends lmbAbstractController
 
       if(is_string($res))
         $this->response->write($res);
-      elseif($this->response->isEmpty() && !$this->view->getTemplate())
-        $this->response->write('Default empty output for controller "' .
+      elseif($this->response->isEmpty() && is_a($this->view, 'lmbDummyView'))
+        $this->response->write('Default dummy output for controller "' .
                                get_class($this) . '" action "' . $this->current_action . '"');
 
       return $res;
@@ -98,7 +104,12 @@ class lmbController extends lmbAbstractController
 
   function setTemplate($template_path)
   {
-    $this->view->setTemplate($template_path);
+    $view = $this->toolkit->createViewByTemplate($template_path);
+    //copying stuff from dummy view, do we need this?
+    $view->copy($this->view);
+    $view->setTemplate($template_path);
+    $this->view = $view;
+    $this->toolkit->setView($view);
   }
 
   protected function _passLocalAttributesToView()

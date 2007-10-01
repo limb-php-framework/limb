@@ -109,10 +109,7 @@ class lmbControllerTest extends UnitTestCase
 
   function testSetTemplateOnlyIfMethodIsNotFound()
   {
-    $mock_locator = new MockWactTemplateLocator();
-    $mock_locator->expectOnce('locateSourceTemplate', array('foo/detail.html'));
-    $mock_locator->setReturnValue('locateSourceTemplate', true, array('foo/detail.html'));
-    $this->toolkit->setWactLocator($mock_locator);
+    $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
 
     $controller = new TestingController();
     $controller->setCurrentAction('detail');
@@ -123,10 +120,7 @@ class lmbControllerTest extends UnitTestCase
 
   function testControllerAttributesAutomaticallyPassedToView()
   {
-    $mock_locator = new MockWactTemplateLocator();
-    $mock_locator->expectOnce('locateSourceTemplate', array('foo/set_vars.html'));
-    $mock_locator->setReturnValue('locateSourceTemplate', true, array('foo/set_vars.html'));
-    $this->toolkit->setWactLocator($mock_locator);
+    $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
 
     $controller = new TestingController();
     $controller->set('foo', 'FOO');
@@ -144,10 +138,7 @@ class lmbControllerTest extends UnitTestCase
 
   function testActionExistsReturnsTrueIsTemplateFound()
   {
-    $mock_locator = new MockWactTemplateLocator();
-    $mock_locator->expectOnce('locateSourceTemplate', array('foo/detail.html'));
-    $mock_locator->setReturnValue('locateSourceTemplate', true, array('foo/detail.html'));
-    $this->toolkit->setWactLocator($mock_locator);
+    $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
 
     $controller = new TestingController();
     $this->assertTrue($controller->actionExists('detail'));
@@ -155,10 +146,7 @@ class lmbControllerTest extends UnitTestCase
 
   function setTemplateIfItExistsBeforePerformingAction()
   {
-    $mock_locator = new MockWactTemplateLocator();
-    $mock_locator->expectOnce('locateSourceTemplate', array('foo/detail.html'));
-    $mock_locator->setReturnValue('locateSourceTemplate', true, array('foo/detail.html'));
-    $this->toolkit->setWactLocator($mock_locator);
+    $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
 
     $controller = new TestingController();
     $controller->setCurrentAction('detail');
@@ -214,7 +202,7 @@ class lmbControllerTest extends UnitTestCase
     $controller = new TestingController();
     $controller->setCurrentAction('without_popup');
     $controller->performAction();
-    $this->assertPattern('~^Default empty output~', $this->toolkit->getResponse()->getResponseString());
+    $this->assertPattern('~^Default dummy output~', $this->toolkit->getResponse()->getResponseString());
   }
 }
 
