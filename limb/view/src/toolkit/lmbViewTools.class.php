@@ -97,8 +97,8 @@ class lmbViewTools extends lmbAbstractTools
     $this->macro_config = new lmbMacroConfig(LIMB_VAR_DIR . '/compiled/', 
                               true,
                               true, 
-                              explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH),
-                              explode(';', LIMB_TEMPLATES_INCLUDE_PATH));
+                              explode(';', LIMB_TEMPLATES_INCLUDE_PATH),
+                              explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH));
 
     return $this->macro_config;
   }
