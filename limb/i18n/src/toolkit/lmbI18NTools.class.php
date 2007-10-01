@@ -16,7 +16,7 @@ lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
  * class lmbI18NTools.
  *
  * @package i18n
- * @version $Id: lmbI18NTools.class.php 6241 2007-08-29 05:46:06Z pachanga $
+ * @version $Id: lmbI18NTools.class.php 6351 2007-10-01 13:33:02Z pachanga $
  */
 class lmbI18NTools extends lmbAbstractTools
 {
