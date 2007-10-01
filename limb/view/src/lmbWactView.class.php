@@ -18,9 +18,21 @@ lmb_require('limb/view/src/lmbView.class.php');
 class lmbWactView extends lmbView
 {
   protected $wact_template;
-  protected $forms_datasources = array();
-  protected $forms_errors = array();
   protected $cache_dir;
+
+  function __construct($template_name = '')
+  {
+    parent :: __construct($template_name);
+    $this->cache_dir = LIMB_VAR_DIR . '/compiled/';
+  }
+
+  static function locateTemplateByAlias($alias)
+  {
+    $locator = lmbToolkit :: instance()->getWactLocator();
+
+    if($template_path = $locator->locateSourceTemplate($alias))
+      return $template_path;
+  }
 
   function setCacheDir($dir)
   {
@@ -39,37 +51,12 @@ class lmbWactView extends lmbView
   function reset()
   {
     parent :: reset();
-    $this->forms_datasources = array();
-    $this->forms_errors = array();
     $this->wact_template = null;
   }
 
   function getWactTemplate()
   {
     return $this->_getWactTemplate();
-  }
-
-  function setFormDatasource($form_name, $datasource)
-  {
-    $this->forms_datasources[$form_name] = $datasource;
-  }
-
-  function getFormDatasource($form_name)
-  {
-    if(isset($this->forms_datasources[$form_name]))
-      return $this->forms_datasources[$form_name];
-    else
-      return null;
-  }
-
-  function setFormErrors($form_name, $error_list)
-  {
-    $this->forms_errors[$form_name] = $error_list;
-  }
-
-  function getForms()
-  {
-    return $this->forms_datasources;
   }
 
   function findChild($id)

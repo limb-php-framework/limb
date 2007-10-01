@@ -6,11 +6,8 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/view/src/macro/lmbMacroTemplate.class.php');
+lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/view/src/lmbView.class.php');
-
-@define('LIMB_TEMPLATES_INCLUDE_PATH', 'template;limb/*/template');
-@define('LIMB_MACRO_TAGS_INCLUDE_PATH', 'src/macro;limb/*/src/macro;limb/macro/src/tags');
 
 /**
  * class lmbMacroView.
@@ -21,11 +18,10 @@ lmb_require('limb/view/src/lmbView.class.php');
 class lmbMacroView extends lmbView
 {
   protected $macro_template;
-  protected $cache_dir;
 
-  function setCacheDir($dir)
+  static function locateTemplateByAlias($alias)
   {
-    $this->cache_dir = $dir;
+    return lmbMacroTemplate :: locateTemplateByAlias($alias, lmbToolkit :: instance()->getMacroConfig());
   }
 
   function render()
@@ -56,17 +52,8 @@ class lmbMacroView extends lmbView
     if(!$path = $this->getTemplate())
       return null;
 
-    $this->macro_template = new lmbMacroTemplate($path, $this->_getMacroConfig()); 
+    $this->macro_template = new lmbMacroTemplate($path, lmbToolkit :: instance()->getMacroConfig()); 
     return $this->macro_template;
-  }
-
-  protected function _getMacroConfig()
-  {
-    return new lmbMacroConfig($this->cache_dir, 
-                              true,
-                              true, 
-                              explode(';', LIMB_TEMPLATES_INCLUDE_PATH),
-                              explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH));
   }
 
   protected function _fillMacroTemplate($template)

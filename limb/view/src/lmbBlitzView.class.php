@@ -1,47 +1,65 @@
 <?php
-
+/*
+ * Limb PHP Framework
+ *
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ */
 lmb_require('limb/view/src/lmbView.class.php');
 
+/**
+ * class lmbBlitzView.
+ *
+ * @package view
+ * @version $Id$
+ */
 class lmbBlitzView extends lmbView
 {
-    private $templateInstance;
+  private $templateInstance;
 
-    function __call($methodName, $params)
-    {
-        $tpl = $this->getTemplateInstance();
-        if(!method_exists($tpl, $methodName))
-        {
-            throw new lmbException(
-                'Wrong template method called', 
-                array(
-                    'template class' => get_class($tpl),
-                    'method' => $methodName,
-                )
-            );
-        }
-        return call_user_method_array($methodName, $tpl, $params);        
-    }
+  static function locateTemplateByAlias($alias)
+  {
+    return null;
+  }
 
-    function getTemplateInstance()
+  function __call($methodName, $params)
+  {
+    $tpl = $this->getTemplateInstance();
+    if(!method_exists($tpl, $methodName))
     {
-        if(!$this->templateInstance)
-        {
-            if(!$this->hasTemplate())
-            {
-                throw new lmbException('template not defined');
-            }
-            $this->templateInstance = new Blitz($this->getTemplate());
-        }
-        return $this->templateInstance;
+      throw new lmbException(
+          'Wrong template method called', 
+          array(
+            'template class' => get_class($tpl),
+            'method' => $methodName,
+            )
+          );
     }
-    
-    function render()
+    return call_user_method_array($methodName, $tpl, $params);        
+  }
+
+  function getTemplateInstance()
+  {
+    if(!$this->templateInstance)
     {
-        foreach ($this->getVariables() as $name => $value)
-        {
-            $this->getTemplateInstance()->set(array($name => $value));
-        }
-        return $this->getTemplateInstance()->parse();
+      if(!$this->hasTemplate())
+        throw new lmbException('template not defined');
+
+      if(!class_exists('Blitz'))
+        throw new lmbException("Blitz extension is not loaded");
+
+      $this->templateInstance = new Blitz($this->getTemplate());
     }
+    return $this->templateInstance;
+  }
+
+  function render()
+  {
+    foreach ($this->getVariables() as $name => $value)
+      $this->getTemplateInstance()->set(array($name => $value));
+
+    return $this->getTemplateInstance()->parse();
+  }
 
 }

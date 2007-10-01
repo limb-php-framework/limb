@@ -17,6 +17,8 @@ abstract class lmbView
 {
   protected $template_name;
   protected $variables = array();
+  protected $forms_datasources = array();
+  protected $forms_errors = array();
 
   function __construct($template_name = '')
   {
@@ -37,7 +39,16 @@ abstract class lmbView
 
   function reset()
   {
+    $this->forms_datasources = array();
+    $this->forms_errors = array();
     $this->variables = array();
+  }
+
+  function copy($view)
+  {
+    $this->variables = $view->variables;
+    $this->forms_errors = $view->forms_errors;
+    $this->forms_datasources = $view->forms_datasources;
   }
 
   function getTemplate()
@@ -65,5 +76,29 @@ abstract class lmbView
   {
     return $this->variables;
   }
+
+  function setFormDatasource($form_name, $datasource)
+  {
+    $this->forms_datasources[$form_name] = $datasource;
+  }
+
+  function getFormDatasource($form_name)
+  {
+    if(isset($this->forms_datasources[$form_name]))
+      return $this->forms_datasources[$form_name];
+    else
+      return null;
+  }
+
+  function setFormErrors($form_name, $error_list)
+  {
+    $this->forms_errors[$form_name] = $error_list;
+  }
+
+  function getForms()
+  {
+    return $this->forms_datasources;
+  }
+
 }
 
