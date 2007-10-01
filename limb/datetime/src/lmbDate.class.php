@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbDate.class.php 6346 2007-10-01 09:31:24Z svk $
  */
 class lmbDate extends lmbObject
 {
@@ -198,7 +198,7 @@ class lmbDate extends lmbObject
 
   protected function _setByStamp($time)
   {
-    if($time < 0 || !$arr = @getdate($time))
+    if(!$arr = @getdate($time))
       throw new lmbException("Could not setup date using stamp'$time'");
 
     $this->year   = $arr['year'];

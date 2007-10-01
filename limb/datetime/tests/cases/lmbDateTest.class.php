@@ -21,14 +21,12 @@ class lmbDateTest extends UnitTestCase
     catch(lmbException $e){}
   }
 
-  function testInvalidStamp()
+  function testNegativeStamp()
   {
-    try
-    {
-      $date = new lmbDate(-1);
-      $this->assertTrue(false);
-    }
-    catch(lmbException $e){}
+  	$date = new lmbDate(-564634800);
+  	$this->assertEqual($date->getDay(), 10);
+  	$this->assertEqual($date->getMonth(), 2);
+  	$this->assertEqual($date->getYear(), 1952);
   }
 
   function testInvalidTimeString()
