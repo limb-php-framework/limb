@@ -11,7 +11,7 @@ include('start.inc.php');
 
 for($i=0;$i<1000;$i++)
 {
-  $tpl = new WactTemplate('wact.html', new WactDefaultTemplateConfig(dirname(__FILE__) . '/wact.ini'));
+  $tpl = new WactTemplate('wact.html', new WactDefaultTemplateConfig(dirname(__FILE__) . '/settings/wact.ini'));
   $tpl->set('name', 'Bob');
   $tpl->capture();
 }
