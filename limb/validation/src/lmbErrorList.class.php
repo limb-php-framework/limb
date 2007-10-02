@@ -7,14 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/validation/src/lmbErrorMessage.class.php');
 lmb_require('limb/core/src/lmbObject.class.php');
 
 /**
  * Holds a list of validation errors
  * @see lmbErrorMessage
  * @package validation
- * @version $Id: lmbErrorList.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbErrorList.class.php 6368 2007-10-02 23:03:47Z pachanga $
  */
 class lmbErrorList extends lmbCollection
 {
