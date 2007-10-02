@@ -92,4 +92,3 @@ function zip($file, $archive)
     `cat $file | zip -9 -q > $archive`;
 }
 
-?>

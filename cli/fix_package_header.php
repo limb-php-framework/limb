@@ -35,4 +35,4 @@ function make_regex($src)
   }
   return $regex;
 }
-?>
+

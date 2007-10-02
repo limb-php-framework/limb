@@ -64,5 +64,3 @@ function get_url_contents($url)
   return $page;
 }
 
-
-?>

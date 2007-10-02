@@ -74,4 +74,3 @@ function err($msg, &$ok)
   $ok = false;
 }
 
-?>

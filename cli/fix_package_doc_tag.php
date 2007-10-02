@@ -19,4 +19,3 @@ foreach($files as $file)
   file_put_contents($file, $src);
 }
 
-?>

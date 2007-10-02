@@ -168,4 +168,3 @@ function fatal($msg)
   exit(1);
 }
 
-?>
