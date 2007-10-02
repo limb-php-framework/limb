@@ -10,7 +10,7 @@ $config = new lmbMacroConfig('/tmp/macro', true, true, array(dirname(__FILE__) .
 
 for($i=0;$i<1000;$i++)
 {
-  $tpl = new lmbMacroTemplate('simple.phtml', $config);
+  $tpl = new lmbMacroTemplate('macro.phtml', $config);
   $tpl->set('name', 'Bob');
   $tpl->render();
 }
