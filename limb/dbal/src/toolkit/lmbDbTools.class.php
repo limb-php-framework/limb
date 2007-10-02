@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDbTools.class.php 6367 2007-10-02 23:02:58Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -98,11 +98,15 @@ class lmbDbTools extends lmbAbstractTools
   {
     $driver = $dsn->getDriver();
     $class = 'lmb' . ucfirst($driver) . 'Connection';
-    $file = dirname(__FILE__) . '/../drivers/' . $driver . '/' . $class . '.class.php';
-    if(!file_exists($file))
-      throw new lmbException("Driver '$driver' file not found for DSN '" . $dsn->toString() . "'!");
 
-    lmb_require($file);
+    if(!class_exists($class))
+    {
+      $file = dirname(__FILE__) . '/../drivers/' . $driver . '/' . $class . '.class.php';
+      if(!file_exists($file))
+        throw new lmbException("Driver '$driver' file not found for DSN '" . $dsn->toString() . "'!");
+
+      lmb_require($file);
+    }
     return new $class($dsn);
   }
 

@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDBAL.class.php 6367 2007-10-02 23:02:58Z pachanga $
  */
 class lmbDBAL
 {
