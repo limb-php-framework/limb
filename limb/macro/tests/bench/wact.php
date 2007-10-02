@@ -7,6 +7,8 @@ require_once('limb/wact/common.inc.php');
 require_once('limb/wact/src/WactTemplate.class.php');
 require_once('limb/wact/src/WactDefaultTemplateConfig.class.php');
 
+include('start.inc.php');
+
 for($i=0;$i<1000;$i++)
 {
   $tpl = new WactTemplate('wact.html', new WactDefaultTemplateConfig(dirname(__FILE__) . '/wact.ini'));
@@ -14,12 +16,4 @@ for($i=0;$i<1000;$i++)
   $tpl->capture();
 }
 
-$classes = array();
-foreach(get_declared_classes() as $class)
-{
-    $refl = new ReflectionClass($class);
-      if(strpos($refl->getFileName(), 'src/') !== false)
-            $classes[] = $class;
-}
-sort($classes);
-var_dump($classes);
+include('end.inc.php');
