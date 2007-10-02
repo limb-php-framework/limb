@@ -2,23 +2,13 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/fs/src/lmbFs.class.php');
-lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
-lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
-
-class lmbMacroListTagTest extends UnitTestCase
+class lmbMacroListTagTest extends lmbBaseMacroTagTest
 {
-  function setUp()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tpl');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
-  }
-
   function testSimpleList()
   {
     $list = '{{list using="$#list" as="$item"}}{{list:item}}<?=$item?> {{/list:item}}{{/list}}';
@@ -47,7 +37,7 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testEmptyList()
   {
-    $list = '{{list using="$#list" as="$item"}}{{list:item}}<?=$item?>{{/list:item}}' . 
+    $list = '{{list using="$#list" as="$item"}}{{list:item}}<?=$item?>{{/list:item}}' .
             '{{list:empty}}Nothing{{/list:empty}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
@@ -87,7 +77,7 @@ class lmbMacroListTagTest extends UnitTestCase
 
   function testTextNodesInsideListTagWithEmptyListTag()
   {
-    $list = '{{list using="$#list" as="$item"}}List: {{list:item}}<?=$item?> {{/list:item}} !' . 
+    $list = '{{list using="$#list" as="$item"}}List: {{list:item}}<?=$item?> {{/list:item}} !' .
             '{{list:empty}}Nothing{{/list:empty}}{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
@@ -99,10 +89,39 @@ class lmbMacroListTagTest extends UnitTestCase
     $this->assertEqual($out, 'Nothing');
   }
 
+  function testParity()
+  {
+    $list = '{{list using="$#list" as="$item" parity="$parity"}}{{list:item}}{{$parity}}-{{$item}} {{/list:item}} !{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd', 'Jeff'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'odd-Bob even-Todd odd-Jeff  !');
+  }
+
+  function testEvenAndOddTags()
+  {
+    $list = '{{list using="$#list" as="$item" parity="$parity"}}{{list:item}}'.
+              '{{list:odd}}Odd{{/list:odd}}{{list:even}}Even{{/list:even}}-{{$item}} {{/list:item}} !{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd', 'Jeff'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Odd-Bob Even-Todd Odd-Jeff  !');
+  }
+
   function testListWithGlue()
   {
-    $list = '{{list using="$#list" as="$item"}}List:{{list:item}}<?=$item?>{{/list:item}}!' . 
-            '{{list:glue}}||{{/list:glue}}{{/list}}';
+    $list = '{{list using="$#list" as="$item"}}List:'.
+            '{{list:item}}<?=$item?>{{list:glue}}||{{/list:glue}}'.
+            '{{/list:item}}!' .
+            '{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -113,19 +132,73 @@ class lmbMacroListTagTest extends UnitTestCase
     $this->assertEqual($out, 'List:Bob||Todd||Marry!');
   }
 
-  protected function _createMacro($file)
+  function testListWithGlueWithStep()
   {
-    $base_dir = LIMB_VAR_DIR . '/tpl';
-    $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $macro = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir, true, true, array($base_dir)));
-    return $macro;
+    $list = '{{list using="$#list" as="$item"}}List:'.
+            '{{list:item}}<?=$item?>{{list:glue step="2"}}||{{/list:glue}}'.
+            '{{/list:item}}!' .
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd', 'Marry'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'List:BobTodd||Marry!');
   }
 
-  protected function _createTemplate($code, $name)
+  function testTwoDependentGlues()
   {
-    $file = LIMB_VAR_DIR . '/tpl/' . $name;
-    file_put_contents($file, $code);
-    return $file;
+    $list = '{{list using="$#list" as="$item"}}List#'.
+            '{{list:item}}<?=$item?>' .
+            '{{list:glue step="2"}}|{{/list:glue}}'.
+            '{{list:glue}}:{{/list:glue}}'.
+            '{{/list:item}}!'.
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('John', 'Pavel', 'Peter', 'Harry', 'Roman', 'Sergey'));
+
+    $this->assertEqual($macro->render(), 'List#John:Pavel|Peter:Harry|Roman:Sergey!');
+  }
+
+  function testListFillTagWithRatio()
+  {
+    $list = '{{list using="$#list" as="$item"}}List#'.
+                '{{list:item}}{{$item}}'.
+                '{{list:glue step="3"}}++{{/list:glue}}'.
+                '{{list:glue}}:{{/list:glue}}'.
+                '{{/list:item}}'.
+                '{{list:fill upto="3" items_left="$items_left"}}{{$items_left}}{{/list:fill}}'.
+                '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('John', 'Pavel', 'Peter', 'Harry'));
+
+    $this->assertEqual($macro->render(), 'List#John:Pavel:Peter++Harry2');
+  }
+
+  function testListFillTagWithTotalElementsLessThanRatio()
+  {
+    $list = '{{list using="$#list" as="$item"}}List#'.
+                '{{list:item}}{{$item}}'.
+                '{{list:glue step="3"}}++{{/list:glue}}'.
+                '{{list:glue}}:{{/list:glue}}'.
+                '{{/list:item}}'.
+                '{{list:fill upto="3" items_left="$items_left"}}{{$items_left}}{{/list:fill}}'.
+                '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('John', 'Pavel'));
+
+    $this->assertEqual($macro->render(), 'List#John:Pavel');
   }
 }
 
