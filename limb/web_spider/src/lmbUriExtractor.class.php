@@ -12,7 +12,7 @@ lmb_require('limb/net/src/lmbUri.class.php');
  * class lmbUriExtractor.
  *
  * @package web_spider
- * @version $Id: lmbUriExtractor.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbUriExtractor.class.php 6372 2007-10-03 18:20:39Z svk $
  */
 class lmbUriExtractor
 {
@@ -38,8 +38,12 @@ class lmbUriExtractor
     $match_number = $this->_defineRegexMatchNumber();
 
     for ($i=0; $i < sizeof($matches); $i++)
-      $uris[] = new lmbUri($matches[$i][$match_number]);
-
+    {
+      try {	
+        $uris[] = new lmbUri($matches[$i][$match_number]);
+      }
+      catch(lmbException $e) {};
+    }	
     return $uris;
   }
 }
