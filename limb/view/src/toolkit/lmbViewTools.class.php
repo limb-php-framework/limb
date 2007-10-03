@@ -95,8 +95,8 @@ class lmbViewTools extends lmbAbstractTools
     lmb_require('limb/macro/src/lmbMacroConfig.class.php');
     
     $this->macro_config = new lmbMacroConfig(LIMB_VAR_DIR . '/compiled/', 
-                              true,
-                              true, 
+                              $this->toolkit->getConf('macro')->get('forcecompile'),
+                              $this->toolkit->getConf('macro')->get('forcescan'),
                               explode(';', LIMB_TEMPLATES_INCLUDE_PATH),
                               explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH));
 
