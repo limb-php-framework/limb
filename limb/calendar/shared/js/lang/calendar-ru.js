@@ -125,3 +125,8 @@ Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
 Calendar._TT["WK"] = "нед";
 Calendar._TT["TIME"] = "Время:";
+
+Calendar._DEFOPT = {};
+Calendar._DEFOPT['day'] = 'число';
+Calendar._DEFOPT['month'] = 'месяц';
+Calendar._DEFOPT['year'] = 'год';
