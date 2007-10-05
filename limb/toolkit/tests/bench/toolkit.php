@@ -13,6 +13,7 @@ class BenchTools extends lmbAbstractTools
   }
 }
 
+/*---------------------------*/
 $toolkit = lmbToolkit :: setup(new BenchTools());
 
 $mark = microtime(true);
@@ -22,6 +23,7 @@ for($i=0;$i<1000;$i++)
 
 echo "tools method access: " . (microtime(true) - $mark) . "\n";
 
+/*---------------------------*/
 $tools = new BenchTools();
 
 $mark = microtime(true);
@@ -30,4 +32,12 @@ for($i=0;$i<1000;$i++)
   $tools->getFoo();
 
 echo "regular method access: " . (microtime(true) - $mark) . "\n";
+
+/*---------------------------*/
+$mark = microtime(true);
+
+for($i=0;$i<1000;$i++)
+  lmbToolkit :: instance()->getFoo();
+
+echo "tools method access with lmbToolkit :: instance() : " . (microtime(true) - $mark) . "\n";
 
