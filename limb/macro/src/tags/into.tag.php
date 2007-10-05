@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
@@ -22,7 +22,7 @@ class lmbMacroIntoTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    if(!$this->parent->isDynamic())
+    if(!$this->parent->isDynamicWrap())
     {
       $tree_builder = $compiler->getTreeBuilder();
       $this->_insert($this->parent, $tree_builder, $this->get('slot'));

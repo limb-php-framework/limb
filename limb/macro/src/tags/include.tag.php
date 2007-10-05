@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
@@ -39,7 +39,7 @@ class lmbMacroIncludeTag extends lmbMacroTag
 
   function _isDynamic()
   {
-    return $this->isVariable('file');
+    return $this->isDynamic('file');
   }
 
   function generateContents($code)
@@ -79,10 +79,10 @@ class lmbMacroIncludeTag extends lmbMacroTag
   {
     $keys = array();
     $vals = array();
-    foreach($this->attributes as $k => $v)
+    foreach($this->attributes as $k => $attribute)
     {
       $keys[] = '$' . $k;
-      $vals[] = $this->_sanitizeValue($v);
+      $vals[] = $this->getEscaped($k);
     }
     return array($keys, $vals);
   }
@@ -90,17 +90,9 @@ class lmbMacroIncludeTag extends lmbMacroTag
   protected function _attributesIntoArray()
   {
     $arr = array();
-    foreach($this->attributes as $k => $v)
-      $arr[$k] = $this->_sanitizeValue($v);
+    foreach($this->attributes as $k => $attribute)
+      $arr[$k] = $this->getEscaped($k);
     return $arr;
-  }
-
-  protected function _sanitizeValue($v)
-  {
-    if(is_numeric($v) || $v{0} == '$')
-      return $v;
-    else //make it smarter
-      return "'$v'";
   }
 }
 

@@ -2,30 +2,19 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
-lmb_require('limb/core/src/lmbObject.class.php');
-lmb_require('limb/fs/src/lmbFs.class.php');
-
-class lmbMacroOutputTagTest extends UnitTestCase
+class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
 {
-  function setUp()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tpl');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
-  }
-
   function testSimpleOutput()
   {
-    $content = '{{$#var}}';
+    $content = '{$#var}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
-    $macro = $this->_createMacro($tpl);
     $macro->set('var', 'Foo');
 
     $out = $macro->render();
@@ -34,11 +23,10 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testSimpleChainedOutputForArray()
   {
-    $content = '{{$#var.foo.bar}}';
+    $content = '{$#var.foo.bar}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
-    $macro = $this->_createMacro($tpl);
     $macro->set('var', array('foo' => array('bar' => 'Hey')));
 
     $out = $macro->render();
@@ -47,11 +35,9 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testBrokenChainOutputForArray()
   {
-    $content = '{{$#var.foo.bar.baz}}';
+    $content = '{$#var.foo.bar.baz}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
-
-    $macro = $this->_createMacro($tpl);
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
     $macro->set('var', null);
     $out = $macro->render();
@@ -68,11 +54,10 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testSimpleChainedOutputForObject()
   {
-    $content = '{{$#var.foo.bar}}';
+    $content = '{$#var.foo.bar}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
-    $macro = $this->_createMacro($tpl);
     $macro->set('var', new lmbObject(array('foo' => new lmbObject(array('bar' => 'Hey')))));
 
     $out = $macro->render();
@@ -81,11 +66,9 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testBrokenChainOutputForObject()
   {
-    $content = '{{$#var.foo.bar.baz}}';
+    $content = '{$#var.foo.bar.baz}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
-
-    $macro = $this->_createMacro($tpl);
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
     $macro->set('var', null);
     $out = $macro->render();
@@ -102,43 +85,34 @@ class lmbMacroOutputTagTest extends UnitTestCase
 
   function testChainedOutputForMixedArraysAndObjects()
   {
-    $content = '{{$#var.foo.bar}}';
+    $content = '{$#var.foo.bar}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
-    $macro = $this->_createMacro($tpl);
     $macro->set('var', new lmbObject(array('foo' => array('bar' => 'Hey'))));
 
     $out = $macro->render();
-    $this->assertEqual($out, 'Hey'); 
+    $this->assertEqual($out, 'Hey');
   }
 
   function testBrokenChainOutputForMixedArraysAndObjects()
   {
-    $content = '{{$#var.foo.bar.baz}}';
+    $content = '{$#var.foo.bar.baz}';
 
-    $tpl = $this->_createTemplate($content, 'tpl.html');
-
-    $macro = $this->_createMacro($tpl);
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
 
     $macro->set('var', new lmbObject(array('foo' => array('bar' => null))));
     $out = $macro->render();
     $this->assertEqual($out, '');
   }
 
-  protected function _createMacro($file)
+  function testTemplateWithOutputExpression()
   {
-    $base_dir = LIMB_VAR_DIR . '/tpl';
-    $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $macro = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir, true, true, array($base_dir)));
-    return $macro;
-  }
-
-  protected function _createTemplate($code, $name)
-  {
-    $file = LIMB_VAR_DIR . '/tpl/' . $name;
-    file_put_contents($file, $code);
-    return $file;
+    $code = '<h1>{$#bar}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', "foo");
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>foo</h1>');
   }
 }
 

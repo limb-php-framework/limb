@@ -2,24 +2,26 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroNode.class.php'); 
+lmb_require('limb/macro/src/lmbMacroNode.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroSourceLocation.class.php');
-lmb_require('limb/macro/src/lmbMacroCodeWriter.class.php'); 
-lmb_require('limb/macro/src/lmbMacroCompiler.class.php'); 
- 
+lmb_require('limb/macro/src/lmbMacroCodeWriter.class.php');
+lmb_require('limb/macro/src/lmbMacroCompiler.class.php');
+lmb_require('limb/macro/src/lmbMacroTagAttribute.class.php');
+
 class MacroTagClass1CompilerTest extends lmbMacroTag{}
 class MacroTagClass2CompilerTest extends lmbMacroTag{}
 
 Mock::generate('lmbMacroNode', 'MockMacroNode');
 Mock::generate('lmbMacroCodeWriter', 'MockMacroCodeWriter');
 Mock::generate('lmbMacroCompiler', 'MockMacroCompiler');
+Mock::generate('lmbMacroTagAttribute', 'MockMacroTagAttribute');
 
 class lmbMacroTagTest extends UnitTestCase
 {
@@ -38,7 +40,7 @@ class lmbMacroTagTest extends UnitTestCase
   {
     return new lmbMacroTag($this->source_location, 'my_tag', $this->tag_info);
   }
-  
+
   function testGetIdAttribute()
   {
     $this->node->setId('Test');
@@ -150,6 +152,15 @@ class lmbMacroTagTest extends UnitTestCase
     $this->node->generate($code_writer);
   }
 
+  function testGenerateCallsPreGenerateForAttributes()
+  {
+    $code_writer = new MockMacroCodeWriter();
+    $attribute = new MockMacroTagAttribute();
+    $attribute->expectOnce('preGenerate');
+    $this->node->add($attribute);
+    $this->node->generate($code_writer);
+  }
+
   function testCheckIdsOk()
   {
     $root = new lmbMacroNode;
@@ -208,23 +219,23 @@ class lmbMacroTagTest extends UnitTestCase
     $root->addChild($child2);
 
     $root->checkChildrenIds();
-  }  
-  
+  }
+
   function testGetIdByDefault()
   {
     $this->assertNotNull($this->node->getId());
-  }  
+  }
 
   function testGetId()
   {
     $this->node->setId('TestId');
     $this->assertEqual($this->node->getId(), 'TestId');
   }
-  
+
   function testGetAttributeUnset()
   {
     $this->assertNull($this->node->get('foo'));
-  }  
+  }
 
   function testGetAttribute()
   {
@@ -266,7 +277,7 @@ class lmbMacroTagTest extends UnitTestCase
     //false cases
     $this->node->set('A', NULL);
     $this->assertFalse($this->node->getBool('A'));
-    
+
     $this->node->set('D', 'False');
     $this->assertFalse($this->node->getBool('D'));
 
@@ -360,6 +371,6 @@ class lmbMacroTagTest extends UnitTestCase
       $this->assertEqual($e->getParam('file'), $this->source_location->getFile());
       $this->assertEqual($e->getParam('line'), $this->source_location->getLine());
     }
-  }  
+  }
 }
 

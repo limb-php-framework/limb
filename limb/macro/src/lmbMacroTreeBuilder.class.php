@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -24,6 +24,8 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTextNode.class.php');
+lmb_require('limb/macro/src/lmbMacroContentBlockAnalizerListener.class.php');
+lmb_require('limb/macro/src/lmbMacroBlockAnalizer.class.php');
 
 class lmbMacroTreeBuilder
 {
@@ -82,13 +84,20 @@ class lmbMacroTreeBuilder
     $this->addNode(new lmbMacroTextNode(null, $text));
   }
 
+  function addContent($text, $location)
+  {
+    $listener = new lmbMacroContentBlockAnalizerListener($this, $location);
+    $analizer = new lmbMacroBlockAnalizer();
+    $analizer->parse($text, $listener);
+  }
+
   /**
   * Ends a node's build phase in relation to the tree.
   * Checks child server ids and moves the 'cursor' up the tree to the parent
   * node.
   */
   function popNode()
-  {    
+  {
     $this->node->checkChildrenIds();
     $this->setCursor($this->node->getParent());
   }
@@ -133,12 +142,12 @@ class lmbMacroTreeBuilder
       return $this->popExpectedTag($tag, $location);
     }
 
-    $expected_tag = $expected_tag_item[0];    
+    $expected_tag = $expected_tag_item[0];
     $expected_location = $expected_tag_item[1];
 
     if(strcasecmp($expected_tag, $tag) === 0)
       return $tag;
- 
+
     throw new lmbMacroException('Unexpected closing tag',
                              array('file' => $location->getFile(),
                                   'tag' => $tag,

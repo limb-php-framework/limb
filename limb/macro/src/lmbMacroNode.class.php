@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/macro/src/lmbMacroException.class.php');
 lmb_require('limb/macro/src/lmbMacroSourceLocation.class.php');
@@ -17,13 +17,13 @@ lmb_require('limb/macro/src/lmbMacroSourceLocation.class.php');
  */
 class lmbMacroNode
 {
-  protected $id;  
+  protected $id;
   protected $children = array();
-  protected $parent;  
+  protected $parent;
   /**
   * @var lmbMacroSourceLocation
   */
-  protected $location;    
+  protected $location;
 
   function __construct($location = null)
   {
@@ -32,17 +32,17 @@ class lmbMacroNode
     else
       $this->location = new lmbMacroSourceLocation();
   }
-  
+
   function setParent($parent)
   {
     $this->parent = $parent;
   }
-  
+
   function getParent()
   {
     return $this->parent;
   }
-  
+
   function getLocationInTemplate()
   {
     return $this->location;
@@ -62,7 +62,7 @@ class lmbMacroNode
   {
     if($this->id)
       return $this->id;
-        
+
     $this->id = self :: generateNewId();
     return $this->id;
   }
@@ -70,21 +70,21 @@ class lmbMacroNode
   function setId($id)
   {
     $this->id = $id;
-  }  
-  
+  }
+
   static function generateNewId()
   {
     static $counter = 1;
     return 'id00' . $counter++;
-  }    
-  
+  }
+
   function raise($error, $vars = array())
-  {    
+  {
     $vars['file'] = $this->location->getFile();
     $vars['line'] = $this->location->getLine();
     throw new lmbMacroException($error, $vars);
-  }  
-  
+  }
+
   function addChild($child)
   {
     $child->parent = $this;
@@ -188,8 +188,8 @@ class lmbMacroNode
         $result[] = $child;
     }
     return $result;
-  }  
-  
+  }
+
   function findParentByClass($class)
   {
     $parent = $this->parent;
@@ -198,16 +198,16 @@ class lmbMacroNode
       $parent = $parent->parent;
 
     return $parent;
-  }  
-  
+  }
+
   function prepare()
   {
     foreach($this->children as $child)
       $child->prepare();
-  }  
+  }
 
   function preParse(){}
-  
+
   function generateConstructor($code_writer)
   {
     foreach($this->children as $child)
@@ -219,12 +219,18 @@ class lmbMacroNode
     foreach($this->children as $child)
       $child->generate($code_writer);
   }
-  
+
   function generate($code_writer)
-  {   
-    $this->generateContents($code_writer);   
-  }  
-     
+  {
+    $this->_preGenerateAttributes($code_writer);
+
+    $this->generateContents($code_writer);
+  }
+
+  protected function _preGenerateAttributes($code_writer)
+  {
+  }
+
   /**
   * Checks that each immediate child of the current component has a unique ID
   * amongst its siblings.
@@ -250,6 +256,6 @@ class lmbMacroNode
         $checked_children[$id] = $child;
       }
     }
-  }  
+  }
 }
 

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
 lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
- 
+
 class MacroTagFooTest extends lmbMacroTag
 {
   function generateContents($code)
@@ -30,35 +30,39 @@ class MacroTagBarTest extends lmbMacroTag
   }
 }
 
-$foo_info = new lmbMacroTagInfo('foo', 'MacroTagFooTest'); 
-$bar_info = new lmbMacroTagInfo('bar', 'MacroTagBarTest'); 
+class MacroTagZooTest extends lmbMacroTag
+{
+  function generateContents($code)
+  {
+    $code->writePHP('echo ' . $this->getEscaped('attr') . ';');
+  }
+}
+
+$foo_info = new lmbMacroTagInfo('foo', 'MacroTagFooTest');
+$bar_info = new lmbMacroTagInfo('bar', 'MacroTagBarTest');
+$zoo_info = new lmbMacroTagInfo('zoo', 'MacroTagZooTest');
 
 lmbMacroTagDictionary :: instance()->register($foo_info, __FILE__);
 lmbMacroTagDictionary :: instance()->register($bar_info, __FILE__);
+lmbMacroTagDictionary :: instance()->register($zoo_info, __FILE__);
 
-class lmbMacroTagAcceptanceTest extends UnitTestCase
+class lmbMacroTagAcceptanceTest extends lmbBaseMacroTest
 {
-  function setUp()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tpl');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
-  }
-
   function testTemplateRendering()
   {
     $code = '<h1>{{foo/}}{{bar/}}</h1>';
-    $tpl = $this->_createTemplate($code);
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>foo!bar</h1>');
   }
 
-  protected function _createTemplate($code)
+  function testCompositeTagAttributes()
   {
-    $file = LIMB_VAR_DIR . '/tpl/' . mt_rand() . '.html';
-    file_put_contents($file, $code);
-    $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $tpl = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir));
-    return $tpl;
+    $code = '<h1>{{zoo attr="Test_{$#var}"/}}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', 'Result');
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>Test_Result</h1>');
   }
 }
 

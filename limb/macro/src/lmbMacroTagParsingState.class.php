@@ -2,13 +2,15 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTokenizerListener.interface.php');
 lmb_require('limb/macro/src/lmbMacroBaseParsingState.class.php');
+lmb_require('limb/macro/src/lmbMacroTagAttributeBlockAnalizerListener.class.php');
+lmb_require('limb/macro/src/lmbMacroBlockAnalizer.class.php');
 
 /**
  * class lmbMacroTagParsingState.
@@ -40,7 +42,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
       $tag_node = $this->buildTagNode($tag_info, $tag, $attrs, $self_closed_tag = true);
       $tag_node->setHasClosingTag(false);
       $this->tree_builder->pushNode($tag_node); // for cases like {{include}} we do pushNode() and popNode() here.
-      $this->tree_builder->popNode();      
+      $this->tree_builder->popNode();
     }
     else
     {
@@ -81,7 +83,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     $this->tree_builder->pushNode($tag_node); // for cases like {{include}} we do pushNode() and popNode() here.
     $this->tree_builder->popNode();
   }
-  
+
   /**
   * Builds a component, adding attributes
   * @param lmbMacroTagInfo
@@ -96,8 +98,8 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     $tag_node->emptyClosedTag = $isEmpty;
     $this->_addAttributesToTagNode($tag_node, $attrs);
     return $tag_node;
-  }    
-  
+  }
+
   protected function _addAttributesToTagNode($tag_node, $attrs)
   {
     foreach($attrs as $name => $value)
@@ -111,9 +113,16 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
                                     'tag' => $tag_node->getTag(),
                                     'attribute' => $name));
       }
-      $tag_node->set($name, $value);
+
+      $attribute = new lmbMacroTagAttribute($name);
+      $listener = new lmbMacroTagAttributeBlockAnalizerListener($attribute, $tag_node);
+
+      $analizer = new lmbMacroBlockAnalizer();
+      $analizer->parse($value, $listener);
+
+      $tag_node->add($attribute);
     }
-  }  
+  }
 
   protected function _createTagNode($tag_info, $tag)
   {
@@ -121,16 +130,16 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     require_once($tag_info->getFile());
     $tag_node = new $class($this->parser->getCurrentLocation(), $tag, $tag_info);
     return $tag_node;
-  }    
+  }
 
   function normalizeAttributes($attrs)
   {
-    return array_change_key_case($attrs, CASE_LOWER);    
+    return array_change_key_case($attrs, CASE_LOWER);
   }
 
   function characters($text)
   {
-    $this->tree_builder->addTextNode($text);
+    $this->tree_builder->addContent($text, $this->parser->getCurrentLocation());
   }
 
   function unexpectedEOF($text)

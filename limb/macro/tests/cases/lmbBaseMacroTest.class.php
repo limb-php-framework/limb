@@ -8,10 +8,11 @@
  */
 
 lmb_require('limb/fs/src/lmbFs.class.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 
-class lmbBaseMacroTagTest extends UnitTestCase
+class lmbBaseMacroTest extends UnitTestCase
 {
   function setUp()
   {
@@ -32,6 +33,12 @@ class lmbBaseMacroTagTest extends UnitTestCase
     $file = LIMB_VAR_DIR . '/tpl/' . $name;
     file_put_contents($file, $code);
     return $file;
+  }
+
+  protected function _createMacroTemplate($code, $name)
+  {
+    $file = $this->_createTemplate($code, $name);
+    return $this->_createMacro($file);
   }
 }
 

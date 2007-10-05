@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroListTagTest extends lmbBaseMacroTagTest
+class lmbMacroListTagTest extends lmbBaseMacroTest
 {
   function testSimpleList()
   {
@@ -91,7 +91,7 @@ class lmbMacroListTagTest extends lmbBaseMacroTagTest
 
   function testParity()
   {
-    $list = '{{list using="$#list" as="$item" parity="$parity"}}{{list:item}}{{$parity}}-{{$item}} {{/list:item}} !{{/list}}';
+    $list = '{{list using="$#list" as="$item" parity="$parity"}}{{list:item}}{$parity}-{$item} {{/list:item}} !{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -105,7 +105,7 @@ class lmbMacroListTagTest extends lmbBaseMacroTagTest
   function testEvenAndOddTags()
   {
     $list = '{{list using="$#list" as="$item" parity="$parity"}}{{list:item}}'.
-              '{{list:odd}}Odd{{/list:odd}}{{list:even}}Even{{/list:even}}-{{$item}} {{/list:item}} !{{/list}}';
+              '{{list:odd}}Odd{{/list:odd}}{{list:even}}Even{{/list:even}}-{$item} {{/list:item}} !{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
 
@@ -168,11 +168,11 @@ class lmbMacroListTagTest extends lmbBaseMacroTagTest
   function testListFillTagWithRatio()
   {
     $list = '{{list using="$#list" as="$item"}}List#'.
-                '{{list:item}}{{$item}}'.
+                '{{list:item}}{$item}'.
                 '{{list:glue step="3"}}++{{/list:glue}}'.
                 '{{list:glue}}:{{/list:glue}}'.
                 '{{/list:item}}'.
-                '{{list:fill upto="3" items_left="$items_left"}}{{$items_left}}{{/list:fill}}'.
+                '{{list:fill upto="3" items_left="$items_left"}}{$items_left}{{/list:fill}}'.
                 '{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');
@@ -186,11 +186,11 @@ class lmbMacroListTagTest extends lmbBaseMacroTagTest
   function testListFillTagWithTotalElementsLessThanRatio()
   {
     $list = '{{list using="$#list" as="$item"}}List#'.
-                '{{list:item}}{{$item}}'.
+                '{{list:item}}{$item}'.
                 '{{list:glue step="3"}}++{{/list:glue}}'.
                 '{{list:glue}}:{{/list:glue}}'.
                 '{{/list:item}}'.
-                '{{list:fill upto="3" items_left="$items_left"}}{{$items_left}}{{/list:fill}}'.
+                '{{list:fill upto="3" items_left="$items_left"}}{$items_left}{{/list:fill}}'.
                 '{{/list}}';
 
     $list_tpl = $this->_createTemplate($list, 'list.html');

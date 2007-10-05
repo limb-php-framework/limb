@@ -2,23 +2,13 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
-lmb_require('limb/fs/src/lmbFs.class.php');
-lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
-
-class lmbMacroTagIncludeTest extends UnitTestCase
+class lmbMacroTagIncludeTest extends lmbBaseMacroTest
 {
-  function setUp()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tpl');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/compiled');
-  }
-
   function testSimpleStaticInclude()
   {
     $bar = '<body>{{include file="foo.html"/}}</body>';
@@ -58,11 +48,11 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
 
     $macro = $this->_createMacro($bar_tpl);
-    
+
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Numbers: 1 2</p></body>');
   }
-  
+
   function testStaticIncludeMixLocalAndTemplateVariables()
   {
     $bar = '<body><?php $var2=2;?>{{include file="foo.html" var1="1" var2="$var2"/}}</body>';
@@ -72,7 +62,7 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $foo_tpl = $this->_createTemplate($foo, 'foo.html');
 
     $macro = $this->_createMacro($bar_tpl);
-    
+
     $macro->set('var3', 3);
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Numbers: 1 2 3</p></body>');
@@ -88,10 +78,10 @@ class lmbMacroTagIncludeTest extends UnitTestCase
 
     $macro = $this->_createMacro($bar_tpl);
     $macro->set('file', 'foo.html');
-    
+
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello!</p></body>');
-  } 
+  }
 
   function testDynamicIncludePassLocalVars()
   {
@@ -103,10 +93,10 @@ class lmbMacroTagIncludeTest extends UnitTestCase
 
     $macro = $this->_createMacro($bar_tpl);
     $macro->set('file', 'foo.html');
-    
+
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Fred!</p></body>');
-  } 
+  }
 
   function testDynamicIncludeMixLocalAndTemplateVars()
   {
@@ -119,24 +109,9 @@ class lmbMacroTagIncludeTest extends UnitTestCase
     $macro = $this->_createMacro($bar_tpl);
     $macro->set('file', 'foo.html');
     $macro->set('lastname', 'Atkins');
-    
+
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Fred Atkins!</p></body>');
-  } 
-
-  protected function _createMacro($file)
-  {
-    $base_dir = LIMB_VAR_DIR . '/tpl';
-    $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $macro = new lmbMacroTemplate($file, new lmbMacroConfig($cache_dir, true, true, array($base_dir)));
-    return $macro;
-  }
-
-  protected function _createTemplate($code, $name)
-  {
-    $file = LIMB_VAR_DIR . '/tpl/' . $name;
-    file_put_contents($file, $code);
-    return $file;
   }
 }
 

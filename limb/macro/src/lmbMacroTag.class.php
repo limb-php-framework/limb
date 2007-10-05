@@ -2,12 +2,13 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroNode.class.php');
+lmb_require('limb/macro/src/lmbMacroTagAttribute.class.php');
 
 /**
  * class lmbMacroTag.
@@ -19,15 +20,15 @@ class lmbMacroTag extends lmbMacroNode
 {
   protected $tag;
   protected $has_closing_tag = true;
-  protected $empty_closed_tag = false;  
+  protected $empty_closed_tag = false;
   protected $tag_info;
   protected $attributes = array();
-  
+
   function __construct($location, $tag, $tag_info)
   {
     $this->tag = $tag;
     $this->tag_info = $tag_info;
-    
+
     parent :: __construct($location);
   }
 
@@ -35,39 +36,60 @@ class lmbMacroTag extends lmbMacroNode
   {
     return $this->tag;
   }
-  
+
   function getHasClosingTag()
   {
     return $this->has_closing_tag;
   }
-  
+
   function setHasClosingTag($flag)
   {
     return $this->has_closing_tag = $flag;
-  }  
-  
+  }
+
   function getId()
   {
     if($this->id)
       return $this->id;
-        
+
     if($id = $this->get('id'))
       $this->id = $id;
     else
       $this->id = self :: generateNewId();
 
     return $this->id;
-  }  
-  
+  }
+
   function get($name)
   {
-    if(array_key_exists(strtolower($name), $this->attributes))
-      return $this->attributes[strtolower($name)];
-  }  
-  
+    if(!array_key_exists(strtolower($name), $this->attributes))
+      return;
+
+    return $this->attributes[strtolower($name)]->getValue();
+  }
+
+  function getEscaped($name)
+  {
+    if($value = $this->get($name))
+    {
+      if($this->isDynamic($name))
+        return $value;
+      else
+        return "'" .  $value . "'";
+    }
+  }
+
+  /**
+  * Should be used for testing purposes only since not parses $value for any output expressions
+  */
   function set($name, $value)
   {
-    $this->attributes[strtolower($name)] = $value;
+    $this->attributes[strtolower($name)] = new lmbMacroTagAttribute($name, $value);
+  }
+
+  function add($attribute)
+  {
+    $this->attributes[strtolower($attribute->getName())] = $attribute;
   }
 
   function has($name)
@@ -75,9 +97,9 @@ class lmbMacroTag extends lmbMacroNode
     return array_key_exists(strtolower($name), $this->attributes);
   }
 
-  function isVariable($name)
+  function isDynamic($name)
   {
-    return $this->has($name) && strpos($this->get($name), '$') === 0;
+    return $this->has($name) && $this->attributes[strtolower($name)]->isDynamic();
   }
 
   /**
@@ -87,16 +109,19 @@ class lmbMacroTag extends lmbMacroNode
   * ATTRIBUTE (true)
   * (attribute unspecified) (default)
   */
-  function getBool($attrib, $default = false)
+  function getBool($name, $default = false)
   {
-    if(!isset($this->attributes[strtolower($attrib)]))
+    if(!isset($this->attributes[strtolower($name)]))
       return $default;
 
-    return self :: getBooleanValue($this->attributes[strtolower($attrib)]);
+    return self :: getBooleanValue($this->attributes[strtolower($name)]->getValue());
   }
 
   static function getBooleanValue($value)
   {
+    if(!$value)
+      return $value;
+
     switch(strtoupper($value))
     {
       case 'FALSE':
@@ -111,22 +136,35 @@ class lmbMacroTag extends lmbMacroNode
     }
   }
 
+  function generate($code_writer)
+  {
+    $this->_preGenerataAttributes($code_writer);
+
+    $this->generateContents($code_writer);
+  }
+
+  protected function _preGenerataAttributes($code_writer)
+  {
+    foreach($this->attributes as $attribute)
+      $attribute->preGenerate($code_writer);
+  }
+
   function remove($attrib)
   {
     unset($this->attributes[strtolower($attrib)]);
-  }  
-    
+  }
+
   function raise($error, $vars = array())
   {
     $vars['tag'] = $this->tag;
     parent :: raise($error, $vars);
-  }  
+  }
 
   function raiseRequiredAttribute($attribute_name)
   {
     $this->raise('Missing required attribute', array('attribute' => $attribute_name));
   }
-  
+
   function preParse($compiler)
   {
     foreach($this->tag_info->getRequiredAttributes() as $attr_name)
@@ -147,6 +185,6 @@ class lmbMacroTag extends lmbMacroNode
                                 array('required_parent_tag_class' => $parent_class));
 
     }
-  }  
+  }
 }
 

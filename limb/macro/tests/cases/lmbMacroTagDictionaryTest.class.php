@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -27,14 +27,6 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
     $dictionary->register($tag_info, $file = 'whatever');
 
     $this->assertIsA($dictionary->findTagInfo('testtag'), 'lmbMacroTagInfo');
-  }
-
-  function testFindOutputTagInfoSpecialCase()
-  {
-    $dictionary = new lmbMacroTagDictionary();
-    $info = $dictionary->findTagInfo('$var');
-    $this->assertIsA($info, 'lmbMacroTagInfo');
-    $this->assertEqual($info->getClass(), 'lmbMacroOutputTag');
   }
 
   function testRegisterTagInfoOnceOnly()

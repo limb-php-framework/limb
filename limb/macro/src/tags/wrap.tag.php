@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTag.class.php');
@@ -24,7 +24,7 @@ class lmbMacroWrapTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    if($this->isVariable('with'))
+    if($this->isDynamic('with'))
       $this->is_dynamic = true;
 
     if(!$this->is_dynamic)
@@ -39,11 +39,6 @@ class lmbMacroWrapTag extends lmbMacroTag
         $this->_insert($this, $tree_builder, $into);
       }
     }
-  }
-
-  function isDynamic()
-  {
-    return $this->is_dynamic;
   }
 
   protected function _compileSourceFileName($file, $compiler)
@@ -71,7 +66,12 @@ class lmbMacroWrapTag extends lmbMacroTag
       $this->raise('Wrap slot not found', $params);
     }
 
-    $tree_builder->pushCursor($insertionPoint, $this->location); 
+    $tree_builder->pushCursor($insertionPoint, $this->location);
+  }
+
+  function isDynamicWrap()
+  {
+    return $this->is_dynamic;
   }
 
   protected function _collectIntos()
@@ -108,7 +108,7 @@ class lmbMacroWrapTag extends lmbMacroTag
 
       $handlers_str .= ')';
 
-      $code->writePHP('$this->wrapTemplate(' . $this->get('with') . ', ' . $handlers_str . ');');
+      $code->writePHP('$this->wrapTemplate(' . $this->getEscaped('with') . ', ' . $handlers_str . ');');
     }
     else
       parent :: generateContents($code);
