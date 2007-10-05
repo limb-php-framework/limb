@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -15,7 +15,7 @@
  * refer to the given components relative position in a template's
  * hierarchy, not to the PHP class hierarchy
  * @package wact
- * @version $Id: WactRuntimeComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactRuntimeComponent.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactRuntimeComponent
 {
@@ -87,10 +87,6 @@ class WactRuntimeComponent
     return parent :: getDatasource();
   }
 
-  function getDatasourceComponent()
-  {
-    return parent :: getDatasourceComponent();
-  }
   /**
   * Set the data source of a child component, or raise an error
   * if the child is not found.

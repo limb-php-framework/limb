@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 
@@ -28,8 +28,7 @@ class WactTemplateFiltersTest extends WactTemplateTestCase
     $page = $this->initTemplate('/template/filter/wactattributevarfilter.html');
 
     $form = $page->getChild('test');
-    $data = new WactArrayObject();
-    $data->set('Var', 'Foo');
+    $data = new ArrayObject(array('Var' => 'Foo'));
     $form->registerDataSource($data);
 
     $output = $page->capture();

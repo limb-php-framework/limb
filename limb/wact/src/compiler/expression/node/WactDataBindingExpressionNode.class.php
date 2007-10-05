@@ -11,7 +11,7 @@
  * class WactDataBindingExpressionNode.
  *
  * @package wact
- * @version $Id: WactDataBindingExpressionNode.class.php 6263 2007-09-05 13:33:22Z serega $
+ * @version $Id: WactDataBindingExpressionNode.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactDataBindingExpressionNode
 {
@@ -21,7 +21,7 @@ class WactDataBindingExpressionNode
   protected $processed_expression;
 
   protected $path_to_target_datasource;
-  protected $field_name;
+  protected $field_name = null;
 
   protected $datasource_ref_var;
 
@@ -82,6 +82,14 @@ class WactDataBindingExpressionNode
     do
     {
       $modifier = $this->processed_expression{0};
+
+      // the same datasource
+      if ($modifier == ".")
+      {
+        $this->processed_expression = substr($this->processed_expression, 1);
+        continue;
+      }
+
       // local PHP variable
       if ($modifier == "$")
       {
@@ -152,7 +160,7 @@ class WactDataBindingExpressionNode
 
   protected function _extractTargetFieldName()
   {
-    if(is_null($this->processed_expression) || $this->processed_expression == "")
+    if(is_null($this->processed_expression) || ($this->processed_expression === false))
       return;
 
     if (preg_match("/^\w+$/", $this->processed_expression))
@@ -231,21 +239,21 @@ class WactDataBindingExpressionNode
 
     if($this->php_variable)
     {
-      $code_writer->writePHP($this->datasource_ref_var . '= WactTemplate :: makeObject($' . $key . ');');
+      $this->datasource_ref_var = '$' . $key;
     }
     else
     {
-      $code_writer->writePHP($this->datasource_ref_var . '= WactTemplate :: makeObject(' . $this->datasource_context->getDataSource()->getComponentRefCode() . '->get(');
+      $code_writer->writePHP($this->datasource_ref_var . '= WactTemplate::getValue(' . $this->datasource_context->getDataSource()->getDatasourceRefCode() . ',');
       $code_writer->writePHPLIteral($key);
-      $code_writer->writePHP('));');
+      $code_writer->writePHP(');');
     }
 
     foreach ($this->path_to_target_datasource as $key)
     {
       $datasource_ref_var = $code_writer->getTempVarRef();
-      $code_writer->writePHP($datasource_ref_var . '= WactTemplate :: makeObject(' . $this->datasource_ref_var . '->get(');
+      $code_writer->writePHP($datasource_ref_var . '= WactTemplate::getValue(' . $this->datasource_ref_var . ',');
       $code_writer->writePHPLIteral($key);
-      $code_writer->writePHP('));');
+      $code_writer->writePHP(');');
       $this->datasource_ref_var = $datasource_ref_var;
     }
   }
@@ -268,7 +276,7 @@ class WactDataBindingExpressionNode
     {
       if($this->datasource_ref_var)
       {
-        $code_writer->writePHP($this->datasource_ref_var . '->get(');
+        $code_writer->writePHP('WactTemplate::getValue(' . $this->datasource_ref_var . ',');
         $code_writer->writePHPLiteral($this->field_name);
         $code_writer->writePHP(')');
         return;
@@ -282,15 +290,15 @@ class WactDataBindingExpressionNode
 
     if (isset($this->datasource_ref_var))
     {
-      $code_writer->writePHP($this->datasource_ref_var . '->get(');
+      $code_writer->writePHP('WactTemplate::getValue(' . $this->datasource_ref_var . ',');
       $code_writer->writePHPLiteral($this->field_name);
       $code_writer->writePHP(')');
     }
     else
     {
-      if($this->field_name)
+      if(!is_null($this->field_name))
       {
-        $code_writer->writePHP('' . $this->datasource_context->getDatasource()->getComponentRefCode() . '->get(');
+        $code_writer->writePHP('WactTemplate::getValue(' . $this->datasource_context->getDatasource()->getDatasourceRefCode() . ',');
         $code_writer->writePHPLiteral($this->field_name);
         $code_writer->writePHP(')');
       }

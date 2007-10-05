@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once('limb/wact/src/components/components.inc.php');
@@ -13,7 +13,7 @@ require_once('limb/wact/src/components/components.inc.php');
  * class WactTemplate.
  *
  * @package wact
- * @version $Id: WactTemplate.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactTemplate.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactTemplate extends WactDatasourceRuntimeComponent
 {
@@ -73,17 +73,33 @@ class WactTemplate extends WactDatasourceRuntimeComponent
     return new WactCompiler($this->config, $this->locator);
   }
 
-  /**
-  * @return WactArrayObject
-  **/
-  static function makeObject($value)
+  static function getValue($source, $value)
   {
-    if (is_object($value) && method_exists($value, 'get'))
-      return $value;
-    elseif(is_object($value) || is_array($value))
-      return new WactArrayObject($value);
+    if(is_scalar($source) || is_null($source))
+      return null;
 
-    return new WactArrayObject(array());
+    if (is_object($source) && method_exists($source, 'get'))
+      return $source->get($value);
+
+    if((is_array($source) || $source instanceof ArrayAccess) && isset($source[$value]))
+      return $source[$value];
+
+    return null;
+  }
+
+  static function setValue(&$source, $field, $value)
+  {
+    if(is_scalar($source) || is_null($source))
+      return;
+
+    if (is_object($source) && method_exists($source, 'set'))
+    {
+      $source->set($field, $value);
+      return;
+    }
+
+    if((is_array($source) || $source instanceof ArrayAccess))
+      $source[$field] = $value;
   }
 
   /**

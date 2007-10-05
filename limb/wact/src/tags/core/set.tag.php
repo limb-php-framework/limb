@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once 'limb/wact/src/compiler/property/WactConstantProperty.class.php';
@@ -15,7 +15,7 @@ require_once 'limb/wact/src/compiler/property/WactConstantProperty.class.php';
  * @tag core:SET
  * @forbid_end_tag
  * @package wact
- * @version $Id: set.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: set.tag.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactCoreSetTag extends WactCompilerTag
 {

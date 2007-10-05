@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once('limb/wact/src/components/form/WactOptionRenderer.class.php');
@@ -13,7 +13,7 @@ require_once('limb/wact/src/components/form/WactOptionRenderer.class.php');
  * class WactGroupedOptionsSelectComponent.
  *
  * @package wact
- * @version $Id: WactGroupedOptionsSelectComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactGroupedOptionsSelectComponent.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactGroupedOptionsSelectComponent extends WactFormElementComponent
 {
@@ -30,7 +30,7 @@ class WactGroupedOptionsSelectComponent extends WactFormElementComponent
   {
     foreach($groups as $group)
     {
-      if(!$options = $group->get('options'))
+      if(!$options = WactTemplate :: getValue($group,'options'))
         continue;
 
       echo '<optgroup ';
@@ -45,8 +45,7 @@ class WactGroupedOptionsSelectComponent extends WactFormElementComponent
 
   protected function _renderOptGroupTagAttributes($group, $level)
   {
-    $attrs = $group->export();
-    foreach($attrs as $key => $value)
+    foreach($group as $key => $value)
     {
       if($key == 'options' || is_object($value))
         continue;

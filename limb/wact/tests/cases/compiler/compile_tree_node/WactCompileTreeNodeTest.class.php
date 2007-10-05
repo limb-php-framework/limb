@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once('limb/wact/src/compiler/templatecompiler.inc.php');
@@ -128,16 +128,16 @@ class WactCompileTreeNodeTest extends UnitTestCase
   function testGetDataSource()
   {
     $parent = new MockWactCompileTreeNode();
-    $ds = new WactArrayObject();
+    $ds = new ArrayObject();
     $parent->setReturnValue('getDataSource', $ds);
     $this->component->parent = $parent;
-    $this->assertIsA($this->component->getDataSource(), 'WactArrayObject');
+    $this->assertIsA($this->component->getDataSource(), 'ArrayObject');
   }
 
   function testGetParentDataSource() {
       /* This test case is broken
       $parent = &new MockWactCompileTreeNode($this);
-      $ds = new WactArrayObject();
+      $ds = new ArrayObject();
       $testparent = new MockWactCompileTreeNode($this);
       $testparent->expectCallCount('getDataSource', 1);
       $mockds->parent = & $testparent;

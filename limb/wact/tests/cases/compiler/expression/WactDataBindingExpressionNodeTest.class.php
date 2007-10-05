@@ -357,7 +357,6 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
   function testGenerateExpressionForRegularCompileTreeNode()
   {
     $code_writer = new WactCodeWriter();
-
     $root = new WactCompileTreeRootNode();
 
     $context = new MockWactCompileTreeNode();
@@ -366,7 +365,7 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
     $DBE = new WactDataBindingExpressionNode('Test', $context);
     $DBE->generateExpression($code_writer);
 
-    $this->assertEqual($code_writer->getCode(), '<?php $root->get(\'Test\')');
+    $this->assertEqual($code_writer->getCode(), '<?php WactTemplate::getValue($root->datasource,\'Test\')');
   }
 
   function testGenerateExpressionWithRootModifier()
@@ -379,8 +378,20 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
 
     $DBE = new WactDataBindingExpressionNode('#Test', $context);
     $DBE->generateExpression($code_writer);
+    $this->assertEqual($code_writer->getCode(), '<?php WactTemplate::getValue($root->datasource,\'Test\')');
+  }
 
-    $this->assertEqual($code_writer->getCode(), '<?php $root->get(\'Test\')');
+  function testGenerateExpressionWithPointModifierUsedForArrayIndexOperations()
+  {
+    $code_writer = new WactCodeWriter();
+
+    $root = new WactCompileTreeRootNode();
+    $context = new WactCompileTreeNode();
+    $context->parent = $root;
+
+    $DBE = new WactDataBindingExpressionNode('.0', $context);
+    $DBE->generateExpression($code_writer);
+    $this->assertEqual($code_writer->getCode(), '<?php WactTemplate::getValue($root->datasource,0)');
   }
 
   function testGenerateExpressionWithLocalVariableModifier()
@@ -435,9 +446,9 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
     $DBE->generateExpression($code_writer);
     $DBE->generatePostStatement($code_writer);
 
-    $this->assertEqual($code_writer->getCode(), '<?php $A= WactTemplate :: makeObject($root->get(\'Test\'));'.
-                                                '$B= WactTemplate :: makeObject($A->get(\'item1\'));'.
-                                                '$B->get(\'item2\')');
+    $this->assertEqual($code_writer->getCode(), '<?php $A= WactTemplate::getValue($root->datasource,\'Test\');'.
+                                                '$B= WactTemplate::getValue($A,\'item1\');'.
+                                                'WactTemplate::getValue($B,\'item2\')');
   }
 
 
@@ -454,8 +465,7 @@ class WactDataBindingExpressionNodeTest extends UnitTestCase
     $DBE->generateExpression($code_writer);
     $DBE->generatePostStatement($code_writer);
 
-    $this->assertEqual($code_writer->getCode(), '<?php $A= WactTemplate :: makeObject($Test);'.
-                                                '$A->get(\'var\')');
+    $this->assertEqual($code_writer->getCode(), '<?php WactTemplate::getValue($Test,\'var\')');
   }
 }
 

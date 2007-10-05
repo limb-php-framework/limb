@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactCodeWriter.
  *
  * @package wact
- * @version $Id: WactCodeWriter.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactCodeWriter.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactCodeWriter
 {
@@ -67,7 +67,9 @@ class WactCodeWriter
   {
     $this->switchToPHP();
 
-    if ($escape_text)
+    if(is_numeric($text))
+      $this->code .= $text;
+    elseif ($escape_text)
       $this->code .= "'" . $this->escapeLiteral($text) . "'";
     else
       $this->code .= "'" . $text . "'";

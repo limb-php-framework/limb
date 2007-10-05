@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';
@@ -24,8 +24,7 @@ class WactInputCheckboxTagTest extends WactTemplateTestCase
 
     $form = $page->getChild('testForm');
 
-    $data = new WactArrayObject(array('myInput' =>'foo'));
-
+    $data = new ArrayObject(array('myInput' =>'foo'));
     $form->registerDataSource($data);
 
     $input = $page->getChild('test');
@@ -46,8 +45,7 @@ class WactInputCheckboxTagTest extends WactTemplateTestCase
 
     $form = $page->getChild('testForm');
 
-    $data = new WactArrayObject(array('myInput' => 'foo')); // foo is not equal to bar
-
+    $data = new ArrayObject(array('myInput' => 'foo')); // foo is not equal to bar
     $form->registerDataSource($data);
 
     $input = $page->getChild('test');

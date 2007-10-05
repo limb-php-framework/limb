@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');
@@ -55,13 +55,6 @@ class WactFormTagTest extends WactTemplateTestCase
     $this->assertFalse($errors->valid());
   }
 
-  function testPrepare()
-  {
-    $form = new WactFormComponent('my_id');
-    $form->prepare();
-    $this->assertIsA($form->getDataSource(), 'WactArrayObject');
-  }
-
   /**
   * Should test registerFilter, prepare and registerDataSource but lazy right now...
   */
@@ -84,7 +77,7 @@ class WactFormTagTest extends WactTemplateTestCase
   function testFormTagGeneratesLocalPHPVariableReferencingToForm()
   {
     $template = '<form id="testForm" runat="server">'.
-                '<?php echo $testForm->get("test_value"); ?>'.
+                '<?php echo $testForm["test_value"]; ?>'.
                 '</form>';
     $this->registerTestingTemplate('/tags/form/form/form_tag_generates_php_variable.html', $template);
 
@@ -252,10 +245,9 @@ class WactFormTagTest extends WactTemplateTestCase
 
   function testPreserveState()
   {
-    $data = new WactArrayObject();
-    $data->set('x','a');
-    $data->set('y','b');
-    $data->set('z','x < z');
+    $data = new ArrayObject(array('x' => 'a',
+                                  'y' => 'b',
+                                  'z' => 'x < z'));
 
     $form = new WactFormComponent('my_id');
     $form->registerDataSource($data);

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';
@@ -133,8 +133,7 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     $select->setChoices($choices);
 
     // The selected values typed as strings
-    $data = new WactArrayObject(array('multiple' => $selectedToString));
-
+    $data = new ArrayObject(array('multiple' => $selectedToString));
     $form->registerDataSource($data);
 
     ob_start();
@@ -157,8 +156,8 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     $choices = array(1 => 'red',2 => 'green',3 => 'blue');
     $select = $page->getChild('test');
     $select->setChoices($choices);
-    $object1 = new WactArrayObject(array('id' => 2));
-    $object2 = new WactArrayObject(array('id' => 3));
+    $object1 = new ArrayObject(array('id' => 2));
+    $object2 = new ArrayObject(array('id' => 3));
     $select->setSelection(array($object1, $object2));
 
     $output = $page->capture();
@@ -180,8 +179,8 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     $choices = array(1 => 'red',2 => 'green',3 => 'blue');
     $select = $page->getChild('test');
     $select->setChoices($choices);
-    $object1 = new WactArrayObject(array('my_id' => 2));
-    $object2 = new WactArrayObject(array('my_id' => 3));
+    $object1 = new ArrayObject(array('my_id' => 2));
+    $object2 = new ArrayObject(array('my_id' => 3));
     $select->setSelection(array($object1, $object2));
 
     $output = $page->capture();

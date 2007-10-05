@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -12,7 +12,7 @@
  * @restrict_self_nesting
  * @parent_tag_class WactPagerNavigatorTag
  * @package wact
- * @version $Id: next.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: next.tag.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactPagerNextTag extends WactCompilerTag
 {
@@ -21,7 +21,7 @@ class WactPagerNextTag extends WactCompilerTag
     $parent = $this->findParentByClass('WactPagerNavigatorTag');
     $code->writePhp('if (' . $parent->getComponentRefCode() . '->hasNext()) {');
 
-    $code->writePhp($this->getDataSource()->getComponentRefCode() . '["href"] = ' .
+    $code->writePhp($this->getDataSourceRefCode() . '["href"] = ' .
                     $parent->getComponentRefCode() . '->getPageUri( ' .
                     $parent->getComponentRefCode() . '->getDisplayedPage() + 1 );' . "\n");
 

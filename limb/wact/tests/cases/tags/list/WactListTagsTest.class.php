@@ -43,7 +43,7 @@ class WactListTagsTest extends WactTemplateTestCase
 
   function testListItemGeneratedLocalVariableInside()
   {
-    $template = '<list:LIST id="test"><list:ITEM id="father"><?php echo $father->get("First"); ?></list:ITEM></list:LIST>';
+    $template = '<list:LIST id="test"><list:ITEM id="father"><?php echo $father["First"]; ?></list:ITEM></list:LIST>';
 
     $this->registerTestingTemplate('/tags/list/list_list_generates_local_php_variable.html', $template);
     $page = $this->initTemplate('/tags/list/list_list_generates_local_php_variable.html');
@@ -243,9 +243,9 @@ class WactListTagsTest extends WactTemplateTestCase
                 '<list:ITEM>{$ListRowNumber}:{$First}</list:ITEM>'.
                 '</list:LIST>';
 
-    $this->registerTestingTemplate('/limb/list_row_number_with_offset.html', $template);
+    $this->registerTestingTemplate('/tags/list/list_row_number_with_offset.html', $template);
 
-    $page = $this->initTemplate('/limb/list_row_number_with_offset.html');
+    $page = $this->initTemplate('/tags/list/list_row_number_with_offset.html');
 
     $list = $page->getChild('test');
 
@@ -635,6 +635,56 @@ class WactListTagsTest extends WactTemplateTestCase
 
     $output = $page->capture();
     $this->assertEqual($output, "0:George-0:Alexander-1:Benjamin-");
+  }
+
+  function testOutputPlainArrays()
+  {
+    $template = '<list:LIST id="test">'.
+                '<list:ITEM id="father">{$$father}</list:ITEM>'.
+                '</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/output_plain_arrays.html', $template);
+
+    $page = $this->initTemplate('/tags/list/output_plain_arrays.html');
+    $page->setChildDataset('test', array('George', 'Alexander', 'Benjamin'));
+
+    $this->assertEqual($page->capture(), 'GeorgeAlexanderBenjamin');
+  }
+
+  function testOutputNestedPlainArrays()
+  {
+    $template = '<list:LIST id="test">'.
+                '<list:ITEM id="item">'.
+                '<list:list from="$item">:{$:Key}:<list:item id="father">{$$father}</list:item></list:list>'.
+                '</list:ITEM>'.
+                '</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/output_nested_plain_arrays.html', $template);
+
+    $page = $this->initTemplate('/tags/list/output_nested_plain_arrays.html');
+
+    $page->setChildDataset('test', array('first' => array('George', 'Alexander', 'Benjamin'),
+                                         'second' => array('Ivanov', 'Petrov', 'Sidorov')));
+
+    $this->assertEqual($page->capture(), ':first:GeorgeAlexanderBenjamin:second:IvanovPetrovSidorov');
+  }
+
+  function testOutputNestedPlainArraysIndexedFields()
+  {
+    $template = '<list:LIST id="test">'.
+                '<list:ITEM id="item">'.
+                ':{$:Key}:{$$item.0} or {$.0}-{$$item.1} or {$.1}'.
+                '</list:ITEM>'.
+                '</list:LIST>';
+
+    $this->registerTestingTemplate('/tags/list/output_nested_plain_arrays_indexed_fields.html', $template);
+
+    $page = $this->initTemplate('/tags/list/output_nested_plain_arrays_indexed_fields.html');
+
+    $page->setChildDataset('test', array('first' => array('Ivan', 'Ivanov'),
+                                         'second' => array('Peter', 'Petrov')));
+
+    $this->assertEqual($page->capture(), ':first:Ivan or Ivan-Ivanov or Ivanov:second:Peter or Peter-Petrov or Petrov');
   }
 }
 

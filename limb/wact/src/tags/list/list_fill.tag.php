@@ -9,7 +9,7 @@
 
 /**
  * Compile time component for output finalizers in a list
- * Allows to generate valid layout while output multicolumb lists
+ * Allows to generate valid layout while output multicolumn lists
  * Default ratio attribute is 1
  *
  * @tag list:FILL
@@ -57,7 +57,7 @@ class WactListFillTag extends WactCompilerTag
 
     $code->writePhp("if ({$items_left_var}){\n");
 
-    $code->writePhp($this->getDataSource()->getComponentRefCode() . "['" . $this->var_name . "'] = {$items_left_var};");
+    $code->writePhp($this->getDatasource()->getComponentRefCode() . "->set('" . $this->var_name . "', {$items_left_var});");
 
     parent :: generateTagContent($code);
 

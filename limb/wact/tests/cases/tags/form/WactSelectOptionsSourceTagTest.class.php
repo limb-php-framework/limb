@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
@@ -179,6 +179,5 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
                        '<select id="select" name="select"><option value="" selected="true">select</option><option value="4">red</option><option value="5">blue</option></select>'.
                        '</form>');
   }
-
 }
 

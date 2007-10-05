@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 class WactIteratorTransferTagTest extends WactTemplateTestCase
@@ -71,7 +71,7 @@ class WactIteratorTransferTagTest extends WactTemplateTestCase
     $data = array(array('name'=> 'joe'),
                   array('name'=> 'ivan'));
 
-    $page->set('object', new WactArrayObject(array('fathers' => $data)));
+    $page->set('object', new ArrayObject(array('fathers' => $data)));
 
     $this->assertEqual($page->capture(), 'joe:ivan:');
   }

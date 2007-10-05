@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * @tag form:REFERER
  * @forbid_end_tag
  * @package wact
- * @version $Id: form_referer.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: form_referer.tag.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactFormRefererTag extends WactCompilerTag
 {
@@ -20,9 +20,9 @@ class WactFormRefererTag extends WactCompilerTag
     $ref = $code->getTempVarRef();
     $ds = $code->getTempVarRef();
 
-    $code->writePHP($ds . ' =' . $this->getComponentRefCode() . ';');
+    $code->writePHP($ds . ' =' . $this->getDatasourceRefCode() . ';');
 
-    $code->writePHP("if(!$ref = {$ds}->get('referer'))\n");
+    $code->writePHP("if(!$ref = WactTemplate :: getValue({$ds}, 'referer'))\n");
 
     if($this->getBoolAttribute('use_current'))
       $code->writePHP($ref . ' = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : "";' . "\n");

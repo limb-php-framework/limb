@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactSelectOptionsSourceComponent.
  *
  * @package wact
- * @version $Id: WactSelectOptionsSourceComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactSelectOptionsSourceComponent.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactSelectOptionsSourceComponent extends WactDatasourceRuntimeComponent
 {
@@ -65,6 +65,12 @@ class WactSelectOptionsSourceComponent extends WactDatasourceRuntimeComponent
     if($this->dataset)
       return $this->_exportDataSetAsChoices($choices);
 
+    if(is_array($this->datasource))
+    {
+      $this->dataset = $this->datasource;
+      return $this->_exportDatasetAsChoices($choices);
+    }
+
     if(is_object($this->datasource))
     {
       if(method_exists($this->datasource,  'export'))
@@ -93,8 +99,7 @@ class WactSelectOptionsSourceComponent extends WactDatasourceRuntimeComponent
       }
       elseif(!$this->field_for_id || !$this->field_for_name)
       {
-        $raw = $record->export();
-        $choices[key($raw)] = current($raw);
+        $choices[key($record)] = current($record);
       }
       elseif($this->field_for_id && $this->field_for_name)
         $choices[$record[$this->field_for_id]] = $record[$this->field_for_name];

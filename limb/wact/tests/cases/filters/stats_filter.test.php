@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once('limb/wact/tests/cases/WactTemplateTestCase.class.php');
@@ -114,8 +114,8 @@ class WactTemplateStatsFilterTestCase extends WactTemplateTestCase {
     $this->registerTestingTemplate('/template/filter/stats_filter_aq2.html', $template);
     $page = $this->initTemplate('/template/filter/stats_filter_aq2.html');
 
-    $DS = new WactArrayObject(array());
-    $DS->set('data', new WactArrayIterator(array(array('val'=>10),array('val'=>20),array('val'=>30))));
+    $DS = new ArrayObject(array());
+    $DS['data'] = new WactArrayIterator(array(array('val'=>10),array('val'=>20),array('val'=>30)));
 
     $page->registerDataSource($DS);
 

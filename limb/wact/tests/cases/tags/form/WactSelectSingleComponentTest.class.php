@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';
@@ -85,7 +85,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $Select = $page->getChild('test');
     $Select->setChoices($choices);
 
-    $data = new WactArrayObject(array('mySelect' => $selectedKey));
+    $data = new ArrayObject(array('mySelect' => $selectedKey));
 
     $Form->registerDataSource($data);
 
@@ -146,7 +146,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $choices = array(1 => 'red',2 => 'green',3 => 'blue');
     $Select = $page->getChild('test');
     $Select->setChoices($choices);
-    $object = new WactArrayObject(array('id' => 2));
+    $object = new ArrayObject(array('id' => 2));
     $Select->setSelection($object);
 
     $output = $page->capture();
@@ -167,7 +167,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $choices = array(1 => 'red',2 => 'green',3 => 'blue');
     $Select = $page->getChild('test');
     $Select->setChoices($choices);
-    $object = new WactArrayObject(array('my_id' => 2));
+    $object = new ArrayObject(array('my_id' => 2));
     $Select->setSelection($object);
 
     $output = $page->capture();
@@ -188,7 +188,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $choices = array(0 => '--', 'red' => 'R', 'green' => 'G', 'blue' => 'B');
     $Select = $page->getChild('test');
     $Select->setChoices($choices);
-    $object = new WactArrayObject(array('my_id' => 'green'));
+    $object = new ArrayObject(array('my_id' => 'green'));
     $Select->setSelection($object);
 
     $output = $page->capture();

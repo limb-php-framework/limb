@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactFormComponent.
  *
  * @package wact
- * @version $Id: WactFormComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactFormComponent.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactFormComponent extends WactRuntimeTagComponent
 {
@@ -21,24 +21,25 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   protected $state_vars = array();
 
-  protected $_datasource;
+  public $datasource;
 
-  protected function _ensureDataSourceAvailable()
+  function __construct($id)
   {
-    if (!isset($this->_datasource))
-      $this->registerDataSource(new ArrayObject());
+    parent :: __construct($id);
+    $this->datasource = array();
   }
 
   function get($name)
   {
-    $this->_ensureDataSourceAvailable();
-    return $this->_datasource->get($name);
+    return WactTemplate :: getValue($this->datasource, $name);
   }
 
+  /**
+  * Set a named property in the form DataSource
+  */
   function set($name, $value)
   {
-    $this->_ensureDataSourceAvailable();
-    $this->_datasource->set($name, $value);
+    WactTemplate :: setValue($this->datasource, $name, $value);
   }
 
   /**
@@ -51,8 +52,7 @@ class WactFormComponent extends WactRuntimeTagComponent
   */
   function getValue($name)
   {
-    $this->_ensureDataSourceAvailable();
-    return $this->_datasource->get($name);
+    return WactTemplate :: getValue($this->datasource, $name);
   }
 
   /**
@@ -60,23 +60,17 @@ class WactFormComponent extends WactRuntimeTagComponent
   */
   function setValue($name, $value)
   {
-    $this->_ensureDataSourceAvailable();
-    $this->_datasource->set($name, $value);
-  }
-
-  function prepare()
-  {
-    $this->_ensureDataSourceAvailable();
+    WactTemplate :: setValue($this->datasource, $name, $value);
   }
 
   function registerDataSource($datasource)
   {
-    $this->_datasource = WactTemplate :: makeObject($datasource);
+    $this->datasource = $datasource;
   }
 
   function getDataSource()
   {
-    return $this->_datasource;
+    return $this->datasource;
   }
 
   /**

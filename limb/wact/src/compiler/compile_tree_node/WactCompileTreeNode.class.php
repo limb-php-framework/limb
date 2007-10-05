@@ -11,7 +11,7 @@
  * class WactCompileTreeNode.
  *
  * @package wact
- * @version $Id: WactCompileTreeNode.class.php 6264 2007-09-06 06:42:53Z serega $
+ * @version $Id: WactCompileTreeNode.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class WactCompileTreeNode
 {
@@ -308,6 +308,11 @@ class WactCompileTreeNode
   function getComponentRefCode()
   {
     return $this->parent->getComponentRefCode();
+  }
+
+  function getDatasourceRefCode()
+  {
+    return $this->getDatasource()->getComponentRefCode() . "->datasource";
   }
 
   function generateConstructor($code_writer)
