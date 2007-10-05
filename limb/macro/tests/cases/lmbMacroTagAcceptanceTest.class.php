@@ -58,11 +58,12 @@ class lmbMacroTagAcceptanceTest extends lmbBaseMacroTest
 
   function testCompositeTagAttributes()
   {
-    $code = '<h1>{{zoo attr="Test_{$#var}"/}}</h1>';
+    $code = '<h1>{{zoo attr="Test_{$#var}_{$#foo}"/}}</h1>';
     $tpl = $this->_createMacroTemplate($code, 'tpl.html');
     $tpl->set('var', 'Result');
+    $tpl->set('foo', 'Attribute');
     $out = $tpl->render();
-    $this->assertEqual($out, '<h1>Test_Result</h1>');
+    $this->assertEqual($out, '<h1>Test_Result_Attribute</h1>');
   }
 }
 
