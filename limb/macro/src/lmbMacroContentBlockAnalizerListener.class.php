@@ -8,7 +8,7 @@
  */
 lmb_require('limb/macro/src/lmbMacroBlockAnalizerListener.interface.php');
 lmb_require('limb/macro/src/lmbMacroOutputExpressionNode.class.php');
-lmb_require('limb/macro/src/lmbMacroExpression.class.php');
+lmb_require('limb/macro/src/lmbMacroExpressionNode.class.php');
 
 /**
  * class lmbMacroContentBlockAnalizerListener.
@@ -34,7 +34,10 @@ class lmbMacroContentBlockAnalizerListener implements lmbMacroBlockAnalizerListe
 
   function addExpressionFragment($text)
   {
-    $expression = new lmbMacroExpression($text);
+    $expression = new lmbMacroExpressionNode($text,
+                                             $this->tree_builder->getCursor(),
+                                             $this->tree_builder->getFilterDictionary());
+
     $output_expression = new lmbMacroOutputExpressionNode($this->location, $expression);
     $this->tree_builder->addNode($output_expression);
   }

@@ -2,14 +2,15 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/macro/src/lmbMacroCompiler.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
+lmb_require('limb/macro/src/lmbMacroFilterDictionary.class.php');
 lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 
 /**
@@ -59,7 +60,7 @@ class lmbMacroTemplate
 
     if($this->config->isForceCompile() || !file_exists($compiled_file))
     {
-      if(!$source_file = $this->locator->locateSourceTemplate($this->file))    
+      if(!$source_file = $this->locator->locateSourceTemplate($this->file))
         throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
 
       $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
@@ -67,7 +68,7 @@ class lmbMacroTemplate
       $compiler = $this->_createCompiler();
       $compiler->compile($source_file, $compiled_file, $macro_executor_class, 'render');
       //appending macro executor class
-      file_put_contents($compiled_file, file_get_contents($compiled_file) . 
+      file_put_contents($compiled_file, file_get_contents($compiled_file) .
                                         "\n\$macro_executor_class='$macro_executor_class';");
     }
 
@@ -88,7 +89,8 @@ class lmbMacroTemplate
   protected function _createCompiler()
   {
     $tag_dictionary = lmbMacroTagDictionary :: load($this->config);
-    return new lmbMacroCompiler($tag_dictionary, $this->locator);
+    $filter_dictionary = lmbMacroFilterDictionary :: load($this->config);
+    return new lmbMacroCompiler($tag_dictionary, $this->locator, $filter_dictionary);
   }
 }
 

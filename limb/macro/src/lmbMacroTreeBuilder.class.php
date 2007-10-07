@@ -32,6 +32,7 @@ class lmbMacroTreeBuilder
   protected $compiler;
   protected $node;
 
+  protected $filter_dictionary;
   /**
   * Stack of tags pushed onto the tree builder
   */
@@ -86,7 +87,7 @@ class lmbMacroTreeBuilder
 
   function addContent($text, $location)
   {
-    $listener = new lmbMacroContentBlockAnalizerListener($this, $location);
+    $listener = new lmbMacroContentBlockAnalizerListener($this, $location, $this->filter_dictionary);
     $analizer = new lmbMacroBlockAnalizer();
     $analizer->parse($text, $listener);
   }
@@ -181,6 +182,11 @@ class lmbMacroTreeBuilder
   {
     $item = end($this->expected_tags);
     return $item[1];
+  }
+
+  function getFilterDictionary()
+  {
+    return $this->compiler->getFilterDictionary();
   }
 }
 

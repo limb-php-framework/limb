@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/macro/src/lmbMacroTreeBuilder.class.php');
@@ -40,11 +40,19 @@ class lmbMacroCompiler
   */
   protected $tag_dictionary;
 
-  function __construct($tag_dictionary, $template_locator)
+  /**
+  * @var lmbMacroFilterDictionary
+  */
+  protected $filter_dictionary;
+
+  function __construct($tag_dictionary, $template_locator, $filter_dictionary)
   {
-    $this->tag_dictionary = $tag_dictionary;
-    $this->template_locator = $template_locator;
     $this->tree_builder = new lmbMacroTreeBuilder($this);
+
+    $this->template_locator = $template_locator;
+
+    $this->tag_dictionary = $tag_dictionary;
+    $this->filter_dictionary = $filter_dictionary;
   }
 
   function compile($source_file, $compiled_file, $class, $render_func)
@@ -92,9 +100,14 @@ class lmbMacroCompiler
     return $this->tag_dictionary;
   }
 
+  function getFilterDictionary()
+  {
+    return $this->filter_dictionary;
+  }
+
   static function writeFile($file, $data)
   {
-    $dirname = dirname($file);    
+    $dirname = dirname($file);
     lmbFs :: mkdir($dirname);
 
     file_put_contents($file, $data);

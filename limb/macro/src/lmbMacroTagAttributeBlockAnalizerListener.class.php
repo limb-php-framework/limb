@@ -8,6 +8,7 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroBlockAnalizerListener.interface.php');
+lmb_require('limb/macro/src/lmbMacroExpression.class.php');
 /**
  * class lmbMacroTagAttributeBlockAnalizerListener.
  *

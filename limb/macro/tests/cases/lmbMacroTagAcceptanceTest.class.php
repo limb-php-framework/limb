@@ -39,12 +39,15 @@ class MacroTagZooTest extends lmbMacroTag
 }
 
 $foo_info = new lmbMacroTagInfo('foo', 'MacroTagFooTest');
+$foo_info->setFile(__FILE__);
 $bar_info = new lmbMacroTagInfo('bar', 'MacroTagBarTest');
+$bar_info->setFile(__FILE__);
 $zoo_info = new lmbMacroTagInfo('zoo', 'MacroTagZooTest');
+$zoo_info->setFile(__FILE__);
 
-lmbMacroTagDictionary :: instance()->register($foo_info, __FILE__);
-lmbMacroTagDictionary :: instance()->register($bar_info, __FILE__);
-lmbMacroTagDictionary :: instance()->register($zoo_info, __FILE__);
+lmbMacroTagDictionary :: instance()->register($foo_info);
+lmbMacroTagDictionary :: instance()->register($bar_info);
+lmbMacroTagDictionary :: instance()->register($zoo_info);
 
 class lmbMacroTagAcceptanceTest extends lmbBaseMacroTest
 {

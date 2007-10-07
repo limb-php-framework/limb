@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -21,14 +21,15 @@ class lmbMacroConfig
   protected $tags_scan_dirs = array();
   protected $tpl_scan_dirs = array();
 
-  function __construct($cache_dir = null, $is_force_compile = true, $is_force_scan = true, 
-                       $tpl_scan_dirs = null, $tags_scan_dirs = null)
+  function __construct($cache_dir = null, $is_force_compile = true, $is_force_scan = true,
+                       $tpl_scan_dirs = null, $tags_scan_dirs = null, $filters_scan_dirs = null)
   {
     $this->cache_dir = $cache_dir ? $cache_dir : LIMB_VAR_DIR . '/compiled';
     $this->is_force_compile = $is_force_compile;
     $this->is_force_scan = $is_force_scan;
     $this->tpl_scan_dirs = $tpl_scan_dirs ? $tpl_scan_dirs : array();
     $this->tags_scan_dirs = $tags_scan_dirs ? $tags_scan_dirs : array('limb/macro/src/tags');
+    $this->filters_scan_dirs = $filters_scan_dirs ? $filters_scan_dirs : array('limb/macro/src/filters');
   }
 
   function getCacheDir()
@@ -49,6 +50,11 @@ class lmbMacroConfig
   function getTagsScanDirectories()
   {
     return $this->tags_scan_dirs;
+  }
+
+  function getFiltersScanDirectories()
+  {
+    return $this->filters_scan_dirs;
   }
 
   function getTemplateScanDirectories()

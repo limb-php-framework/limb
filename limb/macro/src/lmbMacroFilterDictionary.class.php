@@ -7,19 +7,19 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTagInfo.class.php');
+lmb_require('limb/macro/src/lmbMacroFilterInfo.class.php');
 lmb_require('limb/macro/src/lmbMacroAnnotationParser.class.php');
 
 /**
- * class lmbMacroTagDictionary.
+ * class lmbMacroFilterDictionary.
  *
  * @package macro
  * @version $Id$
  */
-class lmbMacroTagDictionary
+class lmbMacroFilterDictionary
 {
   protected $info = array();
-  protected $output_tag_info;
+  protected $output_filter_info;
   static protected $instance;
 
   static function instance()
@@ -27,7 +27,7 @@ class lmbMacroTagDictionary
     if(self :: $instance)
       return self :: $instance;
 
-    self :: $instance = new lmbMacroTagDictionary();
+    self :: $instance = new lmbMacroFilterDictionary();
     return self :: $instance;
   }
 
@@ -35,7 +35,7 @@ class lmbMacroTagDictionary
   {
     $dictionary = self :: instance();
 
-    $dirs = $config->getTagsScanDirectories();
+    $dirs = $config->getFiltersScanDirectories();
     foreach($dirs as $dir)
     {
       foreach(lmb_glob($dir . '/*.tag.php') as $file)
@@ -45,28 +45,28 @@ class lmbMacroTagDictionary
     return $dictionary;
   }
 
-  function register($taginfo)
+  function register($filter_info)
   {
-    $tag_to_lower = strtolower($taginfo->getTag());
+    $name_to_lower = strtolower($filter_info->getName());
 
-    if(isset($this->info[$tag_to_lower]))
+    if(isset($this->info[$name_to_lower]))
       return;
 
-    $this->info[$tag_to_lower] = $taginfo;
+    $this->info[$name_to_lower] = $filter_info;
   }
 
   function registerFromFile($file)
   {
-    $infos = lmbMacroAnnotationParser :: extractFromFile($file, 'lmbMacroTagInfo');
+    $infos = lmbMacroAnnotationParser :: extractFromFile($file, 'lmbMacroFilterInfo');
     foreach($infos as $info)
       $this->register($info, $file);
   }
 
-  function findTagInfo($tag)
+  function findFilterInfo($name)
   {
-    $tag = strtolower($tag);
-    if(isset($this->info[$tag]))
-      return $this->info[$tag];
+    $name = strtolower($name);
+    if(isset($this->info[$name]))
+      return $this->info[$name];
   }
 }
 
