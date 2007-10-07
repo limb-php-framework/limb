@@ -19,7 +19,7 @@ class lmbMacroViewTest extends UnitTestCase
 
   function testRenderSimpleVars()
   {
-    $tpl = $this->_createTemplate('{{$#hello}}{{$#again}}', 'test.phtml');
+    $tpl = $this->_createTemplate('{$#hello}{$#again}', 'test.phtml');
     $view = $this->_createView($tpl);
 
     $view->set('hello', 'Hello message!');
