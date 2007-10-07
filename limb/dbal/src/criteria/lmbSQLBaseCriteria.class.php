@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 6390 2007-10-07 06:24:26Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {

@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6367 2007-10-02 23:02:58Z pachanga $
+ * @version $Id: lmbDbTools.class.php 6390 2007-10-07 06:24:26Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -39,12 +39,12 @@ class lmbDbTools extends lmbAbstractTools
     return $this->db_env;
   }
 
-  function setDefaultDbDSN($conf)
+  function setDefaultDbDSN($dsn)
   {
-    if(is_object($conf))
-      $this->default_db_config = $conf;
+    if(is_object($dsn))
+      $this->default_db_config = $dsn;
     else
-      $this->default_db_config = new lmbDbDSN($conf);
+      $this->default_db_config = new lmbDbDSN($dsn);
   }
 
   function getDefaultDbDSN()
@@ -96,6 +96,9 @@ class lmbDbTools extends lmbAbstractTools
 
   function createDbConnection($dsn)
   {
+    if(!is_object($dsn))
+      $dsn = new lmbDbDSN($dsn);
+
     $driver = $dsn->getDriver();
     $class = 'lmb' . ucfirst($driver) . 'Connection';
 

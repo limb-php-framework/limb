@@ -178,7 +178,6 @@ class lmbSqliteConnection implements lmbDbConnection
   function getSequenceValue($table, $colname)
   {
     return sqlite_last_insert_rowid($this->connectionId);//???
-
   }
 }
 
