@@ -1,8 +1,13 @@
 <?php
 
 set_include_path(dirname(__FILE__) . '/../../../../');
+
+$mark = microtime(true);
+
 require_once('limb/core/common.inc.php');
 require_once('limb/dbal/common.inc.php');
+
+echo "dbal common includes: " . (microtime(true) - $mark) . "\n";
 
 if($native_db = sqlite_open('/tmp/benchdb'))
 {
