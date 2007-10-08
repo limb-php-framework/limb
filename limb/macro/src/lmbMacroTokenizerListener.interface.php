@@ -19,6 +19,7 @@ interface lmbMacroTokenizerListener
   function endElement($tag_name);
   function emptyElement($tag_name, $attrs);
   function characters($data);
+  function php($data);
   function unexpectedEOF($data);
   function invalidEntitySyntax($data);
   function invalidAttributeSyntax($data);

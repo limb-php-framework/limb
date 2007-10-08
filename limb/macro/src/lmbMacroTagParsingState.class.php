@@ -142,6 +142,11 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
     $this->tree_builder->addContent($text, $this->parser->getCurrentLocation());
   }
 
+  function php($text)
+  {
+    $this->tree_builder->addTextNode($text);
+  }
+
   function unexpectedEOF($text)
   {
     $this->tree_builder->addTextNode($text);

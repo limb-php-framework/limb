@@ -93,6 +93,90 @@ class lmbMacroTokenizerTest extends UnitTestCase
     $this->parser->parse('{{/}}');
   }
 
+  function testSelfClosingPHPBlock()
+  {
+    $this->listener->expectNever('startElement');
+    $this->listener->expectNever('characters');
+    $this->listener->expectNever('endElement');
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->listener->expectOnce('php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->parser->parse('<?php $var = "{{tag}}{{/tag}}";?>');
+  }
+
+  function testSeveralPHPBlocks()
+  {
+    $this->listener->expectCallCount('characters', 2);
+    $this->listener->expectArgumentsAt(0, 'characters', array('hey'));
+    $this->listener->expectArgumentsAt(1, 'characters', array('foo'));
+    $this->listener->expectCallCount('php', 2);
+    $this->listener->expectArgumentsAt(0, 'php', array('<?php $yo = "{{foo/}}";?>'));
+    $this->listener->expectArgumentsAt(1, 'php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->listener->expectNever('startElement');
+    $this->listener->expectNever('endElement');
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->parser->parse('<?php $yo = "{{foo/}}";?>hey<?php $var = "{{tag}}{{/tag}}";?>foo');
+  }
+
+  function testNonClosingPHPBlock()
+  {
+    $this->listener->expectNever('startElement');
+    $this->listener->expectNever('characters');
+    $this->listener->expectNever('endElement');
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->listener->expectOnce('php', array('<?php $var = "{{tag}}{{/tag}}";'));
+    $this->parser->parse('<?php $var = "{{tag}}{{/tag}}";');
+  }
+
+  function testTagAfterPHPBlock()
+  {
+    $this->listener->expectOnce('startElement', array('foo', array()));
+    $this->listener->expectOnce('characters', array('hey'));
+    $this->listener->expectOnce('endElement', array('foo'));
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->listener->expectOnce('php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->parser->parse('<?php $var = "{{tag}}{{/tag}}";?>{{foo}}hey{{/foo}}');
+  }
+
+  function testTagBeforePHPBlock()
+  {
+    $this->listener->expectOnce('startElement', array('foo', array()));
+    $this->listener->expectOnce('characters', array('hey'));
+    $this->listener->expectOnce('endElement', array('foo'));
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->listener->expectOnce('php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->parser->parse('{{foo}}hey{{/foo}}<?php $var = "{{tag}}{{/tag}}";?>');
+  }
+
+  function testCharactersBeforePHPBlock()
+  {
+    $this->listener->expectNever('startElement');
+    $this->listener->expectOnce('characters', array('hey'));
+    $this->listener->expectNever('endElement');
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->listener->expectOnce('php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->parser->parse('hey<?php $var = "{{tag}}{{/tag}}";?>');
+  }
+
+  function testMixedTagsAndPHPBlocks()
+  {
+    $this->listener->expectCallCount('startElement', 2);
+    $this->listener->expectArgumentsAt(0, 'startElement', array('foo', array()));
+    $this->listener->expectArgumentsAt(1, 'startElement', array('zoo', array()));
+    $this->listener->expectCallCount('characters', 4);
+    $this->listener->expectArgumentsAt(0, 'characters', array('hey'));
+    $this->listener->expectArgumentsAt(1, 'characters', array('baz'));
+    $this->listener->expectArgumentsAt(2, 'characters', array('wow'));
+    $this->listener->expectArgumentsAt(3, 'characters', array('hm..'));
+    $this->listener->expectCallCount('endElement', 2);
+    $this->listener->expectArgumentsAt(0, 'endElement', array('foo'));
+    $this->listener->expectArgumentsAt(1, 'endElement', array('zoo'));
+    $this->listener->expectNever('invalidAttributeSyntax');
+    $this->listener->expectCallCount('php', 2);
+    $this->listener->expectArgumentsAt(0, 'php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->listener->expectArgumentsAt(1, 'php', array('<?php echo 1;?>'));
+    $this->parser->parse('{{foo}}hey{{/foo}}baz<?php $var = "{{tag}}{{/tag}}";?>{{zoo}}wow{{/zoo}}hm..<?php echo 1;?>');
+  }
+
   function testOutputTag()
   {
     $this->listener->expectOnce('startElement', array('$value', array()));

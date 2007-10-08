@@ -128,6 +128,11 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->active_parsing_state->characters($text);
   }
 
+  function php($text)
+  {
+    $this->active_parsing_state->php($text);
+  }
+
   function unexpectedEOF($text)
   {
     $this->active_parsing_state->unexpectedEOF($text);

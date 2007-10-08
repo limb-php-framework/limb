@@ -51,6 +51,67 @@ class lmbMacroTokenizer
       $this->position++;
   }
 
+  protected function _findTag($start)
+  {
+    do
+    {
+      $php_start = strpos($this->rawtext, '<?php', $start);
+      $tag_start = strpos($this->rawtext, '{{', $start);
+
+      //no php found
+      if($php_start === false)
+      {
+        //tag candidate found
+        if($tag_start !== false)
+        {
+          if($tag_start > $start)
+            $this->observer->characters(substr($this->rawtext, $start, $tag_start - $start));
+          return $tag_start;
+        }
+        //no tags at all
+        else
+        {
+          if($start != $this->length)
+            $this->observer->characters(substr($this->rawtext, $start, $this->length - $start));
+          return null;
+        }
+      }
+      //php found
+      else
+      {
+        $php_end = strpos($this->rawtext, '?>', $start);
+        //php end found
+        if($php_end !== false)
+        {
+          //at the same time tag found and it's not inside php
+          if($tag_start !== false && $tag_start < $php_start)
+          {
+            if($start < $tag_start)
+              $this->observer->characters(substr($this->rawtext, $start, $tag_start - $start));
+            return $tag_start;
+          }
+          //extract php block
+          else
+          {
+            //add preceding characters
+            if($start < $php_start)
+              $this->observer->characters(substr($this->rawtext, $start, $php_start - $start));
+            $this->observer->php(substr($this->rawtext, $php_start, $php_end - $php_start + 2));
+            $start = $php_end + 2;
+          }
+        }
+        //no php end found, everything is php then
+        else
+        {
+          $this->observer->php(substr($this->rawtext, $php_start));
+          return null;
+        }
+                      
+      }
+    }while($start < $this->length);
+    return null;
+  }
+
   /**
   * Begins the parsing operation, setting up any decorators, depending on
   * parse options invoking _parse() to execute parsing
@@ -65,18 +126,10 @@ class lmbMacroTokenizer
     do
     {
       $start = $this->position;
-      $this->position = strpos($this->rawtext, '{{', $start);
-      if($this->position === false)
-      {
-        if($start < $this->length)
-          $this->observer->characters(substr($this->rawtext, $start));
-        return;
-      }
 
-      if($this->position > $start)
-      {
-        $this->observer->characters(substr($this->rawtext, $start, $this->position - $start));
-      }
+      $this->position = $this->_findTag($start);
+      if($this->position === null)
+        return;
 
       $this->position += 2;   // ignore '{{' string
       if($this->position >= $this->length)
@@ -247,11 +300,10 @@ class lmbMacroTokenizer
           }
 
           $this->position += 1;
-
           break;
         }
     }
-    while ($this->position < $this->length);
+    while($this->position < $this->length);
   }
 }
 
