@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbValidationRuleTestCase.class.php');
 lmb_require('limb/validation/src/rule/lmbEmailRule.class.php');
@@ -86,6 +86,18 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
 
     $dataspace = new lmbSet();
     $dataspace->set('testfield', 'bill_gates.the-boss@microsoft.com');
+
+    $this->error_list->expectNever('addError');
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testEmailRuleUnderscoreBeforeAt()
+  {
+    $rule = new lmbEmailRule('testfield');
+
+    $dataspace = new lmbSet();
+    $dataspace->set('testfield', 'bill_gates_@microsoft.com');
 
     $this->error_list->expectNever('addError');
 

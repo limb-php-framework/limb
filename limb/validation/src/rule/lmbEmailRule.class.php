@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 
 /**
  * Checks that field value is a valid Email address.
  * @package validation
- * @version $Id: lmbEmailRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbEmailRule.class.php 6396 2007-10-08 13:13:58Z 3dmax $
  */
 class lmbEmailRule extends lmbDomainRule
 {
@@ -29,7 +29,7 @@ class lmbEmailRule extends lmbDomainRule
 
   protected function _checkUser($value)
   {
-    if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9]+)*$/i', $value))
+    if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9]+|[_])*$/i', $value))
         $this->error('Invalid user in {Field}.');
   }
 
