@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6403 2007-10-09 21:27:41Z pachanga $
+ * @version $Id: common.inc.php 6404 2007-10-09 22:02:56Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -143,6 +143,10 @@ function lmb_var_dump($obj, $echo = false)
 
 function lmb_camel_case($str, $ucfirst = true)
 {
+  //if there are no _, why process at all
+  if(strpos($str, '_') === false)
+    return ($ucfirst) ? ucfirst($str) : $str;
+
   $items = explode('_', $str);
   $len = sizeof($items);
   $first = true;
@@ -168,9 +172,11 @@ function lmb_camel_case($str, $ucfirst = true)
 
 function lmb_under_scores($str)
 {
+  //caching repeated requests
   static $cache = array();
   if(isset($cache[$str]))
     return $cache[$str];
+
   $items = preg_split('~([A-Z][a-z0-9]+)~', $str, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
   $res = '';
   foreach($items as $item)

@@ -14,39 +14,46 @@ class Foo extends lmbObject
 $object = new Foo(array('foo' => 'foo'));
 
 for($i=0;$i<1000;$i++)
-  $object->get('heatingUp');
+  $object->get('heating_up');
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->get('foo');
 
-echo "raw getter access: " . (microtime(true) - $mark) . "\n";
+echo "get('foo'): " . (microtime(true) - $mark) . "\n";
+
+$mark = microtime(true);
+
+for($i=0;$i<1000;$i++)
+  $object->get('foo' . $i);
+
+echo "get('fooXXX'): " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->get('bar');
 
-echo "raw getter access mapped to method: " . (microtime(true) - $mark) . "\n";
+echo "get('bar') => getBar(): " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->getBar();
 
-echo "static getter access: " . (microtime(true) - $mark) . "\n";
+echo "istance getBar(): " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->getFoo();
 
-echo "dynamic getter access: " . (microtime(true) - $mark) . "\n";
+echo "dynamic getFoo(): " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->foo;
 
-echo "raw attribute access: " . (microtime(true) - $mark) . "\n";
+echo "->foo: " . (microtime(true) - $mark) . "\n";
