@@ -22,6 +22,8 @@ lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 class lmbMacroTemplate
 {
   protected $file;
+  protected $compiled_file;
+  protected $executor;
   protected $vars = array();
   protected $child_executor;
 
@@ -55,32 +57,37 @@ class lmbMacroTemplate
   }
 
   function render($vars = array())
-  {
-    $compiled_file = $this->locator->locateCompiledTemplate($this->file);
-
-    if($this->config->isForceCompile() || !file_exists($compiled_file))
+  {     
+    if(!$this->executor)
     {
-      if(!$source_file = $this->locator->locateSourceTemplate($this->file))
-        throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
+      $this->compiled_file = $this->locator->locateCompiledTemplate($this->file);
 
-      $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
+      if($this->config->isForceCompile() || !file_exists($this->compiled_file))
+      {
+        if(!$source_file = $this->locator->locateSourceTemplate($this->file))
+          throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
 
-      $compiler = $this->_createCompiler();
-      $compiler->compile($source_file, $compiled_file, $macro_executor_class, 'render');
-      //appending macro executor class
-      file_put_contents($compiled_file, file_get_contents($compiled_file) .
-                                        "\n\$macro_executor_class='$macro_executor_class';");
+        $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
+
+        $compiler = $this->_createCompiler();
+        $compiler->compile($source_file, $this->compiled_file, $macro_executor_class, 'render');
+        //appending macro executor class
+        file_put_contents($this->compiled_file, file_get_contents($this->compiled_file) .
+                                          "\n\$macro_executor_class='$macro_executor_class';");
+      }
+
+      include($this->compiled_file);
+      $this->executor = new $macro_executor_class($this->config);
     }
 
-    include($compiled_file);
-    $executor = new $macro_executor_class($this->config, $this->vars);
+    $this->executor->setVars($this->vars);
 
     //in case of dynamic wrapping we need to ask parent for all unknown variables
     if($this->child_executor)
-      $this->child_executor->setContext($executor);
+      $this->child_executor->setContext($this->executor);
 
     ob_start();
-    $executor->render($vars);
+    $this->executor->render($vars);
     $out = ob_get_contents();
     ob_end_clean();
     return $out;

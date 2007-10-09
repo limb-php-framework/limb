@@ -23,7 +23,11 @@ class lmbMacroTemplateExecutor
   function __construct(lmbMacroConfig $config = null, $vars = array())
   {
     $this->__config = $config ? $config : new lmbMacroConfig();
+    $this->setVars($vars);
+  }
 
+  function setVars($vars)
+  {
     foreach($vars as $name => $value)
       $this->$name = $value;
   }
