@@ -159,20 +159,6 @@ class lmbObject implements lmbSetInterface
     return $names;
   }
   /**
-   * Returns property value if it exists and not guarded.
-   * Magically maps getter to fine-grained method if it exists, e.g. get('foo') => getFoo()
-   * @param string property name
-   * @return mixed|null
-   */
-  function get($name)
-  {
-    if($method = $this->_mapPropertyToMethod($name))
-      return $this->$method();
-
-    if(!$this->_isGuarded($name))
-      return $this->_getRaw($name);
-  }
-  /**
    * Removes specified property
    * @param string
    */
@@ -198,15 +184,19 @@ class lmbObject implements lmbSetInterface
       $this->remove($name);
   }
 
-  protected function _getRaw($name)
+  /**
+   * Returns property value if it exists and not guarded.
+   * Magically maps getter to fine-grained method if it exists, e.g. get('foo') => getFoo()
+   * @param string property name
+   * @return mixed|null
+   */
+  function get($name)
   {
-    if(isset($this->$name))
-      return $this->$name;
-  }
+    if($method = $this->_mapPropertyToMethod($name))
+      return $this->$method();
 
-  protected function _getObjectVars()
-  {
-    return get_object_vars($this);
+    if(!$this->_isGuarded($name))
+      return $this->_getRaw($name);
   }
   /**
    * Sets property value
@@ -248,6 +238,17 @@ class lmbObject implements lmbSetInterface
   }
   /**#@-*/
 
+  protected function _getRaw($name)
+  {
+    if(isset($this->$name))
+      return $this->$name;
+  }
+
+  protected function _getObjectVars()
+  {
+    return get_object_vars($this);
+  }
+
   protected function _setRaw($name, $value)
   {
     $this->$name = $value;
@@ -262,7 +263,8 @@ class lmbObject implements lmbSetInterface
   {
     if($property = $this->_mapGetToProperty($method))
     {
-      return $this->get($property);
+      if(!$this->_isGuarded($property))
+        return $this->_getRaw($property);
     }
     elseif($property = $this->_mapSetToProperty($method))
     {
@@ -287,13 +289,24 @@ class lmbObject implements lmbSetInterface
 
   protected function _mapPropertyToMethod($property)
   {
+    static $map = array();
+    if(isset($map[$property]))
+      return $map[$property];
+
     $capsed = lmb_camel_case($property);
     $method = 'get' . $capsed;
     if(method_exists($this, $method))
+    {
+      $map[$property] = $method;
       return $method;
+    }
     //'is_foo' property is mapped to 'isFoo' method if it exists
     if(strpos($property, 'is_') === 0 && method_exists($this, $capsed))
+    {
+      $map[$property] = $capsed;
       return $capsed;
+    }
+    $map[$property] = false;
   }
 
   protected function _mapPropertyToSetMethod($property)

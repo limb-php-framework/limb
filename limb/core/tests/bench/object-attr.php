@@ -13,6 +13,9 @@ class Foo extends lmbObject
 }
 $object = new Foo(array('foo' => 'foo'));
 
+for($i=0;$i<1000;$i++)
+  $object->get('heatingUp');
+
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
