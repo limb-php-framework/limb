@@ -51,7 +51,7 @@ class lmbMacroTokenizer
       $this->position++;
   }
 
-  protected function _findTag($start)
+  protected function _parseUntilTagStart($start)
   {
     do
     {
@@ -64,6 +64,7 @@ class lmbMacroTokenizer
         //tag candidate found
         if($tag_start !== false)
         {
+          //add preceding characters
           if($tag_start > $start)
             $this->observer->characters(substr($this->rawtext, $start, $tag_start - $start));
           return $tag_start;
@@ -71,6 +72,7 @@ class lmbMacroTokenizer
         //no tags at all
         else
         {
+          //add preceding characters
           if($start != $this->length)
             $this->observer->characters(substr($this->rawtext, $start, $this->length - $start));
           return null;
@@ -86,6 +88,7 @@ class lmbMacroTokenizer
           //at the same time tag found and it's not inside php
           if($tag_start !== false && $tag_start < $php_start)
           {
+            //add preceding characters
             if($start < $tag_start)
               $this->observer->characters(substr($this->rawtext, $start, $tag_start - $start));
             return $tag_start;
@@ -127,7 +130,7 @@ class lmbMacroTokenizer
     {
       $start = $this->position;
 
-      $this->position = $this->_findTag($start);
+      $this->position = $this->_parseUntilTagStart($start);
       if($this->position === null)
         return;
 
