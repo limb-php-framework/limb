@@ -7,6 +7,30 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
+class lmbMacroOutputExpressionTestClass
+{
+  public $zoo;
+
+  function func1()
+  {
+    return 10;
+  }
+
+  function func2($param1, $param2)
+  {
+    return $param1 . ' - ' . $param2;
+  }
+
+  function func3($extra = '')
+  {
+    $res = array('zoo' => $this->zoo);
+    if($extra)
+      $res['extra'] = $extra;
+
+    return $res;
+  }
+}
+
 class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
 {
   function testSimpleOutput()
@@ -114,5 +138,74 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>foo</h1>');
   }
+
+  function testFunctionCallWithoutParamsInOutputExpression()
+  {
+    $code = '<h1>{$#bar->func1()}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>10</h1>');
+  }
+
+  function testFunctionCallWithParamsInOutputExpression()
+  {
+    $code = '<h1>{$#bar->func2("aaa", $#foo)}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $tpl->set('foo', 10);
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>aaa - 10</h1>');
+  }
+
+  function testPathAfterFunctionCallInOutputExpression()
+  {
+    $code = '<h1>{$#bar->func3().zoo}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $object = new lmbMacroOutputExpressionTestClass();
+    $object->zoo = 30;
+    $tpl->set('bar', $object);
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>30</h1>');
+  }
+
+  function testPointInFuncParamsAndComplexPathInOutputExpression()
+  {
+    $code = '<h1>{$#bar->func3(".").extra}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>.</h1>');
+  }
+
+  function testClosingBracketInFuncParamsAndComplexPathInOutputExpression()
+  {
+    $code = '<h1>{$#bar->func3("}").extra}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>}</h1>');
+  }
+
+  function ToDo_testComplexVariableWithPathsInInFuncParamsInOutputExpression()
+  {
+    $code = '<h1>{$#bar->func2($#foo.var1, $#foo.var2).extra}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $tpl->set('foo', array('var1' => 10, 'var2' => 20));
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>10 - 20</h1>');
+  }
+
+  function ToDo_testNestedExpressionPaths()
+  {
+    $code = '<h1>{$#bar->func2($#foo.func2(10, 20), "aaa")}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $tpl->set('foo', new lmbMacroOutputExpressionTestClass());
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>10 - 20 - "aaa"</h1>');
+  }
+
 }
 

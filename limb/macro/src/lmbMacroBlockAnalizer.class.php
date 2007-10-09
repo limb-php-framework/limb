@@ -17,43 +17,11 @@ class lmbMacroBlockAnalizer
 {
   const BEFORE_CONTENT = 1;
   const EXPRESSION = 2;
-  const AFTER_CONTENT = 4;
-
-  protected $regexp;
-
-  function __construct()
-  {
-    $this->regexp = $this->_getRegexp();
-  }
+  const AFTER_CONTENT = 5;
 
   protected function _getRegexp()
   {
-    $regexp =
-      // start at the beginning
-      '/^' .
-      // Pick up the portion of the string before the variable reference
-      '((?s).*?)' .
-      // Beginning of a variable reference
-      preg_quote('{$', '/') .
-      // Collect the entire variable reference into one subexpression
-      '(' .
-          // capture the contents of one or more fragments.
-          '(' .
-              // Anything thats not a quote or the end of the variable
-              // reference can be in a fragment
-              '[^"\'}]+' .
-          ')+' .
-      ')' .
-      // end of a variable reference
-      preg_quote('}', '/') .
-      // Pick up the portion of the string after the variable reference
-      // This portion may contain additional references; we only match
-      // one at a time.
-      '((?s).*)' .
-      // Match until the end of the string
-      '$/';
-
-    return $regexp;
+    return '/^((?s).*?)'. preg_quote('{$', '/') . '((([^"\']+["\']?[^"\']?["\'])+)?[^}]+)' . preg_quote('}', '/') . '((?s).*)$/';
   }
 
   function parse($text, $observer)
@@ -65,7 +33,9 @@ class lmbMacroBlockAnalizer
       return;
     }
 
-    while (preg_match($this->regexp, $text, $match))
+    $regexp = $this->_getRegexp();
+
+    while (preg_match($regexp, $text, $match))
     {
       if (strlen($match[self :: BEFORE_CONTENT]) > 0)
         $observer->addLiteralFragment($match[self :: BEFORE_CONTENT]);
