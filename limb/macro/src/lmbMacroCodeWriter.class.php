@@ -30,6 +30,8 @@ class lmbMacroCodeWriter
 
   protected $methods = array();
 
+  protected $init_code = '';
+
   protected $methods_stack = array();
 
   protected $include_list = array();
@@ -45,6 +47,7 @@ class lmbMacroCodeWriter
 
     $this->beginMethod($render_func, array('$args = array()'));
     $this->writePHP('if($args) extract($args);');
+    $this->writePHP('$this->_init();');
   }
 
   function getClass()
@@ -117,14 +120,20 @@ class lmbMacroCodeWriter
   {
     $this->endMethod();
 
-    return "<?php\n" .
+    $code = "<?php\n" .
            //protection from self inclusion
            "if(!class_exists('{$this->class}', false)){\n" .
            $this->_renderIncludeList() . 
            "class {$this->class} " . ($this->parent ? "extends {$this->parent} " : '') . "{\n" .
+           (!$this->init_code ? "" :
+           "\nfunction _init() {" .
+           "\n$this->init_code\n" .
+           "}\n" 
+           ) .
            $this->_renderMethods() . 
            "\n}" . 
            "\n}";
+    return $code;
   }
 
   function getCode()
@@ -174,6 +183,11 @@ class lmbMacroCodeWriter
   {
     $this->writePHP("\n}\n");
     list($this->current_method, $this->current_mode) = array_pop($this->methods_stack);
+  }
+
+  function writeToInit($code)
+  {
+    $this->init_code .= $code;
   }
 
   /**

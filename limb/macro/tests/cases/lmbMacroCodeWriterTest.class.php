@@ -90,6 +90,22 @@ class lmbMacroCodeWriterTest extends UnitTestCase
     $this->assertEqual($this->_render(), 'abba');
   }
 
+  function testWriteIntoConstructor()
+  {
+    $bar = $this->writer->beginMethod('bar' . mt_rand());
+    $this->writer->writePHP('echo "b-b-b";');
+    $this->writer->endMethod();
+
+    $foo = $this->writer->beginMethod('foo' . mt_rand());
+    $this->writer->writePHP('echo "a-a-a";');
+    $this->writer->endMethod();
+
+    $this->writer->writePHP("\$this->$bar();");
+    $this->writer->writeToInit("\$this->$foo();");
+
+    $this->assertEqual($this->_render(), 'a-a-ab-b-b');
+  }
+
   function testGetTempVariable()
   {
     $var = $this->writer->getTempVariable();

@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/macro/src/lmbMacroConfig.class.php');
+
 /**
  * class lmbMacroTemplateExecutor.
  *
@@ -25,6 +27,9 @@ class lmbMacroTemplateExecutor
     $this->__config = $config ? $config : new lmbMacroConfig();
     $this->setVars($vars);
   }
+
+  //overridden in children
+  protected function _init(){}
 
   function setVars($vars)
   {
