@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDbDSN.
  *
  * @package dbal
- * @version $Id: lmbDbDSN.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDbDSN.class.php 6405 2007-10-10 04:57:08Z pachanga $
  */
 class lmbDbDSN extends lmbObject
 {
@@ -76,9 +76,9 @@ class lmbDbDSN extends lmbObject
     return $this->uri;
   }
 
-  function get($name)
+  protected function _getRaw($name)
   {
-    $value = parent :: get($name);
+    $value = parent :: _getRaw($name);
 
     if(isset($value))
       return $value;
