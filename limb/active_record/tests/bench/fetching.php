@@ -48,7 +48,7 @@ for($i=0;$i<1000;$i++)
 {
   $rs = lmbActiveRecord :: find('Foo');
   foreach($rs as $obj)
-    $foo = $obj->get('foo');
+    $foo = $obj->get('bar');
 }
 
 echo "lmbActiveRecord fetching, getter: " . (microtime(true) - $mark) . "\n";
@@ -59,7 +59,7 @@ for($i=0;$i<1000;$i++)
 {
   $rs = lmbActiveRecord :: find('Foo');
   foreach($rs as $obj)
-    $foo = $obj->foo;
+    $foo = $obj->bar;
 }
 
 echo "lmbActiveRecord fetching, attr access: " . (microtime(true) - $mark) . "\n";
@@ -70,7 +70,7 @@ for($i=0;$i<1000;$i++)
 {
   $rs = Foo :: find();
   foreach($rs as $obj)
-    $foo = $obj->get('foo');
+    $foo = $obj->get('bar');
 }
 
 echo "Foo fetching, getter: " . (microtime(true) - $mark) . "\n";
