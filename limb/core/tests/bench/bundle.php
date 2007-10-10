@@ -1,11 +1,11 @@
 <?php
 
-set_include_path(dirname(__FILE__) . '/../../../../;.');
+set_include_path(dirname(__FILE__) . '/../../../../');
 require_once('limb/core/common.inc.php');
-require_once('limb/fs/src/lmbFS.class.php');
+require_once('limb/fs/src/lmbFs.class.php');
 
 /*--------------------------------------*/
-lmbFS :: mkDir(dirname(__FILE__) . '/temp/');
+lmbFs :: mkDir(dirname(__FILE__) . '/temp/');
 
 generateBundle('cc');
 
@@ -34,9 +34,9 @@ for($i=0;$i<300;$i++)
   $object = new $class_name();
 }
 
-echo "lmb_require many files: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require $i files: " . (microtime(true) - $mark) . "\n";
 
-lmbFS :: rm(dirname(__FILE__) . '/temp/');
+lmbFs :: rm(dirname(__FILE__) . '/temp/');
 
 /*--------------------------------------*/
 
@@ -65,7 +65,7 @@ function generateFiles($sufffix)
 function getContent($sufffix)
 {
   $content = 'class MyClass' . $sufffix;
-  $content .= file_get_contents(dirname(__FILE__) . '/class_content.php');
+  $content .= file_get_contents(dirname(__FILE__) . '/class_content.inc');
   return $content;
 }
 

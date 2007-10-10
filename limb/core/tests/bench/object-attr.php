@@ -42,7 +42,7 @@ $mark = microtime(true);
 for($i=0;$i<1000;$i++)
   $object->getBar();
 
-echo "istance getBar(): " . (microtime(true) - $mark) . "\n";
+echo "instance getBar(): " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
