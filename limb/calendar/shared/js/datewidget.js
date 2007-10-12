@@ -1,7 +1,7 @@
 var DATE_WIDGETS = new Object();
-function DateWidget_Init(name, show_default)
+function DateWidget_Init(name, show_default, min_year, max_year)
 {
-	DATE_WIDGETS[name] = new DateWidget(name, show_default);
+	DATE_WIDGETS[name] = new DateWidget(name, show_default, min_year, max_year);
 	DATE_WIDGETS[name].init();
 }
 
@@ -19,7 +19,7 @@ function DateWidget_Action(name, action)
 	}
 }
 
-function DateWidget(name, show_default)
+function DateWidget(name, show_default, min_year, max_year)
 {
 	if (!document.getElementById(name))
 	{
@@ -36,6 +36,8 @@ function DateWidget(name, show_default)
 	this.year = this.value ? this.value.substr(0,4) : 0;
 	this.month = this.value ? parseInt(this.value.substr(5,2), 10) : 0;
 	this.day = this.value ? this.value.substr(8, 2) : 0;
+	this.min_year = min_year;
+	this.max_year = max_year;
 }
 
 DateWidget.prototype.init = function()
@@ -105,7 +107,7 @@ DateWidget.prototype.year_options = function()
 			opts[opts.length] = {value: -1, text: '---'};
 		}
 	}
-	for (var i=2000; i>=1950; i--)
+	for (var i=this.max_year; i>=this.min_year; i--)
 	{
 		opts[opts.length] = {value: i, text:i};
 	}

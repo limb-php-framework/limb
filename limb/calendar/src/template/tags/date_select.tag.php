@@ -39,9 +39,19 @@ class DateSelectTag extends WactInputTag
     $month_class = $this->getAttribute('year_class');
     $day_class = $this->getAttribute('year_class');
     $show_default = $this->getBoolAttribute('show_default');
+    $min_year = $this->getAttribute('min_year');
+    $max_year = $this->getAttribute('max_year');
 
     $widget = new lmbDateWidget($lang, $year_class, $month_class, $day_class, $show_default);
-
+	if ($min_year)
+	{
+	  $widget -> setMinYear(intval($min_year));
+	}
+	if ($max_year)
+	{
+	  $widget -> setMaxYear(intval($max_year));
+	}
+    
 
     $code->writeHTML($widget->loadFiles() .
                      $widget->makeFields($this->getAttribute('id') ));

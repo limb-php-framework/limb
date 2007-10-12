@@ -24,6 +24,8 @@ class lmbDateWidget {
   protected $calendar_lib_path = '/shared/calendar/js/';
   protected $calendar_file = 'calendar.js';
   protected $show_default = false;
+  protected $min_year;
+  protected $max_year;
 
   function __construct($lang              = 'en',
   						$year_class = "",
@@ -39,6 +41,8 @@ class lmbDateWidget {
     $this -> dw_month_class = $month_class;
     $this -> dw_day_class = $day_class;
     $this -> dw_lib_path = preg_replace('/\/+$/', '/', $this->calendar_lib_path).'datewidget.js';
+    $this -> min_year = 1950;
+    $this -> max_year = 2000;
   }
 
   function loadFiles()
@@ -69,9 +73,25 @@ class lmbDateWidget {
     $out = '<select name="'.$field_name.'_day" id="'.$field_name.'_day" class="'.$this->dw_day_class.'" onchange="DateWidget_Action(\''.$field_name.'\', \'handle_change\', \'day\');"></select>'.$this->newline;
     $out .= '<select name="'.$field_name.'_month" id="'.$field_name.'_month" class="'.$this->dw_month_class.'" onchange="DateWidget_Action(\''.$field_name.'\', \'handle_change\', \'month\');"></select>'.$this->newline;
     $out .= '<select name="'.$field_name.'_year" id="'.$field_name.'_year" class="'.$this->dw_year_class.'" onchange="DateWidget_Action(\''.$field_name.'\', \'handle_change\', \'year\');"></select>'.$this->newline;
-    $out .= '<script type="text/javascript">DateWidget_Init("'.$field_name.'", '.($this->show_default ? 'true' : 'false').');</script>'.$this->newline;
+    $out .= '<script type="text/javascript">DateWidget_Init("'.$field_name.'", '.($this->show_default ? 'true' : 'false').', '.$this->min_year.', '.$this->max_year.');</script>'.$this->newline;
     return $out;
   }
 
 	
+  function setMinYear($year)
+  {
+  	if ($year > 0)
+  	{
+  	  $this -> min_year = $year;
+  	}
+  }
+  
+  function setMaxYear($year)
+  {
+  	if ($year > 0)
+  	{
+  	  $this -> max_year = $year;
+  	}
+  }
+  
 }
