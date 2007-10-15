@@ -12,7 +12,8 @@
  * @package calendar
  * @version $Id$
  */
-class lmbDateWidget {
+class lmbDateWidget
+{
 
   protected $newline = "\n";
 
