@@ -12,10 +12,11 @@ require_once('limb/calendar/src/lmbDateWidget.class.php');
 /**
  * @tag date_select
  * @forbid_end_tag
- * @package calendar
  * @req_attributes id
- */
-class DateSelectTag extends WactInputTag
+ * @package calendar
+ * @version $Id: $
+*/
+class lmbDateSelectTag extends WactInputTag
 {
   function getRenderedTag()
   {
@@ -43,14 +44,14 @@ class DateSelectTag extends WactInputTag
     $max_year = $this->getAttribute('max_year');
 
     $widget = new lmbDateWidget($lang, $year_class, $month_class, $day_class, $show_default);
-	if ($min_year)
-	{
-	  $widget -> setMinYear(intval($min_year));
-	}
-	if ($max_year)
-	{
-	  $widget -> setMaxYear(intval($max_year));
-	}
+    if ($min_year)
+    {
+      $widget -> setMinYear(intval($min_year));
+    }
+    if ($max_year)
+    {
+      $widget -> setMaxYear(intval($max_year));
+    }
     
 
     $code->writeHTML($widget->loadFiles() .
