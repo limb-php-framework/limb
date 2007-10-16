@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSetInterface.interface.php');
+lmb_require('limb/core/src/exception/lmbNoSuchMethodException.class.php');
+lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
 /**
  * Generic container for data with magic accessors.
  *
@@ -71,6 +73,7 @@ lmb_require('limb/core/src/lmbSetInterface.interface.php');
  */
 class lmbObject implements lmbSetInterface
 {
+  protected $props = array();
   /**
    * Constructor.
    * Fills internals properties if any
@@ -109,10 +112,7 @@ class lmbObject implements lmbSetInterface
       return;
 
     foreach($values as $name => $value)
-    {
-      if(!$this->_isGuarded($name))
-        $this->_setRaw($name, $value);
-    }
+      $this->props[$name] = $value;
   }
   /**
    * Exports all object properties as an array
@@ -120,68 +120,34 @@ class lmbObject implements lmbSetInterface
    */
   function export()
   {
-    $exported = array();
-    foreach($this->_getObjectVars() as $name => $var)
-    {
-      if(!$this->_isGuarded($name))
-        $exported[$name] = $var;
-    }
-    return $exported;
+    return $this->props;
   }
   /**
-   * Checks if such attribute exists
+   * Checks if such property exists
+   * Can be overriden in child classes like lmbActiveRecord
    * @return bool returns true even if attribute is null
    */
   function has($name)
   {
-    return in_array($name, $this->getAttributesNames());
+    return array_key_exists($name, $this->props) || $this->_mapPropertyToMethod($name);
   }
-  /**
-   * @deprecated
-   * @see has()
-   */
-  function hasAttribute($name)
-  {
-    return $this->has($name);
-  }
-  /**
-   * Returns array filled with attribute names
-   * @return array
-   */
-  function getAttributesNames()
-  {
-    $names = array();
-    foreach($this->_getObjectVars() as $name => $value)
-    {
-      if(!$this->_isGuarded($name))
-        $names[] = $name;
-    }
-    return $names;
-  }
+
   /**
    * Removes specified property
    * @param string
    */
   function remove($name)
   {
-    if($this->hasAttribute($name))
-      unset($this->$name);
+    if(array_key_exists($name, $this->props))
+      unset($this->props[$name]);
   }
-  /**
-   * @deprecated
-   * @see reset()
-   */
-  function removeAll()
-  {
-    $this->reset();
-  }
+
   /**
    * Removes all object properties
    */
   function reset()
   {
-    foreach($this->_getObjectVars() as $name => $var)
-      $this->remove($name);
+    $this->props = array();
   }
 
   /**
@@ -195,9 +161,18 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
 
-    if(!$this->_isGuarded($name))
-      return $this->_getRaw($name);
+    if(array_key_exists($name, $this->props))
+      return $this->props[$name];
+
+    throw new lmbNoSuchPropertyException("No such property '$name' in " . get_class($this));
   }
+
+  protected function _getRaw($name)
+  {
+    if(isset($this->props[$name]))
+      return $this->props[$name];
+  }
+
   /**
    * Sets property value
    * Magically maps setter to fine-grained method if it exists, e.g. set('foo', $value) => setFoo($value)
@@ -209,8 +184,12 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToSetMethod($name))
       return $this->$method($value);
 
-    if(!$this->_isGuarded($name))
-      $this->_setRaw($name, $value);
+    $this->props[$name] = $value;
+  }
+
+  protected function _setRaw($name, $value)
+  {
+    $this->props[$name] = $value;
   }
 
   /**#@+
@@ -219,7 +198,7 @@ class lmbObject implements lmbSetInterface
    */
   function offsetExists($offset)
   {
-    return $this->hasAttribute($offset);
+    return $this->has($offset);
   }
 
   function offsetGet($offset)
@@ -238,33 +217,14 @@ class lmbObject implements lmbSetInterface
   }
   /**#@-*/
 
-  protected function _getRaw($name)
-  {
-    if(isset($this->$name))
-      return $this->$name;
-  }
-
-  protected function _getObjectVars()
-  {
-    return get_object_vars($this);
-  }
-
-  protected function _setRaw($name, $value)
-  {
-    $this->$name = $value;
-  }
-
-  protected function _isGuarded($property)
-  {
-    return $property{0} == '_';
-  }
-
   protected function __call($method, $args = array())
   {
     if($property = $this->_mapGetToProperty($method))
     {
-      if(!$this->_isGuarded($property))
-        return $this->_getRaw($property);
+      if($this->has($property))
+        return $this->get($property);
+      else
+        throw new lmbNoSuchMethodException("No such method '$method' in " . get_class($this));
     }
     elseif($property = $this->_mapSetToProperty($method))
     {
@@ -272,7 +232,7 @@ class lmbObject implements lmbSetInterface
       return;
     }
 
-    throw new lmbException("No such method '$method' in " . get_class($this));
+    throw new lmbNoSuchMethodException("No such method '$method' in " . get_class($this));
   }
 
   protected function _mapGetToProperty($method)
@@ -314,6 +274,43 @@ class lmbObject implements lmbSetInterface
     $method = 'set' . lmb_camel_case($property);
     if(method_exists($this, $method))
       return $method;
+  }
+
+  /**
+   * __set        an alias of set()
+   * @see set, offsetSet
+   */
+  public function __set($name,$value)
+  {
+      $this->set($name,$value);
+  }
+
+  /**
+   * __get -- an alias of get()
+   * @see get,  offsetGet
+   * @return mixed
+   */
+  public function __get($name)
+  {
+    return $this->get($name);
+  }
+
+  /**
+   * __isset()
+   * @return boolean          whether or not this object contains $name
+   */
+  public function __isset($name)
+  {
+    return $this->has($name);
+  }
+
+  /**
+   * __unset()
+   * @param string $name
+   */
+  public function __unset($name)
+  {
+    return $this->remove($name);
   }
 }
 
