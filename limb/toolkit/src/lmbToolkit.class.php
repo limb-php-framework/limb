@@ -40,22 +40,22 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6422 2007-10-16 07:43:25Z serega $
+ * @version $Id: lmbToolkit.class.php 6428 2007-10-16 12:26:39Z serega $
  */
 class lmbToolkit extends lmbObject
 {
   /**
   * @var lmbToolkitTools Current tools
   */
-  protected $tools;
+  protected $_tools;
   /**
   * @var array Cached tools signatures that is methods supported by tools
   */
-  protected $tools_signatures = array();
+  protected $_tools_signatures = array();
   /**
   * @var boolean Flag if tools signatures were precached
   */
-  protected $signatures_loaded = false;
+  protected $_signatures_loaded = false;
 
   /**
   * Sets new tools object and clear signatures cache
@@ -63,9 +63,9 @@ class lmbToolkit extends lmbObject
   */
   protected function setTools($tools)
   {
-    $this->tools = $tools;
-    $this->tools_signatures = array();
-    $this->signatures_loaded = false;
+    $this->_tools = $tools;
+    $this->_tools_signatures = array();
+    $this->_signatures_loaded = false;
   }
 
   /**
@@ -140,7 +140,7 @@ class lmbToolkit extends lmbObject
     lmbRegistry :: set('lmbToolkitTools', $tools);
     lmbRegistry :: set('lmbToolkitToolsCopy', $tools_copy);
 
-    lmbRegistry :: set('lmbToolkitProperties', $toolkit->props);
+    lmbRegistry :: set('lmbToolkitProperties', $toolkit->export());
     lmbRegistry :: save('lmbToolkitProperties');
     $toolkit->reset(array());
 
@@ -247,8 +247,8 @@ class lmbToolkit extends lmbObject
   {
     $this->_ensureSignatures();
 
-    if(isset($this->tools_signatures[$method]))
-      return call_user_func_array(array($this->tools_signatures[$method], $method), $args);
+    if(isset($this->_tools_signatures[$method]))
+      return call_user_func_array(array($this->_tools_signatures[$method], $method), $args);
 
     return parent :: __call($method, $args);
   }
@@ -260,11 +260,11 @@ class lmbToolkit extends lmbObject
   */
   protected function _ensureSignatures()
   {
-    if($this->signatures_loaded)
+    if($this->_signatures_loaded)
       return;
 
-    $this->tools_signatures = $this->tools->getToolsSignatures();
-    $this->signatures_loaded = true;
+    $this->_tools_signatures = $this->_tools->getToolsSignatures();
+    $this->_signatures_loaded = true;
   }
 
   protected function _hasGetMethodFor($property)
@@ -273,7 +273,7 @@ class lmbToolkit extends lmbObject
 
     $capsed = lmb_camel_case($property);
     $method = 'get' . $capsed;
-    return isset($this->tools_signatures[$method]);
+    return isset($this->_tools_signatures[$method]);
   }
 
   protected function _mapPropertyToGetMethod($property)
@@ -282,7 +282,7 @@ class lmbToolkit extends lmbObject
 
     $capsed = lmb_camel_case($property);
     $method = 'get' . $capsed;
-    if(isset($this->tools_signatures[$method]))
+    if(isset($this->_tools_signatures[$method]))
       return $method;
   }
 
@@ -291,7 +291,7 @@ class lmbToolkit extends lmbObject
     $this->_ensureSignatures();
 
     $method = 'set' . lmb_camel_case($property);
-    if(isset($this->tools_signatures[$method]))
+    if(isset($this->_tools_signatures[$method]))
       return $method;
   }
 }
