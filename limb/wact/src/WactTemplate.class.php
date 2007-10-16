@@ -13,7 +13,7 @@ require_once('limb/wact/src/components/components.inc.php');
  * class WactTemplate.
  *
  * @package wact
- * @version $Id: WactTemplate.class.php 6425 2007-10-16 08:13:48Z serega $
+ * @version $Id: WactTemplate.class.php 6426 2007-10-16 10:36:28Z serega $
  */
 class WactTemplate extends WactDatasourceRuntimeComponent
 {
@@ -78,8 +78,13 @@ class WactTemplate extends WactDatasourceRuntimeComponent
     if(is_scalar($source) || is_null($source))
       return null;
 
-    if((is_array($source) || $source instanceof ArrayAccess) && isset($source[$value]))
-      return $source[$value];
+    if((is_array($source) || $source instanceof ArrayAccess))
+    {
+      if(isset($source[$value]))
+        return $source[$value];
+      else
+        return null;
+    }
 
     if (is_object($source) && method_exists($source, 'get'))
       return $source->get($value);
@@ -93,7 +98,10 @@ class WactTemplate extends WactDatasourceRuntimeComponent
       return;
 
     if((is_array($source) || $source instanceof ArrayAccess))
+    {
       $source[$field] = $value;
+      return;
+    }
 
     if (is_object($source) && method_exists($source, 'set'))
     {
