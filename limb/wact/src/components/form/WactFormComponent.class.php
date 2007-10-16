@@ -11,7 +11,7 @@
  * class WactFormComponent.
  *
  * @package wact
- * @version $Id: WactFormComponent.class.php 6386 2007-10-05 14:22:21Z serega $
+ * @version $Id: WactFormComponent.class.php 6425 2007-10-16 08:13:48Z serega $
  */
 class WactFormComponent extends WactRuntimeTagComponent
 {
@@ -26,6 +26,7 @@ class WactFormComponent extends WactRuntimeTagComponent
   function __construct($id)
   {
     parent :: __construct($id);
+
     $this->datasource = array();
   }
 
