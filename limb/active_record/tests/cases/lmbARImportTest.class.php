@@ -114,10 +114,14 @@ class lmbARImportTest extends UnitTestCase
     $object2 = new LazyTestOneTableObject($object->getId());
 
     $object1->import($object2);
-    $this->assertFalse($object1->hasAttribute('annotation'));
+    $this->assertFalse(array_key_exists('annotation', $object1->exportRaw()));
+    $this->assertTrue($object1->has('annotation'));
     $this->assertEqual($object1->getAnnotation(), $annotation);
-    $this->assertFalse($object1->hasAttribute('content'));
+    $this->assertTrue(array_key_exists('annotation', $object1->exportRaw()));
+    $this->assertFalse(array_key_exists('content', $object1->exportRaw()));
+    $this->assertTrue($object1->has('content'));
     $this->assertEqual($object1->getContent(), $content);
+    $this->assertTrue(array_key_exists('content', $object1->exportRaw()));
   }
 
   function testImportOverwritesIdOfNewObject()
@@ -134,7 +138,6 @@ class lmbARImportTest extends UnitTestCase
     $this->assertEqual($object->getId(), 1000);
     $this->assertEqual($object->getAnnotation(), 'Some annotation');
     $this->assertEqual($object->getContent(), 'Some content');
-    $this->assertNull($object->getJunk());
   }
 
   function testImportPreservesIdOfExistingObject()

@@ -74,6 +74,12 @@ class lmbAROneToOneRelationsTest extends UnitTestCase
     $this->db->delete('social_security_for_test');
   }
 
+  function testHas()
+  {
+    $person = new PersonForTest();
+    $this->assertTrue(isset($person['social_security']));
+  }
+
   function testNewObjectReturnsNullChild()
   {
     $person = new PersonForTest();

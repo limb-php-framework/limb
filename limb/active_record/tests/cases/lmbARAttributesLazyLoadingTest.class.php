@@ -67,15 +67,19 @@ class lmbARAttributesLazyLoadingTest extends UnitTestCase
 
   protected function _checkLazyness($object, $annotation, $content)
   {
-    $this->assertTrue($object->hasAttribute('news_date'));
+    $this->assertTrue($object->has('news_date'));
 
-    $this->assertFalse($object->hasAttribute('annotation'));
+    $this->assertFalse(array_key_exists('annotation', $object->exportRaw()));
+    $this->assertTrue($object->has('annotation'));
     $this->assertEqual($object->getAnnotation(), $annotation);
-    $this->assertTrue($object->hasAttribute('annotation'));
+    $this->assertTrue($object->has('annotation'));
+    $this->assertTrue(array_key_exists('annotation', $object->exportRaw()));
 
-    $this->assertFalse($object->hasAttribute('content'));
+    $this->assertFalse(array_key_exists('content', $object->exportRaw()));
+    $this->assertTrue($object->has('content'));
     $this->assertEqual($object->getContent(), $content);
-    $this->assertTrue($object->hasAttribute('content'));
+    $this->assertTrue($object->has('content'));
+    $this->assertTrue(array_key_exists('content', $object->exportRaw()));
   }
 
   protected function _createActiveRecord($annotation, $content)

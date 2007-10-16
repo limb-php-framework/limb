@@ -92,6 +92,12 @@ class lmbAROneToManyRelationsTest extends UnitTestCase
     $this->db->delete('lecture_for_test');
   }
 
+  function testHas()
+  {
+    $lecture = new LectureForTest();
+    $this->assertTrue(isset($lecture['course']));
+  }
+
   function testMapPropertyToField()
   {
     $course = new CourseForTest();

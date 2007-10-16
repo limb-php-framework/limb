@@ -127,12 +127,22 @@ class lmbActiveRecordTest extends UnitTestCase
   {
     $this->_cleanUp();
 
+    $this->conn->disconnect();
+
     lmbToolkit :: restore();
   }
 
   function _cleanUp()
   {
     $this->db->delete('test_one_table_object');
+  }
+
+  function testArrayAccessConsidersDbFields()
+  {
+    $object = new TestOneTableObject();
+    $this->assertTrue(isset($object['annotation']));
+    unset($object['annotation']); // Does not make any sence since db fields always available
+    $this->assertTrue(isset($object['annotation']));
   }
 
   function testSaveNewRecord()

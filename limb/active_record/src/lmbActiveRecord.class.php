@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6316 2007-09-19 17:51:10Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6423 2007-10-16 07:49:09Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -65,6 +65,10 @@ class lmbActiveRecord extends lmbObject
    */
   protected $_db_table_name;
   /**
+   * @var array list of database table fields
+   */
+  protected $_db_table_fields = array();
+  /**
    * @var boolean reflects new or loaded status of an object
    */
   protected $_is_new = true;
@@ -96,6 +100,14 @@ class lmbActiveRecord extends lmbObject
    * @var array all value object relations of an object
    */
   protected $_composed_of = array();
+  /**
+   * @var array all relations of an object
+   */
+  protected $_relations = array();
+  /**
+   * @var array all relations of an object to any other object. Like "has one", "many belongs to", "belongs_to".
+   */
+  protected $_single_object_relations = array();
   /**
    * @var boolean true during the object's saving procedure
    */
@@ -150,12 +162,6 @@ class lmbActiveRecord extends lmbObject
   protected $_listeners = array();
 
   /**
-   * Note, this property is not guarded with "_" prefix since we need it to be imported/exported
-   * @var array An array of attached value objects
-   */
-  protected $raw_value_objects = array();
-
-  /**
    *  Constructor.
    *  Creates an instance of lmbActiveRecord object in different ways depending on passed argument
    *  <code>
@@ -174,12 +180,17 @@ class lmbActiveRecord extends lmbObject
 
     $this->_defineRelations();
 
+    // For optimization purposes
+    $this->_relations = $this->_getAllRelations();
+    $this->_single_object_relations = $this->_getSingleObjectRelations();
+
     if(is_object($conn))
       $this->_db_conn = $conn;
     else
       $this->_db_conn = self :: getDefaultConnection();
 
     $this->_db_meta_info = lmbToolkit :: instance()->getActiveRecordMetaInfo($this, $this->_db_conn);
+    $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
     $this->_db_table_name = $this->_db_table->getTableName();
@@ -305,9 +316,8 @@ class lmbActiveRecord extends lmbObject
    */
   function getRelationInfo($relation)
   {
-    $relations = $this->_getAllRelations();
-    if(isset($relations[$relation]))
-      return $relations[$relation];
+    if(isset($this->_relations[$relation]))
+      return $this->_relations[$relation];
   }
 
   protected function _getAllRelations()
@@ -319,6 +329,15 @@ class lmbActiveRecord extends lmbObject
                         $this->_many_belongs_to,
                         $this->_composed_of);
   }
+
+  protected function _getSingleObjectRelations()
+  {
+     return array_merge($this->_has_one,
+                        $this->_belongs_to,
+                        $this->_many_belongs_to,
+                        $this->_composed_of);
+  }
+
   /**
    *  Returns all relations info for one-to-many
    *  @return array
@@ -466,15 +485,18 @@ class lmbActiveRecord extends lmbObject
 
   protected function __call($method, $args = array())
   {
-    if($property = $this->_mapGetToProperty($method))
-      return $this->get($property);
-
-    if($property = $this->mapAddToProperty($method))
+    try
     {
-      $this->_addToProperty($property, $args[0]);
-      return;
+      return parent :: __call($method, $args);
+
     }
-    return parent :: __call($method, $args);
+    catch(lmbNoSuchMethodException $e)
+    {
+      if($property = $this->mapAddToProperty($method))
+        $this->_addToProperty($property, $args[0]);
+      else
+        throw $e;
+    }
   }
 
   protected function _addToProperty($property, $value)
@@ -491,30 +513,30 @@ class lmbActiveRecord extends lmbObject
     return in_array($property, $this->_lazy_attributes);
   }
 
-  protected function _hasLazyAttributes()
-  {
-    if(!$this->_lazy_attributes)
-      return false;
-
-    foreach($this->_lazy_attributes as $attribute)
-      if(!$this->hasAttribute($attribute))
-        return true;
-
-    return false;
-  }
-
   protected function _loadLazyAttribute($property)
   {
     $record = $this->_db_table->selectRecordById($this->getId(), array($property));
     $processed = $this->_decodeDbValues($record);
-    $this->_setDbValue($property, $processed[$property]);
+    $this->_setRaw($property, $processed[$property]);
   }
 
   protected function _loadLazyAttributes()
   {
     foreach($this->_lazy_attributes as $attribute)
-      $this->_loadLazyAttribute($attribute);
+    {
+      if(!parent :: has($attribute))
+        $this->_loadLazyAttribute($attribute);
+    }
   }
+
+  function has($property)
+  {
+    return parent :: has($property)
+           || in_array($property, $this->_db_table_fields)
+           || $this->_izLazyAttribute($property)
+           || $this->_hasRelation($property);
+  }
+
   /**
    *  Generic magic getter for any attribute
    *  @param string property name
@@ -522,16 +544,25 @@ class lmbActiveRecord extends lmbObject
    */
   function get($property)
   {
-    if(!$this->isNew() && $this->_izLazyAttribute($property) && !$this->hasAttribute($property))
+    if(!$this->isNew() && $this->_izLazyAttribute($property) && !parent :: has($property))
       $this->_loadLazyAttribute($property);
 
     if($this->_hasValueObjectRelation($property))
       return $this->_getValueObject($property);
 
-    $value = parent :: get($property);
+    try
+    {
+      return parent :: get($property);
+    }
+    catch(lmbNoSuchPropertyException $e)
+    {
+    }
 
-    if(isset($value))
-      return $value;
+    if(in_array($property, $this->_db_table_fields))
+      return null;
+
+    if($this->isNew() && $this->_hasSingleObjectRelation($property))
+      return null;
 
     if(!$this->isNew() && $this->_hasBelongsToRelation($property))
     {
@@ -560,7 +591,8 @@ class lmbActiveRecord extends lmbObject
       $this->_setRaw($property, $collection);
       return $collection;
     }
-    $exists = false;
+
+    throw $e;
   }
 
   function createRelationCollection($relation, $criteria = null)
@@ -573,6 +605,16 @@ class lmbActiveRecord extends lmbObject
       return new lmbAROneToManyCollection($relation, $this, $criteria, $this->_db_conn);
     else if($this->_hasManyToManyRelation($relation))
       return new lmbARManyToManyCollection($relation, $this, $criteria, $this->_db_conn);
+  }
+
+  protected function _hasRelation($property)
+  {
+    return isset($this->_relations[$property]);
+  }
+
+  protected function _hasSingleObjectRelation($property)
+  {
+    return isset($this->_single_object_relations[$property]);
   }
 
   protected function _hasCollectionRelation($relation)
@@ -600,14 +642,11 @@ class lmbActiveRecord extends lmbObject
       $collection->set($value);
     }
     else
+    {
       parent :: set($property, $value);
-  }
 
-  protected function _setRaw($property, $value)
-  {
-    parent :: _setRaw($property, $value);
-
-    $this->_markDirtyProperty($property);
+      $this->_markDirtyProperty($property);
+    }
   }
 
   protected function _markDirtyProperty($property)
@@ -705,7 +744,7 @@ class lmbActiveRecord extends lmbObject
    */
   function mapFieldToProperty($field)
   {
-    foreach($this->_getAllRelations() as $property => $info)
+    foreach($this->_relations as $property => $info)
     {
       if(isset($info['field']) && $info['field'] == $field)
         return $property;
@@ -783,13 +822,8 @@ class lmbActiveRecord extends lmbObject
            $this->_many_belongs_to[$property]['can_be_null'];
   }
 
-  protected function _loadValueObject($property)
+  protected function _loadValueObject($property, $value)
   {
-    if(!isset($this->raw_value_objects[$this->_composed_of[$property]['field']]))
-      return null;
-
-    $value = $this->raw_value_objects[$this->_composed_of[$property]['field']];
-
     return $this->_createValueObject($this->_composed_of[$property]['class'],
                                      $value);
   }
@@ -807,10 +841,14 @@ class lmbActiveRecord extends lmbObject
 
   protected function _getValueObject($property)
   {
+    if(!parent :: has($property))
+      return;
+
     $value = $this->_getRaw($property);
+
     if(!is_object($value))
     {
-      $object = $this->_loadValueObject($property);
+      $object = $this->_loadValueObject($property, $value);
       $this->_setRaw($property, $object);
       return $object;
     }
@@ -1126,25 +1164,25 @@ class lmbActiveRecord extends lmbObject
   protected function _getCallingClass()
   {
     //once PHP-5.3 LSB patch is available we'll use get_called_class
-    //currently it's a quite a slow implementation and it doesn't 
+    //currently it's a quite a slow implementation and it doesn't
     //recognize multiline function calls
 
-    $trace = debug_backtrace();   
-    $back = $trace[1];  
+    $trace = debug_backtrace();
+    $back = $trace[1];
     $method = $back['function'];
     $fp = fopen($back['file'], 'r');
 
     for($i=0; $i<$back['line']-1; $i++)
       fgets($fp);
 
-    $line = fgets($fp); 
+    $line = fgets($fp);
     fclose($fp);
 
     if(!preg_match('~(\w+)\s*::\s*' . $method . '\s*\(~', $line, $m))
       throw new lmbARException("Static calling class not found!(using multiline static method call?)");
     if($m[1] == 'lmbActiveRecord')
       throw new lmbARException("Found static class can't be lmbActiveRecord!");
-    return $m[1]; 
+    return $m[1];
   }
 
   /**
@@ -1548,19 +1586,11 @@ class lmbActiveRecord extends lmbObject
     $decoded = $this->_decodeDbValues($record);
 
     foreach($decoded as $key => $value)
-      $this->_setDbValue($key, $value);
+      $this->_setRaw($key, $value);
 
     $this->_resetDirty();
     $this->_is_new = false;
     return true;
-  }
-
-  protected function _setDbValue($key, $value)
-  {
-    if($this->_hasValueObjectRelation($key))
-      $this->raw_value_objects[$key] = $value;
-    else
-      parent :: _setRaw($key, $value);
   }
 
   protected function _decodeDbValues($record)
@@ -1624,14 +1654,6 @@ class lmbActiveRecord extends lmbObject
     $this->_invokeListeners(self :: ON_AFTER_DESTROY);
 
     $this->_is_being_destroyed = false;
-  }
-
-  function remove($name)
-  {
-    parent :: remove($name);
-
-    if(isset($this->raw_value_objects[$name]))
-      unset($this->raw_value_objects[$name]);
   }
 
   protected function _deleteDbRecord()
@@ -1850,6 +1872,8 @@ class lmbActiveRecord extends lmbObject
   function importRaw($source)
   {
     parent :: import($source);
+
+    $this->markDirty(true);
   }
 
   protected function _canImportProperty($property)
@@ -1908,7 +1932,7 @@ class lmbActiveRecord extends lmbObject
    */
   function export()
   {
-    if(!$this->isNew() && $this->_hasLazyAttributes())
+    if(!$this->isNew() && sizeof($this->_lazy_attributes))
       $this->_loadLazyAttributes();
 
     return parent :: export();
