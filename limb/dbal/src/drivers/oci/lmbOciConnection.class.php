@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
@@ -21,7 +21,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
  * class lmbOciConnection.
  *
  * @package dbal
- * @version $Id: lmbOciConnection.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbOciConnection.class.php 6424 2007-10-16 08:12:07Z serega $
  */
 class lmbOciConnection implements lmbDbConnection
 {
@@ -66,8 +66,8 @@ class lmbOciConnection implements lmbDbConnection
     $hostspec		= $this->config->get('host');
     $port       = $this->config->get('port');
     $db					= $this->config->get('database');
-    $persistent	= $this->config->get('persistent');
-    $charset    = $this->config->get('charset');
+    $persistent	= isset($this->config['persistent']) ? $this->config['persistent'] : null;
+    $charset	= isset($this->config['charset']) ? $this->config['charset'] : null;
 
     $connect_function = $persistent ? 'oci_pconnect' : 'oci_connect';
 

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbMysqlConnection.class.php 6424 2007-10-16 08:12:07Z serega $
  */
 class lmbMysqlConnection implements lmbDbConnection
 {
@@ -68,7 +68,7 @@ class lmbMysqlConnection implements lmbDbConnection
       $this->_raiseError();
     }
 
-    if($charset = $this->config['charset'])
+    if(isset($this->config['charset']) && $charset = $this->config['charset'])
     {
       mysql_query("SET NAMES '$charset'",  $this->connectionId);
     }

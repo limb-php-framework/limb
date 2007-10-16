@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDbDSN.
  *
  * @package dbal
- * @version $Id: lmbDbDSN.class.php 6405 2007-10-10 04:57:08Z pachanga $
+ * @version $Id: lmbDbDSN.class.php 6424 2007-10-16 08:12:07Z serega $
  */
 class lmbDbDSN extends lmbObject
 {
@@ -34,6 +34,9 @@ class lmbDbDSN extends lmbObject
     }
     elseif(is_string($args))
       $this->_parseUri($args);
+
+    foreach($this->extra as $key => $value)
+      $this->$key = $value;
   }
 
   function _parseUri($str)
@@ -74,17 +77,6 @@ class lmbDbDSN extends lmbObject
       $this->uri->setQueryItems($this->extra);
 
     return $this->uri;
-  }
-
-  protected function _getRaw($name)
-  {
-    $value = parent :: _getRaw($name);
-
-    if(isset($value))
-      return $value;
-
-    if(isset($this->extra[$name]))
-      return $this->extra[$name];
   }
 
   function toString()

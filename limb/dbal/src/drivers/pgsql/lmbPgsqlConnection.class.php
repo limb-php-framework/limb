@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlQueryStatement.class.php');
@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbPgsqlConnection.class.php 6424 2007-10-16 08:12:07Z serega $
  */
 class lmbPgsqlConnection implements lmbDbConnection
 {
@@ -55,7 +55,7 @@ class lmbPgsqlConnection implements lmbDbConnection
 
     global $php_errormsg;
 
-    $persistent = $this->config['persistent'];
+    $persistent = isset($this->config['persistent']) ? $this->config['persistent'] : null;
 
     $connstr = '';
 
@@ -94,7 +94,7 @@ class lmbPgsqlConnection implements lmbDbConnection
       $this->_raiseError($php_errormsg);
     }
 
-    if($charset = $this->config['charset'])
+    if(isset($this->config['charset']) && ($charset = $this->config['charset']))
     {
       pg_set_client_encoding($conn, $charset);
     }
