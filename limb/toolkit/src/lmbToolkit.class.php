@@ -2,15 +2,17 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require(dirname(__FILE__) . '/lmbToolkitTools.interface.php');
-lmb_require(dirname(__FILE__) . '/lmbRegistry.class.php');
-lmb_require(dirname(__FILE__) . '/lmbEmptyToolkitTools.class.php');
-lmb_require(dirname(__FILE__) . '/lmbCompositeToolkitTools.class.php');
-lmb_require(dirname(__FILE__) . '/lmbCompositeNonItersectingToolkitTools.class.php');
+lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
+lmb_require('limb/toolkit/src/lmbRegistry.class.php');
+lmb_require('limb/toolkit/src/lmbEmptyToolkitTools.class.php');
+lmb_require('limb/toolkit/src/lmbCompositeToolkitTools.class.php');
+lmb_require('limb/toolkit/src/lmbCompositeNonItersectingToolkitTools.class.php');
+lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
+lmb_require('limb/core/src/lmbObject.class.php');
 
 /**
  * Toolkit is an implementation of Dinamic Service Locator pattern
@@ -38,18 +40,14 @@ lmb_require(dirname(__FILE__) . '/lmbCompositeNonItersectingToolkitTools.class.p
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6357 2007-10-01 19:57:10Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6422 2007-10-16 07:43:25Z serega $
  */
-class lmbToolkit
+class lmbToolkit extends lmbObject
 {
   /**
   * @var lmbToolkitTools Current tools
   */
   protected $tools;
-  /**
-  * @var array Current set of toolkit data
-  */
-  protected $properties = array();
   /**
   * @var array Cached tools signatures that is methods supported by tools
   */
@@ -70,14 +68,6 @@ class lmbToolkit
     $this->signatures_loaded = false;
   }
 
-  /**
-  * Sets new set of toolkit data
-  * @param array
-  */
-  protected function setProperties($properties)
-  {
-    $this->properties = $properties;
-  }
   /**
   * Follows Singleton pattern interface
   * Returns toolkit instance. Takes instance from {@link lmbRegistry)
@@ -150,9 +140,9 @@ class lmbToolkit
     lmbRegistry :: set('lmbToolkitTools', $tools);
     lmbRegistry :: set('lmbToolkitToolsCopy', $tools_copy);
 
-    lmbRegistry :: set('lmbToolkitProperties', $toolkit->properties);
+    lmbRegistry :: set('lmbToolkitProperties', $toolkit->props);
     lmbRegistry :: save('lmbToolkitProperties');
-    $toolkit->setProperties(array());
+    $toolkit->reset(array());
 
     return $toolkit;
   }
@@ -172,8 +162,7 @@ class lmbToolkit
     $tools = lmbRegistry :: get('lmbToolkitTools');
     $toolkit->setTools($tools);
 
-    $properties = lmbRegistry :: get('lmbToolkitProperties');
-    $toolkit->setProperties($properties);
+    $toolkit->import(lmbRegistry :: get('lmbToolkitProperties'));
 
     return $toolkit;
   }
@@ -216,7 +205,7 @@ class lmbToolkit
     if($method = $this->_mapPropertyToSetMethod($var))
       return $this->$method($value);
     else
-      $this->setRaw($var, $value);
+      return parent :: set($var, $value);
   }
 
   /**
@@ -229,28 +218,23 @@ class lmbToolkit
     if($method = $this->_mapPropertyToGetMethod($var))
       return $this->$method();
     else
-      return $this->getRaw($var);
+      return parent :: get($var);
   }
 
-  /**
-  * Sets variable from toolkit
-  * Doesn't check if appropriate setter method in tools exists to delegate to
-  * @return void
-  */
   function setRaw($var, $value)
   {
-    $this->properties[$var] = $value;
+    return parent :: _setRaw($var, $value);
   }
 
-  /**
-  * Gets variable from toolkit
-  * Doesn't check if appropriate getter method in tools exists to delegate to
-  * @return void
-  */
   function getRaw($var)
   {
-    if(isset($this->properties[$var]))
-      return $this->properties[$var];
+    return parent :: _getRaw($var);
+  }
+
+
+  function has($var)
+  {
+    return $this->_hasGetMethodFor($var) || parent :: has($var);
   }
 
   /**
@@ -263,12 +247,10 @@ class lmbToolkit
   {
     $this->_ensureSignatures();
 
-    if(!isset($this->tools_signatures[$method]))
-      throw new lmbException('toolkit does not support method "' . $method . '" (no such signature)',
-                              array('method' => $method));
+    if(isset($this->tools_signatures[$method]))
+      return call_user_func_array(array($this->tools_signatures[$method], $method), $args);
 
-
-    return call_user_func_array(array($this->tools_signatures[$method], $method), $args);
+    return parent :: __call($method, $args);
   }
 
   /**
@@ -283,6 +265,15 @@ class lmbToolkit
 
     $this->tools_signatures = $this->tools->getToolsSignatures();
     $this->signatures_loaded = true;
+  }
+
+  protected function _hasGetMethodFor($property)
+  {
+    $this->_ensureSignatures();
+
+    $capsed = lmb_camel_case($property);
+    $method = 'get' . $capsed;
+    return isset($this->tools_signatures[$method]);
   }
 
   protected function _mapPropertyToGetMethod($property)
