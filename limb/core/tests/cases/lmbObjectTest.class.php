@@ -12,6 +12,7 @@ class ObjectTestVersion extends lmbObject
 {
   public $bar;
   protected $protected = 'me';
+  public $_guarded = '';
 
   function getBar()
   {
@@ -61,10 +62,23 @@ class lmbObjectTest extends UnitTestCase
     $this->assertTrue($object->has('foo'));
   }
 
+  function testHasAttributeForGuardedProperty()
+  {
+    $object = new ObjectTestVersion();
+    $object->_other_guarded = 'yeah';
+    $this->assertFalse($object->has('_other_guarded'));
+  }
+
   function testHasAttributeForVirtualProperty()
   {
     $object = new ObjectTestVersion();
     $this->assertTrue($object->has('is_error'));
+  }
+
+  function testGetAttributesNames()
+  {
+    $object = new ObjectTestVersion();
+    $this->assertEqual($object->getAttributesNames(), array('bar', 'protected'));
   }
 
   function testSetGet()
@@ -89,6 +103,21 @@ class lmbObjectTest extends UnitTestCase
     try
     {
       $object->get('no_such_property');
+      $this->assertTrue(false);
+    }
+    catch(lmbNoSuchPropertyException $e)
+    {
+    }
+  }
+
+  function testCallGetterForGuardedPropertyThrowsException()
+  {
+    $object = new ObjectTestVersion();
+    $object->_other_guarded = 'yeah';
+
+    try
+    {
+      $object->get('_other_guarded');
       $this->assertTrue(false);
     }
     catch(lmbNoSuchPropertyException $e)
@@ -178,6 +207,14 @@ class lmbObjectTest extends UnitTestCase
     $this->assertEqual($object->get('baz'), 'wow');
   }
 
+  function testImportIgnoresGuardedProperties()
+  {
+    $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
+    $object->import(array('_guarded' => 'no'));
+    $this->assertEqual($object->_guarded, 'yeah');
+  }
+
   function testPassAttributesInConstructor()
   {
     $object = new lmbObject(array('foo' => 'hey', 'baz' => 'wow'));
@@ -194,6 +231,14 @@ class lmbObjectTest extends UnitTestCase
     $this->assertEqual($object->export(), array('foo' => 'yo-yo', 'bar' => 'zoo'));
   }
 
+  function testExportOnlyNonGuardedProperties()
+  {
+    $object = new ObjectTestVersion();
+    $object->set('foo', 'FOO');
+
+    $this->assertEqual($object->export(), array('bar' => null, 'foo' => 'FOO', 'protected' => 'me'));
+  }
+
   function testRemove()
   {
     $object = new lmbObject();
@@ -207,6 +252,15 @@ class lmbObjectTest extends UnitTestCase
     $this->assertFalse($object->has('bar'));
   }
 
+  function testRemoveForGuardedProperty()
+  {
+    $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
+    $object->remove('_guarded');
+
+    $this->assertEqual($object->_guarded, 'yeah');
+  }
+
   function testReset()
   {
     $object = new lmbObject();
@@ -216,6 +270,14 @@ class lmbObjectTest extends UnitTestCase
     $object->reset();
 
     $this->assertEqual($object->export(), array());
+  }
+
+  function testResetExceptGuardedProperties()
+  {
+    $object = new ObjectTestVersion();
+    $object->_guarded = 'yeah';
+    $object->reset();
+    $this->assertEqual($object->_guarded, 'yeah');
   }
 
   function testGetHash()
@@ -243,14 +305,11 @@ class lmbObjectTest extends UnitTestCase
     $o->set('foo', 'Bar');
     $this->assertEqual($o['foo'], 'Bar');
 
-    $this->assertTrue(isset($o['foo']));
-
     $o['foo'] = 'Zoo';
     $this->assertEqual($o->get('foo'), 'Zoo');
 
     unset($o['foo']);
     $this->assertFalse($o->has('foo'));
-    $this->assertFalse(isset($o['foo']));
 
     $o->set('foo', 'Bar');
     $this->assertTrue(isset($o['foo']));

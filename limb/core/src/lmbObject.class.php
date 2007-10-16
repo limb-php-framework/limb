@@ -24,10 +24,12 @@ lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
  * $obj->get('foo');
  * $obj->getFoo();
  * $obj['foo'];
+ * $obj->foo;
  * //the setter calls below are equal
  * $obj->set('foo', 'hey');
  * $obj->setFoo('hey');
  * $obj['foo'] = 'hey';
+ * $obj->foo = 'hey';
  * </code>
  *
  * <b>Mapping generic getters to fine-grained methods</b>
@@ -61,19 +63,11 @@ lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
  * $foo->set('bar', '10.0');
  * </code>
  *
- * <b>Working with deep nested values</b>
- * <code>
- * $obj = new lmbObject(array('foo' => array('bar' => 'hey')));
- * //would print 'hey'
- * echo $obj->getByPath('foo.bar');
- * </code>
- *
  * @version $Id: lmbObject.class.php 5567 2007-04-06 14:37:24Z serega $
  * @package core
  */
 class lmbObject implements lmbSetInterface
 {
-  protected $props = array();
   /**
    * Constructor.
    * Fills internals properties if any
@@ -112,7 +106,10 @@ class lmbObject implements lmbSetInterface
       return;
 
     foreach($values as $name => $value)
-      $this->props[$name] = $value;
+    {
+      if(!$this->_isGuarded($name))
+        $this->_setRaw($name, $value);
+    }
   }
   /**
    * Exports all object properties as an array
@@ -120,8 +117,15 @@ class lmbObject implements lmbSetInterface
    */
   function export()
   {
-    return $this->props;
+    $exported = array();
+    foreach(get_object_vars($this) as $name => $var)
+    {
+      if(!$this->_isGuarded($name))
+        $exported[$name] = $var;
+    }
+    return $exported;
   }
+
   /**
    * Checks if such property exists
    * Can be overriden in child classes like lmbActiveRecord
@@ -129,7 +133,17 @@ class lmbObject implements lmbSetInterface
    */
   function has($name)
   {
-    return array_key_exists($name, $this->props) || $this->_mapPropertyToMethod($name);
+    return $this->_hasAttribute($name) || $this->_mapPropertyToMethod($name);
+  }
+
+  protected function _hasAttribute($name)
+  {
+    return  array_key_exists($name, get_object_vars($this));
+  }
+
+  function getAttributesNames()
+  {
+    return array_keys($this->export());
   }
 
   /**
@@ -138,8 +152,8 @@ class lmbObject implements lmbSetInterface
    */
   function remove($name)
   {
-    if(array_key_exists($name, $this->props))
-      unset($this->props[$name]);
+    if($this->_hasAttribute($name) && !$this->_isGuarded($name))
+      unset($this->$name);
   }
 
   /**
@@ -147,7 +161,8 @@ class lmbObject implements lmbSetInterface
    */
   function reset()
   {
-    $this->props = array();
+    foreach($this->getAttributesNames() as $name)
+      unset($this->$name);
   }
 
   /**
@@ -161,16 +176,10 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
 
-    if(array_key_exists($name, $this->props))
-      return $this->props[$name];
+    if($this->_hasAttribute($name) && !$this->_isGuarded($name))
+      return $this->_getRaw($name);
 
     throw new lmbNoSuchPropertyException("No such property '$name' in " . get_class($this));
-  }
-
-  protected function _getRaw($name)
-  {
-    if(isset($this->props[$name]))
-      return $this->props[$name];
   }
 
   /**
@@ -184,12 +193,24 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToSetMethod($name))
       return $this->$method($value);
 
-    $this->props[$name] = $value;
+    if(!$this->_isGuarded($name))
+      $this->_setRaw($name, $value);
+  }
+
+  protected function _getRaw($name)
+  {
+    if($this->_hasAttribute($name))
+      return $this->$name;
   }
 
   protected function _setRaw($name, $value)
   {
-    $this->props[$name] = $value;
+    $this->$name = $value;
+  }
+
+  protected function _isGuarded($property)
+  {
+    return $property{0} == '_';
   }
 
   /**#@+
@@ -277,12 +298,13 @@ class lmbObject implements lmbSetInterface
   }
 
   /**
-   * __set        an alias of set()
+   * __set  an alias of set()
    * @see set, offsetSet
    */
   public function __set($name,$value)
   {
-      $this->set($name,$value);
+    if(!$this->_isGuarded($name))
+      $this->$name = $value;
   }
 
   /**
@@ -296,8 +318,8 @@ class lmbObject implements lmbSetInterface
   }
 
   /**
-   * __isset()
-   * @return boolean          whether or not this object contains $name
+   * __isset  an alias of has()
+   * @return boolean whether or not this object contains $name
    */
   public function __isset($name)
   {
@@ -305,7 +327,7 @@ class lmbObject implements lmbSetInterface
   }
 
   /**
-   * __unset()
+   * __unser  an alias of remove()
    * @param string $name
    */
   public function __unset($name)
