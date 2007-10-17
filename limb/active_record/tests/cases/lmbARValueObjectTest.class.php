@@ -35,7 +35,7 @@ class LessonForTest extends lmbActiveRecord
                                   'not_required_date' => array('field' => 'date_end',
                                                                'class' => 'TestingValueObject',
                                                                'getter' => 'getValue',
-  														                                 'not_required' => true));
+  														                                 'required' => false));
 }
 
 class LazyLessonForTest extends lmbActiveRecord

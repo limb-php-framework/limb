@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6431 2007-10-17 06:45:49Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 6432 2007-10-17 12:09:01Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -860,7 +860,7 @@ class lmbActiveRecord extends lmbObject
 
   protected function _isRequiedValueObject($property)
   {
-    if(isset($this->_composed_of[$property]['not_required']) && $this->_composed_of[$property]['not_required'])
+    if(isset($this->_composed_of[$property]['required']) && !$this->_composed_of[$property]['required'])
       return false;
     else
       return true;     
