@@ -31,7 +31,11 @@ class LessonForTest extends lmbActiveRecord
                                                         'getter' => 'getValue'),
                                   'date_end' => array('field' => 'date_end',
                                                       'class' => 'TestingValueObject',
-                                                      'getter' => 'getValue'));
+                                                      'getter' => 'getValue'),
+                                  'not_required_date' => array('field' => 'date_end',
+                                                               'class' => 'TestingValueObject',
+                                                               'getter' => 'getValue',
+  														                                 'not_required' => true));
 }
 
 class LazyLessonForTest extends lmbActiveRecord
@@ -66,7 +70,7 @@ class lmbARValueObjectTest extends UnitTestCase
 
   function testNewObjectReturnsNullValueObjects()
   {
-    $lesson = new LessonForTest();
+    $lesson = new LessonForTest();    
     $this->assertNull($lesson->getDateStart());
     $this->assertNull($lesson->getDateEnd());
   }
@@ -121,6 +125,30 @@ class lmbARValueObjectTest extends UnitTestCase
 
     $this->assertEqual($lesson2->getDateStart()->getValue(), $v1);
     $this->assertEqual($lesson2->getDateEnd()->getValue(), $v2);
+  }
+  
+  function testAllowNullValuesForValuesObjects()
+  {
+    $lesson = new LessonForTest();    
+    $lesson->not_required_date = null;
+    $this->assertNull($lesson->getNotRequiredDate());
+  }
+
+  function testEmptyValueForValuesObjects()
+  {
+    $lesson = new LessonForTest();    
+    $lesson->not_required_date = '';
+    $this->assertIdentical($lesson->getNotRequiredDate(), '');
+
+    $lesson->not_required_date = 0;
+    $this->assertIdentical($lesson->getNotRequiredDate(), 0);
+  }
+
+  function testProperWrapForScalrValueWhithNotRequiredFlagForValueObject()
+  {
+    $lesson = new LessonForTest();    
+    $lesson->not_required_date = 'test';
+    $this->assertIsA($lesson->getNotRequiredDate(), 'TestingValueObject');
   }
 }
 
