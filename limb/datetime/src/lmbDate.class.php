@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 6346 2007-10-01 09:31:24Z svk $
+ * @version $Id: lmbDate.class.php 6433 2007-10-18 07:12:09Z korchasa $
  */
 class lmbDate extends lmbObject
 {
@@ -74,7 +74,18 @@ class lmbDate extends lmbObject
   }
 
   /**
-   * Wrapper around constructor, it can be useful since the following is not allowed in PHP 'new lmbDate(..)->addDay(..)->'
+   * Wrapper around constructor
+   * 
+   * It can be useful since the following is not allowed in PHP 'new lmbDate(..)->addDay(..)->'
+   *
+   * @param integer $year_or_date
+   * @param integer $month_or_tz
+   * @param integer $day
+   * @param integer $hour
+   * @param integer $minute
+   * @param integer $second
+   * @param string $tz
+   * @return lmbDate
    */
   static function create($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
   {
