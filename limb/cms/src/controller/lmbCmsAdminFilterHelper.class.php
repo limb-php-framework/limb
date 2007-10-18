@@ -34,6 +34,11 @@ class lmbCmsAdminFilterHelper
 
     $this->session->set($this->filter_name, $params);
   }
+
+  function reset()
+  {
+     $this->session->set($this->filter_name, array());
+  }
 }
 
 
