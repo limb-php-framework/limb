@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/wact/src/tags/form/input.tag.php');
-require_once('limb/calendar/src/lmbDateWidget.class.php');
+require_once('limb/calendar/src/lmbDate3SelectWidget.class.php');
 
 /**
  * @tag date3select
@@ -43,7 +43,7 @@ class lmbDate3SelectTag extends WactInputTag
     $min_year = $this->getAttribute('min_year');
     $max_year = $this->getAttribute('max_year');
 
-    $widget = new lmbDateWidget($lang, $year_class, $month_class, $day_class, $show_default);
+    $widget = new lmbDate3SelectWidget($lang, $year_class, $month_class, $day_class, $show_default);
     if ($min_year)
     {
       $widget -> setMinYear(intval($min_year));
