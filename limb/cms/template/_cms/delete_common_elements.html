@@ -1,5 +1,5 @@
 <input name='delete' type='hidden' value='1'  runat='client'/>
 <div class='list_actions' style='text-align:right'>
-  <input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' class='action' alt='Удалить' runat='client'/>
-  <input id='cancel' type="image" src="/shared/cms/images/button/cancel.gif" width='64' height='19' onclick='window.close();return false;' alt='Отмена' runat='client'/>
+  <input type="submit" value='{$"Delete"|i18n:"cms"}' class='button' runat='client'/>
+  <input type="button" value='{$"Cancel"|i18n:"cms"}' class='button' id='cancel' onclick='window.close();' runat='client'/>
 </div>

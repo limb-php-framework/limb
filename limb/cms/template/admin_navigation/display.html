@@ -58,7 +58,8 @@
         </table>
 
         <div class='list_actions'>
-          <route_url_set field='delete_url' params="action:delete" /><input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Удалить'  onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/><route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="image" src="/shared/cms/images/button/change_order.gif" width='101' height='19' alt='Сментить порядок' onclick='Limb.Form.submitPopup(this.form, "{$save_order_url}");return false;'/>
+          <route_url_set field='delete_url' params="action:delete" /><input type="button" class='button' value='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
+          <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="button" class='button' value='Сментить порядок' onclick='Limb.Form.submit(this.form, "{$save_order_url}");'/>
         </div>
 
     </form>

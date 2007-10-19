@@ -237,8 +237,7 @@ jQuery(window).ready(function(){
           else
             width_bool = true;
 
-      var link = jQuery('<a class="magnifier" href="' + this.src + '" target="_blank"><img src="/images/_cp/icon/magnifier.gif" width="13" height="13" alt="magnifier"/></a>').get()[0];
-
+      var link = jQuery('<a class="magnifier" href="' + this.src + '" target="_blank"><img src="/shared/cms/images/icon/magnifier.gif" width="13" height="13" alt="magnifier"/></a>').get()[0];
 
       if(height_bool)
       {

@@ -35,7 +35,7 @@ class lmbCmsDocument extends lmbActiveRecord
   static function findKidsForParent($parent_id, $conn = null)
   {
     if(!$parent_id)
-      $parent_id = 0;
+      $parent_id = 1;
 
     $sql = 'SELECT document.* '.
            ' FROM document LEFT JOIN node ON node.id = document.node_id '.

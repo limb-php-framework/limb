@@ -20,7 +20,7 @@
 
         <div class='list_actions_top'>
           <route_url_set field='delete_url' params="action:delete" />
-          <input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          <input type="button" class='button' value='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
         </div>
         <table>
           <tr>
@@ -53,7 +53,7 @@
 
         <div class='list_actions'>
           <route_url_set field='delete_url' params="action:delete" />
-          <input type="image" src="/shared/cms/images/button/delete.gif" width='54' height='19' alt='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          <input type="button" class='button' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
         </div>
 
       </form>
