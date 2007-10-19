@@ -78,7 +78,7 @@ class lmbCmsUser extends lmbActiveRecord
 
   function logout()
   {
-    $this->removeAll();
+    $this->reset();
     $this->is_logged_in = false;
   }
 
