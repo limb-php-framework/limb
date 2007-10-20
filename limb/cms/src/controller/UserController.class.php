@@ -45,8 +45,8 @@ class UserController extends lmbController
 
   function doApprove()
   {
-    $user = lmbActiveRecord :: findFirst('rtUser', array('generated_password = ?',
-                                                         $this->request->get('id')));
+    $user = lmbActiveRecord :: findFirst('lmbCmsUser', array('generated_password = ?',
+                                                             $this->request->get('id')));
     if(!$user)
       $this->error_list->addError("Sorry, we can't find a user with email you specified", array('Field' => 'email'));
 
