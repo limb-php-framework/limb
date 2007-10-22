@@ -1,9 +1,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 Limb.Class('Limb.DynamicList',
@@ -194,7 +194,7 @@ Limb.Class('Limb.DoubleSelect',
     var parent = this.select.parentNode;
     var div = this.addElement('div', parent);
 
-    div.innerHTML = "<table><tr><td></td><td align='center' valign='middle'></td><td></td></tr></table>";
+    div.innerHTML = "<table><tr><td></td><td style='text-align:center;vertical-align:middle;'></td><td></td></tr></table>";
     container = div.childNodes[0].childNodes[0].childNodes[0];
     this.srcSelect = this.addSelector(container.childNodes[0]);
     this.makeupSelector(this.srcSelect, this.select)
