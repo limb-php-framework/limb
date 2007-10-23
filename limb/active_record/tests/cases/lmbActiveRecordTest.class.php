@@ -315,6 +315,17 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertFalse($loaded->isNew());
   }
 
+  function testLoadByIdThrowsExceptionIfNotFound()
+  {
+    $loaded = new TestOneTableObject();
+    try
+    {
+      $loaded->loadById(-10000);
+      $this->assertTrue(false);
+    }
+    catch(lmbARException $e){}
+  }
+
   function testPassingIntToConstructorLoadsObject()
   {
     $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
@@ -322,6 +333,16 @@ class lmbActiveRecordTest extends UnitTestCase
     $object2 = new TestOneTableObject($object1->getId());
     $this->assertEqual($object2->export(), $object1->export());
     $this->assertFalse($object2->isNew());
+  }
+
+  function testPassingNonExistingIntToConstructorTrowsException()
+  {
+    try
+    {
+      $loaded = new TestOneTableObject(-10000);
+      $this->assertTrue(false);
+    }
+    catch(lmbARException $e){}
   }
 
   function testFindFirst()
