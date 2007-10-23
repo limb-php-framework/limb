@@ -23,7 +23,7 @@ class lmbDummyView extends lmbView
 
   function render()
   {
-    echo 111;
+    throw new lmbException("It's a dummy view, its render method should never be called");
   }
 }
 
