@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 6433 2007-10-18 07:12:09Z korchasa $
+ * @version $Id: lmbDate.class.php 6453 2007-10-24 12:13:04Z serega $
  */
 class lmbDate extends lmbObject
 {
@@ -144,7 +144,13 @@ class lmbDate extends lmbObject
     $date = new lmbDate((int)$stamp);
     return $date->getIsoDate();
   }
-
+  
+  static function stampToShortIso($stamp)
+  {
+    $date = new lmbDate((int)$stamp);
+    return $date->getIsoShortDate();
+  }
+  
   function _createTimeZoneObject($code=null)
   {
     lmb_require('limb/datetime/src/lmbDateTimeZone.class.php');
