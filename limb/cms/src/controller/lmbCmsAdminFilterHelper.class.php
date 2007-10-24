@@ -13,6 +13,13 @@ class lmbCmsAdminFilterHelper
     $this->request = $this->toolkit->getRequest();
     $this->session = $this->toolkit->getSession();
   }
+  
+  functino getFilter($param_name)
+  {
+    $params = $this->session->get($this->filter_name, array());
+    if(isset($params[$param_name])
+      return $paramas[$param_name];
+  }
 
   function setFilter($param_name, $default_value = null)
   {
