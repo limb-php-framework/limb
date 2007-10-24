@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 6347 2007-10-01 13:17:18Z pachanga $
+ * @version $Id: lmbWebAppTools.class.php 6450 2007-10-24 03:50:22Z pachanga $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -55,14 +55,6 @@ class lmbWebAppTools extends lmbAbstractTools
     $this->view = new lmbDummyView();
 
     return $this->view;
-  }
-
-  function renderView($template)
-  {
-    $view = $this->toolkit->getView();
-    $response = $this->toolkit->getResponse();
-    $view->setTemplate($template);
-    $response->write($view->render());
   }
 
   function setDispatchedController($dispatched)
