@@ -18,7 +18,7 @@ class lmbCmsAdminFilterHelper
   {
     $params = $this->session->get($this->filter_name, array());
     if(isset($params[$param_name]))
-      return $paramas[$param_name];
+      return $params[$param_name];
   }
 
   function setFilter($param_name, $default_value = null)
