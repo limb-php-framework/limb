@@ -160,7 +160,7 @@
     .list tr.even {background-color:#f9f9f9;}
     .list table {width:100%;border-right:1px solid #bbbbbb;}
       .list th {padding:13px 8px;background: #e5e5e5 url(../images/bgr/th_border.gif) repeat-y left top;border:1px solid #bbbbbb;border-width:1px 0;text-align:left;white-space:nowrap;}
-      .list td {padding:5px 8px;background: url(../images/bgr/td_border.gif) repeat-y left top;border-top:1px solid #dddddd;text-align:left;}
+      .list td {padding:5px 8px;background: url(../images/bgr/td_border.gif) repeat-y left top;border-top:1px solid #dddddd;text-align:left;vertical-align:middle;}
         .list td.actions {white-space:nowrap}
         .list td.actions img{vertical-align:middle;margin:5px;white-space:nowrap}
         .list th.selector {width:23px;}
@@ -186,7 +186,7 @@
           #login_form .shadow_left .top {top:0;left:0;width:9px;height:19px;background: url(../images/bgr/shadow/login_lt.png) no-repeat right top;}
           #login_form .shadow_left .center {top:19px;bottom:18px;left:0;width:9px;height:expression(parseFloat(this.parentNode.offsetHeight)-37);background: url(../images/bgr/shadow/login_l.png) repeat-y right top;}
           #login_form .shadow_left .bottom {bottom:0;left:0;width:9px;height:18px;background: url(../images/bgr/shadow/login_lb.png) no-repeat right bottom;}
-        #login_form .shadow_bottom {position:absolute;left:9px;right:9px;bottom:0px;width:expression(parseFloat(this.parentNode.offsetWidth)-18);height:14px;font-size:0;}
+        #login_form .shadow_bottom {position:absolute;left:9px;right:9px;bottom:0px;width:expression(parseFloat(this.parentNode.offsetWidth)-19);height:14px;font-size:0;}
           #login_form .shadow_bottom .left {top:0;left:0;width:14px;height:14px;background: url(../images/bgr/shadow/login_bl.png) no-repeat left top;}
           #login_form .shadow_bottom .center {top:0;left:14px;right:14px;width:expression(parseFloat(this.parentNode.offsetWidth)-28);height:14px;background: url(../images/bgr/shadow/login_b.png) repeat-x left top;}
           #login_form .shadow_bottom .right {right:0;width:14px;height:14px;background: url(../images/bgr/shadow/login_br.png) no-repeat right top;}
