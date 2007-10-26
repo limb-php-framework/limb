@@ -1,18 +1,10 @@
 <core:wrap file="_cms/page.html" in="content_zone">
 
-    <ar:fetch using='limb/cms/src/model/lmbCmsNode' find='by_id_or_path' target='node' first='true'>
-      <find:params record_id='{$#request.id}' path='/'>
-    </ar:fetch>
+  <ar:fetch using='limb/cms/src/model/lmbCmsNode' find='by_id_or_path' target='node' first='true'>
+    <find:params record_id='{$#request.id}' path='/'>
+  </ar:fetch>
 
-    <core:datasource id='node'>
-
-    <div class="header_context">
-
-    <h1>Структура сайта</h1>
-
-    <div class="actions">
-        <route_url params="action:create_node" extra='?popup=1&parent={$id}' class='create'>Добавить элемент</route_url>
-    </div>
+  <core:datasource id='node'>
 
     <div class="breadcrumbs">
       Вы здесь: <route_url params='controller:admin_tree'>Структура сайта</route_url> /
@@ -26,11 +18,24 @@
       </core:optional>
     </div>
 
-  </div>
+    <div id="header_block">
 
-  <div class="list">
+      <h1>{$'Site structure'|i18n:'cms'}</h1>
 
-    <form name='list_form' method='post'>
+      <div class="header_actions">
+          <route_url params="action:create_node" extra='?popup=1&parent={$id}' class='create'>{$'Create'|i18n:'cms'}</route_url>
+      </div>
+
+    </div>
+
+    <div id='content_block'>
+
+      <form name='list_form' method='post' class="list">
+
+        <div class='list_actions'>
+          <route_url_set field='delete_url' params="action:delete" /><input type="button" class='button' value="{$'Delete'|i18n:'cms'}" onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
+          <route_url_set field='move_url' params="action:move,id:{$id}" /><input type="button" class='button' value="{$'Move'|i18n:'cms'}" onclick='Limb.Form.submitPopup(this.form, "{$move_url}");'/>
+        </div>
 
         <table>
            <tr>
@@ -55,14 +60,14 @@
         </table>
 
         <div class='list_actions'>
-          <route_url_set field='delete_url' params="action:delete" /><input type="button" class='button' value='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
-          <route_url_set field='move_url' params="action:move,id:{$id}" /><input type="button" class='button' value='Переместить' onclick='Limb.Form.submitPopup(this.form, "{$move_url}");'/>
+          <route_url_set field='delete_url' params="action:delete" /><input type="button" class='button' value="{$'Delete'|i18n:'cms'}" onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
+          <route_url_set field='move_url' params="action:move,id:{$id}" /><input type="button" class='button' value="{$'Move'|i18n:'cms'}" onclick='Limb.Form.submitPopup(this.form, "{$move_url}");'/>
         </div>
 
-    </form>
+      </form>
 
-  </div>
+    </div>
 
-</core:datasource>
+  </core:datasource>
 
 </core:wrap>

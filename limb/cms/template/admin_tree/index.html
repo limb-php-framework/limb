@@ -17,38 +17,41 @@
   </core:optional>
   <route_url params="action:create_node" extra='?popup=1&parent={$id}' alt='Create' title='Create'><img src='/shared/cms/icons/create.gif' width='24' height='24'/>Create new node</route_url>
 
-  <form name='list_form' method='post'>
+  <form name='list_form' method='post' class='list'>
 
-
-  <table cellpadding="0" cellspacing="0" class='list'>
-     <tr class='header'>
-       <th><core:include file='_cms/selector.html'/></th>
-       <th>Title</th>
-       <th>Identifier</th>
-       <th>Object</th>
-       <th>Actions</th>
-     </tr>
-    <list:list from='kids'>
-    <list:item>
-      <tr>
-        <td><input type='checkbox' name='ids[]' value='{$id}' class='input' runat='client'/></td>
-        <td><route_url params="id:{$id}">{$title}</route_url></td>
-        <td>{$identifier}</td>
-        <td>{$object_class.title}</td>
-        <td><route_url params="action:edit_node,id:{$id}" extra='?popup=1' alt='Edit' title='Edit'><img src='/shared/cms/icons/edit.gif' width='24' height='24' /></route_url>
+    <table >
+    <tr>
+     <th class='selector'><core:include file='_cms/selector.html'/></th>
+     <th>Title</th>
+     <th>Identifier</th>
+     <th>Object</th>
+     <th>Actions</th>
+    </tr>
+      <list:list from='kids'>
+      <list:item>
+        <tr class='{$Parity}'>
+          <td><input type='checkbox' name='ids[]' value='{$id}' runat='client'/></td>
+          <td><route_url params="id:{$id}">{$title}</route_url></td>
+          <td>{$identifier}</td>
+          <td>{$object_class.title}</td>
+          <td class='actions'>
+            <route_url params="action:edit_node,id:{$id}" extra='?popup=1' alt='Edit' title='Edit'><img src='/shared/cms/icons/edit.gif' width='24' height='24' /></route_url>
             <route_url params="action:delete" extra='?popup=1&ids[]={$id}' alt='Delete' title='Delete'><img src='/shared/cms/icons/delete.gif' width='24' height='24' /></route_url>
-        </td>
-      </tr>
-    </list:item>
-  </list:list>
-  </table>
-    <br/>
-    <route_url_set field='delete_url' params="action:delete" />
-    <input type='submit' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          </td>
+        </tr>
+      </list:item>
+    </list:list>
+    </table>
 
-    <route_url_set field='move_url' params="action:move,id:{$id}" />
-    <input type='submit' value='Move' onclick='Limb.Form.submitPopup(this.form, "{$move_url}");return false;'/>
+    <div class='list_actions'>
 
+      <route_url_set field='delete_url' params="action:delete" />
+      <input type='submit' value='Delete' class='button' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+
+      <route_url_set field='move_url' params="action:move,id:{$id}" />
+      <input type='submit' value='Move' class='button' onclick='Limb.Form.submitPopup(this.form, "{$move_url}");return false;'/>
+
+    </div>
 
   </form>
 

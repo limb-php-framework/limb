@@ -1,10 +1,8 @@
 <core:wrap file="_cms/popup.html" in="content_zone">
 
-<h1 class='delete'>Удалить страницы</h1>
+  <h1 class='delete'>Удалить страницы</h1>
 
-<div class="list">
-
-  <form id='delete_form' name='delete_form' method='post' runat='server'>
+  <form id='delete_form' name='delete_form' method='post' runat='server' class="list">
 
     <active_record:fetch class_path='limb/cms/src/model/lmbCmsNode' target="items_to_delete">
       <fetch:param record_ids="{$#request.ids}">
@@ -29,6 +27,5 @@
 
   </form>
 
-</div>
 
 </core:wrap>

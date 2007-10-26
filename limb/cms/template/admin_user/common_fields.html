@@ -1,30 +1,30 @@
 
-  <div class='required fields'>
+  <div class='required field'>
     <label for="login">Login:</label>
     <input name="login" type="text" title="Login" />
   </div>
 
-  <div class='required fields'>
+  <div class='required field'>
     <label for="first_name">First name:</label>
     <input name="first_name" type="text" title="First name" />
   </div>
 
-  <div class='required fields'>
+  <div class='required field'>
     <label for="last_name">Last name:</label>
     <input name="last_name" type="text" title="Last name"/>
   </div>
 
-  <div class='required'>
+  <div class='required field'>
     <label for="middle_name">Middle name:</label>
     <input name="middle_name" type="text" title="Middle name" />
   </div>
 
-  <div class='required fields'>
+  <div class='required field'>
     <label for="email">Email:</label>
     <input name="email" type="text" title="Email"/>
   </div>
 
-  <div class='fields'>
+  <div class='field'>
     <label for="group">Role:</label>
     <fetch using='limb/cms/src/model/lmbCmsUserRoles' target='select_source'/>
     <select:options_source id='select_source' target='role_id' use_as_name="name" use_as_id="id" />

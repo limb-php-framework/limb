@@ -1,26 +1,29 @@
 <div class='tabs'>
-<ul>
-  <li id='properties'><a>Properties</a></li>
-</ul>
 
-<div id="tab_properties">
-  <div class="left_side">
-    <core:include file='admin_user/common_fields.html'/>
+  <ul>
+    <li id='properties'><a>Properties</a></li>
+  </ul>
+
+  <div id="tab_properties" class='bookmarks_content'>
+
+    <div class="left_side">
+      <core:include file='admin_user/common_fields.html'/>
+    </div>
+
+    <div class="right_side">
+
+      <div class='required field'>
+        <label for="password">Password:</label>
+        <input name="password" type="password" title="Password"/>
+      </div>
+
+      <div class='required field'>
+        <label for="repeat_password">Confirm password:</label>
+        <input name="repeat_password" type="password" title="Confirm password"/>
+      </div>
+
+    </div>
+
   </div>
-
-  <div class="right_side">
-
-  <div class='required field'>
-    <label for="password">Password:</label>
-    <input name="password" type="password" title="Password"/>
-  </div>
-
-  <div class='required field'>
-    <label for="repeat_password">Confirm password:</label>
-    <input name="repeat_password" type="password" title="Confirm password"/>
-  </div>
-
-  </div>
-</div>
 
 </div>

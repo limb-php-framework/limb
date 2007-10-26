@@ -1,10 +1,18 @@
-<form id='CRUD_form' name='CRUD_form' method='post' runat='server' enctype="multipart/form-data">
-  <core:include file='form_errors.html'/>
+<core:INCLUDE file='_cms/form_errors.html'>
+<div class="tabs">
 
-  <div class="field required">
-    <label for="title"> Title:</label>
-    <input name="title" type="text" title="title" class="input"/>
+  <ul>
+    <li id='properties_link'><a>Properties</a></li>
+  </ul>
+
+  <div id="bookmark_properties" class='bookmarks_content'>
+
+    <div class="field required">
+      <label for="title"> Title:</label>
+      <input name="title" type="text" title="title" class="input"/>
+    </div>
+
   </div>
-  
-  <input id='post' type='submit' value='Отправить' runat='client'/>
-</form>
+
+</div>
+

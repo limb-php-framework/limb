@@ -6,29 +6,27 @@
     <fetch:param record_ids="{$#request.ids}">
   </active_record:fetch>
 
-  <div class="list">
 
-    <form id='delete_form' name='delete_form' method='post' runat='server'>
+  <form id='delete_form' name='delete_form' method='post' runat='server'  class="list">
 
-      <table>
-      <tr>
-        <th class='selector'><core:include file='_cms/selector.html'/></th>
-        <th>Заголовок</th>
+    <table>
+    <tr>
+      <th class='selector'><core:include file='_cms/selector.html'/></th>
+      <th>Заголовок</th>
+    </tr>
+    <list:list id='items_to_delete'>
+      <list:ITEM>
+      <tr class='{$Parity}'>
+        <td><input type='checkbox' name='ids[]' value='{$id}' checked='true' /></td>
+        <td>{$title}</td>
       </tr>
-      <list:list id='items_to_delete'>
-        <list:ITEM>
-        <tr class='{$Parity}'>
-          <td><input type='checkbox' name='ids[]' value='{$id}' checked='true' /></td>
-          <td>{$title}</td>
-        </tr>
-        </list:ITEM>
-      </list:LIST>
-      </table>
+      </list:ITEM>
+    </list:LIST>
+    </table>
 
-      <core:include file='_cms/delete_common_elements.html'/>
+    <core:include file='_cms/delete_common_elements.html'/>
 
-    </form>
+  </form>
 
-  </div>
 
 </core:wrap>

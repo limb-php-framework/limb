@@ -1,27 +1,27 @@
 <core:wrap file="_cms/page.html" in="content_zone">
 
-   <div class="header_context">
+   <div id="header_block">
 
-    <h1>Users list</h1>
+      <h1>{$'Users list'|i18n:'cms'}</h1>
 
-      <div class='actions'>
-        <route_url params="action:create" extra='?popup=1' class='create'>Add user</route_url>
+      <div class="header_actions">
+        <route_url params="action:create" extra='?popup=1' class='create'>{$'Add user'|i18n:'cms'}</route_url>
       </div>
-
-      <active_record:fetch class_path='limb/cms/src/model/lmbCmsUser' target="users" order="email=ASC" navigator="pager"/>
-
-      <core:include file='_cms/pager.html'>
 
     </div>
 
-    <div class="list">
+    <div id="content_block">
 
-      <form name='list_form' method='post'>
+      <active_record:fetch class_path='limb/cms/src/model/lmbCmsUser' target="users" order="email=ASC" navigator="pager"/>
+      <core:include file='_cms/pager.html'>
 
-        <div class='list_actions_top'>
+      <form name='list_form' method='post' class='list'>
+
+        <div class='list_actions'>
           <route_url_set field='delete_url' params="action:delete" />
-          <input type="button" class='button' value='Удалить' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
+          <input type="button" class='button' value="{$'Delete'|i18n:'cms'}" onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
         </div>
+
         <table>
           <tr>
             <th class='selector'><core:INCLUDE file='_cms/selector.html'></th>
@@ -53,7 +53,7 @@
 
         <div class='list_actions'>
           <route_url_set field='delete_url' params="action:delete" />
-          <input type="button" class='button' value='Delete' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
+          <input type="button" class='button' value="{$'Delete'|i18n:'cms'}" onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
         </div>
 
       </form>

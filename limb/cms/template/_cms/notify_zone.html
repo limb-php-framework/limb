@@ -1,11 +1,13 @@
 <flash_box target='flashbox'/>
 <list:list id='flashbox'>
-<div class='attention'>
-  <span onclick='jQuery(".attention").fadeOut()'>Hide</span>
+<div class='notify_zone'>
+  <span onclick='jQuery(".notify_zone").fadeOut()' class='close'>Hide</span>
   <list:ITEM >
-    <core:OPTIONAL for='is_error'>{$message}</core:OPTIONAL>
-    <core:OPTIONAL for='is_message'>{$message}</core:OPTIONAL>
-    <list:SEPARATOR><br/></list:SEPARATOR>
+    <span class='message'>
+      <core:OPTIONAL for='is_error'>{$message}</core:OPTIONAL>
+      <core:OPTIONAL for='is_message'>{$message}</core:OPTIONAL>
+      <list:SEPARATOR><br/></list:SEPARATOR>
+    </span>
   </list:ITEM>
 </div>
 </list:list>

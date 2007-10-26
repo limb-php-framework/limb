@@ -1,87 +1,91 @@
 <core:wrap file="_cms/page.html" in="content_zone">
 
-<div class="header_context">
   <active_record:fetch using='limb/cms/src/model/lmbCmsNode' target='node' one='true'>
    <fetch:param record_id='{$#request.id}'/>
   </active_record:fetch>
 
   <core:datasource id='node'>
 
-    <core:optional for='object_id'>
-      <h1>Страница "{$title}"</h1>
-    </core:optional>
-    <core:default for='id'>
-      <h1>Список страниц</h1>
-    </core:default>
-
-    <div class='actions'>
-      <core:optional for='node.id'>
-        <route_url params="action:edit,id:{$id}" extra='?popup=1' title='Редактировать'>Редактировать</route_url>
-      </core:optional>
-
-      <route_url params="action:create" extra='?popup=1&parent={$id}' class='create'>Добавить страницу</route_url>
-
-    </div>
-
-    <active_record:fetch using='src/model/lmbCmsDocument' target='kids' navigator='pager' find='kids_for_parent'>
-      <find:params parent_id='{$id}'/>
-      <fetch:params order='node.priority=DESC'/>
-    </active_record:fetch>
-
     <core:include file='_cms/node_breadcrumbs.html'>
 
-    <core:include file='_cms/pager.html'/>
+    <div id="header_block">
 
-    <core:INCLUDE file='_cms/notify_zone.html'/>
+        <core:optional for='object_id'>
+          <h1>{$'Page'|i18n:'cms'} "{$title}"</h1>
+        </core:optional>
+        <core:default for='id'>
+          <h1>{$'Page list'|i18n:'cms'}</h1>
+        </core:default>
 
-    <core:include file='admin_documents/filter_form.html' />
-</div>
+        <div class='header_actions'>
+          <core:optional for='node.id'>
+            <route_url params="action:edit,id:{$id}" extra='?popup=1' title='Редактировать'>{$'Edit'|i18n:'cms'}</route_url>
+          </core:optional>
 
-<div class="list">
-  <form name='list_form' method='post'>
+          <route_url params="action:create" extra='?popup=1&parent={$id}' class='create'>{$'Create page'|i18n:'cms'}</route_url>
 
-    <div class='list_actions_top'>
-      <route_url_set field='delete_url' params="action:delete" /><input type="button" value='{$"Delete"|i18n:"cms"}' class='button' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
-      <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="button" value='{$"Save order"|i18n:"cms"}' class='button' onclick='Limb.Form.submit(this.form, "{$save_order_url}");return false;'/>
+        </div>
+
     </div>
 
-    <table>
-      <tr>
-        <th class='selector'><core:INCLUDE file='_cms/selector.html'></th>
-        <th>#ID</th>
-        <th class='orders'>Порядок</th>
-        <th width='100%'>Страница</th>
-        <th>Действия</th>
-      </tr>
-      <list:list id='kids'>
-        <list:item>
-          <tr class='{$Parity}'>
-            <td class='selector'><input type='checkbox' name='ids[]' value='{$node.id}'/></td>
-            <td>#{$id}</td>
-            <td><input type='text' name='priority[{$node.id}]' value='{$node.priority}' class='order' size='3'/></td>
-            <td>
-              <ul>
-                <li><route_url params="id:{$node.id}">{$node.title}</route_url></li>
-                <li>Путь (URL): <a href='{$node.url_path}' target='_blank'>{$node.absolute_url_path}</a></li>
-              </ul>
-            </td>
-            <td class='actions'>
-              <route_url params="action:edit,id:{$node.id}" extra='?popup=1'><img src='/shared/cms/images/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
-              <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}'><img src='/shared/cms/images/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
-            </td>
+    <div id='content_block'>
+
+      <active_record:fetch using='limb/cms/src/model/lmbCmsDocument' target='kids' navigator='pager' find='kids_for_parent'>
+        <find:params parent_id='{$id}'/>
+        <fetch:params order='node.priority=DESC'/>
+      </active_record:fetch>
+
+      <core:include file='_cms/pager.html'/>
+
+      <core:INCLUDE file='_cms/notify_zone.html'/>
+
+      <core:include file='admin_documents/filter_form.html' />
+
+      <form name='list_form' method='post' class="list">
+
+        <div class='list_actions'>
+          <route_url_set field='delete_url' params="action:delete" /><input type="button" value='{$"Delete"|i18n:"cms"}' class='button' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");return false;'/>
+          <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="button" value='{$"Save order"|i18n:"cms"}' class='button' onclick='Limb.Form.submit(this.form, "{$save_order_url}");return false;'/>
+        </div>
+
+        <table>
+          <tr>
+            <th class='selector'><core:INCLUDE file='_cms/selector.html'></th>
+            <th>#ID</th>
+            <th class='orders'>Порядок</th>
+            <th width='100%'>Страница</th>
+            <th>Действия</th>
           </tr>
-        </list:item>
-      </list:list>
-    </table>
+          <list:list id='kids'>
+            <list:item>
+              <tr class='{$Parity}'>
+                <td class='selector'><input type='checkbox' name='ids[]' value='{$node.id}'/></td>
+                <td>#{$id}</td>
+                <td><input type='text' name='priority[{$node.id}]' value='{$node.priority}' class='order' size='3'/></td>
+                <td>
+                  <ul>
+                    <li><route_url params="id:{$node.id}">{$node.title}</route_url></li>
+                    <li>Путь (URL): <a href='{$node.url_path}' target='_blank'>{$node.absolute_url_path}</a></li>
+                  </ul>
+                </td>
+                <td class='actions'>
+                  <route_url params="action:edit,id:{$node.id}" extra='?popup=1'><img src='/shared/cms/images/icon/action/edit.gif' width='16' height='17' alt='Редактировать'/></route_url>
+                  <route_url params="action:delete" extra='?popup=1&ids[]={$node.id}'><img src='/shared/cms/images/icon/action/delete.gif' width='14' height='17'  alt='Удалить'/></route_url>
+                </td>
+              </tr>
+            </list:item>
+          </list:list>
+        </table>
 
-    <div class='list_actions'>
-      <route_url_set field='delete_url' params="action:delete" /><input type="button" value='{$"Delete"|i18n:"cms"}' class='button' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
-      <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="button" value='{$"Save order"|i18n:"cms"}' class='button' onclick='Limb.Form.submit(this.form, "{$save_order_url}");'/>
+        <div class='list_actions'>
+          <route_url_set field='delete_url' params="action:delete" /><input type="button" value='{$"Delete"|i18n:"cms"}' class='button' onclick='Limb.Form.submitPopup(this.form, "{$delete_url}");'/>
+          <route_url_set field='save_order_url' params="controller:admin_tree,action:save_priority" /><input type="button" value='{$"Save order"|i18n:"cms"}' class='button' onclick='Limb.Form.submit(this.form, "{$save_order_url}");'/>
+        </div>
+
+      </form>
+
     </div>
 
-  </form>
-</div>
-
-</core:datasource>
+  </core:datasource>
 
 </core:wrap>

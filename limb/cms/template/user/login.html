@@ -5,56 +5,52 @@
   <title>Authorization</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
   <link rel=stylesheet type="text/css" href="/shared/cms/styles/cp.css" />
-  <script src="/shared/js/js/jquery.js"></script>
+  <core:INCLUDE file='_cms/js.html'/>
 </head>
 <body id='login_form'>
 
+  <div id="login_form_wrapper">
+
     <form method="POST" id='user_form' runat='server'>
 
-    <table id='login_wrapper'>
-    <tr>
-      <td class='shadow_l'>&nbsp;</td>
-      <td id="limb"><img src="/shared/cms/images/limb_login.gif"  width='110' height='30' alt='LIMB'/></td>
-      <td class="content">
-        <h1>Control panel</h1>
-
-        <core:wrap file="_cms/dialog_central_part.html">
-
-        <div class='fields'>
-          <label for='login'>Login:</label>
-          <input type="text" name="login" id="login" value="" title="Login" class='input'/>
+        <div id="logo_limb">
+          <span><img src="/shared/cms/images/limb_login.gif"  width='110' height='30' alt='LIMB'/></span>
         </div>
 
-        <div class='fields'>
-          <label for='passwd'>Password:</label>
-          <input type="text" name="password" id="password" type="password" title="Password" class='input'/>
-          <input type="image" name='submitted' value='Enter' class='button'>
+        <div id="form_body">
+
+          <h1>Control panel</h1>
+
+          <core:wrap file="_cms/dialog_central_part.html">
+
+          <div class='field'>
+            <label for='login'>Login:</label>
+            <input type="text" name="login" id="login" value="" title="Login" class='input'/>
+          </div>
+
+          <div class='field'>
+            <label for='passwd'>Password:</label>
+            <input type="text" name="password" id="password" type="password" title="Password" class='input'/>
+            <input type="submit" name='submitted' value='Enter' class='button'>
+          </div>
+          <a href="/user/forgot_password">I forgot my password!</a>
+
+          <input type='hidden' name='redirect' value='{$#request.redirect}' runat='client'/>
+
+          </core:wrap>
+
+          <core:include file='_cms/notify_zone.html'/>
+
         </div>
-        <a href="/user/forgot_password">I forgot my password!</a>
-
-        <input type='hidden' name='redirect' value='{$#request.redirect}' runat='client'/>
-
-        </core:wrap>
-
-        <core:include file='_cms/notify_zone.html'/>
-
-      </td>
-      <td class='shadow_r'>&nbsp;</td>
-    </tr>
-    <tr>
-      <td class='shadow_lb'>&nbsp;</td>
-      <td class='shadow_b' colspan='2'>&nbsp;</td>
-      <td class='shadow_rb'>&nbsp;</td>
-    </tr>
-    </table>
-
-
-
-
 
     </form>
 
+    <span class='shadow_bottom'><span class='left'></span><span class='center'></span><span class='right'></span></span>
+    <span class='shadow_left'><span class='top'></span><span class='center'></span><span class='bottom'></span></span>
+    <span class='shadow_right'><span class='top'></span><span class='center'></span><span class='bottom'></span></span>
 
+
+  </div>
 
 
 

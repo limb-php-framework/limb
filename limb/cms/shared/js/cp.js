@@ -10,14 +10,117 @@ function toggle_selected(toggle_obj)
                                   });
 }
 
-function control_filter()
+
+Limb.Class('CMS.Filter',
 {
-  jQuery('.filter').animate({height: 'toggle'}, "slow");
-  if(Limb.cookie('filter') == 1)
-    Limb.cookie('filter', 0);
-  else
-    Limb.cookie('filter', 1);
-}
+  __construct:function()
+  {
+    var filter = jQuery('.filter');
+    var filterForm = jQuery('.filter form');
+    var list = jQuery('.list');
+
+    if (!filter.is('div'))
+      return;
+
+    var activeFilterHTML = '<a class="active_filter"><span>Показать фильтр</span></a>';
+    var htmlText = '<div class="filter_bottom"><a class="active_filter_bottom"><span>Показать фильтр</span></a></div>';
+
+    filter.prepend(activeFilterHTML);
+    list.css('margin','0');
+    list.after(htmlText);
+    this._initBehavior();
+
+    this.activeFilter = jQuery('.filter .active_filter span');
+    this.activeFilterBelowList = jQuery('.filter_bottom .active_filter_bottom span');
+
+    if(Limb.cookie(window.location + '.filter') == 1){
+      filterForm.show();
+      this.activeFilter.text('Скрыть фильтр');
+      this.activeFilter.addClass('show');
+
+    }
+    else {
+      filterForm.hide();
+      this.activeFilter.text('Показать фильтр');
+    }
+
+  },
+
+  initActiveFilterClick: function()
+  {
+    var filterForm = jQuery('.filter form');
+    var filterFormBelowList = jQuery('.filter_bottom form');
+
+    if (filterFormBelowList.is('form')){
+      filterFormBelowList.hide();
+      filterFormBelowList.clone().appendTo(".filter").animate({height: 'show'}, "fast");
+      filterFormBelowList.remove();
+    }
+    else
+      filterForm.animate({height: 'toggle'}, "fast");
+
+    this.setFilterCookie();
+    this.initActiveFilter();
+  },
+
+  initActiveFilterBelowListClick:function()
+  {
+    var filterForm = jQuery('.filter form');
+    var filterFormBelowList = jQuery('.filter_bottom form');
+
+    if (filterFormBelowList.is('form'))
+      filterFormBelowList.animate({height: 'toggle'}, "fast");
+    else {
+      filterForm.hide();
+      filterForm.clone().prependTo(".filter_bottom").animate({height: 'show'}, "fast");
+      filterForm.remove();
+    }
+
+    this.setFilterCookie();
+    this.initActiveFilter();
+
+  },
+
+  initActiveFilter:function (){
+    var filterForm = jQuery('.filter form');
+
+    if (filterForm.is('form')){
+
+        if (this.activeFilter.attr('class')== 'show')
+          this.activeFilter.removeClass('show').text('Показать фильтр');
+        else {
+          this.activeFilter.addClass('show').text('Скрыть фильтр');
+          this.activeFilterBelowList.removeClass('show').text('Показать фильтр');
+        }
+    }
+    else{
+
+        if (this.activeFilterBelowList.attr('class')== 'show')
+          this.activeFilterBelowList.removeClass('show').text('Показать фильтр');
+        else {
+          this.activeFilterBelowList.addClass('show').text('Скрыть фильтр');
+          this.activeFilter.removeClass('show').text('Показать фильтр');
+        }
+
+    }
+  },
+
+  setFilterCookie: function(){
+
+    if(Limb.cookie(window.location + '.filter') == 1)
+      Limb.cookie(window.location + '.filter', 0);
+    else
+      Limb.cookie(window.location + '.filter', 1);
+  },
+
+  _initBehavior: function(){
+    jQuery('.active_filter').click(this.initActiveFilterClick.bind(this));
+    jQuery('.active_filter_bottom').click(this.initActiveFilterBelowListClick.bind(this));
+  }
+
+});
+
+
 
 function control_error()
 {
@@ -206,13 +309,13 @@ function changed_field_highlighter()
 
 jQuery(window).ready(function(){
 
-  //filter up/down sliding control
-  jQuery('.active_filter').bind('click', control_filter);
+  jQuery('.button').wrap('<span class="button_wrapper"></span>');
+
+  // Fiter up/down sliding control
+  new CMS.Filter('filter');
   jQuery('.message_error .show_hidden').bind('click', control_error);
 
-  //cookied filter
-  if(Limb.cookie('filter') == 1)
-    jQuery('.filter').show();
+
 
   //resized images
   jQuery('img[@resize]')
