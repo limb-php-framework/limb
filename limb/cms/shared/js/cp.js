@@ -315,7 +315,7 @@ jQuery(window).ready(function(){
   new CMS.Filter('filter');
   jQuery('.message_error .show_hidden').bind('click', control_error);
 
-
+  jQuery('img[@src$=.png], .shadow_bottom span, .shadow_left span, .shadow_right span').ifixpng()
 
   //resized images
   jQuery('img[@resize]')
