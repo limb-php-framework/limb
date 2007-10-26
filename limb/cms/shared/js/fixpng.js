@@ -30,21 +30,21 @@
   * @author jQuery Community
   */
 
-(function($) {
+(function(jQuery) {
 
   /**
    * helper variables and function
    */
-  $.ifixpng = function(customPixel) {
-    $.ifixpng.pixel = customPixel;
+  jQuery.ifixpng = function(customPixel) {
+    jQuery.ifixpng.pixel = customPixel;
   };
 
-  $.ifixpng.getPixel = function() {
-    return $.ifixpng.pixel || 'images/1x1.gif';
+  jQuery.ifixpng.getPixel = function() {
+    return jQuery.ifixpng.pixel || 'images/1x1.gif';
   };
 
   var hack = {
-    ltie7  : $.browser.msie && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent),
+    ltie7  : jQuery.browser.msie && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent),
     filter : function(src) {
       return "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='"+src+"')";
     }
@@ -62,26 +62,26 @@
    * @name ifixpng
    */
 
-  $.fn.ifixpng = hack.ltie7 ? function() {
+  jQuery.fn.ifixpng = hack.ltie7 ? function() {
       return this.each(function() {
-      var $$ = $(this);
-      var base = $('base').attr('href'); // need to use this in case you are using rewriting urls
-      if ($$.is('img') || $$.is('input')) { // hack image tags present in dom
-        if ($$.attr('src')) {
-          if ($$.attr('src').match(/.*\.png([?].*)?$/i)) { // make sure it is png image
+      var that = jQuery(this);
+      var base = jQuery('base').attr('href'); // need to use this in case you are using rewriting urls
+      if (that.is('img') || that.is('input')) { // hack image tags present in dom
+        if (that.attr('src')) {
+          if (that.attr('src').match(/.*\.png([?].*)?$/i)) { // make sure it is png image
             // use source tag value if set
-            var source = (base && $$.attr('src').substring(0,1)!='/') ? base + $$.attr('src') : $$.attr('src');
+            var source = (base && that.attr('src').substring(0,1)!='/') ? base + that.attr('src') : that.attr('src');
             // apply filter
-            $$.css({filter:hack.filter(source), width:$$.width(), height:$$.height()})
-              .attr({src:$.ifixpng.getPixel()})
+            that.css({filter:hack.filter(source), width:that.width(), height:that.height()})
+              .attr({src:jQuery.ifixpng.getPixel()})
               .positionFix();
           }
         }
       } else { // hack png css properties present inside css
-        var image = $$.css('backgroundImage');
+        var image = that.css('backgroundImage');
         if (image.match(/^url\(["']?(.*\.png([?].*)?)["']?\)$/i)) {
           image = RegExp.$1;
-          $$.css({backgroundImage:'none', filter:hack.filter(image)})
+          that.css({backgroundImage:'none', filter:hack.filter(image)})
             .children().positionFix();
         }
       }
@@ -100,16 +100,16 @@
    * @name iunfixpng
    */
 
-  $.fn.iunfixpng = hack.ltie7 ? function() {
+  jQuery.fn.iunfixpng = hack.ltie7 ? function() {
       return this.each(function() {
-      var $$ = $(this);
-      var src = $$.css('filter');
+      var that = jQuery(this);
+      var src = that.css('filter');
       if (src.match(/src=["']?(.*\.png([?].*)?)["']?/i)) { // get img source from filter
         src = RegExp.$1;
-        if ($$.is('img') || $$.is('input')) {
-          $$.attr({src:src}).css({filter:''});
+        if (that.is('img') || that.is('input')) {
+          that.attr({src:src}).css({filter:''});
         } else {
-          $$.css({filter:'', background:'url('+src+')'});
+          that.css({filter:'', background:'url('+src+')'});
         }
       }
     });
@@ -119,12 +119,12 @@
    * positions selected item relatively
    */
 
-  $.fn.positionFix = function() {
+  jQuery.fn.positionFix = function() {
     return this.each(function() {
-      var $$ = $(this);
-      var position = $$.css('position');
+      var that = jQuery(this);
+      var position = that.css('position');
       if (position != 'absolute' && position != 'relative') {
-        $$.css({position:'relative'});
+        that.css({position:'relative'});
       }
     });
   };
