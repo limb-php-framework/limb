@@ -15,7 +15,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6347 2007-10-01 13:17:18Z pachanga $
+ * @version $Id: lmbController.class.php 6455 2007-10-26 06:50:27Z serega $
  */
 class lmbController extends lmbAbstractController
 {
@@ -169,10 +169,22 @@ class lmbController extends lmbAbstractController
   {
     $this->toolkit->flashError($message);
   }
+  
+  function flashErrorAndRedirect($message, $redirect = array())
+  {
+    $this->flashError($message);
+    $this->redirect($redirect);
+  }
 
   function flashMessage($message)
   {
     $this->toolkit->flashMessage($message);
+  }
+  
+  function flashAndRedirect($message, $redirect = array())
+  {
+    $this->flashMessage($message);
+    $this->redirect($redirect);
   }
 
   function flash($message)
