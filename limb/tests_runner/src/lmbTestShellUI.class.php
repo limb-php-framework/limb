@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6469 2007-10-29 21:52:38Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6470 2007-10-29 22:05:11Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -246,6 +246,9 @@ EOD;
 
   protected function _phpLint($php_code, &$error = '') 
   {
+    $php_code = preg_replace('~<\?php~', '', $php_code);
+    $php_code = preg_replace('~\?>~', '', $php_code);
+
     ob_start();
     $result = create_function('', $php_code);
     if(!$result)
