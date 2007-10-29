@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 /**
  * Checks that field value is a valid Url.
  * @package validation
- * @version $Id: lmbUrlRule.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbUrlRule.class.php 6467 2007-10-29 15:24:16Z serega $
  */
 class lmbUrlRule extends lmbDomainRule
 {
@@ -35,7 +35,7 @@ class lmbUrlRule extends lmbDomainRule
   function check($value)
   {
     $url = @parse_url($value);
-    if (isset($url['scheme']) && isset($url['host']) &&
+    if (isset($url['scheme']) || isset($url['host']) &&
         ($url['scheme'] == 'http' || $url['scheme'] == 'ftp'))
     {
       parent::check($url['host']);
