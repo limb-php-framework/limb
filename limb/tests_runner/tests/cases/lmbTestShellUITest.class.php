@@ -109,6 +109,18 @@ class lmbTestShellUITest extends lmbTestRunnerBase
     $this->assertPattern("~$c2=wow~", $screen);
   }
 
+  function testCoverageSummaryReporter()
+  {
+    if(!extension_loaded('xdebug'))
+    {
+      echo "Skipping coverage test since xdebug is not loaded";
+      return;
+    }
+    $this->_createTestCase($f = LIMB_VAR_DIR . '/cases/cover_test.php');
+    $this->_execScript("-C" . LIMB_VAR_DIR . "/cases $f", $screen);
+    $this->assertPattern("~Code\s+Coverage:\s+100%~", $screen);
+  }
+
   function _createRunScript()
   {
     $dir = dirname(__FILE__);

@@ -85,9 +85,18 @@ class lmbTestRunner
 
     @define('__PHPCOVERAGE_HOME', dirname(__FILE__) . '/../lib/spikephpcoverage/src/');
     require_once(__PHPCOVERAGE_HOME . '/CoverageRecorder.php');
-    require_once(__PHPCOVERAGE_HOME . '/reporter/HtmlCoverageReporter.php');
 
-    $this->coverage_reporter = new HtmlCoverageReporter("limb_unit coverage report", "", $this->coverage_report_dir);
+    if($this->coverage_report_dir)
+    {
+      require_once(__PHPCOVERAGE_HOME . '/reporter/HtmlCoverageReporter.php');
+      $this->coverage_reporter = new HtmlCoverageReporter("limb_unit coverage report", "", $this->coverage_report_dir);
+    }
+    else
+    {
+      //this reporter just collects stats and doesn't write anything, only prints summary
+      require_once(dirname(__FILE__) . '/lmbSummaryCoverageReporter.class.php');
+      $this->coverage_reporter = new lmbSummaryCoverageReporter();
+    }
 
     $this->coverage = new CoverageRecorder($this->coverage_include, $this->coverage_exclude, $this->coverage_reporter);
     $this->coverage->startInstrumentation();
@@ -98,8 +107,7 @@ class lmbTestRunner
     if($this->coverage)
     {
       $this->coverage->stopInstrumentation();
-      if($this->coverage_report_dir)
-        $this->coverage->generateReport();
+      $this->coverage->generateReport();
       $this->coverage_reporter->printTextSummary();
     }
   }
