@@ -87,8 +87,7 @@ class lmbTestRunner
     require_once(__PHPCOVERAGE_HOME . '/CoverageRecorder.php');
     require_once(__PHPCOVERAGE_HOME . '/reporter/HtmlCoverageReporter.php');
 
-    $this->coverage_reporter = new HtmlCoverageReporter("Code Coverage Report", "",
-                                                        $this->coverage_report_dir);
+    $this->coverage_reporter = new HtmlCoverageReporter("limb_unit coverage report", "", $this->coverage_report_dir);
 
     $this->coverage = new CoverageRecorder($this->coverage_include, $this->coverage_exclude, $this->coverage_reporter);
     $this->coverage->startInstrumentation();
