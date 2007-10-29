@@ -117,5 +117,13 @@
       <source>{Field} may not use {scheme}.</source>
       <translation>{Field} не может использоватеь протокол {scheme}.</translation>
     </message>
+    <message>
+      <source>{Field} is not a valid ISO formatted date(YYYY-MM-DD HH:MM).</source>
+      <translation>{Field} должно иметь правильный формат даты (YYYY-MM-DD HH:MM).</translation>
+    </message>
+    <message>
+      <source>{Field} must have a valid date format</source>
+      <translation>{Field} должно иметь правильный формат даты.</translation>
+    </message>
   </context>
 </TS>

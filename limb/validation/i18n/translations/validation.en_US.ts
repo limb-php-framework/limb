@@ -117,5 +117,13 @@
       <source>{Field} may not use {scheme}.</source>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>{Field} is not a valid ISO formatted date(YYYY-MM-DD HH:MM).</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>{Field} must have a valid date format</source>
+      <translation type="unfinished"/>
+    </message>
   </context>
 </TS>
