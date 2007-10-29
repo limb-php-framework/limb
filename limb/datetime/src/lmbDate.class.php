@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 6453 2007-10-24 12:13:04Z serega $
+ * @version $Id: lmbDate.class.php 6466 2007-10-29 14:30:11Z korchasa $
  */
 class lmbDate extends lmbObject
 {
@@ -90,9 +90,9 @@ class lmbDate extends lmbObject
   static function create($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
   {
     if(func_num_args() > 2)
-      return new lmbDate($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
+      return new self($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
     else
-      return new lmbDate($year_or_date, $month_or_tz);
+      return new self($year_or_date, $month_or_tz);
   }
 
   static function createByDays($days)
@@ -126,7 +126,7 @@ class lmbDate extends lmbObject
 
     $century = sprintf('%02d', $century);
     $year    = sprintf('%02d', $year);
-    return new lmbDate($century . $year, $month, $day);
+    return new self($century . $year, $month, $day);
   }
 
   static function setWeekStartsAt($n)
@@ -141,13 +141,13 @@ class lmbDate extends lmbObject
 
   static function stampToIso($stamp)
   {
-    $date = new lmbDate((int)$stamp);
+    $date = new self((int)$stamp);
     return $date->getIsoDate();
   }
   
   static function stampToShortIso($stamp)
   {
-    $date = new lmbDate((int)$stamp);
+    $date = new $class((int)$stamp);
     return $date->getIsoShortDate();
   }
   
@@ -181,9 +181,9 @@ class lmbDate extends lmbObject
     try
     {
       if(func_num_args() > 2)
-        new lmbDate($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
+        new self($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
       else
-        new lmbDate($year_or_date, $month_or_tz);
+        new self($year_or_date, $month_or_tz);
       return true;
     }
     catch(lmbException $e)
@@ -418,12 +418,14 @@ class lmbDate extends lmbObject
 
   function getBeginOfDay()
   {
-    return new lmbDate($this->year, $this->month, $this->day, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, $this->tz);
   }
 
   function getEndOfDay()
   {
-    return new lmbDate($this->year, $this->month, $this->day, 23, 59, 59, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, 23, 59, 59, $this->tz);
   }
 
   function getBeginOfWeek()
@@ -442,7 +444,8 @@ class lmbDate extends lmbObject
 
   function getBeginOfMonth()
   {
-    return new lmbDate($this->year, $this->month, 1, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, 1, $this->tz);
   }
 
   function getEndOfMonth()
@@ -452,12 +455,14 @@ class lmbDate extends lmbObject
 
   function getBeginOfYear()
   {
-    return new lmbDate($this->year, 1, 1, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, 1, 1, $this->tz);
   }
 
   function getEndOfYear()
   {
-    return new lmbDate($this->year, 12, 31, 23, 59, 59, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, 12, 31, 23, 59, 59, $this->tz);
   }
 
   function getWeekOfYear()
@@ -559,89 +564,105 @@ class lmbDate extends lmbObject
 
   function setYear($y)
   {
-    return new lmbDate($y, $this->month, $this->day, $this->hour, $this->minute, $this->second, $this->tz);
+    $class = get_class($this);
+    return new $class($y, $this->month, $this->day, $this->hour, $this->minute, $this->second, $this->tz);
   }
 
   function setMonth($m)
   {
-    return new lmbDate($this->year, $m, $this->day, $this->hour, $this->minute, $this->second, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $m, $this->day, $this->hour, $this->minute, $this->second, $this->tz);
   }
 
   function setDay($d)
   {
-    return new lmbDate($this->year, $this->month, $d, $this->hour, $this->minute, $this->second, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $d, $this->hour, $this->minute, $this->second, $this->tz);
   }
 
   function setHour($h)
   {
-    return new lmbDate($this->year, $this->month, $this->day, $h, $this->minute, $this->second, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, $h, $this->minute, $this->second, $this->tz);
   }
 
   function setMinute($m)
   {
-    return new lmbDate($this->year, $this->month, $this->day, $this->hour, $m, $this->second, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, $this->hour, $m, $this->second, $this->tz);
   }
 
   function setSecond($s)
   {
-    return new lmbDate($this->year, $this->month, $this->day, $this->hour, $this->minute, $s, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, $this->hour, $this->minute, $s, $this->tz);
   }
 
   function setTimeZone($tz)
   {
-    return new lmbDate($this->year, $this->month, $this->day, $this->hour, $this->minute, $this->second, $tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, $this->hour, $this->minute, $this->second, $tz);
   }
 
   function addYear($n=1)
   {
-    $date = new lmbDate(mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year + $n));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year + $n));
     return $date->setTimeZone($this->tz);
   }
 
   function addMonth($n=1)
   {
-    $date = new lmbDate(mktime($this->hour, $this->minute, $this->second, $this->month + $n, $this->day, $this->year));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour, $this->minute, $this->second, $this->month + $n, $this->day, $this->year));
     return $date->setTimeZone($this->tz);
   }
 
   function addWeek($n=1)
   {
-    $date = new lmbDate(mktime($this->hour, $this->minute, $this->second, $this->month, $this->day + ($n * 7), $this->year));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour, $this->minute, $this->second, $this->month, $this->day + ($n * 7), $this->year));
     return $date->setTimeZone($this->tz);
   }
 
   function addDay($n=1)
   {
-    $date = new lmbDate(mktime($this->hour, $this->minute, $this->second, $this->month, $this->day + $n, $this->year));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour, $this->minute, $this->second, $this->month, $this->day + $n, $this->year));
     return $date->setTimeZone($this->tz);
   }
 
   function addHour($n=1)
   {
-    $date = new lmbDate(mktime($this->hour + $n, $this->minute, $this->second, $this->month, $this->day, $this->year));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour + $n, $this->minute, $this->second, $this->month, $this->day, $this->year));
     return $date->setTimeZone($this->tz);
   }
 
   function addMinute($n=1)
   {
-    $date = new lmbDate(mktime($this->hour, $this->minute + $n, $this->second, $this->month, $this->day, $this->year));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour, $this->minute + $n, $this->second, $this->month, $this->day, $this->year));
     return $date->setTimeZone($this->tz);
   }
 
   function addSecond($n=1)
   {
-    $date = new lmbDate(mktime($this->hour, $this->minute, $this->second + $n, $this->month, $this->day, $this->year));
+    $class = get_class($this);
+    $date = new $class(mktime($this->hour, $this->minute, $this->second + $n, $this->month, $this->day, $this->year));
     return $date->setTimeZone($this->tz);
   }
 
   function stripTime()
   {
-    return new lmbDate($this->year, $this->month, $this->day, 0, 0, 0, $this->tz);
+    $class = get_class($this);
+    return new $class($this->year, $this->month, $this->day, 0, 0, 0, $this->tz);
   }
 
   function stripDate()
   {
-    return new lmbDate(null, null, null, $this->hour, $this->minute, $this->second, $this->tz);
+    $class = get_class($this);
+    return new $class(null, null, null, $this->hour, $this->minute, $this->second, $this->tz);
   }
 }
 

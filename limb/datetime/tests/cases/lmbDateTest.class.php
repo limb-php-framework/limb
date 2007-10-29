@@ -9,6 +9,8 @@
 lmb_require('limb/datetime/src/lmbDate.class.php');
 lmb_require('limb/datetime/src/lmbDateTimeZone.class.php');
 
+class FooDate extends lmbDate {}
+
 class lmbDateTest extends UnitTestCase
 {
   function testInvalidDate()
@@ -612,6 +614,12 @@ class lmbDateTest extends UnitTestCase
     $date2 = new lmbDate('2005-01-01 13:20:40');
     $this->assertFalse($date1->isEqualDate($date2));
     $this->assertFalse($date2->isEqualDate($date1));
+  }
+  
+  function testRightReturnedClassFromFluentInterface()
+  {
+    $foo = new FooDate();
+    $this->assertIsA($foo->addDay(), 'FooDate');
   }
 }
 
