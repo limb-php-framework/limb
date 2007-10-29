@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6461 2007-10-29 05:11:23Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6469 2007-10-29 21:52:38Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -190,15 +190,19 @@ EOD;
       }
     }
 
+    if(!$config_file)
+      $config_file = getenv('LIMB_TESTS_RUNNER_CONFIG');
+
     if($config_file)
     {
+      if(!$php = @file_get_contents(realpath($config_file)))
+        $this->_error("Could not read configuration file '$config_file'\n");
+
+      if(!$this->_phpLint($php, $error))
+        $this->_error("Configuration file '$config_file' is invalid(check syntax)\n$error");
+
       if(!include_once(realpath($config_file)))
         $this->_error("Could not include configuration file '$config_file'\n");
-    }
-    else if($config_file = getenv('LIMB_TESTS_RUNNER_CONFIG'))
-    {
-      if(!include_once($config_file))
-        $this->_error("Could not include configuration file specified in LIMB_TESTS_RUNNER_CONFIG env. variable as '$config_file'\n");
     }
 
     if(!is_array($options[1]) || !count($options[1]))
@@ -238,6 +242,17 @@ EOD;
     echo $runner->getRuntime() . " sec.\n";
 
     return $res;
+  }
+
+  protected function _phpLint($php_code, &$error = '') 
+  {
+    ob_start();
+    $result = create_function('', $php_code);
+    if(!$result)
+      $error = ob_get_contents();
+    ob_end_clean();
+    
+    return $result;
   }
 }
 
