@@ -45,6 +45,7 @@ abstract class AdminObjectController extends lmbController
   function doCreate()
   {
     $this->item = new $this->_object_class_name();
+    $this->_onCreate();
 
     $this->useForm($this->_form_name);
     $this->setFormDatasource($this->item);
@@ -63,6 +64,7 @@ abstract class AdminObjectController extends lmbController
   function doEdit()
   {
     $this->item = lmbActiveRecord :: findById($this->_object_class_name, $this->request->getInteger('id'));
+    $this->_onEdit();
     $this->useForm($this->_form_name);
     $this->setFormDatasource($this->item);
 
@@ -155,7 +157,8 @@ abstract class AdminObjectController extends lmbController
   protected function _onAfterDelete() {}
   protected function _onBeforeValidate() {}
   protected function _onAfterValidate() {}
-
+  protected function _onEdit() {}
+  protected function _onCreate() {}
 }
 
 
