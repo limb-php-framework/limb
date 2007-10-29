@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6231 2007-08-10 06:08:05Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6461 2007-10-29 05:11:23Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -192,12 +192,12 @@ EOD;
 
     if($config_file)
     {
-      if(!@include_once(realpath($config_file)))
+      if(!include_once(realpath($config_file)))
         $this->_error("Could not include configuration file '$config_file'\n");
     }
     else if($config_file = getenv('LIMB_TESTS_RUNNER_CONFIG'))
     {
-      if(!@include_once($config_file))
+      if(!include_once($config_file))
         $this->_error("Could not include configuration file specified in LIMB_TESTS_RUNNER_CONFIG env. variable as '$config_file'\n");
     }
 
