@@ -13,7 +13,7 @@ lmb_require('limb/datetime/src/lmbDate.class.php');
  * class lmbLocaleDate.
  *
  * @package i18n
- * @version $Id: lmbLocaleDate.class.php 6241 2007-08-29 05:46:06Z pachanga $
+ * @version $Id: lmbLocaleDate.class.php 6465 2007-10-29 11:29:22Z serega $
  */
 class lmbLocaleDate extends lmbDate
 {
@@ -68,27 +68,27 @@ class lmbLocaleDate extends lmbDate
       switch($nextchar)
       {
         case 'a':
-            $this->_ensureLocale($locale);
+            self :: _ensureLocale($locale);
             $output .= $locale->getDayName($this->getPhpDayOfWeek(), true);
             break;
         case 'A':
-            $this->_ensureLocale($locale);
+            self :: _ensureLocale($locale);
             $output .= $locale->getDayName($this->getPhpDayOfWeek());
             break;
         case 'b':
-            $this->_ensureLocale($locale);
+            self :: _ensureLocale($locale);
             $output .= $locale->getMonthName($this->getMonth() - 1, true);
             break;
         case 'B':
-            $this->_ensureLocale($locale);
+            self :: _ensureLocale($locale);
             $output .= $locale->getMonthName($this->getMonth() - 1);
             break;
         case 'p':
-            $this->_ensureLocale($locale);
+            self :: _ensureLocale($locale);
             $output .= $locale->getMeridiemName($this->getHour());
             break;
         case 'P':
-            $this->_ensureLocale($locale);
+            self :: _ensureLocale($locale);
             $output .= $locale->getMeridiemName($this->getHour(), true);
             break;
         case 'C':
@@ -181,6 +181,38 @@ class lmbLocaleDate extends lmbDate
       $strpos++;
     }
     return $output;
+  }
+  
+  static function create($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
+  {
+    if(func_num_args() > 2)
+      return new lmbLocaleDate($year_or_date, $month_or_tz, $day, $hour, $minute, $second, $tz);
+    else
+      return new lmbLocaleDate($year_or_date, $month_or_tz);
+  }
+  
+  function getShortDateFormatted($locale = null)
+  {
+    self :: _ensureLocale($locale);
+    return $this->localeStrftime($locale->short_date_format, $locale);
+  }
+  
+  function getShortDateTimeFormatted($locale = null)
+  {
+    self :: _ensureLocale($locale);
+    return $this->localeStrftime($locale->short_date_time_format, $locale);
+  }
+  
+  static function createFromShortDateFormat($string, $locale = null)
+  {
+    self :: _ensureLocale($locale);
+    return self :: localStringToDate($locale, $string, $locale->short_date_format);
+  }
+
+  static function createFromShortDateTimeFormat($string, $locale = null)
+  {
+    self :: _ensureLocale($locale);
+    return self :: localStringToDate($locale, $string, $locale->short_date_time_format);
   }
 
   /**
@@ -327,7 +359,7 @@ class lmbLocaleDate extends lmbDate
     return $time_array;
   }
 
-  protected function _ensureLocale(&$locale)
+  static protected function _ensureLocale(&$locale)
   {
     if(!is_object($locale))
       $locale = lmbToolkit :: instance()->getLocaleObject();
