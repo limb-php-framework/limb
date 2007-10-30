@@ -33,8 +33,8 @@ class lmbMacroTreeTag extends lmbMacroTag
 
     $tree = $this->get('using');
 
-    $items = $code->getTempVarRef();
-    $counter = $code->getTempVarRef();
+    $items = $code->generateVar();
+    $counter = $code->generateVar();
 
     $method = $code->beginMethod('_render_tree'. uniqid(), array($items, $level));
     $code->writePHP($counter . '=0;');

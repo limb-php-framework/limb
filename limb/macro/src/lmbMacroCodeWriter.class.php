@@ -193,7 +193,7 @@ class lmbMacroCodeWriter
   /**
   * Utility method, which generates a unique variable name
   */
-  function getTempVariable()
+  function generateTempName()
   {
     $var = $this->temp_var_name++;
     if($var > 675)
@@ -207,9 +207,9 @@ class lmbMacroCodeWriter
   /**
   * Utility method, which generates a unique variable name, prefixed with a $
   */
-  function getTempVarRef()
+  function generateVar()
   {
-    return '$' . $this->getTempVariable();
+    return '$' . $this->generateTempName();
   }
 
   protected function _append($code)

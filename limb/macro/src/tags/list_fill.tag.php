@@ -20,7 +20,7 @@ class lmbMacroListFillTag extends lmbMacroTag
 {
   function generateContents($code)
   {
-    $ratio_var = $code->getTempVarRef();
+    $ratio_var = $code->generateVar();
     if($ratio = $this->get('upto'))
       $code->writePHP($ratio_var . " = $ratio;\n");
     else
@@ -28,8 +28,8 @@ class lmbMacroListFillTag extends lmbMacroTag
 
     $list = $this->findParentByClass('lmbMacroListTag');
 
-    $count_var = $code->getTempVarRef();
-    $items_left_var = $code->getTempVarRef();
+    $count_var = $code->generateVar();
+    $items_left_var = $code->generateVar();
     $code->writePhp($count_var .' = count('. $list->getSourceVar() . ');');
 
     $code->writePhp("if ({$count_var}/{$ratio_var} > 1) \n");

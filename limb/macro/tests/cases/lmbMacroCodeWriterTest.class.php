@@ -106,24 +106,24 @@ class lmbMacroCodeWriterTest extends UnitTestCase
     $this->assertEqual($this->_render(), 'a-a-ab-b-b');
   }
 
-  function testGetTempVariable()
+  function testgenerateTempName()
   {
-    $var = $this->writer->getTempVariable();
+    $var = $this->writer->generateTempName();
     $this->assertWantedPattern('/[a-z][a-z0-9]*/i', $var);
   }
 
   function testGetSecondTempVariable()
   {
-    $A = $this->writer->getTempVariable();
-    $B = $this->writer->getTempVariable();
+    $A = $this->writer->generateTempName();
+    $B = $this->writer->generateTempName();
     $this->assertNotEqual($A, $B);
   }
 
-  function testGetTempVariablesMany()
+  function testgenerateTempNamesMany()
   {
     for($i = 1; $i <= 300; $i++)
     {
-      $var = $this->writer->getTempVariable();
+      $var = $this->writer->generateTempName();
       $this->assertWantedPattern('/[a-z][a-z0-9]*/i', $var);
     }
   }

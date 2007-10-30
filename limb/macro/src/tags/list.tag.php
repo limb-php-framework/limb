@@ -31,7 +31,7 @@ class lmbMacroListTag extends lmbMacroTag
       $as = '$item';
 
     //internal list counter
-    $this->counter_var = $code->getTempVarRef();
+    $this->counter_var = $code->generateVar();
     $code->writePHP($this->counter_var . ' = 0;');
 
     $this->_prepareSourceVar($code);
@@ -111,8 +111,8 @@ class lmbMacroListTag extends lmbMacroTag
   {
     $using = $this->get('using');
 
-    $this->source_var = $code->getTempVarRef();
-    $item_var = $code->getTempVarRef();
+    $this->source_var = $code->generateVar();
+    $item_var = $code->generateVar();
 
     if($this->count_source)
     {

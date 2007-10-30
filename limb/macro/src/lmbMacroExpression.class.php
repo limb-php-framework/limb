@@ -29,8 +29,8 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
 
   function preGenerate($code)
   {
-    $this->tmp = $code->getTempVarRef();
-    $var = $code->getTempVarRef();
+    $this->tmp = $code->generateVar();
+    $var = $code->generateVar();
 
     // simple case if expression is just a variable
     if(strpos($this->expression_str, '.') === false)

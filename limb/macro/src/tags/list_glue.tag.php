@@ -71,7 +71,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
   function getStepVar($code)
   {
     if(!$this->step_var)
-      $this->step_var = $code->getTempVarRef();
+      $this->step_var = $code->generateVar();
 
     return $this->step_var;
   }
@@ -79,7 +79,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
   function getHelperVar($code)
   {
     if(!$this->helper_var)
-      $this->helper_var = $code->getTempVarRef();
+      $this->helper_var = $code->generateVar();
     return $this->helper_var;
   }
 }

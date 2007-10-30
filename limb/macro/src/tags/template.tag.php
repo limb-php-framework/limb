@@ -20,7 +20,7 @@ class lmbMacroTemplateTag extends lmbMacroTag
   {
     $name = $this->get('name');
 
-    $args = $code->getTempVarRef();
+    $args = $code->generateVar();
     $code->beginMethod('_template'. $name, array($args . '= array()'));
     $code->writePHP("if($args) extract($args);");
     parent :: generateContents($code);

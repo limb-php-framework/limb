@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
+lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbMacroTemplateTest extends UnitTestCase
@@ -43,10 +44,13 @@ class lmbMacroTemplateTest extends UnitTestCase
     $this->assertEqual($view->render(), 'Hello, Bob');
   }
 
-  function _createView($tpl)
+  function _createView($tpl, $config = null)
   {
+    if(!$config)
+      $config = new lmbMacroConfig(LIMB_VAR_DIR . '/view/compiled');
+
     $file = $this->_createTemplate($tpl);
-    $view = new lmbMacroTemplate($file, new lmbMacroConfig(LIMB_VAR_DIR . '/view/compiled'));
+    $view = new lmbMacroTemplate($file, $config);
     return $view;
   }
 
