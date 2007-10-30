@@ -19,7 +19,7 @@ class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
   function run($filter_chain)
   {
     $toolkit = lmbToolkit :: instance();
-    $user = $toolkit->getUser();
+    $user = $toolkit->getCmsUser();
     $current_path = '/' . ltrim($toolkit->getRequest()->getUriPath(), '/');
 
     if(strpos($current_path, '/admin') === 0 && !$user->isLoggedIn())

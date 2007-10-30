@@ -12,7 +12,7 @@ CREATE TABLE `node` (
   `controller_id` int(11) NOT NULL default '0',
   `object_class_id` int(11) NULL default '0',
   `object_id` int(11) NULL default '0',
-  `kind` varchar(255) NOT NULL,
+  `kind` varchar(255) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `root_id` (`root_id`),
   KEY `level` (`level`),

@@ -66,7 +66,7 @@ class UserController extends lmbController
   {
     if($this->request->hasPost())
     {
-      $user = $this->toolkit->getUser();
+      $user = $this->toolkit->getCmsUser();
 
       $login = $this->request->get('login');
       $password = $this->request->get('password');
@@ -84,7 +84,7 @@ class UserController extends lmbController
 
   function doLogout()
   {
-    $user = $this->toolkit->getUser();
+    $user = $this->toolkit->getCmsUser();
     $user->logout();
     $this->response->redirect('/');
   }

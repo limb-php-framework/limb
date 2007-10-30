@@ -9,7 +9,7 @@ class lmbCmsAdminNavigationFetcher extends lmbFetcher
     $toolkit = lmbToolkit :: instance();
     $conf = $toolkit->getConf('navigation');
 
-    $data = $conf->get($toolkit->getUser()->getCurrentRole()->getId());
+    $data = $conf->get($toolkit->getCmsUser()->getCurrentRole()->getId());
     if(is_array($data))
       return new lmbCollection($data);
     else

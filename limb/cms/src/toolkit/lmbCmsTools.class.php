@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsSessionUser.class.php');
  * class lmbCmsTools.
  *
  * @package cms
- * @version $Id: lmbCmsTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbCmsTools.class.php 6471 2007-10-30 09:20:30Z serega $
  */
 class lmbCmsTools extends lmbAbstractTools
 {
@@ -36,7 +36,7 @@ class lmbCmsTools extends lmbAbstractTools
     $this->tree = $tree;
   }
 
-  function getUser()
+  function getСmsUser()
   {
     if(is_object($this->user))
       return $this->user;
@@ -53,14 +53,14 @@ class lmbCmsTools extends lmbAbstractTools
     return $this->user;
   }
 
-  function resetUser()
+  function resetCmsUser()
   {
-    $this->setUser(null);
+    $this->setCmsUser(null);
     $session = lmbToolkit :: instance()->getSession();
     $session->destroy('lmbCmsSessionUser');
   }
 
-  function setUser($user)
+  function setCmsUser($user)
   {
     $this->user = $user;
   }
