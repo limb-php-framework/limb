@@ -17,7 +17,7 @@ lmb_require('limb/cms/src/model/lmbCmsUserRoles.class.php');
 
 class lmbCmsUser extends lmbActiveRecord
 {
-  protected $_db_table_name = 'cms_user';
+  protected $_db_table_name = 'user';
 
   protected $password;
   protected $is_logged_in = false;
