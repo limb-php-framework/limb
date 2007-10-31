@@ -138,7 +138,7 @@ class lmbObject implements lmbSetInterface
 
   protected function _hasAttribute($name)
   {
-    return  array_key_exists($name, get_object_vars($this));
+    return property_exists($this, $name);
   }
 
   function getAttributesNames()
