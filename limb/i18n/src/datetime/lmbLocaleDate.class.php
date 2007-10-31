@@ -13,7 +13,7 @@ lmb_require('limb/datetime/src/lmbDate.class.php');
  * class lmbLocaleDate.
  *
  * @package i18n
- * @version $Id: lmbLocaleDate.class.php 6465 2007-10-29 11:29:22Z serega $
+ * @version $Id: lmbLocaleDate.class.php 6475 2007-10-31 09:30:46Z korchasa $
  */
 class lmbLocaleDate extends lmbDate
 {
@@ -371,7 +371,7 @@ class lmbLocaleDate extends lmbDate
       $format = $locale->getShortDateFormat();
 
     $arr = self :: parseTimeString($locale, $string, $format);
-    return new lmbDate($arr['year'], $arr['month'], $arr['day'], $arr['hour'], $arr['minute'], $arr['second']);
+    return new lmbLocaleDate($arr['year'], $arr['month'], $arr['day'], $arr['hour'], $arr['minute'], $arr['second']);
   }
 
   static function isLocalStringValid($locale, $string, $format = null)
