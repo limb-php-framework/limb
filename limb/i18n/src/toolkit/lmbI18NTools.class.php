@@ -16,7 +16,7 @@ lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
  * class lmbI18NTools.
  *
  * @package i18n
- * @version $Id: lmbI18NTools.class.php 6351 2007-10-01 13:33:02Z pachanga $
+ * @version $Id: lmbI18NTools.class.php 6481 2007-11-01 14:17:34Z serega $
  */
 class lmbI18NTools extends lmbAbstractTools
 {
@@ -79,7 +79,7 @@ class lmbI18NTools extends lmbAbstractTools
 
   function createLocaleObject($locale)
   {
-    $file = $this->toolkit->findFileByAlias($locale . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n');
+    $file = $this->toolkit->findFileByAlias($locale . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n_locale');
 
     if(defined('LIMB_VAR_DIR'))
       return new lmbLocale($locale, new lmbCachedIni($file, LIMB_VAR_DIR . '/locale/'));

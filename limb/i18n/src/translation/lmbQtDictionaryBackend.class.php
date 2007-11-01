@@ -77,7 +77,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
   function mapToFile($locale, $domain)
   {
-    return lmbToolkit :: instance()->findFileByAlias($domain . '.' . $locale . '.ts', $this->search_path, 'i18n');
+    return lmbToolkit :: instance()->findFileByAlias($domain . '.' . $locale . '.ts', $this->search_path, 'i18n_translations');
   }
 
   function getDOMDocument($dictionary)
