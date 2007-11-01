@@ -355,7 +355,7 @@ Limb.Class('CMS.SidebarToggle',
 
 
      var SidebarHTML = this.sidebar.html();
-     var toggleHTML = '<div class="sidebar_toggle"><span class="text">Навигация</span><a href="#" class="arrow"><img src="images/1x1.gif" width="8" height="7" alt="<<" /></a></div>';
+     var toggleHTML = '<div class="sidebar_toggle"><span class="text">Навигация</span><span class="arrow"><img src="images/1x1.gif" width="8" height="7" alt="<<" /></span></div>';
 
      this.sidebar.empty();
      this.sidebar.prepend('<div class="inner"></div>');
