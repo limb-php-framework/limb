@@ -4,10 +4,7 @@
   <list:list id='navigation'>
   <list:item>
   <dt class='{$id}'><span>{$title}</span></dt>
-  <dd>
-    <list:list from='children'>
-    <ul><list:item><li><a href='{$url}'>{$title}</a></li></list:item></ul></list:list>
-  </dd>
+  <dd><list:list from='children'><ul><list:item><li><a href='{$url}'>{$title}</a></li></list:item></ul></list:list></dd>
   </list:item>
   </list:list>
 </dl>

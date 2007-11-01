@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- Powered by LIMB | http://www.limb-project.com/ -->
 <!-- Designed by BIT | http://www.bit-creative.com/ -->
 <core:SET title="Панель управления">
@@ -13,50 +12,27 @@
   <core:INCLUDE file='_cms/js.html'/>
   <core:INCLUDE file='_cms/extjs.html'/>
   <script type="text/javascript" src="/shared/cms/js/accordion.js"></script>
-  <script type="text/javascript">
-    cpLayout = function(){
-          return {
-              init : function(){
-                 var layout = new Ext.BorderLayout(document.body, {
-                      west: { split:false, initialSize: 210, titlebar: true, collapsible: true},
-                      north: { split:false, initialSize: 38, collapsible:false, titlebar: false },
-                      center: { autoScroll: true, titlebar: false, fitToFrame: false}
-                  });
-
-                  layout.beginUpdate();
-                  layout.add('west', new Ext.ContentPanel('left', {title: 'Navigation', fitToFrame:true, closable:false}));
-                  layout.add('center', new Ext.ContentPanel('center'));
-                  layout.add('north', new Ext.ContentPanel('top'));
-                  layout.endUpdate();
-                  layout.restoreState();
-             }
-       };
-
-  }();
-
-  Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-  Ext.EventManager.onDocumentReady(cpLayout.init, cpLayout, true);
-  </script>
 </head>
 <body>
+<div id="wrapper">
 
-<!--BEGIN: header-->
-<div id='top'>
-  <img src="/shared/cms/images/limb_admin.gif"  width='94' height='25' alt='LIMB' id='logo'/>
+  <div id='admin_panel'>
+    <img src="/shared/cms/images/limb_admin.gif"  width='94' height='25' alt='LIMB' id='logo_project'/>
+    <core:INCLUDE file='_cms/user_data.html'/>
+  </div>
 
-  <core:INCLUDE file='_cms/user_data.html'/>
+  <div id='container'>
+    <div id="content">
+      <core:PLACEHOLDER id='content_zone'/>
+    </div>
+  </div>
+
+  <div id='sidebar'>
+    <core:INCLUDE file='_cms/menu.html'/>
+  </div>
+
 </div>
-<!--END: header-->
 
-<!--BEGIN:[ body ]-->
-<div id='center'>
-  <core:PLACEHOLDER id='content_zone'/>
-</div>
-<!--END:[ body ]-->
-
-<div id='left'>
-  <core:INCLUDE file='_cms/menu.html'/>
-</div>
 </body>
 </html>
 
