@@ -2,128 +2,6 @@ var LIMB_WINDOW_DEFAULT_PARAMS = { width: 890, height:500, resizable: true, noau
 var ShowFilterDefault = 'Показать фильтр';
 var HideFilterDefault = 'Скрыть фильтр';
 
-function toggle_selected(toggle_obj)
-{
-  var parent_form = toggle_obj.form;
-  var mark = toggle_obj.checked;
-
-  jQuery("input:checkbox[@name='ids[]']", parent_form).each(function(){
-                                        jQuery(this).attr("checked", mark);
-                                  });
-}
-
-
-Limb.Class('CMS.Filter',
-{
-  __construct:function()
-  {
-    var filter = jQuery('.filter');
-    var filterForm = jQuery('.filter form');
-    var list = jQuery('.list');
-
-    if (!filter.is('div'))
-      return;
-
-    var activeFilterHTML = '<a class="active_filter"><span>' + ShowFilterDefault + '</span></a>';
-    var htmlText = '<div class="filter_bottom"><a class="active_filter_bottom"><span>' + ShowFilterDefault + '</span></a></div>';
-
-    filter.prepend(activeFilterHTML);
-    list.css('margin','0');
-    list.after(htmlText);
-    this._initBehavior();
-
-    this.activeFilter = jQuery('.filter .active_filter span');
-    this.activeFilterBelowList = jQuery('.filter_bottom .active_filter_bottom span');
-
-    if(Limb.cookie(window.location + '.filter') == 1){
-      filterForm.show();
-      this.activeFilter.text(HideFilterDefault);
-      this.activeFilter.addClass('show');
-
-    }
-    else {
-      filterForm.hide();
-      this.activeFilter.text(ShowFilterDefault);
-    }
-
-  },
-
-  initActiveFilterClick: function()
-  {
-    var filterForm = jQuery('.filter form');
-    var filterFormBelowList = jQuery('.filter_bottom form');
-
-    if (filterFormBelowList.is('form')){
-      filterFormBelowList.hide();
-      filterFormBelowList.clone().appendTo(".filter").show('slow');
-      filterFormBelowList.remove();
-    }
-    else
-      filterForm.toggle('slow');
-
-    this.setFilterCookie();
-    this.initActiveFilter();
-  },
-
-  initActiveFilterBelowListClick:function()
-  {
-    var filterForm = jQuery('.filter form');
-    var filterFormBelowList = jQuery('.filter_bottom form');
-
-    if (filterFormBelowList.is('form'))
-      filterFormBelowList.toggle('slow');
-    else {
-      filterForm.hide();
-      filterForm.clone().prependTo(".filter_bottom").show('slow');
-      filterForm.remove();
-    }
-
-    this.setFilterCookie();
-    this.initActiveFilter();
-
-  },
-
-  initActiveFilter:function (){
-    var filterForm = jQuery('.filter form');
-
-    if (filterForm.is('form')){
-
-        if (this.activeFilter.attr('class')== 'show')
-          this.activeFilter.removeClass('show').text(ShowFilterDefault);
-        else {
-          this.activeFilter.addClass('show').text(HideFilterDefault);
-          this.activeFilterBelowList.removeClass('show').text(ShowFilterDefault);
-        }
-    }
-    else{
-
-        if (this.activeFilterBelowList.attr('class')== 'show')
-          this.activeFilterBelowList.removeClass('show').text(ShowFilterDefault);
-        else {
-          this.activeFilterBelowList.addClass('show').text(HideFilterDefault);
-          this.activeFilter.removeClass('show').text(ShowFilterDefault);
-        }
-
-    }
-  },
-
-  setFilterCookie: function(){
-
-    if(Limb.cookie(window.location + '.filter') == 1)
-      Limb.cookie(window.location + '.filter', 0);
-    else
-      Limb.cookie(window.location + '.filter', 1);
-  },
-
-  _initBehavior: function(){
-    jQuery('.active_filter').click(this.initActiveFilterClick.bind(this));
-    jQuery('.active_filter_bottom').click(this.initActiveFilterBelowListClick.bind(this));
-  }
-
-});
-
-
-
 function control_error()
 {
   if(jQuery('.message_error .content ol').css('display')=='none')
@@ -131,7 +9,6 @@ function control_error()
   else
     jQuery('.message_error .content ol').slideUp('fast');
 }
-
 
 Limb.namespace('CMS.forms');
 
@@ -304,6 +181,127 @@ Limb.Class('CMS.UploadProgress',
   }
 });
 
+/////// LAYOUT POSTPROCESSING HELPERS
+
+/**
+   Filter formatting
+
+   обрабатывает форму фильтра поиска при выводе списков в панели управления
+   позволяет скрывать/показывать фильтр. при необходимости отображает форму поиска в конце списка.
+   запоминает состояние отображения (скрыт/доуступен) конкретного фильтра в cookies
+
+   TODO: продублировать описание на английском. показать пример использования.
+*/
+Limb.Class('CMS.Filter',
+{
+  __construct:function()
+  {
+    var filter = jQuery('.filter');
+    var filterForm = jQuery('.filter form');
+    var list = jQuery('.list');
+
+    if (!filter.is('div'))
+      return;
+
+    var activeFilterHTML = '<a class="active_filter"><span>' + ShowFilterDefault + '</span></a>';
+    var htmlText = '<div class="filter_bottom"><a class="active_filter_bottom"><span>' + ShowFilterDefault + '</span></a></div>';
+
+    filter.prepend(activeFilterHTML);
+    list.css('margin','0');
+    list.after(htmlText);
+    this._initBehavior();
+
+    this.activeFilter = jQuery('.filter .active_filter span');
+    this.activeFilterBelowList = jQuery('.filter_bottom .active_filter_bottom span');
+
+    if(Limb.cookie(window.location + '.filter') == 1){
+      filterForm.show();
+      this.activeFilter.text(HideFilterDefault);
+      this.activeFilter.addClass('show');
+
+    }
+    else {
+      filterForm.hide();
+      this.activeFilter.text(ShowFilterDefault);
+    }
+
+  },
+
+  initActiveFilterClick: function()
+  {
+    var filterForm = jQuery('.filter form');
+    var filterFormBelowList = jQuery('.filter_bottom form');
+
+    if (filterFormBelowList.is('form')){
+      filterFormBelowList.hide();
+      filterFormBelowList.clone().appendTo(".filter").show('fast');
+      filterFormBelowList.remove();
+    }
+    else
+      filterForm.toggle('slow');
+
+    this.setFilterCookie();
+    this.initActiveFilter();
+  },
+
+  initActiveFilterBelowListClick:function()
+  {
+    var filterForm = jQuery('.filter form');
+    var filterFormBelowList = jQuery('.filter_bottom form');
+
+    if (filterFormBelowList.is('form'))
+      filterFormBelowList.toggle('slow');
+    else {
+      filterForm.hide();
+      filterForm.clone().prependTo(".filter_bottom").show('slow');
+      filterForm.remove();
+    }
+
+    this.setFilterCookie();
+    this.initActiveFilter();
+
+  },
+
+  initActiveFilter:function (){
+    var filterForm = jQuery('.filter form');
+
+    if (filterForm.is('form')){
+
+        if (this.activeFilter.attr('class')== 'show')
+          this.activeFilter.removeClass('show').text(ShowFilterDefault);
+        else {
+          this.activeFilter.addClass('show').text(HideFilterDefault);
+          this.activeFilterBelowList.removeClass('show').text(ShowFilterDefault);
+        }
+    }
+    else{
+
+        if (this.activeFilterBelowList.attr('class')== 'show')
+          this.activeFilterBelowList.removeClass('show').text(ShowFilterDefault);
+        else {
+          this.activeFilterBelowList.addClass('show').text(HideFilterDefault);
+          this.activeFilter.removeClass('show').text(ShowFilterDefault);
+        }
+
+    }
+  },
+
+  setFilterCookie: function(){
+
+    if(Limb.cookie(window.location + '.filter') == 1)
+      Limb.cookie(window.location + '.filter', 0);
+    else
+      Limb.cookie(window.location + '.filter', 1);
+  },
+
+  _initBehavior: function(){
+    jQuery('.active_filter').click(this.initActiveFilterClick.bind(this));
+    jQuery('.active_filter_bottom').click(this.initActiveFilterBelowListClick.bind(this));
+  }
+
+});
+
+
 function initImgResize(){
 jQuery('img[@resize]')
   .one('load', function()
@@ -453,12 +451,6 @@ function initDocumentStructure(){
 
 };
 
-
-function changed_field_highlighter()
-{
-  jQuery(this).change(function(){jQuery(this).prev('label').css({color: 'green'})});
-}
-
 function initMainMenu(){
   //left navigation current item highlight
   var url = window.location.toString();
@@ -485,7 +477,7 @@ function initMainMenu(){
 };
 
 
-/*WINDOW READY ==========================================*/
+/*============================== WINDOW READY ==============================*/
 jQuery(window).ready(function(){
     initDocumentStructure();
     jQuery(window).resize(initDocumentStructure);
@@ -517,9 +509,4 @@ jQuery(window).ready(function(){
 
 });
 
-Limb.namespace('rt.Util');
-rt.Util.clickAjax = function(link)
-{
-  jQuery.ajax({type: 'GET', url: link.href, success: function(){window.location.reload();}});
-  return false;
-}
+
