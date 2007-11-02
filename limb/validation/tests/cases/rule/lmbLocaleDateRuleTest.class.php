@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/validation/src/rule/lmbLocaleDateRule.class.php');
-lmb_require('limb/validation/tests/cases/rule/lmbValidationRuleTestCase.class.php');
 
 class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
 {
