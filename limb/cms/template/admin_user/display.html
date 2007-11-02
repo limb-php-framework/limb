@@ -26,7 +26,7 @@
           <tr>
             <th class='selector'><core:INCLUDE file='_cms/selector.html'></th>
             <th>#ID</th>
-            <th>Full name</th>
+            <th>Name</th>
             <th>Login</th>
             <th>E-mail</th>
             <th>Role</th>
@@ -37,7 +37,7 @@
             <tr class='{$Parity}'>
               <td class='selector'><input type='checkbox' name='ids[]' value='{$id}' runat='client'/></td>
               <td>#{$id}</td>
-              <td>{$full_name}</td>
+              <td>{$name}</td>
               <td>{$login}</td>
               <td><a href='mailto:{$email}'>{$email}</a></td>
               <td>{$current_role.name}</td>
