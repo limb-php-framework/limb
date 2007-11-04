@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/lmbMacroCompiler.class.php');
 lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
 lmb_require('limb/macro/src/lmbMacroFilterDictionary.class.php');
 lmb_require('limb/macro/src/lmbMacroConfig.class.php');
+lmb_require('limb/macro/src/lmbMacroException.class.php');
 
 /**
  * class lmbMacroTemplate.
