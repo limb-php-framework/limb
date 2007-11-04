@@ -109,7 +109,8 @@ class lmbMacroListTag extends lmbMacroTag
 
   protected function _prepareSourceVar($code)
   {
-    $using = $this->get('using');
+    if(!$using = $this->get('for'))
+      $using = $this->get('using');
 
     $this->source_var = $code->generateVar();
     $item_var = $code->generateVar();
