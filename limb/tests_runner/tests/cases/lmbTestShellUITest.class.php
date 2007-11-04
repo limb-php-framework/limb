@@ -97,6 +97,24 @@ class lmbTestShellUITest extends lmbTestRunnerBase
     $this->assertNoPattern('~Error~i', $screen);
   }
 
+  function testPerformOnlySelectedMethods()
+  {
+    $foo_body = 'function testFoo(){ echo "foo";}';
+    $foo_body .= 'function testJunk(){ echo "junk";}';
+    $bar_body = 'function testBar(){ echo "bar";}';
+    $bar_body .= 'function testJunk(){ echo "junk";}';
+
+    $foo = $this->_createTestCase($foo_file = LIMB_VAR_DIR . '/cases/foo_test.php', '', $foo_body);
+    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/bar_test.php', '', $bar_body);
+
+    $ret = $this->_execScript("--methods=testFoo,testBar $foo_file $bar_file", $screen);
+    if(!$this->assertEqual($ret, 0))
+      echo $screen;
+
+    $this->assertPattern('~foo1\s+of\s+2\s+done\(' . $foo->getClass() . '\)~', $screen);
+    $this->assertPattern('~bar2\s+of\s+2\s+done\(' . $bar->getClass() . '\)~', $screen);
+  }
+
   function testAutoDefineConstants()
   {
     $c1 = "FOO_" . mt_rand();

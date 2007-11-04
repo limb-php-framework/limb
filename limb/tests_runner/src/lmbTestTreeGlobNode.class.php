@@ -14,7 +14,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeGlobNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeGlobNode.class.php 6444 2007-10-19 21:10:39Z pachanga $
+ * @version $Id: lmbTestTreeGlobNode.class.php 6487 2007-11-04 23:35:34Z pachanga $
  */
 class lmbTestTreeGlobNode extends lmbTestTreeNode
 {
@@ -45,7 +45,7 @@ class lmbTestTreeGlobNode extends lmbTestTreeNode
 
   function getTestLabel()
   {
-    return 'All tests in "' . implode(';', $this->paths) . '"(filter "' . LIMB_TESTS_RUNNER_FILE_FILTER . '")';
+    return 'All tests in "' . implode(';', $this->paths) . '"(filter "' . lmbTestOptions :: get('file_filter') . '")';
   }
 }
 

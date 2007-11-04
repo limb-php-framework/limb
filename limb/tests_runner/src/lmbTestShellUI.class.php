@@ -7,12 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once(dirname(__FILE__) . '/lmbTestGetopt.class.php');
+require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
 
 /**
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6470 2007-10-29 22:05:11Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6487 2007-11-04 23:35:34Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -115,7 +116,9 @@ EOD;
 
   static function getLongOpts()
   {
-    return array('help', 'version', 'include=', 'config=', 'cover=', 'cover-report=', 'cover-exclude=');
+    return array('help', 'version', 'include=', 'config=', 
+                 'cover=', 'cover-report=', 'cover-exclude=',
+                 'methods=');
   }
 
   function run()
@@ -175,7 +178,7 @@ EOD;
           break;
         case 'I':
         case '--include':
-          @define('LIMB_TESTS_RUNNER_FILE_FILTER', $option[1]);
+          lmbTestOptions :: set('file_filter', $option[1]);
           break;
         case 'C':
         case '--cover':
@@ -186,6 +189,9 @@ EOD;
           break;
         case '--cover-exclude':
           $cover_exclude = $option[1];
+          break;
+        case '--methods':
+          lmbTestOptions :: set('methods_filter', explode(',', $option[1]));
           break;
       }
     }

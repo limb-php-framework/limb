@@ -13,7 +13,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6230 2007-08-10 06:03:04Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6487 2007-11-04 23:35:34Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -47,7 +47,14 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     $candidates = $this->_getClassesDefinedInFile();
     $loader = new SimpleFileLoader();
     foreach($loader->selectRunnableTests($candidates) as $class)
-      $test->addTestCase(new $class());
+    {
+      $case = new $class();
+      $case->filter(lmbTestOptions :: get('methods_filter'));
+      $test->addTestCase($case);
+      //a dirty SimpleTest PHP4 compatibility hack
+      //otherwise $case is overwrittne since it is a reference
+      unset($case);
+    }
   }
 }
 

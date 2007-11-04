@@ -11,13 +11,11 @@ require_once(dirname(__FILE__) . '/lmbTestTreeFileNode.class.php');
 require_once(dirname(__FILE__) . '/lmbDetachedFixture.class.php');
 require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
 
-@define('LIMB_TESTS_RUNNER_FILE_FILTER', '*Test.class.php;*test.php;*Test.php');
-
 /**
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6230 2007-08-10 06:03:04Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6487 2007-11-04 23:35:34Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
@@ -33,7 +31,7 @@ class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
   static function getFileFilter()
   {
     if(!is_object(self :: $file_filter))
-      self :: setFileFilter(LIMB_TESTS_RUNNER_FILE_FILTER);
+      self :: setFileFilter(lmbTestOptions :: get('file_filter'));
     return self :: $file_filter;
   }
 

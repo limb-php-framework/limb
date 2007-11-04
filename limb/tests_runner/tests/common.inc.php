@@ -10,10 +10,12 @@
 class GeneratedTestClass
 {
   protected $class_name;
+  protected $body;
 
-  function __construct()
+  function __construct($body = null)
   {
     $this->class_name = 'GenClass_' . mt_rand(1, 10000);
+    $this->body = $body;
   }
 
   function getClass()
@@ -51,8 +53,13 @@ class GeneratedTestClass
 
   function generateClass()
   {
+    if(!$this->body)
+      $body = "function testSay() {echo \"" . $this->getOutput() . "\";}";
+    else
+      $body = $this->body;
+
     $code = "class {$this->class_name} extends UnitTestCase {
-              function testSay() {echo \"" . $this->getOutput() . "\";}
+             $body
             }";
     return $code;
   }
@@ -87,24 +94,24 @@ abstract class lmbTestRunnerBase extends UnitTestCase
     return $res;
   }
 
-  function _createTestCase($file, $extra = '')
+  function _createTestCase($file, $extra = '', $body = '')
   {
     $dir = dirname($file);
     if(!is_dir($dir))
       mkdir($dir, 0777, true);
 
-    $generated = new GeneratedTestClass();
+    $generated = new GeneratedTestClass($body);
     file_put_contents($file, "<?php\n" . $generated->generateClass() . $extra . "\n?>");
     return $generated;
   }
 
-  function _createTestCaseFailing($file, $extra = '')
+  function _createTestCaseFailing($file, $extra = '', $body = '')
   {
     $dir = dirname($file);
     if(!is_dir($dir))
       mkdir($dir, 0777, true);
 
-    $generated = new GeneratedTestClass();
+    $generated = new GeneratedTestClass($body);
     file_put_contents($file, "<?php\n" . $generated->generateClassFailing() . $extra . "\n?>");
     return $generated;
   }

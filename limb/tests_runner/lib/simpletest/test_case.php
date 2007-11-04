@@ -3,7 +3,7 @@
      *	Base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: test_case.php 6257 2007-09-03 10:41:32Z pachanga $
+     *	@version	$Id: test_case.php 6487 2007-11-04 23:35:34Z pachanga $
      */
 
     /**#@+
@@ -44,6 +44,7 @@
         var $_reporter;
         var $_observers;
 		var $_should_skip = false;
+    var $_methods_filter = array();
 
         /**
          *    Sets up the test with no display.
@@ -151,6 +152,11 @@
             return $reporter->getStatus();
         }
 
+        function filter($methods_filter)
+        {
+            $this->_methods_filter = array_map('strtolower', $methods_filter);
+        }
+
         /**
          *    Gets a list of test names. Normally that will
          *    be all internal methods that start with the
@@ -179,6 +185,8 @@
          */
         function _isTest($method) {
             if (strtolower(substr($method, 0, 4)) == 'test') {
+                if ($this->_methods_filter && !in_array(strtolower($method), $this->_methods_filter))
+                    return false;
                 return ! SimpleTestCompatibility::isA($this, strtolower($method));
             }
             return false;
