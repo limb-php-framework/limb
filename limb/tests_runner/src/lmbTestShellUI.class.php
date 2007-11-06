@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6491 2007-11-06 20:17:33Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6495 2007-11-06 21:29:59Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -70,10 +70,10 @@ Options:
                                     tags which should be executed(e.g @group group1,group2) 
   -M, --methods=testFoo[,testBar]   Comma separated list of test methods which should be
                                     executed 
-  -C, --cover=path1;path2           Sets paths delimitered with ';' which should be analyzed
+  -C, --cover='path1;path2'         Sets paths delimitered with ';' which should be analyzed
                                     for test coverage(requires XDebug extension!)
   --cover-report=dir                Sets coverage report directory
-  --cover-exclude=path1;path2       Sets paths delimitered with ';' which should be excluded
+  --cover-exclude='path1;path2'     Sets paths delimitered with ';' which should be excluded
                                     from coverage analysis
 
 $version
