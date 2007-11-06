@@ -12,7 +12,7 @@ class GeneratedTestClass
   protected $class_name;
   protected $body;
 
-  function __construct($body = null)
+  function __construct($body = '%class%')
   {
     $this->class_name = 'GenClass_' . mt_rand(1, 10000);
     $this->body = $body;
@@ -53,23 +53,26 @@ class GeneratedTestClass
 
   function generateClass()
   {
-    if(!$this->body)
-      $body = "function testSay() {echo \"" . $this->getOutput() . "\";}";
-    else
-      $body = $this->body;
+    $parts = array();
+    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n"; 
+    $parts['%class_footer%'] = "\n}\n";
+    $parts['%class%'] = $parts['%class_header%'] . 
+                        "function testMe() {echo \"" . $this->getOutput() . "\";}" . 
+                        $parts['%class_footer%'];
 
-    $code = "class {$this->class_name} extends UnitTestCase {
-             $body
-            }";
-    return $code;
+    return str_replace(array_keys($parts), array_values($parts), $this->body);
   }
 
   function generateClassFailing()
   {
-    $code = "class {$this->class_name} extends UnitTestCase {
-              function testSay() {\$this->assertTrue(false);echo \"" . $this->getOutput() . "\";}
-            }";
-    return $code;
+    $parts = array();
+    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n"; 
+    $parts['%class_footer%'] = "\n}\n";
+    $parts['%class%'] = $parts['%class_header%'] . 
+                        "function testMe() {\$this->assertTrue(false);echo \"" . $this->getOutput() . "\";}" . 
+                        $parts['%class_footer%'];
+
+    return str_replace(array_keys($parts), array_values($parts), $this->body);
   }
 }
 
@@ -94,25 +97,25 @@ abstract class lmbTestRunnerBase extends UnitTestCase
     return $res;
   }
 
-  function _createTestCase($file, $extra = '', $body = '')
+  function _createTestCase($file, $body = '%class%')
   {
     $dir = dirname($file);
     if(!is_dir($dir))
       mkdir($dir, 0777, true);
 
     $generated = new GeneratedTestClass($body);
-    file_put_contents($file, "<?php\n" . $generated->generateClass() . $extra . "\n?>");
+    file_put_contents($file, "<?php\n" . $generated->generateClass() . "\n?>");
     return $generated;
   }
 
-  function _createTestCaseFailing($file, $extra = '', $body = '')
+  function _createTestCaseFailing($file, $body = '%class%')
   {
     $dir = dirname($file);
     if(!is_dir($dir))
       mkdir($dir, 0777, true);
 
     $generated = new GeneratedTestClass($body);
-    file_put_contents($file, "<?php\n" . $generated->generateClassFailing() . $extra . "\n?>");
+    file_put_contents($file, "<?php\n" . $generated->generateClassFailing() . "\n?>");
     return $generated;
   }
 

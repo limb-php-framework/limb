@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6489 2007-11-06 10:59:46Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6491 2007-11-06 20:17:33Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -66,6 +66,8 @@ Options:
   -I, --include='filter1;filter2'   Sets file filters used for including test files during
                                     recursive traversal of directories.
                                     '*Test.class.php;*test.php;*Test.php' by default.
+  -G, --groups=group1[,group2]      Comma separated list of test groups defined in annotations 
+                                    tags which should be executed(e.g @group group1,group2) 
   -M, --methods=testFoo[,testBar]   Comma separated list of test methods which should be
                                     executed 
   -C, --cover=path1;path2           Sets paths delimitered with ';' which should be analyzed
@@ -113,14 +115,14 @@ EOD;
 
   static function getShortOpts()
   {
-    return 'hvI:c:C:M:';
+    return 'hvI:c:C:M:G:';
   }
 
   static function getLongOpts()
   {
     return array('help', 'version', 'include=', 'config=', 
                  'cover=', 'cover-report=', 'cover-exclude=',
-                 'methods=');
+                 'methods=', 'groups=');
   }
 
   function run()
@@ -182,6 +184,14 @@ EOD;
         case '--include':
           lmbTestOptions :: set('file_filter', $option[1]);
           break;
+        case 'G':
+        case '--groups':
+          lmbTestOptions :: set('groups_filter', array_map('trim', explode(',', trim($option[1]))));
+          break;
+        case 'M':
+        case '--methods':
+          lmbTestOptions :: set('methods_filter', array_map('trim', explode(',', trim($option[1]))));
+          break;
         case 'C':
         case '--cover':
           $cover_include = $option[1];
@@ -191,10 +201,6 @@ EOD;
           break;
         case '--cover-exclude':
           $cover_exclude = $option[1];
-          break;
-        case 'M':
-        case '--methods':
-          lmbTestOptions :: set('methods_filter', array_map('trim', explode(',', trim($option[1]))));
           break;
       }
     }

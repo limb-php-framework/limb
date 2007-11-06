@@ -19,7 +19,8 @@ class lmbTestOptions
 {
   static protected $valid_keys = array('file_filter', 
                                        'methods_filter',
-                                       'groups_filter');
+                                       'groups_filter',
+                                       'verbose');
   static protected $options = array();
   static protected $has_defaults = false;
 
@@ -47,7 +48,8 @@ class lmbTestOptions
 
     self :: $options = array('file_filter' => LIMB_TESTS_RUNNER_FILE_FILTER,
                             'methods_filter' => array(),
-                            'groups_filter' => array());
+                            'groups_filter' => array(),
+                            'verbose' => false);
 
     self :: $has_defaults = true;
   }

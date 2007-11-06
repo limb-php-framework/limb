@@ -13,7 +13,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6487 2007-11-04 23:35:34Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6491 2007-11-06 20:17:33Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -41,6 +41,27 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
      return $matches[1];
   }
 
+  protected function _isClassGroupFiltered($class)
+  {
+    if(!$groups = lmbTestOptions :: get('groups_filter'))
+      return false;
+
+    $refclass = new ReflectionClass($class);
+    $doc = $refclass->getDocComment();
+
+    //if there's a group filter and no group annotation class is filtered
+    if(!preg_match('~.*@group\s+([^\n]+).*~s', $doc, $matches))
+      return true;
+
+    $doc_groups = array_map('trim', explode(',', trim($matches[1])));
+    foreach($doc_groups as $group)
+    {
+      if(in_array($group, $groups))
+        return false;
+    }
+    return true;
+  }
+
   protected function _prepareTestCase($test)
   {
     require_once($this->file);
@@ -48,6 +69,9 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     $loader = new SimpleFileLoader();
     foreach($loader->selectRunnableTests($candidates) as $class)
     {
+      if($this->_isClassGroupFiltered($class))
+        continue;
+
       $case = new $class();
       $case->filter(lmbTestOptions :: get('methods_filter'));
       $test->addTestCase($case);

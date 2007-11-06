@@ -99,13 +99,18 @@ class lmbTestShellUITest extends lmbTestRunnerBase
 
   function testPerformOnlySelectedMethods()
   {
-    $foo_body = 'function testFoo(){ echo "foo";}';
-    $foo_body .= 'function testJunk(){ echo "junk";}';
-    $bar_body = 'function testBar(){ echo "bar";}';
-    $bar_body .= 'function testJunk(){ echo "junk";}';
+    $foo_body  = '%class_header%'; 
+    $foo_body .= 'function testFoo(){echo "foo";}';
+    $foo_body .= 'function testJunk(){echo "junk";}';
+    $foo_body .= '%class_footer%';
 
-    $foo = $this->_createTestCase($foo_file = LIMB_VAR_DIR . '/cases/foo_test.php', '', $foo_body);
-    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/bar_test.php', '', $bar_body);
+    $bar_body  = '%class_header%';
+    $bar_body .= 'function testBar(){echo "bar";}';
+    $bar_body .= 'function testJunk(){echo "junk";}'; 
+    $bar_body .= '%class_footer%';
+
+    $foo = $this->_createTestCase($foo_file = LIMB_VAR_DIR . '/cases/foo_test.php', $foo_body);
+    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/bar_test.php', $bar_body);
 
     $ret = $this->_execScript("--methods=testFoo,testBar $foo_file $bar_file", $screen);
     if(!$this->assertEqual($ret, 0))
@@ -115,12 +120,27 @@ class lmbTestShellUITest extends lmbTestRunnerBase
     $this->assertPattern('~bar2\s+of\s+2\s+done\(' . $bar->getClass() . '\)~', $screen);
   }
 
+  function testPerformOnlySelectedGroupsOfTests()
+  {
+    $foo = $this->_createTestCase($foo_file = LIMB_VAR_DIR . '/cases/foo_test.php', "/**\n* @group foo\n*/ %class%");
+    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/bar_test.php', "/**\n* @group bar\n*/ %class%");
+    $junk = $this->_createTestCase($junk_file = LIMB_VAR_DIR . '/cases/junk_test.php', "/*\n* @group junk\n*/ %class%");
+
+    $ret = $this->_execScript("--groups=foo,bar $foo_file $bar_file $junk_file", $screen);
+    if(!$this->assertEqual($ret, 0))
+      echo $screen;
+
+    $this->assertPattern('~1\s+of\s+2\s+done\(' . $foo->getClass() . '\)~', $screen);
+    $this->assertPattern('~2\s+of\s+2\s+done\(' . $bar->getClass() . '\)~', $screen);
+    $this->assertNoPattern('~' . $junk->getClass() . '~', $screen);
+  }
+
   function testAutoDefineConstants()
   {
     $c1 = "FOO_" . mt_rand();
     $c2 = "FOO_" . mt_rand();
 
-    $this->_createTestCase($f = LIMB_VAR_DIR . '/cases/foo_test.php', "echo '$c1=' . $c1;echo '$c2=' . $c2;");
+    $this->_createTestCase($f = LIMB_VAR_DIR . '/cases/foo_test.php', "%class%\n echo '$c1=' . $c1;echo '$c2=' . $c2;");
     $this->_execScript("$f $c1=hey $c2=wow", $screen);
 
     $this->assertPattern("~$c1=hey~", $screen);
