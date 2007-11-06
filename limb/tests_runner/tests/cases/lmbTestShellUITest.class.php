@@ -123,7 +123,7 @@ class lmbTestShellUITest extends lmbTestRunnerBase
   function testPerformOnlySelectedGroupsOfTests()
   {
     $foo = $this->_createTestCase($foo_file = LIMB_VAR_DIR . '/cases/foo_test.php', "/**\n* @group foo\n*/ %class%");
-    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/bar_test.php', "/**\n* @group bar\n*/ %class%");
+    $bar = $this->_createTestCase($bar_file = LIMB_VAR_DIR . '/cases/bar_test.php', "/**\n* @group bar,foo\n*/ %class%");
     $junk = $this->_createTestCase($junk_file = LIMB_VAR_DIR . '/cases/junk_test.php', "/*\n* @group junk\n*/ %class%");
 
     $ret = $this->_execScript("--groups=foo,bar $foo_file $bar_file $junk_file", $screen);
