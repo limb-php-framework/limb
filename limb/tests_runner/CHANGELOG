@@ -1,3 +1,14 @@
+0.8.6-beta - 6 November 2007 (r6492)
+==================================================
+-- adding test cases filtering by group annotation(TR-18), e.g:
+    $ limb_unit --groups=db,auth sometest.php
+-- adding test methods filtering(TR-20), e.g: 
+    $ limb_unit --methods=testFoo,testBar sometest.php
+-- lmbTestOptions added, it will be used as a global container for all options
+-- better configuration file passed with -c option invalid syntax checking
+-- fixing coverage summary output without generating html reports
+-- printing current file filter
+
 0.8.5-beta - 7 September 2007 (r6271)
 ==================================================
 -- ported SimpleTest CVS fix for abstract classes
