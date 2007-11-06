@@ -25,19 +25,19 @@ function create_archive($dir)
   chdir($dir);
 
   if(!is_file("./VERSION"))
-    fatal("VERSION file is not present");
+    fatal("VERSION file is not present\n");
 
   list($name, $version) = explode('-', trim(file_get_contents("./VERSION")));
 
   system("php package.php", $res);
 
   if($res != 0)
-    fatal("Package XML creation error");
+    fatal("Package XML creation error\n");
 
   system("pear package", $res);
 
   if($res != 0)
-    fatal("'pear package' failed");
+    fatal("'pear package' failed\n");
 
   unlink("package.xml");
   chdir($old);
@@ -56,7 +56,7 @@ function login($user, $password)
   $page = $curl->post($PEAR, $login_form);
 
   if(preg_match('~Invalid\s+Login~', $page))
-    fatal("Could not login to admin page");
+    fatal("Could not login to admin page\n");
 }
 
 function upload($file)
@@ -73,7 +73,7 @@ function upload($file)
   $page = $curl->post($PEAR, $upload_form);
 
   if(!preg_match('~Release\s+successfully\s+saved~', $page))
-     fatal("Could not upload release '$file'");
+     fatal("Could not upload release '$file'\n");
 }
 
 class CURL
@@ -101,6 +101,7 @@ class CURL
 
   protected function _browserInit()
   {
+    @mkdir(dirname(__FILE__) . '/tmp');
     $this->setOpt(CURLOPT_HEADER, 1);
     $this->setOpt(CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322;)");
     $this->setOpt(CURLOPT_FOLLOWLOCATION, 1);
@@ -129,7 +130,7 @@ class CURL
     {
       $error = curl_error($this->handle);
       $this->_resetCurl();
-      fatal($error);
+      fatal($error . "\n");
     }
   }
 
