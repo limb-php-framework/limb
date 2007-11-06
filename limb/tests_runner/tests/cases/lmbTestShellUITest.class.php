@@ -131,7 +131,7 @@ class lmbTestShellUITest extends lmbTestRunnerBase
   {
     if(!extension_loaded('xdebug'))
     {
-      echo "Skipping coverage test since xdebug is not loaded";
+      echo "Skipping coverage test since xdebug is not loaded\n";
       return;
     }
     $this->_createTestCase($f = LIMB_VAR_DIR . '/cases/cover_test.php');

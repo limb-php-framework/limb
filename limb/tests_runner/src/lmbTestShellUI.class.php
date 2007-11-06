@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6487 2007-11-04 23:35:34Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6489 2007-11-06 10:59:46Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -61,16 +61,18 @@ Usage:
 Arguments:
   <file|dir> [<file1|dir1>, ... <fileN|dirN>] - a list of files/directories, globs are supported(e.g. '*')
 Options:
-  -h, --help                      Displays this help and exit
-  -c, --config=/file.php          PHP configuration file path
-  -I, --include='filter1;filter2' Sets file filters used for including test files during
-                                  recursive traversal of directories.
-                                  '*Test.class.php;*test.php;*Test.php' by default.
-  -C, --cover=path1;path2         Sets paths delimitered with ';' which should be analyzed
-                                  for test coverage(requires XDebug extension!)
-  --cover-report=dir              Sets coverage report directory
-  --cover-exclude=path1;path2     Sets paths delimitered with ';' which should be excluded
-                                  from coverage analysis
+  -h, --help                        Displays this help and exit
+  -c, --config=/file.php            PHP configuration file path
+  -I, --include='filter1;filter2'   Sets file filters used for including test files during
+                                    recursive traversal of directories.
+                                    '*Test.class.php;*test.php;*Test.php' by default.
+  -M, --methods=testFoo[,testBar]   Comma separated list of test methods which should be
+                                    executed 
+  -C, --cover=path1;path2           Sets paths delimitered with ';' which should be analyzed
+                                    for test coverage(requires XDebug extension!)
+  --cover-report=dir                Sets coverage report directory
+  --cover-exclude=path1;path2       Sets paths delimitered with ';' which should be excluded
+                                    from coverage analysis
 
 $version
 
@@ -111,7 +113,7 @@ EOD;
 
   static function getShortOpts()
   {
-    return 'hvI:c:C:';
+    return 'hvI:c:C:M:';
   }
 
   static function getLongOpts()
@@ -190,8 +192,9 @@ EOD;
         case '--cover-exclude':
           $cover_exclude = $option[1];
           break;
+        case 'M':
         case '--methods':
-          lmbTestOptions :: set('methods_filter', explode(',', $option[1]));
+          lmbTestOptions :: set('methods_filter', array_map('trim', explode(',', trim($option[1]))));
           break;
       }
     }
