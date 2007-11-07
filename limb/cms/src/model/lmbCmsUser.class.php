@@ -25,8 +25,7 @@ class lmbCmsUser extends lmbActiveRecord
   protected function _createValidator()
   {
     $validator = new lmbValidator();
-    $validator->addRequiredRule('first_name');
-    $validator->addRequiredRule('last_name');
+    $validator->addRequiredRule('name');
     $validator->addRequiredRule('login');
     $validator->addRequiredRule('email');
 
@@ -90,11 +89,6 @@ class lmbCmsUser extends lmbActiveRecord
   function setLoggedIn($logged_in)
   {
     $this->is_logged_in = $logged_in;
-  }
-
-  function getFullName()
-  {
-    return $this->getLastName() . ' ' . $this->getFirstName() . ' ' . $this->getMiddleName();
   }
 
   function cryptPassword($password)
