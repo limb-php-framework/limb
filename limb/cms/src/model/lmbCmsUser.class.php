@@ -29,9 +29,6 @@ class lmbCmsUser extends lmbActiveRecord
     $validator->addRequiredRule('login');
     $validator->addRequiredRule('email');
 
-    lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
-    $validator->addRule(new lmbMatchRule('password', 'password_repeat'));
-
     lmb_require('limb/cms/src/validation/rule/lmbCmsUserUniqueFieldRule.class.php');
     $validator->addRule(new lmbCmsUserUniqueFieldRule('login', $this));
     $validator->addRule(new lmbCmsUserUniqueFieldRule('email', $this));
@@ -45,6 +42,8 @@ class lmbCmsUser extends lmbActiveRecord
   {
     $validator = $this->_createValidator();
     $validator->addRequiredRule('password');
+    lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
+    $validator->addRule(new lmbMatchRule('password', 'repeat_password'));
     return $validator;
   }
 
