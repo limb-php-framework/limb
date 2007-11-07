@@ -15,7 +15,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6455 2007-10-26 06:50:27Z serega $
+ * @version $Id: lmbController.class.php 6497 2007-11-07 13:27:32Z serega $
  */
 class lmbController extends lmbAbstractController
 {
@@ -146,23 +146,6 @@ class lmbController extends lmbAbstractController
   function redirect($params_or_url = array(), $route_url = null)
   {
     $this->toolkit->redirect($params_or_url, $route_url);
-  }
-
-  function forward($controller_name, $action)
-  {
-    $controller = $this->toolkit->createController($controller_name);
-    $controller->setCurrentAction($action);
-    return $controller->performAction();
-  }
-
-  function forwardTo404()
-  {
-    return $this->forward('not_found', 'display');
-  }
-
-  function forwardTo500()
-  {
-    return $this->forward('server_error', 'display');
   }
 
   function flashError($message)

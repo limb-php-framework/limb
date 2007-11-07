@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 6347 2007-10-01 13:17:18Z pachanga $
+ * @version $Id: lmbAbstractController.class.php 6497 2007-11-07 13:27:32Z serega $
  * @package web_app
  */
 abstract class lmbAbstractController
@@ -147,17 +147,26 @@ abstract class lmbAbstractController
       return $this->action_template_map[$this->name][$action];
 
     $template_format = $this->getName() . '/' . $action . '%s';
+    
+    if($template_path = $this->_findTemplateByFormat($template_format));
+    {
+      $this->map_changed = true;
+      $this->action_template_map[$this->name][$action] = $template_path;
+      return $template_path;
+    }
 
+    $this->action_template_map[$this->name][$action] = false;
+  }
+  
+  protected function _findTemplateByFormat($template_format)
+  {
     foreach($this->toolkit->getSupportedViewExtensions() as $ext)
     {
       if($template_path = $this->toolkit->locateTemplateByAlias(sprintf($template_format, $ext)))
       {
-        $this->map_changed = true;
-        $this->action_template_map[$this->name][$action] = $template_path;
         return $template_path;
       }
     }
-    $this->action_template_map[$this->name][$action] = false;
   }
 
   static function performCommand()
@@ -165,6 +174,23 @@ abstract class lmbAbstractController
     $args = func_get_args();
     $class_path = new lmbClassPath(array_shift($args));
     return $class_path->createObject($args)->perform();
+  }
+  
+  function forward($controller_name, $action)
+  {
+    $controller = $this->toolkit->createController($controller_name);
+    $controller->setCurrentAction($action);
+    return $controller->performAction();
+  }
+
+  function forwardTo404()
+  {
+    return $this->forward('not_found', 'display');
+  }
+
+  function forwardTo500()
+  {
+    return $this->forward('server_error', 'display');
   }
 }
 
