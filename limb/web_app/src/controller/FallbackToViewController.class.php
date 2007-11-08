@@ -27,7 +27,7 @@ class FallbackToViewController extends lmbAbstractController
     $toolkit = lmbToolkit :: instance();
     $path = trim($toolkit->getRequest()->getUriPath(), '/');
     
-    if($template_path = $this->_findTemplateByFormat($path . '%s'))
+    if($template_path = $this->_findTemplateByAlias($path))
     {      
       $view = $this->toolkit->createViewByTemplate($template_path);
       $this->toolkit->setView($view);

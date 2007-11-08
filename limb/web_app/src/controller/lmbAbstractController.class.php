@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
 /**
  * Base class for all controllers
  *
- * @version $Id: lmbAbstractController.class.php 6497 2007-11-07 13:27:32Z serega $
+ * @version $Id: lmbAbstractController.class.php 6502 2007-11-08 07:33:43Z serega $
  * @package web_app
  */
 abstract class lmbAbstractController
@@ -146,9 +146,9 @@ abstract class lmbAbstractController
     if(isset($this->action_template_map[$this->name]) && isset($this->action_template_map[$this->name][$action]))
       return $this->action_template_map[$this->name][$action];
 
-    $template_format = $this->getName() . '/' . $action . '%s';
+    $template_format = $this->getName() . '/' . $action;
     
-    if($template_path = $this->_findTemplateByFormat($template_format));
+    if($template_path = $this->_findTemplateByAlias($template_format));
     {
       $this->map_changed = true;
       $this->action_template_map[$this->name][$action] = $template_path;
@@ -158,11 +158,11 @@ abstract class lmbAbstractController
     $this->action_template_map[$this->name][$action] = false;
   }
   
-  protected function _findTemplateByFormat($template_format)
+  protected function _findTemplateByAlias($template_format)
   {
     foreach($this->toolkit->getSupportedViewExtensions() as $ext)
     {
-      if($template_path = $this->toolkit->locateTemplateByAlias(sprintf($template_format, $ext)))
+      if($template_path = $this->toolkit->locateTemplateByAlias($template_format . $ext))
       {
         return $template_path;
       }

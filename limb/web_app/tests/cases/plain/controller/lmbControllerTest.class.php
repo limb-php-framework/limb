@@ -117,6 +117,17 @@ class lmbControllerTest extends UnitTestCase
     $controller->performAction();
     $this->assertTrue($this->toolkit->getView()->getTemplate(), 'testing/detail.html');
   }
+  
+  function testGuessingTemplateWorksOkForActionWithPercentageSymbol()
+  {
+    $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
+
+    $controller = new TestingController();
+    $controller->setCurrentAction('detail%28');
+
+    $controller->performAction();
+    $this->assertTrue($this->toolkit->getView()->getTemplate(), 'testing/detail%28.html');
+  }  
 
   function testControllerAttributesAutomaticallyPassedToView()
   {
@@ -142,17 +153,6 @@ class lmbControllerTest extends UnitTestCase
 
     $controller = new TestingController();
     $this->assertTrue($controller->actionExists('detail'));
-  }
-
-  function setTemplateIfItExistsBeforePerformingAction()
-  {
-    $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
-
-    $controller = new TestingController();
-    $controller->setCurrentAction('detail');
-
-    $controller->performAction();
-    $this->assertTrue($controller->template_name, 'testing/detail.html');
   }
 
   function testValidateOk()
