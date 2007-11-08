@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
  * class lmbMacroUcFirstFilter.
  *
  * @filter ucfirst
+ * @aliases capitalize
  * @package macro
  * @version $Id$
  */ 

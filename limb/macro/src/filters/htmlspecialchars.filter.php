@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
  * class lmbMacroHtmlSpecialCharsFilter.
  *
  * @filter htmlspecialchars
+ * @aliases html
  * @package macro
  * @version $Id$
  */ 

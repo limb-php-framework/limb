@@ -18,6 +18,7 @@ class lmbMacroFilterInfo
   protected $name = '';
   protected $class = '';
   protected $file;
+  protected $aliases = array();
 
   function __construct($name, $class)
   {
@@ -33,6 +34,13 @@ class lmbMacroFilterInfo
     $filter = $annotations['filter'];
     $info = new lmbMacroFilterInfo($filter, $class);
 
+    if(isset($annotations['aliases']))
+    {
+      $filter_aliases = explode(',' , $annotations['aliases']);
+      $filter_aliases = array_map('trim', $filter_aliases);
+      $info->setAliases($filter_aliases);
+    }
+    
     $info->setFile($file);
 
     return $info;
@@ -62,6 +70,16 @@ class lmbMacroFilterInfo
   function getFile()
   {
     return $this->file;
+  }
+  
+  function setAliases($aliases)
+  {
+    $this->aliases = $aliases;
+  }
+  
+  function getAliases()
+  {
+    return $this->aliases;
   }
 }
 

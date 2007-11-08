@@ -26,5 +26,14 @@ class lmbMacroNumberFormatFilterTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, '1 234,56');
   }
+
+  function testAlias()
+  {
+    $code = '{$#var|number:2,","," "}';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', 1234.56);
+    $out = $tpl->render();
+    $this->assertEqual($out, '1 234,56');
+  }
 }
 

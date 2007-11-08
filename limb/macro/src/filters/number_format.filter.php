@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
  * class lmbMacroNumberFormatFilter.
  *
  * @filter number_format
+ * @aliases number
  * @package macro
  * @version $Id$
  */ 

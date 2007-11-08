@@ -29,6 +29,19 @@ class lmbMacroFilterDictionaryTest extends UnitTestCase
     $this->assertIsA($dictionary->findFilterInfo('testtag'), 'lmbMacroFilterInfo');
   }
 
+  function testFindFilterInfoByAlias()
+  {
+    $filter_info = new lmbMacroFilterInfo('testtag', 'SomeFilterClass');
+    $filter_info->setAliases(array('testtag_alias', 'testtag_alias2'));
+    $dictionary = new lmbMacroFilterDictionary();
+    $dictionary->register($filter_info, $file = 'whatever');
+
+    $this->assertIsA($dictionary->findFilterInfo('testtag'), 'lmbMacroFilterInfo');
+    $this->assertIsA($dictionary->findFilterInfo('testtag_alias'), 'lmbMacroFilterInfo');
+    $this->assertIsA($dictionary->findFilterInfo('testtag_alias2'), 'lmbMacroFilterInfo');
+  }
+  
+
   function testRegisterFilterInfoOnceOnly()
   {
     $dictionary = new lmbMacroFilterDictionary();
@@ -56,6 +69,7 @@ class lmbMacroFilterDictionaryTest extends UnitTestCase
 <?php
 /**
  * @filter foo_{$rnd}
+ * @aliases foo1_{$rnd}, foo2_{$rnd} 
  */
 class Foo{$rnd}Filter extends lmbMacroFilter{}
 
@@ -67,6 +81,7 @@ EOD;
     file_put_contents($file = LIMB_VAR_DIR . '/filters/' . $rnd . '.filter.php', $contents);
 
     $filter_info1 = new lmbMacroFilterInfo("foo_$rnd", "Foo{$rnd}Filter");
+    $filter_info1->setAliases(array("foo1_$rnd", "foo2_$rnd"));
     $filter_info1->setFile($file);
     $filter_info2 = new lmbMacroFilterInfo("bar_$rnd", "Bar{$rnd}Filter");
     $filter_info2->setFile($file);
@@ -75,6 +90,7 @@ EOD;
     $dictionary->registerFromFile($file);
 
     $this->assertEqual($dictionary->findFilterInfo("foo_$rnd"), $filter_info1);
+    $this->assertEqual($dictionary->findFilterInfo("foo1_$rnd"), $filter_info1);
     $this->assertEqual($dictionary->findFilterInfo("bar_$rnd"), $filter_info2);
   }
 }

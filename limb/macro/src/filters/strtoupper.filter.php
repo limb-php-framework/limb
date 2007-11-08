@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
  * class lmbMacroStrToUpperFilter.
  *
  * @filter strtoupper
+ * @aliases uppercase
  * @package macro
  * @version $Id$
  */ 

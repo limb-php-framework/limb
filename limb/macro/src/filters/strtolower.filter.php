@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
  * class lmbMacroStrToLowerFilter.
  *
  * @filter strtolower
+ * @aliases lowercase
  * @package macro
  * @version $Id$
  */ 

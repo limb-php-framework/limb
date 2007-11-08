@@ -47,12 +47,23 @@ class lmbMacroFilterDictionary
 
   function register($filter_info)
   {
-    $name_to_lower = strtolower($filter_info->getName());
-
-    if(isset($this->info[$name_to_lower]))
-      return;
-
-    $this->info[$name_to_lower] = $filter_info;
+    $names = array(strtolower($filter_info->getName()));
+    
+    $aliases = $filter_info->getAliases();
+    if(count($aliases))
+    {
+      $aliases = array_map('strtolower', $aliases);
+      
+      $names = array_merge($names, $aliases);
+    }
+    
+    foreach($names as $filter_name)
+    {
+      if(isset($this->info[$filter_name]))
+        return;
+  
+      $this->info[$filter_name] = $filter_info;
+    }
   }
 
   function registerFromFile($file)
