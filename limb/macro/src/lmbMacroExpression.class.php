@@ -18,10 +18,6 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
 {
   protected $tmp;
 
-  // used for parsing expression path items
-  protected $text;
-  protected $position;
-
   function __construct($expression_str)
   {
     $this->expression_str = $expression_str;
@@ -40,6 +36,7 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
     }
 
     $expr = '';
+    
     $items = $this->_extractExpressionPathItems($this->expression_str);
 
     //first item is variable itself
@@ -65,59 +62,44 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
 
   protected function _extractExpressionPathItems($text)
   {
-    $this->text = $text;
-    $length = strlen($text);
+    $tokens = token_get_all('<?php ' . $text . '?>');
+    // removing first and last tokens since we just added them with the line above
+    array_shift($tokens);
+    array_pop($tokens);
 
     $path_items = array();
-    do
+    $in_function = false;
+    
+    $item = '';
+    foreach($tokens as $token)
     {
-      $token = $this->_getToken('/\G("|\'|\.|[^\'"\.]+)/u');
-      if ($token === FALSE)
+      if(is_scalar($token))
       {
-        $path_items[] = $this->text;
-        break;
+        if($token == '(')
+          $in_function = true;
+        if($token == ')')
+          $in_function = false;
+        if($token == '.' && !$in_function)
+        {
+          $path_items[] = $item;
+          $item = '';
+          continue;
+        }
+        
+        $item .= $token;
       }
-
-      if ($token == '"' || $token == "'")
-      {
-        $string = $this->_getToken('/\G([^' . $token . ']*)' . $token . ',?/u');
-
-        if ($string === FALSE)
-          $this->context->raise("Expecting a closing quote in expression path item: " . $text);
-      }
-      elseif($token == '.')
-      {
-        $path_items[] = substr($this->text, 0, $this->position - 1);
-        $this->text = substr($this->text, $this->position);
-        $length = strlen($this->text);
-        $this->position = 0;
-      }
+      else
+        $item .= $token[1];
     }
-    while($this->position < $length);
-
-    //ensures the last filter expression added
-    $path_items[] = substr($this->text, 0, $this->position );
-    $this->text = substr($this->text, $this->position);
-    $length = strlen($this->text);
-    $this->position = 0;
-
+    
+    $path_items[] = $item;
+    
     return $path_items;
   }
 
   function getValue()
   {
     return $this->tmp;
-  }
-
-  protected function _getToken($pattern)
-  {
-    if (preg_match($pattern, $this->text, $match, PREG_OFFSET_CAPTURE, $this->position))
-    {
-      $this->position += strlen($match[0][0]);
-      return $match[1][0];
-    }
-    else
-      return FALSE;
   }
 }
 

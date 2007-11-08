@@ -187,24 +187,26 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<h1>}</h1>');
   }
 
-  function ToDo_testComplexVariableWithPathsInInFuncParamsInOutputExpression()
+  // Test that concat operation in function call is just concat operation 
+  function testComplexFuncParamsWithConcatOperationInOutputExpression()
   {
-    $code = '<h1>{$#bar->func2($#foo.var1, $#foo.var2).extra}</h1>';
+    $code = '<h1>{$#bar->func3($#foo["var1.var3"]["var"] . $#foo["var2"]).extra}</h1>';
     $tpl = $this->_createMacroTemplate($code, 'tpl.html');
     $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
-    $tpl->set('foo', array('var1' => 10, 'var2' => 20));
+    $tpl->set('foo', $var = array('var1.var3' => 10, 'var2' => 20));
+    
     $out = $tpl->render();
-    $this->assertEqual($out, '<h1>10 - 20</h1>');
+    $this->assertEqual($out, '<h1>20</h1>');
   }
 
-  function ToDo_testNestedExpressionPaths()
+  function testNestedExpressionPaths()
   {
-    $code = '<h1>{$#bar->func2($#foo.func2(10, 20), "aaa")}</h1>';
+    $code = '<h1>{$#bar->func2($#foo->func2(10, 20), "aaa")}</h1>';
     $tpl = $this->_createMacroTemplate($code, 'tpl.html');
     $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
     $tpl->set('foo', new lmbMacroOutputExpressionTestClass());
     $out = $tpl->render();
-    $this->assertEqual($out, '<h1>10 - 20 - "aaa"</h1>');
+    $this->assertEqual($out, '<h1>10 - 20 - aaa</h1>');
   }
 
 }
