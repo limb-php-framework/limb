@@ -2,11 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-@define('PHPMAILER_DIR', dirname(__FILE__) . '/../lib/phpmailer-1.72/');
+@define('PHPMAILER_DIR', dirname(__FILE__) . '/../lib/phpmailer-1.73/');
 @define('LIMB_USE_PHPMAIL', false);
 @define('LIMB_SMTP_PORT', '25');
 @define('LIMB_SMTP_HOST', 'localhost');
@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbMailer.class.php 6503 2007-11-08 10:05:03Z wiliam $
  */
 class lmbMailer
 {
