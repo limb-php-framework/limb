@@ -199,7 +199,7 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<h1>20</h1>');
   }
 
-  function testNestedExpressionPaths()
+  function testNestedFunctionCalls()
   {
     $code = '<h1>{$#bar->func2($#foo->func2(10, 20), "aaa")}</h1>';
     $tpl = $this->_createMacroTemplate($code, 'tpl.html');

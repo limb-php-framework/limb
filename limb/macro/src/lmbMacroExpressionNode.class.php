@@ -85,6 +85,7 @@ class lmbMacroExpressionNode  implements lmbMacroExpressionInterface
 
     $filter_class = $filter_info->getClass();
     $filter = new $filter_class($base);
+    $filter->setParams($params);
     return $filter;
   }
 

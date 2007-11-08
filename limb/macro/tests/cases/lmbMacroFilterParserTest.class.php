@@ -26,9 +26,9 @@ class lmbMacroFilterParserTest extends UnitTestCase
   function testName()
   {
     $filters = $this->parser->parse($expression = 'filter');
-    $this->assertEqual($filters, array('filter' => array('name' => 'filter',
-                                                         'expression' => 'filter',
-                                                         'params' => "")));
+    $this->assertEqual($filters, array(array('name' => 'filter',
+                                             'expression' => 'filter',
+                                             'params' => array())));
   }
 
   function testEmptyName()
@@ -79,58 +79,58 @@ class lmbMacroFilterParserTest extends UnitTestCase
   function testOneParam()
   {
     $filters = $this->parser->parse($expression = 'filter:$arg');
-    $this->assertEqual($filters, array('filter' => array('name' => 'filter',
-                                                         'expression' => 'filter:$arg',
-                                                         'params' => '$arg')));
+    $this->assertEqual($filters, array(array('name' => 'filter',
+                                             'expression' => 'filter:$arg',
+                                             'params' => array('$arg'))));
   }
 
   function testTwoParams()
   {
     $filters = $this->parser->parse($expression = 'filter:$arg1,"arg2"');
-    $this->assertEqual($filters, array('filter' => array('name' => 'filter',
-                                                         'expression' => 'filter:$arg1,"arg2"',
-                                                         'params' => '$arg1,"arg2"')));
+    $this->assertEqual($filters, array(array('name' => 'filter',
+                                             'expression' => 'filter:$arg1,"arg2"',
+                                             'params' => array('$arg1','"arg2"'))));
   }
 
   function testSpaceInParams()
   {
     $filters = $this->parser->parse($expression = 'filter:" "');
-    $this->assertEqual($filters, array('filter' => array('name' => 'filter',
-                                                         'expression' => 'filter:" "',
-                                                         'params' => '" "')));
+    $this->assertEqual($filters, array(array('name' => 'filter',
+                                             'expression' => 'filter:" "',
+                                             'params' => array('" "'))));
   }
 
   function testTwoFiltersNoParams()
   {
     $filters = $this->parser->parse($expression = 'filter1|filter2');
-    $this->assertEqual($filters, array('filter1' => array('name' => 'filter1',
-                                                         'expression' => 'filter1',
-                                                         'params' => ''),
-                                       'filter2' => array('name' => 'filter2',
-                                                         'expression' => 'filter2',
-                                                         'params' => '')));
+    $this->assertEqual($filters, array(array('name' => 'filter1',
+                                             'expression' => 'filter1',
+                                             'params' => array()),
+                                       array('name' => 'filter2',
+                                             'expression' => 'filter2',
+                                             'params' => array())));
   }
 
   function testTwoFiltersWithParams()
   {
     $filters = $this->parser->parse($expression = 'filter1: $arg1, arg2 |filter2: arg3');
-    $this->assertEqual($filters, array('filter1' => array('name' => 'filter1',
-                                                         'expression' => 'filter1: $arg1, arg2 ',
-                                                         'params' => ' $arg1, arg2 '),
-                                       'filter2' => array('name' => 'filter2',
-                                                         'expression' => 'filter2: arg3',
-                                                         'params' => ' arg3')));
+    $this->assertEqual($filters, array(array('name' => 'filter1',
+                                             'expression' => 'filter1: $arg1, arg2 ',
+                                             'params' => array(' $arg1',' arg2 ')),
+                                       array('name' => 'filter2',
+                                             'expression' => 'filter2: arg3',
+                                             'params' => array(' arg3'))));
   }
 
   function testTwoFiltersWithSeparatorInParams()
   {
     $filters = $this->parser->parse($expression = 'filter1: "x|y", arg2 |filter2: arg3');
-    $this->assertEqual($filters, array('filter1' => array('name' => 'filter1',
-                                                         'expression' => 'filter1: "x|y", arg2 ',
-                                                         'params' => ' "x|y", arg2 '),
-                                       'filter2' => array('name' => 'filter2',
-                                                         'expression' => 'filter2: arg3',
-                                                         'params' => ' arg3')));
+    $this->assertEqual($filters, array(array('name' => 'filter1',
+                                             'expression' => 'filter1: "x|y", arg2 ',
+                                             'params' => array(' "x|y"',' arg2 ')),
+                                       array('name' => 'filter2',
+                                             'expression' => 'filter2: arg3',
+                                             'params' => array(' arg3'))));
   }
 }
 

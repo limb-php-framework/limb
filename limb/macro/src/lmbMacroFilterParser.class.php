@@ -59,9 +59,10 @@ class lmbMacroFilterParser
     $this->position = 0;
 
     $filters_expressions = $this->_extractFiltersExpressions();
-
+    
     foreach($filters_expressions as $filter_expression)
     {
+      $filter_spec = array();
       $result = preg_match('/\G\s*([A-Za-z][A-Za-z0-9_.]*)/u', $filter_expression, $match, PREG_OFFSET_CAPTURE);
 
       if(!$result)
@@ -69,13 +70,16 @@ class lmbMacroFilterParser
 
       $position = $match[0][1];
       $filter_name = $match[1][0];
-      $filters[$filter_name] = array('name' => $filter_name,
-                                     'expression' => $filter_expression,
-                                     'params' => "");
+      $filter_spec = array('name' => $filter_name,
+                           'expression' => $filter_expression,
+                           'params' => array());
 
       $params_expression = substr($filter_expression, strlen($filter_name));
       if(!$params_expression)
+      {
+        $filters[] = $filter_spec;
         continue;
+      }
 
       if(strlen($params_expression))
       {
@@ -84,14 +88,55 @@ class lmbMacroFilterParser
           $this->context->raise('Unexpected symbol after filter name');
       }
 
-      $params = substr($params_expression, $params_start_position + 1);
-      if (strlen($params) == 0)
+      $params_str = substr($params_expression, $params_start_position + 1);
+      if (strlen($params_str) == 0)
         $this->context->raise('Filter params expected after ":" symbol');
 
-      $filters[$filter_name]['params'] = $params;
+      $filter_spec['params'] = $this->_parseParams($params_str);
+      $filters[] = $filter_spec; 
     }
 
     return $filters;
+  }
+  
+  protected function _parseParams($params_string)
+  {
+    $params = array();
+    
+    $length = strlen($params_string);
+    $this->position = 0;
+    $this->text = $params_string;
+
+    do
+    {
+      $token = $this->getToken('/\G("|\'|,|[^\'",]+)/u');
+      if ($token === FALSE)
+      {
+        $filters_expressions[] = $this->text;
+        break;
+      }
+
+      if ($token == '"' || $token == "'")
+      {
+        $string = $this->getToken('/\G([^' . $token . ']*' . $token . ')/u');
+
+        if ($string === FALSE)
+          $this->context->raise("Expecting a string literal in filter param");
+      }
+      elseif($token == ',')
+      {
+        $params[] = substr($this->text, 0, $this->position - 1);
+        $this->text = substr($this->text, $this->position);
+        $length = strlen($this->text);
+        $this->position = 0;
+      }
+    }
+    while($this->position < $length);
+
+    //ensures the last param added
+    $params[] = substr($this->text, 0, $this->position );
+    
+    return $params;
   }
 
   protected function _extractFiltersExpressions()
@@ -128,9 +173,6 @@ class lmbMacroFilterParser
 
     //ensures the last filter expression added
     $filters_expressions[] = substr($this->text, 0, $this->position );
-    $this->text = substr($this->text, $this->position);
-    $length = strlen($this->text);
-    $this->position = 0;
 
     return $filters_expressions;
   }

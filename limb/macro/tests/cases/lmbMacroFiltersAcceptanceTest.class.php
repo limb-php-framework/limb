@@ -27,7 +27,10 @@ class MacroFilterZooTest extends lmbMacroFilter
 {
   function getValue()
   {
-    return 'trim(' . $this->base->getValue() . ')';
+    if(!isset($this->params[0]))
+      return 'trim(' . $this->base->getValue() . ')';
+    else
+      return 'trim(' . $this->base->getValue() . ', ' . $this->params[0] . ')';
   }
 }
 
@@ -55,6 +58,25 @@ class lmbMacroFiltersTest extends lmbBaseMacroTest
     $code = '{$#var|trim|uppercase}';
     $tpl = $this->_createMacroTemplate($code, 'tpl.html');
     $tpl->set('var', '  hello  ');
+    $out = $tpl->render();
+    $this->assertEqual($out, 'HELLO');
+  }
+  
+  function testFilterWithParams()
+  {
+    $code = '{$#var|trim|trim:"/"|uppercase}';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', '  /hello/  ');
+    $out = $tpl->render();
+    $this->assertEqual($out, 'HELLO');
+  }
+
+  function testFilterWithVariablesInParams()
+  {
+    $code = '{$#var|trim|trim:$#foo|uppercase}';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', '  /hello/  ');
+    $tpl->set('foo', '/');
     $out = $tpl->render();
     $this->assertEqual($out, 'HELLO');
   }
