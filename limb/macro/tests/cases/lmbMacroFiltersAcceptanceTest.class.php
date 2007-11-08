@@ -80,5 +80,16 @@ class lmbMacroFiltersTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, 'HELLO');
   }
+
+  function testFilterWithPHPCodeInParams()
+  {
+    $code = '{$#var|trim|trim:$#foo . $#bar|uppercase}';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', '  #/hello/#  ');
+    $tpl->set('foo', '/');
+    $tpl->set('bar', '#');
+    $out = $tpl->render();
+    $this->assertEqual($out, 'HELLO');
+  }
 }
 
