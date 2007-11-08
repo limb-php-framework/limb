@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*
  * Limb PHP Framework
  *
@@ -7,15 +7,15 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */ 
 lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
- 
+
 /**
- * class lmbMacroTrimFilter.
+ * class lmbMacroUcFirstFilter.
  *
- * @filter trim
+ * @filter ucfirst
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroTrimFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroUcFirstFilter extends lmbMacroPhpFunctionBasedFilter
 {
-  protected $function = 'trim';
+  protected $function = 'ucfirst';
 } 

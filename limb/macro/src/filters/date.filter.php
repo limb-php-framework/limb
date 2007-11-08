@@ -6,16 +6,19 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */ 
-lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
+lmb_require('limb/macro/src/lmbMacroFilter.class.php');
  
 /**
- * class lmbMacroTrimFilter.
+ * class lmbMacroDateFilter.
  *
- * @filter trim
+ * @filter date
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroTrimFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroDateFilter extends lmbMacroFilter
 {
-  protected $function = 'trim';
+  function getValue()
+  {
+    return 'date(' . $this->params[0].', ' . $this->base->getValue() . ')';
+  }  
 } 

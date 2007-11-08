@@ -38,7 +38,7 @@ class lmbMacroFilterDictionary
     $dirs = $config->getFiltersScanDirectories();
     foreach($dirs as $dir)
     {
-      foreach(lmb_glob($dir . '/*.tag.php') as $file)
+      foreach(lmb_glob($dir . '/*.filter.php') as $file)
         $dictionary->registerFromFile($file);
     }
 

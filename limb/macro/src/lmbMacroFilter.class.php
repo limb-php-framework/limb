@@ -17,7 +17,7 @@ lmb_require('limb/macro/src/lmbMacroExpressionInterface.interface.php');
 abstract class lmbMacroFilter implements lmbMacroExpressionInterface
 {
   protected $base;
-  protected $params;
+  protected $params = array();
 
   function __construct($base)
   {

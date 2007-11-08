@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*
  * Limb PHP Framework
  *
@@ -7,15 +7,15 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */ 
 lmb_require('limb/macro/src/filters/lmbMacroPhpFunctionBasedFilter.class.php');
- 
+
 /**
- * class lmbMacroTrimFilter.
+ * class lmbMacroNumberFormatFilter.
  *
- * @filter trim
+ * @filter number_format
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroTrimFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroNumberFormatFilter extends lmbMacroPhpFunctionBasedFilter
 {
-  protected $function = 'trim';
+  protected $function = 'number_format';
 } 
