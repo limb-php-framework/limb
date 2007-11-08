@@ -170,6 +170,24 @@ class lmbSetTest extends UnitTestCase
     $this->assertTrue(isset($ds['foo']));
     $this->assertFalse(isset($ds['bar']));
   }
+  
+  function testImplementsMagicGetSetUnsetMethods()
+  {
+    $ds = new lmbSet();
+
+    $ds->set('foo', 'Bar');
+    $this->assertEqual($ds->foo, 'Bar');
+
+    $ds->foo = 'Zoo';
+    $this->assertEqual($ds->foo, 'Zoo');
+
+    unset($ds->foo);
+    $this->assertFalse(property_exists($ds, 'foo'));
+
+    $ds->set('foo', 'Bar');
+    $this->assertTrue(isset($ds->foo));
+    $this->assertFalse(isset($ds->bar));
+  }  
 
   function testImplementsIterator()
   {

@@ -98,7 +98,7 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
   function has($name)
   {
     if(!$this->_isGuarded($name))
-      return isset($this->$name);
+      return property_exists($this, $name);
   }
 
   function isEmpty()
