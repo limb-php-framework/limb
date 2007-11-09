@@ -51,15 +51,30 @@ class lmbMacroConfig
   {
     return $this->tags_scan_dirs;
   }
+  
+  function setTagsScanDirectories($dirs)
+  {
+    $this->tags_scan_dirs = $dirs;
+  }
 
   function getFiltersScanDirectories()
   {
     return $this->filters_scan_dirs;
   }
 
+  function setFiltersScanDirectories($dirs)
+  {
+    $this->filters_scan_dirs = $dirs;
+  }
+  
   function getTemplateScanDirectories()
   {
     return $this->tpl_scan_dirs;
+  }
+
+  function setTemplateScanDirectories($dirs)
+  {
+    $this->tpl_scan_dirs = $dirs;
   }
 }
 

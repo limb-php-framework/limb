@@ -31,19 +31,36 @@ class lmbMacroTagDictionary
     return self :: $instance;
   }
 
-  static function load(lmbMacroConfig $config)
+  function load(lmbMacroConfig $config)
   {
-    $dictionary = self :: instance();
-
-    $dirs = $config->getTagsScanDirectories();
-    foreach($dirs as $dir)
+    $config_scan_dirs = $config->getTagsScanDirectories();
+    $real_scan_dirs = array();
+    
+    foreach($config_scan_dirs as $dir)
     {
-      foreach(lmb_glob($dir . '/*.tag.php') as $file)
-        $dictionary->registerFromFile($file);
+      foreach($this->_getThisAndImmediateDirectories($dir) as $item)
+        $real_scan_dirs[] = $item;
+    }
+    
+    foreach($real_scan_dirs as $scan_dir)
+    {
+      foreach(lmb_glob($scan_dir . '/*.tag.php') as $file)
+        $this->registerFromFile($file);
+    }
+  }
+
+  function _getThisAndImmediateDirectories($dir)
+  {
+    $dirs = array();
+    foreach(lmb_glob("$dir/*") as $item) {
+      if($item{0} != '.' && is_dir($item))
+        $dirs[] = $item;
     }
 
-    return $dictionary;
-  }
+    $dirs[] = $dir;
+
+    return $dirs;
+  }  
 
   function register($taginfo)
   {

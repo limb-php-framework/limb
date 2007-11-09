@@ -96,8 +96,11 @@ class lmbMacroTemplate
 
   protected function _createCompiler()
   {
-    $tag_dictionary = lmbMacroTagDictionary :: load($this->config);
-    $filter_dictionary = lmbMacroFilterDictionary :: load($this->config);
+    $tag_dictionary = lmbMacroTagDictionary :: instance();
+    $filter_dictionary = lmbMacroFilterDictionary :: instance();
+    $tag_dictionary->load($this->config);
+    $filter_dictionary->load($this->config);
+
     return new lmbMacroCompiler($tag_dictionary, $this->locator, $filter_dictionary);
   }
 }

@@ -31,18 +31,14 @@ class lmbMacroFilterDictionary
     return self :: $instance;
   }
 
-  static function load(lmbMacroConfig $config)
+  function load(lmbMacroConfig $config)
   {
-    $dictionary = self :: instance();
-
     $dirs = $config->getFiltersScanDirectories();
     foreach($dirs as $dir)
     {
       foreach(lmb_glob($dir . '/*.filter.php') as $file)
-        $dictionary->registerFromFile($file);
+        $this->registerFromFile($file);
     }
-
-    return $dictionary;
   }
 
   function register($filter_info)
