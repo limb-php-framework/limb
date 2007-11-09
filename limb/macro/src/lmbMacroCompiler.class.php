@@ -12,6 +12,9 @@ lmb_require('limb/macro/src/lmbMacroNode.class.php');
 lmb_require('limb/macro/src/lmbMacroParser.class.php');
 lmb_require('limb/macro/src/lmbMacroCodeWriter.class.php');
 
+lmb_require('limb/macro/src/lmbMacroTag.class.php');
+lmb_require('limb/macro/src/lmbMacroPassiveTag.class.php');
+
 /**
  * class lmbMacroCompiler.
  *

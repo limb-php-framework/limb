@@ -59,6 +59,12 @@ class lmbMacroTag extends lmbMacroNode
 
     return $this->id;
   }
+  
+  function getEscapedId()
+  {
+    $id = $this->getId();
+    return "'" .  $id . "'";
+  }
 
   function get($name)
   {
@@ -70,13 +76,14 @@ class lmbMacroTag extends lmbMacroNode
 
   function getEscaped($name)
   {
-    if($value = $this->get($name))
-    {
-      if($this->isDynamic($name))
-        return $value;
-      else
-        return "'" .  $value . "'";
-    }
+    if(!$this->has($name))
+      return;
+      
+    $value = $this->get($name);
+    if($this->isDynamic($name))
+      return $value;
+    else
+      return "'" .  $value . "'";
   }
 
   /**
