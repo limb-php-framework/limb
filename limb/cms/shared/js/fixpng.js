@@ -64,27 +64,35 @@
 
   jQuery.fn.ifixpng = hack.ltie7 ? function() {
       return this.each(function() {
-      var that = jQuery(this);
-      var base = jQuery('base').attr('href'); // need to use this in case you are using rewriting urls
-      if (that.is('img') || that.is('input')) { // hack image tags present in dom
-        if (that.attr('src')) {
-          if (that.attr('src').match(/.*\.png([?].*)?$/i)) { // make sure it is png image
-            // use source tag value if set
-            var source = (base && that.attr('src').substring(0,1)!='/') ? base + that.attr('src') : that.attr('src');
-            // apply filter
-            that.css({filter:hack.filter(source), width:that.width(), height:that.height()})
-              .attr({src:jQuery.ifixpng.getPixel()})
-              .positionFix();
+        var that = jQuery(this);
+        var base = jQuery('base').attr('href'); // need to use this in case you are using rewriting urls
+        if (that.is('img') || that.is('input'))// hack image tags present in dom
+        {
+          /* skip images. drop this line if u wanna fix them
+            if (that.attr('src'))
+            {
+              if (that.attr('src').match(/.*\.png([?].*)?$/i))// make sure it is png image
+              {
+                alert(that.attr('src')+' ' + that.height());
+                // use source tag value if set
+                var source = (base && that.attr('src').substring(0,1)!='/') ? base + that.attr('src') : that.attr('src');
+                // apply filter
+                that.css({filter:hack.filter(source), width:that.width(), height:that.height()})
+                  .attr({src:jQuery.ifixpng.getPixel()})
+                  .positionFix();
+              }
+            }
+          //**/
+
+        } else { // hack png css properties present inside css
+          var image = that.css('backgroundImage');
+          if (image.match(/url\("(.+\.png)"\)/i))
+          {
+            image = RegExp.$1;
+            that.css({backgroundImage:'none', filter:hack.filter(image)})
+              .children().positionFix();
           }
         }
-      } else { // hack png css properties present inside css
-        var image = that.css('backgroundImage');
-        if (image.match(/^url\(["']?(.*\.png([?].*)?)["']?\)$/i)) {
-          image = RegExp.$1;
-          that.css({backgroundImage:'none', filter:hack.filter(image)})
-            .children().positionFix();
-        }
-      }
     });
   } : function() { return this; };
 
