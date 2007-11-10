@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6495 2007-11-06 21:29:59Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6515 2007-11-10 11:52:05Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -68,6 +68,8 @@ Options:
                                     '*Test.class.php;*test.php;*Test.php' by default.
   -G, --groups=group1[,group2]      Comma separated list of test groups defined in annotations 
                                     tags which should be executed(e.g @group group1,group2) 
+  -T, --tests=Foo[,Bar]             Comma separated list of test classes which should be
+                                    executed 
   -M, --methods=testFoo[,testBar]   Comma separated list of test methods which should be
                                     executed 
   -C, --cover='path1;path2'         Sets paths delimitered with ';' which should be analyzed
@@ -115,14 +117,14 @@ EOD;
 
   static function getShortOpts()
   {
-    return 'hvI:c:C:M:G:';
+    return 'hvI:c:C:T:M:G:';
   }
 
   static function getLongOpts()
   {
     return array('help', 'version', 'include=', 'config=', 
                  'cover=', 'cover-report=', 'cover-exclude=',
-                 'methods=', 'groups=');
+                 'tests=', 'methods=', 'groups=');
   }
 
   function run()
@@ -187,6 +189,10 @@ EOD;
         case 'G':
         case '--groups':
           lmbTestOptions :: set('groups_filter', array_map('trim', explode(',', trim($option[1]))));
+          break;
+        case 'T':
+        case '--tests':
+          lmbTestOptions :: set('tests_filter', array_map('trim', explode(',', trim($option[1]))));
           break;
         case 'M':
         case '--methods':

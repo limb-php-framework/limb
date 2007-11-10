@@ -17,11 +17,11 @@
  */
 class lmbTestOptions
 {
-  static protected $valid_keys = array('file_filter', 
-                                       'methods_filter',
-                                       'groups_filter',
-                                       'verbose');
-  static protected $options = array();
+  static protected $options = array('file_filter' => LIMB_TESTS_RUNNER_FILE_FILTER,
+                           'tests_filter' => array(),
+                           'methods_filter' => array(),
+                           'groups_filter' => array(),
+                           'verbose' => false);
   static protected $has_defaults = false;
 
   static function set($name, $value)
@@ -46,17 +46,14 @@ class lmbTestOptions
     if(self :: $has_defaults)
       return;
 
-    self :: $options = array('file_filter' => LIMB_TESTS_RUNNER_FILE_FILTER,
-                            'methods_filter' => array(),
-                            'groups_filter' => array(),
-                            'verbose' => false);
+    //???
 
     self :: $has_defaults = true;
   }
 
   static protected function _check($key)
   {
-    if(!in_array($key, self :: $valid_keys))
+    if(!in_array($key, array_keys(self :: $options)))
       throw new Exception("Test option '$key' is not supported");
   }
 }

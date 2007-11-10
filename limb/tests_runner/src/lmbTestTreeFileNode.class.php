@@ -13,7 +13,7 @@ require_once(dirname(__FILE__). '/lmbTestUserException.class.php');
  * class lmbTestTreeFileNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeFileNode.class.php 6491 2007-11-06 20:17:33Z pachanga $
+ * @version $Id: lmbTestTreeFileNode.class.php 6515 2007-11-10 11:52:05Z pachanga $
  */
 class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
 {
@@ -41,6 +41,14 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
      return $matches[1];
   }
 
+  protected function _isClassFiltered($class)
+  {
+    $filter = lmbTestOptions :: get('tests_filter');
+    if(!$filter)
+      return false;
+    return !in_array($class, $filter);
+  }
+
   protected function _isClassGroupFiltered($class)
   {
     if(!$groups = lmbTestOptions :: get('groups_filter'))
@@ -62,14 +70,21 @@ class lmbTestTreeFileNode extends lmbTestTreeTerminalNode
     return true;
   }
 
+  protected function _isFiltered($class)
+  {
+    return $this->_isClassFiltered($class) ||
+           $this->_isClassGroupFiltered($class);
+  }
+
   protected function _prepareTestCase($test)
   {
     require_once($this->file);
     $candidates = $this->_getClassesDefinedInFile();
+
     $loader = new SimpleFileLoader();
     foreach($loader->selectRunnableTests($candidates) as $class)
     {
-      if($this->_isClassGroupFiltered($class))
+      if($this->_isFiltered($class))
         continue;
 
       $case = new $class();
