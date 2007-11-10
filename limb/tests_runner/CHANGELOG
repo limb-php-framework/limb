@@ -1,3 +1,9 @@
+0.8.7-beta - 10 November 2007 (r6515)
+==================================================
+-- test class filter added, can be used as follows:
+    $ limb_unit --tests Foo,Bar sometest.php
+-- minor help screen improvements
+
 0.8.6-beta - 6 November 2007 (r6492)
 ==================================================
 -- adding test cases filtering by group annotation(TR-18), e.g:
