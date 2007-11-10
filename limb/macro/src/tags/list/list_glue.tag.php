@@ -32,7 +32,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
     $helper_var = $this->getHelperVar($code);
 
     $code->writePHP("if(!isset({$helper_var})){\n");
-    $code->registerInclude('limb/macro/src/helpers/lmbMacroListGlueHelper.class.php');
+    $code->registerInclude('limb/macro/src/tags/list/lmbMacroListGlueHelper.class.php');
     $code->writePHP($helper_var . " = new lmbMacroListGlueHelper();\n");
 
     if($step = $this->get('step'))
