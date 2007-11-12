@@ -19,7 +19,7 @@ class lmbMacroPagerNextTag extends lmbMacroTag
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
     
     $code->writePhp("if ({$pager}->hasNext()) {\n");
-    $code->writePhp("\$href = {$pager}->getPageUri({$pager}->getDisplayedPage() + 1 );\n");
+    $code->writePhp("\$href = {$pager}->getPageUri({$pager}->getCurrentPage() + 1 );\n");
 
     parent :: generate($code);
 

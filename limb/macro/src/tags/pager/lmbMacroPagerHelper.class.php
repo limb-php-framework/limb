@@ -20,7 +20,7 @@ class lmbMacroPagerHelper
   protected $total_items = 0;
   protected $total_page_count = 0;
   protected $page_counter = 0;
-  protected $displayed_page = 0;
+  protected $current_page = 0;
   protected $items_per_page = 20;
   protected $base_url = null;
 
@@ -34,6 +34,8 @@ class lmbMacroPagerHelper
   function __construct($id)
   {
     $this->id = $id;
+
+    $this->_initBaseUrl();
   }
 
   function prepare()
@@ -43,7 +45,7 @@ class lmbMacroPagerHelper
     if ($this->total_page_count < 1)
       $this->total_page_count = 1;
 
-    $this->_initBaseUrl();
+    $this->_initCurrentPage();
 
     $this->page_counter = 1;
   }
@@ -108,25 +110,23 @@ class lmbMacroPagerHelper
   {
     $this->items_per_page = $items;
   }
-
-  //implementing WACT pager interface
-  function getStartingItem()
+  
+  function setCurrentPage($page)
   {
-    $number = $this->getDisplayedPageBeginItem();
-    return ($number == 0) ? 0 : $number - 1;
+    $this->current_page = $page;
   }
 
-  function getDisplayedPageBeginItem()
+  function getCurrentPageBeginItem()
   {
     if($this->total_items < 1)
       return 0;
 
-    return $this->items_per_page * ($this->displayed_page - 1) + 1;
+    return $this->items_per_page * ($this->current_page - 1) + 1;
   }
 
-  function getDisplayedPageEndItem()
+  function getCurrentPageEndItem()
   {
-    $res = $this->items_per_page * $this->displayed_page;
+    $res = $this->items_per_page * $this->current_page;
 
     if($res > $this->total_items)
       return $this->total_items;
@@ -146,22 +146,22 @@ class lmbMacroPagerHelper
 
   function isFirst()
   {
-    return ($this->displayed_page == 1);
+    return ($this->current_page == 1);
   }
 
   function hasPrev()
   {
-    return ($this->displayed_page > 1);
+    return ($this->current_page > 1);
   }
 
   function hasNext()
   {
-    return ($this->displayed_page < $this->total_page_count);
+    return ($this->current_page < $this->total_page_count);
   }
 
   function isLast()
   {
-    return ($this->displayed_page == $this->total_page_count);
+    return ($this->current_page == $this->total_page_count);
   }
 
   protected function _initBaseUrl()
@@ -169,18 +169,19 @@ class lmbMacroPagerHelper
     $this->base_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
     $pos = strpos($this->base_url, '?');
     if (is_integer($pos))
-        $this->base_url = substr($this->base_url, 0, $pos);
+      $this->base_url = substr($this->base_url, 0, $pos);
+  }
+  
+  protected function _initCurrentPage()
+  {
+    if(!$this->current_page && isset($_GET[$this->id]))
+      $this->current_page = $_GET[$this->id];
 
-    $this->displayed_page = @$_GET[$this->id];
-    if (empty($this->displayed_page)) {
-        $this->displayed_page = 1;
-    }
+    if (empty($this->current_page))
+      $this->current_page = 1;
 
-    if (empty($this->displayed_page))
-      $this->displayed_page = 1;
-
-    if($this->displayed_page > $this->total_page_count)
-      $this->displayed_page = $this->total_page_count;
+    if($this->current_page > $this->total_page_count)
+      $this->current_page = $this->total_page_count;
   }
 
   function nextPage()
@@ -209,7 +210,7 @@ class lmbMacroPagerHelper
 
   function isDisplayedPage()
   {
-    return $this->page_counter == $this->displayed_page;
+    return $this->page_counter == $this->current_page;
   }
 
   function shouldDisplayPage()
@@ -221,12 +222,12 @@ class lmbMacroPagerHelper
     return (
         $this->page_counter <= $this->pages_in_sides ||
         $this->page_counter > $this->total_page_count - $this->pages_in_sides ||
-        ($this->page_counter >= $this->displayed_page - $half_windows_size &&
-        $this->page_counter <= $this->displayed_page + $half_windows_size) ||
+        ($this->page_counter >= $this->current_page - $half_windows_size &&
+        $this->page_counter <= $this->current_page + $half_windows_size) ||
         ($this->page_counter == $this->pages_in_sides + 1 &&
-        $this->page_counter == $this->displayed_page - $half_windows_size - 1) ||
+        $this->page_counter == $this->current_page - $half_windows_size - 1) ||
         ($this->page_counter == $this->total_page_count - $this->pages_in_sides &&
-        $this->page_counter == $this->displayed_page + $half_windows_size + 1));
+        $this->page_counter == $this->current_page + $half_windows_size + 1));
   }
 
   function isDisplayedSection()
@@ -244,7 +245,7 @@ class lmbMacroPagerHelper
 
   function getDisplayedSection()
   {
-    return ceil($this->displayed_page / $this->pages_per_section);
+    return ceil($this->current_page / $this->pages_per_section);
   }
 
   function getSectionUri()
@@ -277,14 +278,14 @@ class lmbMacroPagerHelper
     return $result;
   }
 
-  function getDisplayedPageUri()
+  function getCurrentPageUri()
   {
-    return $this->getPageUri($this->displayed_page);
+    return $this->getPageUri($this->current_page);
   }
 
-  function getDisplayedPage()
+  function getCurrentPage()
   {
-    return $this->displayed_page;
+    return $this->current_page;
   }
 
   function getPageUri($page = null)

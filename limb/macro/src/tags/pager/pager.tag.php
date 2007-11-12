@@ -23,6 +23,8 @@ class lmbMacroPagerTag extends lmbMacroTag
     $pager = $this->getPagerVar();
     
     $this->_generatePagerHelperWithInitialParams($code, $pager);
+
+    $code->writePhp("{$pager}->prepare();\n");
     
     $this->_generatePagerVariables($code, $pager);
     
@@ -63,8 +65,6 @@ class lmbMacroPagerTag extends lmbMacroTag
       if ($pages_per_section = $this->getEscaped('pages_per_section'))
         $code->writeToInit("{$pager}->setPagesPerSection({$pages_per_section});\n");
     }
-    
-    $code->writeToInit("{$pager}->prepare();\n");
   }
   
   protected function _generatePagerVariables($code, $pager)
@@ -72,8 +72,8 @@ class lmbMacroPagerTag extends lmbMacroTag
      $code->writePhp("\$total_items = {$pager}->getTotalItems();\n");
      $code->writePhp("\$total_pages = {$pager}->getTotalPages();\n");
      $code->writePhp("\$items_per_page = {$pager}->getItemsPerPage();\n");
-     $code->writePhp("\$begin_item_number = {$pager}->getDisplayedPageBeginItem();\n");
-     $code->writePhp("\$end_item_number = {$pager}->getDisplayedPageEndItem();\n");
+     $code->writePhp("\$begin_item_number = {$pager}->getCurrentPageBeginItem();\n");
+     $code->writePhp("\$end_item_number = {$pager}->getCurrentPageEndItem();\n");
   }
 
   function getPagerVar()
