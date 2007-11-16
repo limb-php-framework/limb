@@ -69,34 +69,14 @@ Limb.Class('CMS.Tab',
   activate: function()
   {
    this.link.className = 'active';
-   if (Limb.Browser.is_win_ie)
       jQuery(this.content).css('display','block');
-    else
-      jQuery(this.content).css({
-                          visibility:'visible',
-                          minHeight: '320px',
-                          maxHeight: '10000',
-                          padding: '10px 10px 1px',
-                          border:'1px solid #ddd',
-                          borderTop:'3px solid #7d7d7d',
-                          borderBottom: '0'
-                          })
 
   },
 
   deactivate: function()
   {
     this.link.className = '';
-    if (Limb.Browser.is_win_ie)
       jQuery(this.content).css('display','none');
-    else
-      jQuery(this.content).css({
-                          visibility:'hidden',
-                          minHeight: '0',
-                          maxHeight: '0',
-                          padding: '0',
-                          border:'0'
-                          })
 
   },
 
