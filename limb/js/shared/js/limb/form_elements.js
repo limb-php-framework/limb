@@ -156,11 +156,14 @@ Limb.Class('Limb.DoubleSelect',
   __construct: function(instanceName)
   {
     // Properties
+
     this.instanceName	= instanceName;
+
     this.select = null;
     this.srcSelect = null;
     this.dstSelect = null;
     this.replaceSelect();
+
   },
 
   replaceSelect: function()
@@ -196,7 +199,9 @@ Limb.Class('Limb.DoubleSelect',
     div.className = 'DoubleSelect';
 
     div.innerHTML = "<table><tr><td></td><td class='buttons'></td><td></td></tr></table>";
-    container = div.childNodes[0].childNodes[0].childNodes[0];
+
+    var container = div.childNodes[0].childNodes[0].childNodes[0];
+
     this.srcSelect = this.addSelector(container.childNodes[0]);
     this.makeupSelector(this.srcSelect, this.select)
     this.addButtons(container.childNodes[1]);
