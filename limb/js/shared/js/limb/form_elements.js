@@ -193,8 +193,9 @@ Limb.Class('Limb.DoubleSelect',
     this.select.style.display = 'none';
     var parent = this.select.parentNode;
     var div = this.addElement('div', parent);
+    div.className = 'DoubleSelect';
 
-    div.innerHTML = "<table><tr><td></td><td style='text-align:center;vertical-align:middle;'></td><td></td></tr></table>";
+    div.innerHTML = "<table><tr><td></td><td class='buttons'></td><td></td></tr></table>";
     container = div.childNodes[0].childNodes[0].childNodes[0];
     this.srcSelect = this.addSelector(container.childNodes[0]);
     this.makeupSelector(this.srcSelect, this.select)
@@ -229,12 +230,14 @@ Limb.Class('Limb.DoubleSelect',
     button  = this.addButton(parent);
     button.value = '>>';
     button.onclick = this.selectAll;
+    button.className = 'button';
 
     this.addElement('br', parent);
     this.addElement('br', parent);
 
     button  = this.addButton(parent);
     button.value = ' > ';
+    button.className = 'button';
     button.onclick = this.selectItems;
 
     this.addElement('br', parent);
@@ -242,6 +245,7 @@ Limb.Class('Limb.DoubleSelect',
 
     button  = this.addButton(parent);
     button.value = ' < ';
+    button.className = 'button';
     button.onclick = this.deselectItems;
 
     this.addElement('br', parent);
@@ -249,6 +253,7 @@ Limb.Class('Limb.DoubleSelect',
 
     button  = this.addButton(parent);
     button.value = '<<';
+    button.className = 'button';
     button.onclick = this.deselectAll;
   },
 
