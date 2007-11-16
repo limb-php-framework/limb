@@ -14,10 +14,12 @@ if(jQuery)
       var ul = jQuery(this).children('ul');
       ul.addClass('bookmarks');
       ul.children('li').each(function(){
-        if(this.id)
+        var oldID = this.id;
+        this.id = 'bookmark-' + this.id;
+        if(oldID)
         {
-          jQuery('#tab_' + this.id).addClass('bookmarks_content');
-          tabs.push(new CMS.Tab(this.id, 'tab_' + this.id));
+          jQuery('#tab_' + oldID).addClass('bookmarks_content');
+          tabs.push(new CMS.Tab(this.id, 'tab_' + oldID));
         }
       });
 
