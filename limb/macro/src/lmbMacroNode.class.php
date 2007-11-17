@@ -138,7 +138,25 @@ class lmbMacroNode
       }
     }
   }
+  
+  /**
+   * Sometimes it is useful to find node located in another tree branch, eg:
+   *  <code>
+   *  {{block}}{{some_tag id='tag1'}}{{/block}}
+   *  {{block}}{{some_tag id='tag2'}}{{/block}}
+   *  </code>
+   * in this case we can find tag1 tag from tag2 tag using findUpChild.
+   */
+  function findUpChild($id)
+  {
+    if($child = $this->findChild($id))
+      return $child;
 
+    if($this->parent)
+      return $this->parent->findUpChild($id);
+  }
+
+  
   function findChildByClass($class)
   {
     foreach($this->children as $child)
