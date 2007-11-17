@@ -77,6 +77,28 @@ class lmbMacroTagTest extends UnitTestCase
     $this->assertFalse($this->node->findChild('Test'));
   }
 
+  function testFindUpChild()
+  {
+    $node1 = new lmbMacroNode();
+    $node1->setId('foo');
+    $node2 = new lmbMacroNode();
+    $node2->setId('bar');
+    $parent1 = new lmbMacroNode();
+    $parent1->setId('parent1');
+    $parent2 = new lmbMacroNode();
+    $parent2->setId('parent2');
+    
+    $parent1->addChild($node1);
+    $parent2->addChild($node2);
+    
+    $this->node->addChild($parent1);
+    $this->node->addChild($parent2);
+    
+    $this->assertEqual($node2->findUpChild('foo')->getId(), $node1->getId());
+    $this->assertEqual($parent1->findUpChild('parent2')->getId(), $parent2->getId());
+    $this->assertEqual($parent1->findUpChild('foo')->getId(), $node1->getId());
+  }
+
   function testFindChildByClass()
   {
     $mock = new MockMacroNode();
