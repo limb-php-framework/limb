@@ -63,9 +63,26 @@ class lmbMacroTemplate
     {
       $this->compiled_file = $this->locator->locateCompiledTemplate($this->file);
 
-      if($this->config->isForceCompile() || !file_exists($this->compiled_file))
+      $need_compile = false;	
+
+      if (true === $this->config->isForceCompile()) {
+
+		$need_compile = true;
+		$source_file = $this->locator->locateSourceTemplate($this->file);
+
+      } else if ('auto' == $this->config->isForceCompile()) {
+
+ 		if (filemtime($source_file = $this->locator->locateSourceTemplate($this->file)) > filemtime($this->compiled_file)) {
+
+			$need_compile = true;
+
+		}
+
+      }
+
+      if($need_compile || !file_exists($this->compiled_file))
       {
-        if(!$source_file = $this->locator->locateSourceTemplate($this->file))
+        if(!$source_file)
           throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
 
         $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
