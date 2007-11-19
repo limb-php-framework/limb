@@ -19,7 +19,6 @@ lmb_require('limb/macro/src/lmbMacroAnnotationParser.class.php');
 class lmbMacroTagDictionary
 {
   protected $info = array();
-  protected $output_tag_info;
   static protected $instance;
 
   static function instance()
@@ -33,6 +32,9 @@ class lmbMacroTagDictionary
 
   function load(lmbMacroConfig $config)
   {
+    if(!$config->isForceScan() && $this->_loadCache($config))
+      return;
+
     $config_scan_dirs = $config->getTagsScanDirectories();
     $real_scan_dirs = array();
     
@@ -47,6 +49,8 @@ class lmbMacroTagDictionary
       foreach(lmb_glob($scan_dir . '/*.tag.php') as $file)
         $this->registerFromFile($file);
     }
+
+    $this->_saveCache($config);
   }
 
   function _getThisAndImmediateDirectories($dir)
@@ -62,6 +66,27 @@ class lmbMacroTagDictionary
     return $dirs;
   }  
 
+  protected function _loadCache(lmbMacroConfig $config)
+  {
+    $cache_file = $config->getCacheDir() . '/tags.cache';
+    if(!file_exists($cache_file))
+      return false;
+
+    $info = @unserialize(file_get_contents($cache_file));
+    if($info === false || !is_array($info))
+      return false;
+
+    $this->info = $info;
+
+    return true;
+  }
+
+  protected function _saveCache(lmbMacroConfig $config)
+  {
+    $cache_file = $config->getCacheDir() . '/tags.cache';
+    lmbFs :: safeWrite($cache_file, serialize($this->info));
+  }
+
   function register($tag_info)
   {
     $names = array(strtolower($tag_info->getTag()));
@@ -70,7 +95,6 @@ class lmbMacroTagDictionary
     if(count($aliases))
     {
       $aliases = array_map('strtolower', $aliases);
-      
       $names = array_merge($names, $aliases);
     }
     

@@ -1,8 +1,10 @@
 <?php
 
-include('start.inc.php');
+require_once(dirname(__FILE__) . '/profile.inc.php');
 
 $name = 'Bob';
+
+profile_start();
 
 for($i=0;$i<1000;$i++)
 {
@@ -12,5 +14,4 @@ for($i=0;$i<1000;$i++)
   ob_end_clean();
 }
 
-include('end.inc.php');
-
+profile_end("running $i iterations of include");

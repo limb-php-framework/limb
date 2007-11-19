@@ -19,7 +19,6 @@ lmb_require('limb/macro/src/lmbMacroAnnotationParser.class.php');
 class lmbMacroFilterDictionary
 {
   protected $info = array();
-  protected $output_filter_info;
   static protected $instance;
 
   static function instance()
@@ -33,12 +32,38 @@ class lmbMacroFilterDictionary
 
   function load(lmbMacroConfig $config)
   {
+    if(!$config->isForceScan() && $this->_loadCache($config))
+      return;
+
     $dirs = $config->getFiltersScanDirectories();
     foreach($dirs as $dir)
     {
       foreach(lmb_glob($dir . '/*.filter.php') as $file)
         $this->registerFromFile($file);
     }
+
+    $this->_saveCache($config);
+  }
+
+  protected function _loadCache(lmbMacroConfig $config)
+  {
+    $cache_file = $config->getCacheDir() . '/filters.cache';
+    if(!file_exists($cache_file))
+      return false;
+
+    $info = @unserialize(file_get_contents($cache_file));
+    if($info === false || !is_array($info))
+      return false;
+
+    $this->info = $info;
+
+    return true;
+  }
+
+  protected function _saveCache(lmbMacroConfig $config)
+  {
+    $cache_file = $config->getCacheDir() . '/filters.cache';
+    lmbFs :: safeWrite($cache_file, serialize($this->info));
   }
 
   function register($filter_info)
@@ -49,7 +74,6 @@ class lmbMacroFilterDictionary
     if(count($aliases))
     {
       $aliases = array_map('strtolower', $aliases);
-      
       $names = array_merge($names, $aliases);
     }
     
