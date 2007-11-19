@@ -11,6 +11,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 
 /**
  * @tag apply
+ * @req_attributes template
  * @package macro
  * @version $Id$
  */

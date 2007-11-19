@@ -12,6 +12,8 @@
  * Elipses are sed to mark omitted page numbers outside of the
  * current range of the pager e.g. ...6 7 8... (the ... are the elipses)
  * @tag pager:elipses
+ * @restrict_self_nesting
+ * @parent_tag_class lmbMacroPagerListTag
  * @package macro
  * @version $Id$
  */

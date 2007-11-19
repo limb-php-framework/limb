@@ -62,14 +62,25 @@ class lmbMacroTagDictionary
     return $dirs;
   }  
 
-  function register($taginfo)
+  function register($tag_info)
   {
-    $tag_to_lower = strtolower($taginfo->getTag());
+    $names = array(strtolower($tag_info->getTag()));
 
-    if(isset($this->info[$tag_to_lower]))
-      return;
-
-    $this->info[$tag_to_lower] = $taginfo;
+    $aliases = $tag_info->getAliases();
+    if(count($aliases))
+    {
+      $aliases = array_map('strtolower', $aliases);
+      
+      $names = array_merge($names, $aliases);
+    }
+    
+    foreach($names as $tag_name)
+    {
+      if(isset($this->info[$tag_name]))
+        return;
+  
+      $this->info[$tag_name] = $tag_info;
+    }
   }
 
   function registerFromFile($file)

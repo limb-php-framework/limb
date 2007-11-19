@@ -12,7 +12,7 @@
  * @restrict_self_nesting
  * @parent_tag_class lmbMacroPagerTag
  * @package macro
- * @version $Id: last.tag.php 6386 2007-10-05 14:22:21Z serega $
+ * @version $Id$
  */
 class lmbMacroPagerLastTag extends lmbMacroTag
 {

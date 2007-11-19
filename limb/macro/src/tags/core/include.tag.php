@@ -13,6 +13,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  * class lmbMacroIncludeTag.
  *
  * @tag include
+ * @req_attributes file
  * @package macro
  * @version $Id$
  */
@@ -24,8 +25,7 @@ class lmbMacroIncludeTag extends lmbMacroTag
 
     $locator = $compiler->getTemplateLocator();
 
-    if(!$file = $this->get('file'))
-      $this->raiseRequiredAttributeError($file);
+    $file = $this->get('file');
 
     if(!$this->_isDynamic())
     {

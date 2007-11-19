@@ -9,6 +9,8 @@
 
 /**
  * @tag pager:current
+ * @parent_tag_class lmbMacroPagerListTag
+ * @restrict_self_nesting
  * @package macro
  * @version $Id$
  */

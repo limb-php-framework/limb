@@ -13,6 +13,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  * class lmbMacroWrapTag.
  *
  * @tag wrap
+ * @req_attributes with
  * @package macro
  * @version $Id$
  */

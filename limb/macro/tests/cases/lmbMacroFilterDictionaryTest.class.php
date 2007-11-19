@@ -22,26 +22,25 @@ class lmbMacroFilterDictionaryTest extends UnitTestCase
 
   function testFindFilterInfo()
   {
-    $filter_info = new lmbMacroFilterInfo('testtag', 'SomeFilterClass');
+    $filter_info = new lmbMacroFilterInfo('testfilter', 'SomeFilterClass');
     $dictionary = new lmbMacroFilterDictionary();
     $dictionary->register($filter_info, $file = 'whatever');
 
-    $this->assertIsA($dictionary->findFilterInfo('testtag'), 'lmbMacroFilterInfo');
+    $this->assertIsA($dictionary->findFilterInfo('testfilter'), 'lmbMacroFilterInfo');
   }
 
   function testFindFilterInfoByAlias()
   {
-    $filter_info = new lmbMacroFilterInfo('testtag', 'SomeFilterClass');
-    $filter_info->setAliases(array('testtag_alias', 'testtag_alias2'));
+    $filter_info = new lmbMacroFilterInfo('testfilter', 'SomeFilterClass');
+    $filter_info->setAliases(array('testfilter_alias', 'testfilter_alias2'));
     $dictionary = new lmbMacroFilterDictionary();
     $dictionary->register($filter_info, $file = 'whatever');
 
-    $this->assertIsA($dictionary->findFilterInfo('testtag'), 'lmbMacroFilterInfo');
-    $this->assertIsA($dictionary->findFilterInfo('testtag_alias'), 'lmbMacroFilterInfo');
-    $this->assertIsA($dictionary->findFilterInfo('testtag_alias2'), 'lmbMacroFilterInfo');
+    $this->assertIsA($dictionary->findFilterInfo('testfilter'), 'lmbMacroFilterInfo');
+    $this->assertIsA($dictionary->findFilterInfo('testfilter_alias'), 'lmbMacroFilterInfo');
+    $this->assertIsA($dictionary->findFilterInfo('testfilter_alias2'), 'lmbMacroFilterInfo');
   }
   
-
   function testRegisterFilterInfoOnceOnly()
   {
     $dictionary = new lmbMacroFilterDictionary();
@@ -55,7 +54,7 @@ class lmbMacroFilterDictionaryTest extends UnitTestCase
 
   function testFilterNotFound()
   {
-    $filter_info = new lmbMacroFilterInfo('testtag', 'SomeFilterClass');
+    $filter_info = new lmbMacroFilterInfo('testfilter', 'SomeFilterClass');
     $dictionary = new lmbMacroFilterDictionary();
     $dictionary->register($filter_info, $file = 'whatever');
 

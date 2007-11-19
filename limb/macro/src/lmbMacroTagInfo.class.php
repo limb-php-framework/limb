@@ -20,6 +20,7 @@ class lmbMacroTagInfo
   protected $tag;
   protected $class;
   protected $file;
+  protected $aliases = array();
   protected $req_attributes = array();
   protected $parent_class;
   protected $restrict_self_nesting = false;
@@ -42,8 +43,28 @@ class lmbMacroTagInfo
 
     $info->setFile($file);
 
-    if(isset($annotations['endtag']) && $annotations['endtag'] == 'no')
+    if(isset($annotations['forbid_end_tag']))
       $info->setForbidEndtag(true);
+
+    if(isset($annotations['restrict_self_nesting']))
+      $info->setRestrictSelfNesting(true);
+
+    if(isset($annotations['parent_tag_class']))
+      $info->setParentClass(trim($annotations['parent_tag_class']));
+    
+    if(isset($annotations['req_attributes']))
+    {
+      $req_attributes = explode(',' , $annotations['req_attributes']);
+      $req_attributes = array_map('trim', $req_attributes);
+      $info->setRequiredAttributes($req_attributes);
+    }
+    
+    if(isset($annotations['aliases']))
+    {
+      $filter_aliases = explode(',' , $annotations['aliases']);
+      $filter_aliases = array_map('trim', $filter_aliases);
+      $info->setAliases($filter_aliases);
+    }
 
     return $info;
   }
@@ -98,6 +119,16 @@ class lmbMacroTagInfo
     return $this->parent_class;
   }
 
+  function setAliases($aliases)
+  {
+    $this->aliases = $aliases;
+  }
+  
+  function getAliases()
+  {
+    return $this->aliases;
+  }
+  
   function setRestrictSelfNesting($flag = true)
   {
     $this->restrict_self_nesting = $flag;

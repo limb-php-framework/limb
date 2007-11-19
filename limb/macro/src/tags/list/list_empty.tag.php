@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 /**
  * Empty List tag for a list which failed to have any contents
  * @tag list:empty
+ * @parent_tag_class lmbMacroListTag
  * @package macro
  * @version $Id$
  */

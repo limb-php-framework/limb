@@ -24,11 +24,23 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
 
   function testFindTagInfo()
   {
-    $tag_info = new lmbMacroTagInfo('testtag', 'SomeTagClass');
+    $tag_info = new lmbMacroTagInfo('test_tag', 'SomeTagClass');
+    $dictionary = new lmbMacroTagDictionary();
+    $dictionary->register($tag_info, $file = 'whatever');
+
+    $this->assertIsA($dictionary->findTagInfo('test_tag'), 'lmbMacroTagInfo');
+  }
+  
+  function testFindFilterInfoByAlias()
+  {
+    $tag_info = new lmbMacroTagInfo('testtag', 'SomeFilterClass');
+    $tag_info->setAliases(array('testtag_alias', 'testtag_alias2'));
     $dictionary = new lmbMacroTagDictionary();
     $dictionary->register($tag_info, $file = 'whatever');
 
     $this->assertIsA($dictionary->findTagInfo('testtag'), 'lmbMacroTagInfo');
+    $this->assertIsA($dictionary->findTagInfo('testtag_alias'), 'lmbMacroTagInfo');
+    $this->assertIsA($dictionary->findTagInfo('testtag_alias2'), 'lmbMacroTagInfo');
   }
 
   function testRegisterTagInfoOnceOnly()
@@ -58,6 +70,10 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
 <?php
 /**
  * @tag foo_{$rnd}
+ * @req_attributes attr1, attr2
+ * @restrict_self_nesting
+ * @parent_tag_class SomeParentTagClass
+ * @forbid_end_tag
  */
 class Foo{$rnd}Tag extends lmbMacroTag{}
 
@@ -70,6 +86,11 @@ EOD;
 
     $tag_info1 = new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag");
     $tag_info1->setFile($file);
+    $tag_info1->setForbidEndtag(true);
+    $tag_info1->setRestrictSelfNesting(true);
+    $tag_info1->setParentClass('SomeParentTagClass');
+    $tag_info1->setRequiredAttributes(array('attr1', 'attr2'));
+    
     $tag_info2 = new lmbMacroTagInfo("bar_$rnd", "Bar{$rnd}Tag");
     $tag_info2->setFile($file);
 

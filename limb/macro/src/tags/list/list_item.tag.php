@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 /**
  * Compile time component for items (rows) in the list
  * @tag list:item
+ * @parent_tag_class lmbMacroListTag
  * @package macro
  * @version $Id$
  */

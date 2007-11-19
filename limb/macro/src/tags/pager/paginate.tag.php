@@ -10,6 +10,7 @@
 /**
  * Applies pager to iterator (so called "pagination")
  * @tag paginate
+ * @req_attributes iterator
  * @package macro
  * @version $Id$
  */

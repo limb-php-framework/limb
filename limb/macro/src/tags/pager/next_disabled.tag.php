@@ -9,6 +9,8 @@
 
 /**
  * @tag pager:next:disabled
+ * @parent_tag_class lmbMacroPagerTag
+ * @restrict_self_nesting
  * @version $Id$
  */
 class lmbMacroPagerNextDisabledTag extends lmbMacroTag

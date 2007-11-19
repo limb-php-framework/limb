@@ -12,7 +12,9 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 /**
  * Compile time component for output finalizers in a list
  * Allows to generate valid layout while output multicolumn lists
- * Default ratio attribute is 1  * @tag list:fill
+ * Default ratio attribute is 1  
+ * @tag list:fill
+ * @parent_tag_class lmbMacroListTag
  * @package macro
  * @version $Id$
  */

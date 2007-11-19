@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
 /**
  * The parent compile time component for lists
  * @tag list
+ * @req_attributes using
  * @package macro
  * @version $Id$
  */
@@ -19,6 +20,14 @@ class lmbMacroListTag extends lmbMacroTag
 {
   protected $counter_var_var;
   protected $count_source = false;
+  
+  function preParse($compiler)
+  {
+    if(!$this->has('using') && $this->has('for'))
+      $this->set('using', $this->get('for'));
+    
+    return parent :: preParse($compiler);
+  }
 
   function countSource()
   {
@@ -109,8 +118,7 @@ class lmbMacroListTag extends lmbMacroTag
 
   protected function _prepareSourceVar($code)
   {
-    if(!$using = $this->get('for'))
-      $using = $this->get('using');
+    $using = $this->get('using');
 
     $this->source_var = $code->generateVar();
     $item_var = $code->generateVar();
