@@ -11,7 +11,7 @@
  * class lmbTestShellReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellReporter.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbTestShellReporter.class.php 6531 2007-11-20 12:22:57Z serega $
  */
 class lmbTestShellReporter extends TextReporter
 {
@@ -21,5 +21,21 @@ class lmbTestShellReporter extends TextReporter
 
     echo $this->getTestCaseProgress() . " of " . $this->getTestCaseCount() . " done({$test_name})\n";
   }
+  
+  function paintException($exception) 
+  {
+    parent::paintException($exception);
+    $message = 'Unexpected exception of type [' . get_class($exception) .
+            '] with message ['. $exception->getMessage() .
+            '] in ['. $exception->getFile() .
+            ' line ' . $exception->getLine() . ']';
+    print "Exception " . $this->getExceptionCount() . "!\n$message\n";
+    $breadcrumb = $this->getTestList();
+    array_shift($breadcrumb);
+    print "\tin " . implode("\n\tin ", array_reverse($breadcrumb));
+    print "\n";
+    print "Exception full message:\n";
+    print $exception->__toString();
+  }  
 }
 
