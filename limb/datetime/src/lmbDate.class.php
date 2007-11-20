@@ -12,10 +12,15 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDate.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 6466 2007-10-29 14:30:11Z korchasa $
+ * @version $Id: lmbDate.class.php 6532 2007-11-20 15:55:48Z serega $
  */
 class lmbDate extends lmbObject
 {
+  const MINUTE = 60;
+  const HOUR = 3600;
+  const DAY = 86400;
+  const WEEK = 604800;
+  
   //YYYY-MM-DD HH:MM:SS timezone
   const DATE_ISO_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
 
