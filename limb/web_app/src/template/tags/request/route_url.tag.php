@@ -10,7 +10,7 @@
  * @tag route_url
  * @suppress_attributes params route extra skip_controller
  * @package web_app
- * @version $Id: route_url.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: route_url.tag.php 6530 2007-11-20 07:28:07Z serega $
  */
 class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
 {
@@ -28,14 +28,17 @@ class lmbRouteURLTag extends WactRuntimeComponentHTMLTag
     if(isset($this->attributeNodes['route']))
       $code->writePhp($route. ' = "'. $this->attributeNodes['route']->getValue() . '";');
 
+    $fake_params = '$' . $code->getTempVariable();
     $params = '$' . $code->getTempVariable();
+    $code->writePhp($fake_params . ' = array();');
     $code->writePhp($params . ' = array();');
 
     if(isset($this->attributeNodes['params']))
     {
-      $code->writePhp($params . ' = lmbArrayHelper :: explode(",", ":",');
+      $code->writePhp($fake_params . ' = lmbArrayHelper :: explode(",", ":",');
       $this->attributeNodes['params']->generateExpression($code);
       $code->writePhp(');');
+      $code->writePhp('foreach(' . $fake_params . ' as $key => $value) ' . $params . '[trim($key)] = trim($value);');
     }
 
     if($this->getBoolAttribute('skip_controller')) $skip_controller = 'true';

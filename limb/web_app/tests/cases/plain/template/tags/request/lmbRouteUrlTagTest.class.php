@@ -29,6 +29,24 @@ class lmbRouteUrlTagTest extends lmbWactTestCase
     $this->assertEqual($page->capture(), $expected);
   }
 
+  function testAllParamsWithSpaces()
+  {
+    $config = array('blog' => array('path' => '/blog/:controller/:action'),
+                    'news' => array('path' => '/:controller/:action'));
+
+    $routes = $this->_createRoutes($config);
+
+    $template = '<route_url route="news" params="controller:news, action: archive" onclick="something"></route_url>';
+
+    $this->registerTestingTemplate('/limb/route_url_tag_static_attributes_spaces.html', $template);
+
+    $page = $this->initTemplate('/limb/route_url_tag_static_attributes_spaces.html');
+
+    $url  = lmbToolkit :: instance()->getRoutesUrl(array('controller' => 'news', 'action' => 'archive'), 'news');
+    $expected = '<a onclick="something" href="'. $url . '"></a>';
+    $this->assertEqual($page->capture(), $expected);
+  }
+  
   function testWithDynamicParams()
   {
     $config = array('blog' => array('path' => '/blog/:controller/:action'),

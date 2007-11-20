@@ -11,7 +11,7 @@
  * @forbid_end_tag
  * @req_const_attributes field
  * @package web_app
- * @version $Id: route_url_set.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: route_url_set.tag.php 6530 2007-11-20 07:28:07Z serega $
  */
 class lmbRouteUrlSetTag extends WactCompilerTag
 {
@@ -22,14 +22,17 @@ class lmbRouteUrlSetTag extends WactCompilerTag
     if(isset($this->attributeNodes['route']))
       $code->writePhp($route. ' = "'. $this->attributeNodes['route']->getValue() . '";');
 
+    $fake_params = '$' . $code->getTempVariable();
     $params = '$' . $code->getTempVariable();
+    $code->writePhp($fake_params . ' = array();');
     $code->writePhp($params . ' = array();');
 
     if(isset($this->attributeNodes['params']))
     {
-      $code->writePhp($params . ' = lmbArrayHelper :: explode(",",":",');
+      $code->writePhp($fake_params . ' = lmbArrayHelper :: explode(",",":",');
       $this->attributeNodes['params']->generateExpression($code);
       $code->writePhp(');');
+      $code->writePhp('foreach(' . $fake_params . ' as $key => $value) ' . $params . '[trim($key)] = trim($value);');
     }
 
     $skip_controller = '$' . $code->getTempVariable();
