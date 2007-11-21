@@ -9,12 +9,12 @@
 lmb_require('limb/core/src/lmbObject.class.php');
 
 /**
- * class lmbDate.
+ * class lmbDateTime.
  *
  * @package datetime
- * @version $Id: lmbDate.class.php 6533 2007-11-21 20:03:24Z pachanga $
+ * @version $Id: lmbDate.class.php 6532 2007-11-20 15:55:48Z serega $
  */
-class lmbDate extends lmbObject
+class lmbDateTime extends lmbObject
 {
   const MINUTE = 60;
   const HOUR = 3600;
@@ -51,7 +51,7 @@ class lmbDate extends lmbObject
       $this->second = (int)$second;
       $this->tz     = $tz;
     }
-    elseif(is_a($year_or_date, 'lmbDate'))
+    elseif(is_a($year_or_date, 'lmbDateTime'))
     {
       $this->_copy($year_or_date);
     }
@@ -81,7 +81,7 @@ class lmbDate extends lmbObject
   /**
    * Wrapper around constructor
    * 
-   * It can be useful since the following is not allowed in PHP 'new lmbDate(..)->addDay(..)->'
+   * It can be useful since the following is not allowed in PHP 'new lmbDateTime(..)->addDay(..)->'
    *
    * @param integer $year_or_date
    * @param integer $month_or_tz
@@ -90,7 +90,7 @@ class lmbDate extends lmbObject
    * @param integer $minute
    * @param integer $second
    * @param string $tz
-   * @return lmbDate
+   * @return lmbDateTime
    */
   static function create($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
   {
@@ -313,7 +313,7 @@ class lmbDate extends lmbObject
    */
   function compare($d)
   {
-    if(!$d instanceof lmbDate)
+    if(!$d instanceof lmbDateTime)
       throw new lmbException("Wrong date argument", array('arg' => $d));
 
     $s1 = $this->getStamp();
@@ -437,14 +437,14 @@ class lmbDate extends lmbObject
   {
     $this_weekday = $this->getPhpDayOfWeek();
     $interval = (7 - self :: $week_starts_at + $this_weekday) % 7;
-    return lmbDate :: createByDays($this->getDateDays() - $interval);
+    return self :: createByDays($this->getDateDays() - $interval);
   }
 
   function getEndOfWeek()
   {
     $this_weekday = $this->getPhpDayOfWeek();
     $interval = (6 + self :: $week_starts_at - $this_weekday) % 7;
-    return lmbDate :: createByDays($this->getDateDays() + $interval);
+    return self :: createByDays($this->getDateDays() + $interval);
   }
 
   function getBeginOfMonth()

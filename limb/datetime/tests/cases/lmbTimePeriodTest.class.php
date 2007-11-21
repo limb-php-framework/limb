@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/datetime/src/lmbTimePeriod.class.php');
-lmb_require('limb/datetime/src/lmbDatePeriod.class.php');
+lmb_require('limb/datetime/src/lmbDateTimePeriod.class.php');
 
 class lmbTimePeriodTest extends UnitTestCase
 {
@@ -21,7 +21,7 @@ class lmbTimePeriodTest extends UnitTestCase
   {
     $p = new lmbTimePeriod('13:45:12', '13:46:00');
     $date_period = $p->getDatePeriod('2006-12-01');
-    $this->assertEqual($date_period, new lmbDatePeriod('2006-12-01 13:45:12', '2006-12-01 13:46:00'));
+    $this->assertEqual($date_period, new lmbDateTimePeriod('2006-12-01 13:45:12', '2006-12-01 13:46:00'));
   }
 }
 

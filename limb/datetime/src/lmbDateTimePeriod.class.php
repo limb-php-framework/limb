@@ -6,24 +6,24 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/datetime/src/lmbDate.class.php');
+lmb_require('limb/datetime/src/lmbDateTime.class.php');
 lmb_require('limb/core/src/exception/lmbException.class.php');
 
 /**
- * class lmbDatePeriod.
+ * class lmbDateTimePeriod.
  *
  * @package datetime
- * @version $Id: lmbDatePeriod.class.php 6533 2007-11-21 20:03:24Z pachanga $
+ * @version $Id: lmbDateTimePeriod.class.php 6243 2007-08-29 11:53:10Z pachanga $
  */
-class lmbDatePeriod
+class lmbDateTimePeriod
 {
   protected $start;
   protected $end;
 
   function __construct($start, $end)
   {
-    $this->start = (is_object($start)) ? $start : new lmbDate($start);
-    $this->end = (is_object($end)) ? $end : new lmbDate($end);
+    $this->start = (is_object($start)) ? $start : new lmbDateTime($start);
+    $this->end = (is_object($end)) ? $end : new lmbDateTime($end);
 
     if($this->end->isBefore($this->start))
       throw new lmbException('Wrong period interval', array('start' => $this->start->toString(),
