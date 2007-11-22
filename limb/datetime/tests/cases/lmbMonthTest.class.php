@@ -7,13 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/datetime/src/lmbMonth.class.php');
-lmb_require('limb/datetime/src/lmbDate.class.php');
+lmb_require('limb/datetime/src/lmbDateTime.class.php');
 
 class lmbMonthTest extends UnitTestCase
 {
   function testCreateCurrent()
   {
-    $date = new lmbDate();
+    $date = new lmbDateTime();
 
     $c = new lmbMonth();
     $this->assertEqual($c->getYear(), $date->getYear());
@@ -29,7 +29,7 @@ class lmbMonthTest extends UnitTestCase
 
   function testCreateByDate()
   {
-    $c = new lmbMonth(new lmbDate('2007-05-01'));
+    $c = new lmbMonth(new lmbDateTime('2007-05-01'));
     $this->assertEqual($c->getYear(), 2007);
     $this->assertEqual($c->getMonth(), 5);
   }
@@ -44,8 +44,8 @@ class lmbMonthTest extends UnitTestCase
   function testGetBoundaries()
   {
     $c = new lmbMonth(2007, 5);
-    $this->assertEqual(new lmbDate('2007-05-01 00:00:00'), $c->getStartDate());
-    $this->assertEqual(new lmbDate('2007-05-31 23:59:59'), $c->getEndDate());
+    $this->assertEqual(new lmbDateTime('2007-05-01 00:00:00'), $c->getStartDate());
+    $this->assertEqual(new lmbDateTime('2007-05-31 23:59:59'), $c->getEndDate());
   }
 
   function testGetMonthName()
@@ -109,13 +109,13 @@ class lmbMonthTest extends UnitTestCase
     $expected3 = array();
 
     for($i=0;$i<7;$i++)
-      $expected0[] = new lmbDate(sprintf("1999-02-%02d", $i+1));
+      $expected0[] = new lmbDateTime(sprintf("1999-02-%02d", $i+1));
     for($i=7;$i<14;$i++)
-      $expected1[] = new lmbDate(sprintf("1999-02-%02d", $i+1));
+      $expected1[] = new lmbDateTime(sprintf("1999-02-%02d", $i+1));
     for($i=14;$i<21;$i++)
-      $expected2[] = new lmbDate(sprintf("1999-02-%02d", $i+1));
+      $expected2[] = new lmbDateTime(sprintf("1999-02-%02d", $i+1));
     for($i=21;$i<28;$i++)
-      $expected3[] = new lmbDate(sprintf("1999-02-%02d", $i+1));
+      $expected3[] = new lmbDateTime(sprintf("1999-02-%02d", $i+1));
 
     $this->assertEqual($week0, $expected0);
     $this->assertEqual($week1, $expected1);
@@ -139,21 +139,21 @@ class lmbMonthTest extends UnitTestCase
     $expected4 = array();
 
     for($i=29;$i<32;$i++)
-      $expected0[] = new lmbDate(sprintf("2007-01-%02d", $i));
+      $expected0[] = new lmbDateTime(sprintf("2007-01-%02d", $i));
     for($i=1;$i<5;$i++)
-      $expected0[] = new lmbDate(sprintf("2007-02-%02d", $i));
+      $expected0[] = new lmbDateTime(sprintf("2007-02-%02d", $i));
 
     for($i=5;$i<12;$i++)
-      $expected1[] = new lmbDate(sprintf("2007-02-%02d", $i));
+      $expected1[] = new lmbDateTime(sprintf("2007-02-%02d", $i));
     for($i=12;$i<19;$i++)
-      $expected2[] = new lmbDate(sprintf("2007-02-%02d", $i));
+      $expected2[] = new lmbDateTime(sprintf("2007-02-%02d", $i));
     for($i=19;$i<26;$i++)
-      $expected3[] = new lmbDate(sprintf("2007-02-%02d", $i));
+      $expected3[] = new lmbDateTime(sprintf("2007-02-%02d", $i));
 
     for($i=26;$i<29;$i++)
-      $expected4[] = new lmbDate(sprintf("2007-02-%02d", $i));
+      $expected4[] = new lmbDateTime(sprintf("2007-02-%02d", $i));
     for($i=1;$i<5;$i++)
-      $expected4[] = new lmbDate(sprintf("2007-03-%02d", $i));
+      $expected4[] = new lmbDateTime(sprintf("2007-03-%02d", $i));
 
     $this->assertEqual($week0, $expected0);
     $this->assertEqual($week1, $expected1);

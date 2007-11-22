@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/datetime/src/lmbDate.class.php');
+lmb_require('limb/datetime/src/lmbDateTime.class.php');
 
 /**
  * class lmbMonth.
@@ -22,11 +22,11 @@ class lmbMonth
   function __construct($year_or_date = null, $month = null)
   {
     if($year_or_date && $month)
-      $tmp_date = new lmbDate($year_or_date, $month, 1);
+      $tmp_date = new lmbDateTime($year_or_date, $month, 1);
     elseif($year_or_date && !$month)
-      $tmp_date = new lmbDate($year_or_date);
+      $tmp_date = new lmbDateTime($year_or_date);
     else
-      $tmp_date = new lmbDate();
+      $tmp_date = new lmbDateTime();
 
     $this->start_date = $tmp_date->getBeginOfMonth();
     $this->end_date = $tmp_date->getEndOfMonth();
@@ -71,19 +71,19 @@ class lmbMonth
   {
     $dow = $this->start_date->getPhpDayOfWeek();
 
-    if(lmbDate :: getWeekStartsAt() == 1 && $dow == 0)
+    if(lmbDateTime :: getWeekStartsAt() == 1 && $dow == 0)
     {
-      $first_week_days = 7 - $dow + lmbDate :: getWeekStartsAt();
+      $first_week_days = 7 - $dow + lmbDateTime :: getWeekStartsAt();
       $weeks = 1;
     }
-    elseif(lmbDate :: getWeekStartsAt() == 0 && $dow == 6)
+    elseif(lmbDateTime :: getWeekStartsAt() == 0 && $dow == 6)
     {
-      $first_week_days = 7 - $dow + lmbDate :: getWeekStartsAt();
+      $first_week_days = 7 - $dow + lmbDateTime :: getWeekStartsAt();
       $weeks = 1;
     }
     else
     {
-      $first_week_days = lmbDate :: getWeekStartsAt() - $dow;
+      $first_week_days = lmbDateTime :: getWeekStartsAt() - $dow;
       $weeks = 0;
     }
 
@@ -101,7 +101,7 @@ class lmbMonth
 
     for($i=0;$i<=6;$i++)
     {
-      $week_array[$i] = lmbDate :: createByDays($curr_day);
+      $week_array[$i] = lmbDateTime :: createByDays($curr_day);
       $curr_day++;
     }
     return $week_array;
