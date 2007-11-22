@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6436 2007-10-18 07:44:39Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 6538 2007-11-22 09:46:10Z wiliam $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -369,6 +369,14 @@ class lmbActiveRecord extends lmbObject
   function getManyBelongsToRelationsInfo()
   {
     return $this->_many_belongs_to;
+  }
+  /**
+   *  Returns all relations info for composed_of
+   *  @return array
+   */
+  function getComposedOfRelationsInfo()
+  {
+    return $this->_composed_of;
   }
   /**
    *  Returns default sort params
@@ -845,10 +853,10 @@ class lmbActiveRecord extends lmbObject
       return;
 
     $value = $this->_getRaw($property);
-    
+
     if((!$value) && !$this->_isRequiedValueObject($property))
       return $value;
-    
+
     if(!is_object($value))
     {
       $object = $this->_loadValueObject($property, $value);
@@ -863,9 +871,9 @@ class lmbActiveRecord extends lmbObject
     if(isset($this->_composed_of[$property]['can_be_null']) && $this->_composed_of[$property]['can_be_null'])
       return false;
     else
-      return true;     
+      return true;
   }
-  
+
 
   protected function _doSave($need_validation)
   {
