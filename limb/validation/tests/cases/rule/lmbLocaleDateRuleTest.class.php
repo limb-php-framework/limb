@@ -6,13 +6,13 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/validation/src/rule/lmbLocaleDateRule.class.php');
+lmb_require('limb/validation/src/rule/lmbLocaleDateTimeRule.class.php');
 
-class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
+class lmbLocaleDateTimeRuleTest extends lmbValidationRuleTestCase
 {
   function testLocaleDateRuleCorrect()
   {
-    $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
+    $rule = new lmbLocaleDateTimeRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
 
     $data = new lmbSet(array('test' => '02/28/2003'));
 
@@ -23,7 +23,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
 
   function testLocaleDateRuleErrorLeapYear()
   {
-    $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
+    $rule = new lmbLocaleDateTimeRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
 
     $data = new lmbSet(array('test' => '02/29/2003'));
 
@@ -36,7 +36,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
 
   function testErrorLocaleMonthPosition()
   {
-    $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
+    $rule = new lmbLocaleDateTimeRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
 
     $data = new lmbSet(array('test' => '28/12/2003'));
 
@@ -49,7 +49,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
 
   function testLocaleDateRuleErrorFormat()
   {
-    $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
+    $rule = new lmbLocaleDateTimeRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
 
     $data = new lmbSet(array('test' => '02-29-2003'));
 
@@ -62,7 +62,7 @@ class lmbLocaleDateRuleTest extends lmbValidationRuleTestCase
 
   function testLocaleDateRuleError()
   {
-    $rule = new lmbLocaleDateRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
+    $rule = new lmbLocaleDateTimeRule('test', new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/en.ini')));
 
     $data = new lmbSet(array('test' => '02jjklklak/sdsdskj34-sdsdsjkjkj78'));
 

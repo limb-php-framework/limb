@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
-lmb_require('limb/datetime/src/lmbDate.class.php');
+lmb_require('limb/datetime/src/lmbDateTime.class.php');
 
 /**
  * Checks that field value is a valid date
@@ -31,7 +31,7 @@ class lmbDateRule extends lmbSingleFieldRule
   {
     if($this->type == lmbDateRule :: TYPE_ISO)
     {
-      if(!lmbDate :: validate((string)$value))
+      if(!lmbDateTime :: validate((string)$value))
         $this->error('{Field} is not a valid ISO formatted date(YYYY-MM-DD HH:MM).');
     }
   }

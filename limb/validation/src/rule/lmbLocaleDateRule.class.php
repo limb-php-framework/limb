@@ -7,15 +7,15 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
-lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
+lmb_require('limb/i18n/src/datetime/lmbLocaleDateTime.class.php');
 
 /**
- * class lmbLocaleDateRule.
+ * class lmbLocaleDateTimeRule.
  *
  * @package validation
  * @version $Id$
  */
-class lmbLocaleDateRule extends lmbSingleFieldRule
+class lmbLocaleDateTimeRule extends lmbSingleFieldRule
 {
   protected $locale;
 
@@ -32,7 +32,7 @@ class lmbLocaleDateRule extends lmbSingleFieldRule
     if(!$this->locale)
       $this->locale = $toolkit->getLocaleObject();
 
-    if(!lmbLocaleDate ::  isLocalStringValid($this->locale, $value))
+    if(!lmbLocaleDateTime ::  isLocalStringValid($this->locale, $value))
       $this->error(lmb_i18n('{Field} must have a valid date format', 'validation'));
   }
 }

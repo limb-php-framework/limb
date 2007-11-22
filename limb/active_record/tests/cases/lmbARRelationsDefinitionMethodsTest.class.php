@@ -73,14 +73,14 @@ class TestOneTableObjectWithRelationsByMethods extends lmbActiveRecord
     $this->relations['other_many_belongs_to_relation'] = $other_many_belongs_to;
 
     $this->_composedOf('value_object', $value_object = array('field' => 'date_start',
-                                                             'class' => 'lmbDate',
+                                                             'class' => 'lmbDateTime',
                                                              'getter' => 'getStamp'));
 
     $this->relations['value_object'] = $value_object;
 
 
     $this->_composedOf('other_value_object', $other_value_object = array('field' => 'date_end',
-                                                                         'class' => 'lmbDate',
+                                                                         'class' => 'lmbDateTime',
                                                                          'getter' => 'getStamp'));
     $this->relations['other_value_object'] = $other_value_object;
   }
