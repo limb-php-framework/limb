@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/datetime/src/lmbDate.class.php');
+lmb_require('limb/datetime/src/lmbDateTime.class.php');
 
 class lmbI18NDateFilterTest extends lmbWactTestCase
 {
@@ -29,7 +29,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testSetDateByStampValue()
   {
-    $date = new lmbDate('2004-12-20 10:15:30');
+    $date = new lmbDateTime('2004-12-20 10:15:30');
 
     $template = '{$"' . $date->getStamp() . '"|i18n_date:"en", "stamp"}';
 
@@ -42,7 +42,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testFormatType()
   {
-    $date = new lmbDate('2005-01-20 10:15:30');
+    $date = new lmbDateTime('2005-01-20 10:15:30');
 
     $template = '{$"' . $date->getStamp() . '"|i18n_date:"en", "stamp", "date"}';
 
@@ -66,7 +66,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testDefinedFormat()
   {
-    $date = new lmbDate('2004-12-20 10:15:30');
+    $date = new lmbDateTime('2004-12-20 10:15:30');
 
     $template = '{$"' . $date->getStamp() . '"|i18n_date:"en", "stamp", "", "%Y %m %d"}';
 
@@ -82,7 +82,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
     $toolkit = lmbToolkit :: save();
     $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../../../ru.ini')));
 
-    $date = new lmbDate('2004-12-20 10:15:30');
+    $date = new lmbDateTime('2004-12-20 10:15:30');
 
     $template = '{$"' . $date->getStamp() . '"|i18n_date:"ru", "stamp"}';
 
@@ -110,7 +110,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testDBESetDateByStampValue()
   {
-    $date = new lmbDate('2004-12-20 10:15:30');
+    $date = new lmbDateTime('2004-12-20 10:15:30');
 
     $template = '{$var|i18n_date:"en", "stamp"}';
 
@@ -125,7 +125,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testDBEFormatType()
   {
-    $date = new lmbDate('2005-01-20 10:15:30');
+    $date = new lmbDateTime('2005-01-20 10:15:30');
 
     $template = '{$var|i18n_date:"en", "stamp", "date"}';
 
@@ -140,7 +140,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testDBEDefinedFormat()
   {
-    $date = new lmbDate('2005-01-20 10:15:30');
+    $date = new lmbDateTime('2005-01-20 10:15:30');
 
     $template = '{$var|i18n_date:"en", "stamp", "", "%Y %m %d"}';
 
@@ -158,7 +158,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
     $toolkit = lmbToolkit :: save();
     $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../../../ru.ini')));
 
-    $date = new lmbDate('2005-01-20 10:15:30');
+    $date = new lmbDateTime('2005-01-20 10:15:30');
 
     $template = '{$var|i18n_date:"ru", "stamp"}';
 
@@ -175,7 +175,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
 
   function testComplexPathBasedDBEWithDefinedFormat()
   {
-    $date = new lmbDate('2005-01-20 10:15:30');
+    $date = new lmbDateTime('2005-01-20 10:15:30');
 
     $template = '{$my.var|i18n_date:"en", "stamp", "", "%Y %m %d"}';
 

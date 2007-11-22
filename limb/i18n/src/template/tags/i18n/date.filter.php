@@ -6,13 +6,13 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
+lmb_require('limb/i18n/src/datetime/lmbLocaleDateTime.class.php');
 
 /**
  * @filter i18n_date
  * @max_attributes 5
  * @package i18n
- * @version $Id: date.filter.php 6241 2007-08-29 05:46:06Z pachanga $
+ * @version $Id: date.filter.php 6535 2007-11-22 07:25:47Z pachanga $
  */
 class lmbI18NDateFilter extends WactCompilerFilter
 {
@@ -33,7 +33,7 @@ class lmbI18NDateFilter extends WactCompilerFilter
     else
       $locale = $toolkit->getLocaleObject();
 
-    $this->date = new lmbLocaleDate();
+    $this->date = new lmbLocaleDateTime();
 
     $this->_setDate();
 
@@ -54,14 +54,14 @@ class lmbI18NDateFilter extends WactCompilerFilter
     switch($date_type)
     {
       case 'string':
-        $this->date = new lmbLocaleDate($value);
+        $this->date = new lmbLocaleDateTime($value);
       break;
       case 'stamp':
-        $this->date = new lmbLocaleDate((int)$value);
+        $this->date = new lmbLocaleDateTime((int)$value);
       break;
 
       default:
-        $this->date = new lmbLocaleDate($value);
+        $this->date = new lmbLocaleDateTime($value);
       break;
     }
   }
@@ -87,7 +87,7 @@ class lmbI18NDateFilter extends WactCompilerFilter
     $toolkit_var = $code->getTempVarRef();
     $this->locale_var = $code->getTempVarRef();
 
-    $code->writePHP("lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');");
+    $code->writePHP("lmb_require('limb/i18n/src/datetime/lmbLocaleDateTime.class.php');");
     $code->writePHP($toolkit_var . ' = lmbToolkit :: instance();' . "\n");
     $code->writePHP($this->locale_var . ' = ');
 
@@ -116,19 +116,19 @@ class lmbI18NDateFilter extends WactCompilerFilter
     switch($date_type)
     {
       case 'stamp':
-        $code->writePHP($this->date_var . ' = new lmbLocaleDate((int)');
+        $code->writePHP($this->date_var . ' = new lmbLocaleDateTime((int)');
         $this->base->generateExpression($code);
         $code->writePHP(');');
       break;
 
       case 'string':
-        $code->writePHP($this->date_var . ' = new lmbLocaleDate(');
+        $code->writePHP($this->date_var . ' = new lmbLocaleDateTime(');
         $this->base->generateExpression($code);
         $code->writePHP(');');
       break;
 
       default:
-        $code->writePHP($this->date_var . ' = new lmbLocaleDate((int)');
+        $code->writePHP($this->date_var . ' = new lmbLocaleDateTime((int)');
         $this->base->generateExpression($code);
         $code->writePHP(');');
       break;
