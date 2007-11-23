@@ -202,10 +202,10 @@ Limb.Class('Limb.DoubleSelect',
 
     var container = div.childNodes[0].childNodes[0].childNodes[0];
 
-    this.srcSelect = this.addSelector(container.childNodes[0]);
+    this.srcSelect = this.addSelector(container.childNodes[2]);
     this.makeupSelector(this.srcSelect, this.select)
     this.addButtons(container.childNodes[1]);
-    this.dstSelect = this.addSelector(container.childNodes[2])
+    this.dstSelect = this.addSelector(container.childNodes[0])
     this.makeupSelector(this.dstSelect, this.select)
 
   },
