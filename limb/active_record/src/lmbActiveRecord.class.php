@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6538 2007-11-22 09:46:10Z wiliam $
+ * @version $Id: lmbActiveRecord.class.php 6541 2007-11-23 07:19:13Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -511,7 +511,7 @@ class lmbActiveRecord extends lmbObject
   {
     $collection = $this->get($property);
     if(!is_object($collection))
-      throw new lmbARException("Collection object info for property '$property' is missing");
+      throw new lmbARException("Collection object info for property '{$property}' is missing");
 
     $collection->add($value);
   }
