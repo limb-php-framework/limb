@@ -81,5 +81,13 @@ class WactCheckableInputComponentTest extends WactTemplateTestCase
 
     $this->assertFalse($this->checkbox->isChecked());
   }  
+  
+  function testCheckedIfValueAndValueAttributeAreZero()
+  {
+    $this->form->set('my_checkbox', 0);
+    $this->checkbox->setAttribute('value', 0);
+
+    $this->assertTrue($this->checkbox->isChecked());
+  }    
 }
 

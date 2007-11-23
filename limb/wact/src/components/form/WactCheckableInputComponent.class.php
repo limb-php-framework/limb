@@ -46,6 +46,8 @@ class WactCheckableInputComponent extends WactFormElementComponent
       return true;
     elseif($value && $value != $this->getAttribute('value'))
       return false;
+    elseif(!$value && $this->hasAttribute('value') && !$this->getAttribute('value'))
+      return true;
 
     return false;
   }
