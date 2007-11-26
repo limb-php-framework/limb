@@ -71,7 +71,7 @@ Limb.Form.submit = function (form, form_action)
 
 Limb.Form.submitPopup = function (form, form_action)
 {
-  var w = new Limb.Window(form_action, form.id + 'popup');
+  var w = new Limb.Window('', form.id + 'popup');
   form.target = w.getWindowObject().name;
 
   if(form_action)
