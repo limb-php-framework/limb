@@ -3,7 +3,7 @@
      *	base include file for SimpleTest
      *	@package	SimpleTest
      *	@subpackage	UnitTester
-     *	@version	$Id: unit_tester.php 5999 2007-06-18 13:13:08Z pachanga $
+     *	@version	$Id: unit_tester.php 6549 2007-11-27 10:07:10Z serega $
      */
 
     /**#@+
@@ -45,7 +45,7 @@
          *    @return boolean           True on pass
          *    @access public
          */
-        function assertTrue($result, $message = false) {
+        function assertTrue($result, $message = '%s') {
             return $this->assert(new TrueExpectation(), $result, $message);
         }
 
