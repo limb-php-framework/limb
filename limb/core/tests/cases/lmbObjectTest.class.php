@@ -55,6 +55,14 @@ class lmbObjectTest extends UnitTestCase
     $this->assertTrue($object->has('bar'));
   }
 
+  function testHasAttributeForNullValue()
+  {
+    $object = new lmbObject();
+    $object->set('bar', null);
+
+    $this->assertTrue($object->has('bar'));
+  }
+  
   function testHasAttributeForExistingButNullProperty()
   {
     $object = new lmbObject();
