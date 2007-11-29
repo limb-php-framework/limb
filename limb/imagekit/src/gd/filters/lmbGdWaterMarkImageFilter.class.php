@@ -7,16 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-/**
- * @package imagekit
- * @version $Id: lmbGdWaterMarkImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
- */
 lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdWaterMarkImageFilter.class.php 6333 2007-09-24 16:38:22Z cmz $
+ * @version $Id: lmbGdWaterMarkImageFilter.class.php 6553 2007-11-29 15:41:27Z cmz $
  */
 class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
 {

@@ -7,10 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-/**
- * @package imagekit
- * @version $Id: lmbGdImageContainer.class.php 6333 2007-09-24 16:38:22Z cmz $
- */
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageContainer.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportException.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageCreateFailedException.class.php');
@@ -21,7 +17,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * GD image container
  *
  * @package imagekit
- * @version $Id: lmbGdImageContainer.class.php 6333 2007-09-24 16:38:22Z cmz $
+ * @version $Id: lmbGdImageContainer.class.php 6553 2007-11-29 15:41:27Z cmz $
  */
 class lmbGdImageContainer extends lmbAbstractImageContainer
 {
