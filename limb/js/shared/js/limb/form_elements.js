@@ -233,7 +233,7 @@ Limb.Class('Limb.DoubleSelect',
   addButtons: function(parent)
   {
     button  = this.addButton(parent);
-    button.value = '>>';
+    button.value = '<<';
     button.onclick = this.selectAll;
     button.className = 'button';
 
@@ -241,7 +241,7 @@ Limb.Class('Limb.DoubleSelect',
     this.addElement('br', parent);
 
     button  = this.addButton(parent);
-    button.value = ' > ';
+    button.value = ' < ';
     button.className = 'button';
     button.onclick = this.selectItems;
 
@@ -249,7 +249,7 @@ Limb.Class('Limb.DoubleSelect',
     this.addElement('br', parent);
 
     button  = this.addButton(parent);
-    button.value = ' < ';
+    button.value = ' > ';
     button.className = 'button';
     button.onclick = this.deselectItems;
 
@@ -257,7 +257,7 @@ Limb.Class('Limb.DoubleSelect',
     this.addElement('br', parent);
 
     button  = this.addButton(parent);
-    button.value = '<<';
+    button.value = '>>';
     button.className = 'button';
     button.onclick = this.deselectAll;
   },
