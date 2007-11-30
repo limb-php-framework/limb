@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbConf.class.php 6554 2007-11-30 11:34:07Z serega $
  */
 class lmbConf extends lmbSet
 {
@@ -20,7 +20,7 @@ class lmbConf extends lmbSet
   {
     $conf = array();
 
-    if(!@include($file))
+    if(!include($file))
       throw new lmbException("Config file '$file' not found");
 
     if($override_file = $this->_getOverrideFile($file))
