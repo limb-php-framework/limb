@@ -139,32 +139,6 @@ class lmbMacroTagTest extends UnitTestCase
     $this->assertReference($mock, $children[0]);
   }
 
-  function testPrepare()
-  {
-    $child = new MockMacroNode();
-    $this->node->addChild($child);
-    $child->expectCallCount('prepare', 1);
-    $this->node->prepare();
-  }
-
-  function testGenerateConstructor()
-  {
-    $code_writer = new MockMacroCodeWriter();
-    $child = new MockMacroNode();
-    $child->expectCallCount('generateConstructor', 1);
-    $this->node->addChild($child);
-    $this->node->generateConstructor($code_writer);
-  }
-
-  function testGenerateContents()
-  {
-    $code_writer = new MockMacroCodeWriter();
-    $child = new MockMacroNode();
-    $child->expectCallCount('generate', 1);
-    $this->node->addChild($child);
-    $this->node->generateContents($code_writer);
-  }
-
   function testGenerate()
   {
     $code_writer = new MockMacroCodeWriter();
@@ -253,7 +227,7 @@ class lmbMacroTagTest extends UnitTestCase
     $this->node->setId('TestId');
     $this->assertEqual($this->node->getId(), 'TestId');
   }
-
+  
   function testGetAttributeUnset()
   {
     $this->assertNull($this->node->get('foo'));
@@ -276,6 +250,15 @@ class lmbMacroTagTest extends UnitTestCase
     $this->assertTrue($this->node->has('FOO'));
     $this->assertTrue($this->node->has('TRICKY'));
     $this->assertFalse($this->node->has('MISSING'));
+  }
+  
+  function testHasConstantAttribute()
+  {
+    $this->node->set('foo', 'bar');
+    $this->node->set('tricky', '$this->bar');
+    
+    $this->assertTrue($this->node->hasConstant('foo'));
+    $this->assertFalse($this->node->hasConstant('tricky'));
   }
 
   function testRemoveAttribute()

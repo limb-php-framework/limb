@@ -1,0 +1,115 @@
+<?php
+/*
+ * Limb PHP Framework
+ *
+ * @link http://limb-project.com
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
+ */
+
+require_once('limb/macro/src/tags/form/lmbMacroFormWidget.class.php');
+require_once('limb/macro/src/tags/form/lmbMacroFormErrorList.class.php');
+require_once('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
+require_once('limb/macro/src/tags/form/lmbMacroFormLabelWidget.class.php');
+
+class lmbMacroFormWidgetTest extends lmbBaseMacroTest
+{
+  function testAddAndGetChild()
+  {
+    $form = new lmbMacroFormWidget('my_id');
+    $field1 = new lmbMacroFormFieldWidget('Input1');
+    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $form->addChild($field1);
+    $form->addChild($field2);
+    
+    $this->assertEqual($form->getChild('Input3'), $field2);
+    $this->assertNull($form->getChild('NoSuchInput'));
+  }
+  
+  function testGetLabelFor()
+  {
+    $form = new lmbMacroFormWidget('my_id');
+    $field1 = new lmbMacroFormFieldWidget('Input1');
+    $label1 = new lmbMacroFormLabelWidget('Label1');
+    $label1->setAttribute('for', 'Input1');
+    
+    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $label2 = new lmbMacroFormLabelWidget('Label3');
+    $label2->setAttribute('for', 'Input3');
+
+    $form->addChild($field1);
+    $form->addChild($field2);
+    $form->addChild($label1);
+    $form->addChild($label2);
+    
+    $this->assertEqual($form->getLabelFor('Input3'), $label2);
+    $this->assertEqual($form->getLabelFor('Input1'), $label1);
+    $this->assertNull($form->getLabelFor('NoSuchInput'));
+  }
+  
+  function testSetErrorsNotifyFieldsAboutErrors()
+  {
+    $error_list = new lmbMacroFormErrorList();
+    $error_fields = array('x'=>'Input1', 'z'=>'Input3');
+    $error_list->addError('message', $error_fields);
+
+    $form = new lmbMacroFormWidget('my_id');
+    $field1 = new lmbMacroFormFieldWidget('Input1');
+    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $form->addChild($field1);
+    $form->addChild($field2);
+    
+    $form->setErrorList($error_list);
+    
+    $this->assertTrue($field1->hasErrors());
+    $this->assertTrue($field2->hasErrors());
+  }
+
+  function testSetErrorsNotifyFieldsAndLabelsAboutErrors()
+  {
+    $error_list = new lmbMacroFormErrorList();
+    $error_list->addError('message', array('x'=>'Input1'));
+
+    $form = new lmbMacroFormWidget('my_id');
+    $field1 = new lmbMacroFormFieldWidget('Input1');
+    $label1 = new lmbMacroFormLabelWidget('Label1');
+    $label1->setAttribute('for', 'Input1');
+
+    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $label2 = new lmbMacroFormLabelWidget('Label3');
+    $label2->setAttribute('for', 'Input3');
+    
+    $form->addChild($field1);
+    $form->addChild($field2);
+    $form->addChild($label1);
+    $form->addChild($label2);
+    
+    $form->setErrorList($error_list);
+    
+    $this->assertTrue($field1->hasErrors());
+    $this->assertFalse($field2->hasErrors());
+    $this->assertTrue($label1->hasErrors());
+    $this->assertFalse($label2->hasErrors());
+  }
+
+  function testGetFieldErrorsForField()
+  {
+    $error_list = new lmbMacroFormErrorList();
+    $error_list->addError('message1', array('x'=>'Input1'));
+    $error_list->addError('message2', array('x'=>'Input1', 'z'=>'Input2'));
+
+    $form = new lmbMacroFormWidget('my_id');
+    $form->setErrorList($error_list);
+
+    $errors = $form->getErrorsListForFields();
+    $this->assertEqual(sizeof($errors), 3);
+    
+    $errors = $form->getErrorsListForFields('Input1');
+
+    $this->assertEqual($errors[0]['message'], 'message1');
+    $this->assertEqual($errors[1]['message'], 'message2');
+
+    $errors = $form->getErrorsListForFields('Input2');
+    $this->assertEqual($errors[0]['message'], 'message2');
+  }
+}

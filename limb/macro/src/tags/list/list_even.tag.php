@@ -18,13 +18,13 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  */
 class lmbMacroListRowEvenTag extends lmbMacroTag
 {
-  function generateContents($code)
+  protected function _generateContent($code)
   {
     $list = $this->findParentByClass('lmbMacroListTag');
     $counter_var = $list->getCounterVar();
 
     $code->writePHP('if(('. $counter_var . '+1) % 2 == 0) {');
-    parent :: generateContents($code);
+    parent :: _generateContent($code);
     $code->writePHP('}');
   }
 }

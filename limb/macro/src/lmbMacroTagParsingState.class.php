@@ -39,7 +39,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
     if($tag_info->isEndTagForbidden())
     {
-      $tag_node = $this->buildTagNode($tag_info, $tag, $attrs, $self_closed_tag = true);
+      $tag_node = $this->buildTagNode($tag_info, $tag, $attrs);
       $tag_node->setHasClosingTag(false);
       $this->tree_builder->pushNode($tag_node); // for cases like {{include}} we do pushNode() and popNode() here.
       $this->tree_builder->popNode();
@@ -54,7 +54,9 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
 
   function endElement($tag)
   {
-    $tag_info = $this->tag_dictionary->findTagInfo($tag);
+    if(!$tag_info = $this->tag_dictionary->findTagInfo($tag))
+      throw new lmbMacroException("Tag '$tag' not found in dictionary");
+    
     $location = $this->parser->getCurrentLocation();
 
     if($tag_info->isEndTagForbidden())
@@ -78,7 +80,7 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
       throw new lmbMacroException("Tag '$tag' not found in dictionary");
     $tag_info->load();
 
-    $tag_node = $this->buildTagNode($tag_info, $tag, $attrs, $self_closed_tag = true);
+    $tag_node = $this->buildTagNode($tag_info, $tag, $attrs);
     $tag_node->setHasClosingTag(false);
     $this->tree_builder->pushNode($tag_node); // for cases like {{include}} we do pushNode() and popNode() here.
     $this->tree_builder->popNode();
@@ -92,10 +94,9 @@ class lmbMacroTagParsingState extends lmbMacroBaseParsingState implements lmbMac
   * @param boolean whether the tag has contents
   * @return lmbMacroNode
   */
-  function buildTagNode($tag_info, $tag, $attrs, $isEmpty)
+  function buildTagNode($tag_info, $tag, $attrs)
   {
     $tag_node = $this->_createTagNode($tag_info, $tag);
-    $tag_node->emptyClosedTag = $isEmpty;
     $this->_addAttributesToTagNode($tag_node, $attrs);
     return $tag_node;
   }

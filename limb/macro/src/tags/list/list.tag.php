@@ -34,7 +34,7 @@ class lmbMacroListTag extends lmbMacroTag
     $this->count_source = true;
   }
 
-  function generateContents($code)
+  protected function _generateContent($code)
   {
     if(!$as = $this->get('as'))
       $as = '$item';
@@ -65,7 +65,7 @@ class lmbMacroListTag extends lmbMacroTag
         if(!$found_item_tag)
         {
           $code->writePHP('if(' . $this->counter_var . ' == 0) {');
-          $child->generateContents($code);
+          $child->generate($code);
           $code->writePHP('}');
         }
         //otherwise we collect them to display later
@@ -75,7 +75,7 @@ class lmbMacroListTag extends lmbMacroTag
       elseif(is_a($child, 'lmbMacroListItemTag'))
       {
         $found_item_tag = true;
-        $child->generateContents($code);
+        $child->generate($code);
       }
     }
 
@@ -86,7 +86,7 @@ class lmbMacroListTag extends lmbMacroTag
     foreach($postponed_nodes as $node)
     {
       $code->writePHP('if(' . $this->counter_var . ' > 0) {');
-      $node->generateContents($code);
+      $node->generate($code);
       $code->writePHP('}');
     }
 
@@ -139,7 +139,7 @@ class lmbMacroListTag extends lmbMacroTag
     if($list_empty = $this->findImmediateChildByClass('lmbMacroListEmptyTag'))
     {
       $code->writePHP('if(' . $this->counter_var . ' == 0) {');
-      $list_empty->generateContents($code);
+      $list_empty->generate($code);
       $code->writePHP('}');
     }
   }

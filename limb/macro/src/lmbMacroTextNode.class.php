@@ -23,10 +23,10 @@ class lmbMacroTextNode extends lmbMacroNode
     $this->contents = $text;
   }
 
-  function generateContents($code_writer)
+  function generate($code_writer)
   {
     $code_writer->writeHtml($this->contents);
-    parent :: generateContents($code_writer);
+    parent :: generate($code_writer);
   }
 
   function getText()

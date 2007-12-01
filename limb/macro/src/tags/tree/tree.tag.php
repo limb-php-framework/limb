@@ -16,7 +16,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  */
 class lmbMacroTreeTag extends lmbMacroTag
 {
-  function generateContents($code)
+  protected function _generateContent($code)
   {
     if(!$level = $this->get('level'))
       $level = '$level';
@@ -44,11 +44,11 @@ class lmbMacroTreeTag extends lmbMacroTag
     //rendering tags before branch
     $code->writePHP('if(!' . $counter . ') {');
     foreach($before_branch as $tag)
-      $tag->generateContents($code);
+      $tag->generate($code);
     $code->writePHP('}');
 
     $branch->setRecursionMethod($method);
-    $branch->generateContents($code);
+    $branch->generate($code);
 
     $code->writePHP($counter . '++;');
     $code->writePHP('}');//foreach
@@ -56,7 +56,7 @@ class lmbMacroTreeTag extends lmbMacroTag
     //rendering tags after branch
     $code->writePHP('if(' . $counter . ') {');
     foreach($after_branch as $tag)
-      $tag->generateContents($code);
+      $tag->generate($code);
     $code->writePHP('}');
 
     $code->endMethod();

@@ -42,15 +42,15 @@ class lmbMacroIncludeTag extends lmbMacroTag
     return $this->isDynamic('file');
   }
 
-  function generateContents($code)
+  function generate($code)
   {
     if($this->_isDynamic())
-      $this->_generateDynamicContents($code);
+      $this->_generateDynamicaly($code);
     else
-      $this->_generateStaticContents($code);
+      $this->_generateStaticaly($code);
   }
 
-  function _generateDynamicContents($code)
+  function _generateDynamicaly($code)
   {
     $args = $this->_attributesIntoArray();
 
@@ -62,14 +62,14 @@ class lmbMacroIncludeTag extends lmbMacroTag
     $code->writePHP('$this->includeTemplate(' . $this->get('file') . ',' . $arg_str . ');');
   }
 
-  function _generateStaticContents($code)
+  function _generateStaticaly($code)
   {
     static $counter = 1;
 
     list($keys, $vals) = $this->_attributesIntoArgs();
 
     $method = $code->beginMethod('__staticInclude' . ($counter++), $keys);
-    parent :: generateContents($code);
+    parent :: generate($code);
     $code->endMethod();
 
     $code->writePHP('$this->' . $method . '(' . implode(', ', $vals) . ');');

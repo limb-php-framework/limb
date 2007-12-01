@@ -17,7 +17,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  */
 class lmbMacroApplyTag extends lmbMacroTag
 {
-  function generateContents($code)
+  function generate($code)
   {
     $name = $this->get('template');
 

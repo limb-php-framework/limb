@@ -23,7 +23,7 @@ class lmbMacroTreeBranchTag extends lmbMacroTag
     $this->method = $name;
   }
 
-  function generateContents($code)
+  protected function _generateContent($code)
   {
     if(!$level = $this->parent->get('level'))
       $level = '$level';
@@ -41,18 +41,18 @@ class lmbMacroTreeBranchTag extends lmbMacroTag
     $code->writePHP('if(isset(' . $as . '["' . $kids_prop . '"])) {');
 
     foreach($before_item as $tag)
-      $tag->generateContents($code);
+      $tag->generate($code);
 
-    $item->generateContents($code);
+    $item->generate($code);
 
     $code->writePHP('$this->' . $this->method . '(' . $as . '["' . $kids_prop . '"], ' . $level . ' + 1);');
 
     foreach($after_item as $tag)
-      $tag->generateContents($code);
+      $tag->generate($code);
 
     $code->writePHP('} else {');
 
-    parent :: generateContents($code);
+    parent :: _generateContent($code);
 
     $code->writePHP('}');
   }

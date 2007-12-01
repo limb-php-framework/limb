@@ -27,7 +27,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
     $list->countSource();
   }
 
-  function generateContents($code)
+  protected function _generateContent($code)
   {
     $step_var = $this->getStepVar($code);
     $helper_var = $this->getHelperVar($code);
@@ -64,7 +64,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
       }
     }
 
-    parent :: generateContents($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

@@ -20,7 +20,7 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  */
 class lmbMacroListFillTag extends lmbMacroTag
 {
-  function generateContents($code)
+  protected function _generateContent($code)
   {
     $ratio_var = $code->generateVar();
     if($ratio = $this->get('upto'))
@@ -44,7 +44,7 @@ class lmbMacroListFillTag extends lmbMacroTag
     if($items_left = $this->get('items_left'))
       $code->writePhp($items_left . " = {$items_left_var};");
 
-    parent :: generateContents($code);
+    parent :: _generateContent($code);
 
     $code->writePhp('}'. "\n");
   }

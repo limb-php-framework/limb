@@ -218,35 +218,12 @@ class lmbMacroNode
     return $parent;
   }
 
-  function prepare()
-  {
-    foreach($this->children as $child)
-      $child->prepare();
-  }
-
   function preParse(){}
-
-  function generateConstructor($code_writer)
-  {
-    foreach($this->children as $child)
-      $child->generateConstructor($code_writer);
-  }
-
-  function generateContents($code_writer)
-  {
-    foreach($this->children as $child)
-      $child->generate($code_writer);
-  }
 
   function generate($code_writer)
   {
-    $this->_preGenerateAttributes($code_writer);
-
-    $this->generateContents($code_writer);
-  }
-
-  protected function _preGenerateAttributes($code_writer)
-  {
+    foreach($this->children as $child)
+      $child->generate($code_writer);
   }
 
   /**

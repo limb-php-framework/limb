@@ -16,7 +16,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
 
 class MacroTagFooTest extends lmbMacroTag
 {
-  function generateContents($code)
+  function generate($code)
   {
     $code->writeHtml('foo!');
   }
@@ -24,7 +24,7 @@ class MacroTagFooTest extends lmbMacroTag
 
 class MacroTagBarTest extends lmbMacroTag
 {
-  function generateContents($code)
+  function generate($code)
   {
     $code->writeHtml('bar');
   }
@@ -32,7 +32,8 @@ class MacroTagBarTest extends lmbMacroTag
 
 class MacroTagZooTest extends lmbMacroTag
 {
-  function generateContents($code)
+  // note that we overrided _generateContent since generate() methods pregenerates dynamic attributes
+  function _generateContent($code)
   {
     $code->writePHP('echo ' . $this->getEscaped('attr') . ';');
   }

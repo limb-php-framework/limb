@@ -26,7 +26,7 @@ class lmbMacroOutputExpressionNode extends lmbMacroNode
     parent :: __construct($location);
   }
 
-  function generateContents($code)
+  function generate($code)
   {
     $this->expression->preGenerate($code);
     $code->writePHP('echo ' . $this->expression->getValue() .  ";\n");

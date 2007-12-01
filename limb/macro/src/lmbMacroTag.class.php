@@ -19,9 +19,8 @@ lmb_require('limb/macro/src/lmbMacroTagAttribute.class.php');
 class lmbMacroTag extends lmbMacroNode
 {
   protected $tag;
-  protected $has_closing_tag = true;
-  protected $empty_closed_tag = false;
   protected $tag_info;
+  protected $has_closing_tag = true;
   protected $attributes = array();
 
   function __construct($location, $tag, $tag_info)
@@ -103,10 +102,26 @@ class lmbMacroTag extends lmbMacroNode
   {
     return array_key_exists(strtolower($name), $this->attributes);
   }
+  
+  function hasConstant($name)
+  {
+    return $this->has($name) && !$this->attributes[strtolower($name)]->isDynamic();
+  }
 
   function isDynamic($name)
   {
-    return $this->has($name) && $this->attributes[strtolower($name)]->isDynamic();
+    return !$this->hasConstant($name);
+  }
+  
+  function getConstantAttributes()
+  {
+    $res = array();
+    foreach($this->attributes as $key => $attr)
+    {
+      if(!$attr->isDynamic())
+        $res[$attr->getName()] = $attr->getValue();
+    }
+    return $res;
   }
 
   /**
@@ -146,10 +161,29 @@ class lmbMacroTag extends lmbMacroNode
   function generate($code_writer)
   {
     $this->_preGenerataAttributes($code_writer);
-
-    $this->generateContents($code_writer);
+    
+    $this->_generateBeforeContent($code_writer);
+    
+    $this->_generateContent($code_writer);
+    
+    $this->_generateAfterContent($code_writer);
+  }
+  
+  // children can override this method if they need to generate some code around content in simple cases
+  // but it's recommended to override generateBeforeContent() and generateAfterContent() instead.
+  protected function _generateContent($code_writer)
+  {
+    parent :: generate($code_writer);
+  }
+ 
+  protected function _generateBeforeContent($code_writer)
+  {
   }
 
+  protected function _generateAfterContent($code_writer)
+  {
+  }
+  
   protected function _preGenerataAttributes($code_writer)
   {
     foreach($this->attributes as $attribute)

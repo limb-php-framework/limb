@@ -17,14 +17,14 @@ lmb_require('limb/macro/src/lmbMacroTag.class.php');
  */
 class lmbMacroTemplateTag extends lmbMacroTag
 {
-  function generateContents($code)
+  function generate($code)
   {
     $name = $this->get('name');
 
     $args = $code->generateVar();
     $code->beginMethod('_template'. $name, array($args . '= array()'));
     $code->writePHP("if($args) extract($args);");
-    parent :: generateContents($code);
+    parent :: generate($code);
     $code->endMethod();
   }
 }

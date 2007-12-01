@@ -63,8 +63,6 @@ class lmbMacroCompiler
     $root_node = new lmbMacroNode(new lmbMacroSourceLocation($source_file, ''));
     $this->parseTemplate($source_file, $root_node);
 
-    $root_node->prepare();
-
     $generated_code = $this->_generateTemplateCode($class, $render_func, $root_node);
     self :: writeFile($compiled_file, $generated_code);
   }
