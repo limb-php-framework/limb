@@ -22,9 +22,11 @@ function control_error()
    TODO: продублировать описание на английском. показать пример использования.
 */
 Limb.Class('CMS.Filter',
-{
+{  
   __construct:function(showFilterStr, hideFilterStr)
   {
+    this.showFilterStr = showFilterStr || '';
+    this.hideFilterStr = hideFilterStr || '';      
     var filter = jQuery('.filter');
     var filterForm = jQuery('.filter form');
     var list = jQuery('.list');
@@ -44,13 +46,13 @@ Limb.Class('CMS.Filter',
 
     if(Limb.cookie(window.location + '.filter') == 1){
       filterForm.show();
-      this.activeFilter.text(hideFilterStr);
+      this.activeFilter.text(this.hideFilterStr);
       this.activeFilter.addClass('show');
 
     }
     else {
       filterForm.hide();
-      this.activeFilter.text(showFilterStr);
+      this.activeFilter.text(this.showFilterStr);
     }
 
   },
@@ -96,19 +98,19 @@ Limb.Class('CMS.Filter',
     if (filterForm.is('form')){
 
         if (this.activeFilter.attr('class')== 'show')
-          this.activeFilter.removeClass('show').text(showFilterStr);
+          this.activeFilter.removeClass('show').text(this.showFilterStr);
         else {
           this.activeFilter.addClass('show').text(hideFilterStr);
-          this.activeFilterBelowList.removeClass('show').text(showFilterStr);
+          this.activeFilterBelowList.removeClass('show').text(this.showFilterStr);
         }
     }
     else{
 
         if (this.activeFilterBelowList.attr('class')== 'show')
-          this.activeFilterBelowList.removeClass('show').text(showFilterStr);
+          this.activeFilterBelowList.removeClass('show').text(this.showFilterStr);
         else {
-          this.activeFilterBelowList.addClass('show').text(hideFilterStr);
-          this.activeFilter.removeClass('show').text(showFilterStr);
+          this.activeFilterBelowList.addClass('show').text(this.hideFilterStr);
+          this.activeFilter.removeClass('show').text(this.showFilterStr);
         }
 
     }
