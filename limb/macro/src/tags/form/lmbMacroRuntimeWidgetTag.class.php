@@ -42,28 +42,28 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
     $this->_generateAfterClosingTag($code_writer);
   }
   
-  function getWidgetVar()
+  function getRuntimeVar()
   {
-    return '$this->' . $this->html_tag . '_' . $this->getWidgetId();
+    return '$this->' . $this->html_tag . '_' . $this->getRuntimeId();
   }
   
-  function getWidgetId()
+  function getRuntimeId()
   {
-    if ($this->hasConstant('widget_id'))
-      return $this->get('widget_id');
+    if ($this->hasConstant('runtime_id'))
+      return $this->get('runtime_id');
     elseif($this->hasConstant('id'))
       return $this->get('id');
     elseif($this->hasConstant('name'))
       return $this->get('name');
     else
     {
-      $widget_id = self :: generateNewWidgetId();
-      $this->set('widget_id', $widget_id);
+      $runtime_id = self :: generateNewRuntimeId();
+      $this->set('runtime_id', $runtime_id);
       return $widget_id;
     }
   }   
 
-  static function generateNewWidgetId()
+  static function generateNewRuntimeId()
   {
     static $counter = 1;
     return 'id00' . $counter++;
@@ -74,9 +74,9 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
     if ($this->widget_include_file)
       $code_writer->registerInclude($this->widget_include_file);
 
-    $id = $this->getWidgetId();
-    $widget = $this->getWidgetVar();
-    $code_writer->writeToInit("{$widget} = new {$this->widget_class_name}('{$id}');\n");
+    $runtime_id = $this->getRuntimeId();
+    $widget = $this->getRuntimeVar();
+    $code_writer->writeToInit("{$widget} = new {$this->widget_class_name}('{$runtime_id}');\n");
     $code_writer->writeToInit("{$widget}->setAttributes(" . var_export($this->getConstantAttributes(), true) . ");\n");
   }
 
@@ -86,7 +86,7 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
 
     $code->writeHTML("<{$this->html_tag}");
 
-    $code->writePHP($this->getWidgetVar() . '->renderAttributes();');
+    $code->writePHP($this->getRuntimeVar() . '->renderAttributes();');
 
     if (!$this->has_closing_tag)
       $code->writeHTML(' /');
@@ -96,7 +96,7 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
   
   protected function _generateDynamicAttributes($code)
   {
-    $widget = $this->getWidgetVar();
+    $widget = $this->getRuntimeVar();
     foreach(array_keys($this->attributes) as $key)
     {
       if ($this->attributes[$key]->isDynamic())

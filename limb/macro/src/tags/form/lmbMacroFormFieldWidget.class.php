@@ -23,7 +23,7 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
   
   function getDisplayName()
   {
-    return $this->id;
+    return $this->runtime_id;
   }
   
   function setForm($form)
@@ -49,7 +49,7 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
     if(is_object($this->form))
     {
       $ds = $this->form->getDatasource();
-      $id = $this->getId();
+      $id = $this->getRuntimeId();
       if(isset($ds[$id]))
         return $ds[$id];
     }

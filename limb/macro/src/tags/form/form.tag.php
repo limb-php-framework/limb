@@ -23,7 +23,7 @@ class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
   
   protected function _generateBeforeOpeningTag($code)
   {
-    $form = $this->getWidgetVar();
+    $form = $this->getRuntimeVar();
     
     // passing specified variable as a datasource to form widget
     if($this->has('from'))

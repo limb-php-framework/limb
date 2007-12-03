@@ -18,7 +18,7 @@ class lmbMacroFormErrorsTag extends lmbMacroTag
 {
   function generate($code)
   {
-    $form = $this->findParentByClass('lmbMacroFormTag')->getWidgetVar();
+    $form = $this->findParentByClass('lmbMacroFormTag')->getRuntimeVar();
     
     $to = $this->get('to');
     

@@ -16,16 +16,16 @@ class lmbMacroHtmlTagWidget
 {
   protected $attributes = array();
 
-  protected $id;
+  protected $runtime_id;
   
   function __construct($id)
   {
-    $this->id = $id;
+    $this->runtime_id = $id;
   }
   
-  function getId()
+  function getRuntimeId()
   {
-    return $this->id;
+    return $this->runtime_id;
   }
 
   function setAttributes($attributes)

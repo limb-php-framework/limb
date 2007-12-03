@@ -39,7 +39,7 @@ class lmbMacroFormWidget extends lmbMacroHtmlTagWidget
   
   function addChild($child)
   {
-    $this->children[$child->getId()] = $child;
+    $this->children[$child->getRuntimeId()] = $child;
   }
 
   function setDatasource($datasource)
@@ -79,7 +79,7 @@ class lmbMacroFormWidget extends lmbMacroHtmlTagWidget
           continue;
         
         $field->setErrorState(true);
-        if($label = $this->getLabelFor($field->getId()))
+        if($label = $this->getLabelFor($field->getRuntimeId()))
           $label->setErrorState(true);
       }
     }

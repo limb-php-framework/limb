@@ -18,7 +18,7 @@ class lmbMacroFormElementTag extends lmbMacroRuntimeWidgetTag
   {
     parent :: _generateWidget($code_writer);
     if($form_tag = $this->findParentByClass('lmbMacroFormTag'))
-      $code_writer->writePHP("{$this->getWidgetVar()}->setForm({$form_tag->getWidgetVar()});\n");
+      $code_writer->writePHP("{$this->getRuntimeVar()}->setForm({$form_tag->getRuntimeVar()});\n");
   }  
 }
 
