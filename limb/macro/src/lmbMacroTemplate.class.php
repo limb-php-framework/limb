@@ -8,9 +8,6 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
-lmb_require('limb/macro/src/lmbMacroCompiler.class.php');
-lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
-lmb_require('limb/macro/src/lmbMacroFilterDictionary.class.php');
 lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 lmb_require('limb/macro/src/lmbMacroException.class.php');
 
@@ -96,6 +93,9 @@ class lmbMacroTemplate
 
   protected function _createCompiler()
   {
+    lmb_require('limb/macro/src/compiler/*.interface.php');
+    lmb_require('limb/macro/src/compiler/*.class.php');
+
     $tag_dictionary = lmbMacroTagDictionary :: instance();
     $filter_dictionary = lmbMacroFilterDictionary :: instance();
     $tag_dictionary->load($this->config);

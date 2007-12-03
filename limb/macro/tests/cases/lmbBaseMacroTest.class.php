@@ -7,11 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/fs/src/lmbFs.class.php');
-lmb_require('limb/core/src/lmbObject.class.php');
-lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
-lmb_require('limb/macro/src/lmbMacroTagDictionary.class.php');
-
 class lmbBaseMacroTest extends UnitTestCase
 {
   function setUp()

@@ -7,8 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTag.class.php');
-
 /**
  * Renders a portion of the template if the current list row is odd
  * @tag list:odd

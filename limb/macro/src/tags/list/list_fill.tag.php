@@ -7,8 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTag.class.php');
-
 /**
  * Compile time component for output finalizers in a list
  * Allows to generate valid layout while output multicolumn lists

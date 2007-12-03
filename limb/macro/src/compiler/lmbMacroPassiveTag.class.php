@@ -8,13 +8,21 @@
  */
 
 /**
- * Compile time component for items (rows) in the list
- * @tag list:item
- * @parent_tag_class lmbMacroListTag
+ * class lmbMacroPassiveTag.
+ *
  * @package macro
  * @version $Id$
  */
-class lmbMacroListItemTag extends lmbMacroTag
+class lmbMacroPassiveTag extends lmbMacroTag 
 {
+
+  function generate($code_writer)
+  {
+  }
+  
+  function generateNow($code_writer)
+  {
+    parent :: generate($code_writer);
+  }
 }
 

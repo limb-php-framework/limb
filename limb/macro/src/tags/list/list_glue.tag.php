@@ -7,8 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTag.class.php');
-
 /**
  * Compile time component for separators in a list
  * @tag list:glue
