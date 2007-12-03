@@ -32,9 +32,13 @@ class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
       $code->writePHP("{$form}->setDatasource({$from});\n");
       $this->remove('from');
     }
-    
-    $error_list_id = $form . '_error_list';
+
+    $datasource_id = $form . '_datasource';
     // передача установленного в шаблон списка ошибок формы
+    $code->writePHP("if(isset({$datasource_id})){$form}->setDatasource({$datasource_id});\n");
+    
+    // передача установленного в шаблон списка ошибок формы
+    $error_list_id = $form . '_error_list';
     $code->writePHP("if(isset({$error_list_id})){$form}->setErrorList({$error_list_id});\n");
     
     parent :: _generateBeforeOpeningTag($code);
