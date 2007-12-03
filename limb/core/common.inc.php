@@ -9,13 +9,15 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6559 2007-12-03 11:14:21Z pachanga $
+ * @version $Id: common.inc.php 6562 2007-12-03 12:03:25Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
 function lmb_resolve_include_path($path)
 {
-  //this will be replaced with stream_resolve_include_path() in the future versions of PHP
+  if(function_exists('stream_resolve_include_path'))
+    return stream_resolve_include_path($path);
+
   foreach(lmb_get_include_path_items() as $dir)
   {
     $full_path = "$dir/$path";
