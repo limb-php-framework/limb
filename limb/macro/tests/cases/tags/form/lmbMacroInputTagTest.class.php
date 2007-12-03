@@ -81,4 +81,24 @@ class lmbMacroInputTagTest extends lmbBaseMacroTest
                 '<input type="reset" name="my_reset" /></form>';
     $this->assertEqual($out, $expected);
   }
+  
+  function testTypesFileAndSubmitAndPasswordAndResetAndFile_MayRenderValueAttribute()
+  {
+    $template = '{{input type="file" name="my_file" value="$#my_file"}}'.
+                '{{input type="submit" name="my_submit" value="title_{$#my_submit}"}}'.
+                '{{input type="password" name="my_password" value="$#my_password"}}'.
+                '{{input type="reset" name="my_reset" value="any_value"}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    $page->set('my_file', 10);
+    $page->set('my_submit', 20);
+    $page->set('my_password', 30);
+ 
+    $out = $page->render();
+    $expected = '<input type="file" name="my_file" value="10" />'.
+                '<input type="submit" name="my_submit" value="title_20" />'.
+                '<input type="password" name="my_password" value="30" />'.
+                '<input type="reset" name="my_reset" value="any_value" />';
+    $this->assertEqual($out, $expected);
+  }  
 }
