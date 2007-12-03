@@ -108,7 +108,9 @@ abstract class AdminObjectController extends lmbController
 
   protected function _import()
   {
+    $this->_onBeforeImport();
     $this->item->import($this->request);
+    $this->_onAfterImport();
   }
 
   protected function _validateAndSave($is_create = false)
@@ -122,7 +124,7 @@ abstract class AdminObjectController extends lmbController
       if($is_create)
         $this->_onBeforeCreate();
       else
-        $this->_onBeforeEdit();
+        $this->_onBeforeUpdate();
 
       $this->_onBeforeSave();
       $this->item->saveSkipValidation();
@@ -131,7 +133,7 @@ abstract class AdminObjectController extends lmbController
       if($is_create)
         $this->_onAfterCreate();
       else
-        $this->_onAfterEdit();
+        $this->_onAfterUpdate();
 
       $this->_endDialog();
     }
@@ -151,12 +153,14 @@ abstract class AdminObjectController extends lmbController
   protected function _onAfterSave() {}
   protected function _onBeforeCreate() {}
   protected function _onAfterCreate() {}
-  protected function _onBeforeEdit() {}
-  protected function _onAfterEdit() {}
+  protected function _onBeforeUpdate() {}
+  protected function _onAfterUpdate() {}
   protected function _onBeforeDelete() {}
   protected function _onAfterDelete() {}
   protected function _onBeforeValidate() {}
   protected function _onAfterValidate() {}
+  protected function _onBeforeImport() {}
+  protected function _onAfterImport() {}
   protected function _onEdit() {}
   protected function _onCreate() {}
 }
