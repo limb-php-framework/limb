@@ -17,13 +17,9 @@ lmb_require('limb/macro/src/tags/form/lmbMacroRuntimeWidgetTag.class.php');
  */
 class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
 {
+  protected $html_tag = 'form';
   protected $widget_class_name = 'lmbMacroFormWidget';
   protected $widget_include_file = 'limb/macro/src/tags/form/lmbMacroFormWidget.class.php';
-  
-  function __construct($location, $tag, $tag_info)
-  {
-    parent :: __construct($location, $tag, $tag_info, 'form');
-  }
   
   protected function _generateBeforeOpeningTag($code)
   {
@@ -32,8 +28,9 @@ class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
     // передача указанного контейнера с данными в виджет формы
     if($this->has('from'))
     {
-      $from = $this->getEscaped('from');       
+      $from = $this->get('from');       
       $code->writePHP("{$form}->setDatasource({$from});\n");
+      $this->remove('from');
     }
     
     $error_list_id = $form . '_error_list';

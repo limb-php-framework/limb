@@ -19,14 +19,13 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
   protected $widget_class_name;
   protected $html_tag;
   
-  function __construct($location, $tag, $tag_info, $html_tag)
+  function preParse()
   {
-    parent :: __construct($location, $tag, $tag_info);
-
-    $this->html_tag = $html_tag;
-    
     if(!$this->widget_class_name)
       $this->raise('Please specify "$widget_class_name" property of the tag class "' . get_class($this) .'"');
+
+    if(!$this->html_tag)
+      $this->raise('Please specify "$html_tag" property of the tag class "' . get_class($this) .'"');
   }
 
   protected function _generateBeforeContent($code_writer)
@@ -106,7 +105,7 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
       {
         $value = $this->attributes[$key]->getValue();
         $code->writePHP("{$widget}->setAttribute('{$key}',");
-        $code->writePHP($this->attributes[$key]->getEscaped());
+        $code->writePHP($this->getEscaped($key));
         $code->writePHP(");\n");
       }
     } 

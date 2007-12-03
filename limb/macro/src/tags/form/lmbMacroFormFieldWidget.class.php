@@ -19,10 +19,16 @@ lmb_require('limb/macro/src/tags/form/lmbMacroHtmlTagWidget.class.php');
 class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
 {
   protected $has_errors = false;
+  protected $form;
   
   function getDisplayName()
   {
     return $this->id;
+  }
+  
+  function setForm($form)
+  {
+    $this->form = $form;
   }
   
   function setErrorState($has_errors = true)
@@ -34,5 +40,19 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
   {
     return $this->has_errors;
   }
+  
+  function getValue()
+  {
+    if($this->hasAttribute('value'))
+      return $this->getAttribute('value');
+    
+    if(is_object($this->form))
+    {
+      $ds = $this->form->getDatasource();
+      $id = $this->getId();
+      if(isset($ds[$id]))
+        return $ds[$id];
+    }
+  }   
 }
 

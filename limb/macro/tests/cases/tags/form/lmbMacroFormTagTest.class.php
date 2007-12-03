@@ -51,4 +51,20 @@ class lmbMacroFormTagTest extends lmbBaseMacroTest
     $out = $page->render();
     $this->assertEqual($out, '<form name="my_form">1111</form>');
   }  
+  
+  function testFormTakesDatasourceByFromAttribute()
+  {
+    $template = '{{form name="my_form" from="$#form_data"}}'.
+                '<?php $ds = $this->form_my_form->getDatasource(); '.
+                ' echo $ds["value"];'.
+                '?>'.
+                '{{/form}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $page->set('form_data', array('value' => 1111));
+ 
+    $out = $page->render();
+    $this->assertEqual($out, '<form name="my_form">1111</form>');
+  }
 }
