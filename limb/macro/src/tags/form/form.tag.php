@@ -25,7 +25,7 @@ class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
   {
     $form = $this->getWidgetVar();
     
-    // передача указанного контейнера с данными в виджет формы
+    // passing specified variable as a datasource to form widget
     if($this->has('from'))
     {
       $from = $this->get('from');       
@@ -33,11 +33,11 @@ class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
       $this->remove('from');
     }
 
+    // passing specially named variable of the compiled template as a datasource to form widget if the variable if defined
     $datasource_id = $form . '_datasource';
-    // передача установленного в шаблон списка ошибок формы
     $code->writePHP("if(isset({$datasource_id})){$form}->setDatasource({$datasource_id});\n");
     
-    // передача установленного в шаблон списка ошибок формы
+    // passing specially named variable of the compiled template as an error_list to form widget if the variable if defined
     $error_list_id = $form . '_error_list';
     $code->writePHP("if(isset({$error_list_id})){$form}->setErrorList({$error_list_id});\n");
     

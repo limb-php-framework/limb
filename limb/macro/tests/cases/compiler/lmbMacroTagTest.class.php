@@ -25,204 +25,12 @@ class lmbMacroTagTest extends UnitTestCase
   {
     $this->tag_info = new lmbMacroTagInfo('MacroTag', 'whatever');
     $this->source_location = new lmbMacroSourceLocation('my_file', 10);
-    $this->node = $this->_createNode();
+    $this->node = new lmbMacroTag($this->source_location, 'my_tag', $this->tag_info);
   }
 
-  protected function _createNode()
+  function testGetAttribute_NoSuchAttribute()
   {
-    return new lmbMacroTag($this->source_location, 'my_tag', $this->tag_info);
-  }
-
-  function testGetIdAttribute()
-  {
-    $this->node->setId('Test');
-    $this->assertEqual($this->node->getId(), 'Test');
-  }
-
-  function testGetIdGenerated()
-  {
-    $id = $this->node->getId();
-    $this->assertEqual($this->node->getId(), $id);
-  }
-
-  function testFindChild()
-  {
-    $mock = new MockMacroNode();
-    $mock->setReturnValue('getId', 'Test');
-    $this->node->addChild($mock);
-    $this->assertEqual($this->node->findChild('Test')->getId(), 'Test');
-  }
-
-  function testFindChildInMany()
-  {
-    $node1 = new MockMacroNode();
-    $node1->setReturnValue('getId', 'foo');
-    $node2 = new MockMacroNode();
-    $node2->setReturnValue('getId', 'bar');
-    $this->node->addChild($node1);
-    $this->node->addChild($node2);
-    $this->assertEqual($this->node->findChild('bar')->getId(), 'bar');
-  }
-
-  function testFindChildNotFound()
-  {
-    $this->assertFalse($this->node->findChild('Test'));
-  }
-
-  function testFindUpChild()
-  {
-    $node1 = new lmbMacroNode();
-    $node1->setId('foo');
-    $node2 = new lmbMacroNode();
-    $node2->setId('bar');
-    $parent1 = new lmbMacroNode();
-    $parent1->setId('parent1');
-    $parent2 = new lmbMacroNode();
-    $parent2->setId('parent2');
-    
-    $parent1->addChild($node1);
-    $parent2->addChild($node2);
-    
-    $this->node->addChild($parent1);
-    $this->node->addChild($parent2);
-    
-    $this->assertEqual($node2->findUpChild('foo')->getId(), $node1->getId());
-    $this->assertEqual($parent1->findUpChild('parent2')->getId(), $parent2->getId());
-    $this->assertEqual($parent1->findUpChild('foo')->getId(), $node1->getId());
-  }
-
-  function testFindChildByClass()
-  {
-    $mock = new MockMacroNode();
-    $this->node->addChild($mock);
-    $this->assertIsA($this->node->findChildByClass('MockMacroNode'), 'MockMacroNode');
-  }
-
-  function testFindChildByClassNotFound()
-  {
-    $this->assertFalse($this->node->findChildByClass('Booo'));
-  }
-
-  function testFindParentByChild()
-  {
-    $parent = new lmbMacroNode;
-    $parent->addChild($this->node);
-    $this->assertIsA($this->node->findParentByClass('lmbMacroNode'), 'lmbMacroNode');
-  }
-
-  function testFindParentByClassNotFound()
-  {
-    $this->assertFalse($this->node->findParentByClass('Test'));
-  }
-
-  function testRemoveChild()
-  {
-    $mock = new MockMacroNode();
-    $mock->setReturnValue('getId', 'Test');
-    $this->node->addChild($mock);
-    $this->assertIsA($this->node->removeChild('Test'), 'MockMacroNode');
-  }
-
-  function testGetChildren()
-  {
-    $mock = new MockMacroNode();
-    $this->node->addChild($mock);
-    $children = $this->node->getChildren();
-    $this->assertReference($mock, $children[0]);
-  }
-
-  function testGenerate()
-  {
-    $code_writer = new MockMacroCodeWriter();
-    $child = new MockMacroNode();
-    $child->expectCallCount('generate', 1);
-    $this->node->addChild($child);
-    $this->node->generate($code_writer);
-  }
-
-  function testGenerateCallsPreGenerateForAttributes()
-  {
-    $code_writer = new MockMacroCodeWriter();
-    $attribute = new MockMacroTagAttribute();
-    $attribute->expectOnce('preGenerate');
-    $this->node->add($attribute);
-    $this->node->generate($code_writer);
-  }
-
-  function testCheckIdsOk()
-  {
-    $root = new lmbMacroNode;
-    $child1 = new lmbMacroNode;
-    $child1->setId('id1');
-
-    $child2 = new lmbMacroNode;
-    $child2->setId('id2');
-
-    $root->addChild($child1);
-    $root->addChild($child2);
-
-    $root->checkChildrenIds();
-  }
-
-  function testDuplicateIdsError()
-  {
-    $root = new lmbMacroNode;
-    $child1 = new lmbMacroNode(new lmbMacroSourceLocation('my_file', 10));
-    $child1->setId('my_tag');
-    $root->addChild($child1);
-
-    $child2 = new lmbMacroNode(new lmbMacroSourceLocation('my_file2', 15));
-    $child2->setId('my_tag');
-    $root->addChild($child2);
-
-    try
-    {
-      $root->checkChildrenIds();
-      $this->assertTrue(false);
-    }
-    catch(lmbMacroException $e)
-    {
-      $this->assertWantedPattern('/Duplicate "id" attribute/', $e->getMessage());
-      $params = $e->getParams();
-      $this->assertEqual($params['file'], 'my_file2');
-      $this->assertEqual($params['line'], 15);
-      $this->assertEqual($params['duplicate_node_file'], 'my_file');
-      $this->assertEqual($params['duplicate_node_line'], 10);
-    }
-  }
-
-  function testDuplicateIdIsLegalInDifferentBranches()
-  {
-    $root = new lmbMacroNode;
-
-    $Branch = new lmbMacroNode;
-    $root->addChild($Branch);
-
-    $child1 = new lmbMacroNode;
-    $child1->setId('my_tag');
-    $Branch->addChild($child1);
-
-    $child2 = new MockMacroNode();
-    $child2->setId('my_tag');
-    $root->addChild($child2);
-
-    $root->checkChildrenIds();
-  }
-
-  function testGetIdByDefault()
-  {
-    $this->assertNotNull($this->node->getId());
-  }
-
-  function testGetId()
-  {
-    $this->node->setId('TestId');
-    $this->assertEqual($this->node->getId(), 'TestId');
-  }
-  
-  function testGetAttributeUnset()
-  {
-    $this->assertNull($this->node->get('foo'));
+    $this->assertNull($this->node->get('no_such_attribute'));
   }
 
   function testGetAttribute()
@@ -251,6 +59,14 @@ class lmbMacroTagTest extends UnitTestCase
     
     $this->assertTrue($this->node->hasConstant('foo'));
     $this->assertFalse($this->node->hasConstant('tricky'));
+  }
+  
+  function testGetConstantAttributes()
+  {
+    $this->node->set('foo', 'value1');
+    $this->node->set('zoo', 'value2');
+    $this->node->set('tricky', '$this->bar');
+    $this->assertEqual($this->node->getConstantAttributes(), array('foo' => 'value1', 'zoo' => 'value2'));
   }
 
   function testRemoveAttribute()
@@ -291,6 +107,47 @@ class lmbMacroTagTest extends UnitTestCase
 
     $this->node->set('I', '0');
     $this->assertFalse($this->node->getBool('I'));
+  }
+  
+  function testGetId()
+  {
+    $this->node->setId('Test');
+    $this->assertEqual($this->node->getId(), 'Test');
+  }
+
+  function testGetIdGenerated()
+  {
+    $id = $this->node->getId();
+    $this->assertEqual($this->node->getId(), $id);
+  }
+  
+  function testGetIdByDefault()
+  {
+    $this->assertNotNull($this->node->getId());
+  }
+     
+  function testGetId_ByIdAttribute()
+  {
+    $this->node->set('id', 'my_tag');
+    $this->assertEqual($this->node->getId(), 'my_tag');
+  }
+
+  function testGenerate()
+  {
+    $code_writer = new MockMacroCodeWriter();
+    $child = new MockMacroNode();
+    $child->expectCallCount('generate', 1);
+    $this->node->addChild($child);
+    $this->node->generate($code_writer);
+  }
+
+  function testGenerateCallsPreGenerateForAttributes()
+  {
+    $code_writer = new MockMacroCodeWriter();
+    $attribute = new MockMacroTagAttribute();
+    $attribute->expectOnce('preGenerate');
+    $this->node->add($attribute);
+    $this->node->generate($code_writer);
   }
 
   function testPreparseAndCheckForRequiredAttributes()
