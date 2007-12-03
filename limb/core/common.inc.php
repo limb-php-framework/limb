@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6404 2007-10-09 22:02:56Z pachanga $
+ * @version $Id: common.inc.php 6559 2007-12-03 11:14:21Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -57,12 +57,12 @@ function lmb_is_path_absolute($path)
   if(!$path)
     return false;
 
-  //very trivial check, is more comprehensive required?
+  //very trivial check, is more comprehensive one required?
   return (($path{0} == '/' || $path{0} == '\\') ||
           (strlen($path) > 2 && $path{1} == ':'));
 }
 
-function lmb_require($file_path, $optional = false)
+function lmb_require($file_path, $class = null)
 {
   static $tried = array();
 
@@ -71,42 +71,54 @@ function lmb_require($file_path, $optional = false)
   else
     $tried[$file_path] = true;
 
+  //do we really need this stuff here?
   if(strpos($file_path, '*') !== false)
   {
     foreach(lmb_glob($file_path) as $path)
-      lmb_require($path, $optional);
+      lmb_require($path);
     return;
   }
 
-  if($optional && !lmb_is_readable($file_path))
-    return;
-
-  $file = basename($file_path);
-  $items = explode('.', $file);
-
-  if(isset($items[1]))
+  if(!$class)
   {
-    if($items[1] == 'class' || $items[1] == 'interface')
+    //autoguessing class or interface name by file
+    $file = basename($file_path);
+    $items = explode('.', $file);
+
+    if(isset($items[1]))
     {
-      $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$items[0]] = $file_path;
-      return;
+      if($items[1] == 'class' || $items[1] == 'interface')
+        $class = $items[0];
     }
   }
-  else
+
+  if($class)
   {
-    if($items[1] == 'class' && class_exists($items[0], false))
-      return;
-    if($items[1] == 'interface' && interface_exists($items[0], false))
-      return;
+    $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$class] = $file_path;
+    return;
   }
 
   if(!include_once($file_path))
     throw new lmbException("Could not include source file '$file_path'");
 }
 
+function lmb_glob_require($file_path)
+{
+  if(strpos($file_path, '*') !== false)
+  {
+    foreach(lmb_glob($file_path) as $path)
+      lmb_require($path);
+  }
+  else
+    lmb_require($path);
+}
+
 function lmb_require_optional($file_path)
 {
-  lmb_require($file_path, true);
+  if(!lmb_is_readable($file_path))
+    return;
+
+  lmb_require($file_path);
 }
 
 function lmb_autoload($name)
@@ -114,6 +126,7 @@ function lmb_autoload($name)
   if(isset($GLOBALS['LIMB_LAZY_CLASS_PATHS'][$name]))
   {
     $file_path = $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$name];
+    //is it safe to use include here instead of include_once?
     if(!include($file_path))
       throw new lmbException("Could not include source file '$file_path'");
   }

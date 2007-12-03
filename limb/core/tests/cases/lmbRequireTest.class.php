@@ -29,10 +29,30 @@ class lmbRequireTest extends UnitTestCase
   function testLazyLoadClass()
   {
     $name1 = $this->_rndName();
-    $path1 = $this->_writeClassFile($name1);
+    $path1 = $this->_writeClassFile($name1, '.php');
 
     $name2 = $this->_rndName();
-    $path2 = $this->_writeClassFile($name2);
+    $path2 = $this->_writeClassFile($name2, '.php');
+
+    lmb_require($path1, $name1);
+    lmb_require($path2, $name2);
+
+    $this->assertFalse(in_array($name1, get_declared_classes()));
+    $this->assertFalse(in_array($name2, get_declared_classes()));
+
+    $this->assertTrue(class_exists($name1, true));//triggers autoload
+
+    $this->assertTrue(in_array($name1, get_declared_classes()));
+    $this->assertFalse(in_array($name2, get_declared_classes()));
+  }
+
+  function testLazyLoadClassGuessNameFromFile()
+  {
+    $name1 = $this->_rndName();
+    $path1 = $this->_writeClassFile($name1, '.class.php');
+
+    $name2 = $this->_rndName();
+    $path2 = $this->_writeClassFile($name2, '.class.php');
 
     lmb_require($path1);
     lmb_require($path2);
@@ -49,9 +69,28 @@ class lmbRequireTest extends UnitTestCase
   function testLazyLoadInterface()
   {
     $name1 = $this->_rndName();
-    $path1 = $this->_writeInterfaceFile($name1);
+    $path1 = $this->_writeInterfaceFile($name1, '.php');
     $name2 = $this->_rndName();
-    $path2 = $this->_writeInterfaceFile($name2);
+    $path2 = $this->_writeInterfaceFile($name2, '.php');
+
+    lmb_require($path1, $name1);
+    lmb_require($path2, $name2);
+
+    $this->assertFalse(in_array($name1, get_declared_interfaces()));
+    $this->assertFalse(in_array($name2, get_declared_interfaces()));
+
+    $this->assertTrue(interface_exists($name1, true));//triggers autoload
+
+    $this->assertTrue(in_array($name1, get_declared_interfaces()));
+    $this->assertFalse(in_array($name2, get_declared_interfaces()));
+  }
+
+  function testLazyLoadInterfaceGuessNameFromFile()
+  {
+    $name1 = $this->_rndName();
+    $path1 = $this->_writeInterfaceFile($name1, '.interface.php');
+    $name2 = $this->_rndName();
+    $path2 = $this->_writeInterfaceFile($name2, '.interface.php');
 
     lmb_require($path1);
     lmb_require($path2);
@@ -65,7 +104,7 @@ class lmbRequireTest extends UnitTestCase
     $this->assertFalse(in_array($name2, get_declared_interfaces()));
   }
 
-  function testRecursionProtection()
+  function testPossibleRecursiveInclude()
   {
     $name = $this->_rndName();
     $path = $this->_writeModule("$name.class.php", "<?php \$foo = new $name(); class $name {} ?>");
@@ -153,7 +192,7 @@ class lmbRequireTest extends UnitTestCase
     }
   }
 
-  function testRequireOptional()
+  function testRequireOptionalOk()
   {
     $name = $this->_rndName();
     $path = $this->_writeModule("$name.class.php", "<?php class $name {} ?>");
@@ -184,16 +223,16 @@ class lmbRequireTest extends UnitTestCase
     }
   }
 
-  function _writeClassFile($name, $body = null)
+  function _writeClassFile($name, $ext = '.class.php')
   {
-    $path = $this->tmp_dir . $name . '.class.php';
-    $this->_write($path, $body ? $body : $this->_classCode($name));
+    $path = $this->tmp_dir . $name . $ext;
+    $this->_write($path, $this->_classCode($name));
     return $path;
   }
 
-  function _writeInterfaceFile($name)
+  function _writeInterfaceFile($name, $ext = '.interface.php')
   {
-    $path = $this->tmp_dir . $name . '.interface.php';
+    $path = $this->tmp_dir . $name . $ext;
     $this->_write($path, $this->_faceCode($name));
     return $path;
   }
