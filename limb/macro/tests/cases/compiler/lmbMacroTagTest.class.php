@@ -109,27 +109,27 @@ class lmbMacroTagTest extends UnitTestCase
     $this->assertFalse($this->node->getBool('I'));
   }
   
-  function testGetId()
+  function testGetNodeId()
   {
-    $this->node->setId('Test');
-    $this->assertEqual($this->node->getId(), 'Test');
+    $this->node->setNodeId('Test');
+    $this->assertEqual($this->node->getNodeId(), 'Test');
   }
 
-  function testGetIdGenerated()
+  function testGetNodeIdGenerated()
   {
-    $id = $this->node->getId();
-    $this->assertEqual($this->node->getId(), $id);
+    $id = $this->node->getNodeId();
+    $this->assertEqual($this->node->getNodeId(), $id);
   }
   
-  function testGetIdByDefault()
+  function testGetNodeIdByDefault()
   {
-    $this->assertNotNull($this->node->getId());
+    $this->assertNotNull($this->node->getNodeId());
   }
      
-  function testGetId_ByIdAttribute()
+  function testGetNodeId_ByIdAttribute()
   {
     $this->node->set('id', 'my_tag');
-    $this->assertEqual($this->node->getId(), 'my_tag');
+    $this->assertEqual($this->node->getNodeId(), 'my_tag');
   }
 
   function testGenerate()

@@ -15,7 +15,7 @@
  */
 class lmbMacroNode
 {
-  protected $id;
+  protected $node_id;
   protected $children = array();
   protected $parent;
   /**
@@ -56,18 +56,18 @@ class lmbMacroNode
     return $this->location->getLine();
   }
 
-  function getId()
+  function getNodeId()
   {
-    if($this->id)
-      return $this->id;
+    if($this->node_id)
+      return $this->node_id;
 
-    $this->id = self :: generateNewId();
-    return $this->id;
+    $this->node_id = self :: generateNewId();
+    return $this->node_id;
   }
 
-  function setId($id)
+  function setNodeId($node_id)
   {
-    $this->id = $id;
+    $this->node_id = $node_id;
   }
 
   static function generateNewId()
@@ -93,7 +93,7 @@ class lmbMacroNode
   {
     foreach($this->children as $key => $child)
     {
-      if($child->getId() == $id)
+      if($child->getNodeId() == $id)
       {
         unset($this->children[$key]);
         return $child;
@@ -127,7 +127,7 @@ class lmbMacroNode
   {
     foreach($this->children as $child)
     {
-      if($child->getId() == $id)
+      if($child->getNodeId() == $id)
         return $child;
       else
       {
@@ -234,7 +234,7 @@ class lmbMacroNode
     $checked_children = array();
     foreach($this->getChildren() as $key => $child)
     {
-      $id = $child->getId();
+      $id = $child->getNodeId();
       if(in_array($id, $child_ids))
       {
         $duplicate_child = $checked_children[$id];

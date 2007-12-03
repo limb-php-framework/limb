@@ -43,22 +43,22 @@ class lmbMacroTag extends lmbMacroNode
     return $this->has_closing_tag = $flag;
   }
 
-  function getId()
+  function getNodeId()
   {
-    if($this->id)
-      return $this->id;
+    if($this->node_id)
+      return $this->node_id;
 
     if($id = $this->get('id'))
-      $this->id = $id;
+      $this->node_id = $id;
     else
-      $this->id = self :: generateNewId();
+      $this->node_id = self :: generateNewId();
 
-    return $this->id;
+    return $this->node_id;
   }
   
-  function getEscapedId()
+  function getEscapedNodeId()
   {
-    $id = $this->getId();
+    $id = $this->getNodeId();
     return "'" .  $id . "'";
   }
 

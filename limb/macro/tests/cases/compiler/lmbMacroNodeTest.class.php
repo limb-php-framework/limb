@@ -26,7 +26,7 @@ class lmbMacroNodeTest extends UnitTestCase
   protected function _createNode($id = 'node', $parent = null)
   {
     $node = new lmbMacroNode($this->source_location);
-    $node->setId($id);
+    $node->setNodeId($id);
     
     if($parent)
       $parent->addChild($node);
@@ -34,21 +34,21 @@ class lmbMacroNodeTest extends UnitTestCase
     return $node;
   }
 
-  function testGetId()
+  function testGetNodeId()
   {
-    $this->node->setId('Test');
-    $this->assertEqual($this->node->getId(), 'Test');
+    $this->node->setNodeId('Test');
+    $this->assertEqual($this->node->getNodeId(), 'Test');
   }
 
-  function testGetIdGenerated()
+  function testGetNodeIdGenerated()
   {
-    $id = $this->node->getId();
-    $this->assertEqual($this->node->getId(), $id);
+    $id = $this->node->getNodeId();
+    $this->assertEqual($this->node->getNodeId(), $id);
   }
   
-  function testGetIdByDefault()
+  function testGetNodeIdByDefault()
   {
-    $this->assertNotNull($this->node->getId());
+    $this->assertNotNull($this->node->getNodeId());
   }
   
   function testGetChildren()
@@ -61,7 +61,7 @@ class lmbMacroNodeTest extends UnitTestCase
   function testFindChild()
   {
     $child = $this->_createNode();
-    $child->setId('Test');
+    $child->setNodeId('Test');
     $this->node->addChild($child);
     $this->assertEqual($this->node->findChild('Test'), $child);
   }
@@ -107,9 +107,9 @@ class lmbMacroNodeTest extends UnitTestCase
     $node1 = $this->_createNode('foo', $parent1);
     $node2 = $this->_createNode('bar', $parent2);
     
-    $this->assertEqual($node2->findUpChild('foo')->getId(), $node1->getId());
-    $this->assertEqual($parent1->findUpChild('parent2')->getId(), $parent2->getId());
-    $this->assertEqual($parent1->findUpChild('foo')->getId(), $node1->getId());
+    $this->assertEqual($node2->findUpChild('foo')->getNodeId(), $node1->getNodeId());
+    $this->assertEqual($parent1->findUpChild('parent2')->getNodeId(), $parent2->getNodeId());
+    $this->assertEqual($parent1->findUpChild('foo')->getNodeId(), $node1->getNodeId());
   }
 
   function testFindChildByClassAmongImmediateChildren()
@@ -216,11 +216,11 @@ class lmbMacroNodeTest extends UnitTestCase
   {
     $root = new lmbMacroNode();
     $child1 = new lmbMacroNode(new lmbMacroSourceLocation('my_file', 10));
-    $child1->setId('my_tag');
+    $child1->setNodeId('my_tag');
     $root->addChild($child1);
 
     $child2 = new lmbMacroNode(new lmbMacroSourceLocation('my_file2', 15));
-    $child2->setId('my_tag');
+    $child2->setNodeId('my_tag');
     $root->addChild($child2);
 
     try

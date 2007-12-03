@@ -33,7 +33,7 @@ class lmbMacroPagerTag extends lmbMacroTag
   
   protected function _generatePagerHelperWithInitialParams($code, $pager)
   {
-    $id = $this->getEscapedId();
+    $id = $this->getEscapedNodeId();
     $code->writeToInit("{$pager} = new lmbMacroPagerHelper({$id});\n");
 
     if ($total_items = $this->getEscaped('total_items'))
@@ -78,7 +78,7 @@ class lmbMacroPagerTag extends lmbMacroTag
 
   function getPagerVar()
   {
-    return '$this->pager_' . $this->getId(); 
+    return '$this->pager_' . $this->getNodeId(); 
   }
 }
 
