@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6562 2007-12-03 12:03:25Z pachanga $
+ * @version $Id: common.inc.php 6563 2007-12-03 12:22:22Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -104,7 +104,7 @@ function lmb_require($file_path, $class = null)
     throw new lmbException("Could not include source file '$file_path'");
 }
 
-function lmb_glob_require($file_path)
+function lmb_require_glob($file_path)
 {
   if(strpos($file_path, '*') !== false)
   {

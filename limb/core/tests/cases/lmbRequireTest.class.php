@@ -149,6 +149,32 @@ class lmbRequireTest extends UnitTestCase
     $this->tmp_dir = $old_dir;
   }
 
+  function testGlobRequireWithAutoload2()
+  {
+    //creating new unique directory
+    $old_dir = $this->tmp_dir;
+    $this->tmp_dir = $this->tmp_dir . $this->_rndName() . '/';
+    mkdir($this->tmp_dir);
+
+    $c1 = $this->_rndName();
+    $c2 = $this->_rndName();
+    $c3 = $this->_rndName();
+
+    $path1 = $this->_writeClassFile($c1);
+    $path2 = $this->_writeClassFile($c2);
+    $path3 = $this->_writeClassFile($c3);
+
+    lmb_require_glob($this->tmp_dir . '/*.class.php');
+
+    foreach(array($c1, $c2, $c3) as $c)
+    {
+      $this->assertFalse(in_array($c, get_declared_interfaces()));
+      $this->assertTrue(class_exists($c, true));
+    }
+
+    $this->tmp_dir = $old_dir;
+  }
+
   function testRequireFileCacheHit()
   {
     if(!function_exists('xdebug_start_code_coverage'))
