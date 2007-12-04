@@ -63,14 +63,14 @@ class lmbMacroNodeTest extends UnitTestCase
     $child = $this->_createNode();
     $child->setNodeId('Test');
     $this->node->addChild($child);
-    $this->assertEqual($this->node->findChild('Test'), $child);
+    $this->assertReference($this->node->findChild('Test'), $child);
   }
 
   function testFindChildInMany()
   {
     $child1 = $this->_createNode('foo', $this->node);
     $child2 = $this->_createNode('bar', $this->node);
-    $this->assertEqual($this->node->findChild('bar'), $child2);
+    $this->assertReference($this->node->findChild('bar'), $child2);
   }
 
   function testFindChildNotFound()
@@ -107,9 +107,9 @@ class lmbMacroNodeTest extends UnitTestCase
     $node1 = $this->_createNode('foo', $parent1);
     $node2 = $this->_createNode('bar', $parent2);
     
-    $this->assertEqual($node2->findUpChild('foo')->getNodeId(), $node1->getNodeId());
-    $this->assertEqual($parent1->findUpChild('parent2')->getNodeId(), $parent2->getNodeId());
-    $this->assertEqual($parent1->findUpChild('foo')->getNodeId(), $node1->getNodeId());
+    $this->assertReference($node2->findUpChild('foo'), $node1);
+    $this->assertReference($parent1->findUpChild('parent2'), $parent2);
+    $this->assertReference($parent1->findUpChild('foo'), $node1);
   }
 
   function testFindChildByClassAmongImmediateChildren()
@@ -118,7 +118,7 @@ class lmbMacroNodeTest extends UnitTestCase
     $special_child = new MyTestingMacroNode();
     $this->node->addChild($special_child);
     
-    $this->assertEqual($this->node->findChildByClass('MyTestingMacroNode'), $special_child);
+    $this->assertReference($this->node->findChildByClass('MyTestingMacroNode'), $special_child);
   }
 
   function testFindChildByClassInDeeperLevels()
@@ -128,7 +128,7 @@ class lmbMacroNodeTest extends UnitTestCase
     $parent->addChild($special_child);
     $common_child = $this->_createNode('bar', $parent);
     
-    $this->assertEqual($this->node->findChildByClass('MyTestingMacroNode'), $special_child);
+    $this->assertReference($this->node->findChildByClass('MyTestingMacroNode'), $special_child);
   }
 
   function testFindChildByClassNotFound()
@@ -148,7 +148,9 @@ class lmbMacroNodeTest extends UnitTestCase
     $parent2->addChild($child3);
     $parent2->addChild($child4);
     
-    $this->assertEqual($this->node->findChildrenByClass('MyTestingMacroNode'), array($child3, $child4));
+    $children = $this->node->findChildrenByClass('MyTestingMacroNode');
+    $this->assertReference($children[0], $child3);
+    $this->assertReference($children[1], $child4);
   }
 
   function testFindParentByClass()
@@ -159,10 +161,10 @@ class lmbMacroNodeTest extends UnitTestCase
     $parent = $this->_createNode('parent', $grandpa);
     $child = $this->_createNode('child', $parent);
     
-    $this->assertEqual($child->findParentByClass('lmbMacroNode'), $parent);
-    $this->assertEqual($child->findParentByClass('MyTestingMacroNode'), $grandpa);
-    $this->assertEqual($parent->findParentByClass('lmbMacroNode'), $grandpa);
-    $this->assertEqual($child->findParentByClass('MyTestingMacroNode'), $grandpa);
+    $this->assertReference($child->findParentByClass('lmbMacroNode'), $parent);
+    $this->assertReference($child->findParentByClass('MyTestingMacroNode'), $grandpa);
+    $this->assertReference($parent->findParentByClass('lmbMacroNode'), $grandpa);
+    $this->assertReference($child->findParentByClass('MyTestingMacroNode'), $grandpa);
   }
 
   function testFindParentByClassNotFound()
@@ -180,9 +182,9 @@ class lmbMacroNodeTest extends UnitTestCase
     $special_child2 = new MyTestingMacroNode();
     $this->node->addChild($special_child2);
     
-    $this->assertEqual($child->findImmediateChildByClass('MyTestingMacroNode'), $special_child2);
+    $this->assertReference($child->findImmediateChildByClass('MyTestingMacroNode'), $special_child2);
     // just to show the differences
-    $this->assertEqual($child->findChildByClass('MyTestingMacroNode'), $special_child);    
+    $this->assertReference($child->findChildByClass('MyTestingMacroNode'), $special_child);    
   }
 
   function findImmediateChildrenByClass()
@@ -194,13 +196,15 @@ class lmbMacroNodeTest extends UnitTestCase
     $this->node->addChild($special_child1);
     $this->node->addChild($special_child2);
 
-    $this->assertEqual($child->findImmediateChildrenByClass('MyTestingMacroNode'), array($special_child1, $special_child2));
+    $children = $child->findImmediateChildrenByClass('MyTestingMacroNode');
+    $this->assertReference($children, $special_child1);
+    $this->assertReference($children, $special_child2);
   }
   
   function testRemoveChild()
   {
     $child = $this->_createNode('Test', $this->node);
-    $this->assertEqual($this->node->removeChild('Test'), $child);
+    $this->assertReference($this->node->removeChild('Test'), $child);
     $this->assertNull($this->node->findChild('Test'));
   }
 
