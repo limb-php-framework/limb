@@ -192,7 +192,8 @@
   /*SIDEBAR ======================================================================================*/
     #sidebar {float: left;width: 225px;margin: 0 -225px 0 0;}
     #sidebar .sidebar_toggle {width:198px;height:auto;overflow:hidden;_height:1%;_overflow:visible;margin:1px 0 1px 1px;padding:5px 0;background-color:#E5E5E5;border:1px solid #bbbbbb;}
-      #sidebar.hide .sidebar_toggle {position:absolute;top:0;padding:5px;width:10px;}
+    #sidebar.hide {width:30px}
+      #sidebar.hide .sidebar_toggle {position:absolute;top:0;padding:5px;width:10px}
       #sidebar .sidebar_toggle .text {margin:0 10px 0 6px;float:left;}
       #sidebar .sidebar_toggle .arrow {float:right;display:block;width:10px;height:9px;margin:1px 6px 0 0;background: url(../images/icon/arrow.gif) no-repeat left top;cursor:pointer;}
         #sidebar .sidebar_toggle .arrow:hover {background-image: url(../images/icon/arrow_hover.gif);}

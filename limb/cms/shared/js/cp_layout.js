@@ -22,11 +22,11 @@ function control_error()
    TODO: продублировать описание на английском. показать пример использования.
 */
 Limb.Class('CMS.Filter',
-{  
+{
   __construct:function(showFilterStr, hideFilterStr)
   {
     this.showFilterStr = showFilterStr || ShowFilterDefault || '';
-    this.hideFilterStr = hideFilterStr || HideFilterDefault || '';      
+    this.hideFilterStr = hideFilterStr || HideFilterDefault || '';
     var filter = jQuery('.filter');
     var filterForm = jQuery('.filter form');
     var list = jQuery('.list');
@@ -238,18 +238,18 @@ Limb.Class('CMS.SidebarToggle',
 
   showSidebar: function(){
     this.inner.show('slow');
-    this.toggle_text.show('slow');
-    this.sidebar.removeClass('hide');
+    this.toggle_text.show();
     this.toggle.css('height','');
+    this.sidebar.removeClass('hide');
     this.content.css('margin-left','225px');
 
   },
 
   hideSidebar: function(){
-    this.inner.hide('slow');
-    this.toggle_text.hide('slow');
-    this.sidebar.addClass('hide');
     this.toggle.height(jQuery('body').height()-53);
+    this.toggle_text.hide();
+    this.inner.hide('slow');
+    this.sidebar.addClass('hide');
     this.sidebar.height(jQuery('body').height()-40);
     this.content.css('margin-left','38px');
   },
@@ -289,6 +289,7 @@ Limb.Class('CMS.SidebarToggle',
 function initDocumentStructure(){
   var container = jQuery('#container');
   var sidebar = jQuery('#sidebar');
+  var toggle = jQuery('.sidebar_toggle');
   container.css({
                 position:'absolute',
                 overflow: 'auto',
@@ -298,7 +299,7 @@ function initDocumentStructure(){
   });
   sidebar.css({
                 position:'absolute',
-                overflow: 'auto',
+                overflow: 'hidden',
                 top: '38px',
                 left: '0',
                 zIndex: 20
@@ -307,6 +308,7 @@ function initDocumentStructure(){
   var bodyHeight = jQuery('body').height()-40;
   container.height(bodyHeight);
   sidebar.height(bodyHeight);
+  toggle.height (bodyHeight -13);
 
 };
 
