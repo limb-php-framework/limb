@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6563 2007-12-03 12:22:22Z pachanga $
+ * @version $Id: common.inc.php 6574 2007-12-04 11:26:06Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -102,6 +102,26 @@ function lmb_require($file_path, $class = null)
 
   if(!include_once($file_path))
     throw new lmbException("Could not include source file '$file_path'");
+}
+
+function lmb_require_class($file_path, $class = null)
+{
+  static $tried = array();
+
+  if(isset($tried[$file_path]))
+    return;
+  else
+    $tried[$file_path] = true;
+
+  if(!$class)
+  {
+    //autoguessing class or interface name by file
+    $file = basename($file_path);
+    $items = explode('.', $file);
+    $class = $items[0];
+  }
+
+  $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$class] = $file_path;
 }
 
 function lmb_require_glob($file_path)
