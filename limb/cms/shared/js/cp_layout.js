@@ -25,16 +25,16 @@ Limb.Class('CMS.Filter',
 {  
   __construct:function(showFilterStr, hideFilterStr)
   {
-    this.showFilterStr = showFilterStr || '';
-    this.hideFilterStr = hideFilterStr || '';      
+    this.showFilterStr = showFilterStr || ShowFilterDefault || '';
+    this.hideFilterStr = hideFilterStr || HideFilterDefault || '';      
     var filter = jQuery('.filter');
     var filterForm = jQuery('.filter form');
     var list = jQuery('.list');
     if (!filter.is('div'))
       return;
 
-    var activeFilterHTML = '<a class="active_filter"><span>' + showFilterStr + '</span></a>';
-    var htmlText = '<div class="filter_bottom"><a class="active_filter_bottom"><span>' + showFilterStr + '</span></a></div>';
+    var activeFilterHTML = '<a class="active_filter"><span>' + this.showFilterStr + '</span></a>';
+    var htmlText = '<div class="filter_bottom"><a class="active_filter_bottom"><span>' + this.showFilterStr + '</span></a></div>';
 
     filter.prepend(activeFilterHTML);
     list.css('margin','0');
