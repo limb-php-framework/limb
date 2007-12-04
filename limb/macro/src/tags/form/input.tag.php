@@ -32,6 +32,11 @@ class lmbMacroInputTag extends lmbMacroFormElementTag
       case 'button':
         $this->widget_class_name = 'lmbMacroInputWidget';
         break;
+      case 'checkbox':
+      case 'radio':
+        $this->widget_include_file = 'limb/macro/src/tags/form/lmbMacroCheckableInputWidget.class.php';
+        $this->widget_class_name = 'lmbMacroCheckableInputWidget';
+        break;
       case 'password':
       case 'submit':
       case 'reset':
@@ -39,7 +44,7 @@ class lmbMacroInputTag extends lmbMacroFormElementTag
         $this->widget_class_name = 'lmbMacroFormFieldWidget';
         break;
       default:
-        $this->raiseCompilerError('Unrecognized type attribute for input tag');
+        $this->raise('Unrecognized type attribute for input tag');
     }
   }
 }

@@ -46,6 +46,11 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
     if($this->hasAttribute('value'))
       return $this->getAttribute('value');
     
+    return $this->_getValueFromFormDatasource();
+  }   
+  
+  protected function _getValueFromFormDatasource()
+  {
     if(is_object($this->form))
     {
       $ds = $this->form->getDatasource();
@@ -53,6 +58,6 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
       if(isset($ds[$id]))
         return $ds[$id];
     }
-  }   
+  }
 }
 
