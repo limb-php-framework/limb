@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6574 2007-12-04 11:26:06Z pachanga $
+ * @version $Id: common.inc.php 6575 2007-12-04 11:37:10Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 
@@ -64,14 +64,14 @@ function lmb_is_path_absolute($path)
           (strlen($path) > 2 && $path{1} == ':'));
 }
 
-function lmb_require($file_path, $class = null)
+function lmb_require($file_path, $class = '')
 {
   static $tried = array();
 
-  if(isset($tried[$file_path]))
+  if(isset($tried[$file_path . $class]))
     return;
   else
-    $tried[$file_path] = true;
+    $tried[$file_path . $class] = true;
 
   //do we really need this stuff here?
   if(strpos($file_path, '*') !== false)
@@ -104,15 +104,8 @@ function lmb_require($file_path, $class = null)
     throw new lmbException("Could not include source file '$file_path'");
 }
 
-function lmb_require_class($file_path, $class = null)
+function lmb_require_class($file_path, $class = '')
 {
-  static $tried = array();
-
-  if(isset($tried[$file_path]))
-    return;
-  else
-    $tried[$file_path] = true;
-
   if(!$class)
   {
     //autoguessing class or interface name by file
