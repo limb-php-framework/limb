@@ -39,21 +39,20 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
 
     //first item is variable itself
     //$var = $items[0];
-    $expr .= $var . ' = ' . $items[0] . ';';
-    $code->writePHP($this->tmp . "='';");
+    $expr .= $var . ' = ' . $items[0] . ';' . "\n";
+    $code->writePHP($this->tmp . "='';\n");
 
-    for($i=1; $i<sizeof($items); $i++)
+    for($i=1; $i < sizeof($items); $i++)
     {
       $item = $items[$i];
-      $expr .= 'if((is_array(' . $var . ') && isset(' . $var . '["' . $item . '"])) || ' .
-               '(is_object(' . $var . ') && ' . $this->tmp . '=' . $var . '->get("' . $item . '")))' .
-               '{if(is_array(' . $var . '))' . $this->tmp . ' = ' . $var . '["' . $item . '"];';
+      $expr .= "if((is_array({$var}) || ({$var} instanceof ArrayAccess)) && isset({$var}['{$item}'])) " .
+               "{ {$this->tmp} = {$var}['{$item}'];\n";
       $var = $this->tmp;
     }
 
     //closing brackets
     for($i=1; $i < sizeof($items); $i++)
-      $expr .= '}else{' . $this->tmp . '="";}';
+      $expr .= "}else{ {$this->tmp} = '';}\n";
 
     $code->writePHP($expr);
   }

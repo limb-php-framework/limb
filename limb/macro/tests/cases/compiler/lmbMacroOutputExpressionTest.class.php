@@ -57,6 +57,7 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'Hey');
   }
 
+  /*
   function testBrokenChainOutputForArray()
   {
     $content = '{$#var.foo.bar.baz}';
@@ -208,6 +209,6 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>10 - 20 - aaa</h1>');
   }
-
+  */
 }
 
