@@ -46,8 +46,8 @@ class lmbMacroCodeWriter
     $this->registerInclude('limb/macro/src/compiler/lmbMacroTemplateExecutor.class.php');
 
     $this->beginMethod($render_func, array('$args = array()'));
-    $this->writePHP('if($args) extract($args);');
-    $this->writePHP('$this->_init();');
+    $this->writePHP('if($args) extract($args);'."\n");
+    $this->writePHP('$this->_init();'."\n");
   }
 
   function getClass()

@@ -64,7 +64,11 @@ class lmbMacroFormWidget extends lmbMacroHtmlTagWidget
 
   function setErrorList($error_list)
   {
+    if(!($error_list instanceof lmbMacroFormErrorList) && is_array($error_list))
+      $error_list = new lmbMacroFormErrorList($error_list);
+    
     $this->error_list = $error_list;
+    $this->error_list->setForm($this);
 
     $this->_notifyFieldsAboutErrors();
   }

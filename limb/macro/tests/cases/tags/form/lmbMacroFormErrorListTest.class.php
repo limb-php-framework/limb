@@ -32,7 +32,7 @@ class lmbMacroFormErrorListTest extends lmbBaseMacroTest
                                                         'values' => array())));
   }
 
-  function testBindToForm()
+  function testErrorsIfFormWidgetIsSet()
   {
     $form = new MockMacroFormWidget();
     $field1 = new MockMacroFormFieldWidget();
@@ -48,7 +48,7 @@ class lmbMacroFormErrorListTest extends lmbBaseMacroTest
     $field1->setReturnValue('getDisplayName', 'TitleField');
     $field2->setReturnValue('getDisplayName', 'NameField');
     
-    $error_list->bindToForm($form);
+    $error_list->setForm($form);
     
     $this->assertErrorsInList($error_list, array(array('message' => 'Error in TitleField',
                                                         'fields' => array('Field' => 'title'),

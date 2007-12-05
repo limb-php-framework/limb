@@ -33,10 +33,9 @@ class lmbMacroFormErrorList extends ArrayIterator
       return $field_id;
   }
 
-  function bindToForm($form)
+  function setForm(lmbMacroFormWidget $form)
   {
     $this->form = $form;
-    $form->setErrorList($this);
   }
 
   function current()

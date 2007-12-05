@@ -59,6 +59,19 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
     $this->assertTrue($field1->hasErrors());
     $this->assertTrue($field2->hasErrors());
   }
+  
+  function testSetErrorsConvertErrorsToErrorList()
+  {
+    $error_fields = array('x'=>'Input1', 'z'=>'Input3');
+    $errors = array(array('message' => 'My message', 'fields' => $error_fields, 'values' => array(10, 20)));
+
+    $form = new lmbMacroFormWidget('my_id');
+    $form->setErrorList($errors);
+    
+    $error_list = $form->getErrorList();
+    $this->assertIsA($error_list, 'lmbMacroFormErrorList');
+    $this->assertEqual(count($error_list), 1);
+  }
 
   function testSetErrorsNotifyFieldsAndLabelsAboutErrors()
   {
