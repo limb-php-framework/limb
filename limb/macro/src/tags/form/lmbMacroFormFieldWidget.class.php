@@ -20,9 +20,15 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
 {
   protected $has_errors = false;
   protected $form;
+  protected $skip_render = array('error_class', 'error_style');
   
   function getDisplayName()
   {
+    if($this->hasAttribute('title'))
+      return $this->getAttribute('title');
+    if($this->hasAttribute('alt'))
+      return $this->getAttribute('alt');
+    
     return $this->runtime_id;
   }
   
@@ -34,6 +40,14 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
   function setErrorState($has_errors = true)
   {
     $this->has_errors = $has_errors;
+    
+    if($has_errors)
+    {
+      if($this->hasAttribute('error_class')) 
+        $this->setAttribute('class', $this->getAttribute('error_class'));
+      if($this->hasAttribute('error_style')) 
+       $this->setAttribute('style', $this->getAttribute('error_style'));
+    }
   }
   
   function hasErrors()

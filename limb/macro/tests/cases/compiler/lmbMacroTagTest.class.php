@@ -132,6 +132,12 @@ class lmbMacroTagTest extends UnitTestCase
     $this->assertEqual($this->node->getNodeId(), 'my_tag');
   }
 
+  function testGetNodeId_DontUseDynamicIdAttribute()
+  {
+    $this->node->set('id', '$my_tag');
+    $this->assertNotEqual($this->node->getNodeId(), '$my_tag');
+  }
+  
   function testGenerate()
   {
     $code_writer = new MockMacroCodeWriter();

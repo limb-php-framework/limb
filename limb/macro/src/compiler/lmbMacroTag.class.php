@@ -48,8 +48,8 @@ class lmbMacroTag extends lmbMacroNode
     if($this->node_id)
       return $this->node_id;
 
-    if($id = $this->get('id'))
-      $this->node_id = $id;
+    if($this->hasConstant('id'))
+      $this->node_id = $this->get('id');
     else
       $this->node_id = self :: generateNewId();
 

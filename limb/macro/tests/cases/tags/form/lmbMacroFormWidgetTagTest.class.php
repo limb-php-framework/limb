@@ -17,7 +17,7 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
     $form->addChild($field1);
     $form->addChild($field2);
     
-    $this->assertEqual($form->getChild('Input3'), $field2);
+    $this->assertReference($form->getChild('Input3'), $field2);
     $this->assertNull($form->getChild('NoSuchInput'));
   }
   
@@ -37,8 +37,8 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
     $form->addChild($label1);
     $form->addChild($label2);
     
-    $this->assertEqual($form->getLabelFor('Input3'), $label2);
-    $this->assertEqual($form->getLabelFor('Input1'), $label1);
+    $this->assertReference($form->getLabelFor('Input3'), $label2);
+    $this->assertReference($form->getLabelFor('Input1'), $label1);
     $this->assertNull($form->getLabelFor('NoSuchInput'));
   }
   

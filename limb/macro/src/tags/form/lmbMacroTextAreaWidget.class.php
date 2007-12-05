@@ -16,6 +16,6 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
  */
 class lmbMacroTextAreaWidget extends lmbMacroFormFieldWidget
 {
-  protected $skip_render = array('value');
+  protected $skip_render = array('value', 'error_class', 'error_style');
 }
 
