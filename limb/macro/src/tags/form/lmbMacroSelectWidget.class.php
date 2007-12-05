@@ -21,6 +21,8 @@ abstract class lmbMacroSelectWidget extends lmbMacroFormFieldWidget
 
   function setOptions($options)
   {
+    if(!is_array($options))
+      $options = array();
     $this->options = $options;
   }
   
