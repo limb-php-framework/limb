@@ -17,7 +17,7 @@ class lmbCacheFilePersisterTest extends lmbCacheTestBase
 
   function _createPersisterImp()
   {
-    $this->cache_dir = LIMB_VAR_DIR . '/cache/whatever';
+    $this->cache_dir = LIMB_VAR_DIR . '/cache';
     return new lmbCacheFilePersister($this->cache_dir);
   }
 

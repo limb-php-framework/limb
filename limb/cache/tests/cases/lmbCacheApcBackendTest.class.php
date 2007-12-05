@@ -16,6 +16,7 @@ class lmbCacheApcBackendTest extends lmbCacheBackendTest
   {
     $this->skipIf(!extension_loaded('apc'), 'APC extension not found. Test skipped.');
     $this->skipIf(!ini_get('apc.enabled'), 'APC extension not enabled. Test skipped.');
+    $this->skipIf((!ini_get('apc.enabled_cli') and php_sapi_name() == 'cli'), 'APC CLI not enabled. Test skipped.');    
   }
 
   function _createPersisterImp()

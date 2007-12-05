@@ -9,8 +9,9 @@
 
 /**
  * @package cache
- * @version $Id: common.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: common.inc.php 6588 2007-12-05 22:10:21Z alex433 $
  */
 require_once('limb/core/common.inc.php');
+lmb_require(dirname(__FILE__) . '/toolkit.inc.php');
 
 ?>

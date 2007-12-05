@@ -7,31 +7,32 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
-
 /**
  * class lmbCacheTools.
  *
  * @package cache
- * @version $Id: lmbCacheTools.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbCacheTools.class.php 6588 2007-12-05 22:10:21Z alex433 $
  */
 class lmbCacheTools extends lmbAbstractTools
 {
-  protected $cache;
+  protected $_cache;
 
   function getCache()
   {
-    if(is_object($this->cache))
-      return $this->cache;
+    if(is_object($this->_cache))
+      return $this->_cache;
+    
+    lmb_require('limb/cache/src/lmbCacheGroupDecorator.class.php');
+    lmb_require('limb/cache/src/lmbCacheFileBackend.class.php');
 
-    lmb_require('limb/cache/src/lmbCachePersisterKeyDecorator.class.php');
-    $this->cache = new lmbCachePersisterKeyDecorator(new lmbCacheMemoryPersister());
+    $this->_cache = new lmbCacheGroupDecorator(new lmbCacheFileBackend(LIMB_VAR_DIR . '/cache'));
 
-    return $this->cache;
+    return $this->_cache;
   }
 
   function setCache($cache)
   {
-    $this->cache = $cache;
+    $this->_cache = $cache;
   }
 }
 

@@ -20,6 +20,12 @@ abstract class lmbCacheBackendTest extends UnitTestCase
     $this->cache->flush();
   }
 
+  function tearDown()
+  {
+    $this->cache->flush();
+  }
+
+  
   function testGetFalse()
   {
     $this->assertFalse($this->cache->get(1));
