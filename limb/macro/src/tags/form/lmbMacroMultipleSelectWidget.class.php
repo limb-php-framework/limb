@@ -15,40 +15,47 @@ lmb_require('limb/macro/src/tags/form/lmbMacroSelectWidget.class.php');
  * @package macro
  * @version $Id$
  */
-class lmbMacroSingleSelectWidget extends lmbMacroSelectWidget
+class lmbMacroMultipleSelectWidget extends lmbMacroSelectWidget
 {
-  protected $default_selection = null;
+  protected $default_selection = array();
   
   function addToDefaultSelection($selection)
   {
-    $this->default_selection = $selection;
+    $this->default_selection[] = $selection;
   }
   
   function getValue()
   {
-    $value = parent :: getValue();
+    $values = parent :: getValue();
     
-    if(is_null($value))
-      $value = $this->default_selection;
+    if(!is_object($values) && !is_array($values))
+      $values = $this->default_selection;
 
-    if(is_scalar($value))
-      return $value;
+    if(is_object($values) && !($values instanceof Iterator))
+      $values = $this->default_selection;
     
     if(!$value_field = $this->getAttribute('value_field'))
       $value_field = 'id';
-
-    if((is_array($value) || ($value instanceof ArrayAccess)) && isset($value[$value_field]))
-      return $value[$value_field];
+    
+    $result = array();
+    foreach($values as $value)
+    {
+      if(is_scalar($value))
+        $result[] = $value;        
+      elseif((is_array($value) || $value instanceof ArrayAccess)  && isset($value[$value_field]))
+        $result[] = $value[$value_field];        
+    }
+    return $result;
   }
   
   function renderOptions()
   {
-    $value = $this->getValue();
+    $values = $this->getValue();
 
     foreach($this->options as $key => $option)
     {
       //special case, since in PHP "0 == 'bar'"
-      $selected = ((string)$key) == $value;
+      $selected = in_array((string)$key, $values);
       $this->_renderOption($key, $option, $selected);
     }
   }

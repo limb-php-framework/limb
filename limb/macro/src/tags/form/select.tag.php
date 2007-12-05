@@ -28,7 +28,7 @@ class lmbMacroSelectTag extends lmbMacroFormElementTag
 
       if (!$this->has('name'))
       {
-        if ( $this->has('id') )
+        if ($this->has('id') )
           $this->set('name', $this->get('id').'[]'); // Note - appends [] to id value
         else
           $this->raiseRequiredAttribute('name');
