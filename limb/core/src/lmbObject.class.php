@@ -171,7 +171,7 @@ class lmbObject implements lmbSetInterface
    * @param string property name
    * @return mixed|null
    */
-  function get($name)
+  function get($name, $default = '@#undefined#@')
   {
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
@@ -179,6 +179,10 @@ class lmbObject implements lmbSetInterface
     if($this->_hasAttribute($name) && !$this->_isGuarded($name))
       return $this->_getRaw($name);
 
+    if('@#undefined#@' != $default) {
+      return $default;
+    }
+    
     throw new lmbNoSuchPropertyException("No such property '$name' in " . get_class($this));
   }
 

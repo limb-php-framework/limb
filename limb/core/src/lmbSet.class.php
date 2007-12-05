@@ -22,10 +22,13 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
       $this->import($properties);
   }
 
-  function get($name)
+  function get($name, $default = '@#undefined#@')
   {
     if(isset($this->$name) && !$this->_isGuarded($name))
       return $this->$name;
+    
+    if('@#undefined#@' != $default)
+      return $default;
   }
 
   function getInteger($name)

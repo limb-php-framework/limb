@@ -21,6 +21,13 @@ abstract class DriverRecordTestBase extends UnitTestCase
     $record = new $this->record_class(array('test' => 'value'));
     $this->assertEqual($record['test'], 'value');
   }
+  
+  function testGetWithDefaultValue()
+  {
+    $record = new $this->record_class();
+    $this->assertEqual($record->get('foo'), null);
+    $this->assertEqual($record->get('foo', 'bar'), 'bar');
+  }
 }
 
 

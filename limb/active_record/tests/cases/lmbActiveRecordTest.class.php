@@ -144,6 +144,21 @@ class lmbActiveRecordTest extends UnitTestCase
     unset($object['annotation']); // Does not make any sence since db fields always available
     $this->assertTrue(isset($object['annotation']));
   }
+  
+  function testGetWithDefaultValue()
+  {
+    $object = new TestOneTableObject();
+    try
+    {
+      $object->get('foo');
+      $this->fail();
+    }
+    catch (Exception $e)
+    {
+      $this->pass();
+    }
+    $this->assertEqual($object->get('foo', 'bar'), 'bar');
+  }
 
   function testSaveNewRecord()
   {

@@ -104,6 +104,12 @@ class lmbObjectTest extends UnitTestCase
 
     $this->assertNull($object->get('foo'));
   }
+  
+  function testGetWithDefaultValue()
+  {
+    $object = new lmbObject();
+    $this->assertEqual($object->get('foo', 'bar'), 'bar');
+  }
 
   function testCallingGetterForNoneExistingPropertyThrowsException()
   {

@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6541 2007-11-23 07:19:13Z serega $
+ * @version $Id: lmbActiveRecord.class.php 6583 2007-12-05 12:43:47Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -550,21 +550,27 @@ class lmbActiveRecord extends lmbObject
    *  @param string property name
    *  @return mixed
    */
-  function get($property)
+  function get($property, $default = '@#undefined#@')
   {
     if(!$this->isNew() && $this->_izLazyAttribute($property) && !parent :: has($property))
       $this->_loadLazyAttribute($property);
 
     if($this->_hasValueObjectRelation($property))
-      return $this->_getValueObject($property);
+    { 
+      if($valueObject = $this->_getValueObject($property))
+        return $valueObject; 
+      
+      return ('@#undefined#@' != $default) ? $default : $valueObject;
+    }
 
     try
     {
       return parent :: get($property);
     }
-    catch(lmbNoSuchPropertyException $e)
-    {
-    }
+    catch(lmbNoSuchPropertyException $e) {}
+    
+    if('@#undefined#@' != $default)
+      return $default;
 
     if(in_array($property, $this->_db_table_fields))
       return null;
@@ -598,7 +604,7 @@ class lmbActiveRecord extends lmbObject
       $collection = $this->createRelationCollection($property);
       $this->_setRaw($property, $collection);
       return $collection;
-    }
+    }    
 
     throw $e;
   }

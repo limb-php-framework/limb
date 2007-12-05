@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbOciRecord.
  *
  * @package dbal
- * @version $Id: lmbOciRecord.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbOciRecord.class.php 6583 2007-12-05 12:43:47Z korchasa $
  */
 class lmbOciRecord extends lmbDbBaseRecord
 {
@@ -31,6 +31,9 @@ class lmbOciRecord extends lmbDbBaseRecord
       return $this->properties[$upname];
     elseif(isset($this->properties[$name])) //a quick hack
       return $this->properties[$name];
+    
+    if('@#undefined#@' != $default)
+      return $default;
   }
 
   function remove($name)

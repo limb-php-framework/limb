@@ -235,6 +235,20 @@ class lmbToolkitTest extends UnitTestCase
 
     $this->assertEqual($toolkit->get('my_var'), 'value1');
   }
+  
+  function testGetWithDefaultValue()
+  {
+    $toolkit = lmbToolkit :: instance();
+    try
+    {
+      $toolkit->get('foo');
+      $this->fail();
+    } catch (Exception $e) {
+      $this->pass();
+    }
+   
+    $this->assertEqual($toolkit->get('foo', 'baz'), 'baz');    
+  }
 
   function testSaveAndRestoreProperties()
   {

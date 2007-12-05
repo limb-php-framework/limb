@@ -15,7 +15,7 @@
  */
 interface lmbSetInterface extends ArrayAccess
 {
-  function get($name);
+  function get($name, $default = '@#undefined#@');
   function set($name, $value);
   function remove($name);
   function reset();

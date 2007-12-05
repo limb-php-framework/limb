@@ -27,6 +27,8 @@ class lmbSqliteRecord extends lmbDbBaseRecord
   {
     if(isset($this->properties[$name]))
       return $this->properties[$name];
+    if('@#undefined#@' != $default)
+      return $default;
   }
 
   function set($name, $value)

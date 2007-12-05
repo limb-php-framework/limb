@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbPgsqlRecord.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecord.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbPgsqlRecord.class.php 6583 2007-12-05 12:43:47Z korchasa $
  */
 class lmbPgsqlRecord extends lmbDbBaseRecord
 {
@@ -27,6 +27,8 @@ class lmbPgsqlRecord extends lmbDbBaseRecord
   {
     if(isset($this->properties[$name]))
       return $this->properties[$name];
+    if('@#undefined#@' != $default)
+      return $default;
   }
 
   function set($name, $value)

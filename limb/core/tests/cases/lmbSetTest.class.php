@@ -28,6 +28,12 @@ class lmbSetTest extends UnitTestCase
     $this->assertTrue($ds->has('test'));
     $this->assertEqual($ds->get('test'), 'value');
   }
+  
+  function testGetWithDefaultValue()
+  {
+    $ds = new lmbSet();    
+    $this->assertEqual($ds->get('test', 'default'), 'default');
+  }
 
   function testSetAndGetForGuardedProperty()
   {

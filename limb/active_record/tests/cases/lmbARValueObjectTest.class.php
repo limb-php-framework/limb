@@ -35,8 +35,10 @@ class LessonForTest extends lmbActiveRecord
                                   'not_required_date' => array('field' => 'date_end',
                                                                'class' => 'TestingValueObject',
                                                                'getter' => 'getValue',
-  														                                 'can_be_null' => true));
+  														       'can_be_null' => true));
 }
+
+class NotRequiredDateNullObject {}
 
 class LazyLessonForTest extends lmbActiveRecord
 {
@@ -132,6 +134,12 @@ class lmbARValueObjectTest extends UnitTestCase
     $lesson = new LessonForTest();    
     $lesson->not_required_date = null;
     $this->assertNull($lesson->getNotRequiredDate());
+  }
+  
+  function testGetDefaultObject()
+  {
+    $lesson = new LessonForTest();    
+    $this->assertIsA($lesson->get('not_required_date', new NotRequiredDateNullObject()), 'NotRequiredDateNullObject');     
   }
 
   function testEmptyValueForValuesObjects()

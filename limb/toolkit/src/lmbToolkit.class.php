@@ -40,7 +40,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6428 2007-10-16 12:26:39Z serega $
+ * @version $Id: lmbToolkit.class.php 6583 2007-12-05 12:43:47Z korchasa $
  */
 class lmbToolkit extends lmbObject
 {
@@ -213,12 +213,12 @@ class lmbToolkit extends lmbObject
   * Checks if appropriate getter method in tools exists to delegate to
   * @return void
   */
-  function get($var)
+  function get($var, $default = '@#undefined#@')
   {
     if($method = $this->_mapPropertyToGetMethod($var))
       return $this->$method();
     else
-      return parent :: get($var);
+      return parent :: get($var, $default);
   }
 
   function setRaw($var, $value)
