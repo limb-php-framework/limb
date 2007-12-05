@@ -24,6 +24,13 @@ class TestingValueObject
   }
 }
 
+class TestingNullValueObject extends TestingValueObject {
+  function getValue()
+  {
+    return 'i\'m a null';
+  }
+}
+
 class LessonForTest extends lmbActiveRecord
 {
   protected $_composed_of = array('date_start' => array('field' => 'date_start',
@@ -36,6 +43,16 @@ class LessonForTest extends lmbActiveRecord
                                                                'class' => 'TestingValueObject',
                                                                'getter' => 'getValue',
   														       'can_be_null' => true));
+}
+
+class LessonWithNullObject extends LessonForTest 
+{
+  protected $_db_table_name = 'lesson_for_test';
+  function getNotRequiredDate()
+  {
+    $null_object = new TestingValueObject('null');
+    return $this->get('not_required_date', $null_object);
+  }
 }
 
 class NotRequiredDateNullObject {}
@@ -138,13 +155,15 @@ class lmbARValueObjectTest extends UnitTestCase
   
   function testGetDefaultObject()
   {
-    $lesson = new LessonForTest();    
-    $this->assertIsA($lesson->get('not_required_date', new NotRequiredDateNullObject()), 'NotRequiredDateNullObject');     
+    $lesson = new LessonWithNullObject();    
+    $this->assertIdentical($lesson->getNotRequiredDate()->getValue(), 'null');
+    $lesson->not_required_date = new TestingValueObject('not_null');
+    $this->assertIdentical($lesson->getNotRequiredDate()->getValue(), 'not_null');    
   }
 
   function testEmptyValueForValuesObjects()
   {
-    $lesson = new LessonForTest();    
+    $lesson = new LessonForTest();
     $lesson->not_required_date = '';
     $this->assertIdentical($lesson->getNotRequiredDate(), '');
 
