@@ -7,10 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-require_once('limb/macro/src/tags/form/lmbMacroFormErrorList.class.php');
-require_once('limb/macro/src/tags/form/lmbMacroFormWidget.class.php');
-require_once('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
-
 Mock :: generate('lmbMacroFormWidget', 'MockMacroFormWidget');
 Mock :: generate('lmbMacroFormFieldWidget', 'MockMacroFormFieldWidget');
 

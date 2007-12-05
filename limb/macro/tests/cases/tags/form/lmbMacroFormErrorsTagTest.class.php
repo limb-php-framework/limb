@@ -7,8 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
  
-require_once('limb/macro/src/tags/form/lmbMacroFormErrorList.class.php'); 
-
 class lmbMacroFormErrorsTagTest extends lmbBaseMacroTest
 {
   function testSimpleCase()

@@ -18,6 +18,9 @@ class lmbMacroNode
   protected $node_id;
   protected $children = array();
   protected $parent;
+  
+  static protected $counter = 1;
+  
   /**
   * @var lmbMacroSourceLocation
   */
@@ -72,8 +75,7 @@ class lmbMacroNode
 
   static function generateNewId()
   {
-    static $counter = 1;
-    return 'id00' . $counter++;
+    return 'id00' . self :: $counter++;
   }
 
   function raise($error, $vars = array())

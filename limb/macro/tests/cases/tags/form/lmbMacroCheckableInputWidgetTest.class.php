@@ -7,10 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
-require_once('limb/core/src/lmbSet.class.php');
-require_once('limb/macro/src/tags/form/lmbMacroFormWidget.class.php');
-require_once('limb/macro/src/tags/form/lmbMacroCheckableInputWidget.class.php');
- 
 class lmbMacroCheckableInputWidgetTest extends lmbBaseMacroTest
 {
   protected $checkbox;

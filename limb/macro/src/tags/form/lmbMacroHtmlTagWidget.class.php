@@ -18,6 +18,8 @@ class lmbMacroHtmlTagWidget
 
   protected $runtime_id;
   
+  protected $skip_render = array();
+  
   function __construct($id)
   {
     $this->runtime_id = $id;
@@ -99,6 +101,8 @@ class lmbMacroHtmlTagWidget
   {
     foreach ($this->attributes as $name => $value)
     {
+      if(in_array($name, $this->skip_render))
+        continue;
       echo ' ';
       echo $name;
       if (!is_null($value))
