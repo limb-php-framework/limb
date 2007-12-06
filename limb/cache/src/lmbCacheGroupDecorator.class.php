@@ -24,6 +24,9 @@ class lmbCacheGroupDecorator implements lmbCacheBackend
   {
     $this->_cache = $cache;
     $this->_default_group = $default_group;
+    
+    if ($groups = $this->_cache->get('groups'))
+      $this->_groups = $groups;
   }
 
   function set($key, $value, $params = array())
@@ -87,5 +90,10 @@ class lmbCacheGroupDecorator implements lmbCacheBackend
   protected function _generateKey($key, $group)
   {
     return $group . '_' . $key;
+  }
+  
+  function __destruct()
+  {
+    $this->_cache->set('groups', $this->_groups);
   }
 }
