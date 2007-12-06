@@ -23,11 +23,11 @@ class lmbSqliteRecord extends lmbDbBaseRecord
     $this->properties = $data;
   }
 
-  function get($name)
+  function get($name, $default = LIMB_UNDEFINED)
   {
     if(isset($this->properties[$name]))
       return $this->properties[$name];
-    if('@#undefined#@' != $default)
+    if(LIMB_UNDEFINED != $default)
       return $default;
   }
 

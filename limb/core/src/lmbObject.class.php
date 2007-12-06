@@ -171,7 +171,7 @@ class lmbObject implements lmbSetInterface
    * @param string property name
    * @return mixed|null
    */
-  function get($name, $default = '@#undefined#@')
+  function get($name, $default = LIMB_UNDEFINED)
   {
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
@@ -179,7 +179,7 @@ class lmbObject implements lmbSetInterface
     if($this->_hasAttribute($name) && !$this->_isGuarded($name))
       return $this->_getRaw($name);
 
-    if('@#undefined#@' != $default) {
+    if(LIMB_UNDEFINED != $default) {
       return $default;
     }
     

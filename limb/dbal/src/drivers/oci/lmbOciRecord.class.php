@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbOciRecord.
  *
  * @package dbal
- * @version $Id: lmbOciRecord.class.php 6583 2007-12-05 12:43:47Z korchasa $
+ * @version $Id: lmbOciRecord.class.php 6595 2007-12-06 20:10:05Z pachanga $
  */
 class lmbOciRecord extends lmbDbBaseRecord
 {
@@ -23,7 +23,7 @@ class lmbOciRecord extends lmbDbBaseRecord
     $this->import($data);
   }
 
-  function get($name)
+  function get($name, $default = LIMB_UNDEFINED)
   {
     //Character encoding issue? Charset of identifiers?
     $upname = strtoupper($name);
@@ -32,7 +32,7 @@ class lmbOciRecord extends lmbDbBaseRecord
     elseif(isset($this->properties[$name])) //a quick hack
       return $this->properties[$name];
     
-    if('@#undefined#@' != $default)
+    if(LIMB_UNDEFINED != $default)
       return $default;
   }
 

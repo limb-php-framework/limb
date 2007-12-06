@@ -9,9 +9,10 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6575 2007-12-04 11:37:10Z pachanga $
+ * @version $Id: common.inc.php 6595 2007-12-06 20:10:05Z pachanga $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
+define('LIMB_UNDEFINED', 'undefined' . microtime());
 
 function lmb_resolve_include_path($path)
 {

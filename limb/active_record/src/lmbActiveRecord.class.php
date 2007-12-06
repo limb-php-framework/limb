@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6583 2007-12-05 12:43:47Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 6595 2007-12-06 20:10:05Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -550,7 +550,7 @@ class lmbActiveRecord extends lmbObject
    *  @param string property name
    *  @return mixed
    */
-  function get($property, $default = '@#undefined#@')
+  function get($property, $default = LIMB_UNDEFINED)
   {
     if(!$this->isNew() && $this->_izLazyAttribute($property) && !parent :: has($property))
       $this->_loadLazyAttribute($property);
@@ -560,7 +560,7 @@ class lmbActiveRecord extends lmbObject
       if($valueObject = $this->_getValueObject($property))
         return $valueObject; 
       
-      return ('@#undefined#@' != $default) ? $default : $valueObject;
+      return (LIMB_UNDEFINED != $default) ? $default : $valueObject;
     }
 
     try
@@ -569,7 +569,7 @@ class lmbActiveRecord extends lmbObject
     }
     catch(lmbNoSuchPropertyException $e) {}
     
-    if('@#undefined#@' != $default)
+    if(LIMB_UNDEFINED != $default)
       return $default;
 
     if(in_array($property, $this->_db_table_fields))

@@ -40,7 +40,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6583 2007-12-05 12:43:47Z korchasa $
+ * @version $Id: lmbToolkit.class.php 6595 2007-12-06 20:10:05Z pachanga $
  */
 class lmbToolkit extends lmbObject
 {
@@ -213,7 +213,7 @@ class lmbToolkit extends lmbObject
   * Checks if appropriate getter method in tools exists to delegate to
   * @return void
   */
-  function get($var, $default = '@#undefined#@')
+  function get($var, $default = LIMB_UNDEFINED)
   {
     if($method = $this->_mapPropertyToGetMethod($var))
       return $this->$method();
