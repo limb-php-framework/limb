@@ -59,7 +59,7 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
     {
       $runtime_id = self :: generateNewRuntimeId();
       $this->set('runtime_id', $runtime_id);
-      return $widget_id;
+      return $runtime_id;
     }
   }   
 

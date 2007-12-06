@@ -20,7 +20,13 @@ class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
 {
   protected $has_errors = false;
   protected $form;
-  protected $skip_render = array('error_class', 'error_style');
+  
+  function __construct($id)
+  {
+    parent :: __construct($id);
+    
+    $this->skip_render = array_merge($this->skip_render, array('error_class', 'error_style'));
+  }
   
   function getDisplayName()
   {

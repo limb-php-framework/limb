@@ -51,5 +51,32 @@ class lmbMacroFormErrorsTagTest extends lmbBaseMacroTest
                 '</form>';
     $this->assertEqual($page->render(), $expected);
   }   
-  
+
+  function testChildFieldsGetErrorsAsWell()
+  {
+    $template = '{{form name="my_form"}}'.
+                '{{form:errors to="$form_errors"/}}'.
+                '{{list using="$form_errors" as="$item"}}{{list:item}}{$item.message}{{/list:item}}{{/list}}'.
+                '{{label for="text_field" error_style="style_of_error"}}My text{{/label}}'.
+                '{{input type="text" name="text_field" title="My text field" error_class="class_of_error"/}}'.
+                '{{label for="select_field" error_class="class_of_error"}}My select{{/label}}'.
+                '{{select name="select_field" title="My select field" error_style="style_of_error"/}}'.
+                '{{/form}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $error_list = new lmbMacroFormErrorList();
+    $error_list->addError('Error in {field}', array('field' => 'text_field'));
+    $error_list->addError('Other error in {field}', array('field' => 'select_field'));
+    
+    $page->set('form_my_form_error_list', $error_list);
+ 
+    $expected = '<form name="my_form">Error in My text fieldOther error in My select field'.
+                '<label for="text_field" style="style_of_error">My text</label>'.
+                '<input type="text" name="text_field" title="My text field" class="class_of_error" value="" />'.
+                '<label for="select_field" class="class_of_error">My select</label>'.
+                '<select name="select_field" title="My select field" style="style_of_error"></select>'.
+                '</form>';
+    $this->assertEqual($page->render(), $expected);
+  }   
 }

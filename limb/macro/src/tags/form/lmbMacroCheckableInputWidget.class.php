@@ -16,7 +16,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
  */
 class lmbMacroCheckableInputWidget extends lmbMacroFormFieldWidget
 {
-  protected $skip_render = array('checked_value', 'error_class', 'error_style');
+  protected $skip_render = array('checked_value');
   
   function getName()
   {

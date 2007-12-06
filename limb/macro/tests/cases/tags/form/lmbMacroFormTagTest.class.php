@@ -48,7 +48,7 @@ class lmbMacroFormTagTest extends lmbBaseMacroTest
     $out = $page->render();
     $this->assertEqual($out, '<form name="my_form">1111</form>');
   }
-
+  
   function testFormTakesDatasourceFromTemplateVariable()
   {
     $template = '{{form name="my_form"}}'.

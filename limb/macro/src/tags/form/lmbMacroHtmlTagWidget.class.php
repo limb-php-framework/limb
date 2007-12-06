@@ -23,6 +23,8 @@ class lmbMacroHtmlTagWidget
   function __construct($id)
   {
     $this->runtime_id = $id;
+
+    $this->skip_render = array_merge($this->skip_render, array('runtime_id'));
   }
   
   function getRuntimeId()

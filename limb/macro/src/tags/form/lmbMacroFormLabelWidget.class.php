@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
  
-lmb_require('limb/macro/src/tags/form/lmbMacroHtmlTagWidget.class.php');
+lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
 
 /**
  * class lmbMacroFormLabelFieldWidget.
@@ -16,18 +16,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroHtmlTagWidget.class.php');
  * @package macro
  * @version $Id$
  */
-class lmbMacroFormLabelWidget extends lmbMacroHtmlTagWidget
+class lmbMacroFormLabelWidget extends lmbMacroFormFieldWidget
 {
-  protected $has_errors = false;
-  
-  function setErrorState($has_errors = true)
-  {
-    $this->has_errors = $has_errors;
-  }
-  
-  function hasErrors()
-  {
-    return $this->has_errors;
-  }   
 }
 
