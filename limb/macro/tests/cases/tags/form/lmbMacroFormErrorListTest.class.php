@@ -8,7 +8,7 @@
  */
 
 Mock :: generate('lmbMacroFormWidget', 'MockMacroFormWidget');
-Mock :: generate('lmbMacroFormFieldWidget', 'MockMacroFormFieldWidget');
+Mock :: generate('lmbMacroFormElementWidget', 'MockMacroFormFieldWidget');
 
 class lmbMacroFormErrorListTest extends lmbBaseMacroTest
 {

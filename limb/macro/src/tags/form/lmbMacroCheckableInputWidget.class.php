@@ -7,14 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
  
-lmb_require('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
+lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
  
 /**
  * Represents an HTML input type="radio" and type="checkbox" tags
  * @package macro
  * @version $Id$
  */
-class lmbMacroCheckableInputWidget extends lmbMacroFormFieldWidget
+class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
 {
   protected $skip_render = array('checked_value');
   

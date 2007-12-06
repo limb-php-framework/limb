@@ -7,14 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
  
-lmb_require('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
+lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
  
 /**
  * Represents an HTML textarea tag at runtime
  * @package macro
  * @version $Id$
  */
-class lmbMacroTextAreaWidget extends lmbMacroFormFieldWidget
+class lmbMacroTextAreaWidget extends lmbMacroFormElementWidget
 {
   protected $skip_render = array('value');
 }

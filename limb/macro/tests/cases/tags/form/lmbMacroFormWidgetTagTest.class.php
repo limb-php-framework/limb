@@ -12,8 +12,8 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
   function testAddAndGetChild()
   {
     $form = new lmbMacroFormWidget('my_id');
-    $field1 = new lmbMacroFormFieldWidget('Input1');
-    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $field1 = new lmbMacroFormElementWidget('Input1');
+    $field2 = new lmbMacroFormElementWidget('Input3');
     $form->addChild($field1);
     $form->addChild($field2);
     
@@ -24,11 +24,11 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
   function testGetLabelFor()
   {
     $form = new lmbMacroFormWidget('my_id');
-    $field1 = new lmbMacroFormFieldWidget('Input1');
+    $field1 = new lmbMacroFormElementWidget('Input1');
     $label1 = new lmbMacroFormLabelWidget('Label1');
     $label1->setAttribute('for', 'Input1');
     
-    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $field2 = new lmbMacroFormElementWidget('Input3');
     $label2 = new lmbMacroFormLabelWidget('Label3');
     $label2->setAttribute('for', 'Input3');
 
@@ -49,8 +49,8 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
     $error_list->addError('message', $error_fields);
 
     $form = new lmbMacroFormWidget('my_id');
-    $field1 = new lmbMacroFormFieldWidget('Input1');
-    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $field1 = new lmbMacroFormElementWidget('Input1');
+    $field2 = new lmbMacroFormElementWidget('Input3');
     $form->addChild($field1);
     $form->addChild($field2);
     
@@ -79,11 +79,11 @@ class lmbMacroFormWidgetTest extends lmbBaseMacroTest
     $error_list->addError('message', array('x'=>'Input1'));
 
     $form = new lmbMacroFormWidget('my_id');
-    $field1 = new lmbMacroFormFieldWidget('Input1');
+    $field1 = new lmbMacroFormElementWidget('Input1');
     $label1 = new lmbMacroFormLabelWidget('Label1');
     $label1->setAttribute('for', 'Input1');
 
-    $field2 = new lmbMacroFormFieldWidget('Input3');
+    $field2 = new lmbMacroFormElementWidget('Input3');
     $label2 = new lmbMacroFormLabelWidget('Label3');
     $label2->setAttribute('for', 'Input3');
     

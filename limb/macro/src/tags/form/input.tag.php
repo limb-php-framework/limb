@@ -41,7 +41,7 @@ class lmbMacroInputTag extends lmbMacroFormElementTag
       case 'submit':
       case 'reset':
       case 'file':
-        $this->widget_class_name = 'lmbMacroFormFieldWidget';
+        $this->widget_class_name = 'lmbMacroFormElementWidget';
         break;
       default:
         $this->raise('Unrecognized type attribute for input tag');

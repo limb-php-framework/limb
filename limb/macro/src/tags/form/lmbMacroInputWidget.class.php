@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
+lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
 
 /**
  * class lmbMacroInputWidget
@@ -15,7 +15,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormFieldWidget.class.php');
  * @package macro
  * @version $Id$
  */
-class lmbMacroInputWidget extends lmbMacroFormFieldWidget
+class lmbMacroInputWidget extends lmbMacroFormElementWidget
 {
   function renderAttributes()
   {

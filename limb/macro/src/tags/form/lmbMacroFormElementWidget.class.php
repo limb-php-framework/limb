@@ -10,13 +10,13 @@
 lmb_require('limb/macro/src/tags/form/lmbMacroHtmlTagWidget.class.php');
 
 /**
- * class lmbMacroFormFieldWidget.
+ * class lmbMacroFormElementWidget.
  * Base class for any form fields object at runtime 
  *
  * @package macro
  * @version $Id$
  */
-class lmbMacroFormFieldWidget extends lmbMacroHtmlTagWidget
+class lmbMacroFormElementWidget extends lmbMacroHtmlTagWidget
 {
   protected $has_errors = false;
   protected $form;

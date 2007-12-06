@@ -16,7 +16,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
  * @package macro
  * @version $Id$
  */
-class lmbMacroFormLabelWidget extends lmbMacroFormFieldWidget
+class lmbMacroFormLabelWidget extends lmbMacroFormElementWidget
 {
 }
 
