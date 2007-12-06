@@ -11,7 +11,7 @@
  * class lmbMessageBox.
  *
  * @package web_app
- * @version $Id: lmbMessageBox.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbMessageBox.class.php 6593 2007-12-06 15:37:16Z serega $
  */
 class lmbMessageBox
 {
@@ -69,6 +69,18 @@ class lmbMessageBox
   function hasMessages()
   {
     return sizeof($this->messages[self :: MESSAGES]) > 0;
+  }
+  
+  function getUnifiedList()
+  {
+    $result = array();
+    foreach($this->getErrors() as $error)
+      $result[] = array('message' => $error, 'is_error' => true, 'is_message' => false);
+
+    foreach($this->getMessages() as $message)
+      $result[] = array('message' => $message, 'is_message' => true, 'is_error' => false);
+    
+    return $result;
   }
 }
 
