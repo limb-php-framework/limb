@@ -9,7 +9,7 @@
 
 /**
  * @package active_record
- * @version $Id: toolkit.inc.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: toolkit.inc.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/active_record/src/toolkit/lmbARTools.class.php');

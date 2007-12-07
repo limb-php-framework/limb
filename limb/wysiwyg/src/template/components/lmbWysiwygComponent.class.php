@@ -12,7 +12,7 @@ lmb_require('limb/wact/src/components/form/form.inc.php');
  * class lmbWysiwygComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbWysiwygComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbWysiwygComponent.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbWysiwygComponent extends WactTextAreaComponent
 {

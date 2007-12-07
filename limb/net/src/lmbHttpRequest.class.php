@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {

@@ -9,7 +9,7 @@
 
 /**
  * @package web_app
- * @version $Id: setup.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: setup.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 set_include_path(dirname(__FILE__) . PATH_SEPARATOR .
                  dirname(__FILE__) . '/lib/' . PATH_SEPARATOR);

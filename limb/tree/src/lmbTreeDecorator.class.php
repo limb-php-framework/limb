@@ -9,7 +9,7 @@
 
 /**
  * @package tree
- * @version $Id: lmbTreeDecorator.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbTreeDecorator.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 lmb_require('limb/tree/src/lmbTree.interface.php');
 lmb_require('limb/core/src/lmbDecorator.class.php');

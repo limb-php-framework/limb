@@ -11,7 +11,7 @@
  * Include all the compile time base components plus the compiler
  *
  * @package wact
- * @version $Id: templatecompiler.inc.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: templatecompiler.inc.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 require_once 'limb/wact/src/compiler/WactDictionaryHolder.class.php';
 

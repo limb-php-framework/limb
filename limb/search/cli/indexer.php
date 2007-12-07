@@ -9,7 +9,7 @@
 
 /**
  * @package search
- * @version $Id: indexer.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: indexer.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 if(!isset($argv[1]))
   die("index starting uri not specified!\n");

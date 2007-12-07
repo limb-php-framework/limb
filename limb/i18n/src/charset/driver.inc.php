@@ -9,7 +9,7 @@
 
 /**
  * @package i18n
- * @version $Id: driver.inc.php 6190 2007-07-23 14:15:18Z pachanga $
+ * @version $Id: driver.inc.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 lmb_require('limb/i18n/src/charset/lmbSingleByteCharsetDriver.class.php');
 

@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsRootNode.class.php');
  * class lmbCmsNode.
  *
  * @package cms
- * @version $Id: lmbCmsNode.class.php 6228 2007-08-08 20:00:14Z 3dmax $
+ * @version $Id: lmbCmsNode.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbCmsNode extends lmbActiveRecord
 {

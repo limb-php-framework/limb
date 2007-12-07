@@ -14,7 +14,7 @@ lmb_require('limb/cms/src/model/lmbCmsSessionUser.class.php');
  * class lmbCmsTools.
  *
  * @package cms
- * @version $Id: lmbCmsTools.class.php 6472 2007-10-30 09:40:17Z serega $
+ * @version $Id: lmbCmsTools.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbCmsTools extends lmbAbstractTools
 {

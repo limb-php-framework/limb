@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbARManyToManyCollection.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {

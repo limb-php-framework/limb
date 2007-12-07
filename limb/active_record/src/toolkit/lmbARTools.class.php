@@ -13,7 +13,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
  * class lmbARTools.
  *
  * @package active_record
- * @version $Id: lmbARTools.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbARTools.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbARTools extends lmbAbstractTools
 {

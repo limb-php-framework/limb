@@ -30,4 +30,3 @@ $cli = new lmbCliRunner($input, $output);
 $result = $cli->execute();
 
 exit($result);
-?>

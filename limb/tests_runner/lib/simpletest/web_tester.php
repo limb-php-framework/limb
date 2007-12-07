@@ -3,7 +3,7 @@
      *	Base include file for SimpleTest.
      *	@package	SimpleTest
      *	@subpackage	WebTester
-     *	@version	$Id: web_tester.php 5999 2007-06-18 13:13:08Z pachanga $
+     *	@version	$Id: web_tester.php 6598 2007-12-07 08:01:45Z pachanga $
      */
 
     /**#@+

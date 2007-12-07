@@ -11,7 +11,7 @@
  * Exception 'Image create is failed'
  * 
  * @package imagekit
- * @version $Id: lmbImageCreateFailedException.class.php 6553 2007-11-29 15:41:27Z cmz $
+ * @version $Id: lmbImageCreateFailedException.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbImageCreateFailedException extends lmbException 
 {

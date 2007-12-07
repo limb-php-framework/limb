@@ -11,7 +11,7 @@
  * class WactException.
  *
  * @package wact
- * @version $Id: error.inc.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: error.inc.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class WactException extends Exception
 {

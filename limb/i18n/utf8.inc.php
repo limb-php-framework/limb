@@ -9,7 +9,7 @@
 
 /**
  * @package i18n
- * @version $Id: utf8.inc.php 5969 2007-06-08 10:51:09Z pachanga $
+ * @version $Id: utf8.inc.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 lmb_require('limb/i18n/src/charset/lmbUTF8BaseDriver.class.php');
 lmb_require('limb/i18n/src/charset/lmbUTF8MbstringDriver.class.php');

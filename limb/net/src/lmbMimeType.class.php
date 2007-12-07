@@ -11,7 +11,7 @@
  * class lmbMimeType.
  *
  * @package net
- * @version $Id: lmbMimeType.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbMimeType.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbMimeType
 {

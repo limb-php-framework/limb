@@ -9,7 +9,7 @@
 
 /**
  * @package wact
- * @version $Id: components.inc.php 6386 2007-10-05 14:22:21Z serega $
+ * @version $Id: components.inc.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 require_once(dirname(__FILE__) . '/WactRuntimeComponent.class.php');
 require_once(dirname(__FILE__) . '/WactDatasourceRuntimeComponent.class.php');

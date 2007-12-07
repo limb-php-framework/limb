@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbMySQL4FullTextSearchQuery.
  *
  * @package search
- * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbMySQL4FullTextSearchQuery.class.php 6598 2007-12-07 08:01:45Z pachanga $
  */
 class lmbMySQL4FullTextSearchQuery extends lmbSelectRawQuery
 {
