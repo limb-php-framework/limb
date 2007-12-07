@@ -13,7 +13,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbCachedIni.
  *
  * @package config
- * @version $Id: lmbCachedIni.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbCachedIni.class.php 6605 2007-12-07 14:08:31Z pachanga $
  */
 class lmbCachedIni extends lmbIni
 {
@@ -87,6 +87,9 @@ class lmbCachedIni extends lmbIni
 
   protected function _saveCache()
   {
+    if(!$this->isCacheEnabled())
+      return;
+
     lmbFs :: safeWrite($this->getCacheFile(),
                        serialize($this->export()));
   }
