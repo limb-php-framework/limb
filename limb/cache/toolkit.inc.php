@@ -9,9 +9,9 @@
 
 /**
  * @package cache
- * @version $Id: toolkit.inc.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: toolkit.inc.php 6599 2007-12-07 08:56:13Z alex433 $
  */
+lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/cache/src/lmbCacheTools.class.php');
+
 lmbToolkit :: merge(new lmbCacheTools());
-
-
