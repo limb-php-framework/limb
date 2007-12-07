@@ -57,7 +57,6 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'Hey');
   }
 
-  /*
   function testBrokenChainOutputForArray()
   {
     $content = '{$#var.foo.bar.baz}';
@@ -209,6 +208,15 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>10 - 20 - aaa</h1>');
   }
-  */
+  
+  function testOutputExpressionAsHtmlTagAttribute()
+  {
+    $code = '<a href="{$#href}">{$#message}</a>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('href', '/path/to/somethere');
+    $tpl->set('message', 'some text');
+    $expected = '<a href="/path/to/somethere">some text</a>';
+    $this->assertEqual($tpl->render(), $expected);
+  }
 }
 

@@ -8,6 +8,8 @@
  */
  
 lmb_require('limb/macro/src/tags/form/lmbMacroHtmlTagWidget.class.php');
+lmb_require('limb/macro/src/tags/form/lmbMacroFormLabelWidget.class.php');
+lmb_require('limb/macro/src/tags/form/lmbMacroFormErrorList.class.php');
 
 /**
  * class lmbMacroFormWidget.

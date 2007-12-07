@@ -21,7 +21,7 @@ class lmbMacroBlockAnalizer
 
   protected function _getRegexp()
   {
-    return '/^((?s).*?)'. preg_quote('{$', '/') . '((([^"\']+["\']?[^"\']?["\'])+)?[^}]+)' . preg_quote('}', '/') . '((?s).*)$/';
+    return '/^((?s).*?)'. preg_quote('{$', '/') . '((([^\}"\']+["\'][^"\']?["\'])+)?[^}]+)' . preg_quote('}', '/') . '((?s).*)$/';
   }
 
   function parse($text, $observer)
