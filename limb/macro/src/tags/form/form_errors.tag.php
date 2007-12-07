@@ -9,6 +9,7 @@
 
 /**
  * @tag form:errors
+ * @forbid_end_tag   
  * @parent_tag_class lmbMacroFormTag
  * @restrict_self_nesting
  * @package macro

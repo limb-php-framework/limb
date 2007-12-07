@@ -12,6 +12,7 @@
  *
  * @tag include
  * @req_attributes file
+ * @forbid_end_tag   
  * @package macro
  * @version $Id$
  */

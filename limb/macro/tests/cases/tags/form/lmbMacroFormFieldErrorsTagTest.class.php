@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
  
-class lmbMacroFormErrorsTagTest extends lmbBaseMacroTest
+class lmbMacroFormFieldErrorsTagTest extends lmbBaseMacroTest
 {
   function testSimpleCase()
   {

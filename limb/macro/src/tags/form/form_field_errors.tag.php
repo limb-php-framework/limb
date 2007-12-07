@@ -9,12 +9,13 @@
 
 /**
  * @tag form:field_errors
+ * @forbid_end_tag   
  * @parent_tag_class lmbMacroFormTag
  * @restrict_self_nesting
  * @package macro
  * @version $Id$
  */
-class lmbMacroFormErrorsTag extends lmbMacroTag
+class lmbMacroFormFieldErrorsTag extends lmbMacroTag
 {
   function generate($code)
   {
