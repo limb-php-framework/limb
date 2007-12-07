@@ -21,4 +21,9 @@ class lmbCacheMemoryBackendTest extends lmbCacheBackendTest
     return;
   }
   
+  function testObjectClone()
+  {
+    return;
+  }
+  
 }

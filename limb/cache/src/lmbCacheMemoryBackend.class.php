@@ -20,9 +20,6 @@ class lmbCacheMemoryBackend implements lmbCacheBackend
 
   function set($key, $value, $params = array())
   {
-    if (is_object($value))
-      $value = clone $value;
-      
     $this->_cache[$key] = $value;
   }
 
@@ -30,9 +27,6 @@ class lmbCacheMemoryBackend implements lmbCacheBackend
   {
     if(!isset($this->_cache[$key]))
       return false;
-    
-    if (is_object($this->_cache[$key]))
-      return clone $this->_cache[$key];
     
     return $this->_cache[$key];
   }
