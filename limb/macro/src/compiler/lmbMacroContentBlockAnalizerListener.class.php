@@ -31,11 +31,13 @@ class lmbMacroContentBlockAnalizerListener implements lmbMacroBlockAnalizerListe
 
   function addExpressionFragment($text)
   {
-    $expression = new lmbMacroExpressionNode($text,
-                                             $this->tree_builder->getCursor(),
-                                             $this->tree_builder->getFilterDictionary());
+    $output_expression = new lmbMacroOutputExpressionNode($this->location);
 
-    $output_expression = new lmbMacroOutputExpressionNode($this->location, $expression);
+    $expression = new lmbMacroExpressionNode($text,
+                                             $output_expression,
+                                             $this->tree_builder->getFilterDictionary());
+    $output_expression->setExpression($expression);
+    
     $this->tree_builder->addNode($output_expression);
   }
 }

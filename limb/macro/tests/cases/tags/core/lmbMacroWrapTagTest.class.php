@@ -9,6 +9,24 @@
 
 class lmbMacroWrapTagTest extends lmbBaseMacroTest
 {
+  function testThrowExceptionIfWrapTagForIntoNotFound()
+  {
+    $bar = '{{into slot="slot1"}}Bob{{/into}}';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+
+    try
+    {
+      $macro = $this->_createMacro($bar_tpl);
+      $macro->render();
+      $this->assertTrue(false);
+    }
+    catch(lmbMacroException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
+  
   function testSimpleStaticWrap()
   {
     $bar = '{{wrap with="foo.html" into="slot1"}}Bob{{/wrap}}';

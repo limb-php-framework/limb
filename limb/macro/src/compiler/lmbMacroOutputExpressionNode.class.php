@@ -17,11 +17,16 @@ class lmbMacroOutputExpressionNode extends lmbMacroNode
 {
   protected $expression;
 
-  function __construct($location, $expression)
+  function __construct($location, $expression = null)
   {
     $this->expression = $expression;
 
     parent :: __construct($location);
+  }
+  
+  function setExpression($expression)
+  {
+    $this->expression = $expression;
   }
 
   function generate($code)

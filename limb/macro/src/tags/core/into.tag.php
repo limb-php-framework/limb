@@ -20,7 +20,9 @@ class lmbMacroIntoTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    $wrapper = $this->findParentByClass('lmbMacroWrapTag');
+    if(!$wrapper = $this->findParentByClass('lmbMacroWrapTag'))
+      $this->raise('parent {{wrap}} tag not found');
+    
     if(!$wrapper->isDynamicWrap())
     {
       $tree_builder = $compiler->getTreeBuilder();
