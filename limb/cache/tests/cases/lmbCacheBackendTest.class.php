@@ -6,6 +6,8 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
+lmb_require('limb/core/src/lmbObject.class.php');
+
 class CacheableFooBarClass{}
 
 abstract class lmbCacheBackendTest extends UnitTestCase
@@ -98,6 +100,21 @@ abstract class lmbCacheBackendTest extends UnitTestCase
     $this->cache->set(1, $obj);
 
     $this->assertEqual($obj, $this->cache->get(1));
+  }
+
+  function testObjectClone()
+  {
+    $value = 'bar';
+    
+    $obj = new lmbObject();
+    $obj->set('foo', $value);
+    
+    $this->cache->set(1, $obj);
+    
+    $obj->set('foo', 'new value');
+    
+    $this->assertEqual($value, $this->cache->get(1)->get('foo'));
+    
   }
 
   function _getCachedValues()
