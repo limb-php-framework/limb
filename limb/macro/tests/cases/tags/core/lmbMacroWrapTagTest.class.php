@@ -193,5 +193,21 @@ class lmbMacroWrapTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, 'Bob');
   }
+  
+  function testMultiStaticWrapFromIncludedFile()
+  {
+    $child = '{{into slot="slot1"}}Bob{{/into}}{{into slot="slot2"}}Thorton{{/into}}';
+    $main = '{{wrap with="base.html"}}{{include file="child.html"}}{{/wrap}}';
+    $base = '<p>Hello, {{slot id="slot2"/}} {{slot id="slot1"/}}</p>';
+
+    $child_tpl = $this->_createTemplate($child, 'child.html');
+    $base_tpl = $this->_createTemplate($base, 'base.html');
+    $main_tpl = $this->_createTemplate($main, 'main.html');
+
+    $macro = $this->_createMacro($main_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<p>Hello, Thorton Bob</p>');
+  }  
 }
 
