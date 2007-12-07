@@ -60,6 +60,14 @@ class lmbMacroView extends lmbView
   {
     foreach($this->getVariables() as $variable_name => $value)
       $template->set($variable_name, $value);
+    
+    foreach($this->forms_datasources as $form_id => $datasource)
+      $template->set('form_' . $form_id . '_datasource', $datasource);
+
+    foreach($this->forms_errors as $form_id => $error_list)
+    {
+      $template->set('form_' . $form_id . '_error_list', $error_list->getArray());
+    }
   }
 }
 
