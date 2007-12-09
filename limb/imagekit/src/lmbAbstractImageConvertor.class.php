@@ -11,7 +11,7 @@
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageConvertor.class.php 6333 2007-09-24 16:38:22Z cmz $
+ * @version $Id: lmbAbstractImageConvertor.class.php 6607 2007-12-09 15:21:52Z svk $
  */
 abstract class lmbAbstractImageConvertor
 {
@@ -76,4 +76,3 @@ abstract class lmbAbstractImageConvertor
 
   abstract function isSupportConversion($file, $src_type = '', $dest_type = '');
 }
-?>

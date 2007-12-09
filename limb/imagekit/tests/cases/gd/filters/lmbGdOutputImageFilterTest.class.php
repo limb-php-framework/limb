@@ -9,7 +9,6 @@
 
 lmb_require(dirname(__FILE__).'/../../../../src/gd/lmbGdImageContainer.class.php');
 lmb_require(dirname(__FILE__).'/../../../../src/gd/filters/lmbGdOutputImageFilter.class.php');
-
 class lmbGdOutputImageFilterTest extends UnitTestCase {
 
   function testChangeOutput()
@@ -24,4 +23,3 @@ class lmbGdOutputImageFilterTest extends UnitTestCase {
   }
 
 }
-?>

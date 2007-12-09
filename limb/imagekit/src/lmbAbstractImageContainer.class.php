@@ -11,7 +11,7 @@
  * Abstract image container
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageContainer.class.php 6333 2007-09-24 16:38:22Z cmz $
+ * @version $Id: lmbAbstractImageContainer.class.php 6607 2007-12-09 15:21:52Z svk $
  */
 abstract class lmbAbstractImageContainer
 {
@@ -33,4 +33,3 @@ abstract class lmbAbstractImageContainer
   abstract function save($file_name = null);
 
 }
-?>

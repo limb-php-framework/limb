@@ -14,26 +14,15 @@ lmb_require(dirname(__FILE__).'/../exception/lmbImageSaveFailedException.class.p
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
 /**
- * GD image container
+ * Imagick image container
  *
  * @package imagekit
- * @version $Id: lmbGdImageContainer.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id$
  */
-class lmbGdImageContainer extends lmbAbstractImageContainer
+class lmbImImageContainer extends lmbAbstractImageContainer
 {
-  protected static $gd_types = array(
-    'gif' => IMG_GIF,
-    //'jpg' => IMG_JPG,
-    'jpeg' => IMG_JPG,
-    'png' => IMG_PNG,
-    'wbmp' => IMG_WBMP
-  );
-  protected static $lookup_types = array(
-    IMAGETYPE_GIF => 'gif',
-    IMAGETYPE_JPEG => 'jpeg',
-    IMAGETYPE_PNG => 'png',
-    IMAGETYPE_WBMP => 'wbmp'
-  );
+
+  protected static $supported_types = array('GIF', 'JPEG', 'PNG', 'WBMP', 'gif', 'jpeg', 'png', 'wbmp');
 
   protected $img;
   protected $img_type;
@@ -43,9 +32,14 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
   function setOutputType($type)
   {
     if($type)
+    {
       if(!self::supportSaveType($type))
+      {
         throw new lmbImageTypeNotSupportException($type);
-
+      }
+      $this->out_type = $type;
+    }
+    
     parent::setOutputType($type);
   }
 
@@ -57,30 +51,27 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     if(!$imginfo)
       throw new lmbFileNotFoundException($file_name);
 
-    if(!$type)
-      $type = self::convertImageType($imginfo[2]);
 
-    if(!self::supportLoadType($type))
-      throw new lmbImageTypeNotSupportException($type);
-
-    $createfunc = 'imagecreatefrom'.$type;
-    if(!($this->img = $createfunc($file_name)))
+    $this->img = new Imagick();
+    $this->img->readImage($file_name);
+    if (!($this->img instanceof Imagick))
       throw new lmbImageCreateFailedException($file_name);
 
-    $this->img_type = $type;
+    $this->img_type = $this->img->getImageFormat();
   }
 
   function save($file_name = null)
   {
-    $type = $this->output_type;
+    $type = $this->out_type;
     if(!$type)
       $type = $this->img_type;
 
     if(!self::supportSaveType($type))
       throw new lmbImageTypeNotSupportException($type);
 
-    $imagefunc = 'image'.$type;
-    if(!@$imagefunc($this->img, $file_name))
+    $this->img->setImageFormat($type);
+    $this->img->setImageFilename($file_name);
+    if (!$this->img->writeImage($file_name))
       throw new lmbImageSaveFailedException($file_name);
 
     $this->destroyImage();
@@ -93,30 +84,29 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
 
   function replaceResource($img)
   {
-    imagedestroy($this->img);
+    $this->destroyImage();
     $this->img = $img;
   }
 
   function isPallete()
   {
-    return !imageistruecolor($this->img);
+    return ($this->img->getImageColors() < 256);
   }
 
   function getWidth()
   {
-    return imagesx($this->img);
+    return $this->img->getImageWidth();
   }
 
   function getHeight()
   {
-    return imagesy($this->img);
+    return $this->img->getImageHeight();
   }
 
   function destroyImage()
   {
     if(!$this->img)
       return;
-    imagedestroy($this->img);
     $this->img = null;
   }
 
@@ -134,27 +124,28 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
 
   static function supportType($type)
   {
-    if(!function_exists('imagetypes'))
+    if(!class_exists('Imagick'))
       return false;
-    $gdtype = self::getGdType($type);
-    if($gdtype === false)
-      return false;
-    return (boolean)(imagetypes() & $gdtype);
+    return (boolean)(in_array($type, self::$supported_types));
   }
 
-  static function getGdType($type)
+  static function convertImageType($type)
   {
-    return isset(self::$gd_types[$type]) ? self::$gd_types[$type] : false;
-  }
-
-  static function convertImageType($imagetype)
-  {
-    if(!isset(self::$lookup_types[$imagetype]))
+    switch ($type)
     {
-      $type = function_exists('image_type_to_extension') ? image_type_to_extension($imagetype) : '';
-        throw new lmbImageTypeNotSupportException($type);
+      case 2:
+        return "JPEG";
+      break;
+      case 3:
+        return "PNG";
+      break;
+      case 1:
+        return "GIF";
+      break;
+      case 15:
+        return "WBMP";
+      break;
     }
-    return self::$lookup_types[$imagetype];
   }
 
   function __destruct()

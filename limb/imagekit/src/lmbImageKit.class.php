@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 6333 2007-09-24 16:38:22Z cmz $
+ * @version $Id: lmbImageKit.class.php 6607 2007-12-09 15:21:52Z svk $
  */
 class lmbImageKit
 {
@@ -39,4 +39,3 @@ class lmbImageKit
   }
 
 }
-?>

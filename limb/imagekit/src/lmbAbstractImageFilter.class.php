@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__).'/lmbAbstractImageContainer.class.php');
  * Abstract image filter
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageFilter.class.php 6553 2007-11-29 15:41:27Z cmz $
+ * @version $Id: lmbAbstractImageFilter.class.php 6607 2007-12-09 15:21:52Z svk $
  */
 abstract class lmbAbstractImageFilter
 {
@@ -85,4 +85,3 @@ abstract class lmbAbstractImageFilter
 
   abstract function apply(lmbAbstractImageContainer $container);
 }
-?>

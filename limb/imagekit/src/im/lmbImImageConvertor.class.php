@@ -8,34 +8,35 @@
  */
 
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageConvertor.class.php');
-lmb_require(dirname(__FILE__).'/lmbGdImageContainer.class.php');
+lmb_require(dirname(__FILE__).'/lmbImImageContainer.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/imagekit/src/exception/lmbLibraryNotInstalledException.class.php');
 
+
 /**
- * GD image convertor
+ * Imagick image convertor
  *
  * @package imagekit
- * @version $Id: lmbGdImageConvertor.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id$
  */
-class lmbGdImageConvertor extends lmbAbstractImageConvertor
+class lmbImImageConvertor extends lmbAbstractImageConvertor
 {
-
+  
   function __construct()
   {
-    if (!function_exists('gd_info'))
-      throw new lmbLibraryNotInstalledException('gd');
+    if (!class_exists('Imagick'))
+      throw new lmbLibraryNotInstalledException('ImageMagick');
   }
-    
+  
   protected function createFilter($name, $params)
   {
-    $class = $this->loadFilter(dirname(__FILE__).'/filters', $name, 'Gd');
+    $class = $this->loadFilter(dirname(__FILE__).'/filters', $name, 'Im');
     return new $class($params);
   }
 
   protected function createImageContainer($file_name, $type = '')
   {
-    $container = new lmbGdImageContainer();
+    $container = new lmbImImageContainer();
     $container->load($file_name, $type);
     return $container;
   }
@@ -44,15 +45,14 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
   {
     if(!$src_type)
     {
-      $imginfo = @getimagesize($file);
+      $imginfo = getimagesize($file);
       if(!$imginfo)
         throw new lmbFileNotFoundException($file);
-      $src_type = lmbGdImageContainer::convertImageType($imginfo[2]);
+      $src_type = lmbImImageContainer::convertImageType($imginfo[2]);
     }
     if(!$dest_type)
       $dest_type = $src_type;
-    return lmbGdImageContainer::supportLoadType($src_type) &&
-           lmbGdImageContainer::supportSaveType($dest_type);
+    return lmbImImageContainer::supportLoadType($src_type) &&
+           lmbImImageContainer::supportSaveType($dest_type);
   }
 }
-?>
