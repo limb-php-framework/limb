@@ -13,7 +13,7 @@
  * @package imagekit
  * @version $Id: lmbImageCreateFailedException.class.php 6553 2007-11-29 15:41:27Z cmz $
  */
-class lmbLibraryNotInstalledException extends lmbException 
+class lmbImageLibraryNotInstalledException extends lmbException 
 {
 
   function __construct($lib_name)

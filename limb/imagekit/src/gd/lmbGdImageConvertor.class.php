@@ -10,13 +10,13 @@
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageConvertor.class.php');
 lmb_require(dirname(__FILE__).'/lmbGdImageContainer.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
-lmb_require('limb/imagekit/src/exception/lmbLibraryNotInstalledException.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.class.php');
 
 /**
  * GD image convertor
  *
  * @package imagekit
- * @version $Id: lmbGdImageConvertor.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id: lmbGdImageConvertor.class.php 6608 2007-12-10 11:13:09Z svk $
  */
 class lmbGdImageConvertor extends lmbAbstractImageConvertor
 {
@@ -24,7 +24,7 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
   function __construct()
   {
     if (!function_exists('gd_info'))
-      throw new lmbLibraryNotInstalledException('gd');
+      throw new lmbImageLibraryNotInstalledException('gd');
   }
     
   protected function createFilter($name, $params)

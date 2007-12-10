@@ -10,7 +10,7 @@
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageConvertor.class.php');
 lmb_require(dirname(__FILE__).'/lmbImImageContainer.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
-lmb_require('limb/imagekit/src/exception/lmbLibraryNotInstalledException.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.class.php');
 
 
 /**
@@ -25,7 +25,7 @@ class lmbImImageConvertor extends lmbAbstractImageConvertor
   function __construct()
   {
     if (!class_exists('Imagick'))
-      throw new lmbLibraryNotInstalledException('ImageMagick');
+      throw new lmbImageLibraryNotInstalledException('ImageMagick');
   }
   
   protected function createFilter($name, $params)
