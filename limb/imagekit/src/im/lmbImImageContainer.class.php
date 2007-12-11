@@ -8,7 +8,7 @@
  */
 
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageContainer.class.php');
-lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportException.class.php');
+lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportedException.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageCreateFailedException.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageSaveFailedException.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
@@ -35,7 +35,7 @@ class lmbImImageContainer extends lmbAbstractImageContainer
     {
       if(!self::supportSaveType($type))
       {
-        throw new lmbImageTypeNotSupportException($type);
+        throw new lmbImageTypeNotSupportedException($type);
       }
       $this->out_type = $type;
     }
@@ -67,7 +67,7 @@ class lmbImImageContainer extends lmbAbstractImageContainer
       $type = $this->img_type;
 
     if(!self::supportSaveType($type))
-      throw new lmbImageTypeNotSupportException($type);
+      throw new lmbImageTypeNotSupportedException($type);
 
     $this->img->setImageFormat($type);
     $this->img->setImageFilename($file_name);

@@ -8,7 +8,7 @@
  */
 
 lmb_require(dirname(__FILE__).'/../lmbAbstractImageContainer.class.php');
-lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportException.class.php');
+lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportedException.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageCreateFailedException.class.php');
 lmb_require(dirname(__FILE__).'/../exception/lmbImageSaveFailedException.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
@@ -17,7 +17,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * GD image container
  *
  * @package imagekit
- * @version $Id: lmbGdImageContainer.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id: lmbGdImageContainer.class.php 6610 2007-12-11 15:35:05Z cmz $
  */
 class lmbGdImageContainer extends lmbAbstractImageContainer
 {
@@ -44,7 +44,7 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
   {
     if($type)
       if(!self::supportSaveType($type))
-        throw new lmbImageTypeNotSupportException($type);
+        throw new lmbImageTypeNotSupportedException($type);
 
     parent::setOutputType($type);
   }
@@ -61,7 +61,7 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
       $type = self::convertImageType($imginfo[2]);
 
     if(!self::supportLoadType($type))
-      throw new lmbImageTypeNotSupportException($type);
+      throw new lmbImageTypeNotSupportedException($type);
 
     $createfunc = 'imagecreatefrom'.$type;
     if(!($this->img = $createfunc($file_name)))
@@ -77,7 +77,7 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
       $type = $this->img_type;
 
     if(!self::supportSaveType($type))
-      throw new lmbImageTypeNotSupportException($type);
+      throw new lmbImageTypeNotSupportedException($type);
 
     $imagefunc = 'image'.$type;
     if(!@$imagefunc($this->img, $file_name))
@@ -152,7 +152,7 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     if(!isset(self::$lookup_types[$imagetype]))
     {
       $type = function_exists('image_type_to_extension') ? image_type_to_extension($imagetype) : '';
-        throw new lmbImageTypeNotSupportException($type);
+        throw new lmbImageTypeNotSupportedException($type);
     }
     return self::$lookup_types[$imagetype];
   }
