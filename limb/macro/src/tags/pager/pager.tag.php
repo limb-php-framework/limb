@@ -16,7 +16,7 @@ class lmbMacroPagerTag extends lmbMacroTag
 {
   protected $runtimeComponentName = 'lmbMacroPagerComponent';
   
-  function generate($code)
+  protected function _generateContent($code)
   {
     $code->registerInclude('limb/macro/src/tags/pager/lmbMacroPagerHelper.class.php');
     
@@ -28,7 +28,7 @@ class lmbMacroPagerTag extends lmbMacroTag
     
     $this->_generatePagerVariables($code, $pager);
     
-    parent :: generate($code);
+    parent :: _generateContent($code);
   }
   
   protected function _generatePagerHelperWithInitialParams($code, $pager)

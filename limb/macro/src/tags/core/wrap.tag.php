@@ -78,7 +78,7 @@ class lmbMacroWrapTag extends lmbMacroTag
     return $this->findImmediateChildrenByClass('lmbMacroIntoTag');
   }
 
-  function generate($code)
+  protected function _generateContent($code)
   {
     if($this->is_dynamic)
     {
@@ -98,7 +98,7 @@ class lmbMacroWrapTag extends lmbMacroTag
       else
       {
         $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. uniqid());
-        parent :: generate($code);
+        parent :: _generateContent($code);
         $code->endMethod();
       }
 
@@ -110,7 +110,7 @@ class lmbMacroWrapTag extends lmbMacroTag
       $code->writePHP('$this->wrapTemplate(' . $this->getEscaped('with') . ', ' . $handlers_str . ');');
     }
     else
-      parent :: generate($code);
+      parent :: _generateContent($code);
   }
 }
 

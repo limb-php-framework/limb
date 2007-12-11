@@ -16,14 +16,14 @@
  */
 class lmbMacroPagerNextTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
     
     $code->writePhp("if ({$pager}->hasNext()) {\n");
     $code->writePhp("\$href = {$pager}->getPageUri({$pager}->getCurrentPage() + 1 );\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

@@ -157,7 +157,7 @@ class lmbMacroTag extends lmbMacroNode
 
   function generate($code_writer)
   {
-    $this->_preGenerataAttributes($code_writer);
+    $this->_preGenerateAttributes($code_writer);
     
     $this->_generateBeforeContent($code_writer);
     
@@ -181,7 +181,7 @@ class lmbMacroTag extends lmbMacroNode
   {
   }
   
-  protected function _preGenerataAttributes($code_writer)
+  protected function _preGenerateAttributes($code_writer)
   {
     foreach($this->attributes as $attribute)
       $attribute->preGenerate($code_writer);

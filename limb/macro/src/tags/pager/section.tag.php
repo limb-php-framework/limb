@@ -16,7 +16,7 @@
  */
 class lmbMacroPagerSectionTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
     
@@ -26,7 +26,7 @@ class lmbMacroPagerSectionTag extends lmbMacroTag
     $code->writePhp("\$section_begin_page = {$pager}->getSectionBeginPage();\n");
     $code->writePhp("\$section_end_page = {$pager}->getSectionEndPage();\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

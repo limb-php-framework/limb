@@ -16,13 +16,13 @@
  */
 class lmbMacroPagerPrevTagDisabled extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
 
     $code->writePhp("if (!{$pager}->hasPrev()) {\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

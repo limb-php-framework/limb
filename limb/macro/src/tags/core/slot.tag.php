@@ -16,7 +16,7 @@
  */
 class lmbMacroSlotTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $slot = $this->getNodeId();
     //calling slot handler in case of dynamic wrapping
@@ -29,7 +29,7 @@ class lmbMacroSlotTag extends lmbMacroTag
     if($this->children)
     {
       $method = $code->beginMethod('__slotHandler' . uniqid());
-      parent :: generate($code);
+      parent :: _generateContent($code);
       $code->endMethod();
       $code->writePHP('$this->' . $method . '()');
     }

@@ -16,7 +16,7 @@
  */
 class lmbMacroPagerListTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $this->pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
 

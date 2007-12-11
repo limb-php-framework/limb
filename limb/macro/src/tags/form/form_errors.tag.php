@@ -17,7 +17,7 @@
  */
 class lmbMacroFormErrorsTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $form = $this->findParentByClass('lmbMacroFormTag')->getRuntimeVar();
     
@@ -25,7 +25,7 @@ class lmbMacroFormErrorsTag extends lmbMacroTag
     
     $code->writePhp("{$to} = {$form}->getErrorList();\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
   }
 }
 

@@ -15,7 +15,7 @@
  */
 class lmbMacroApplyTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $name = $this->get('template');
 

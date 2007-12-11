@@ -38,7 +38,7 @@ class lmbMacroTagAttribute implements lmbMacroExpressionInterface
 
   function addExpressionFragment($expression)
   {
-     $this->raw_string .= '%s';
+    $this->raw_string .= '%s';
     $this->expressions[] = $expression;
   }
 
@@ -58,6 +58,11 @@ class lmbMacroTagAttribute implements lmbMacroExpressionInterface
     // simple case
     if(!sizeof($this->expressions))
        return $this->raw_string;
+    
+    if((sizeof($this->expressions) == 1) && ($this->raw_string == "%s"))
+    {
+      return $this->expressions[0]->getValue();
+    }
 
     $res = 'sprintf(\'' . $this->raw_string. '\',';
 

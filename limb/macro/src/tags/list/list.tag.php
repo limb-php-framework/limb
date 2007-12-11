@@ -10,6 +10,7 @@
 /**
  * The parent compile time component for lists
  * @tag list
+ * @aliases list:list 
  * @req_attributes using
  * @package macro
  * @version $Id$

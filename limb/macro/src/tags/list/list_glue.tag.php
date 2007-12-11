@@ -10,6 +10,7 @@
 /**
  * Compile time component for separators in a list
  * @tag list:glue
+ * @aliases list:separator 
  * @parent_tag_class lmbMacroListItemTag
  * @package macro
  * @version $Id$

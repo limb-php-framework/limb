@@ -17,7 +17,7 @@
  */
 class lmbMacroFormFieldErrorsTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $form = $this->findParentByClass('lmbMacroFormTag')->getRuntimeVar();
     
@@ -30,7 +30,7 @@ class lmbMacroFormFieldErrorsTag extends lmbMacroTag
     
     $code->writePhp("{$to} = {$form}->getErrorsListForFields({$for});\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
   }
 }
 

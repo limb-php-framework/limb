@@ -16,14 +16,14 @@
  */
 class lmbMacroPagerLastTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar(); 
     
     $code->writePhp("if (!{$pager}->isLast()) {\n");
     $code->writePhp("\$href = {$pager}->getLastPageUri();\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

@@ -10,6 +10,7 @@
 /**
  * Empty List tag for a list which failed to have any contents
  * @tag list:empty
+ * @aliases list:default 
  * @parent_tag_class lmbMacroListTag
  * @package macro
  * @version $Id$

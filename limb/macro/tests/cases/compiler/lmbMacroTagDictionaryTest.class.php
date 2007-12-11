@@ -67,6 +67,7 @@ class lmbMacroTagDictionaryTest extends UnitTestCase
  * @req_attributes attr1, attr2
  * @restrict_self_nesting
  * @parent_tag_class SomeParentTagClass
+ * @aliases foo1_{$rnd}, foo2_{$rnd} 
  * @forbid_end_tag
  */
 class Foo{$rnd}Tag extends lmbMacroTag{}
@@ -81,6 +82,7 @@ EOD;
     $tag_info1 = new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag");
     $tag_info1->setFile($file);
     $tag_info1->setForbidEndtag(true);
+    $tag_info1->setAliases(array("foo1_$rnd", "foo2_$rnd"));
     $tag_info1->setRestrictSelfNesting(true);
     $tag_info1->setParentClass('SomeParentTagClass');
     $tag_info1->setRequiredAttributes(array('attr1', 'attr2'));
@@ -92,6 +94,7 @@ EOD;
     $dictionary->registerFromFile($file);
 
     $this->assertEqual($dictionary->findTagInfo("foo_$rnd"), $tag_info1);
+    $this->assertEqual($dictionary->findTagInfo("foo1_$rnd"), $tag_info1);
     $this->assertEqual($dictionary->findTagInfo("bar_$rnd"), $tag_info2);
   }
   

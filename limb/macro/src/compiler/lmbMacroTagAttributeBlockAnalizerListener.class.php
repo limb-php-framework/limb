@@ -27,7 +27,13 @@ class lmbMacroTagAttributeBlockAnalizerListener implements lmbMacroBlockAnalizer
 
   function addLiteralFragment($text)
   {
-    $this->attribute->addTextFragment($text);
+    if(strpos($text, '$') === 0)
+    {
+      $expression = new lmbMacroExpression($text);
+      $this->attribute->addExpressionFragment($expression);
+    }
+    else
+      $this->attribute->addTextFragment($text);
   }
 
   function addExpressionFragment($text)

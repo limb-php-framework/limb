@@ -16,7 +16,7 @@
  */
 class lmbMacroPaginateTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $iterator = $this->get('iterator');
     

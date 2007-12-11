@@ -16,14 +16,14 @@
  */
 class lmbMacroPagerFirstTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
     
     $code->writePhp("if (!{$pager}->isFirst()) {\n");
     $code->writePhp("\$href = {$pager}->getFirstPageUri();\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

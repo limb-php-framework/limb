@@ -16,7 +16,7 @@
  */
 class lmbMacroPagerNumberTag extends lmbMacroTag
 {
-  function generate($code)
+  protected function _generateContent($code)
   {
     $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
     
@@ -25,7 +25,7 @@ class lmbMacroPagerNumberTag extends lmbMacroTag
     $code->writePhp("\$href = {$pager}->getPageUri();\n");
     $code->writePhp("\$number = {$pager}->getPage();\n");
 
-    parent :: generate($code);
+    parent :: _generateContent($code);
 
     $code->writePhp("}\n");
   }

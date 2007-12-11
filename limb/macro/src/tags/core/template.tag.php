@@ -15,14 +15,14 @@
  */
 class lmbMacroTemplateTag extends lmbMacroTag
 {
-  function generate($code)
+  function _generateContent($code)
   {
     $name = $this->get('name');
 
     $args = $code->generateVar();
     $code->beginMethod('_template'. $name, array($args . '= array()'));
     $code->writePHP("if($args) extract($args);");
-    parent :: generate($code);
+    parent :: _generateContent($code);
     $code->endMethod();
   }
 }

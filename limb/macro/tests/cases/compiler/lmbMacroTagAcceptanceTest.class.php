@@ -62,5 +62,15 @@ class lmbMacroTagAcceptanceTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>Test_Result_Attribute</h1>');
   }
+
+  function testTagAttributeWithPathBasedVariable()
+  {
+    $code = '<h1>{{zoo attr="$#var.title"/}}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', array('title' => 'Result'));
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>Result</h1>');
+  }
+  
 }
 
