@@ -22,6 +22,9 @@ class lmbMacroWrapTag extends lmbMacroTag
   function preParse($compiler)
   {
     parent :: preParse($compiler);
+    
+    if($this->has('in'))
+      $this->set('into', $this->get('in'));
 
     if($this->isDynamic('with'))
       $this->is_dynamic = true;
