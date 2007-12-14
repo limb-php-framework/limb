@@ -26,17 +26,17 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
     $this->tmp = $code->generateVar();
     $var = $code->generateVar();
 
+    $items = $this->_extractExpressionPathItems($this->expression_str);
+    
     // simple case if expression is just a variable
-    if(strpos($this->expression_str, '.') === false)
+    if(count($items) == 1)
     {
       $this->tmp = $this->expression_str;
       return;
     }
-
+    
     $expr = '';
     
-    $items = $this->_extractExpressionPathItems($this->expression_str);
-
     //first item is variable itself
     //$var = $items[0];
     $expr .= $var . ' = ' . $items[0] . ';' . "\n";

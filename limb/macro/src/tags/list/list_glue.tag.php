@@ -24,6 +24,9 @@ class lmbMacroListGlueTag extends lmbMacroTag
   {
     $list = $this->findParentByClass('lmbMacroListTag');
     $list->countSource();
+    
+    if($this->has('every'))
+      $this->set('step', $this->get('every'));
   }
 
   protected function _generateContent($code)

@@ -168,7 +168,16 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, '<h1>30</h1>');
   }
-
+  
+  function testPointInFuncParams()
+  {
+    $code = '<h1>{$#bar->func2(".", "+")}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', new lmbMacroOutputExpressionTestClass());
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>. - +</h1>');
+  }
+  
   function testPointInFuncParamsAndComplexPathInOutputExpression()
   {
     $code = '<h1>{$#bar->func3(".").extra}</h1>';
