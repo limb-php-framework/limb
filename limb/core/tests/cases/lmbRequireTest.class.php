@@ -302,7 +302,7 @@ class lmbRequireTest extends UnitTestCase
 
   function _rndName()
   {
-    return 'Foo' . mt_rand(1, 1000);
+    return 'Foo' . md5(microtime());
   }
 
   function _rnd()
