@@ -72,6 +72,20 @@ class lmbMacroWrapTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
+  
+  function testSimpleStaticIntoRoot()
+  {
+    $included = '{{into slot="slot1"}}Bob{{/into}}';
+    $main = '<p>Hello, {{slot id="slot1"/}}</p>{{include file="included.html"/}}';
+
+    $included_tpl = $this->_createTemplate($included, 'included.html');
+    $main_tpl = $this->_createTemplate($main, 'main.html');
+
+    $macro = $this->_createMacro($main_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<p>Hello, Bob</p>');
+  }
 
   function testMultiStaticWrap()
   {

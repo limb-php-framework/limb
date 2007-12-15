@@ -20,10 +20,17 @@ class lmbMacroIntoTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    if(!$wrapper = $this->findParentByClass('lmbMacroWrapTag'))
-      $this->raise('parent {{wrap}} tag not found');
+    if($wrapper = $this->findParentByClass('lmbMacroWrapTag'))
+    {
+      $is_dynamic = $wrapper->isDynamicWrap();  
+    }
+    else
+    {
+      $wrapper = $this->findRoot();
+      $is_dynamic = false;  
+    }
     
-    if(!$wrapper->isDynamicWrap())
+    if(!$is_dynamic)
     {
       $tree_builder = $compiler->getTreeBuilder();
       $this->_insert($wrapper, $tree_builder, $this->get('slot'));

@@ -172,6 +172,17 @@ class lmbMacroNodeTest extends UnitTestCase
     $this->assertNull($this->node->findParentByClass('Test'));
   }
   
+  function testFindRoot_StartingFromRoot()
+  {
+    $this->assertReference($this->node->findRoot(), $this->node);
+  }
+
+  function testFindRoot_StartingFromChild()
+  {
+    $child = $this->_createNode('parent', $this->node);
+    $this->assertReference($child->findRoot(), $this->node);
+  }
+  
   function findImmediateChildByClass()
   {
     $parent = $this->_createNode('foo', $this->node);

@@ -217,6 +217,14 @@ class lmbMacroNode
 
     return $parent;
   }
+  
+  function findRoot()
+  {
+    $root = $this;
+    while ($root->parent != NULL)
+      $root = $root->parent;
+    return $root;
+  }   
 
   function preParse(){}
 
