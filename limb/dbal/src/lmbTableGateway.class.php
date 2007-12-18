@@ -18,7 +18,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbTableGateway.class.php 6616 2007-12-18 15:54:59Z pachanga $
  */
 class lmbTableGateway
 {
@@ -114,6 +114,11 @@ class lmbTableGateway
       return false;
 
     return $this->getTableInfo()->getColumn($column_name)->getType();
+  }
+
+  function setPrimaryKeyName($name)
+  {
+    $this->_primary_key_name = $name;
   }
 
   function getPrimaryKeyName()
