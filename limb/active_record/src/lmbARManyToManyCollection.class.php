@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbARManyToManyCollection.class.php 6617 2007-12-18 15:55:56Z pachanga $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -28,7 +28,7 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     $foreign_field = $this->relation_info['foreign_field'];
 
     $sql = "SELECT {$table}.* FROM {$table}, {$join_table}
-            WHERE {$table}.id={$join_table}.$foreign_field AND
+            WHERE {$table}." . $object->getPrimaryKeyName() . "={$join_table}.$foreign_field AND
             {$join_table}.{$field}=" . $this->owner->getId() . ' %where%';
 
     $query = new lmbSelectRawQuery($sql, $this->conn);
@@ -48,7 +48,7 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     $foreign_field = $this->conn->quoteIdentifier($this->relation_info['foreign_field']);
 
     $sql = "SELECT $table.* FROM $table, $join_table
-            WHERE $table.id=$join_table.$foreign_field AND
+            WHERE $table." . $object->getPrimaryKeyName() . "=$join_table.$foreign_field AND
             $join_table.$field=" . $this->owner->getId() . ' %where%';
 
     $query = new lmbSelectRawQuery($sql, $this->conn);

@@ -25,7 +25,7 @@ lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6595 2007-12-06 20:10:05Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6617 2007-12-18 15:55:56Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -60,6 +60,10 @@ class lmbActiveRecord extends lmbObject
    * @var object lmbTableGateway instance used to access underlying db table
    */
   protected $_db_table;
+  /**
+   * @var string name of the primary key
+   */
+  protected $_primary_key_name = 'id';
   /**
    * @var string name of class database table to store instance fields, if not set lmbActiveRecord tries to guess it
    */
@@ -193,6 +197,7 @@ class lmbActiveRecord extends lmbObject
     $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
+    $this->_db_table->setPrimaryKeyName($this->_primary_key_name);
     $this->_db_table_name = $this->_db_table->getTableName();
     $this->_error_list = new lmbErrorList();
 
@@ -255,6 +260,14 @@ class lmbActiveRecord extends lmbObject
   function getTableName()
   {
     return $this->_db_table_name;
+  }
+  /**
+   *  Returns primary key name of the database table
+   *  @return string
+   */
+  function getPrimaryKeyName()
+  {
+    return $this->_primary_key_name;
   }
   /**
    *  Returns table gateway instance used for all db interactions
@@ -385,7 +398,7 @@ class lmbActiveRecord extends lmbObject
   function getDefaultSortParams()
   {
     if(!$this->_default_sort_params)
-      $this->_default_sort_params = array($this->_db_table_name . '.id' => 'ASC');
+      $this->_default_sort_params = array($this->_db_table_name . '.' . $this->_primary_key_name => 'ASC');
 
     return $this->_default_sort_params;
   }
@@ -1087,7 +1100,7 @@ class lmbActiveRecord extends lmbObject
   function detach()
   {
     $this->setIsNew();
-    $this->remove('id');
+    $this->remove($this->_primary_key_name);
   }
   /**
    *  Validates object
@@ -1311,7 +1324,7 @@ class lmbActiveRecord extends lmbObject
   protected function _findById($id, $throw_exception)
   {
     if($object = self :: find(get_class($this),
-                              array('first', 'criteria' => 'id=' . (int)$id),
+                              array('first', 'criteria' => $this->_primary_key_name . '=' . (int)$id),
                               $this->_db_conn))
       return $object;
     elseif($throw_exception)
@@ -1360,7 +1373,7 @@ class lmbActiveRecord extends lmbObject
       return new lmbCollection();
     else
     {
-      $params['criteria'] = new lmbSQLFieldCriteria('id', $ids, lmbSQLFieldCriteria :: IN);
+      $params['criteria'] = new lmbSQLFieldCriteria($this->_primary_key_name, $ids, lmbSQLFieldCriteria :: IN);
       return self :: find(get_class($this), $params, $this->_db_conn);
     }
   }
@@ -1629,7 +1642,7 @@ class lmbActiveRecord extends lmbObject
    */
   function getId()
   {
-    if($id = $this->_getRaw('id'))
+    if($id = $this->_getRaw($this->_primary_key_name))
       return (int)$id;
   }
   /**
@@ -1639,7 +1652,7 @@ class lmbActiveRecord extends lmbObject
    */
   function setId($id)
   {
-    $this->_setRaw('id', (int)$id);
+    $this->_setRaw($this->_primary_key_name, (int)$id);
   }
 
   function getUpdateTime()
@@ -1841,7 +1854,7 @@ class lmbActiveRecord extends lmbObject
 
   function __clone()
   {
-    $this->remove('id');
+    $this->remove($this->_primary_key_name);
   }
   /**
    *  Imports magically data into object using relation info. This method is magic because it allows to
@@ -1907,7 +1920,7 @@ class lmbActiveRecord extends lmbObject
     if($this->isNew())
       return true;
 
-    if($property == 'id')
+    if($property == $this->_primary_key_name)
       return false;
 
     return true;
