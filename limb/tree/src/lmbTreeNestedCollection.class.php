@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
  * class lmbTreeNestedCollection.
  *
  * @package tree
- * @version $Id: lmbTreeNestedCollection.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbTreeNestedCollection.class.php 6618 2007-12-19 13:07:21Z serega $
  */
 class lmbTreeNestedCollection extends lmbCollectionDecorator
 {
@@ -55,24 +55,25 @@ class lmbTreeNestedCollection extends lmbCollectionDecorator
     {
       $item = $rs->current();
 
-      if($level == 0 && $item->get($this->parent_field) !== $prev_item_id)
-        $parent_id = $item->get($this->parent_field);
+      if($level == 0 && ($item[$this->parent_field] !== $prev_item_id))
+        $parent_id = $item[$this->parent_field];
 
-      if($item->get($this->parent_field) == $parent_id)
+      if($item[$this->parent_field] == $parent_id)
       {
-        $nested_array[] = $item->export();
+        $nested_array[] = $item;
         $rs->next();
       }
-      elseif($item->get($this->parent_field) === $prev_item_id)
+      elseif($item[$this->parent_field] === $prev_item_id)
       {
-        $nested_array[sizeof($nested_array) - 1]['children'] = array();
-        $new_nested =& $nested_array[sizeof($nested_array) - 1]['children'];
-        self :: _doMakeNested($rs, $new_nested, $prev_item_id, $level + 1);
+        $children = array();
+        $pos = sizeof($nested_array) - 1;
+        self :: _doMakeNested($rs, $children, $prev_item_id, $level + 1);
+        $nested_array[$pos]['children'] = $children;
       }
       else
         return;
 
-      $prev_item_id = $item->get($this->node_field);
+      $prev_item_id = $item[$this->node_field];
     }
   }
 }

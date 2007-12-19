@@ -20,7 +20,7 @@ class lmbTreeInvalidNodeException extends lmbTreeException
   function __construct($node)
   {
     $this->node = $node;
-    parent :: __construct("Node '$node' is invalid");
+    parent :: __construct("Node '{$node}' is invalid");
   }
 
   function getNode()

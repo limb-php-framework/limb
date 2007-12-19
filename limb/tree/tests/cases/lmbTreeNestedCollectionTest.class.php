@@ -21,7 +21,7 @@ class lmbTreeNestedCollectionTest extends UnitTestCase
       array('id' => 1, 'parent_id' => 0),
       );
 
-    $raw = new lmbCollection($raw_tree_array);
+    $raw = new ArrayIterator($raw_tree_array);
     $nested = new lmbTreeNestedCollection($raw);
     $arr = $this->toArray($nested);
 
@@ -39,19 +39,14 @@ class lmbTreeNestedCollectionTest extends UnitTestCase
       );
 
     $expected_tree_array = array(
-      array('id' => 1, 'parent_id' => 0, 'children' =>
-            array(
-                  array('id' => 2, 'parent_id' => 1, 'children' => array(
-                      array('id' => 5, 'parent_id' => 2),
-                      )
-                  ),
-                  array('id' => 3, 'parent_id' => 1),
-                  ),
-            ),
+      array('id' => 1, 'parent_id' => 0, 
+            'children' => array(array('id' => 2, 'parent_id' => 1, 
+                                      'children' => array(array('id' => 5, 'parent_id' => 2))),
+                          array('id' => 3, 'parent_id' => 1))),
       array('id' => 4, 'parent_id' => 100)
       );
 
-    $raw = new lmbCollection($raw_tree_array);
+    $raw = new ArrayIterator($raw_tree_array);
     $nested = new lmbTreeNestedCollection($raw);
     $arr = $this->toArray($nested);
 
@@ -96,7 +91,7 @@ class lmbTreeNestedCollectionTest extends UnitTestCase
       array('id' => 8, 'parent_id' => 200),
     );
 
-    $raw = new lmbCollection($raw_tree_array);
+    $raw = new ArrayIterator($raw_tree_array);
     $nested = new lmbTreeNestedCollection($raw);
     $arr = $this->toArray($nested);
 
