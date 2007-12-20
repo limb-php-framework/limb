@@ -83,5 +83,23 @@ class lmbMacroFiltersTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, 'HELLO');
   }
+  
+  function testApplyHtmlFilterByDefault()
+  {
+    $code = '{$#var}';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', '<>');
+    $out = $tpl->render();
+    $this->assertEqual($out, '&lt;&gt;');
+  }  
+
+  function testDoesNotApplyHtmlFilterIfOutFilterPresent()
+  {
+    $code = '{$#var|trim}';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('var', '<>');
+    $out = $tpl->render();
+    $this->assertEqual($out, '<>');
+  }    
 }
 

@@ -39,13 +39,17 @@ class lmbMacroExpressionNode  implements lmbMacroExpressionInterface
     $pos = strpos($this->expression, "|");
 
     if ($pos === FALSE)
-      $this->parsed = new lmbMacroExpression($this->expression);
+    {
+      $filters_expression = 'html';
+      $base_expression = $this->expression;
+    }
     else
     {
       $base_expression = trim(substr($this->expression, 0, $pos));
       $filters_expression = trim(substr($this->expression, $pos + 1));
-      $this->parsed = $this->createFilterChain($filters_expression, new lmbMacroExpression($base_expression));
     }
+    
+    $this->parsed = $this->createFilterChain($filters_expression, new lmbMacroExpression($base_expression));
   }
 
   /**
