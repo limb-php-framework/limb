@@ -11,7 +11,7 @@
  * class lmbMessageBox.
  *
  * @package web_app
- * @version $Id: lmbMessageBox.class.php 6593 2007-12-06 15:37:16Z serega $
+ * @version $Id: lmbMessageBox.class.php 6621 2007-12-20 09:29:04Z serega $
  */
 class lmbMessageBox
 {
@@ -79,6 +79,8 @@ class lmbMessageBox
 
     foreach($this->getMessages() as $message)
       $result[] = array('message' => $message, 'is_message' => true, 'is_error' => false);
+    
+    $this->reset();
     
     return $result;
   }
