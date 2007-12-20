@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/calendar/src/lmbCalendarWidget.class.php');
+require_once('limb/macro/src/tags/form/lmbMacroFormElementTag.class.php');
 
 /**
  * @tag datetime
