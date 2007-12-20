@@ -13,4 +13,5 @@
  */
 require_once('limb/core/common.inc.php');
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
+lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 

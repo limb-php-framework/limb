@@ -44,14 +44,20 @@ class lmbMacroFormErrorList extends ArrayIterator
 
     $text = $error['message'];
     
-    foreach($error['fields'] as $key => $fieldName)
+    if(isset($error['fields']))
     {
-      $replacement = $this->getFieldName($fieldName);
-      $text = str_replace('{' . $key . '}', $replacement, $text);
+      foreach($error['fields'] as $key => $fieldName)
+      {
+        $replacement = $this->getFieldName($fieldName);
+        $text = str_replace('{' . $key . '}', $replacement, $text);
+      }
     }
 
-    foreach($error['values'] as $key => $replacement)
-      $text = str_replace('{' . $key . '}', $replacement, $text);
+    if(isset($error['values']))
+    {
+      foreach($error['values'] as $key => $replacement)
+        $text = str_replace('{' . $key . '}', $replacement, $text);
+    }
 
     $error['message'] = $text;
     return $error;

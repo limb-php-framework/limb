@@ -19,5 +19,16 @@ class lmbMacroTextAreaTagTest extends lmbBaseMacroTest
     $expected = '<textarea name="my_textarea">&lt;&lt; super &gt;&gt;</textarea>';
     $this->assertEqual($page->render(), $expected);
   }
+
+  function testTakeValueFromFormIfPossible()
+  {
+    $template = '{{form name="my_form" from="$#form_data"}}{{textarea name="my_textarea"/}}{{/form}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    $page->set('form_data', array('my_textarea' => "<>"));
+ 
+    $out = $page->render();
+    $this->assertEqual($out, '<form name="my_form"><textarea name="my_textarea">&lt;&gt;</textarea></form>');
+  }    
 }
 

@@ -15,7 +15,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormElementTag.class.php');
  * @package macro
  * @version $Id$
  */
-class lmbMacroTextAreaTag extends lmbMacroRuntimeWidgetTag
+class lmbMacroTextAreaTag extends lmbMacroFormElementTag
 {
   protected $html_tag = 'textarea';
   protected $widget_class_name = 'lmbMacroTextAreaWidget';
