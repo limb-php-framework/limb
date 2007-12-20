@@ -517,6 +517,22 @@ class lmbARManyToManyCollectionTest extends UnitTestCase
     $this->assertEqual($collection->at(0)->getTitle(), $group1->getTitle());
     $this->assertEqual($collection->at(1)->getTitle(), $group3->getTitle());
   }
+  
+  function testRemove_DeleteRecordAndCleanUpInternalIterator()
+  {
+    $group1 = $this->_initGroup();
+    $group2 = $this->_initGroup();
+    $group3 = $this->_initGroup();
+
+    $user = $this->_createUserAndSave(array($group1, $group2, $group3));
+    $groups = $user->getGroups();
+    $arr = $groups->getArray();
+    $this->assertEqual(count($arr), 3);
+    
+    $groups->remove($group2);
+    $arr = $groups->getArray();
+    $this->assertEqual(count($arr), 2);
+  }
 
   protected function _initUser($groups = array())
   {
