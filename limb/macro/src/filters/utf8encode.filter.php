@@ -13,7 +13,7 @@
  * @package macro
  * @version $Id$
  */
-class lmbMacroUtf8EncodeFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroUtf8EncodeFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'utf8_encode';
 }  

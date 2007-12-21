@@ -8,13 +8,13 @@
  */ 
 
 /**
- * class lmbMacroStrToUpperFilter.
+ * class lmbMacroFunctionBasedFilter.
  *
  * @filter strtoupper
  * @package macro
  * @version $Id$
  */ 
-abstract class lmbMacroPhpFunctionBasedFilter extends lmbMacroFilter
+abstract class lmbMacroFunctionBasedFilter extends lmbMacroFilter
 {
   protected $function;
   protected $include_file;

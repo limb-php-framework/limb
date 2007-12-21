@@ -15,7 +15,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroStrToLowerFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroStrToLowerFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'strtolower';
 } 

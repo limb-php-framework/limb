@@ -15,7 +15,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroStripTagsFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroStripTagsFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'strip_tags';
 } 

@@ -15,7 +15,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroStrToUpperFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroStrToUpperFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'strtoupper';
 } 

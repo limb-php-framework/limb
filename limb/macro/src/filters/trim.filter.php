@@ -14,7 +14,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroTrimFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroTrimFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'trim';
 } 

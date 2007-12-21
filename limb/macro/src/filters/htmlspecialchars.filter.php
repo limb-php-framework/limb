@@ -15,7 +15,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroHtmlSpecialCharsFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroHtmlSpecialCharsFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'htmlspecialchars';
   protected $params = array(ENT_QUOTES);

@@ -15,7 +15,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroUcFirstFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroUcFirstFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'ucfirst';
 } 

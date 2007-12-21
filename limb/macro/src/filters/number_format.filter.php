@@ -15,7 +15,7 @@
  * @package macro
  * @version $Id$
  */ 
-class lmbMacroNumberFormatFilter extends lmbMacroPhpFunctionBasedFilter
+class lmbMacroNumberFormatFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'number_format';
 } 
