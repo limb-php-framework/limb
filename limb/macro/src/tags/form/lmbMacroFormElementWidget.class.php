@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
  
-lmb_require('limb/macro/src/tags/form/lmbMacroHtmlTagWidget.class.php');
+lmb_require('limb/macro/src/compiler/lmbMacroHtmlTagWidget.class.php');
 
 /**
  * class lmbMacroFormElementWidget.

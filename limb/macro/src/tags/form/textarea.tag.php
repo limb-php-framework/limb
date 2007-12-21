@@ -21,8 +21,10 @@ class lmbMacroTextAreaTag extends lmbMacroFormElementTag
   protected $widget_class_name = 'lmbMacroTextAreaWidget';
   protected $widget_include_file = 'limb/macro/src/tags/form/lmbMacroTextAreaWidget.class.php';
   
-  function preParse()
+  function preParse($compiler)
   { 
+    parent :: preParse($compiler);
+  
     // always has closing tag
     $this->has_closing_tag = true;
   }

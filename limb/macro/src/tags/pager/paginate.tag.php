@@ -25,7 +25,7 @@ class lmbMacroPaginateTag extends lmbMacroTag
       if(!$pager_tag = $this->parent->findUpChild($this->get('pager')))
         $this->raise('Can\'t find pager by "pager" attribute in {{paginate}} tag');
       
-      $pager = $pager_tag->getPagerVar();
+      $pager = $pager_tag->getRuntimeVar();
       
       if($this->has('limit'))
         $code->writePhp("{$pager}->setItemsPerPage({$this->get('limit')});\n");

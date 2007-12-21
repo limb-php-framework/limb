@@ -12,18 +12,15 @@
  * @package macro
  * @version $Id$
  */
-class lmbMacroPagerTag extends lmbMacroTag
+class lmbMacroPagerTag extends lmbMacroRuntimeWidgetTag
 {
-  protected $runtimeComponentName = 'lmbMacroPagerComponent';
+  protected $widget_include_file = 'limb/macro/src/tags/pager/lmbMacroPagerHelper.class.php';
+  protected $widget_class_name = 'lmbMacroPagerHelper';
   
   protected function _generateContent($code)
   {
-    $code->registerInclude('limb/macro/src/tags/pager/lmbMacroPagerHelper.class.php');
+    $pager = $this->getRuntimeVar();
     
-    $pager = $this->getPagerVar();
-    
-    $this->_generatePagerHelperWithInitialParams($code, $pager);
-
     $code->writePhp("{$pager}->prepare();\n");
     
     $this->_generatePagerVariables($code, $pager);
@@ -31,10 +28,11 @@ class lmbMacroPagerTag extends lmbMacroTag
     parent :: _generateContent($code);
   }
   
-  protected function _generatePagerHelperWithInitialParams($code, $pager)
+  protected function _generateWidget($code)
   {
-    $id = $this->getEscapedNodeId();
-    $code->writeToInit("{$pager} = new lmbMacroPagerHelper({$id});\n");
+    parent :: _generateWidget($code);
+    
+    $pager = $this->getRuntimeVar();
 
     if ($total_items = $this->getEscaped('total_items'))
       $code->writeToInit("{$pager}->setTotalItems({$total_items});\n");
@@ -74,11 +72,6 @@ class lmbMacroPagerTag extends lmbMacroTag
      $code->writePhp("\$items_per_page = {$pager}->getItemsPerPage();\n");
      $code->writePhp("\$begin_item_number = {$pager}->getCurrentPageBeginItem();\n");
      $code->writePhp("\$end_item_number = {$pager}->getCurrentPageEndItem();\n");
-  }
-
-  function getPagerVar()
-  {
-    return '$this->pager_' . $this->getNodeId(); 
   }
 }
 

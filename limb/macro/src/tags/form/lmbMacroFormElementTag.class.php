@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/compiler/lmbMacroRuntimeWidgetTag.class.php');
+lmb_require('limb/macro/src/compiler/lmbMacroRuntimeWidgetHtmlTag.class.php');
 
 /**
  * Base class for any form element tag
  */
-class lmbMacroFormElementTag extends lmbMacroRuntimeWidgetTag
+class lmbMacroFormElementTag extends lmbMacroRuntimeWidgetHtmlTag
 {
   function _generateWidget($code_writer)
   {

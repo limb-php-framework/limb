@@ -21,9 +21,9 @@ class lmbMacroJSCheckboxTag extends lmbMacroFormElementTag
   protected $widget_class_name = 'lmbMacroJSCheckboxWidget';
   protected $widget_include_file = 'limb/macro/src/tags/form/lmbMacroJSCheckboxWidget.class.php'; 
   
-  function preParse()
+  function preParse($compiler)
   {
-    parent :: preParse();
+    parent :: preParse($compiler);
 
     $this->set('type', 'checkbox');
   }

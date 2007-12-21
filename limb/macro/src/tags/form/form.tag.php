@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/compiler/lmbMacroRuntimeWidgetTag.class.php');
+lmb_require('limb/macro/src/compiler/lmbMacroRuntimeWidgetHtmlTag.class.php');
 
 /**
  * Macro analog for html <form> tag
@@ -15,7 +15,7 @@ lmb_require('limb/macro/src/compiler/lmbMacroRuntimeWidgetTag.class.php');
  * @package macro
  * @version $Id$
  */
-class lmbMacroFormTag extends lmbMacroRuntimeWidgetTag
+class lmbMacroFormTag extends lmbMacroRuntimeWidgetHtmlTag
 {
   protected $html_tag = 'form';
   protected $widget_class_name = 'lmbMacroFormWidget';

@@ -19,7 +19,7 @@ class lmbMacroSelectTag extends lmbMacroFormElementTag
 {
   protected $html_tag = 'select';
   
-  function preParse()
+  function preParse($compiler)
   {
     if ($this->getBool('multiple'))
     {
@@ -48,6 +48,8 @@ class lmbMacroSelectTag extends lmbMacroFormElementTag
     
     // always has closing tag
     $this->has_closing_tag = true;
+
+    parent :: preParse($compiler);
   }
   
   protected function _generateBeforeOpeningTag($code)

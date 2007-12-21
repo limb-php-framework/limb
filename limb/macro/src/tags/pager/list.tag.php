@@ -18,7 +18,7 @@ class lmbMacroPagerListTag extends lmbMacroTag
 {
   protected function _generateContent($code)
   {
-    $this->pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
+    $this->pager = $this->findParentByClass('lmbMacroPagerTag')->getRuntimeVar();
 
     $this->elipses_count_var = $code->generateVar();
     $code->writePhp("{$this->elipses_count_var} = 0;\n");

@@ -18,7 +18,7 @@ class lmbMacroPagerPrevTag extends lmbMacroTag
 {
   protected function _generateContent($code)
   {
-    $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();
+    $pager = $this->findParentByClass('lmbMacroPagerTag')->getRuntimeVar();
     
     $code->writePhp("if ({$pager}->hasPrev()) {\n");
     $code->writePhp("\$href = {$pager}->getPageUri({$pager}->getCurrentPage() - 1 );\n");

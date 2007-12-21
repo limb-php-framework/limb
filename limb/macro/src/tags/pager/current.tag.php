@@ -18,7 +18,7 @@ class lmbMacroPagerCurrentTag extends lmbMacroTag
 {
   protected function _generateContent($code)
   {
-    $pager = $this->findParentByClass('lmbMacroPagerTag')->getPagerVar();  
+    $pager = $this->findParentByClass('lmbMacroPagerTag')->getRuntimeVar();  
 
     $code->writePhp("if ({$pager}->isDisplayedPage()) {\n");
 
