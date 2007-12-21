@@ -11,23 +11,22 @@ lmb_require('limb/web_app/src/filter/lmbRequestDispatchingFilter.class.php');
 lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
 lmb_require('limb/toolkit/src/lmbMockToolsWrapper.class.php');
 lmb_require('limb/web_app/src/toolkit/lmbWebAppTools.class.php');
-lmb_require('limb/web_app/src/controller/lmbStaticCommandController.class.php');
+lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
 Mock :: generate('lmbFilterChain', 'MockFilterChain');
 Mock :: generate('lmbRequestDispatcher', 'MockRequestDispatcher');
 Mock :: generate('lmbWebAppTools', 'MockWebAppTools');
 
-class lmbRequestDispatchingTestingController extends lmbStaticCommandController
+class lmbRequestDispatchingTestingController extends lmbController
 {
   function __construct($name)
   {
     $this->name = $name;
     parent :: __construct();
   }
-
-  protected function _defineActions()
+  
+  function doDisplay()
   {
-    return array('display' => array());
   }
 }
 
