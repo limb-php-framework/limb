@@ -150,6 +150,12 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     $fields = '';
     foreach($this->_fields as $field => $alias)
     {
+      if(strpos($field, '*') !== false)
+      {
+        $fields .= $field . ',';
+        continue;
+      }
+      
       $fields .= $this->_conn->quoteIdentifier($field) .
                  ($alias ? ' as ' . $this->_conn->quoteIdentifier($alias) : '') . ',';
     }

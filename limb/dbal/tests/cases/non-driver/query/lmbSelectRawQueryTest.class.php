@@ -76,6 +76,15 @@ class lmbSelectRawQueryTest extends UnitTestCase
 
     $this->assertEqual($sql->toString(), "SELECT 't1' as 'a1','t2' as 'a2' FROM test");
   }
+  
+  function testAddAllFieldFromTable()
+  {
+    $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
+    $sql->addField('t1.*');
+
+    $this->assertEqual($sql->toString(), 'SELECT t1.* FROM test');
+  }
+  
 
   function testNoAddTable()
   {
