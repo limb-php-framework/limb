@@ -24,6 +24,7 @@ class lmbViewTools extends lmbAbstractTools
                                 '.phtml' => 'lmbMacroView');
   protected $wact_locator;
   protected $macro_config;
+  protected $macro_locator;
 
   function setSupportedViewTypes($types)
   {
@@ -101,6 +102,19 @@ class lmbViewTools extends lmbAbstractTools
                               explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH));
 
     return $this->macro_config;
+  }
+  
+  function getMacroLocator()
+  {
+    if(is_object($this->macro_locator))
+      return $this->macro_locator;
+
+    lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
+
+    $config = lmbToolkit :: instance()->getMacroConfig();
+    $this->macro_locator = new lmbMacroTemplateLocator($config);
+    
+    return $this->macro_locator;
   }
 
   function setMacroConfig($config)
