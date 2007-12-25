@@ -11,7 +11,7 @@
  * class WactFormComponent.
  *
  * @package wact
- * @version $Id: WactFormComponent.class.php 6425 2007-10-16 08:13:48Z serega $
+ * @version $Id: WactFormComponent.class.php 6636 2007-12-25 08:51:43Z serega $
  */
 class WactFormComponent extends WactRuntimeTagComponent
 {
@@ -105,7 +105,7 @@ class WactFormComponent extends WactRuntimeTagComponent
       // Find the component(s) that the error applies to and tell
       // them there was an error (using their setError() method)
       // as well as notifying related label components if found
-      foreach ($Error->getFields() as $fieldName)
+      foreach ($Error['fields'] as $fieldName)
       {
         $Field = $this->findChild($fieldName);
         if (is_object($Field))
@@ -161,8 +161,7 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   protected function _appendErrorsForEachField(&$result, $error)
   {
-    $fields = $error->getFields();
-    foreach($fields as $alias => $field)
+    foreach($error['fields'] as $alias => $field)
     {
       $field_error = clone($error);
       $field_error['id'] = $field;
@@ -172,7 +171,7 @@ class WactFormComponent extends WactRuntimeTagComponent
 
   protected function _appendErrorForField(&$result, $error, $field)
   {
-    if(!in_array($field, $error->getFields()))
+    if(!in_array($field, $error['fields']))
       return;
 
     $field_error = clone($error);

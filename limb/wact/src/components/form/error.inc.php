@@ -11,7 +11,7 @@
  * Translates between form name attributes and tag displayname
  * attributes (human reabable).
  * @package wact
- * @version $Id: error.inc.php 6544 2007-11-23 14:50:06Z serega $
+ * @version $Id: error.inc.php 6636 2007-12-25 08:51:43Z serega $
  */
 class WactFormFieldNameDictionary
 {
@@ -31,7 +31,7 @@ class WactFormFieldNameDictionary
   * @return string displayname attribute of the field
   * @access protected
   * @package wact
- * @version $Id: error.inc.php 6544 2007-11-23 14:50:06Z serega $
+ * @version $Id: error.inc.php 6636 2007-12-25 08:51:43Z serega $
  */
 
   function getFieldName($field_name)
@@ -77,13 +77,14 @@ class WactFormErrorList extends ArrayIterator
     $error = parent :: current();
 
     $text = $error['message'];
-    foreach($error->getFields() as $key => $fieldName)
+    
+    foreach($error['fields'] as $key => $fieldName)
     {
-      $replacement = $this->getFieldName($fieldName);
+      $replacement = '"' . $this->getFieldName($fieldName) . '"';
       $text = str_replace('{' . $key . '}', $replacement, $text);
     }
 
-    foreach($error->getValues() as $key => $replacement)
+    foreach($error['values'] as $key => $replacement)
       $text = str_replace('{' . $key . '}', $replacement, $text);
 
     $error['message'] = $text;
@@ -95,7 +96,7 @@ class WactFormErrorList extends ArrayIterator
  * class WactFormError.
  *
  * @package wact
- * @version $Id: error.inc.php 6544 2007-11-23 14:50:06Z serega $
+ * @version $Id: error.inc.php 6636 2007-12-25 08:51:43Z serega $
  */
 class WactFormError extends ArrayObject
 {
