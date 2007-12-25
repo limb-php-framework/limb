@@ -21,7 +21,7 @@ class lmbMacroInputTag extends lmbMacroFormElementTag
   protected $html_tag = 'input';
   protected $widget_include_file = 'limb/macro/src/tags/form/lmbMacroInputWidget.class.php';
   
-  function preParse()
+  function preParse($compiler)
   {
     $type = strtolower($this->get('type'));
     switch ($type)

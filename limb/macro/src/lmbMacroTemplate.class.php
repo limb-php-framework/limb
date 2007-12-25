@@ -25,18 +25,11 @@ class lmbMacroTemplate
   protected $vars = array();
   protected $child_executor;
 
-  function __construct($file, lmbMacroConfig $config = null)
+  function __construct($file, lmbMacroConfig $config = null, lmbMacroTemplateLocator $locator = null)
   {
     $this->file = $file;
     $this->config = $config ? $config : new lmbMacroConfig();
-    $this->locator = new lmbMacroTemplateLocator($this->config);
-  }
-
-  static function locateTemplateByAlias($alias, lmbMacroConfig $config = null)
-  {
-    $config = $config ? $config : new lmbMacroConfig();
-    $locator = new lmbMacroTemplateLocator($config);
-    return $locator->locateSourceTemplate($alias);
+    $this->locator = $locator ? $locator : new lmbMacroTemplateLocator($this->config);
   }
 
   function setVars($vars)
