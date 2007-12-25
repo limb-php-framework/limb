@@ -1,3 +1,10 @@
+0.4.0-beta - 25 December 2007 (r6652)
+==================================================
+-- improving lmbTreeNestedCollection to be able to work with more generic iterators like ArrayIterator. Now lmbTreeNestedCollection does not call export() for every iterator item and uses ArrayAccess interface only
+-- eol changes
+-- lmbMPTree::getNodeByPath() uses iterative sql query which allows to fix some possible nasty bug
+-- adding test with nodes having similar identifiers on different tree levels
+
 0.3.2-beta - 23 July 2007 (r6187)
 ==================================================
 -- lmbMPTree, lmbNSTree :: getNodeByPath() now use lmbDbConnection :: escape(..) in order to escape input strings
