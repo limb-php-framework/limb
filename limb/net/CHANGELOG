@@ -1,3 +1,10 @@
+1.0.0-stable - 25 December 2007 (r6649)
+==================================================
+-- eol changes
+-- lmbUri internal properties are not prefixed with _
+-- lmbUri extends lmbSet
+-- lmbHttpRequest uses $request property in toString(in toFlatArray call)
+
 0.2.0-beta - 6 July 2007 (r6084)
 ==================================================
 -- files are part of request again, i.e you can get it with generic get() call
@@ -41,6 +48,6 @@
 -- lmbUri :: parse() is considered obsolete
 -- initial PhpDocs
 
-0.1.0-alpha - 14 December 2006==================================================
-
+0.1.0-alpha - 14 December 2006
+==================================================
 -- Initial release of this package.
