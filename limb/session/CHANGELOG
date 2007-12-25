@@ -1,3 +1,7 @@
+1.0.0-stable - 25 December 2007 (r6651)
+==================================================
+-- eol changes
+
 0.3.1-alpha - 6 July 2007 (r6096)
 ==================================================
 -- better tests isolation in case when there's no compatible db test dump
