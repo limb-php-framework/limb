@@ -1,4 +1,4 @@
-0.3.2-rc1 - 25 December 2007 (r6641)
+1.0.0-stable - 25 December 2007 (r6641)
 ==================================================
 -- writing ini cache only if caching is enabled
 -- eol changes
