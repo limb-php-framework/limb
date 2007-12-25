@@ -1,3 +1,28 @@
+0.3.0-rc1 - 25 December 2007 (r6640)
+==================================================
+-- introducing LIMB_UNDEFINED universal constant which can be used for any 'undefined' values
+-- default value introduced in "get" method for all classes implementing SetInterface
+-- lmb_require static includes cache for modules with classes fixed
+-- adding experimental lmb_require_class which operates with lazy loading of classes only
+-- renaming lmb_glob_require => lmb_require_glob and adding a test for it
+-- adding support for future stream_resolve_include_path
+-- lmb_require second argument is not $optional any more, this stuff was moved into lmb_require_optional
+-- lmb_require second argument now can be a class or interface name which gives possibility to use lmb_require lazy loading for classes and interfaces which are stored in modules
+-- lmb_require internal cruft refactoring
+-- new lmbArrayIterator class added that is an advanced version of SPL ArrayIterator supporting lmbCollectionInterface
+-- lmbObject::_hasAttribute() increased performance
+-- lmbObject massive changes
+  * lmbObject now throws an exception of lmbNoSuchPropertyException if someone calls get() to non existing property. Please use has() or isset() before getting any property.
+  * lmbObject now throws an exception of lmbNoSuchMethodException if someone calls getXX() for non existing property. 
+  * lmbObject has __set, __get, __isset, __unset methods overloaded that delegate to set, get, has and remove accordingly
+  * As a result lmbObject fulfils its contract, i.e. $obj['foo'] == $obj->getFoo() == obj->get('foo') == $obj->foo
+-- added some bench tests for lmb_require()
+-- adding misc optimizations into lmbObject getters
+-- better tests for lmbSet and lmbObject
+-- lmbSet :: remove(..) didn't honour guarded properties
+-- lmbSet now operates with properties in a similar to lmbObject way: it stores properties as attributes of a class, this simplifies chain calls in templates
+-- all lmbArrayHelper methods are static now
+
 0.2.0-beta - 6 July 2007 (r6082)
 ==================================================
 -- CLASSKIT, DATASOURCE packages merged into CORE
