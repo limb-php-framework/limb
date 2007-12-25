@@ -1,4 +1,4 @@
-0.3.0rc1-stable - 25 December 2007 (r6640)
+1.0.0rc1-stable - 25 December 2007 (r6640)
 ==================================================
 -- introducing LIMB_UNDEFINED universal constant which can be used for any 'undefined' values
 -- default value introduced in "get" method for all classes implementing SetInterface
