@@ -180,7 +180,7 @@ class lmbARValidationTest extends UnitTestCase
     }
     catch(lmbValidationException $e)
     {
-      $this->assertEqual($e->getErrorList()->export(), $error_list->getReadable()->export());
+      $this->assertEqual($e->getErrorList(), array('foo'));
     }
 
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
@@ -231,7 +231,7 @@ class lmbARValidationTest extends UnitTestCase
     }
     catch(lmbValidationException $e)
     {
-      $this->assertEqual($e->getErrorList()->export(), $error_list->getReadable()->export());
+      $this->assertEqual($e->getErrorList(), array('foo'));
     }
 
     $record = $this->db->selectRecord('test_one_table_object');
@@ -318,7 +318,7 @@ class lmbARValidationTest extends UnitTestCase
     $this->assertFalse($object->trySave($error_list));
     $this->assertFalse($error_list->isEmpty());
     $this->assertEqual(sizeof($error_list), 1);
-    $this->assertPattern('~yo-yo~', $error_list[0]->getMessage());
+    $this->assertPattern('~yo-yo~', $error_list[0]['message']);
   }
 
   function _createActiveRecord()
