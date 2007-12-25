@@ -1,3 +1,8 @@
+1.0.0-stable - 25 December 2007 (r6646)
+==================================================
+-- lmbToolkit now extends lmbObject
+-- adding bench for tools accessing from toolkit
+
 0.2.1-beta - 6 July 2007 (r6081)
 ==================================================
 -- toolkit was not restored properly in tests
