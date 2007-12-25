@@ -1,3 +1,10 @@
+0.3.2-rc1 - 25 December 2007 (r6641)
+==================================================
+-- writing ini cache only if caching is enabled
+-- eol changes
+-- removed @ operation in include config file.
+-- changes due to new lmbSet implementation
+
 0.3.1-beta - 6 July 2007 (r6083)
 ==================================================
 -- minor fixes due to FS packages refactoring
