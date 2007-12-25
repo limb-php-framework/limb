@@ -46,7 +46,7 @@ class lmbMacroViewTest extends UnitTestCase
     $view->setFormDatasource('form1', new lmbSet(array('title' => 'My title')));
     $view->setFormErrors('form1', $error_list);
 
-    $expected = '<form id="form1" name="form1">An error in Title with value1|'.
+    $expected = '<form id="form1" name="form1">An error in &quot;Title&quot; with value1|'.
                 '<input type="text" name="title" title="Title" value="My title" />'.
                 '</form>';
                 

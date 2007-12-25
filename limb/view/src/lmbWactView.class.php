@@ -94,8 +94,8 @@ class lmbWactView extends lmbView
       if(!$error_list->isValid())
       {
         lmb_require('limb/wact/src/components/form/error.inc.php');
-        $error_list->setFieldNameDictionary(new WactFormFieldNameDictionary($form_component));
-        $form_component->setErrors($error_list->getReadable());
+        $wact_error_list = new WactFormErrorList($error_list->getArray());
+        $wact_error_list->bindToForm($form_component);
       }
     }
   }
