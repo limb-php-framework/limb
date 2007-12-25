@@ -22,9 +22,9 @@ class lmbErrorListTest extends UnitTestCase
 
     $errors = $list->export();
     $this->assertEqual(sizeof($errors), 1);
-    $this->assertEqual($errors[0]->getMessage(), $message);
-    $this->assertEqual($errors[0]->getFields(), array('foo'));
-    $this->assertEqual($errors[0]->getValues(), array('FOO'));
+    $this->assertEqual($errors[0]['message'], $message);
+    $this->assertEqual($errors[0]['fields'], array('foo'));
+    $this->assertEqual($errors[0]['values'], array('FOO'));
   }
 }
 

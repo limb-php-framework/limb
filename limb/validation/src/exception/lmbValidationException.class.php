@@ -13,7 +13,7 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
  * Uses in some classes where validation process is very important for performing an operation successfully
  * @see lmbActiveRecord :: save()
  * @package validation
- * @version $Id: lmbValidationException.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbValidationException.class.php 6639 2007-12-25 09:01:29Z serega $
  */
 class lmbValidationException extends lmbException
 {
@@ -33,11 +33,7 @@ class lmbValidationException extends lmbException
   {
     $this->error_list = $error_list->getReadable();
 
-    $errors = array();
-    foreach($this->error_list as $error)
-      $errors[] .= $error->getMessage();
-
-    $message .= ' Errors list : ' . implode(', ', $errors);
+    $message .= ' Errors list : ' . implode(', ', $this->error_list);
 
     parent :: __construct($message, $params, $code);
   }

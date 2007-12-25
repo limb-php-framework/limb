@@ -7,46 +7,26 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/core/src/lmbObject.class.php');
 
 /**
  * Holds a list of validation errors
  * @see lmbErrorMessage
  * @package validation
- * @version $Id: lmbErrorList.class.php 6368 2007-10-02 23:03:47Z pachanga $
+ * @version $Id: lmbErrorList.class.php 6639 2007-12-25 09:01:29Z serega $
  */
 class lmbErrorList extends lmbCollection
 {
-  /**
-  * @see lmbErrorMessage :: getErrorMessage()
-  * @see getFieldName()
-  * @var object Field name dictionary that is used in making human readable error messages
-  */
-  protected $field_name_dictionary;
-
-  /**
-  * Sets new field name dictionary
-  * Usually this happens in {@link WactFormComponent :: setErrors()}
-  * @see WactFormFieldNameDictionary
-  * @param mixed New field name dictionary object.
-  * @return void
-  */
-  function setFieldNameDictionary($dictionary)
-  {
-    $this->field_name_dictionary = $dictionary;
-  }
-
   /**
   * Adds new error.
   * Creates an object of {@link lmbErrorMessage} class.
   * Accepts error message, array of fields list which this error is belong to and array of values.
   * Error message can contain placeholders like {Placeholder} that will be replaced with field names
-  * and values in {@link lmbErrorMessage :: getReadableErrorList()}
+  * and values in {@link lmbErrorMessage :: getReadable()}
   * Here is an example of adding error to error list in some validation rule:
   * <code>
   *  $error_list->addError('{Field} must contain at least {min} characters.', array('Field' => 'password'), array('min' => 5));
   * </code>
-  * After all replacements we can get something like "Password must contain at least 5 characters", there "password" becomes "Password"
+  * After all replacements we can get something like "password must contain at least 5 characters"
   * @param string Error message with placeholders like {Field} must contain at least {min} characters.
   * @param array Array of aliases and field names like array('BaseField' => 'password', 'RepeatField' => 'repeat_password')
   * @param array Array of aliases and field values like array('Min' => 5, 'Max' => 15)
@@ -54,26 +34,9 @@ class lmbErrorList extends lmbCollection
   */
   function addError($message, $fields = array(), $values = array())
   {
-    $error = new lmbObject(array('message' => $message,
-                                 'error' => $message, // for BC
-                                 'fields' => $fields,
-                                 'values' => $values));
+    $error = array('message' => $message, 'fields' => $fields, 'values' => $values);
     $this->add($error);
     return $error;
-  }
-
-  /**
-  * Returns humal readable name of a field
-  * Actually delegates to field name dictionary
-  * @param string
-  * @return string
-  */
-  function getFieldName($field)
-  {
-    if(is_object($this->field_name_dictionary))
-      return $this->field_name_dictionary->getFieldName($field);
-    else
-      return $field;
   }
 
   /**
@@ -86,30 +49,30 @@ class lmbErrorList extends lmbCollection
   }
 
   /**
-  * Return processed error list with translated and formatted messages
+  * Return processed error list with formatted messages
   * @see lmbErrorList :: addError()
   * @see __construct
   * @return string
   */
   function getReadable()
   {
-    $new_list = new lmbErrorList();
+    $result = array();
 
     foreach($this as $error)
     {
-      $text = $error->getMessage();
+      $text = $error['message'];
 
-      foreach($error->getFields() as $key => $fieldName)
+      foreach($error['fields'] as $key => $fieldName)
       {
-        $replacement = '"' . $this->getFieldName($fieldName) . '"';
+        $replacement = '"' . $fieldName . '"';
         $text = str_replace('{' . $key . '}', $replacement, $text);
       }
 
-      foreach($error->getValues() as $key => $replacement)
+      foreach($error['values'] as $key => $replacement)
         $text = str_replace('{' . $key . '}', $replacement, $text);
 
-      $new_list->addError($text, $error->getFields(), $error->getValues());
+      $result[] = $text;
     }
-    return $new_list;
+    return $result;
   }
 }
