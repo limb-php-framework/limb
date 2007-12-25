@@ -1,3 +1,18 @@
+0.5.0-beta - 25 December 2007 (r6653)
+==================================================
+-- minor fix lmbARValidationTest due to VALIDATION package refactoring
+-- lmbARManyToManyCollection :: remove($object) method added. Not sure if we need this method in a more generic lmbARRelationCollection
+-- adding exeperimental support for specifying different than 'id' name of the primary key
+-- eol changes
+-- lmbActiveRecord :: getComposedOfRelationsInfo(..) added
+-- adding more tests for exceptional cases
+-- value object definition supports 'can_be_null'
+-- lmbActiveRecord throws exceptions from get('no_such_property') and getNoSuchProperty() as well as lmbObject does
+-- adding initial benchmarks
+-- adding experimental and quite hacky late static binding(LSB) emulation
+-- lmbARRelationCollection :: export() method added which uses getArray() method internally
+-- fixing relation null condition for a more ANSI compatible SQL query
+
 0.4.0-beta - 6 July 2007 (r6093)
 ==================================================
 -- lmbARManyToManyCollection :: removeAll() removes only those records where 'foreigh_field' field has not NULL values. This functionality tested for mysql and sqlite db drivers.
