@@ -1,3 +1,16 @@
+0.5.0-beta - 25 December 2007 (r6654)
+==================================================
+-- lmbSelectRawQuery :: field() now supports adding all fields from a table, e.g. $quest->field("my_table.*");
+-- lmbTableGateway :: setPrimaryKeyName(name) method added
+-- eol changes
+-- minor fixes in connection classes and in lmbDbDSN due to recent lmbObject changes
+-- lmbDbDSN overrides _getRaw instead of get due to optimizations made in lmbObject :: __call()
+-- adding sqlite based bench tests
+-- eol fixes
+-- more efficient DB factory class existence check
+-- optional third argument added into lmbSQLCriteria :: in(..), it allows to specify a function to be applied to array of ids, for example 'intval' and so on
+-- removing possible quotes when retrieving table name(DBAL-12)
+
 0.4.1-beta - 23 July 2007 (r6186)
 ==================================================
 -- lmbDbConnection :: escape($string) added, it escapes string making it safe to use with db queries
