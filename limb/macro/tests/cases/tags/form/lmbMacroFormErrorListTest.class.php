@@ -27,7 +27,7 @@ class lmbMacroFormErrorListTest extends lmbBaseMacroTest
     $error_list = new lmbMacroFormErrorList();
     $error_list->addError('Error in {Field}', array('Field' => 'title'));
     
-    $this->assertErrorsInList($error_list, array(array('message' => 'Error in title',
+    $this->assertErrorsInList($error_list, array(array('message' => 'Error in "title"',
                                                         'fields' => array('Field' => 'title'),
                                                         'values' => array())));
   }
@@ -50,10 +50,10 @@ class lmbMacroFormErrorListTest extends lmbBaseMacroTest
     
     $error_list->setForm($form);
     
-    $this->assertErrorsInList($error_list, array(array('message' => 'Error in TitleField',
+    $this->assertErrorsInList($error_list, array(array('message' => 'Error in "TitleField"',
                                                         'fields' => array('Field' => 'title'),
                                                         'values' => array()),
-                                                 array('message' => 'Other error in NameField',
+                                                 array('message' => 'Other error in "NameField"',
                                                         'fields' => array('Field' => 'name'),
                                                         'values' => array())));
   }
@@ -65,7 +65,7 @@ class lmbMacroFormErrorListTest extends lmbBaseMacroTest
                           array('Field' => 'title'),
                           array('value_min' => 10, 'value_max' => 100));
     
-    $this->assertErrorsInList($error_list, array(array('message' => 'title should be between 10 and 100',
+    $this->assertErrorsInList($error_list, array(array('message' => '"title" should be between 10 and 100',
                                                        'fields' => array('Field' => 'title'),
                                                        'values' => array('value_min' => 10, 'value_max' => 100))));
   }

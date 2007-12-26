@@ -45,7 +45,7 @@ class lmbMacroFormErrorsTagTest extends lmbBaseMacroTest
     
     $page->set('form_my_form_error_list', $error_list);
  
-    $expected = '<form name="my_form">Error in My text fieldOther error in My select field'.
+    $expected = '<form name="my_form">Error in &quot;My text field&quot;Other error in &quot;My select field&quot;'.
                 '<input type="text" name="text_field" title="My text field" value="" />'.
                 '<select name="select_field" title="My select field"></select>'.
                 '</form>';
@@ -71,7 +71,7 @@ class lmbMacroFormErrorsTagTest extends lmbBaseMacroTest
     
     $page->set('form_my_form_error_list', $error_list);
  
-    $expected = '<form name="my_form">Error in My text fieldOther error in My select field'.
+    $expected = '<form name="my_form">Error in &quot;My text field&quot;Other error in &quot;My select field&quot;'.
                 '<label for="text_field" style="style_of_error">My text</label>'.
                 '<input type="text" name="text_field" title="My text field" class="class_of_error" value="" />'.
                 '<label for="select_field" class="class_of_error">My select</label>'.
