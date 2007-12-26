@@ -8,10 +8,10 @@
  */
 lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
 lmb_require('limb/web_app/src/filter/lmbActionPerformingFilter.class.php');
-lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
+lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
 Mock :: generate('lmbFilterChain', 'MockFilterChain');
-Mock :: generate('lmbAbstractController', 'MockController');
+Mock :: generate('lmbController', 'MockController');
 
 class lmbActionPerformingFilterTest extends UnitTestCase
 {

@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */ 
-lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
+lmb_require('limb/web_app/src/controller/lmbController.class.php');
 
 /**
  * class FallbackToViewController.
@@ -20,12 +20,11 @@ lmb_require('limb/web_app/src/controller/lmbAbstractController.class.php');
  * @package web_app
  * @version $Id: lmbController.class.php 6497 2007-11-07 13:27:32Z serega $
  */ 
-class FallbackToViewController extends lmbAbstractController
+class FallbackToViewController extends lmbController
 {
   function performAction()
   {
-    $toolkit = lmbToolkit :: instance();
-    $path = trim($toolkit->getRequest()->getUriPath(), '/');
+    $path = trim($this->request->getUriPath(), '/');
     
     if($template_path = $this->_findTemplateByAlias($path))
     {      

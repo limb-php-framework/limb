@@ -91,7 +91,7 @@ class lmbControllerTest extends UnitTestCase
     $this->assertEqual($controller->getName(), 'second_testing');
   }
 
-  function testPerformCommand()
+  function testPerformAction()
   {
     $controller = new TestingController();
     $controller->setCurrentAction('display');
@@ -204,6 +204,7 @@ class lmbControllerTest extends UnitTestCase
     $controller->performAction();
     $this->assertPattern('~^Default dummy output~', $this->toolkit->getResponse()->getResponseString());
   }
+
 }
 
 
