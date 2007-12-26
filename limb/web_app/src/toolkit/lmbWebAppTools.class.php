@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 6450 2007-10-24 03:50:22Z pachanga $
+ * @version $Id: lmbWebAppTools.class.php 6662 2007-12-26 08:54:19Z serega $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -52,7 +52,7 @@ class lmbWebAppTools extends lmbAbstractTools
 
     //default view
     lmb_require('limb/view/src/lmbDummyView.class.php');
-    $this->view = new lmbDummyView();
+    $this->view = new lmbDummyView('dummy_template_path');
 
     return $this->view;
   }

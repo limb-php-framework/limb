@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6660 2007-12-26 08:42:49Z serega $
+ * @version $Id: lmbController.class.php 6662 2007-12-26 08:54:19Z serega $
  */
 class lmbController
 {
@@ -193,7 +193,6 @@ class lmbController
     $view = $this->toolkit->createViewByTemplate($template_path);
     //copying stuff from dummy view, do we need this?
     $view->copy($this->view);
-    $view->setTemplate($template_path);
     $this->view = $view;
     $this->toolkit->setView($view);
   }
