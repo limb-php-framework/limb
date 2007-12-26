@@ -11,7 +11,7 @@
  * Translates between form name attributes and tag displayname
  * attributes (human reabable).
  * @package wact
- * @version $Id: error.inc.php 6636 2007-12-25 08:51:43Z serega $
+ * @version $Id: error.inc.php 6658 2007-12-26 07:31:49Z serega $
  */
 class WactFormFieldNameDictionary
 {
@@ -31,7 +31,7 @@ class WactFormFieldNameDictionary
   * @return string displayname attribute of the field
   * @access protected
   * @package wact
- * @version $Id: error.inc.php 6636 2007-12-25 08:51:43Z serega $
+ * @version $Id: error.inc.php 6658 2007-12-26 07:31:49Z serega $
  */
 
   function getFieldName($field_name)
@@ -50,7 +50,7 @@ class WactFormErrorList extends ArrayIterator
 
   function addError($message, $fields = array(), $values = array())
   {
-    $this->append(new WactFormError($message, $fields, $values));
+    $this->append(array('message' => $message, 'fields' => $fields, 'values' => $values));
   }
 
   function setFieldNameDictionary($dict)
@@ -91,34 +91,3 @@ class WactFormErrorList extends ArrayIterator
     return $error;
   }
 }
-
-/**
- * class WactFormError.
- *
- * @package wact
- * @version $Id: error.inc.php 6636 2007-12-25 08:51:43Z serega $
- */
-class WactFormError extends ArrayObject
-{
-  protected $fields_list = array();
-  protected $values = array();
-
-  function __construct($message, $fields_list = array(), $values = array())
-  {
-    parent :: __construct(array('message' => $message));
-
-    $this->fields_list = $fields_list;
-    $this->values = $values;
-  }
-
-  function getFields()
-  {
-    return $this->fields_list;
-  }
-
-  function getValues()
-  {
-    return $this->values;
-  }
-}
-

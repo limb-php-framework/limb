@@ -11,7 +11,7 @@
  * class WactFormComponent.
  *
  * @package wact
- * @version $Id: WactFormComponent.class.php 6636 2007-12-25 08:51:43Z serega $
+ * @version $Id: WactFormComponent.class.php 6658 2007-12-26 07:31:49Z serega $
  */
 class WactFormComponent extends WactRuntimeTagComponent
 {
@@ -163,7 +163,7 @@ class WactFormComponent extends WactRuntimeTagComponent
   {
     foreach($error['fields'] as $alias => $field)
     {
-      $field_error = clone($error);
+      $field_error = $error;
       $field_error['id'] = $field;
       $result[] = $field_error;
     }
@@ -174,7 +174,7 @@ class WactFormComponent extends WactRuntimeTagComponent
     if(!in_array($field, $error['fields']))
       return;
 
-    $field_error = clone($error);
+    $field_error = $error;
     $field_error['id'] = $field;
     $result[] = $field_error;
   }
