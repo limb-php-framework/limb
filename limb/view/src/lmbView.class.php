@@ -20,19 +20,9 @@ abstract class lmbView
   protected $forms_datasources = array();
   protected $forms_errors = array();
 
-  function __construct($template_name = '')
+  function __construct($template_name)
   {
     $this->template_name = $template_name;
-  }
-
-  function setTemplate($template_name)
-  {
-    $this->template_name = $template_name;
-  }
-
-  function hasTemplate()
-  {
-    return $this->template_name != '';
   }
 
   abstract function render();

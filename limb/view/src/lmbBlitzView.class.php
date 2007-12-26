@@ -43,9 +43,6 @@ class lmbBlitzView extends lmbView
   {
     if(!$this->templateInstance)
     {
-      if(!$this->hasTemplate())
-        throw new lmbException('template not defined');
-
       if(!class_exists('Blitz'))
         throw new lmbException("Blitz extension is not loaded");
 

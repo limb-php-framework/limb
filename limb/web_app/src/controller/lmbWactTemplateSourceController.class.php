@@ -25,9 +25,7 @@ abstract class lmbWactTemplateSourceController extends lmbController
     require_once('limb/wact/src/compiler/templatecompiler.inc.php');
     require_once('limb/view/src/lmbWactView.class.php');
     
-    $this->toolkit->setView(new lmbWactView());
-    $this->view = $this->toolkit->getView();
-    $this->view->setTemplate('template_source/display.html');
+    $this->setTemplate('template_source/display.html');
     
     if(($t = $this->request->get('t')) && is_array($t) && sizeof($t) > 0)
     {
@@ -36,7 +34,7 @@ abstract class lmbWactTemplateSourceController extends lmbController
     }
     else
     {
-      $this->view->setTemplate($this->template_for_hackers);
+      $this->setTemplate($this->template_for_hackers);
       return;
     }
 
@@ -47,7 +45,7 @@ abstract class lmbWactTemplateSourceController extends lmbController
 
     if(!$source_file_path = $wact_locator->locateSourceTemplate($template_path))
     {
-      $this->view->setTemplate($this->template_for_hackers);
+      $this->setTemplate($this->template_for_hackers);
       return;
     }
 
