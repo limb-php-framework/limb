@@ -38,8 +38,10 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
       return $this->get('runtime_id');
     elseif($this->hasConstant('id'))
       return $this->get('id');
-    elseif($this->hasConstant('name'))
+    elseif($this->hasConstant('name') && (strpos($this->get('name'), '[]') === false))
+    {
       return $this->get('name');
+    }
     else
     {
       $runtime_id = self :: generateNewRuntimeId();

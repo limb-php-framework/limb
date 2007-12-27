@@ -51,6 +51,12 @@ class lmbMacroRuntimeWidgetTagTest extends lmbBaseMacroTest
     $this->tag->set('name', 'my_id');
     $this->assertEqual($this->tag->getRuntimeId(), 'my_id');
   }
+
+  function testGetRuntimeId_ByCleanedNameAttribute()
+  {
+    $this->tag->set('name', 'my_id[]');
+    $this->assertNotEqual($this->tag->getRuntimeId(), 'my_id[]');
+  }
   
   function testGetRuntimeId_PreferRuntimeIdOverOtherWays()
   {
