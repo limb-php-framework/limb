@@ -10,6 +10,8 @@ lmb_require('limb/validation/src/rule/lmbRequiredObjectRule.class.php');
 
 class TestObjectForThisRule{}
 
+class TestChildObjectForThisRule extends TestObjectForThisRule{}
+
 class lmbRequiredObjectRuleTest extends lmbValidationRuleTestCase
 {
   function testValid()
@@ -24,6 +26,18 @@ class lmbRequiredObjectRuleTest extends lmbValidationRuleTestCase
     $rule->validate($dataspace, $this->error_list);
   }
 
+  function testValid_ForChildClass()
+  {
+    $rule = new lmbRequiredObjectRule('testfield', 'TestObjectForThisRule');
+
+    $dataspace = new lmbSet();
+    $dataspace->set('testfield', new TestChildObjectForThisRule());
+
+    $this->error_list->expectNever('addError');
+
+    $rule->validate($dataspace, $this->error_list);
+  }
+  
   function testInvalidIfDataspaceIsEmpty()
   {
     $rule = new lmbRequiredObjectRule('testfield');

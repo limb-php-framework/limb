@@ -19,7 +19,7 @@ lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
  * </code>
  * @see lmbValidator :: addRequiredObjectRule()
  * @package validation
- * @version $Id: lmbRequiredObjectRule.class.php 6334 2007-09-25 11:39:40Z serega $
+ * @version $Id: lmbRequiredObjectRule.class.php 6665 2007-12-27 13:16:16Z serega $
  */
 class lmbRequiredObjectRule extends lmbBaseValidationRule
 {
@@ -54,7 +54,7 @@ class lmbRequiredObjectRule extends lmbBaseValidationRule
   {
     $value = $datasource->get($this->field_name);
 
-    if(!is_object($value) || ($this->class && get_class($value) != $this->class))
+    if(!is_object($value) || ($this->class && !($value instanceof $this->class)))
     {
       $error = $this->custom_error ? $this->custom_error : lmb_i18n('Object {Field} is required', 'validation');
       $this->error($error, array('Field' => $this->field_name));
