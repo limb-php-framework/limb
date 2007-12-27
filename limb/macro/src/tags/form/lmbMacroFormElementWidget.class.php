@@ -69,12 +69,20 @@ class lmbMacroFormElementWidget extends lmbMacroHtmlTagWidget
     return $this->_getValueFromFormDatasource();
   }   
   
+  function getName()
+  {
+    if($this->hasAttribute('name'))
+      return $this->getAttribute('name');
+
+    return $this->getRuntimeId();
+  }   
+  
   protected function _getValueFromFormDatasource()
   {
     if(is_object($this->form))
     {
       $ds = $this->form->getDatasource();
-      $id = $this->getRuntimeId();
+      $id = $this->getName();
       if(isset($ds[$id]))
         return $ds[$id];
     }

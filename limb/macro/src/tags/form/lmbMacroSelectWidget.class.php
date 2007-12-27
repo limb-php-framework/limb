@@ -19,6 +19,12 @@ abstract class lmbMacroSelectWidget extends lmbMacroFormElementWidget
 
   protected $skip_render = array('value', 'options', 'value_field');
 
+  function getName()
+  {
+    $name = parent :: getName();
+    return str_replace('[]', '', $name) ;
+  } 
+  
   function setOptions($options)
   {
     if(!is_array($options))

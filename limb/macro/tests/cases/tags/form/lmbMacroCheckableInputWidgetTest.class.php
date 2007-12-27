@@ -42,6 +42,13 @@ class lmbMacroCheckableInputWidgetTest extends lmbBaseMacroTest
     $this->assertEqual($this->checkbox->getValue(), 'whatever');
   }
 
+  function testGetValue_FromFormDatasource_ByCleanedNameAttribute()
+  {
+    $this->checkbox->setAttribute('name', 'items[]');
+    $this->datasource->set('items', 'whatever');
+    $this->assertEqual($this->checkbox->getValue(), 'whatever');
+  }
+  
   function testCheckedIfNotValueAndCheckedAttribute()
   {
     $this->checkbox->setAttribute('checked', true);
