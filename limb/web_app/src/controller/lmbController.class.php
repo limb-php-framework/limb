@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6662 2007-12-26 08:54:19Z serega $
+ * @version $Id: lmbController.class.php 6667 2007-12-29 08:16:25Z serega $
  */
 class lmbController
 {
@@ -337,13 +337,6 @@ class lmbController
       return $this->$name;
   }
 
-  static function performCommand()
-  {
-    $args = func_get_args();
-    $class_path = new lmbClassPath(array_shift($args));
-    return $class_path->createObject($args)->perform();
-  }
-  
   protected function _findTemplateForAction($action)
   {
     if(isset($this->action_template_map[$this->name]) && isset($this->action_template_map[$this->name][$action]))

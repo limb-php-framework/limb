@@ -25,7 +25,6 @@ class FallbackToViewController extends lmbController
   function performAction()
   {
     $path = trim($this->request->getUriPath(), '/');
-    
     if($template_path = $this->_findTemplateByAlias($path))
     {      
       $view = $this->toolkit->createViewByTemplate($template_path);
