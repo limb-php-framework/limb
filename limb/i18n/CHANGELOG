@@ -1,3 +1,11 @@
+0.5.0-alpha - 31 December 2007 (r6677)
+==================================================
+-- lmbLocaleDate is now obsolete, lmbLocaleDateTime is used instead
+-- using different locator identifiers for locale files and translation files
+-- lmbLocaleDate :: getShortDateFormatted(), :: getShortDateFormatted(), :: create(), :: createFromShortDataFormat(), :: createFromShortDateTimeFormat() methods added
+-- eol changes
+-- changes due to improvements in lmbFsRecursiveIterator
+
 0.4.0-alpha - 6 July 2007 (r6106)
 ==================================================
 -- adding phpdoc header to modules
