@@ -1,3 +1,12 @@
+0.3.0-alpha - 31 December 2007 (r6674)
+==================================================
+-- quick fix for Limb.From.submitPopup(); (Before it opened new window for form action url, then submited form to window - so window contents was loaded twice.)
+-- misc IE minor bugfixes
+-- added class for double select
+-- .htaccess (allow override all) added to shared directory
+-- DOCTYPE tag added to admin-page template, CSS improved
+-- jQuery updated to v.1.2.1
+
 0.2.0-alpha - 6 July 2007 (r6095)
 ==================================================
 -- moving to jQuery library(r1809), removing prototype and scriptaculous
