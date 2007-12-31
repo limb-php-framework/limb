@@ -1,0 +1,4 @@
+{{macro}} is a powerful alternative to WACT which uses pretty similar approach of compiling 
+templates into PHP code.  However {{macro}} is more lightweight and simple than WACT. 
+
+{{macro}} is about to become the default template engine of Limb3.
