@@ -3,6 +3,7 @@ set_time_limit(0);
 
 $packages = array(
 "active_record",
+"cache",
 "calendar",
 "cli",
 "config",
@@ -14,6 +15,7 @@ $packages = array(
 "i18n",
 "js",
 "log",
+"macro",
 "mail",
 "net",
 "session",
