@@ -76,6 +76,7 @@ $package->setPearinstallerDep('1.4.99');
 
 $package->addPackageDepWithChannel('required', 'core', 'pear.limb-project.com', '0.1.3');
 $package->addPackageDepWithChannel('required', 'wact', 'pear.limb-project.com', '0.3.2');
+$package->addPackageDepWithChannel('required', 'macro', 'pear.limb-project.com', '0.1.0');
 $package->addPackageDepWithChannel('required', 'config', 'pear.limb-project.com', '0.3.0');
 
 $package->generateContents();

@@ -1,1 +1,1 @@
-This package provides different means for view rendering.
+This package is a thin layer between controller and low level templating subsystems(e.g. {{macro}} and WACT)
