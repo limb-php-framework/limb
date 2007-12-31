@@ -1,3 +1,26 @@
+0.7.0-beta - 31 December 2007 (r6672)
+==================================================
+-- all old style commands removed.
+-- lmb*CommandController removed since commands removed and since we never actually used them since lmbController was implemented.
+-- lmbController :: performCommand() removed
+-- lmbWebAppTools passed dummy template path to dummy view
+-- minor fixes due to lmbView class changes
+-- lmbAbstractController merged into lmbController. lmbAbstractController removed.
+-- FallbackToViewController now extends lmbController
+-- <flash_box> tag removed
+-- flashbox fetchers removed. Please use raw php blocks instead.
+-- lmbMessageBox :: getUnifiedList() method added that copies functionality of lmbFlashBoxFetcher
+-- {{route_url}} macro tag added that can be used to echo an URL composed with routes
+-- added possibility to use spaces inside route_url, route_url_set tags in 'params' attribute, e.g. <route_url params="controller: some_controller, action: some_action">
+-- fixed a bug with finding template by alias if controller action name constains percentage symbol
+-- added new FallbackToViewController that allows to render any view template if uri path is matching to any template. To use this class pass "fallback_to_view" as a second parameter to lmbRequestDispatchingFilter filter
+-- lmbController :: flashErrorAndRedirect(), :: flashAndRedirect() methods added
+-- lmbWebAppTools :: renderView(..) removed as not really needed
+-- adding default macro.conf.php
+-- removing unneccessary includes from common.inc.php
+-- adding alias <find:param> for <find:params> tag
+-- removing deprecated setViewFormDatasource
+
 0.6.1-alpha - 9 July 2007 (r6119)
 ==================================================
 -- lmbRequestExtractor.interface.php removed since we not use it anymore
