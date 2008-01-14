@@ -34,7 +34,7 @@ class lmbMacroAnnotationParser
 
         //now checking prev token for /**/
         if(!is_array($prev_token) || $prev_token[0] != T_DOC_COMMENT)
-          throw new lmbMacroException('Invalid token, doc comment is expected');
+          throw new lmbMacroException('Invalid token, doc comment is expected', array('prev_token' => $prev_token));
 
         //now parsing annotations
         $annotations = self :: _extractAnnotations($prev_token[1]);
