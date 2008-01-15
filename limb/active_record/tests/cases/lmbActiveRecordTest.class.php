@@ -6,28 +6,6 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once('limb/active_record/src/lmbActiveRecord.class.php');
-require_once('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
-require_once('limb/dbal/src/lmbTableGateway.class.php');
-
-class TestOneTableObject extends lmbActiveRecord
-{
-  protected $_db_table_name = 'test_one_table_object';
-  protected $dummy;
-}
-
-class TestOneTableObjectFailing extends lmbActiveRecord
-{
-  var $fail;
-  protected $_db_table_name = 'test_one_table_object';
-
-  protected function _onAfterSave()
-  {
-    if(is_object($this->fail))
-      throw $this->fail;
-  }
-}
 
 class TestOneTableObjectWithCustomDestroy extends lmbActiveRecord
 {
@@ -108,34 +86,9 @@ class TestOneTableObjectWithSortParams extends TestOneTableObject
   protected $_default_sort_params = array('id' => 'DESC');
 }
 
-class lmbActiveRecordTest extends UnitTestCase
+class lmbActiveRecordTest extends lmbARBaseTestCase
 {
-  var $conn;
-  var $db;
-  var $class_name = 'TestOneTableObject';
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: save();
-    $this->conn = $toolkit->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-
-    $this->conn->disconnect();
-
-    lmbToolkit :: restore();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('test_one_table_object');
-  }
+  protected $tables_to_cleanup = array('test_one_table_object', 'lecture_for_test', 'course_for_test');
 
   function testArrayAccessConsidersDbFields()
   {
@@ -187,7 +140,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDontCreateNewRecordTwice()
   {
-    $object = $this->_initActiveRecordWithData(new TestOneTableObject());
+    $object = $this->creator->initOneTableObject();
 
     $object->save();
     $object->save();
@@ -199,7 +152,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testIsNew()
   {
-    $object = $this->_initActiveRecordWithData(new TestOneTableObject());
+    $object = $this->creator->initOneTableObject();
     $this->assertTrue($object->isNew());
 
     $object->save();
@@ -212,7 +165,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDetach()
   {
-    $object = $this->_initActiveRecordWithData(new TestOneTableObject());
+    $object = $this->creator->initOneTableObject();
     $this->assertTrue($object->isNew());
 
     $object->save();
@@ -231,7 +184,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testSaveUpdate()
   {
-    $object = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object = $this->creator->createOneTableObject();
 
     $object->set('annotation', $annotation = 'Other annotation');
     $object->set('content', $content = 'Other content');
@@ -293,8 +246,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindById()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $found = lmbActiveRecord :: findById('TestOneTableObject', $object2->getId());
     $this->assertEqual($found->export(), $object2->export());
@@ -321,8 +274,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testLoadById()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $loaded = new TestOneTableObject();
     $loaded->loadById($object2->getId());
@@ -343,7 +296,7 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testPassingIntToConstructorLoadsObject()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
 
     $object2 = new TestOneTableObject($object1->getId());
     $this->assertEqual($object2->export(), $object1->export());
@@ -362,8 +315,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindFirst()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
     $found = lmbActiveRecord :: findFirst('TestOneTableObject', array('criteria' => 'id=' . $object1->getId()));
@@ -382,8 +335,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindFirstConvertStringToCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
     $found = lmbActiveRecord :: findFirst('TestOneTableObject', 'id=' . $object1->getId());
@@ -402,8 +355,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindFirstConvertObjectToCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
     $found = lmbActiveRecord :: findFirst('TestOneTableObject', new lmbSQLRawCriteria('id=' . $object1->getId()));
@@ -422,8 +375,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindFirstConvertArrayToCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
     $found = lmbActiveRecord :: findFirst('TestOneTableObject', array('id=?', $object1->getId()));
@@ -442,8 +395,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindFirstWithSortParams()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $found = lmbActiveRecord :: findFirst('TestOneTableObject', array('sort' => array('id' => 'DESC')));
     $this->assertEqual($found->get('id'), $object2->getId());
@@ -473,8 +426,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindOneAlias()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
     $found = lmbActiveRecord :: findOne('TestOneTableObject', 'id=' . $object1->getId());
@@ -493,8 +446,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindAllRecordsNoCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $object = new TestOneTableObject();
     $rs = $object->findAllRecords();
@@ -506,8 +459,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFildAllRecordsWithCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $object = new TestOneTableObject();
     $rs = $object->findAllRecords(new lmbSQLFieldCriteria('id', $object2->getId()));
@@ -519,8 +472,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindAllNoCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: find('TestOneTableObject');
     $rs->rewind();
@@ -538,8 +491,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindAllWithCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: find('TestOneTableObject', array('criteria' => new lmbSQLFieldCriteria('id', $object2->getId())));
     $rs->rewind();
@@ -557,8 +510,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindConvertObjectToCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: find('TestOneTableObject', new lmbSQLFieldCriteria('id', $object2->getId()));
     $rs->rewind();
@@ -576,8 +529,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindConvertStringToCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: find('TestOneTableObject', 'id=' . $object2->getId());
     $rs->rewind();
@@ -595,8 +548,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindConvertArrayToCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: find('TestOneTableObject', array('id=?', $object2->getId()));
     $rs->rewind();
@@ -614,8 +567,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindWithIntegerCallsFindById()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $object = lmbActiveRecord :: find('TestOneTableObject', $object2->getId());
     $this->assertEqual($object2->getId(), $object->getId());
@@ -635,8 +588,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindAllWithSortParams()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: find('TestOneTableObject', array('sort' => array('id' => 'DESC')));
     $arr = $rs->getArray();
@@ -672,10 +625,39 @@ class lmbActiveRecordTest extends UnitTestCase
     $this->assertEqual($arr[1]->get('id'), $object1->getId());
   }
 
+  function testFindWithRelatedObjects_UsingWithParam()
+  {
+    $course1 = $this->creator->createCourse();
+    $course2 = $this->creator->createCourse();
+    $alt_course1 = $this->creator->createCourse();
+    $alt_course2 = $this->creator->createCourse();
+    $lecture1 = $this->creator->createLecture($course1, $alt_course1);
+    $lecture2 = $this->creator->createLecture($course2, $alt_course2);
+    $lecture3 = $this->creator->createLecture($course1, $alt_course2);
+    
+    $rs = lmbActiveRecord :: find('LectureForTest', array('with' => 'course, alt_course'));
+    $arr = $rs->getArray();
+
+    //make sure we really eager fetching
+    $this->db->delete('course_for_test'); 
+    
+    $this->assertEqual($arr[0]->getId(), $lecture1->getId());
+    $this->assertEqual($arr[0]->getCourse()->getTitle(), $course1->getTitle());
+    $this->assertEqual($arr[0]->getAltCourse()->getTitle(), $alt_course1->getTitle());
+    
+    $this->assertEqual($arr[1]->getId(), $lecture2->getId());
+    $this->assertEqual($arr[1]->getCourse()->getTitle(), $course2->getTitle());
+    $this->assertEqual($arr[1]->getAltCourse()->getTitle(), $alt_course2->getTitle());
+    
+    $this->assertEqual($arr[2]->getId(), $lecture3->getId());
+    $this->assertEqual($arr[2]->getCourse()->getTitle(), $course1->getTitle());
+    $this->assertEqual($arr[2]->getAltCourse()->getTitle(), $alt_course2->getTitle());
+  }
+
   function testFindBySql()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: findBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
     $rs->rewind();
@@ -697,8 +679,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindFirstBySql()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $object = lmbActiveRecord :: findFirstBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
     $this->assertEqual($object2->getId(), $object->getId());
@@ -710,8 +692,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindOneBySqlAlias()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $object = lmbActiveRecord :: findOneBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
     $this->assertEqual($object2->getId(), $object->getId());
@@ -723,9 +705,9 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindByIds()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object3 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
+    $object3 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: findByIds('TestOneTableObject',
                                        array($object1->getId(), $object3->getId()),
@@ -749,8 +731,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testFindByIdsReturnEmptyIteratorIfNoIds()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $rs = lmbActiveRecord :: findByIds('TestOneTableObject', array());
     $rs->rewind();
@@ -764,8 +746,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testGetDatasetActsAsStaticFind()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $ds = $object2->getDataset();
     $this->assertEqual($ds->at(0)->getId(), $object1->getId());
@@ -774,8 +756,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDelete()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     lmbActiveRecord :: delete('TestOneTableObject');
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
@@ -783,8 +765,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteShort()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     TestOneTableObject :: delete();
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
@@ -792,8 +774,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteCallsDestroy()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     ob_start();
     lmbActiveRecord :: delete('TestOneTableObjectWithCustomDestroy');
@@ -806,8 +788,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteShortCallsDestroy()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     ob_start();
     TestOneTableObjectWithCustomDestroy :: delete();
@@ -820,8 +802,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteByCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
     lmbActiveRecord :: delete('TestOneTableObject', $criteria);
@@ -834,8 +816,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteShortByCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
     TestOneTableObject :: delete($criteria);
@@ -848,8 +830,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteRaw()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     lmbActiveRecord :: deleteRaw('TestOneTableObject');
 
@@ -858,8 +840,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteShortRaw()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     TestOneTableObject :: deleteRaw();
 
@@ -868,8 +850,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteRawDoesntCallDestroy()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     ob_start();
     lmbActiveRecord :: deleteRaw('TestOneTableObjectWithCustomDestroy');
@@ -882,8 +864,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteShortRawDoesntCallDestroy()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObjectWithCustomDestroy());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     ob_start();
     TestOneTableObjectWithCustomDestroy :: deleteRaw();
@@ -896,8 +878,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteRawByCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
     lmbActiveRecord :: deleteRaw('TestOneTableObject', $criteria);
@@ -910,8 +892,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testDeleteShortRawByCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     $criteria = new lmbSQLFieldCriteria('id', $object2->getId());
     TestOneTableObject :: deleteRaw($criteria);
@@ -924,8 +906,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testUpdateRawAllWithArraySet()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     lmbActiveRecord :: updateRaw('TestOneTableObject', array('content' => 'blah'));
 
@@ -940,8 +922,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testUpdateShortRawAllWithArraySet()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     TestOneTableObject :: updateRaw(array('content' => 'blah'));
 
@@ -956,8 +938,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testUpdateRawAllWithRawValues()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     lmbActiveRecord :: updateRaw('TestOneTableObject', 'ordr=1');
 
@@ -972,8 +954,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testUpdateShortRawAllWithRawValues()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     TestOneTableObject :: updateRaw('ordr=1');
 
@@ -988,8 +970,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testUpdateRawWithCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     lmbActiveRecord :: updateRaw('TestOneTableObject', array('content' => 'blah'), 'id=' . $object2->getId());
 
@@ -1004,8 +986,8 @@ class lmbActiveRecordTest extends UnitTestCase
 
   function testUpdateShortRawWithCriteria()
   {
-    $object1 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
-    $object2 = $this->_initActiveRecordWithDataAndSave(new TestOneTableObject());
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
 
     TestOneTableObject :: updateRaw(array('content' => 'blah'), 'id=' . $object2->getId());
 
@@ -1022,22 +1004,6 @@ class lmbActiveRecordTest extends UnitTestCase
   {
     $object = new TestOneTableObject();
     $this->assertEqual($object->getTableName(), 'test_one_table_object');
-  }
-
-  protected function _initActiveRecordWithData($object)
-  {
-    $object->set('annotation', 'Annotation ' . time());
-    $object->set('content', 'Content ' . time());
-    $object->set('news_date', date("Y-m-d", time()));
-    $object->set('ordr', mt_rand());
-    return $object;
-  }
-
-  protected function _initActiveRecordWithDataAndSave($object)
-  {
-    $this->_initActiveRecordWithData($object);
-    $object->save();
-    return $object;
   }
 }
 

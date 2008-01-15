@@ -6,8 +6,6 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once('limb/active_record/src/lmbActiveRecord.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
 
 class TestingValueObject
 {
@@ -42,7 +40,7 @@ class LessonForTest extends lmbActiveRecord
                                   'not_required_date' => array('field' => 'date_end',
                                                                'class' => 'TestingValueObject',
                                                                'getter' => 'getValue',
-  														       'can_be_null' => true));
+  														    'can_be_null' => true));
 }
 
 class LessonWithNullObject extends LessonForTest 

@@ -93,6 +93,7 @@ DROP TABLE IF EXISTS `user_for_test`;
 CREATE TABLE `user_for_test` (
   `id` bigint(20) NOT NULL auto_increment,
   `first_name` varchar(255) default NULL,
+  `linked_object_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

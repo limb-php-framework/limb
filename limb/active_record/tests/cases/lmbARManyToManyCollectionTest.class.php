@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/active_record/src/lmbARManyToManyCollection.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
 require_once(dirname(__FILE__) . '/lmbARManyToManyRelationsTest.class.php');
 
 Mock :: generate('GroupForTest', 'MockGroupForTest');

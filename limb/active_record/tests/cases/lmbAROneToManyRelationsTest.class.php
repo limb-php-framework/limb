@@ -6,50 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once('limb/active_record/src/lmbActiveRecord.class.php');
 require_once('limb/active_record/src/lmbAROneToManyCollection.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
-
-class CourseForTest extends lmbActiveRecord
-{
-  protected $_db_table_name = 'course_for_test';
-  protected $_has_many = array('lectures' => array('field' => 'course_id',
-                                                   'class' => 'LectureForTest'),
-                               'alt_lectures' => array('field' => 'alt_course_id',
-                                                       'class' => 'LectureForTest'));
-
-  public $save_calls = 0;
-
-  function save()
-  {
-    parent :: save();
-    $this->save_calls++;
-  }
-}
-
-class LectureForTest extends lmbActiveRecord
-{
-  protected $_db_table_name = 'lecture_for_test';
-  protected $_many_belongs_to = array('course' => array('field' => 'course_id',
-                                                        'class' => 'CourseForTest'),
-                                      'alt_course' => array('field' => 'alt_course_id',
-                                                            'class' => 'CourseForTest',
-                                                            'can_be_null' => true));
-  protected $_test_validator;
-
-  function setValidator($validator)
-  {
-    $this->_test_validator = $validator;
-  }
-
-  function _createValidator()
-  {
-    if($this->_test_validator)
-      return $this->_test_validator;
-
-    return parent :: _createValidator();
-  }
-}
 
 class LecturesForTestCollectionStub extends lmbAROneToManyCollection{}
 
@@ -71,27 +28,10 @@ class CourseForTestWithNullifyRelationProperty extends lmbActiveRecord
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 
-class lmbAROneToManyRelationsTest extends UnitTestCase
+class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
 {
-  protected $db;
-
-  function setUp()
-  {
-    $this->db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    $this->db->delete('course_for_test');
-    $this->db->delete('lecture_for_test');
-  }
-
+  protected $tables_to_cleanup = array('course_for_test', 'lecture_for_test');
+  
   function testHas()
   {
     $lecture = new LectureForTest();
@@ -436,6 +376,45 @@ class lmbAROneToManyRelationsTest extends UnitTestCase
 
     $error_list = new lmbErrorList();
     $this->assertFalse($course->trySave($error_list));
+  }
+  
+  function testFetchWithRelatedObjects_UsingWithMethod()
+  {
+    $course = $this->creator->createCourse();
+    
+    $alt_course1 = $this->creator->createCourse();
+    $alt_course2 = $this->creator->createCourse();
+    
+    $lecture1 = $this->creator->createLecture($course, $alt_course1);
+    $lecture2 = $this->creator->createLecture($course, $alt_course2);
+    $lecture3 = $this->creator->createLecture($course, $alt_course1);
+    
+    $lectures = $course->getLectures()->with('course')->with('alt_course');
+    $arr = $lectures->getArray();
+    
+    //make sure we really eager fetching
+    $this->db->delete('course_for_test');
+    
+    $this->assertIsA($arr[0], 'LectureForTest');
+    $this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
+    $this->assertIsA($arr[0]->getCourse(), 'CourseForTest');
+    $this->assertEqual($arr[0]->getCourse()->getTitle(), $course->getTitle());
+    $this->assertIsA($arr[0]->getAltCourse(), 'CourseForTest');
+    $this->assertEqual($arr[0]->getAltCourse()->getTitle(), $alt_course1->getTitle());
+
+    $this->assertIsA($arr[1], 'LectureForTest');
+    $this->assertEqual($arr[1]->getTitle(), $lecture2->getTitle());
+    $this->assertIsA($arr[1]->getCourse(), 'CourseForTest');
+    $this->assertEqual($arr[1]->getCourse()->getTitle(), $course->getTitle());
+    $this->assertIsA($arr[1]->getAltCourse(), 'CourseForTest');
+    $this->assertEqual($arr[1]->getAltCourse()->getTitle(), $alt_course2->getTitle());
+
+    $this->assertIsA($arr[2], 'LectureForTest');
+    $this->assertEqual($arr[2]->getTitle(), $lecture3->getTitle());
+    $this->assertIsA($arr[2]->getCourse(), 'CourseForTest');
+    $this->assertEqual($arr[2]->getCourse()->getTitle(), $course->getTitle());
+    $this->assertIsA($arr[2]->getAltCourse(), 'CourseForTest');
+    $this->assertEqual($arr[2]->getAltCourse()->getTitle(), $alt_course1->getTitle());
   }
 
   function _initCourse()

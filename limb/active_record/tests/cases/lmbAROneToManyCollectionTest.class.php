@@ -8,7 +8,6 @@
  */
 require_once('limb/active_record/src/lmbAROneToManyCollection.class.php');
 require_once('limb/core/src/lmbCollectionDecorator.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');

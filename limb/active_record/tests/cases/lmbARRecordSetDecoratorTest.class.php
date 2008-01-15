@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/active_record/src/lmbARRecordSetDecorator.class.php');
-require_once('limb/core/src/lmbCollection.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
 class lmbARRecordSetDecoratorTest extends UnitTestCase
@@ -46,25 +45,6 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
     $this->assertEqual($lecture2->getCourse()->getTitle(), $course->getTitle());
   }
 
-  function testSetActiveRecordClassPathWithSetter()
-  {
-    $course = $this->_createCourseWithTwoLectures();
-
-    $db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $decorated = $db->select('lecture_for_test');
-
-    $iterator = new lmbARRecordSetDecorator($decorated);
-    $iterator->setClassPath('LectureForTest');
-    $iterator->rewind();
-
-    $lecture1 = $iterator->current();
-    $this->assertEqual($lecture1->getCourse()->getTitle(), $course->getTitle());
-
-    $iterator->next();
-    $lecture2 = $iterator->current();
-    $this->assertEqual($lecture2->getCourse()->getTitle(), $course->getTitle());
-  }
-
   function testGetOffsetIsDecorated()
   {
     $course = $this->_createCourseWithTwoLectures();
@@ -72,8 +52,7 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
     $db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
     $decorated = $db->select('lecture_for_test');
 
-    $iterator = new lmbARRecordSetDecorator($decorated);
-    $iterator->setClassPath('LectureForTest');
+    $iterator = new lmbARRecordSetDecorator($decorated, 'LectureForTest');
 
     $this->assertEqual($iterator->at(0)->getCourse()->getTitle(), $course->getTitle());
     $this->assertEqual($iterator[0]->getCourse()->getTitle(), $course->getTitle());
@@ -82,27 +61,33 @@ class lmbARRecordSetDecoratorTest extends UnitTestCase
     $this->assertEqual($iterator[1]->getCourse()->getTitle(), $course->getTitle());
   }
 
-  function testThrowExceptionIfClassPathIsNotDefined()
+  function testProcessPrefixedFieldsAsRelatedActiveRecords()
   {
     $course = $this->_createCourseWithTwoLectures();
+    $lecture = new LectureForTest();
+    $course_info = $lecture->getRelationInfo('course'); 
 
     $db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $decorated = $db->select('lecture_for_test');
+    $sql = 'SELECT lecture_for_test.*, course_for_test.id as course__id, course_for_test.title as course__title 
+            FROM lecture_for_test LEFT JOIN course_for_test ON course_for_test.id = lecture_for_test.course_id';
+    $decorated = lmbDBAL :: fetch($sql);
 
-    $iterator = new lmbARRecordSetDecorator($decorated);
-    $iterator->rewind();
-    try
-    {
-      $iterator->current();
-      $this->assertTrue(false);
-    }
-    catch(lmbException $e){}
+    $iterator = new lmbARRecordSetDecorator($decorated, 'LectureForTest', null, array('course' => $course_info));
+    
+    // let's fetch all data in order to actually call rewind() and current();
+    $arr = $iterator->getArray();
+    
+    // now let's remove everything from db tables so we can be sure that processing is correct
+    $db->delete('lecture_for_test');
+    $db->delete('course_for_test');
+    
+    $this->assertEqual($arr[0]->getCourse()->getTitle(), $course->getTitle());
+    $this->assertEqual($arr[1]->getCourse()->getTitle(), $course->getTitle());
   }
 
   function testIfRecordIsEmpty()
   {
-    $iterator = new lmbARRecordSetDecorator(new lmbCollection());
-    $iterator->setClassPath('LectureForTest');
+    $iterator = new lmbARRecordSetDecorator(new lmbCollection(), 'LectureForTest');
     $iterator->rewind();
     $this->assertFalse($iterator->valid());
   }

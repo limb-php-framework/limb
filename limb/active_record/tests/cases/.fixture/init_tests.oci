@@ -195,6 +195,7 @@ BEGIN EXECUTE IMMEDIATE 'DROP TABLE user_for_test'; EXCEPTION WHEN OTHERS THEN N
 CREATE TABLE user_for_test (
   id number NOT NULL,
   first_name varchar(255) default NULL,
+  linked_object_id number default NULL,
   PRIMARY KEY  (id)
 );
 /

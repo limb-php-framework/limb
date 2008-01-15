@@ -81,7 +81,8 @@ CREATE TABLE "group_for_test" (
 DROP TABLE "user_for_test";
 CREATE TABLE "user_for_test" (
   "id" INTEGER PRIMARY KEY,
-  "first_name" varchar(255) default NULL
+  "first_name" varchar(255) default NULL,
+  "linked_object_id" bigint(20) default NULL
 );
 
 DROP TABLE "user2group_for_test";

@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbARRelationCollection.class.php 6691 2008-01-15 14:55:59Z serega $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -22,17 +22,19 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   protected $relation_info;
   protected $owner;
   protected $dataset;
-  protected $criteria;
   protected $conn;
   protected $is_owner_new;
   protected $decorators = array();
+  protected $fetch_with_relations = array();
+  protected $default_params = array();
 
   function __construct($relation, $owner, $criteria = null, $conn = null)
   {
     $this->relation = $relation;
     $this->owner = $owner;
     $this->relation_info = $owner->getRelationInfo($relation);
-    $this->criteria = lmbSQLCriteria :: objectify($criteria);
+    $this->default_params['criteria'] = lmbSQLCriteria :: objectify($criteria);
+    $this->default_params['sort'] = array();
 
     if(is_object($conn))
       $this->conn = $conn;
@@ -64,14 +66,25 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
       $this->dataset = $this->find();
   }
 
-  abstract protected function _createDbRecordSet($criteria = null);
-
   function find($magic_params = array())
   {
     if($this->is_owner_new)
       throw new lmbException('Not implemented for in memory collection');
 
-    return $this->_createDecoratedDbRecordSet($magic_params);
+    if(is_string($magic_params) || is_object($magic_params))
+      $magic_params = array('criteria' => lmbSQLCriteria :: objectify($magic_params));
+    
+    $magic_params['criteria'] = isset($magic_params['criteria']) ? $magic_params['criteria']->addAnd($this->default_params['criteria']) : $this->default_params['criteria'];
+    $magic_params['sort'] = isset($magic_params['sort']) ? $magic_params['sort'] : $this->default_params['sort'];
+    
+    $query = $this->_createARQuery($magic_params);
+    
+    foreach($this->fetch_with_relations as $relation)
+      $query->with($relation);
+    
+    $rs = $query->fetch();
+    
+    return $this->_applyDecorators($rs);
   }
 
   function findFirst($magic_params = array())
@@ -81,65 +94,68 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     if($rs->valid())
       return $rs->current();
   }
-
-  protected function _createDecoratedDbRecordSet($magic_params = array())
+  
+  function with($relation_name)
   {
-    $class = $this->relation_info['class'];
-    $object = new $class();
+    $this->fetch_with_relations[] = $relation_name;
+    return $this;
+  }
 
-    $criteria = clone $this->criteria;
+  static function createFullARQueryForRelation($class, $relation_info, $conn, $magic_params = array())
+  {
+    $object = new $relation_info['class'];
 
-    $sort_params = array();
+    $criteria = isset($magic_params['criteria']) ? $magic_params['criteria'] : new lmbSQLCriteria();
+    
     $has_class_criteria = false;
-
-    if(is_string($magic_params) || is_object($magic_params))
-      $criteria->addAnd($magic_params);
-    elseif(is_array($magic_params))
+    if(isset($magic_params['class']))
     {
-      if(isset($magic_params['criteria']))
-        $criteria->addAnd($magic_params['criteria']);
-
-      if(isset($magic_params['class']))
-      {
-        $filter_object = new $magic_params['class'];
-        $criteria = $filter_object->addClassCriteria($criteria);
-        $has_class_criteria = true;
-      }
-
-      if(isset($magic_params['sort']))
-        $sort_params = $magic_params['sort'];
+      $filter_object = new $magic_params['class'];
+      $criteria = $filter_object->addClassCriteria($criteria);
+      $has_class_criteria = true;
     }
 
     if(!$has_class_criteria)
       $object->addClassCriteria($criteria);
 
-    $rs = $this->_createDbRecordSet($criteria);
-    $this->_applySortParams($rs, $sort_params);
-    $dataset = $object->_decorateRecordSet($rs);
-    return $this->_applyDecorators($dataset);
-  }
+    $query = call_user_func_array(array($class, 'createCoreARQueryForRelation'), array($relation_info, $conn));
+    
+    $query->addCriteria($criteria);
 
-  protected function _applySortParams($rs, $sort_params = array())
+    $sort_params = array();
+    if(isset($magic_params['sort']))
+      $sort_params = $magic_params['sort'];
+    
+    self :: applySortParams($query, $relation_info, $sort_params);
+    
+    return $query;
+  }
+  
+  abstract static function createCoreARQueryForRelation($relation_info, $conn);
+  
+  abstract protected function _createARQuery($magic_params = array());
+
+  static function applySortParams($query, $relation_info, $sort_params = array())
   {
     if(count($sort_params))
     {
-      $rs->sort($sort_params);
+      $query->order($sort_params);
       return;
     }
-
-    if(isset($this->relation_info['sort_params']) &&
-       is_array($this->relation_info['sort_params']) &&
-       count($this->relation_info['sort_params']))
+    
+    if(isset($relation_info['sort_params']) &&
+       is_array($relation_info['sort_params']) &&
+       count($relation_info['sort_params']))
     {
-      $rs->sort($this->relation_info['sort_params']);
+      $query->order($relation_info['sort_params']);
       return;
     }
 
-    $class = $this->relation_info['class'];
+    $class = $relation_info['class'];
     $object = new $class();
     if(count($default_sort_params = $object->getDefaultSortParams()))
     {
-      $rs->sort($default_sort_params);
+      $query->order($default_sort_params);
       return;
     }
   }
@@ -273,8 +289,17 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
 
   function sort($params)
   {
-    $this->_ensureDataset();
-    $this->dataset->sort($params);
+    if($this->is_owner_new)
+    {
+      $this->_ensureDataset();
+      $this->dataset->sort($params);
+    }
+    else
+    {
+      // we want to give users ability to change sort params at any time so we just save the last sort params 
+      //  and apply them at the last moment in find() method or even deeper
+      $this->default_params['sort'] = $params;
+    }
     return $this;
   }
 

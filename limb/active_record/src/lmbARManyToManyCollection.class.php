@@ -13,48 +13,46 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6625 2007-12-20 14:48:13Z serega $
+ * @version $Id: lmbARManyToManyCollection.class.php 6691 2008-01-15 14:55:59Z serega $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
-  protected function _createDbRecordSet2($criteria = null)
+  protected function _createARQuery($magic_params = array())
   {
-    $class = $this->relation_info['class'];
-    $object = new $class();
-    $table = $object->getTableName();
-
-    $join_table = $this->relation_info['table'];
-    $field = $this->relation_info['field'];
-    $foreign_field = $this->relation_info['foreign_field'];
-
-    $sql = "SELECT {$table}.* FROM {$table}, {$join_table}
-            WHERE {$table}." . $object->getPrimaryKeyName() . "={$join_table}.$foreign_field AND
-            {$join_table}.{$field}=" . $this->owner->getId() . ' %where%';
-
-    $query = new lmbSelectRawQuery($sql, $this->conn);
-    if($criteria)
-      $query->addCriteria($criteria);
-    return $query->getRecordSet();
-  }
-
-  protected function _createDbRecordSet($criteria = null)
-  {
-    $class = $this->relation_info['class'];
-    $object = new $class();
-    $table = $this->conn->quoteIdentifier($object->getTableName());
-
+    $query = self :: createFullARQueryForRelation($this->relation_info, $this->conn, $magic_params);
+    
     $join_table = $this->conn->quoteIdentifier($this->relation_info['table']);
     $field = $this->conn->quoteIdentifier($this->relation_info['field']);
-    $foreign_field = $this->conn->quoteIdentifier($this->relation_info['foreign_field']);
+    $query->addCriteria("{$join_table}.{$field} = {$this->owner->getId()}");
 
-    $sql = "SELECT $table.* FROM $table, $join_table
-            WHERE $table." . $object->getPrimaryKeyName() . "=$join_table.$foreign_field AND
-            $join_table.$field=" . $this->owner->getId() . ' %where%';
+    return $query; 
+  }
+  
+  static function createFullARQueryForRelation($relation_info, $conn, $magic_params = array())
+  {
+    return parent :: createFullARQueryForRelation(__CLASS__, $relation_info, $conn, $magic_params);
+  }
+  
+  static function createCoreARQueryForRelation($relation_info, $conn)
+  {
+    $class = $relation_info['class'];
+    $object = new $class();
 
-    $query = new lmbSelectRawQuery($sql, $this->conn);
-    if($criteria)
-      $query->addCriteria($criteria);
-    return $query->getRecordSet();
+    $table = $conn->quoteIdentifier($object->getTableName());
+    $join_table = $conn->quoteIdentifier($relation_info['table']);
+    $field = $conn->quoteIdentifier($relation_info['field']);
+    $foreign_field = $conn->quoteIdentifier($relation_info['foreign_field']);
+    
+    $sql = "SELECT %fields% FROM {$table} INNER JOIN {$join_table} ON {$table}.{$object->getPrimaryKeyName()} = {$join_table}.{$foreign_field}" . 
+           " %tables% %left_join% %where% %group% %having% %order%";
+
+    $query = new lmbARQuery($class, $conn, $sql);
+
+    $fields = $object->getDbTable()->getColumnsForSelect();
+    foreach($fields as $field => $alias)
+      $query->addField($field, $alias);
+    
+    return $query;
   }
 
   function set($objects)

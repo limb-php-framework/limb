@@ -6,9 +6,19 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once('limb/active_record/src/lmbActiveRecord.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
 require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOneTableObjectFailing
+
+class TestOneTableObjectFailing extends lmbActiveRecord
+{
+  var $fail;
+  protected $_db_table_name = 'test_one_table_object';
+
+  protected function _onAfterSave()
+  {
+    if(is_object($this->fail))
+      throw $this->fail;
+  }
+}
 
 class lmbARTransactionTest extends UnitTestCase
 {

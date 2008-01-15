@@ -18,14 +18,15 @@ lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/validation/src/exception/lmbValidationException.class.php');
 lmb_require('limb/active_record/src/lmbARException.class.php');
 lmb_require('limb/active_record/src/lmbARNotFoundException.class.php');
-lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
 lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
+lmb_require('limb/active_record/src/lmbARQuery.class.php');
+lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6617 2007-12-18 15:55:56Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6691 2008-01-15 14:55:59Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -139,7 +140,7 @@ class lmbActiveRecord extends lmbObject
   /**
    * @var array sort params used to order objects during database retrieval
    */
-  protected $_default_sort_params;
+  protected $_default_sort_params = array();
   /**
    * @var object database metainfo object
    */
@@ -158,6 +159,16 @@ class lmbActiveRecord extends lmbObject
   const ON_AFTER_CREATE            = 8;
   const ON_BEFORE_DESTROY          = 9;
   const ON_AFTER_DESTROY           = 10;
+  /**#@-*/
+  
+  /**#@+
+   * Relation type constants
+   */
+  const HAS_ONE             = 1;
+  const HAS_MANY            = 2;
+  const HAS_MANY_TO_MANY    = 3;
+  const BELONGS_TO          = 4;
+  const MANY_BELONGS_TO     = 5;
   /**#@-*/
 
   /**
@@ -332,6 +343,24 @@ class lmbActiveRecord extends lmbObject
     if(isset($this->_relations[$relation]))
       return $this->_relations[$relation];
   }
+  
+  function getRelationType($relation)
+  {
+    if(isset($this->_has_one[$relation]))
+      return self :: HAS_ONE;
+
+    if(isset($this->_has_many[$relation]))
+      return self :: HAS_MANY;
+
+    if(isset($this->_has_many_to_many[$relation]))
+      return self :: HAS_MANY_TO_MANY;
+
+    if(isset($this->_belongs_to[$relation]))
+      return self :: BELONGS_TO;
+
+    if(isset($this->_many_belongs_to[$relation]))
+      return self :: MANY_BELONGS_TO;
+  }
 
   protected function _getAllRelations()
   {
@@ -342,14 +371,14 @@ class lmbActiveRecord extends lmbObject
                         $this->_many_belongs_to,
                         $this->_composed_of);
   }
-
+  
   protected function _getSingleObjectRelations()
   {
      return array_merge($this->_has_one,
                         $this->_belongs_to,
                         $this->_many_belongs_to,
                         $this->_composed_of);
-  }
+  }  
 
   /**
    *  Returns all relations info for one-to-many
@@ -548,6 +577,11 @@ class lmbActiveRecord extends lmbObject
       if(!parent :: has($attribute))
         $this->_loadLazyAttribute($attribute);
     }
+  }
+  
+  function getLazyAttributes()
+  {
+    return $this->_lazy_attributes;
   }
 
   function has($property)
@@ -1519,9 +1553,8 @@ class lmbActiveRecord extends lmbObject
    */
   protected function _find($params = array())
   {
-    $criteria = isset($params['criteria']) ? $params['criteria'] : null;
-    $sort_params = isset($params['sort']) ? $params['sort'] : array();
-    $rs = $this->_decorateRecordSet($this->findAllRecords($criteria, $sort_params));
+    $query = $this->_createARQuery($params);
+    $rs = $query->fetch();
 
     $return_first = false;
     foreach(array_values($params) as $value)
@@ -1546,6 +1579,29 @@ class lmbActiveRecord extends lmbObject
     else
       return $rs;
   }
+  
+  protected function _createARQuery($params)
+  {
+    $query = new lmbARQuery(get_class($this), $this->_db_conn);
+
+    $criteria = (isset($params['criteria']) && $params['criteria']) ? $params['criteria'] : lmbSQLCriteria :: create();
+    $criteria = $this->addClassCriteria($criteria);    
+    $query->addCriteria($criteria);
+    
+    $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $this->_default_sort_params;
+    foreach($sort_params as $field => $sort_type)
+      $query->addOrder($field, $sort_type);
+
+    $with = (isset($params['with']) && $params['with']) ? $params['with'] : array();
+    if(!is_array($with))
+      $with = explode(',', $with);
+    
+    foreach($with as $relation_name)
+      $query->with(trim($relation_name));
+    
+    return $query;
+  }
+  
   /**
    *  Finds a collection of records(not lmbActiveRecord objects!) from database table
    *  @param string|object filtering criteria
@@ -1554,12 +1610,10 @@ class lmbActiveRecord extends lmbObject
    */
   function findAllRecords($criteria = null, $sort_params = array())
   {
-    if(!count($sort_params))
-      $sort_params = $this->_default_sort_params;
-
-    return $this->_db_table->select($this->addClassCriteria($criteria),
-                                    $sort_params,
-                                    $this->_getColumnsForSelect());
+    $query = $this->_createARQuery(array('criteria' => $criteria, 'sort' => $sort_params));
+    return $query->fetch($decorate = false);
+    
+    return $this->_db_table->select($this->addClassCriteria($criteria), $sort_params, $columns);
   }
   /**
    *  Adds class name criterion to passed in criteria
@@ -1759,11 +1813,6 @@ class lmbActiveRecord extends lmbObject
     $object = new $class_name(null, $conn);
     $db_table = $object->getDbTable();
     $db_table->update($set, $criteria);
-  }
-
-  protected function _getColumnsForSelect()
-  {
-    return $this->_db_table->getColumnsForSelect('', $this->_lazy_attributes);
   }
 
   protected function _removeOneToOneObjects()

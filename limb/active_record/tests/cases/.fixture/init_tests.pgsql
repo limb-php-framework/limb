@@ -104,6 +104,7 @@ DROP TABLE user_for_test CASCADE;
 CREATE TABLE user_for_test (
   "id" SERIAL,
   "first_name" varchar(255)  default NULL,
+  "linked_object_id" int8 default NULL,
   PRIMARY KEY  (id)
 )  ;
 

@@ -6,22 +6,6 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once('limb/active_record/src/lmbActiveRecord.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
-
-class PersonForTest extends lmbActiveRecord
-{
-  public $save_count = 0;
-  protected $_has_one = array('social_security' => array('field' => 'ss_id',
-                                                         'class' => 'SocialSecurityForTest',
-                                                         'can_be_null' => true));
-
-  function _onSave()
-  {
-    $this->save_count++;
-  }
-
-}
 
 class PersonForTestNoCascadeDelete extends lmbActiveRecord
 {
@@ -47,33 +31,10 @@ class PersonForTestWithRequiredSocialSecurity extends lmbActiveRecord
   }
 }
 
-class SocialSecurityForTest extends lmbActiveRecord
+class lmbAROneToOneRelationsTest extends lmbARBaseTestCase
 {
-  protected $_belongs_to = array('person' => array('field' => 'ss_id',
-                                                   'class' => 'PersonForTest'));
-}
-
-class lmbAROneToOneRelationsTest extends UnitTestCase
-{
-  protected $db;
-
-  function setUp()
-  {
-    $this->db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    $this->db->delete('person_for_test');
-    $this->db->delete('social_security_for_test');
-  }
-
+  protected $tables_to_cleanup = array('person_for_test', 'social_security_for_test'); 
+  
   function testHas()
   {
     $person = new PersonForTest();
