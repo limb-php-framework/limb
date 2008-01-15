@@ -72,7 +72,14 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
 
   function addOrder($field, $type='ASC')
   {
-    $this->_order[] = $this->_conn->quoteIdentifier($field) . " $type";
+    if(is_array($field))
+    {
+      foreach($field as $field_name => $type)
+        $this->_order[] = $this->_conn->quoteIdentifier($field_name) . " $type";
+    }
+    else
+      $this->_order[] = $this->_conn->quoteIdentifier($field) . " $type";
+      
     return $this;
   }
 
@@ -118,9 +125,16 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     return $this->_having;
   }
 
-  function addLeftJoin($table, $field, $connect_table, $connect_field)
+  function addLeftJoin($table, $field, $connect_table, $connect_field, $table_alias = '')
   {
-    $this->_left_join_constraints[$table] = array($table . '.' . $field => $connect_table . '.' . $connect_field);
+    if(!$table_alias)
+      $connect_by = array($table . '.' . $field => $connect_table . '.' . $connect_field);
+    else
+      $connect_by = array($table_alias . '.' . $field => $connect_table . '.' . $connect_field);
+    
+    $this->_left_join_constraints[] = array('table' => $table,
+                                            'connect_by' => $connect_by,
+                                            'alias' => $table_alias);
     return $this;
   }
 
@@ -196,11 +210,14 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   protected function _getLeftJoinHint()
   {
     $join = array();
-    foreach($this->_left_join_constraints as $table => $connect_by)
+    foreach($this->_left_join_constraints as $info)
     {
+      $table = $info['table'];
+      $connect_by = $info['connect_by'];
+      $alias = $info['alias'] ? ' AS ' . $this->_conn->quoteIdentifier($info['alias']) : '';
       $foreign_key = $this->_conn->quoteIdentifier(key($connect_by));
       $alias_key = $this->_conn->quoteIdentifier(reset($connect_by));
-      $join[] = "LEFT JOIN " . $this->_conn->quoteIdentifier($table) . " ON $foreign_key=$alias_key";
+      $join[] = "LEFT JOIN " . $this->_conn->quoteIdentifier($table) . "$alias ON $foreign_key=$alias_key";
     }
 
     return implode(' ', $join);

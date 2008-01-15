@@ -133,6 +133,18 @@ class lmbSelectRawQueryTest extends UnitTestCase
                        "SELECT * FROM test LEFT JOIN 'article' ON 'article.id'='test.article_id'");
   }
 
+  function testAddLeftJoinTwiceForTheSameTable()
+  {
+    $sql = new lmbSelectRawQuery('SELECT * FROM test %left_join%', $this->conn);
+
+    $sql->addLeftJoin('article', 'id', 'test', 'article_id');
+    $sql->addLeftJoin('article', 'id', 'test', 'other_article_id', 'next_article');
+
+    $this->assertEqual($sql->toString(),
+                       "SELECT * FROM test LEFT JOIN 'article' ON 'article.id'='test.article_id'".
+                       " LEFT JOIN 'article' AS 'next_article' ON 'next_article.id'='test.other_article_id'");
+  }
+  
   function testEmptyCondition()
   {
     $sql = new lmbSelectRawQuery('SELECT * FROM test %where%', $this->conn);
@@ -232,6 +244,14 @@ class lmbSelectRawQueryTest extends UnitTestCase
                        "SELECT * FROM test \nORDER BY 't1' ASC,'t2' DESC");
   }
 
+  function testAddOrderAsArray()
+  {
+    $sql = new lmbSelectRawQuery("SELECT * FROM test \n%order%", $this->conn);
+
+    $sql->addOrder(array('t1' => 'ASC', 't2' => 'DESC'));
+    $this->assertEqual($sql->toString(),
+  }
+  
   function testAddOrderWithOrderClause()
   {
     $sql = new lmbSelectRawQuery("SELECT * FROM test ORDER BY\n %order%", $this->conn);
