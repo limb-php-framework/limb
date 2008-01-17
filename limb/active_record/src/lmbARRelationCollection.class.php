@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6691 2008-01-15 14:55:59Z serega $
+ * @version $Id: lmbARRelationCollection.class.php 6694 2008-01-17 15:41:51Z serega $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -25,7 +25,8 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   protected $conn;
   protected $is_owner_new;
   protected $decorators = array();
-  protected $fetch_with_relations = array();
+  protected $join_relations = array();
+  protected $attach_relations = array();
   protected $default_params = array();
 
   function __construct($relation, $owner, $criteria = null, $conn = null)
@@ -33,8 +34,8 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     $this->relation = $relation;
     $this->owner = $owner;
     $this->relation_info = $owner->getRelationInfo($relation);
-    $this->default_params['criteria'] = lmbSQLCriteria :: objectify($criteria);
-    $this->default_params['sort'] = array();
+    if($criteria)
+      $this->default_params['criteria'] = lmbSQLCriteria :: objectify($criteria);
 
     if(is_object($conn))
       $this->conn = $conn;
@@ -53,6 +54,11 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   {
     $this->is_owner_new = $this->owner->isNew();
     $this->dataset = null;
+  }
+  
+  function setDataset($dataset)
+  {
+    $this->dataset = $dataset;
   }
 
   protected function _ensureDataset()
@@ -74,13 +80,21 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     if(is_string($magic_params) || is_object($magic_params))
       $magic_params = array('criteria' => lmbSQLCriteria :: objectify($magic_params));
     
-    $magic_params['criteria'] = isset($magic_params['criteria']) ? $magic_params['criteria']->addAnd($this->default_params['criteria']) : $this->default_params['criteria'];
-    $magic_params['sort'] = isset($magic_params['sort']) ? $magic_params['sort'] : $this->default_params['sort'];
+    if(isset($this->default_params['criteria']))
+    {
+      if(isset($magic_params['criteria']))
+        $magic_params['criteria']->addAnd($this->default_params['criteria']);
+      else
+        $magic_params['criteria'] = $this->default_params['criteria'];
+    }
+    
+    if(!isset($magic_params['sort']) && isset($this->default_params['sort']))
+      $magic_params['sort'] = $this->default_params['sort'];
+    
+    $magic_params['with'] = $this->join_relations;
+    $magic_params['attach'] = $this->attach_relations;
     
     $query = $this->_createARQuery($magic_params);
-    
-    foreach($this->fetch_with_relations as $relation)
-      $query->with($relation);
     
     $rs = $query->fetch();
     
@@ -95,43 +109,29 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
       return $rs->current();
   }
   
-  function with($relation_name)
+  function with($relation_name, $params = array())
   {
-    $this->fetch_with_relations[] = $relation_name;
+    $this->join_relations[$relation_name] = $params;
     return $this;
   }
 
-  static function createFullARQueryForRelation($class, $relation_info, $conn, $magic_params = array())
+  function attach($relation_name, $params = array())
   {
-    $object = new $relation_info['class'];
+    $this->attach_relations[$relation_name] = $params;
+    return $this;
+  }
 
-    $criteria = isset($magic_params['criteria']) ? $magic_params['criteria'] : new lmbSQLCriteria();
+  static function createFullARQueryForRelation($calling_class, $relation_info, $conn, $params = array())
+  {
+    if(!isset($params['sort']) && isset($relation_info['sort_params']))
+      $params['sort'] = $relation_info['sort_params'];
     
-    $has_class_criteria = false;
-    if(isset($magic_params['class']))
-    {
-      $filter_object = new $magic_params['class'];
-      $criteria = $filter_object->addClassCriteria($criteria);
-      $has_class_criteria = true;
-    }
-
-    if(!$has_class_criteria)
-      $object->addClassCriteria($criteria);
-
-    $query = call_user_func_array(array($class, 'createCoreARQueryForRelation'), array($relation_info, $conn));
-    
-    $query->addCriteria($criteria);
-
-    $sort_params = array();
-    if(isset($magic_params['sort']))
-      $sort_params = $magic_params['sort'];
-    
-    self :: applySortParams($query, $relation_info, $sort_params);
+    $query = call_user_func_array(array($calling_class, 'createCoreARQueryForRelation'), array($relation_info, $conn, $params));
     
     return $query;
   }
   
-  abstract static function createCoreARQueryForRelation($relation_info, $conn);
+  abstract static function createCoreARQueryForRelation($relation_info, $conn, $params = array());
   
   abstract protected function _createARQuery($magic_params = array());
 

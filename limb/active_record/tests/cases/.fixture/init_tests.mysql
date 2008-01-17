@@ -58,9 +58,17 @@ CREATE TABLE `person_for_test` (
 PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `program_for_test`;
+CREATE TABLE `program_for_test` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `course_for_test`;
 CREATE TABLE `course_for_test` (
  `id` bigint(20) NOT NULL auto_increment,
+ `program_id` bigint(20) default NULL,
  `title` varchar(255) default NULL,
  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

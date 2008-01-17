@@ -13,13 +13,13 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6691 2008-01-15 14:55:59Z serega $
+ * @version $Id: lmbARManyToManyCollection.class.php 6694 2008-01-17 15:41:51Z serega $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
-  protected function _createARQuery($magic_params = array())
+  protected function _createARQuery($params = array())
   {
-    $query = self :: createFullARQueryForRelation($this->relation_info, $this->conn, $magic_params);
+    $query = self :: createFullARQueryForRelation($this->relation_info, $this->conn, $params);
     
     $join_table = $this->conn->quoteIdentifier($this->relation_info['table']);
     $field = $this->conn->quoteIdentifier($this->relation_info['field']);
@@ -28,12 +28,12 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     return $query; 
   }
   
-  static function createFullARQueryForRelation($relation_info, $conn, $magic_params = array())
+  static function createFullARQueryForRelation($relation_info, $conn, $params = array())
   {
-    return parent :: createFullARQueryForRelation(__CLASS__, $relation_info, $conn, $magic_params);
+    return parent :: createFullARQueryForRelation(__CLASS__, $relation_info, $conn, $params);
   }
   
-  static function createCoreARQueryForRelation($relation_info, $conn)
+  static function createCoreARQueryForRelation($relation_info, $conn, $params = array())
   {
     $class = $relation_info['class'];
     $object = new $class();
@@ -46,7 +46,7 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     $sql = "SELECT %fields% FROM {$table} INNER JOIN {$join_table} ON {$table}.{$object->getPrimaryKeyName()} = {$join_table}.{$foreign_field}" . 
            " %tables% %left_join% %where% %group% %having% %order%";
 
-    $query = new lmbARQuery($class, $conn, $sql);
+    $query = lmbARQuery :: create($class, $params, $conn, $sql); 
 
     $fields = $object->getDbTable()->getColumnsForSelect();
     foreach($fields as $field => $alias)

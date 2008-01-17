@@ -12,25 +12,25 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbAROneToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbAROneToManyCollection.class.php 6691 2008-01-15 14:55:59Z serega $
+ * @version $Id: lmbAROneToManyCollection.class.php 6694 2008-01-17 15:41:51Z serega $
  */
 class lmbAROneToManyCollection extends lmbARRelationCollection
 {
-  protected function _createARQuery($magic_params = array())
+  protected function _createARQuery($params = array())
   {
-    $query = self :: createFullARQueryForRelation($this->relation_info, $this->conn, $magic_params);
+    $query = self :: createFullARQueryForRelation($this->relation_info, $this->conn, $params);
     $query->addCriteria(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
     return $query;
   }
   
-  static function createFullARQueryForRelation($relation_info, $conn, $magic_params = array())
+  static function createFullARQueryForRelation($relation_info, $conn, $params = array())
   {
-    return parent :: createFullARQueryForRelation(__CLASS__, $relation_info, $conn, $magic_params);
+    return parent :: createFullARQueryForRelation(__CLASS__, $relation_info, $conn, $params);
   }
   
-  static function createCoreARQueryForRelation($relation_info, $conn)
+  static function createCoreARQueryForRelation($relation_info, $conn, $params = array())
   {
-    return new lmbARQuery($relation_info['class'], $conn);
+    return lmbARQuery :: create($relation_info['class'], $params, $conn);
   }
   
   function add($object)

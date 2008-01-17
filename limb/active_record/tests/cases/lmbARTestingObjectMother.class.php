@@ -23,6 +23,14 @@ class SocialSecurityForTest extends lmbActiveRecord
                                                    'class' => 'PersonForTest'));
 }
 
+class ProgramForTest extends lmbActiveRecord
+{
+  protected $_db_table_name = 'program_for_test';
+
+  protected $_has_many = array('courses' => array('field' => 'program_id',
+                                                  'class' => 'CourseForTest'));
+}
+
 class CourseForTest extends lmbActiveRecord
 {
   protected $_db_table_name = 'course_for_test';
@@ -31,6 +39,10 @@ class CourseForTest extends lmbActiveRecord
                                'alt_lectures' => array('field' => 'alt_course_id',
                                                        'class' => 'LectureForTest'));
 
+  protected $_many_belongs_to = array('program' => array('field' => 'program_id',
+                                                         'class' => 'ProgramForTest',
+                                                         'can_be_null' => true));
+  
   public $save_calls = 0;
 
   function save()
@@ -141,12 +153,24 @@ class lmbARTestingObjectMother
     return $number; 
   }
   
-  function createCourse()
+  function createCourse($program = null)
   {
     $course = new CourseForTest();
     $course->setTitle('Course_'. rand(0, 100));
+    
+    if($program)
+      $course->setProgram($program);
+    
     $course->save();
     return $course;
+  }
+  
+  function createProgram()
+  {
+    $program = new ProgramForTest();
+    $program->setTitle('Program_'. rand(0, 100));
+    $program->save();
+    return $program;
   }
 
   function createLecture($course, $alt_course = null, $title = '')

@@ -14,19 +14,17 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 6691 2008-01-15 14:55:59Z serega $
+ * @version $Id: lmbARRecordSetDecorator.class.php 6694 2008-01-17 15:41:51Z serega $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
   protected $class_path;
   protected $conn;
-  protected $with_relations = array();
 
-  function __construct($record_set, $class_path, $conn = null, $with_relations = array())
+  function __construct($record_set, $class_path, $conn = null)
   {
     $this->class_path = $class_path;
     $this->conn = $conn;
-    $this->with_relations = $with_relations;
 
     parent :: __construct($record_set);
   }
@@ -42,35 +40,10 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
   protected function _createObjectFromRecord($record)
   {
     $object = $this->_createObject($record);
-    $this->_extractPrefixedFieldsAsActiveRecords($record);
     $object->loadFromRecord($record);
     return $object;
   }
   
-  protected function _extractPrefixedFieldsAsActiveRecords($record)
-  {
-    foreach($this->with_relations as $relation_name => $relation_info)
-    {
-      $fields = new lmbSet();
-      $prefix = $relation_name . '__';
-      
-      foreach($record->export() as $field => $value)
-      {
-        if(strpos($field, $prefix) === 0)
-        {
-          $non_prefixes_field_name = substr($field, strlen($prefix));
-          $fields->set($non_prefixes_field_name, $value);
-          $record->remove($field);
-        }
-      }
-      
-      $related_object_class = $relation_info['class'];
-      $related_object = new $related_object_class(null, $this->conn);
-      $related_object->loadFromRecord($fields);
-      $record->set($relation_name, $related_object);
-    }
-  }
-
   protected function _createObject($record)
   {
     if($path = $record->get(lmbActiveRecord :: getInheritanceField()))

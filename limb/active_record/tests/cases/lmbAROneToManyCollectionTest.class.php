@@ -662,7 +662,6 @@ class lmbAROneToManyCollectionTest extends UnitTestCase
     $l->setTitle($title);
     return $l;
   }
-
 }
 
 

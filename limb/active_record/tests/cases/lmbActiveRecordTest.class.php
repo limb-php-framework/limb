@@ -653,6 +653,41 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $this->assertEqual($arr[2]->getCourse()->getTitle(), $course1->getTitle());
     $this->assertEqual($arr[2]->getAltCourse()->getTitle(), $alt_course2->getTitle());
   }
+  
+  function testFindAttachRelatedObjects_HasMany()
+  {
+    $course1 = $this->creator->createCourse();
+    $course2 = $this->creator->createCourse();
+    
+    $lecture1 = $this->creator->createLecture($course1, null, 'ZZZ');
+    $lecture2 = $this->creator->createLecture($course2, null, 'CCC');
+    $lecture3 = $this->creator->createLecture($course1, null, 'AAA');
+    $lecture4 = $this->creator->createLecture($course1, null, 'BBB');
+    
+    $rs = lmbActiveRecord :: find('CourseForTest', array('attach' => array('lectures' => array('sort' => array('title' => 'ASC')))));
+    $arr = $rs->getArray();
+    
+    //make sure we really eager fetching
+    $this->db->delete('lecture_for_test');
+    
+    $this->assertIsA($arr[0], 'CourseForTest');
+    $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
+    $lectures = $arr[0]->getLectures();
+    $this->assertEqual(count($lectures), 3);
+    $this->assertEqual($lectures[0]->getId(), $lecture3->getId());
+    $this->assertEqual($lectures[0]->getTitle(), 'AAA');
+    $this->assertEqual($lectures[1]->getId(), $lecture4->getId());
+    $this->assertEqual($lectures[1]->getTitle(), 'BBB');
+    $this->assertEqual($lectures[2]->getId(), $lecture1->getId());
+    $this->assertEqual($lectures[2]->getTitle(), 'ZZZ');
+    
+    $this->assertIsA($arr[1], 'CourseForTest');
+    $this->assertEqual($arr[1]->getTitle(), $course2->getTitle());
+    $lectures = $arr[1]->getLectures();
+    $this->assertEqual(count($lectures), 1);
+    $this->assertEqual($lectures[0]->getId(), $lecture2->getId());
+    $this->assertEqual($lectures[0]->getTitle(), 'CCC');
+  }  
 
   function testFindBySql()
   {

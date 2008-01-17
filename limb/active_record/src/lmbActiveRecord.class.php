@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6691 2008-01-15 14:55:59Z serega $
+ * @version $Id: lmbActiveRecord.class.php 6694 2008-01-17 15:41:51Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -684,7 +684,7 @@ class lmbActiveRecord extends lmbObject
            $this->_hasManyToManyRelation($relation);
   }
   /**
-   *  Generic magis getter for any attribute
+   *  Generic magic setter for any attribute
    *  @param string property name
    *  @param mixed property value
    */
@@ -1553,7 +1553,7 @@ class lmbActiveRecord extends lmbObject
    */
   protected function _find($params = array())
   {
-    $query = $this->_createARQuery($params);
+    $query = lmbARQuery :: create(get_class($this), $params, $this->_db_conn);
     $rs = $query->fetch();
 
     $return_first = false;
@@ -1580,28 +1580,6 @@ class lmbActiveRecord extends lmbObject
       return $rs;
   }
   
-  protected function _createARQuery($params)
-  {
-    $query = new lmbARQuery(get_class($this), $this->_db_conn);
-
-    $criteria = (isset($params['criteria']) && $params['criteria']) ? $params['criteria'] : lmbSQLCriteria :: create();
-    $criteria = $this->addClassCriteria($criteria);    
-    $query->addCriteria($criteria);
-    
-    $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $this->_default_sort_params;
-    foreach($sort_params as $field => $sort_type)
-      $query->addOrder($field, $sort_type);
-
-    $with = (isset($params['with']) && $params['with']) ? $params['with'] : array();
-    if(!is_array($with))
-      $with = explode(',', $with);
-    
-    foreach($with as $relation_name)
-      $query->with(trim($relation_name));
-    
-    return $query;
-  }
-  
   /**
    *  Finds a collection of records(not lmbActiveRecord objects!) from database table
    *  @param string|object filtering criteria
@@ -1610,10 +1588,8 @@ class lmbActiveRecord extends lmbObject
    */
   function findAllRecords($criteria = null, $sort_params = array())
   {
-    $query = $this->_createARQuery(array('criteria' => $criteria, 'sort' => $sort_params));
+    $query = lmbARQuery :: create(get_class($this), $params = array('criteria' => $criteria, 'sort' => $sort_params), $this->_db_conn);
     return $query->fetch($decorate = false);
-    
-    return $this->_db_table->select($this->addClassCriteria($criteria), $sort_params, $columns);
   }
   /**
    *  Adds class name criterion to passed in criteria
@@ -1671,7 +1647,7 @@ class lmbActiveRecord extends lmbObject
     $this->_is_new = false;
   }
   /**
-   *  Loads current object with data from database record, overwrites any previous data, marks object dirty and unsets new status
+   *  Loads current object with data from database record, overwrites any previous data, resets object dirtiness and unsets new status
    *  @param object database record object
    */
   function loadFromRecord($record)
