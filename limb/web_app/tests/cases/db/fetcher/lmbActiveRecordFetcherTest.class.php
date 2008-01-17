@@ -9,6 +9,7 @@
 lmb_require('limb/web_app/tests/cases/lmbWebAppTestCase.class.php');
 lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
 lmb_require('limb/web_app/src/fetcher/lmbActiveRecordFetcher.class.php');
+require_once('limb/active_record/tests/cases/lmbARBaseTestCase.class.php');
 require_once('limb/active_record/tests/cases/lmbAROneToManyRelationsTest.class.php');
 
 class CourseForFetcherTestVersion extends CourseForTest
