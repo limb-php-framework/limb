@@ -249,7 +249,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $sql = new lmbSelectRawQuery("SELECT * FROM test \n%order%", $this->conn);
 
     $sql->addOrder(array('t1' => 'ASC', 't2' => 'DESC'));
-    $this->assertEqual($sql->toString(),
+    $this->assertEqual($sql->toString(), "SELECT * FROM test \nORDER BY 't1' ASC,'t2' DESC");
   }
   
   function testAddOrderWithOrderClause()
