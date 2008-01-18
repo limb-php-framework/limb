@@ -11,7 +11,7 @@
  * interface lmbDbStatement.
  *
  * @package dbal
- * @version $Id: lmbDbStatement.interface.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbDbStatement.interface.php 6697 2008-01-18 08:39:40Z serega $
  */
 interface lmbDbStatement
 {
@@ -33,6 +33,7 @@ interface lmbDbStatement
   function import($paramList);
   function getSQL();
   function execute();
+  function setConnection($connection);
 }
 
 

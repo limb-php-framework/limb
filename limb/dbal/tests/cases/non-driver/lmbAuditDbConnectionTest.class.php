@@ -8,8 +8,10 @@
  */
 lmb_require('limb/dbal/src/drivers/lmbAuditDbConnection.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
 Mock :: generate('lmbDbConnection', 'MockDbConnection');
+Mock :: generate('lmbDbStatement', 'MockDbStatement');
 
 class lmbAuditDbConnectionTest extends UnitTestCase
 {
@@ -42,6 +44,21 @@ class lmbAuditDbConnectionTest extends UnitTestCase
     $this->connection->reset();
     
     $this->assertEqual($this->connection->count(), 0);
+  }
+  
+  function testNewStatementSetSelfAsConnection()
+  {
+    $sql = 'whatever sql';
+    
+    $this->wrapped->expectOnce('newStatement', array($sql));
+    
+    $statement = new MockDbStatement();
+    $statement->expectOnce('setConnection', array(new ReferenceExpectation($this->connection)));
+    $this->wrapped->expectOnce('newStatement', array($sql));
+    $this->wrapped->setReturnValue('newStatement', $statement, array($sql));
+    
+    $refreshed_statement = $this->connection->newStatement($sql);
+    $this->assertReference($statement, $refreshed_statement);
   }
   
   function testGetQueries()

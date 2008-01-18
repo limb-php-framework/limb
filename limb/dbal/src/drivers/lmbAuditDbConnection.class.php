@@ -27,6 +27,13 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
     return parent :: execute($sql);
   }
   
+  function newStatement($sql)
+  {
+    $statement = parent :: newStatement($sql);
+    $statement->setConnection($this);
+    return $statement;
+  }
+  
   function count()
   {
     return sizeof($this->queries);

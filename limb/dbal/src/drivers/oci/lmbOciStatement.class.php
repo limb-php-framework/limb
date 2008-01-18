@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbOciStatement.
  *
  * @package dbal
- * @version $Id: lmbOciStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbOciStatement.class.php 6697 2008-01-18 08:39:40Z serega $
  */
 class lmbOciStatement implements lmbDbStatement
 {
@@ -25,6 +25,11 @@ class lmbOciStatement implements lmbDbStatement
   function __construct($connection, $sql)
   {
     $this->sql = $sql;
+    $this->connection = $connection;
+  }
+  
+  function setConnection($connection)
+  {
     $this->connection = $connection;
   }
 

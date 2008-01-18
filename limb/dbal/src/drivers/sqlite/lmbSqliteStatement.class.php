@@ -25,6 +25,11 @@ class lmbSqliteStatement implements lmbDbStatement
     $this->statement = $sql;
     $this->connection = $connection;
   }
+  
+  function setConnection($connection)
+  {
+    $this->connection = $connection;
+  }
 
   function setNull($name)
   {
