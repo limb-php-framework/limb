@@ -34,12 +34,12 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
     return $statement;
   }
   
-  function count()
+  function countQueries()
   {
     return sizeof($this->queries);
   }
   
-  function reset()
+  function resetQueries()
   {
     $this->queries = array();
   }
