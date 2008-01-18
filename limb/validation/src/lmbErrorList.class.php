@@ -7,12 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
+lmb_require('limb/validation/src/lmbErrorMessage.class.php');
 
 /**
  * Holds a list of validation errors
  * @see lmbErrorMessage
  * @package validation
- * @version $Id: lmbErrorList.class.php 6639 2007-12-25 09:01:29Z serega $
+ * @version $Id: lmbErrorList.class.php 6706 2008-01-18 15:58:27Z alex433 $
  */
 class lmbErrorList extends lmbCollection
 {
@@ -34,7 +35,7 @@ class lmbErrorList extends lmbCollection
   */
   function addError($message, $fields = array(), $values = array())
   {
-    $error = array('message' => $message, 'fields' => $fields, 'values' => $values);
+    $error = new lmbErrorMessage($message, $fields, $values);
     $this->add($error);
     return $error;
   }
@@ -50,6 +51,7 @@ class lmbErrorList extends lmbCollection
 
   /**
   * Return processed error list with formatted messages
+  * @deprecated
   * @see lmbErrorList :: addError()
   * @see __construct
   * @return string
@@ -57,22 +59,9 @@ class lmbErrorList extends lmbCollection
   function getReadable()
   {
     $result = array();
+    foreach ($this as $error)
+      $result[] = $error->getReadable();
 
-    foreach($this as $error)
-    {
-      $text = $error['message'];
-
-      foreach($error['fields'] as $key => $fieldName)
-      {
-        $replacement = '"' . $fieldName . '"';
-        $text = str_replace('{' . $key . '}', $replacement, $text);
-      }
-
-      foreach($error['values'] as $key => $replacement)
-        $text = str_replace('{' . $key . '}', $replacement, $text);
-
-      $result[] = $text;
-    }
     return $result;
   }
 }

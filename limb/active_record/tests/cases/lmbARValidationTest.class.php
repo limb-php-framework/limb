@@ -158,7 +158,7 @@ class lmbARValidationTest extends lmbARBaseTestCase
     }
     catch(lmbValidationException $e)
     {
-      $this->assertEqual($e->getErrorList(), array('foo'));
+      $this->assertEqual($e->getErrorList(), $error_list);
     }
 
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
@@ -209,7 +209,7 @@ class lmbARValidationTest extends lmbARBaseTestCase
     }
     catch(lmbValidationException $e)
     {
-      $this->assertEqual($e->getErrorList(), array('foo'));
+      $this->assertEqual($e->getErrorList(), $error_list);
     }
 
     $record = $this->db->selectRecord('test_one_table_object');
