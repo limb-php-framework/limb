@@ -46,7 +46,8 @@ class lmbMacroFormErrorList extends ArrayIterator
     
     if(isset($error['fields']))
     {
-      foreach($error['fields'] as $key => $fieldName)
+      $fields = $error['fields'];
+      foreach($fields as $key => $fieldName)
       {
         $replacement = '"' . $this->getFieldName($fieldName) . '"';
         $text = str_replace('{' . $key . '}', $replacement, $text);
@@ -55,7 +56,8 @@ class lmbMacroFormErrorList extends ArrayIterator
 
     if(isset($error['values']))
     {
-      foreach($error['values'] as $key => $replacement)
+      $values = $error['values'];
+      foreach($values as $key => $replacement)
         $text = str_replace('{' . $key . '}', $replacement, $text);
     }
 
