@@ -6,7 +6,8 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once(dirname(__FILE__) . '/lmbARTestingObjectMother.class.php'); 
+require_once(dirname(__FILE__) . '/lmbARTestingObjectMother.class.php');
+lmb_require('limb/dbal/src/drivers/lmbAuditDbConnection.class.php');
 
 class lmbARBaseTestCase extends UnitTestCase
 {
@@ -18,7 +19,8 @@ class lmbARBaseTestCase extends UnitTestCase
   function setUp()
   {
     $toolkit = lmbToolkit :: save();
-    $this->conn = $toolkit->getDefaultDbConnection();
+    $this->conn = new lmbAuditDbConnection($toolkit->getDefaultDbConnection());
+    $toolkit->setDefaultDbConnection($this->conn);
     $this->db = new lmbSimpleDb($this->conn);
     $this->creator = new lmbARTestingObjectMother($this->conn);
 
