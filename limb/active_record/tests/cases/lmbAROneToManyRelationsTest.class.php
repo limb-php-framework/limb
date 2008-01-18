@@ -378,7 +378,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $this->assertFalse($course->trySave($error_list));
   }
   
-  function testFetchWithRelatedObjects_UsingWithMethod()
+  function testFetchWithRelatedObjects_UsingJoinMethod()
   {
     $course = $this->creator->createCourse();
     
@@ -389,7 +389,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $lecture2 = $this->creator->createLecture($course, $alt_course2);
     $lecture3 = $this->creator->createLecture($course, $alt_course1);
     
-    $lectures = $course->getLectures()->with('course')->with('alt_course');
+    $lectures = $course->getLectures()->join('course')->join('alt_course');
     $arr = $lectures->getArray();
     
     //make sure we really eager fetching

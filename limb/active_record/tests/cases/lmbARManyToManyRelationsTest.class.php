@@ -103,7 +103,7 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
     $group->setUsers(array($user1, $user2));    
 
     $group2 = lmbActiveRecord :: findById('GroupForTest', $group->getId());
-    $arr = $group2->getUsers()->with('linked_object')->getArray();
+    $arr = $group2->getUsers()->join('linked_object')->getArray();
 
     //make sure we really eager fetching
     $this->db->delete('test_one_table_object');

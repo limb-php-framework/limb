@@ -635,7 +635,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $lecture2 = $this->creator->createLecture($course2, $alt_course2);
     $lecture3 = $this->creator->createLecture($course1, $alt_course2);
     
-    $rs = lmbActiveRecord :: find('LectureForTest', array('with' => 'course, alt_course'));
+    $rs = lmbActiveRecord :: find('LectureForTest', array('join' => 'course, alt_course'));
     $arr = $rs->getArray();
 
     //make sure we really eager fetching

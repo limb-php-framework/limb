@@ -14,7 +14,7 @@ class lmbARQuery extends lmbSelectRawQuery
 {
   protected $_base_class_name;
   protected $_base_object;
-  protected $_with = array();
+  protected $_join = array();
   protected $_attach = array();
   
   function __construct($base_class_name, $conn, $sql = '')
@@ -34,9 +34,9 @@ class lmbARQuery extends lmbSelectRawQuery
     }
   }
   
-  function with($relation_name, $params = array())
+  function join($relation_name, $params = array())
   {
-    $this->_with[$relation_name] = $params;
+    $this->_join[$relation_name] = $params;
 
     return $this;
   }
@@ -56,7 +56,7 @@ class lmbARQuery extends lmbSelectRawQuery
   
   function fetch($decorate = true)
   {
-    $this->_applyJoins($this->_base_object, $this->_with);
+    $this->_applyJoins($this->_base_object, $this->_join);
     
     $rs = parent :: fetch();
 
@@ -112,15 +112,15 @@ class lmbARQuery extends lmbSelectRawQuery
         break;
       }
       
-      if(isset($params['with']))
-        $this->_applyJoins($object, $params['with'], $prefix . $relation_name);
+      if(isset($params['join']))
+        $this->_applyJoins($object, $params['join'], $prefix . $relation_name);
     }
   }
 
   protected function _decorateWithJoinDecorator($rs)
   {
-    if(count($this->_with))
-      return new lmbARRecordSetJoinDecorator($rs, $this->_base_object, $this->_conn, $this->_with);
+    if(count($this->_join))
+      return new lmbARRecordSetJoinDecorator($rs, $this->_base_object, $this->_conn, $this->_join);
     else
       return $rs;
   }
@@ -162,16 +162,16 @@ class lmbARQuery extends lmbSelectRawQuery
     $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $object->getDefaultSortParams();
     $query->order($sort_params);
 
-    $with = (isset($params['with']) && $params['with']) ? $params['with'] : array();
-    if(!is_array($with))
-      $with = explode(',', $with);
+    $join = (isset($params['join']) && $params['join']) ? $params['join'] : array();
+    if(!is_array($join))
+      $join = explode(',', $join);
     
-    foreach($with as $relation_name=> $params_or_relation_name)
+    foreach($join as $relation_name=> $params_or_relation_name)
     {
       if(is_numeric($relation_name))
-        $query->with(trim($params_or_relation_name));
+        $query->join(trim($params_or_relation_name));
       else
-        $query->with(trim($relation_name), $params_or_relation_name);
+        $query->join(trim($relation_name), $params_or_relation_name);
     }
 
     $attach = (isset($params['attach']) && $params['attach']) ? $params['attach'] : array();

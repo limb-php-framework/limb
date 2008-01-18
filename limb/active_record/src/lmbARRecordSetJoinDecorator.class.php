@@ -41,8 +41,8 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
     {
       $relation_info = $this->base_object->getRelationInfo($relation_name);
       $object = new $relation_info['class'];
-      if(isset($params['with']))
-        $this->iterator = new lmbARRecordSetJoinDecorator($this->iterator, $object, $this->conn, $params['with'], $this->prefix . $relation_name . '__');
+      if(isset($params['join']))
+        $this->iterator = new lmbARRecordSetJoinDecorator($this->iterator, $object, $this->conn, $params['join'], $this->prefix . $relation_name . '__');
       if(isset($params['attach']))
         $this->iterator = new lmbARRecordSetAttachDecorator($this->iterator, $object, $this->conn, $params['attach'], $relation_name . '__');
     }

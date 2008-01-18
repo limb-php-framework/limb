@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6694 2008-01-17 15:41:51Z serega $
+ * @version $Id: lmbARRelationCollection.class.php 6700 2008-01-18 09:27:02Z serega $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -91,7 +91,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     if(!isset($magic_params['sort']) && isset($this->default_params['sort']))
       $magic_params['sort'] = $this->default_params['sort'];
     
-    $magic_params['with'] = $this->join_relations;
+    $magic_params['join'] = $this->join_relations;
     $magic_params['attach'] = $this->attach_relations;
     
     $query = $this->_createARQuery($magic_params);
@@ -109,7 +109,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
       return $rs->current();
   }
   
-  function with($relation_name, $params = array())
+  function join($relation_name, $params = array())
   {
     $this->join_relations[$relation_name] = $params;
     return $this;

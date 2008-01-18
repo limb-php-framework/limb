@@ -30,7 +30,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($arr[1]->getAnnotation(), $object2->getAnnotation());
   }
   
-  function testFetch_With_RelatedHasOneObject()
+  function testFetch_Join_RelatedHasOneObject()
   {
     $person1 = $this->creator->createPerson();
     $person2 = $this->creator->createPerson();
@@ -38,7 +38,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->reset();
     
     $query = new lmbARQuery('PersonForTest', $this->conn);
-    $query->with('social_security');
+    $query->join('social_security');
     $iterator = $query->fetch();
     $arr = $iterator->getArray();
     
@@ -62,7 +62,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->count(), 0);
   }
 
-  function testFetch_With_RelatedBelongsToObject()
+  function testFetch_Join_RelatedBelongsToObject()
   {
     $person1 = $this->creator->createPerson();
     $ss1 = $person1->getSocialSecurity();
@@ -72,7 +72,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->reset();
     
     $query = new lmbARQuery('SocialSecurityForTest', $this->conn);
-    $query->with('person');
+    $query->join('person');
     $iterator = $query->fetch();
     $arr = $iterator->getArray();
 
@@ -96,7 +96,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->count(), 0);
   }
 
-  function testFetch_With_RelatedManyBelongsToObject()
+  function testFetch_Join_RelatedManyBelongsToObject()
   {
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
@@ -107,7 +107,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->reset();
     
     $query = new lmbARQuery('LectureForTest', $this->conn);
-    $query->with('course');
+    $query->join('course');
     $iterator = $query->fetch();
     $arr = $iterator->getArray();
     
@@ -144,7 +144,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->reset();
     
     $query = new lmbARQuery('PersonForTest', $this->conn);
-    // note attach() has the same effect as with() but workds is a different way - it produces another sql request 
+    // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
     $iterator = $query->attach('social_security')->fetch();
     $arr = $iterator->getArray();
     
@@ -180,7 +180,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->reset();
     
     $query = new lmbARQuery('SocialSecurityForTest', $this->conn);
-    // note attach() has the same effect as with() but workds is a different way - it produces another sql request 
+    // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
     $arr = $query->attach('person')->fetch()->getArray();
 
     $this->assertEqual($this->conn->count(), 2);
@@ -340,7 +340,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->count(), 0);
   }
 
-  function testFetch_NestedWithProperty_In_Attach_ForHasMany()
+  function testFetch_NestedJoinProperty_In_Attach_ForHasMany()
   {
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
@@ -357,7 +357,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $query = new lmbARQuery('CourseForTest', $this->conn);
     $query->where(lmbSQLCriteria :: in('id', array($course1->getId(), $course2->getId())));
-    $arr = $query->attach('lectures', array('with' => 'alt_course'))->fetch()->getArray();
+    $arr = $query->attach('lectures', array('join' => 'alt_course'))->fetch()->getArray();
     
     $this->assertEqual($this->conn->count(), 2);
     
@@ -389,7 +389,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->count(), 0);
   }  
   
-  function testFetch_NestedAttachProperty_In_With()
+  function testFetch_NestedAttachProperty_In_Join()
   {
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
@@ -411,7 +411,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
 
     $query = new lmbARQuery('LectureForTest', $this->conn);
     $query->where(lmbSQLCriteria :: equal('course_id', $course1->getId()));
-    $iterator = $query->with('alt_course', array('attach' => 'lectures'))->fetch();
+    $iterator = $query->join('alt_course', array('attach' => 'lectures'))->fetch();
     $arr = $iterator->getArray();
     
     $this->assertEqual($this->conn->count(), 2);
@@ -445,7 +445,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->count(), 0);
   }  
 
-  function testFetchNested_AttachProperty_In_WithProperty_In_Attach()
+  function testFetchNested_AttachProperty_In_JoinProperty_In_Attach()
   {
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
@@ -467,7 +467,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $query = new lmbARQuery('CourseForTest', $this->conn);
     $query->where(lmbSQLCriteria :: in('id', array($course1->getId(), $course2->getId())));
-    $arr = $query->attach('lectures', array('with' => array('alt_course' => array('attach' => 'lectures'))))->fetch()->getArray();
+    $arr = $query->attach('lectures', array('join' => array('alt_course' => array('attach' => 'lectures'))))->fetch()->getArray();
 
     $this->assertEqual($this->conn->count(), 3);
     
@@ -513,7 +513,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->count(), 0);
   }  
   
-  function testFetch_NestedWithProperty_In_With()
+  function testFetch_NestedJoinProperty_In_Join()
   {
     $program1 = $this->creator->createProgram();
     $program2 = $this->creator->createProgram();
@@ -525,7 +525,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->reset();
     
     $query = new lmbARQuery('LectureForTest', $this->conn);
-    $iterator = $query->with('course', array('with' => 'program'))->fetch();
+    $iterator = $query->join('course', array('join' => 'program'))->fetch();
     $arr = $iterator->getArray();
     
     $this->assertEqual($this->conn->count(), 1);
