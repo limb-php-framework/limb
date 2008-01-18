@@ -41,7 +41,7 @@ class lmbAuditDbConnectionTest extends UnitTestCase
     
     $this->assertEqual($this->connection->countQueries(), 2);
     
-    $this->connection->resetQueries();
+    $this->connection->resetStats();
     
     $this->assertEqual($this->connection->countQueries(), 0);
   }

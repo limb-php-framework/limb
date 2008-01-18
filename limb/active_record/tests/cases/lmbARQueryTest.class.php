@@ -35,7 +35,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $person1 = $this->creator->createPerson();
     $person2 = $this->creator->createPerson();
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('PersonForTest', $this->conn);
     $query->join('social_security');
@@ -47,7 +47,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('social_security_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'PersonForTest');
     $this->assertEqual($arr[0]->getName(), $person1->getName());
@@ -69,7 +69,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $person2 = $this->creator->createPerson();
     $ss2 = $person2->getSocialSecurity();
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('SocialSecurityForTest', $this->conn);
     $query->join('person');
@@ -81,7 +81,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('person_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'SocialSecurityForTest');
     $this->assertEqual($arr[0]->getCode(), $ss1->getCode());
@@ -104,7 +104,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture2 = $this->creator->createLecture($course1);
     $lecture3 = $this->creator->createLecture($course2);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('LectureForTest', $this->conn);
     $query->join('course');
@@ -116,7 +116,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('course_for_test');
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'LectureForTest');
     $this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
@@ -141,7 +141,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $person1 = $this->creator->createPerson();
     $person2 = $this->creator->createPerson();
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('PersonForTest', $this->conn);
     // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
@@ -153,7 +153,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('social_security_for_test');
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'PersonForTest');
     $this->assertEqual($arr[0]->getName(), $person1->getName());
@@ -177,7 +177,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $this->db->delete('person_for_test', 'id = ' . $id);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('SocialSecurityForTest', $this->conn);
     // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
@@ -188,7 +188,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('person_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'SocialSecurityForTest');
     $this->assertEqual($arr[0]->getCode(), $person1->getSocialSecurity()->getCode());
@@ -214,7 +214,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture2 = $this->creator->createLecture($course, $alt_course2);
     $lecture3 = $this->creator->createLecture($course, $alt_course1);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('LectureForTest', $this->conn);
     $arr = $query->attach('course')->attach('alt_course')->fetch()->getArray();
@@ -224,7 +224,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('course_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'LectureForTest');
     $this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
@@ -260,7 +260,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture3 = $this->creator->createLecture($course1, null, 'AAA');
     $lecture4 = $this->creator->createLecture($course1, null, 'BBB');
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('CourseForTest', $this->conn);
     $arr = $query->attach('lectures', array('sort' => array('title' => 'ASC')))->fetch()->getArray();
@@ -270,7 +270,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     //make sure we really eager fetching
     $this->db->delete('lecture_for_test');
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'CourseForTest');
     $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
@@ -306,7 +306,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $group2->setUsers(array($user2));
     $group3->setUsers(array($user1));
      
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('UserForTest', $this->conn);
     $arr = $query->attach('groups', array('sort' => array('title' => 'DESC')))->fetch()->getArray();
@@ -317,7 +317,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->db->delete('group_for_test');
     $this->db->delete('user2group_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'UserForTest');
     $this->assertEqual($arr[0]->getFirstName(), $user1->getFirstName());
@@ -353,7 +353,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture3 = $this->creator->createLecture($course1, $alt_course2);
     $lecture4 = $this->creator->createLecture($course1, $alt_course1);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('CourseForTest', $this->conn);
     $query->where(lmbSQLCriteria :: in('id', array($course1->getId(), $course2->getId())));
@@ -365,7 +365,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->db->delete('lecture_for_test');
     $this->db->delete('course_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'CourseForTest');
     $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
@@ -407,7 +407,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture7 = $this->creator->createLecture($alt_course2);
     $lecture8 = $this->creator->createLecture($alt_course1);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
 
     $query = new lmbARQuery('LectureForTest', $this->conn);
     $query->where(lmbSQLCriteria :: equal('course_id', $course1->getId()));
@@ -420,7 +420,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->db->delete('lecture_for_test');
     $this->db->delete('course_for_test');
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'LectureForTest');
     $this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
@@ -463,7 +463,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture7 = $this->creator->createLecture($alt_course2);
     $lecture8 = $this->creator->createLecture($alt_course1);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('CourseForTest', $this->conn);
     $query->where(lmbSQLCriteria :: in('id', array($course1->getId(), $course2->getId())));
@@ -475,7 +475,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->db->delete('lecture_for_test');
     $this->db->delete('course_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'CourseForTest');
     $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
@@ -522,7 +522,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture1 = $this->creator->createLecture($course1);
     $lecture2 = $this->creator->createLecture($course2);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('LectureForTest', $this->conn);
     $iterator = $query->join('course', array('join' => 'program'))->fetch();
@@ -535,7 +535,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->db->delete('course_for_test');
     $this->db->delete('program_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'LectureForTest');
     $this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
@@ -567,7 +567,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $lecture7 = $this->creator->createLecture($course3);
     $lecture8 = $this->creator->createLecture($course4);
     
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $query = new lmbARQuery('ProgramForTest', $this->conn);
     $iterator = $query->attach('courses', array('attach' => 'lectures'))->fetch();
@@ -581,7 +581,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->db->delete('course_for_test');
     $this->db->delete('program_for_test');
 
-    $this->conn->resetQueries();
+    $this->conn->resetStats();
     
     $this->assertIsA($arr[0], 'ProgramForTest');
     $this->assertEqual($arr[0]->getTitle(), $program1->getTitle());
