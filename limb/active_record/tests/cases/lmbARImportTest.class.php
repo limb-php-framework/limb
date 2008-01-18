@@ -25,33 +25,12 @@ class LessonForTestWithCustomImport extends lmbActiveRecord
   }
 }
 
-class lmbARImportTest extends UnitTestCase
+class lmbARImportTest extends lmbARBaseTestCase
 {
-  protected $db;
-
-  function setUp()
-  {
-    $this->db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    lmbActiveRecord :: delete('TestOneTableObject');
-    lmbActiveRecord :: delete('CourseForTest');
-    lmbActiveRecord :: delete('LectureForTest');
-    lmbActiveRecord :: delete('GroupForTest');
-    lmbActiveRecord :: delete('UserForTest');
-    lmbActiveRecord :: delete('LessonForTest');
-    lmbActiveRecord :: delete('PersonForTest');
-    lmbActiveRecord :: delete('SocialSecurityForTest');
-  }
-
+  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test', 'test_one_table_object', 
+                                       'user_for_test', 'group_for_test', 'user2group_for_test', 
+                                       'person_for_test', 'social_security_for_test'); 
+  
   function testImportingObjectCallsItsExportMethod()
   {
     $object = new TestOneTableObject();

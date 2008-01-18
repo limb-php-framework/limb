@@ -20,26 +20,10 @@ class TestOneTableObjectFailing extends lmbActiveRecord
   }
 }
 
-class lmbARTransactionTest extends UnitTestCase
+class lmbARTransactionTest extends lmbARBaseTestCase
 {
-  function setUp()
-  {
-    $this->conn = lmbToolkit :: instance()->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('test_one_table_object');
-  }
-
+  protected $tables_to_cleanup = array('test_one_table_object');
+  
   function  testSaveInTransaction()
   {
     $this->conn->beginTransaction();

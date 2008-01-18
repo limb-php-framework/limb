@@ -71,24 +71,10 @@ class SpecialLectureForTest extends LectureForTest
   protected $_default_sort_params = array('id' => 'DESC');
 }
 
-class lmbAROneToManyCollectionTest extends UnitTestCase
+class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 {
-  function setUp()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    lmbActiveRecord :: delete('CourseForTest');
-    lmbActiveRecord :: delete('LectureForTest');
-  }
-
+  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test'); 
+  
   function testAddToWithExistingOwner()
   {
     $course = $this->_createCourseAndSave();

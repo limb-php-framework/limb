@@ -39,30 +39,10 @@ class lmbActiveRecordValidationStub extends lmbActiveRecord
   }
 }
 
-class lmbARValidationTest extends UnitTestCase
+class lmbARValidationTest extends lmbARBaseTestCase
 {
-  protected $db = null;
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: save();
-    $this->db = new lmbSimpleDb($toolkit->getDefaultDbConnection());
-
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-
-    lmbToolkit :: restore();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('test_one_table_object');
-  }
-
+  protected $tables_to_cleanup = array('test_one_table_object');
+  
   function testGetErrorListReturnDefaultErrorList()
   {
     $object = $this->_createActiveRecord();

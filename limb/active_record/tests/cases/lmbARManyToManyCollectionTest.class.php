@@ -32,28 +32,9 @@ class UserForTestWithSpecialRelationTable extends lmbActiveRecord
                                                          'class' => 'GroupForTest'));
 }
 
-class lmbARManyToManyCollectionTest extends UnitTestCase
+class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 {
-  protected $db;
-
-  function setUp()
-  {
-    $this->db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    $this->db->delete('group_for_test');
-    $this->db->delete('user_for_test');
-    $this->db->delete('user2group_for_test');
-    $this->db->delete('extended_user2group_for_test');
-  }
+  protected $tables_to_cleanup = array('group_for_test', 'user_for_test', 'user2group_for_test', 'extended_user2group_for_test'); 
 
   function testAddToWithExistingOwner()
   {

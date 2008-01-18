@@ -106,31 +106,9 @@ class lmbActiveRecordEventHaldlerStubDelegate
   }
 }
 
-class lmbAREventHandlersTest extends UnitTestCase
+class lmbAREventHandlersTest extends lmbARBaseTestCase
 {
-  var $conn = null;
-  var $db = null;
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: save();
-    $this->conn = $toolkit->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-
-    lmbToolkit :: restore();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('test_one_table_object');
-  }
+  protected $tables_to_cleanup = array('test_one_table_object');
 
   function testSaveNewRecord()
   {

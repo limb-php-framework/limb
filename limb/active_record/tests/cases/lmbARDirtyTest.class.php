@@ -6,39 +6,12 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');
-require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 require_once(dirname(__FILE__) . '/lmbARValueObjectTest.class.php');
-require_once(dirname(__FILE__) . '/lmbAROneToOneRelationsTest.class.php');
 
-class lmbARDirtyTest extends UnitTestCase
+class lmbARDirtyTest extends lmbARBaseTestCase
 {
-  var $conn = null;
-  var $db = null;
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: save();
-    $this->conn = $toolkit->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-    lmbToolkit :: restore();
-  }
-
-  function _cleanUp()
-  {
-    lmbActiveRecord :: delete('TestOneTableObject');
-    lmbActiveRecord :: delete('LessonForTest');
-    lmbActiveRecord :: delete('CourseForTest');
-    lmbActiveRecord :: delete('LectureForTest');
-  }
-
+  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test', 'test_one_table_object', 'lesson_for_test'); 
+  
   function testJustFoundObjectIsNotDirty()
   {
     $object = new TestOneTableObject();

@@ -9,24 +9,10 @@
 require_once('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
-class lmbARRecordSetDecoratorTest extends UnitTestCase
+class lmbARRecordSetDecoratorTest extends lmbARBaseTestCase
 {
-  function setUp()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    lmbActiveRecord :: delete('CourseForTest');
-    lmbActiveRecord :: delete('LectureForTest');
-  }
-
+  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test'); 
+  
   function testCreateActiveRecordFromCurrentRecord()
   {
     $course = $this->_createCourseWithTwoLectures();

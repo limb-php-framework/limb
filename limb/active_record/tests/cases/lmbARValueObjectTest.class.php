@@ -68,23 +68,10 @@ class LazyLessonForTest extends lmbActiveRecord
 
 }
 
-class lmbARValueObjectTest extends UnitTestCase
+class lmbARValueObjectTest extends lmbARBaseTestCase
 {
-  function setUp()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    lmbActiveRecord :: delete('LessonForTest');
-  }
-
+  protected $tables_to_cleanup = array('lesson_for_test');
+  
   function testNewObjectReturnsNullValueObjects()
   {
     $lesson = new LessonForTest();    

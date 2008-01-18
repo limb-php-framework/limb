@@ -134,10 +134,16 @@ class lmbARTestingObjectMother
     return $object;
   }
   
-  function createPerson()
+  function initPerson()
   {
     $person = new PersonForTest();
     $person->setName('Person_' . rand(0, 1000));
+    return $person;
+  }
+  
+  function createPerson()
+  {
+    $person = $this->initPerson();
 
     $number = $this->createSocialSecurity($person);
     $person->setSocialSecurity($number);
@@ -145,10 +151,16 @@ class lmbARTestingObjectMother
     return $person;
   }
   
-  function createSocialSecurity($person)
+  function initSocialSecurity()
   {
     $number = new SocialSecurityForTest();
     $number->setCode(rand(0,1000));
+    return $number;
+  }
+  
+  function createSocialSecurity($person)
+  {
+    $number = $this->initSocialSecurity();
     $number->setPerson($person);
     return $number; 
   }

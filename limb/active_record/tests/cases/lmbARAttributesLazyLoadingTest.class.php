@@ -13,28 +13,10 @@ class LazyTestOneTableObject extends lmbActiveRecord
   protected $_lazy_attributes = array('annotation', 'content');
 }
 
-class lmbARAttributesLazyLoadingTest extends UnitTestCase
+class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
 {
-  var $conn = null;
-  var $db = null;
-
-  function setUp()
-  {
-    $this->conn = lmbToolkit :: instance()->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('test_one_table_object');
-  }
-
+  protected $tables_to_cleanup = array('test_one_table_object'); 
+  
   function testLazyFind()
   {
     $object = $this->_createActiveRecord($annotation = 'Some annotation', $content = 'Some content');

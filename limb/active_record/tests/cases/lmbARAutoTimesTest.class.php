@@ -12,32 +12,10 @@ class TestAutoTimesObject extends lmbActiveRecord
   protected $_db_table_name = 'test_auto_times_object';
 }
 
-class lmbARAutoTimesTest extends UnitTestCase
+class lmbARAutoTimesTest extends lmbARBaseTestCase
 {
-  var $conn;
-  var $db;
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: save();
-    $this->conn = $toolkit->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_cleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_cleanUp();
-
-    lmbToolkit :: restore();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('test_auto_times_object');
-  }
-
+  protected $tables_to_cleanup = array('test_auto_times_object'); 
+  
   function testSetTimesAutomaticallyOnCreate()
   {
     $time = time();

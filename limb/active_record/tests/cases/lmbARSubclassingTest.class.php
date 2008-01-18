@@ -34,27 +34,9 @@ class CourseForTestForTypedLecture extends lmbActiveRecord
                                                        'class' => 'FooLectureForTest'));
 }
 
-class lmbARSubclassingTest extends UnitTestCase
+class lmbARSubclassingTest extends lmbARBaseTestCase
 {
-  protected $db;
-
-  function setUp()
-  {
-    $this->db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    $this->db->delete('lecture_for_typed_test');
-    $this->db->delete('course_for_typed_test');
-    $this->db->delete('test_one_table_typed_object');
-  }
+  protected $tables_to_cleanup = array('lecture_for_typed_test', 'course_for_typed_test', 'test_one_table_typed_object'); 
 
   function testCreate()
   {
