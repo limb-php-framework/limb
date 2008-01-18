@@ -614,6 +614,19 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $this->assertEqual($this->conn->countQueries(), 0);
   }    
+
+  function testFetch_JoinWorkdsOkIfJoinedObjectIsNotSet()
+  {
+    $program = $this->creator->createProgram();
+    $course1 = $this->creator->createCourse($program);
+    $course2 = $this->creator->createCourse();
+    
+    $query = new lmbARQuery('CourseForTest', $this->conn);
+    $arr = $query->join('program')->fetch()->getArray();
+    
+    $this->assertEqual($arr[0]->getProgram()->getTitle(), $program->getTitle());
+    $this->assertNull($arr[1]->getProgram());
+  }  
 }
 
 

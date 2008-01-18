@@ -64,7 +64,10 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
   {
     foreach($this->join_relations as $relation_name => $params)
     {
-      $relation_info = $this->base_object->getRelationInfo($relation_name); 
+      $relation_info = $this->base_object->getRelationInfo($relation_name);
+      if(isset($relation_info['can_be_null']) && $relation_info['can_be_null'] && !$record->get($this->prefix . $relation_info['field']))
+        return;
+      
       $fields = new lmbSet();
       $prefix = $this->prefix . $relation_name . '__';
       
