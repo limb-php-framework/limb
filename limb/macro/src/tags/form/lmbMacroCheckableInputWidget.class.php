@@ -2,13 +2,13 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
- 
+
 lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
- 
+
 /**
  * Represents an HTML input type="radio" and type="checkbox" tags
  * @package macro
@@ -17,7 +17,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
 class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
 {
   protected $skip_render = array('checked_value');
-  
+
   function getName()
   {
     $name = parent :: getName();
@@ -33,12 +33,12 @@ class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
 
     parent :: renderAttributes();
   }
-  
+
   function getValue()
   {
     if($this->hasAttribute('checked_value'))
       return $this->getAttribute('checked_value');
-    
+
     return $this->_getValueFromFormDatasource();
   }
 
@@ -56,6 +56,8 @@ class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
     elseif($this->hasAttribute('checked') && is_null($value))
       return true;
     elseif($value && $value != $this->getAttribute('value'))
+      return false;
+    elseif(is_null($value))
       return false;
     elseif(!$value && $this->hasAttribute('value') && !$this->getAttribute('value'))
       return true;
