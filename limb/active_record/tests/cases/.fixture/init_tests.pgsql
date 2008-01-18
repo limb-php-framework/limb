@@ -64,11 +64,21 @@ name varchar(255) default NULL,
 PRIMARY   KEY  (id)
 )  ;
 
+DROP TABLE program_for_test CASCADE;
+
+CREATE TABLE program_for_test (
+ "id" SERIAL,
+ "title" varchar(255) default NULL,
+ PRIMARY KEY  (id)
+)  ;
+
+
 DROP TABLE course_for_test CASCADE;
 
 CREATE TABLE course_for_test (
  "id" SERIAL,
  "title" varchar(255) default NULL,
+ "program_id" int8 default NULL,
  PRIMARY KEY  (id)
 )  ;
 

@@ -23,6 +23,7 @@ CREATE TABLE "test_one_table_typed_object" (
   "kind" varchar(255) NOT NULL
 );
 
+
 DROP TABLE "course_for_typed_test";
 CREATE TABLE "course_for_typed_test" (
  "id" INTEGER PRIMARY KEY,
@@ -51,9 +52,16 @@ CREATE TABLE "person_for_test" (
 "ss_id" bigint(20) default NULL
 );
 
+DROP TABLE "program_for_test";
+CREATE TABLE "program_for_test" (
+ "id" INTEGER PRIMARY KEY,
+ "title" varchar(255) default NULL
+);
+
 DROP TABLE "course_for_test";
 CREATE TABLE "course_for_test" (
  "id" INTEGER PRIMARY KEY,
+ "program_id" bigint(20) default NULL,
  "title" varchar(255) default NULL
 );
 

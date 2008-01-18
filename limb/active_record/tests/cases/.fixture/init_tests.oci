@@ -119,6 +119,22 @@ CREATE OR REPLACE TRIGGER person_for_test_trigger
 BEFORE INSERT ON person_for_test REFERENCING NEW AS NEW FOR EACH ROW
 BEGIN IF :NEW.ID IS NULL THEN SELECT person_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
 /
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE program_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE program_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE program_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE program_for_test (
+  id number NOT NULL,
+  title varchar(255) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER program_for_test_trigger
+BEFORE INSERT ON program_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT program_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
 BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE course_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
 CREATE SEQUENCE course_for_test_seq;
@@ -128,6 +144,7 @@ BEGIN EXECUTE IMMEDIATE 'DROP TABLE course_for_test'; EXCEPTION WHEN OTHERS THEN
 CREATE TABLE course_for_test (
   id number NOT NULL,
   title varchar(255) default NULL,
+  program_id number default NULL,
   PRIMARY KEY  (id)
 );
 /
