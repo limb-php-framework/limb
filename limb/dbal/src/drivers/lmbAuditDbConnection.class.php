@@ -13,7 +13,7 @@ lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
 
 /**
  * class lmbAuditDbConnection.
- * Uses in tests to ensure performed sql queries.
+ * Remembers queries for later analysis, especially useful in tests
  * @package dbal
  * @version $Id$
  */
