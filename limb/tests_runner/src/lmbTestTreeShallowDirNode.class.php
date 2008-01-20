@@ -49,13 +49,6 @@ class lmbTestTreeShallowDirNode extends lmbTestTreeNode
     return $this->dir;
   }
 
-  function init()
-  {
-    //deprecated
-    if(file_exists($this->dir . '/.init.php'))
-      include_once($this->dir . '/.init.php');
-  }
-
   function getTestLabel()
   {
     if(file_exists($this->dir . '/.description'))

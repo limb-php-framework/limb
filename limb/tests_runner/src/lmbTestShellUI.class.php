@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6515 2007-11-10 11:52:05Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6709 2008-01-20 19:06:51Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -60,6 +60,8 @@ Usage:
   Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
 Arguments:
   <file|dir> [<file1|dir1>, ... <fileN|dirN>] - a list of files/directories, globs are supported(e.g. '*')
+  KEY1=value1 [KEY2=value2, ... KEYN=valueN]  - a list of arbitrary key=value pairs which will be declared 
+                                                as constants using PHP define call
 Options:
   -h, --help                        Displays this help and exit
   -c, --config=/file.php            PHP configuration file path
@@ -147,6 +149,8 @@ EOD;
     $short_opts = self :: getShortOpts();
     $long_opts = self :: getLongOpts();
 
+    lmbTestGetopt :: defineAndExtractConstants($this->argv);
+
     try
     {
       if($this->posix_opts)
@@ -158,8 +162,6 @@ EOD;
     {
       $this->_help(1);
     }
-
-    lmbTestGetopt :: defineConstants($this->argv);
 
     $config_file = null;
     $cover_include = '';

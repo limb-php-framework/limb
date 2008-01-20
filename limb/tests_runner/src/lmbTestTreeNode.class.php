@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/lmbTestTreePath.class.php');
  * abstract class lmbTestTreeNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeNode.class.php 6230 2007-08-10 06:03:04Z pachanga $
+ * @version $Id: lmbTestTreeNode.class.php 6709 2008-01-20 19:06:51Z pachanga $
  */
 class lmbTestTreeNode
 {
@@ -103,8 +103,6 @@ class lmbTestTreeNode
     return false;
   }
 
-  function init(){}
-
   function getTestLabel()
   {
     return 'Test Group';
@@ -131,7 +129,6 @@ class lmbTestTreeNode
     {
       if($child->isSkipped())
         continue;
-      $child->init();//obsolete stuff
       $test->addTestCase($child->createTestCase(false));
     }
     return $test;
