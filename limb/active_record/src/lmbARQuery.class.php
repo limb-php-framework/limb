@@ -16,6 +16,7 @@ class lmbARQuery extends lmbSelectRawQuery
   protected $_base_object;
   protected $_join = array();
   protected $_attach = array();
+  protected $_sort_params = array();
   
   function __construct($base_class_name, $conn, $sql = '')
   {
@@ -54,6 +55,16 @@ class lmbARQuery extends lmbSelectRawQuery
       $this->addField($field, $alias);
   }
   
+  function addOrder($field, $type='ASC')
+  {
+    if(is_array($field))
+    {
+      $this->_sort_params = $this->_sort_params + $field;
+    }
+    else
+      $this->_sort_params[$field] = $type;
+  }
+  
   function fetch($decorate = true)
   {
     $this->_applyJoins($this->_base_object, $this->_join);
@@ -65,7 +76,11 @@ class lmbARQuery extends lmbSelectRawQuery
     
     $rs = $this->_decorateWithJoinDecorator($rs);
     
-    return $this->_decorateWithAttachDecorator($rs);
+    $rs =  $this->_decorateWithAttachDecorator($rs);
+    
+    $rs->sort($this->_sort_params);
+    
+    return $rs;
   }
   
   protected function _applyJoins($base_object, $joins, $parent_relation_name = '')

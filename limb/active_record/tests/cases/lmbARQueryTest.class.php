@@ -30,6 +30,22 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertIsA($arr[1], 'TestOneTableObject');
     $this->assertEqual($arr[1]->getAnnotation(), $object2->getAnnotation());
   }
+
+  function testSimpleFetch_WithSort()
+  {
+    $object1 = $this->creator->createOneTableObject(10);
+    $object2 = $this->creator->createOneTableObject(20);
+    
+    $query = lmbARQuery :: create('TestOneTableObject', array('sort' => array('ordr' => 'DESC')), $this->conn);
+    $iterator = $query->fetch();
+    $iterator->sort(array('id' => 'ASC'));
+    $arr = $iterator->getArray();
+    
+    $this->assertIsA($arr[0], 'TestOneTableObject');
+    $this->assertEqual($arr[0]->getAnnotation(), $object1->getAnnotation());
+    $this->assertIsA($arr[1], 'TestOneTableObject');
+    $this->assertEqual($arr[1]->getAnnotation(), $object2->getAnnotation());
+  }
   
   function testFetch_Join_RelatedHasOneObject()
   {

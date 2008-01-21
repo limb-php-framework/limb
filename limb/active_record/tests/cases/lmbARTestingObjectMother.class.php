@@ -117,19 +117,20 @@ class UserForTest extends lmbActiveRecord
 
 class lmbARTestingObjectMother
 {
-  function initOneTableObject()
+  function initOneTableObject($ordr = '')
   {
     $object = new TestOneTableObject();
     $object->set('annotation', 'Annotation ' . rand(0, 1000));
     $object->set('content', 'Content ' . rand(0, 1000));
     $object->set('news_date', date("Y-m-d", time()));
-    $object->set('ordr', rand(0, 1000));
+    $ordr = $ordr ? $ordr : rand(0, 1000);
+    $object->set('ordr', $ordr);
     return $object;
   }
   
-  function createOneTableObject()
+  function createOneTableObject($ordr = '')
   {
-    $object = $this->initOneTableObject();
+    $object = $this->initOneTableObject($ordr);
     $object->save();
     return $object;
   }
