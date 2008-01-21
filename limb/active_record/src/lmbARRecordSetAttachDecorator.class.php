@@ -22,6 +22,7 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
   protected $conn;
   protected $attach_relations = array();
   protected $prefix = "";
+  protected $loaded_attaches = array();
 
   function __construct($record_set, $base_object, $conn = null, $attach_relations = array(), $prefix = "")
   {
@@ -119,16 +120,21 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
       {
         case lmbActiveRecord :: HAS_ONE:
         case lmbActiveRecord :: MANY_BELONGS_TO:
-          $fields->set($this->prefix . $relation_name, $this->loaded_attaches[$relation_name][$object->get($this->prefix . $relation_info['field'])]);
+          if(isset($this->loaded_attaches[$relation_name][$object->get($this->prefix . $relation_info['field'])]))
+            $fields->set($this->prefix . $relation_name, $this->loaded_attaches[$relation_name][$object->get($this->prefix . $relation_info['field'])]);
         break;
         case lmbActiveRecord :: BELONGS_TO:
-          $fields->set($this->prefix . $relation_name, $this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]);
+          if(isset($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]))
+            $fields->set($this->prefix . $relation_name, $this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]);
         break;
         case lmbActiveRecord :: HAS_MANY:
         case lmbActiveRecord :: HAS_MANY_TO_MANY:
-          $collection = $this->base_object->createRelationCollection($relation_name);
-          $collection->setDataset(new lmbCollection($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]));
-          $fields->set($this->prefix . $relation_name, $collection);
+          if(isset($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]))
+          {
+            $collection = $this->base_object->createRelationCollection($relation_name);
+            $collection->setDataset(new lmbCollection($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]));
+            $fields->set($this->prefix . $relation_name, $collection);
+          }
         break;
       }
     }

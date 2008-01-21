@@ -110,6 +110,9 @@ class lmbARQuery extends lmbSelectRawQuery
                              $base_object->getPrimaryKeyName(),
                              $prefix . $relation_name);
         break;
+        default:
+           throw new lmbARException('"' . $relation_name . '" has a wrong relation type for JOIN operation');
+        break;
       }
       
       if(isset($params['join']))

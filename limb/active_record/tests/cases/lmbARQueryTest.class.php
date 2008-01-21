@@ -9,7 +9,8 @@
  
 class lmbARQueryTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('test_one_table_object', 
+  protected $tables_to_cleanup = array('test_one_table_object',
+                                       'program_for_test',
                                        'person_for_test', 
                                        'social_security_for_test',
                                        'lecture_for_test',
@@ -627,6 +628,53 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($arr[0]->getProgram()->getTitle(), $program->getTitle());
     $this->assertNull($arr[1]->getProgram());
   }  
+
+  function testFetch_AttachWithNothingToAttach()
+  {
+    $program1 = $this->creator->createProgram();
+    $program2 = $this->creator->createProgram();
+    
+    $query = new lmbARQuery('ProgramForTest', $this->conn);
+    $arr = $query->attach('courses')->fetch()->getArray();
+    
+    $this->assertEqual($arr[0]->getTitle(), $program1->getTitle());
+    $this->assertEqual($arr[1]->getTitle(), $program2->getTitle());
+    $this->assertEqual($arr[0]->getCourses()->count(), 0);
+    $this->assertEqual($arr[1]->getCourses()->count(), 0);
+  }  
+
+  function testFetch_JoinWithWrongRelationType()
+  {
+    $program1 = $this->creator->createProgram();
+    $program2 = $this->creator->createProgram();
+    
+    $query = new lmbARQuery('ProgramForTest', $this->conn);
+    $query->join('courses');
+    try
+    {
+      $it = $query->fetch();
+      $this->assertTrue(false);
+    }
+    catch(lmbARException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }  
+  
+  function testFetch_AttachManyBelongsToRelationWithNothingToAttach()
+  {
+    $course1 = $this->creator->createCourse();
+    $course2 = $this->creator->createCourse();
+    
+    $query = new lmbARQuery('CourseForTest', $this->conn);
+    $arr = $query->attach('program')->fetch()->getArray();
+
+    $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
+    $this->assertEqual($arr[1]->getTitle(), $course2->getTitle());
+
+    $this->assertNull($arr[0]->getProgram(), 0);
+    $this->assertNull($arr[1]->getProgram(), 0);
+  }
 }
 
 
