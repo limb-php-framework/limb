@@ -67,10 +67,10 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
                                                                                 $export_each = false); 
         break;
         case lmbActiveRecord :: HAS_MANY:
-          if(isset($params['sort']))
-            $params['sort'] = array($relation_info['field'] => 'ASC') + $params['sort']; 
-          else
-            $params['sort'] = array($relation_info['field'] => 'ASC');
+          if(!isset($params['sort']))
+            $params['sort'] = $relation_object->getDefaultSortParams();
+          
+          $params['sort'] = array($relation_info['field'] => 'ASC') + $params['sort']; 
             
           $query = lmbAROneToManyCollection :: createFullARQueryForRelation($relation_info, $this->conn, $params);
           
@@ -83,10 +83,10 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
             $this->loaded_attaches[$relation_name][$attached_object->get($relation_info['field'])][] = $attached_object; 
         break;
         case lmbActiveRecord :: HAS_MANY_TO_MANY:
-          if(isset($params['sort']))
-            $params['sort'] = array($relation_info['field'] => 'ASC') + $params['sort']; 
-          else
-            $params['sort'] = array($relation_info['field'] => 'ASC');
+          if(!isset($params['sort']))
+            $params['sort'] = $relation_object->getDefaultSortParams();
+          
+          $params['sort'] = array($relation_info['field'] => 'ASC') + $params['sort']; 
             
           $query = lmbARManyToManyCollection :: createFullARQueryForRelation($relation_info, $this->conn, $params);
           $query->addField($relation_info['table']. '.' . $relation_info['field'], "link__id");
