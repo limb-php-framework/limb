@@ -12,22 +12,22 @@ lmb_require('limb/active_record/src/lmbARRecordSetJoinDecorator.class.php');
 
 class lmbARQuery extends lmbSelectRawQuery
 {
-  protected $_base_class_name;
-  protected $_base_object;
-  protected $_join = array();
-  protected $_attach = array();
-  protected $_sort_params = array();
+  protected $base_class_name;
+  protected $base_object;
+  protected $join_relations = array();
+  protected $attach_relations = array();
+  protected $sort_params = array();
   
   function __construct($base_class_name, $conn, $sql = '')
   {
-    $this->_base_class_name = $base_class_name;
-    $this->_base_object = new $this->_base_class_name(null, $conn);
+    $this->base_class_name = $base_class_name;
+    $this->base_object = new $this->base_class_name(null, $conn);
 
     if(!$sql)
     {
       parent :: __construct($conn);
-      $this->addTable($this->_base_object->getTableName());
-      $this->_addFieldsForObject($this->_base_object);
+      $this->addTable($this->base_object->getTableName());
+      $this->_addFieldsForObject($this->base_object);
     }
     else
     {
@@ -35,16 +35,16 @@ class lmbARQuery extends lmbSelectRawQuery
     }
   }
   
-  function join($relation_name, $params = array())
+  function joinRelation($relation_name, $params = array())
   {
-    $this->_join[$relation_name] = $params;
+    $this->join_relations[$relation_name] = $params;
 
     return $this;
   }
   
-  function attach($relation_name, $params = array())
+  function attachRelation($relation_name, $params = array())
   {
-    $this->_attach[$relation_name] = $params;
+    $this->attach_relations[$relation_name] = $params;
     return $this;
   }
   
@@ -58,27 +58,25 @@ class lmbARQuery extends lmbSelectRawQuery
   function addOrder($field, $type='ASC')
   {
     if(is_array($field))
-    {
-      $this->_sort_params = $this->_sort_params + $field;
-    }
+      $this->sort_params = $this->sort_params + $field;
     else
-      $this->_sort_params[$field] = $type;
+      $this->sort_params[$field] = $type;
   }
   
   function fetch($decorate = true)
   {
-    $this->_applyJoins($this->_base_object, $this->_join);
+    $this->_applyJoins($this->base_object, $this->join_relations);
     
     $rs = parent :: fetch();
 
     if($decorate)
-      $rs = new lmbARRecordSetDecorator($rs, $this->_base_class_name, $this->_conn);
+      $rs = new lmbARRecordSetDecorator($rs, $this->base_class_name, $this->_conn);
     
     $rs = $this->_decorateWithJoinDecorator($rs);
     
     $rs =  $this->_decorateWithAttachDecorator($rs);
     
-    $rs->sort($this->_sort_params);
+    $rs->sort($this->sort_params);
     
     return $rs;
   }
@@ -137,16 +135,16 @@ class lmbARQuery extends lmbSelectRawQuery
 
   protected function _decorateWithJoinDecorator($rs)
   {
-    if(count($this->_join))
-      return new lmbARRecordSetJoinDecorator($rs, $this->_base_object, $this->_conn, $this->_join);
+    if(count($this->join_relations))
+      return new lmbARRecordSetJoinDecorator($rs, $this->base_object, $this->_conn, $this->join_relations);
     else
       return $rs;
   }
   
   protected function _decorateWithAttachDecorator($rs)
   {
-    if(count($this->_attach))
-      return new lmbARRecordSetAttachDecorator($rs, $this->_base_object, $this->_conn, $this->_attach);
+    if(count($this->attach_relations))
+      return new lmbARRecordSetAttachDecorator($rs, $this->base_object, $this->_conn, $this->attach_relations);
     else
       return $rs;
   }
@@ -187,9 +185,9 @@ class lmbARQuery extends lmbSelectRawQuery
     foreach($join as $relation_name=> $params_or_relation_name)
     {
       if(is_numeric($relation_name))
-        $query->join(trim($params_or_relation_name));
+        $query->joinRelation(trim($params_or_relation_name));
       else
-        $query->join(trim($relation_name), $params_or_relation_name);
+        $query->joinRelation(trim($relation_name), $params_or_relation_name);
     }
 
     $attach = (isset($params['attach']) && $params['attach']) ? $params['attach'] : array();
@@ -199,9 +197,9 @@ class lmbARQuery extends lmbSelectRawQuery
     foreach($attach as $relation_name => $params_or_relation_name)
     {
       if(is_numeric($relation_name))
-        $query->attach(trim($params_or_relation_name));
+        $query->attachRelation(trim($params_or_relation_name));
       else
-        $query->attach(trim($relation_name), $params_or_relation_name);
+        $query->attachRelation(trim($relation_name), $params_or_relation_name);
     }
     
     return $query;

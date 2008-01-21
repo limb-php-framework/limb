@@ -55,7 +55,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('PersonForTest', array(), $this->conn);
-    $query->join('social_security');
+    $query->joinRelation('social_security');
     $iterator = $query->fetch();
     $arr = $iterator->getArray();
     
@@ -89,7 +89,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('SocialSecurityForTest', array(), $this->conn);
-    $query->join('person');
+    $query->joinRelation('person');
     $iterator = $query->fetch();
     $arr = $iterator->getArray();
 
@@ -124,7 +124,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('LectureForTest', array(), $this->conn);
-    $query->join('course');
+    $query->joinRelation('course');
     $iterator = $query->fetch();
     $arr = $iterator->getArray();
     
@@ -162,7 +162,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $query = lmbARQuery :: create('PersonForTest', array(), $this->conn);
     // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
-    $iterator = $query->attach('social_security')->fetch();
+    $iterator = $query->attachRelation('social_security')->fetch();
     $arr = $iterator->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 2);
@@ -198,7 +198,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $query = lmbARQuery :: create('SocialSecurityForTest', array(), $this->conn);
     // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
-    $arr = $query->attach('person')->fetch()->getArray();
+    $arr = $query->attachRelation('person')->fetch()->getArray();
 
     $this->assertEqual($this->conn->countQueries(), 2);
     
@@ -234,7 +234,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('LectureForTest', array(), $this->conn);
-    $arr = $query->attach('course')->attach('alt_course')->fetch()->getArray();
+    $arr = $query->attachRelation('course')->attachRelation('alt_course')->fetch()->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 3);
     
@@ -280,7 +280,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
-    $arr = $query->attach('lectures', array('sort' => array('title' => 'ASC')))->fetch()->getArray();
+    $arr = $query->attachRelation('lectures', array('sort' => array('title' => 'ASC')))->fetch()->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 2);
     
@@ -326,7 +326,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('UserForTest', array(), $this->conn);
-    $arr = $query->attach('groups', array('sort' => array('title' => 'DESC')))->fetch()->getArray();
+    $arr = $query->attachRelation('groups', array('sort' => array('title' => 'DESC')))->fetch()->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 2);
     
@@ -374,7 +374,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
     $query->where(lmbSQLCriteria :: in('id', array($course1->getId(), $course2->getId())));
-    $rs = $query->attach('lectures', array('join' => 'alt_course'))->fetch();
+    $rs = $query->attachRelation('lectures', array('join' => 'alt_course'))->fetch();
     $arr = $rs->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 2);
@@ -429,7 +429,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
 
     $query = lmbARQuery :: create('LectureForTest', array(), $this->conn);
     $query->where(lmbSQLCriteria :: equal('course_id', $course1->getId()));
-    $iterator = $query->join('alt_course', array('attach' => 'lectures'))->fetch();
+    $iterator = $query->joinRelation('alt_course', array('attach' => 'lectures'))->fetch();
     $arr = $iterator->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 2);
@@ -485,7 +485,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
     $query->where(lmbSQLCriteria :: in('id', array($course1->getId(), $course2->getId())));
-    $arr = $query->attach('lectures', array('join' => array('alt_course' => array('attach' => 'lectures'))))->fetch()->getArray();
+    $arr = $query->attachRelation('lectures', array('join' => array('alt_course' => array('attach' => 'lectures'))))->fetch()->getArray();
 
     $this->assertEqual($this->conn->countQueries(), 3);
     
@@ -543,7 +543,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('LectureForTest', array(), $this->conn);
-    $iterator = $query->join('course', array('join' => 'program'))->fetch();
+    $iterator = $query->joinRelation('course', array('join' => 'program'))->fetch();
     $arr = $iterator->getArray();
     
     $this->assertEqual($this->conn->countQueries(), 1);
@@ -588,7 +588,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('ProgramForTest', array(), $this->conn);
-    $iterator = $query->attach('courses', array('attach' => 'lectures'))->fetch();
+    $iterator = $query->attachRelation('courses', array('attach' => 'lectures'))->fetch();
     
     $arr = $iterator->getArray();
 
@@ -640,7 +640,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $course2 = $this->creator->createCourse();
     
     $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
-    $arr = $query->join('program')->fetch()->getArray();
+    $arr = $query->joinRelation('program')->fetch()->getArray();
     
     $this->assertEqual($arr[0]->getProgram()->getTitle(), $program->getTitle());
     $this->assertNull($arr[1]->getProgram());
@@ -654,7 +654,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('ProgramForTest', array(), $this->conn);
-    $arr = $query->attach('courses')->fetch()->getArray();
+    $arr = $query->attachRelation('courses')->fetch()->getArray();
 
     $this->assertEqual($this->conn->countQueries(), 2);
 
@@ -674,7 +674,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $program2 = $this->creator->createProgram();
     
     $query = lmbARQuery :: create('ProgramForTest', array(), $this->conn);
-    $query->join('courses');
+    $query->joinRelation('courses');
     try
     {
       $it = $query->fetch();
@@ -694,7 +694,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
-    $arr = $query->attach('program')->fetch()->getArray();
+    $arr = $query->attachRelation('program')->fetch()->getArray();
 
     $this->assertEqual($this->conn->countQueries(), 2);    
 
