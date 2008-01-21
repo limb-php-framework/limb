@@ -635,13 +635,21 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $program1 = $this->creator->createProgram();
     $program2 = $this->creator->createProgram();
     
+    $this->conn->resetStats();
+    
     $query = lmbARQuery :: create('ProgramForTest', array(), $this->conn);
     $arr = $query->attach('courses')->fetch()->getArray();
+
+    $this->assertEqual($this->conn->countQueries(), 2);
+
+    $this->conn->resetStats();
     
     $this->assertEqual($arr[0]->getTitle(), $program1->getTitle());
     $this->assertEqual($arr[1]->getTitle(), $program2->getTitle());
     $this->assertEqual($arr[0]->getCourses()->count(), 0);
     $this->assertEqual($arr[1]->getCourses()->count(), 0);
+
+    $this->assertEqual($this->conn->countQueries(), 0);
   }  
 
   function testFetch_JoinWithWrongRelationType()
@@ -667,14 +675,21 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
     
+    $this->conn->resetStats();
+    
     $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
     $arr = $query->attach('program')->fetch()->getArray();
 
+    $this->assertEqual($this->conn->countQueries(), 2);    
+
+    $this->conn->resetStats();
     $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
     $this->assertEqual($arr[1]->getTitle(), $course2->getTitle());
 
     $this->assertNull($arr[0]->getProgram(), 0);
     $this->assertNull($arr[1]->getProgram(), 0);
+    
+    $this->assertEqual($this->conn->countQueries(), 0);    
   }
 }
 

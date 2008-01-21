@@ -129,12 +129,10 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
         break;
         case lmbActiveRecord :: HAS_MANY:
         case lmbActiveRecord :: HAS_MANY_TO_MANY:
+          $collection = $this->base_object->createRelationCollection($relation_name);
           if(isset($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]))
-          {
-            $collection = $this->base_object->createRelationCollection($relation_name);
             $collection->setDataset(new lmbCollection($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]));
-            $fields->set($this->prefix . $relation_name, $collection);
-          }
+          $fields->set($this->prefix . $relation_name, $collection);
         break;
       }
     }
