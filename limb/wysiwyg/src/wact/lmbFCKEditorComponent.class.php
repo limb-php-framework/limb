@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php');
+lmb_require('limb/wysiwyg/src/wact/lmbWysiwygComponent.class.php');
 
 @define('LIMB_FCKEDITOR_DIR', 'limb/wysiwyg/lib/FCKeditor/');
 
@@ -14,7 +14,7 @@ lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php'
  * class lmbFCKEditorComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbFCKEditorComponent.class.php 6727 2008-01-22 09:03:48Z serega $
+ * @version $Id: lmbFCKEditorComponent.class.php 6728 2008-01-22 19:33:39Z alex433 $
  */
 class lmbFCKEditorComponent extends lmbWysiwygComponent
 {

@@ -12,12 +12,12 @@ define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 /**
  * @tag richedit,wysiwyg
  * @package wysiwyg
- * @version $Id: wysiwyg.tag.php 6727 2008-01-22 09:03:48Z serega $
+ * @version $Id: wysiwyg.tag.php 6728 2008-01-22 19:33:39Z alex433 $
  */
 class lmbWysiwygTag extends WactControlTag
 {
   var $runtimeComponentName = 'lmbWysiwygComponent';
-  var $runtimeIncludeFile = 'limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php';
+  var $runtimeIncludeFile = 'limb/wysiwyg/src/wact/lmbWysiwygComponent.class.php';
   var $ini_file_name = 'wysiwyg.ini';
   var $profile;
 

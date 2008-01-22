@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php');
+lmb_require('limb/wysiwyg/src/wact/lmbWysiwygComponent.class.php');
 
 /**
  * class lmbTinyMCEComponent.
