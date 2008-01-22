@@ -13,7 +13,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
   function setUp()
   {
     parent :: setUp();
-    $this->toolkit->addLocaleObject(new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../../../en.ini')));
+    $this->toolkit->addLocaleObject(new lmbLocale('en', new lmbIni(dirname(__FILE__) . '/../en.ini')));
   }
 
   function testSetDateByString()
@@ -80,7 +80,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
   function testUseRussianAsCurrentLocale()
   {
     $toolkit = lmbToolkit :: save();
-    $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../../../ru.ini')));
+    $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../ru.ini')));
 
     $date = new lmbDateTime('2004-12-20 10:15:30');
 
@@ -156,7 +156,7 @@ class lmbI18NDateFilterTest extends lmbWactTestCase
   function testDBEUseRussianAsCurrentLocale()
   {
     $toolkit = lmbToolkit :: save();
-    $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../../../ru.ini')));
+    $toolkit->addLocaleObject(new lmbLocale('ru', new lmbIni(dirname(__FILE__) . '/../ru.ini')));
 
     $date = new lmbDateTime('2005-01-20 10:15:30');
 
