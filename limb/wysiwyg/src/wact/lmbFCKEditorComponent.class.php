@@ -14,7 +14,7 @@ lmb_require('limb/wysiwyg/src/template/components/lmbWysiwygComponent.class.php'
  * class lmbFCKEditorComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbFCKEditorComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbFCKEditorComponent.class.php 6727 2008-01-22 09:03:48Z serega $
  */
 class lmbFCKEditorComponent extends lmbWysiwygComponent
 {
