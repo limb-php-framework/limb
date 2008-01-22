@@ -12,12 +12,12 @@ require_once('limb/wact/src/tags/fetch/fetch.tag.php');
  * @tag active_record:FETCH,ar:FETCH
  * @req_const_attributes class_path
  * @package web_app
- * @version $Id: active_record_fetch.tag.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: active_record_fetch.tag.php 6718 2008-01-22 08:32:50Z serega $
  */
 class lmbActiveRecordFetchTag extends WactFetchTag
 {
   var $runtimeComponentName = 'lmbActiveRecordFetchComponent';
-  var $runtimeIncludeFile = 'limb/web_app/src/template/components/lmbActiveRecordFetchComponent.class.php';
+  var $runtimeIncludeFile = 'limb/web_app/src/wact/fetch/lmbActiveRecordFetchComponent.class.php';
 
   function preParse()
   {
