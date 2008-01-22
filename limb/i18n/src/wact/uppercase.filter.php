@@ -9,7 +9,7 @@
 /**
  * @filter i18n_uppercase
  * @package i18n
- * @version $Id: uppercase.filter.php 6241 2007-08-29 05:46:06Z pachanga $
+ * @version $Id: uppercase.filter.php 6721 2008-01-22 08:39:51Z serega $
  */
 class lmbI18NUppercaseFilter extends WactCompilerFilter
 {

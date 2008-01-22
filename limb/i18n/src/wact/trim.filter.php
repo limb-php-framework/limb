@@ -10,7 +10,7 @@
  * @filter i18n_trim
  * @max_attributes 1
  * @package i18n
- * @version $Id: trim.filter.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: trim.filter.php 6721 2008-01-22 08:39:51Z serega $
  */
 class lmbI18NTrimFilter extends WactCompilerFilter
 {

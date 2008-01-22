@@ -12,7 +12,7 @@ lmb_require('limb/i18n/src/datetime/lmbLocaleDateTime.class.php');
  * @filter i18n_date
  * @max_attributes 5
  * @package i18n
- * @version $Id: date.filter.php 6535 2007-11-22 07:25:47Z pachanga $
+ * @version $Id: date.filter.php 6721 2008-01-22 08:39:51Z serega $
  */
 class lmbI18NDateFilter extends WactCompilerFilter
 {
