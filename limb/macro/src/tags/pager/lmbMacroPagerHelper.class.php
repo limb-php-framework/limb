@@ -175,7 +175,7 @@ class lmbMacroPagerHelper
   protected function _initCurrentPage()
   {
     if(!$this->current_page && isset($_GET[$this->id]))
-      $this->current_page = $_GET[$this->id];
+      $this->current_page = (int)$_GET[$this->id];
 
     if (empty($this->current_page))
       $this->current_page = 1;
