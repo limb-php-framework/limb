@@ -11,7 +11,7 @@
  * class WactPagerComponent.
  *
  * @package wact
- * @version $Id: WactPagerComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactPagerComponent.class.php 6730 2008-01-23 12:14:25Z serega $
  */
 class WactPagerComponent extends WactRuntimeComponent
 {
@@ -136,7 +136,7 @@ class WactPagerComponent extends WactRuntimeComponent
     if($this->total_items < 1)
       return 0;
 
-    return $this->items_per_page * ($this->displayed_page - 1) + 1;
+    return (int)$this->items_per_page * ($this->displayed_page - 1) + 1;
   }
 
   function getDisplayedPageEndItem()
