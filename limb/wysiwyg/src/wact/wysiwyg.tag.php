@@ -12,13 +12,12 @@ define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 /**
  * @tag richedit,wysiwyg
  * @package wysiwyg
- * @version $Id: wysiwyg.tag.php 6728 2008-01-22 19:33:39Z alex433 $
+ * @version $Id: wysiwyg.tag.php 6735 2008-01-23 14:07:39Z serega $
  */
 class lmbWysiwygTag extends WactControlTag
 {
   var $runtimeComponentName = 'lmbWysiwygComponent';
   var $runtimeIncludeFile = 'limb/wysiwyg/src/wact/lmbWysiwygComponent.class.php';
-  var $ini_file_name = 'wysiwyg.ini';
   var $profile;
 
   function prepare()
@@ -28,7 +27,14 @@ class lmbWysiwygTag extends WactControlTag
 
   function determineComponent()
   {
-    $ini = lmbToolkit :: instance()->getConf($this->ini_file_name);
+    try
+    {
+      $ini = lmbToolkit :: instance()->getConf('wact_wisywyg.ini');
+    }
+    catch(lmbException $e){}
+    
+    if(!$ini)
+      $ini = lmbToolkit :: instance()->getConf('wisywyg.ini');
 
     if(($this->profile = $this->getAttribute('profile')) == '' &&
        ($this->profile = $ini->getOption('profile')) == '')
@@ -41,7 +47,6 @@ class lmbWysiwygTag extends WactControlTag
       $this->runtimeIncludeFile = $ini->getOption('runtimeIncludeFile', $this->profile);
     if($ini->getOption('runtimeComponentName', $this->profile))
       $this->runtimeComponentName = $ini->getOption('runtimeComponentName', $this->profile);
-
   }
 
   protected function _renderOpenTag($code_writer)

@@ -19,6 +19,7 @@ class lmbTinyMCEComponent extends lmbWysiwygComponent
   protected $_base_path;
   protected $_css_class;
   public static $is_included = false;
+  
   function renderContents()
   {
     $this->renderEditor();
