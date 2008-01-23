@@ -11,7 +11,7 @@
  * class WactPagerComponent.
  *
  * @package wact
- * @version $Id: WactPagerComponent.class.php 6731 2008-01-23 12:17:32Z serega $
+ * @version $Id: WactPagerComponent.class.php 6734 2008-01-23 13:48:48Z serega $
  */
 class WactPagerComponent extends WactRuntimeComponent
 {
@@ -186,7 +186,7 @@ class WactPagerComponent extends WactRuntimeComponent
     if (is_integer($pos))
         $this->base_url = substr($this->base_url, 0, $pos);
 
-    $this->displayed_page = @$_GET[$this->getPagerId()];
+    $this->displayed_page = (int)@$_GET[$this->getPagerId()];
     if (empty($this->displayed_page)) {
         $this->displayed_page = 1;
     }
