@@ -22,8 +22,8 @@ abstract class lmbDbBaseRecordSet implements lmbDbRecordSet
 
   function paginate($offset, $limit)
   {
-    $this->offset = $offset;
-    $this->limit = $limit;
+    $this->offset = (int)$offset;
+    $this->limit = (int)$limit;
     return $this;
   }
 
