@@ -11,61 +11,57 @@
  * class lmbMimeType.
  *
  * @package net
- * @version $Id: lmbMimeType.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbMimeType.class.php 6745 2008-01-24 16:44:39Z vasiatka $
  */
 class lmbMimeType
 {
   static protected $mime_types = array(
-    'avi' => 'video/avi',
-    'aif' => 'audio/x-aiff',
-    'aifc' => 'audio/x-aiff',
-    'aiff' => 'audio/x-aiff',
-    'bmp' => 'image/bmp',
-    'doc' => 'application/msword',
-    'flv' => 'video/x-flv',
-    'gif' => 'image/gif',
-    'html' => 'text/html',
-    'jpeg' => 'image/pjpeg',
-    'jpg' => 'image/jpeg',
-    'js' => 'text/javascript',
-    'mpeg' => 'video/mpeg',
-    'mp3' => 'audio/mpeg',
-    'mpg' => 'video/mpeg',
-    'msg' => 'message/rfc822',
-    'pdf' => 'application/pdf',
-    'png' => 'image/png',
-    'ppt' => 'application/vnd.ms-powerpoint',
-    'psd' => 'image/psd',
-    'rtf' => 'text/rtf',
-    'swf' => 'application/x-shockwave-flash',
-    'txt' => 'text/plain',
-    'wav' => 'audio/x-wav',
-    'xls' => 'application/vnd.ms-excel',
-    'zip' => 'application/x-zip-compressed',
-    'zip' => 'application/zip',
+    'video/avi'=>'avi',
+    'audio/x-aiff'=>'aif',
+    'audio/x-aiff' => 'aifc',
+    'audio/x-aiff' => 'aiff',
+    'image/bmp' =>'bmp',
+    'application/msword' =>'doc',
+    'video/x-flv' =>'flv',
+    'image/gif' =>'gif',
+    'text/html' =>'html',
+    'image/pjpeg' =>'jpeg',
+    'image/jpeg' =>'jpg',
+    'text/javascript' =>'js',
+    'video/mpeg' =>'mpeg',
+    'audio/mpeg' =>'mp3',
+    'video/mpeg' =>'mpg',
+    'message/rfc822' =>'msg',
+    'application/pdf' =>'pdf',
+    'image/png' =>'png',
+    'application/vnd.ms-powerpoint' =>'ppt',
+    'image/psd' =>'psd',
+    'text/rtf' =>'rtf',
+    'application/x-shockwave-flash' =>'swf',
+    'text/plain' =>'txt',
+    'audio/x-wav' =>'wav',
+    'application/vnd.ms-excel' =>'xls',
+    'application/x-rar-compressed' =>'rar',
+    'application/rar' =>'rar',
+    'application/x-zip-compressed' =>'zip',
+    'application/zip' =>'zip'
   );
-
-  static protected $flipped_mime_types = array();
 
   static function getExtension($mime_type)
   {
-    if(!self :: $flipped_mime_types)
-      self :: $flipped_mime_types = array_flip(self :: $mime_types);
-
     $mime_type = strtolower($mime_type);
-
-    return isset(self :: $flipped_mime_types[$mime_type])
-      ? self :: $flipped_mime_types[$mime_type]
+    return isset(self :: $mime_types[$mime_type])
+      ? self :: $mime_types[$mime_type]
       : null;
   }
 
   static function getMimeType($extension)
   {
-    $extension = ltrim(strtolower($extension), '.');
 
-    return isset(self :: $mime_types[$extension])
-      ? self :: $mime_types[$extension]
-      : null;
+    $extension = ltrim(strtolower($extension), '.');
+    $mime_type = array_search($extension,self :: $mime_types);
+    
+    return $mime_type ? $mime_type : null;
   }
 
   static function getFileMimeType($file)
