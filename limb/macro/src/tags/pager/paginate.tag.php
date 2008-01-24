@@ -11,6 +11,7 @@
  * Applies pager to iterator (so called "pagination")
  * @tag paginate
  * @req_attributes iterator
+ * @forbid_end_tag     
  * @package macro
  * @version $Id$
  */

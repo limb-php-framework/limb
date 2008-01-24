@@ -12,6 +12,7 @@
  * @forbid_end_tag   
  * @parent_tag_class lmbMacroFormTag
  * @restrict_self_nesting
+ * @req_attributes to 
  * @package macro
  * @version $Id$
  */
