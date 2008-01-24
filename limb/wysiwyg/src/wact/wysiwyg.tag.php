@@ -12,7 +12,7 @@ define('LIMB_WYSIWYG_DIR', dirname(__FILE__) . '/../../../');
 /**
  * @tag richedit,wysiwyg
  * @package wysiwyg
- * @version $Id: wysiwyg.tag.php 6735 2008-01-23 14:07:39Z serega $
+ * @version $Id: wysiwyg.tag.php 6739 2008-01-24 12:33:35Z serega $
  */
 class lmbWysiwygTag extends WactControlTag
 {
@@ -29,12 +29,12 @@ class lmbWysiwygTag extends WactControlTag
   {
     try
     {
-      $ini = lmbToolkit :: instance()->getConf('wact_wisywyg.ini');
+      $ini = lmbToolkit :: instance()->getConf('wact_wysiwyg.ini');
     }
     catch(lmbException $e){}
     
     if(!$ini)
-      $ini = lmbToolkit :: instance()->getConf('wisywyg.ini');
+      $ini = lmbToolkit :: instance()->getConf('wysiwyg.ini');
 
     if(($this->profile = $this->getAttribute('profile')) == '' &&
        ($this->profile = $ini->getOption('profile')) == '')
