@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6595 2007-12-06 20:10:05Z pachanga $
+ * @version $Id: common.inc.php 6748 2008-01-25 07:45:03Z serega $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -42,12 +42,16 @@ function lmb_glob($path)
   if(lmb_is_path_absolute($path))
     return glob($path);
 
-  foreach(lmb_get_include_path_items() as $dir)
-  {
-    if($res = glob("$dir/$path"))
-      return $res;
-  }
-  return array();
+  $result = array();  
+  foreach(lmb_get_include_path_items() as $dir)  
+  {  
+    if($res = glob("$dir/$path"))  
+    {  
+      foreach($res as $item)  
+         $result[] = $item;  
+    }  
+  }  
+  return $result;    
 }
 
 function lmb_get_include_path_items()
