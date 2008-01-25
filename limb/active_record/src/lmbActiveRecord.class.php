@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6694 2008-01-17 15:41:51Z serega $
+ * @version $Id: lmbActiveRecord.class.php 6751 2008-01-25 13:38:49Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1673,7 +1673,7 @@ class lmbActiveRecord extends lmbObject
   function getId()
   {
     if($id = $this->_getRaw($this->_primary_key_name))
-      return (int)$id;
+      return $id;
   }
   /**
    *  Sets id of an object typecasted to integer explicitly, be carefull using this method since
