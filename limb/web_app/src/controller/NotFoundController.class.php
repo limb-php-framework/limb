@@ -13,14 +13,14 @@ lmb_require('limb/web_app/src/controller/lmbController.class.php');
  * class NotFoundController.
  *
  * @package web_app
- * @version $Id: NotFoundController.class.php 6743 2008-01-24 16:07:15Z serega $
+ * @version $Id: NotFoundController.class.php 6747 2008-01-25 07:35:18Z serega $
  */
 class NotFoundController extends lmbController
 {
   function doDisplay()
   {
     $this->response->header('HTTP/1.x 404 Not Found');
-    $this->setTemplate($this->_findTemplateByAlias('not_found'));
+    $this->setTemplate($this->findTemplateByAlias('not_found'));
   }
 }
 

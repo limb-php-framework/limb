@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6667 2007-12-29 08:16:25Z serega $
+ * @version $Id: lmbController.class.php 6747 2008-01-25 07:35:18Z serega $
  */
 class lmbController
 {
@@ -142,7 +142,7 @@ class lmbController
     if(method_exists($this, $this->_mapActionToMethod($action)))
       return true;
 
-    if($this->_findTemplateForAction($action))
+    if($this->findTemplateForAction($action))
       return true;
 
     return false;
@@ -152,7 +152,7 @@ class lmbController
   {
     if(method_exists($this, $this->_mapCurrentActionToMethod()))
     {
-      if($template_path = $this->_findTemplateForAction($this->current_action))
+      if($template_path = $this->findTemplateForAction($this->current_action))
       {
         $this->setTemplate($template_path);
       }
@@ -170,7 +170,7 @@ class lmbController
 
       return $res;
     }
-    elseif($template_path = $this->_findTemplateForAction($this->current_action))
+    elseif($template_path = $this->findTemplateForAction($this->current_action))
     {
       $this->setTemplate($template_path);
       $this->_passLocalAttributesToView();
@@ -337,14 +337,14 @@ class lmbController
       return $this->$name;
   }
 
-  protected function _findTemplateForAction($action)
+  function findTemplateForAction($action)
   {
     if(isset($this->action_template_map[$this->name]) && isset($this->action_template_map[$this->name][$action]))
       return $this->action_template_map[$this->name][$action];
 
     $template_format = $this->getName() . '/' . $action;
     
-    if($template_path = $this->_findTemplateByAlias($template_format));
+    if($template_path = $this->findTemplateByAlias($template_format));
     {
       $this->map_changed = true;
       $this->action_template_map[$this->name][$action] = $template_path;
@@ -354,7 +354,7 @@ class lmbController
     $this->action_template_map[$this->name][$action] = false;
   }
   
-  protected function _findTemplateByAlias($template_format)
+  function findTemplateByAlias($template_format)
   {
     foreach($this->toolkit->getSupportedViewExtensions() as $ext)
     {
