@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 6367 2007-10-02 23:02:58Z pachanga $
+ * @version $Id: lmbDBAL.class.php 6750 2008-01-25 13:36:19Z korchasa $
  */
 class lmbDBAL
 {
@@ -55,6 +55,11 @@ class lmbDBAL
     return new lmbSimpleDb($conn);
   }
 
+  /**
+   * @param string $table
+   * @param [lmbDbConnection] $conn
+   * @return lmbTableGateway
+   */
   static function table($table, $conn = null)
   {
     return lmbToolkit :: instance()->createTableGateway($table, $conn);
