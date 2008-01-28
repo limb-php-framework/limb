@@ -196,9 +196,9 @@ class lmbARQuery extends lmbSelectRawQuery
     foreach($join as $relation_name=> $params_or_relation_name)
     {
       if(is_numeric($relation_name))
-        $query->joinRelation(trim($params_or_relation_name));
+        $query->eagerJoin(trim($params_or_relation_name));
       else
-        $query->joinRelation(trim($relation_name), $params_or_relation_name);
+        $query->eagerJoin(trim($relation_name), $params_or_relation_name);
     }
 
     $attach = (isset($params['attach']) && $params['attach']) ? $params['attach'] : array();
@@ -208,9 +208,9 @@ class lmbARQuery extends lmbSelectRawQuery
     foreach($attach as $relation_name => $params_or_relation_name)
     {
       if(is_numeric($relation_name))
-        $query->attachRelation(trim($params_or_relation_name));
+        $query->eagerAttach(trim($params_or_relation_name));
       else
-        $query->attachRelation(trim($relation_name), $params_or_relation_name);
+        $query->eagerAttach(trim($relation_name), $params_or_relation_name);
     }
     
     return $query;
