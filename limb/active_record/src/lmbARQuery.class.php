@@ -35,17 +35,28 @@ class lmbARQuery extends lmbSelectRawQuery
     }
   }
   
-  function joinRelation($relation_name, $params = array())
+  function eagerJoin($relation_name, $params = array())
   {
     $this->join_relations[$relation_name] = $params;
-
     return $this;
   }
+
+  //should be removed before release
+  function joinRelation($relation_name, $params = array())
+  {
+    return $this->eagerJoin($relation_name, $params);
+  }
   
-  function attachRelation($relation_name, $params = array())
+  function eagerAttach($relation_name, $params = array())
   {
     $this->attach_relations[$relation_name] = $params;
     return $this;
+  }
+  
+  //should be removed before release
+  function attachRelation($relation_name, $params = array())
+  {
+    return $this->eagerAttach($relation_name, $params);
   }
   
   protected function _addFieldsForObject($object, $table_name = '', $prefix = '')
