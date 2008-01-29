@@ -13,68 +13,24 @@
  * @package macro
  * @version $Id$
  */
-class lmbMacroConfig
+class lmbMacroConfig extends lmbObject
 {
-  protected $cache_dir;
-  protected $is_force_scan;
-  protected $is_force_compile;
-  protected $tags_scan_dirs = array();
-  protected $tpl_scan_dirs = array();
-
+  public $cache_dir;
+  public $is_force_compile;
+  public $is_force_scan;
+  public $tpl_scan_dirs;
+  public $tags_scan_dirs;
+  public $filters_scan_dirs;
   function __construct($cache_dir = null, $is_force_compile = true, $is_force_scan = true,
-                       $tpl_scan_dirs = null, $tags_scan_dirs = null, $filters_scan_dirs = null)
-  {
-    $this->cache_dir = $cache_dir ? $cache_dir : LIMB_VAR_DIR . '/compiled';
-    $this->is_force_compile = $is_force_compile;
-    $this->is_force_scan = $is_force_scan;
-    $this->tpl_scan_dirs = $tpl_scan_dirs ? $tpl_scan_dirs : array('templates');
-    $this->tags_scan_dirs = $tags_scan_dirs ? $tags_scan_dirs : array('limb/macro/src/tags');
-    $this->filters_scan_dirs = $filters_scan_dirs ? $filters_scan_dirs : array('limb/macro/src/filters');
-  }
-
-  function getCacheDir()
-  {
-    return $this->cache_dir;
-  }
-
-  function isForceScan()
-  {
-    return $this->is_force_scan;
-  }
-
-  function isForceCompile()
-  {
-    return $this->is_force_compile;
-  }
-
-  function getTagsScanDirectories()
-  {
-    return $this->tags_scan_dirs;
-  }
-  
-  function setTagsScanDirectories($dirs)
-  {
-    $this->tags_scan_dirs = $dirs;
-  }
-
-  function getFiltersScanDirectories()
-  {
-    return $this->filters_scan_dirs;
-  }
-
-  function setFiltersScanDirectories($dirs)
-  {
-    $this->filters_scan_dirs = $dirs;
-  }
-  
-  function getTemplateScanDirectories()
-  {
-    return $this->tpl_scan_dirs;
-  }
-
-  function setTemplateScanDirectories($dirs)
-  {
-    $this->tpl_scan_dirs = $dirs;
+                       $tpl_scan_dirs = array(), $tags_scan_dirs = array(), $filters_scan_dirs = array())
+  {    
+    $params['cache_dir'] = $cache_dir;
+    $params['is_force_compile'] = $is_force_compile;
+    $params['is_force_scan'] = $is_force_scan;
+    $params['tpl_scan_dirs'] = $tpl_scan_dirs;
+    $params['tags_scan_dirs'] = $tags_scan_dirs;
+    $params['filters_scan_dirs'] = $filters_scan_dirs;
+    parent::__construct($params);
   }
 }
 

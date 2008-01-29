@@ -7,8 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
-lmb_require('limb/macro/src/lmbMacroConfig.class.php');
+lmb_require('limb/macro/src/lmbMacroTemplateLocatorInterface.interface.php');
 lmb_require('limb/macro/src/lmbMacroException.class.php');
 
 /**
@@ -24,12 +23,24 @@ class lmbMacroTemplate
   protected $executor;
   protected $vars = array();
   protected $child_executor;
+  public $config;
 
-  function __construct($file, lmbMacroConfig $config = null, lmbMacroTemplateLocator $locator = null)
+  function __construct($file, $config = array(), lmbMacroTemplateLocatorInterface $locator = null)
   {
     $this->file = $file;
-    $this->config = $config ? $config : new lmbMacroConfig();
+    $this->config = $config;        
+    $this->_applyConfig($config);
     $this->locator = $locator ? $locator : new lmbMacroTemplateLocator($this->config);
+  }
+  
+  protected function _applyConfig($config)
+  {
+    $this->config['cache_dir'] = (isset($config['cache_dir'])) ? $config['cache_dir'] : LIMB_VAR_DIR . '/compiled';
+    $this->config['is_force_compile'] = (isset($config['is_force_compile'])) ? $config['is_force_compile'] : true;
+    $this->config['is_force_scan'] = (isset($config['is_force_scan'])) ? $config['is_force_scan'] : false;
+    $this->config['tpl_scan_dirs'] = (isset($config['tpl_scan_dirs'])) ? $config['tpl_scan_dirs'] : 'templates';
+    $this->config['tags_scan_dirs'] = (isset($config['tags_scan_dirs'])) ? $config['tags_scan_dirs'] : array('limb/macro/src/tags');
+    $this->config['filters_scan_dirs'] = (isset($config['filters_scan_dirs'])) ? $config['filters_scan_dirs'] : array('limb/macro/src/filters');    
   }
 
   function setVars($vars)
@@ -53,7 +64,7 @@ class lmbMacroTemplate
     {
       $this->compiled_file = $this->locator->locateCompiledTemplate($this->file);
 
-      if($this->config->isForceCompile() || !file_exists($this->compiled_file))
+      if($this->config['is_force_compile'] || !file_exists($this->compiled_file))
       {
         if(!$source_file = $this->locator->locateSourceTemplate($this->file))
           throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));

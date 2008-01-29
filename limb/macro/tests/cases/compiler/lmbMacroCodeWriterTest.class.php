@@ -7,12 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
-class lmbMacroCodeWriterTest extends UnitTestCase
+class lmbMacroCodeWriterTest extends lmbBaseMacroTest
 {
   protected $writer;
 
   function setUp()
   {
+    parent::setUp();
     $this->class = 'Foo' . mt_rand();
     $this->writer = new lmbMacroCodeWriter($this->class);
   }
@@ -140,7 +141,7 @@ class lmbMacroCodeWriterTest extends UnitTestCase
   {
     $this->_writeAndInclude($this->writer->renderCode());
     $class = $this->class;
-    $object = new $class();
+    $object = new $class($this->_createMacroConfig());
     return $object;
   }
 

@@ -7,13 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroTagDictionaryTest extends UnitTestCase
+class lmbMacroTagDictionaryTest extends lmbBaseMacroTest
 {
   function setUp()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tags/');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tags/');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tags/subfolder/');
+  { 
+    parent::setUp();
+    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/tags/');   
+    lmbFs :: mkdir(LIMB_VAR_DIR . '/tpl/tags/subfolder/');
   }
 
   function testFindTagInfo()
@@ -117,17 +117,16 @@ EOD;
 class Bar{$rnd}Tag extends lmbMacroTag{}
 EOD;
 
-    file_put_contents($file1 = LIMB_VAR_DIR . '/tags/foo_' . $rnd . '.tag.php', $content1);
-    file_put_contents($file2 = LIMB_VAR_DIR . '/tags/subfolder/bar_' . $rnd . '.tag.php', $content2);
+    file_put_contents($file1 = LIMB_VAR_DIR . '/tpl/tags/foo_' . $rnd . '.tag.php', $content1);
+    file_put_contents($file2 = LIMB_VAR_DIR . '/tpl/tags/subfolder/bar_' . $rnd . '.tag.php', $content2);
 
     $tag_info1 = new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag");
     $tag_info1->setFile($file1);
     $tag_info2 = new lmbMacroTagInfo("bar_$rnd", "Bar{$rnd}Tag");
-    $tag_info2->setFile($file2);
-
-    $config = new lmbMacroConfig();
-    $config->setTagsScanDirectories(array(LIMB_VAR_DIR . '/tags/'));
+    $tag_info2->setFile($file2);    
     
+    $config = $this->_createMacroConfig();
+    $config['tags_scan_dirs'] = array(LIMB_VAR_DIR . '/tpl/tags/');
     $dictionary = new lmbMacroTagDictionary();
     $dictionary->load($config);
 

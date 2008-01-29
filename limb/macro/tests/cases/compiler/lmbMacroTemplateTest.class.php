@@ -7,16 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
  
-class lmbMacroTemplateTest extends UnitTestCase
-{
-  function setUp()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/view');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/view');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/view/tpl');
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/view/compiled');
-  }
-
+class lmbMacroTemplateTest extends lmbBaseMacroTest
+{  
   function testRenderTemplateVar()
   {
     $view = $this->_createView('Hello, <?php echo $this->name;?>');
@@ -43,17 +35,14 @@ class lmbMacroTemplateTest extends UnitTestCase
 
   function _createView($tpl, $config = null)
   {
-    if(!$config)
-      $config = new lmbMacroConfig(LIMB_VAR_DIR . '/view/compiled');
-
     $file = $this->_createTemplate($tpl);
-    $view = new lmbMacroTemplate($file, $config);
+    $view = new lmbMacroTemplate($file, $this->_createMacroConfig());
     return $view;
   }
 
   function _createTemplate($tpl)
   {
-    $file = LIMB_VAR_DIR . '/view/tpl/' . mt_rand() . '.phtml';
+    $file = $this->tpl_dir . mt_rand() . '.phtml';
     file_put_contents($file, $tpl);
     return $file;
   }

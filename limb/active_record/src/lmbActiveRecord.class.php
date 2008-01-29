@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6751 2008-01-25 13:38:49Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 6756 2008-01-29 08:30:51Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -160,7 +160,7 @@ class lmbActiveRecord extends lmbObject
   const ON_BEFORE_DESTROY          = 9;
   const ON_AFTER_DESTROY           = 10;
   /**#@-*/
-  
+
   /**#@+
    * Relation type constants
    */
@@ -343,7 +343,7 @@ class lmbActiveRecord extends lmbObject
     if(isset($this->_relations[$relation]))
       return $this->_relations[$relation];
   }
-  
+
   function getRelationType($relation)
   {
     if(isset($this->_has_one[$relation]))
@@ -371,14 +371,14 @@ class lmbActiveRecord extends lmbObject
                         $this->_many_belongs_to,
                         $this->_composed_of);
   }
-  
+
   protected function _getSingleObjectRelations()
   {
      return array_merge($this->_has_one,
                         $this->_belongs_to,
                         $this->_many_belongs_to,
                         $this->_composed_of);
-  }  
+  }
 
   /**
    *  Returns all relations info for one-to-many
@@ -578,7 +578,7 @@ class lmbActiveRecord extends lmbObject
         $this->_loadLazyAttribute($attribute);
     }
   }
-  
+
   function getLazyAttributes()
   {
     return $this->_lazy_attributes;
@@ -603,10 +603,10 @@ class lmbActiveRecord extends lmbObject
       $this->_loadLazyAttribute($property);
 
     if($this->_hasValueObjectRelation($property))
-    { 
+    {
       if($valueObject = $this->_getValueObject($property))
-        return $valueObject; 
-      
+        return $valueObject;
+
       return (LIMB_UNDEFINED != $default) ? $default : $valueObject;
     }
 
@@ -615,7 +615,7 @@ class lmbActiveRecord extends lmbObject
       return parent :: get($property);
     }
     catch(lmbNoSuchPropertyException $e) {}
-    
+
     if(LIMB_UNDEFINED != $default)
       return $default;
 
@@ -651,7 +651,7 @@ class lmbActiveRecord extends lmbObject
       $collection = $this->createRelationCollection($property);
       $this->_setRaw($property, $collection);
       return $collection;
-    }    
+    }
 
     throw $e;
   }
@@ -1579,7 +1579,7 @@ class lmbActiveRecord extends lmbObject
     else
       return $rs;
   }
-  
+
   /**
    *  Finds a collection of records(not lmbActiveRecord objects!) from database table
    *  @param string|object filtering criteria
@@ -1675,6 +1675,7 @@ class lmbActiveRecord extends lmbObject
     if($id = $this->_getRaw($this->_primary_key_name))
       return $id;
   }
+
   /**
    *  Sets id of an object typecasted to integer explicitly, be carefull using this method since
    *  it may break relations if used improperly

@@ -16,6 +16,7 @@
 class lmbMacroTagDictionary
 {
   protected $info = array();
+  protected $cache_dir;
   static protected $instance;
 
   static function instance()
@@ -27,27 +28,30 @@ class lmbMacroTagDictionary
     return self :: $instance;
   }
 
-  function load(lmbMacroConfig $config)
+  function load($config)
   {
-    if(!$config->isForceScan() && $this->_loadCache($config))
-      return;
+    if(!isset($config['cache_dir']) || !$config['cache_dir']
+      || !isset($config['is_force_scan'])
+      || !isset($config['tags_scan_dirs']) || !$config['tags_scan_dirs'])      
+      throw new lmbMacroException('Wrong Config object data', $config);
 
-    $config_scan_dirs = $config->getTagsScanDirectories();
-    $real_scan_dirs = array();
-    
-    foreach($config_scan_dirs as $dir)
+    $this->cache_dir = $config['cache_dir']; 
+    if(!$config['is_force_scan'] && $this->_loadCache())
+      return;
+      
+    $real_scan_dirs = array();    
+    foreach($config['tags_scan_dirs'] as $dir)
     {
       foreach($this->_getThisAndImmediateDirectories($dir) as $item)
         $real_scan_dirs[] = $item;
     }
-    
     foreach($real_scan_dirs as $scan_dir)
     {
       foreach(lmb_glob($scan_dir . '/*.tag.php') as $file)
         $this->registerFromFile($file);
     }
 
-    $this->_saveCache($config);
+    $this->_saveCache();
   }
 
   function _getThisAndImmediateDirectories($dir)
@@ -63,9 +67,9 @@ class lmbMacroTagDictionary
     return $dirs;
   }  
 
-  protected function _loadCache(lmbMacroConfig $config)
+  protected function _loadCache()
   {
-    $cache_file = $config->getCacheDir() . '/tags.cache';
+    $cache_file = $this->cache_dir . '/tags.cache';
     if(!file_exists($cache_file))
       return false;
 
@@ -78,9 +82,9 @@ class lmbMacroTagDictionary
     return true;
   }
 
-  protected function _saveCache(lmbMacroConfig $config)
+  protected function _saveCache()
   {
-    $cache_file = $config->getCacheDir() . '/tags.cache';
+    $cache_file = $this->cache_dir . '/tags.cache';
     lmbFs :: safeWrite($cache_file, serialize($this->info));
   }
 
@@ -118,4 +122,5 @@ class lmbMacroTagDictionary
       return $this->info[$tag];
   }
 }
+
 

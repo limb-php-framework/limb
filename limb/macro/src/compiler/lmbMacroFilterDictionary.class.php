@@ -16,6 +16,7 @@
 class lmbMacroFilterDictionary
 {
   protected $info = array();
+  protected $cache_dir;
   static protected $instance;
 
   static function instance()
@@ -27,24 +28,28 @@ class lmbMacroFilterDictionary
     return self :: $instance;
   }
 
-  function load(lmbMacroConfig $config)
+  function load($config)
   {
-    if(!$config->isForceScan() && $this->_loadCache($config))
+    if(!array_key_exists('cache_dir', $config)
+      || !array_key_exists('is_force_scan', $config)
+      || !array_key_exists('filters_scan_dirs', $config))
+      throw new lmbMacroException('Wrong Config object data', $config);
+    $this->cache_dir = $config['cache_dir'];
+    if(!$config['is_force_scan'] && $this->_loadCache())
       return;
 
-    $dirs = $config->getFiltersScanDirectories();
-    foreach($dirs as $dir)
+    foreach($config['filters_scan_dirs'] as $dir)
     {
       foreach(lmb_glob($dir . '/*.filter.php') as $file)
         $this->registerFromFile($file);
     }
 
-    $this->_saveCache($config);
+    $this->_saveCache();
   }
 
-  protected function _loadCache(lmbMacroConfig $config)
+  protected function _loadCache()
   {
-    $cache_file = $config->getCacheDir() . '/filters.cache';
+    $cache_file = $this->cache_dir . '/filters.cache';
     if(!file_exists($cache_file))
       return false;
 
@@ -57,9 +62,9 @@ class lmbMacroFilterDictionary
     return true;
   }
 
-  protected function _saveCache(lmbMacroConfig $config)
+  protected function _saveCache()
   {
-    $cache_file = $config->getCacheDir() . '/filters.cache';
+    $cache_file = $this->cache_dir . '/filters.cache';
     lmbFs :: safeWrite($cache_file, serialize($this->info));
   }
 

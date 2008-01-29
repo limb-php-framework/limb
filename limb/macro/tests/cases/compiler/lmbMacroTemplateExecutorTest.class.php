@@ -7,11 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroTemplateExecutorTest extends UnitTestCase
+class lmbMacroTemplateExecutorTest extends lmbBaseMacroTest
 {
   function testPassVars()
   {
-    $tpl = new lmbMacroTemplateExecutor(new lmbMacroConfig(), array('foo' => 'foo', 'bar' => 'bar'));
+    $tpl = new lmbMacroTemplateExecutor($this->_createMacroConfig(), array('foo' => 'foo', 'bar' => 'bar'));
     $tpl->set('zoo', 'zoo');
     $this->assertEqual($tpl->foo, 'foo');
     $this->assertEqual($tpl->bar, 'bar');
@@ -20,7 +20,7 @@ class lmbMacroTemplateExecutorTest extends UnitTestCase
 
   function testMissingVarIsEmpty()
   {
-    $tpl = new lmbMacroTemplateExecutor(new lmbMacroConfig());
+    $tpl = new lmbMacroTemplateExecutor($this->_createMacroConfig());
     $this->assertNoErrors();
     $this->assertIdentical($tpl->junk, '');
   }

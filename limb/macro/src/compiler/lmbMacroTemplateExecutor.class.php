@@ -20,11 +20,12 @@ class lmbMacroTemplateExecutor
   protected $__config;
   protected $__context;
 
-  function __construct(lmbMacroConfig $config = null, $vars = array())
+  function __construct($config, $vars = array())
   {
-    $this->__config = $config ? $config : new lmbMacroConfig();
-    $this->setVars($vars);
+    $this->__config = $config;    
+    $this->setVars($vars);    
   }
+  
 
   //overridden in children
   protected function _init(){}

@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroFilterDictionaryTest extends UnitTestCase
+class lmbMacroFilterDictionaryTest extends lmbBaseMacroTest
 {
   function setUp()
   {
