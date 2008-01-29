@@ -18,7 +18,7 @@ class lmbBaseMacroTest extends UnitTestCase
   function setUp()
   {
     $this->base_dir = LIMB_VAR_DIR . '/tpl';
-    $this->tpl_dir = $this->base_dir.'/';      
+    $this->tpl_dir = $this->base_dir;      
     $this->cache_dir = $this->base_dir . '/compiled';
     $this->tags_dir = dirname(__FILE__).'/../../src/tags';
     $this->filters_dir = dirname(__FILE__).'/../../src/filters';
@@ -38,7 +38,7 @@ class lmbBaseMacroTest extends UnitTestCase
 
   protected function _createTemplate($code, $name)
   {
-    $file = $this->tpl_dir . $name;
+    $file = $this->tpl_dir . '/'. $name;
     file_put_contents($file, $code);
     return $file;
   }

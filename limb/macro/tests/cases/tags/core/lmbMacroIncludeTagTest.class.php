@@ -23,6 +23,7 @@ class lmbMacroTagIncludeTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
 
+  /*
   function testNestedStaticInclude()
   {
     $bar = '<body>{{include file="foo.html"/}}</body>';
@@ -113,5 +114,6 @@ class lmbMacroTagIncludeTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Fred Atkins!</p></body>');
   }
+  */
 }
 

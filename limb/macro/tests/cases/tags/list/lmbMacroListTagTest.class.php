@@ -183,7 +183,7 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($macro->render(), 'List#John:Pavel:Peter++Harry2');
   }
 
-  function testListFillTagWithTotalElementsLessThanRatio()
+  function testListFillTagWithTotalElementsLessThanRatioDoesNotRenderAnything()
   {
     $list = '{{list using="$#list" as="$item"}}List#'.
                 '{{list:item}}{$item}'.
@@ -199,6 +199,42 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $macro->set('list', array('John', 'Pavel'));
 
     $this->assertEqual($macro->render(), 'List#John:Pavel');
+  }
+
+  function testListFillTagWithTotalElementsLessButWithForceAttributeIsRendering()
+  {
+    $list = '{{list using="$#list" as="$item"}}List#'.
+            '{{list:item}}{$item}'.
+            '{{list:glue step="3"}}++{{/list:glue}}'.
+            '{{list:glue}}:{{/list:glue}}'.
+            '{{/list:item}}'.
+            '{{list:fill upto="3" force="true" items_left="$items_left"}}{$items_left}{{/list:fill}}'.
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('John', 'Pavel'));
+
+    $this->assertEqual($macro->render(), 'List#John:Pavel1');
+  }
+
+  function testListFillTagWithTotalElementsLessButWithForceAttributeButWithEmptyList()
+  {
+    $list = '{{list using="$#list" as="$item"}}List#'.
+            '{{list:item}}{$item}'.
+            '{{list:glue step="3"}}++{{/list:glue}}'.
+            '{{list:glue}}:{{/list:glue}}'.
+            '{{/list:item}}'.
+            '{{list:fill upto="3" force="true" items_left="$items_left"}}{$items_left}{{/list:fill}}'.
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array());
+
+    $this->assertEqual($macro->render(), '');
   }
 }
 

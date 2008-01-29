@@ -122,12 +122,15 @@ class lmbMacroListTag extends lmbMacroTag
     $this->source_var = $code->generateVar();
     $item_var = $code->generateVar();
 
+    $code->writePHP("\nif(!is_array({$using}) && !({$using} instanceof Iterator)) {\n");
+      $code->writePHP("{$using}  = array();}\n");
+    
     if($this->count_source)
     {
       $code->writePHP($this->source_var . " = array();\n");
       $code->writePHP('foreach(' . $using . " as $item_var) {\n");
         $code->writePHP($this->source_var . "[] = $item_var;\n");
-      $code->writePHP("}\n;");
+      $code->writePHP("}\n");
     }
     else
       $code->writePHP($this->source_var . " = {$using};\n");

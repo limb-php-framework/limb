@@ -38,7 +38,7 @@ class lmbMacroTemplate
     $this->config['cache_dir'] = (isset($config['cache_dir'])) ? $config['cache_dir'] : LIMB_VAR_DIR . '/compiled';
     $this->config['is_force_compile'] = (isset($config['is_force_compile'])) ? $config['is_force_compile'] : true;
     $this->config['is_force_scan'] = (isset($config['is_force_scan'])) ? $config['is_force_scan'] : false;
-    $this->config['tpl_scan_dirs'] = (isset($config['tpl_scan_dirs'])) ? $config['tpl_scan_dirs'] : 'templates';
+    $this->config['tpl_scan_dirs'] = (isset($config['tpl_scan_dirs'])) ? $config['tpl_scan_dirs'] : array('templates');
     $this->config['tags_scan_dirs'] = (isset($config['tags_scan_dirs'])) ? $config['tags_scan_dirs'] : array('limb/macro/src/tags');
     $this->config['filters_scan_dirs'] = (isset($config['filters_scan_dirs'])) ? $config['filters_scan_dirs'] : array('limb/macro/src/filters');    
   }

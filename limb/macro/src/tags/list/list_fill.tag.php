@@ -31,8 +31,10 @@ class lmbMacroListFillTag extends lmbMacroTag
     $count_var = $code->generateVar();
     $items_left_var = $code->generateVar();
     $code->writePhp($count_var .' = count('. $list->getSourceVar() . ');');
+    
+    $force = (int)$this->getBool('force');
 
-    $code->writePhp("if ({$count_var}/{$ratio_var} > 1) \n");
+    $code->writePhp("if (($force || ({$count_var}/{$ratio_var} > 1)) && {$count_var}) \n");
     $code->writePhp($items_left_var . " = ceil({$count_var}/{$ratio_var})*{$ratio_var} - {$count_var}; \n");
     $code->writePhp("else \n");
     $code->writePhp($items_left_var . " = 0;\n");
