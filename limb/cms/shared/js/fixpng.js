@@ -82,7 +82,7 @@
                   .positionFix();
               }
             }
-          //**/
+          */
 
         } else { // hack png css properties present inside css
           var image = that.css('backgroundImage');
