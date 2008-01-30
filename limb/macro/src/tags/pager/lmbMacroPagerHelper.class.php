@@ -123,6 +123,15 @@ class lmbMacroPagerHelper
 
     return $this->items_per_page * ($this->current_page - 1) + 1;
   }
+  
+  function getCurrentPageOffset()
+  {
+    $number = $this->getCurrentPageBeginItem();
+    if(!$number)
+      return 0;
+    else
+      return $number - 1;
+  }
 
   function getCurrentPageEndItem()
   {

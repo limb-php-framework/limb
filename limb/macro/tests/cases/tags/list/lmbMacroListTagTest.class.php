@@ -236,5 +236,25 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
 
     $this->assertEqual($macro->render(), '');
   }
+  
+  
+  function testListFillTag_WithoutGlueTag_AndListHasTheSameNumberOfItemsAndFillTagUpTo()
+  {
+    $list = '{{list using="$#list" as="$item"}}List#'.
+                '{{list:item}}{$item}'.
+                '{{/list:item}}'.
+                '{{list:fill upto="3" items_left="$items_left"}}{$items_left}{{/list:fill}}'.
+                '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    lmb_require('limb/core/src/lmbArrayIterator.class.php');
+    $list = new lmbArrayIterator(array('John', 'Pavel', 'Serega', 'Viktor'));
+    $list->paginate(0, 3);
+    $macro->set('list', $list);
+
+    $this->assertEqual($macro->render(), 'List#JohnPavelSerega');
+  }  
 }
 

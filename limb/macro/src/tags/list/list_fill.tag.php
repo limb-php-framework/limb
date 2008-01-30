@@ -18,6 +18,14 @@
  */
 class lmbMacroListFillTag extends lmbMacroTag
 {
+  function preParse($compiler)
+  {
+    $list = $this->findParentByClass('lmbMacroListTag');
+    $list->countSource();
+    
+    return parent :: preParse($compiler);
+  }
+  
   protected function _generateContent($code)
   {
     $ratio_var = $code->generateVar();

@@ -55,6 +55,7 @@ class lmbMacroPagerHelperTest extends UnitTestCase
     $this->assertTrue($this->pager->hasPrev());
     $this->assertEqual($this->pager->getCurrentPageBeginItem(), 11);
     $this->assertEqual($this->pager->getCurrentPageEndItem(), 20);
+    $this->assertEqual($this->pager->getCurrentPageOffset(), 10);
   }
   
   function testGettingCurrentPageWithGetIfCurrentPageWasNotSet()
@@ -79,6 +80,7 @@ class lmbMacroPagerHelperTest extends UnitTestCase
     $this->assertTrue($this->pager->hasPrev());
     $this->assertEqual($this->pager->getCurrentPageBeginItem(), 11);
     $this->assertEqual($this->pager->getCurrentPageEndItem(), 20);
+    $this->assertEqual($this->pager->getCurrentPageOffset(), 10);
   }
 
   function testTotalItemsZero()
@@ -101,6 +103,7 @@ class lmbMacroPagerHelperTest extends UnitTestCase
     $this->assertFalse($this->pager->hasPrev());
     $this->assertEqual($this->pager->getCurrentPageBeginItem(), 0);
     $this->assertEqual($this->pager->getCurrentPageEndItem(), 0);
+    $this->assertEqual($this->pager->getCurrentPageOffset(), 0);
   }
 
   function testNextPage()
