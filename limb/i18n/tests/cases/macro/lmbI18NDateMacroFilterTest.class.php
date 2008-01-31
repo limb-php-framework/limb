@@ -10,28 +10,6 @@ lmb_require('limb/i18n/src/datetime/lmbLocaleDate.class.php');
 
 class lmbI18NDateMacroFilterTest extends lmbBaseMacroTest
 {
-  protected function _createMacro($file)
-  {
-    $base_dir = LIMB_VAR_DIR . '/tpl';
-    $cache_dir = LIMB_VAR_DIR . '/tpl/compiled';
-    $macro = new lmbMacroTemplate($file,
-                                  new lmbMacroConfig(
-                                                     $cache_dir,
-                                                     true,
-                                                     true,
-                                                     array($base_dir),
-                                                     null,
-                                                     array('limb/macro/src/filters','limb/i18n/src/macro')
-                                                     )
-                                 );
-    return $macro;
-  }
-
-  function tearDown()
-  {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tpl');
-  }
-
   function testSetDateByString()
   {
     $code = '{$#var|i18n_date:"en_US", "string"}';
