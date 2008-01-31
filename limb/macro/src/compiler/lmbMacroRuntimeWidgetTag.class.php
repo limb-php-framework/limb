@@ -15,6 +15,7 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
 {
   protected $widget_include_file;
   protected $widget_class_name;
+  protected $runtime_var;
   
   function preParse($compiler)
   {
@@ -29,7 +30,10 @@ class lmbMacroRuntimeWidgetTag extends lmbMacroTag
     
   function getRuntimeVar()
   {
-    return '$this->' . $this->tag . '_' . $this->getRuntimeId();
+    if($this->runtime_var)
+      return $this->runtime_var;
+    $this->runtime_var = '$this->' . $this->tag . '_' . $this->getRuntimeId();
+    return $this->runtime_var;
   }
   
   function getRuntimeId()
