@@ -27,8 +27,6 @@ class lmbBaseMacroTest extends UnitTestCase
     lmbFs :: mkdir($this->base_dir);
     lmbFs :: mkdir($this->tpl_dir);
     lmbFs :: mkdir($this->cache_dir);
-    lmbFs :: mkdir($this->tags_dir);
-    lmbFs :: mkdir($this->filters_dir);
   }
 
   protected function _createMacro($file)
@@ -56,8 +54,8 @@ class lmbBaseMacroTest extends UnitTestCase
       'is_force_compile' => true,
       'is_force_scan' => true,     
       'tpl_scan_dirs' =>  array($this->tpl_dir),
-      'tags_scan_dirs' => array($this->tags_dir),
-      'filters_scan_dirs' => array($this->filters_dir)
+      'tags_scan_dirs' => array('src/tags', 'limb/*/src/macro', 'limb/macro/src/tags'),
+      'filters_scan_dirs' => array('src/filters', 'limb/*/src/macro', 'limb/macro/src/filters')
     );
     return $config;
   }
