@@ -130,12 +130,12 @@ class lmbMacroListTag extends lmbMacroTag
     if($this->count_source)
     {
       $code->writePHP($this->source_var . " = array();\n");
-      $code->writePHP('foreach(' . $using . " as $item_var) {\n");
+      $code->writePHP('foreach(' . $temp_using . " as $item_var) {\n");
         $code->writePHP($this->source_var . "[] = $item_var;\n");
       $code->writePHP("}\n");
     }
     else
-      $code->writePHP($this->source_var . " = {$using};\n");
+      $code->writePHP($this->source_var . " = {$temp_using};\n");
   }
 
   protected function _renderEmptyTag($code)
