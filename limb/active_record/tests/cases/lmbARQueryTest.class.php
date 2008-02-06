@@ -78,7 +78,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
 
     $this->assertEqual($this->conn->countQueries(), 0);
   }
-
+  
   function testFetch_Join_RelatedBelongsToObject()
   {
     $person1 = $this->creator->createPerson();
@@ -161,7 +161,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->conn->resetStats();
     
     $query = lmbARQuery :: create('PersonForTest', array(), $this->conn);
-    // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
+    // note attach() has the same effect as join() but works in a different way - it produces another sql request 
     $iterator = $query->eagerAttach('social_security')->fetch();
     $arr = $iterator->getArray();
     
@@ -184,6 +184,32 @@ class lmbARQueryTest extends lmbARBaseTestCase
 
     $this->assertEqual($this->conn->countQueries(), 0);
   }
+  
+  function testFetch_Attach_WhenEmptyRecordSet_ForHasOneRelation()
+  {
+    $this->conn->resetStats();
+    
+    $query = lmbARQuery :: create('PersonForTest', array(), $this->conn);
+    // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
+    $iterator = $query->eagerAttach('social_security')->fetch();
+    $arr = $iterator->getArray();
+    $this->assertEqual(sizeof($arr), 0);
+    
+    $this->assertEqual($this->conn->countQueries(), 1);
+  }
+  
+  function testFetch_Attach_WhenEmptyRecordSet_ForBelongsToRelation()
+  {
+    $this->conn->resetStats();
+    
+    $query = lmbARQuery :: create('SocialSecurityForTest', array(), $this->conn);
+    // note attach() has the same effect as join() but workds is a different way - it produces another sql request 
+    $iterator = $query->eagerAttach('person')->fetch();
+    $arr = $iterator->getArray();
+    $this->assertEqual(sizeof($arr), 0);
+    
+    $this->assertEqual($this->conn->countQueries(), 1);
+  }  
 
   function testFetch_Attach_RelatedBelongsToObjects()
   {
@@ -308,6 +334,16 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($lectures[0]->getTitle(), 'CCC');
     
     $this->assertEqual($this->conn->countQueries(), 0);
+  }
+  
+  function testFetch_Attach_WithEmptyRS_ForRelatedHasMany()
+  {
+    $this->conn->resetStats();
+    
+    $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
+    $arr = $query->eagerAttach('lectures')->fetch()->getArray();
+    
+    $this->assertEqual($this->conn->countQueries(), 1);
   }
 
   function testFetch_Attach_RelatedHasManyToMany()

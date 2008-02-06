@@ -51,20 +51,30 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
         case lmbActiveRecord :: HAS_ONE:
         case lmbActiveRecord :: MANY_BELONGS_TO:
           $ids = lmbArrayHelper :: getColumnValues($this->prefix . $relation_info['field'], $this->iterator);
-          $attached_objects = lmbActiveRecord :: findByIds($relation_class, $ids, $params, $this->conn);
-          $this->loaded_attaches[$relation_name] = lmbCollection :: toFlatArray($attached_objects, 
-                                                                                $key_field = $relation_object->getPrimaryKeyName(),
-                                                                                $export_each = false); 
+          if(!count($ids))
+            $this->loaded_attaches[$relation_name] = array();
+          else
+          {
+            $attached_objects = lmbActiveRecord :: findByIds($relation_class, $ids, $params, $this->conn);
+            $this->loaded_attaches[$relation_name] = lmbCollection :: toFlatArray($attached_objects, 
+                                                                                  $key_field = $relation_object->getPrimaryKeyName(),
+                                                                                  $export_each = false);
+          }
         break;
         case lmbActiveRecord :: BELONGS_TO:
           $ids = lmbArrayHelper :: getColumnValues($this->prefix . $this->base_object->getPrimaryKeyName(), $this->iterator);
           
-          $criteria = lmbSQLCriteria :: in($relation_info['field'], $ids);
-          $params['criteria'] = isset($params['criteria']) ? $params['criteria']->addAnd($criteria) : $criteria;
-          $attached_objects = lmbActiveRecord :: find($relation_class, $params, $this->conn);
-          $this->loaded_attaches[$relation_name] = lmbCollection :: toFlatArray($attached_objects, 
-                                                                                $key_field = $relation_info['field'], 
-                                                                                $export_each = false); 
+          if(!count($ids))
+            $this->loaded_attaches[$relation_name] = array();
+          else
+          {
+            $criteria = lmbSQLCriteria :: in($relation_info['field'], $ids);
+            $params['criteria'] = isset($params['criteria']) ? $params['criteria']->addAnd($criteria) : $criteria;
+            $attached_objects = lmbActiveRecord :: find($relation_class, $params, $this->conn);
+            $this->loaded_attaches[$relation_name] = lmbCollection :: toFlatArray($attached_objects, 
+                                                                                  $key_field = $relation_info['field'], 
+                                                                                  $export_each = false);
+          }
         break;
         case lmbActiveRecord :: HAS_MANY:
           if(!isset($params['sort']))
@@ -75,12 +85,18 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
           $query = lmbAROneToManyCollection :: createFullARQueryForRelation($relation_info, $this->conn, $params);
           
           $ids = lmbArrayHelper :: getColumnValues($this->prefix . $this->base_object->getPrimaryKeyName(), $this->iterator);
-          $query->addCriteria(lmbSQLCriteria :: in($relation_info['field'], $ids));
           
-          $attached_objects = $query->fetch();
-          
-          foreach($attached_objects as $attached_object)
-            $this->loaded_attaches[$relation_name][$attached_object->get($relation_info['field'])][] = $attached_object; 
+          if(!count($ids))
+            $this->loaded_attaches[$relation_name] = array();
+          else
+          {
+            $query->addCriteria(lmbSQLCriteria :: in($relation_info['field'], $ids));
+            
+            $attached_objects = $query->fetch();
+            
+            foreach($attached_objects as $attached_object)
+              $this->loaded_attaches[$relation_name][$attached_object->get($relation_info['field'])][] = $attached_object;
+          }
         break;
         case lmbActiveRecord :: HAS_MANY_TO_MANY:
           if(!isset($params['sort']))
@@ -92,12 +108,17 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
           $query->addField($relation_info['table']. '.' . $relation_info['field'], "link__id");
           
           $ids = lmbArrayHelper :: getColumnValues($this->prefix . $this->base_object->getPrimaryKeyName(), $this->iterator);
-          $query->addCriteria(lmbSQLCriteria :: in($relation_info['field'], $ids));
-          
-          $attached_objects = $query->fetch();
-          
-          foreach($attached_objects as $attached_object)
-            $this->loaded_attaches[$relation_name][$attached_object->get("link__id")][] = $attached_object; 
+          if(!count($ids))
+            $this->loaded_attaches[$relation_name] = array();
+          else
+          {          
+            $query->addCriteria(lmbSQLCriteria :: in($relation_info['field'], $ids));
+            
+            $attached_objects = $query->fetch();
+            
+            foreach($attached_objects as $attached_object)
+              $this->loaded_attaches[$relation_name][$attached_object->get("link__id")][] = $attached_object;
+          }
         break;
       }
     }
