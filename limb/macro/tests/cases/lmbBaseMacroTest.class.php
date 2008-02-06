@@ -34,14 +34,16 @@ class lmbBaseMacroTest extends UnitTestCase
     return new lmbMacroTemplate($file, $this->_createMacroConfig());
   }
 
-  protected function _createTemplate($code, $name)
+  protected function _createTemplate($code, $name = false)
   {
+    if(!$name)
+      $name = mt_rand() . '.phtml';
     $file = $this->tpl_dir . '/'. $name;
     file_put_contents($file, $code);
     return $file;
   }
 
-  protected function _createMacroTemplate($code, $name)
+  protected function _createMacroTemplate($code, $name = false)
   {
     $file = $this->_createTemplate($code, $name);
     return $this->_createMacro($file);
