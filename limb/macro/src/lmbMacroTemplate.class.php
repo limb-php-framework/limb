@@ -8,7 +8,9 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplateLocatorInterface.interface.php');
+lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/macro/src/lmbMacroException.class.php');
+
 
 /**
  * class lmbMacroTemplate.
@@ -72,7 +74,7 @@ class lmbMacroTemplate
         $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
 
         $compiler = $this->_createCompiler();
-        $compiler->compile($source_file, $this->compiled_file, $macro_executor_class, 'render');
+        $compiler->compile($this->file, $this->compiled_file, $macro_executor_class, 'render');
         //appending macro executor class
         file_put_contents($this->compiled_file, file_get_contents($this->compiled_file) .
                                           "\n\$macro_executor_class='$macro_executor_class';");

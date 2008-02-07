@@ -13,6 +13,9 @@
  * @package macro
  * @version $Id$
  */
+
+lmb_require('limb/core/src/lmbObject.class.php');
+
 class lmbMacroConfig extends lmbObject
 {
   public $cache_dir;
