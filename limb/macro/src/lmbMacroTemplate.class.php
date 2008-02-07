@@ -68,9 +68,6 @@ class lmbMacroTemplate
 
       if($this->config['is_force_compile'] || !file_exists($this->compiled_file))
       {
-        if(!$source_file = $this->locator->locateSourceTemplate($this->file))
-          throw new lmbMacroException('Template source file not found', array('file_name' => $this->file));
-
         $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
 
         $compiler = $this->_createCompiler();

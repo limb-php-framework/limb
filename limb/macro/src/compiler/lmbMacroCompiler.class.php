@@ -68,7 +68,8 @@ class lmbMacroCompiler
 
   function parseTemplate($file_name, $root_node)
   {
-    $source_file_path = $this->template_locator->locateSourceTemplate($file_name);
+    if(!$source_file_path = $this->template_locator->locateSourceTemplate($file_name))
+          throw new lmbMacroException('Template source file not found', array('file_name' => $file_name));
     $parser = new lmbMacroParser($this->tree_builder, $this->tag_dictionary);
     $parser->parse($source_file_path, $root_node);
   }
