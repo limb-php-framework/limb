@@ -24,8 +24,6 @@ class lmbMacroTemplateLocatorSimple implements lmbMacroTemplateLocatorInterface
 
   function locateSourceTemplate($file_name)
   {                
-//    if(file_exists($file_name))
-//      return $file_name;
     $file_path = $this->config['tpl_scan_dirs'].'/'.$file_name;
     if(!file_exists($file_path))
       throw new lmbMacroException('template file not found', array('template' => $file_path));
@@ -34,10 +32,7 @@ class lmbMacroTemplateLocatorSimple implements lmbMacroTemplateLocatorInterface
 
   function locateCompiledTemplate($file_name)
   {
-    $file_path = $this->config['cache_dir'] . '/' . md5($file_name) . '.php';
-    if(!file_exists($file_path))
-      throw new lmbMacroException('compiled template file not found', array('compiled template' => $file_path));
-    return $file_path;
+    return $this->config['cache_dir'] . '/' . md5($file_name) . '.php';
   }
 }
 

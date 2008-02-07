@@ -26,7 +26,7 @@ class lmbMacroTemplateLocatorSimpleTest extends lmbBaseMacroTest
       $this->pass();
     }
     
-    $this->_createMacroTemplate('bar',$this->template_name);
+    $this->_createMacroTemplate('bar',$this->template_name); 
     
     try
     {
@@ -43,35 +43,15 @@ class lmbMacroTemplateLocatorSimpleTest extends lmbBaseMacroTest
   
   function testLocateCompiledTemplate()
   {
-    
-    $config = $this->_createMacroConfig();
-         
-    $template_locator = new lmbMacroTemplateLocatorSimple($config);
-    try
-    {
-      $template = $template_locator->locateCompiledTemplate($this->template_name);
-      $this->fail();
-    } 
-    catch (lmbMacroException $e) 
-    {      
-      $this->pass();
-    }
-    
+    $template_locator = new lmbMacroTemplateLocatorSimple($config = $this->_createMacroConfig());    
     $compiled_file_name = md5($this->template_name);
     file_put_contents($config['cache_dir'].'/'.$compiled_file_name . '.php', 'bar');
     
-    try
-    {
-      $template = $template_locator->locateCompiledTemplate($this->template_name);
-      $this->pass();
-    } 
-    catch (lmbMacroException $e) 
-    {      
-      $this->fail();
-    }
+    $template = $template_locator->locateCompiledTemplate($this->template_name);
     
     $this->assertEqual('bar', file_get_contents($template));
   }
+  
 }
 
 
