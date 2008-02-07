@@ -22,17 +22,9 @@ class lmbMacroIncludeTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    $locator = $compiler->getTemplateLocator();
-
-    $file = $this->get('file');
-
     if(!$this->_isDynamic())
     {
-      $source_file = $locator->locateSourceTemplate($file);
-      if(empty($source_file))
-        $this->raise('Template source file not found', array('file_name' => $file));
-
-      $compiler->parseTemplate($file, $this);
+      $compiler->parseTemplate($this->get('file'), $this);
     }
   }
 

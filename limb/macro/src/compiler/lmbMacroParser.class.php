@@ -24,20 +24,14 @@ class lmbMacroParser implements lmbMacroTokenizerListener
    */
   protected $tree_builder;
 
-  /**
-   * @var lmbMacroTemplateLocator
-   */
-  protected $template_locator;
-
   protected $tokenizer;
 
-  function __construct($tree_builder, $template_locator, $tag_dictionary)
+  function __construct($tree_builder, $tag_dictionary)
   {
     $this->tokenizer = new lmbMacroTokenizer($this);
     $this->preprocessor = new lmbMacroPreprocessor();
 
     $this->tree_builder = $tree_builder;
-    $this->template_locator = $template_locator;
 
     $this->tag_parsing_state = $this->_createTagParsingState($tag_dictionary);
   }
@@ -57,20 +51,13 @@ class lmbMacroParser implements lmbMacroTokenizerListener
   * Initially invoked by the CompileTemplate function,
   * the first component argument being a root node.
   */
-  function parse($file_name, $root_node)
+  function parse($source_file_path, $root_node)
   {
-    $source_file_path = $this->template_locator->locateSourceTemplate($file_name);
-
-    if(empty($source_file_path))
-      throw new lmbMacroException('Template source file not found', array('file_name' => $file_name));
-
     $tags_before_parse = $this->tree_builder->getExpectedTagCount();
 
     $this->tree_builder->setCursor($root_node);
 
-    $this->changeToTagParsingState();
-
-    $this->setTemplateLocator($this->template_locator);
+    $this->changeToTagParsingState();    
 
     $content = file_get_contents($source_file_path);
 
@@ -98,10 +85,6 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->active_parsing_state = $this->tag_parsing_state;
   }  
 
-  function setTemplateLocator($template_locator)
-  {
-    $this->tag_parsing_state->setTemplateLocator($template_locator);
-  }  
 
   function startElement($tag, $attrs)
   {

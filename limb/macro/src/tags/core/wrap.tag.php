@@ -32,7 +32,7 @@ class lmbMacroWrapTag extends lmbMacroTag
     if(!$this->is_dynamic)
     {
       $file = $this->get('with');
-      $this->_compileSourceFileName($file, $compiler);
+      $compiler->parseTemplate($file, $this);
 
       //if there's no 'into' attribute we consider that {{into}} tags used instead
       if($into = $this->get('into'))
@@ -41,16 +41,6 @@ class lmbMacroWrapTag extends lmbMacroTag
         $this->_insert($this, $tree_builder, $into);
       }
     }
-  }
-
-  protected function _compileSourceFileName($file, $compiler)
-  {
-    $this->sourcefile = $compiler->getTemplateLocator()->locateSourceTemplate($file);
-
-    if(empty($this->sourcefile))
-      $this->raise('Template source file not found', array('file_name' => $file));
-
-    $compiler->parseTemplate($file, $this);
   }
 
   function _insert($wrapper, $tree_builder, $point)

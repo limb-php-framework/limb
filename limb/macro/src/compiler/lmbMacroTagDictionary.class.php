@@ -84,6 +84,7 @@ class lmbMacroTagDictionary
 
   protected function _saveCache()
   {
+    lmb_require('limb/fs/src/lmbFs.class.php');
     $cache_file = $this->cache_dir . '/tags.cache';
     lmbFs :: safeWrite($cache_file, serialize($this->info));
   }
