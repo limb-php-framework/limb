@@ -21,7 +21,7 @@ class lmbMacroCompiler
   protected $tree_builder;
 
   /**
-  * @var lmbMacroTemplateLocator
+  * @var lmbMacroTemplateLocatorInterface
   */
   protected $template_locator;
 
@@ -66,9 +66,10 @@ class lmbMacroCompiler
     return $code_writer->renderCode();
   }
 
-  function parseTemplate($source_file_path, $root_node)
+  function parseTemplate($file_name, $root_node)
   {
-    $parser = new lmbMacroParser($this->tree_builder, $this->template_locator, $this->tag_dictionary);
+    $source_file_path = $this->template_locator->locateSourceTemplate($file_name);
+    $parser = new lmbMacroParser($this->tree_builder, $this->tag_dictionary);
     $parser->parse($source_file_path, $root_node);
   }
 
