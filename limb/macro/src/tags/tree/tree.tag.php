@@ -25,9 +25,9 @@ class lmbMacroTreeTag extends lmbMacroTag
     if(!$kids_prop = $this->get('kids_prop'))
       $kids_prop = 'kids';
 
-    $before_branch = $this->_getTagsBeforeBranch();
-    $after_branch = $this->_getTagsAfterBranch();
-    $branch = $this->findImmediateChildByClass('lmbMacroTreeItemTag');
+    $before_node = $this->_getTagsBeforeNode();
+    $after_node = $this->_getTagsAfterNode();
+    $tree_node = $this->findImmediateChildByClass('lmbMacroTreeNodeTag');
 
     $tree = $this->get('using');
 
@@ -48,18 +48,18 @@ class lmbMacroTreeTag extends lmbMacroTag
      
     //rendering tags before branch
     $code->writePHP('if(!' . $counter . ") {\n");
-    foreach($before_branch as $tag)
+    foreach($before_node as $tag)
       $tag->generate($code);
     $code->writePHP("}\n");
 
-    $branch->generate($code);
+    $tree_node->generate($code);
 
     $code->writePHP($counter . "++;\n");
     $code->writePHP("}\n");//foreach
 
     //rendering tags after branch
     $code->writePHP('if(' . $counter . ") {\n");
-    foreach($after_branch as $tag)
+    foreach($after_node as $tag)
       $tag->generate($code);
     $code->writePHP("}\n");
 
@@ -74,19 +74,19 @@ class lmbMacroTreeTag extends lmbMacroTag
     return $this->method;
   }
 
-  protected function _getTagsBeforeBranch()
+  protected function _getTagsBeforeNode()
   {
     $tags = array();
     foreach($this->children as $child)
     {
-      if(is_a($child, 'lmbMacroTreeItemTag'))
+      if(is_a($child, 'lmbMacroTreeNodeTag'))
         break;
       $tags[] = $child;
     }
     return $tags;
   }
 
-  protected function _getTagsAfterBranch()
+  protected function _getTagsAfterNode()
   {
     $tags = array();
     $collect = false;
@@ -94,7 +94,7 @@ class lmbMacroTreeTag extends lmbMacroTag
     {
       if($collect)
         $tags[] = $child;
-      if(is_a($child, 'lmbMacroTreeItemTag'))
+      if(is_a($child, 'lmbMacroTreeNodeTag'))
         $collect = true;
     }
     return $tags;

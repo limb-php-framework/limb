@@ -8,11 +8,12 @@
  */
 
 /**
- * @tag tree:item
+ * @tag tree:node
+ * @aliases tree:branch
  * @package macro
  * @version $Id$
  */
-class lmbMacroTreeItemTag extends lmbMacroTag
+class lmbMacroTreeNodeTag extends lmbMacroTag
 {
 }
 

@@ -76,5 +76,28 @@ class lmbMacroTreeTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, '<ul><li>1.1)foo</li><li>1.2)bar<ul><li>1.2.1)bar1</li><li>1.2.2)bar2</li></ul></li><li>1.3)hey</li></ul>');
   }
+  
+  function testCheckBC()
+  {
+    $content = '{{tree using="$#tree" as="$item" kids_prop="kids" counter="$counter" prefix="1"}}' . 
+                  '<ul>' . 
+                  '{{tree:branch}}' . 
+                  '<li>{$prefix}.{$counter})'.
+                  '{{tree:item prefix="$new_prefix"}}{$item.title}<?php $new_prefix = $prefix . "." . $counter; ?>{{/tree:item}}</li>' . 
+                  '{{/tree:branch}}' .
+                  '</ul>' . 
+                '{{/tree}}';
+
+    $tpl = $this->_createTemplate($content, 'tree.html');
+
+    $macro = $this->_createMacro($tpl);
+    $macro->set('tree', array(array('title' => 'foo'), 
+                              array('title' => 'bar', 'kids' => array(array('title' => 'bar1'),
+                                                                      array('title' => 'bar2'))), 
+                              array('title' => 'hey')));
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<ul><li>1.1)foo</li><li>1.2)bar<ul><li>1.2.1)bar1</li><li>1.2.2)bar2</li></ul></li><li>1.3)hey</li></ul>');
+  }
 }
 

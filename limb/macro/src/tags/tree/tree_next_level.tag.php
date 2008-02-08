@@ -9,6 +9,7 @@
 
 /**
  * @tag tree:nextlevel
+ * @aliases tree:item
  * @package macro
  * @version $Id$
  */
