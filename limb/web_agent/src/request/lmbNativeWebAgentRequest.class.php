@@ -14,21 +14,22 @@ lmb_require(dirname(__FILE__).'/../lmbWebAgentHeaders.class.php');
 lmb_require(dirname(__FILE__).'/../lmbWebServerCookiesCollection.class.php');
 
 /**
- * Web request with sockets
+ * Web request through file_get_contents
  *
  * @package web_agent
- * @version $Id: lmbSocketWebAgentRequest.class.php 6779 2008-02-08 12:35:40Z cmz $
+ * @version $Id: lmbNativeWebAgentRequest.class.php 6779 2008-02-08 12:35:40Z cmz $
  */
-class lmbSocketWebAgentRequest extends lmbAbstractWebAgentRequest {
-  protected $request_data = '';
+class lmbNativeWebAgentRequest extends lmbAbstractWebAgentRequest {
+  protected $request_data = null;
   protected $request_headers = null;
-  protected $request_method = '';
-  protected $parsed_url = null;
-  protected $response_data = array();
+  protected $url = null;
+  protected $response_data = false;
+  protected $response_headers_raw = '';
   protected $response_headers = null;
-
+  
   protected function prepareRequestData($url, $method)
   {
+    $this->request_data = array('http' => array());
     $this->setRequestMethod($method);
     $this->setRequestUrl($url);
     $this->initRequestData();
@@ -42,49 +43,17 @@ class lmbSocketWebAgentRequest extends lmbAbstractWebAgentRequest {
 
   protected function setRequestMethod($method)
   {
-    $this->request_method = strtoupper($method);
+    $this->request_data['http']['method'] = $method;
   }
 
   protected function setRequestUrl($url)
   {
-    $this->parsed_url = parse_url($url);
-  }
-
-  protected function getRequestHostWithPort()
-  {
-    $host = $this->getRequestHost();
-    $port = $this->getRequestPort();
-    if($port != 80) $host .= ':'.$port;
-    return $host;
-  }
-
-  protected function getRequestPort()
-  {
-  	return isset($this->parsed_url['port']) ? $this->parsed_url['port'] : 80;
-  }
-
-  protected function getRequestHost()
-  {
-  	return $this->parsed_url['host'];
-  }
-
-  protected function getRequestPath()
-  {
-    $path = '/';
-    if(isset($this->parsed_url['path']))
-      $path = $this->parsed_url['path'];
-    if(isset($this->parsed_url['query']))
-      $path .= '?'.$this->parsed_url['query'];
-    return $path;
+    $this->url = $url;
   }
 
   protected function initRequestData()
   {
   	$this->request_headers = new lmbWebAgentHeaders();
-    $this->request_headers->setRaw(
-      $this->request_method.' '.$this->getRequestPath().' HTTP/1.1'
-    );
-    $this->addHeader('host', $this->getRequestHostWithPort());
     $this->addHeader('connection', 'close');
   }
 
@@ -102,7 +71,7 @@ class lmbSocketWebAgentRequest extends lmbAbstractWebAgentRequest {
   protected function prepareUserAgent()
   {
     if($this->user_agent)
-      $this->addHeader('User-Agent', $this->user_agent);
+      $this->request_data['http']['user_agent'] = $this->user_agent;
   }
 
   protected function prepareAcceptCharset()
@@ -119,12 +88,12 @@ class lmbSocketWebAgentRequest extends lmbAbstractWebAgentRequest {
   protected function prepareContent()
   {
     if($this->content)
-      $this->addHeader('Content-length', strlen($this->content));
+      $this->request_data['http']['content'] = $this->content;
   }
 
   protected function assembleRequestData()
   {
-    $this->request_data = $this->request_headers->exportHeaders()."\r\n".$this->content;
+    $this->request_data['http']['header'] = $this->request_headers->exportHeaders();
   }
 
   function doRequest($url, $method = 'GET')
@@ -165,25 +134,22 @@ class lmbSocketWebAgentRequest extends lmbAbstractWebAgentRequest {
 
   protected function readData()
   {
-    if($fp = fsockopen($this->getRequestHost(), $this->getRequestPort()))
-    {
-      fwrite($fp, $this->request_data);
-      $this->response_data = array();
-      while(!feof($fp))
-      	$this->response_data[] = fgets($fp);
-      fclose($fp);
-      return true;
-    }
-    else
+    $context  = stream_context_create($this->request_data);
+    $this->response_data = file_get_contents($this->url, null, $context);
+    if($this->response_data === false)
       return false;
+    
+    $this->response_headers_raw = $http_response_header;
+    return true;
   }
-
+  
   protected function readHeaders()
   {
     $this->response_headers = new lmbWebAgentHeaders();
-  	while($header = trim(array_shift($this->response_data))) {
+    foreach($this->response_headers_raw as $header)
+    {
       $this->response_headers->parse($header);
-  	}
+    }
     return $this->response_headers;
   }
 
@@ -235,7 +201,7 @@ class lmbSocketWebAgentRequest extends lmbAbstractWebAgentRequest {
 
   protected function readContent()
   {
-    return implode('', $this->response_data);
+    return $this->response_data;
   }
 }
 ?>

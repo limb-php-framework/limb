@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__).'/../lmbWebAgentHeaders.class.php');
  * Abstract class of webagent request
  *
  * @package web_agent
- * @version $Id: lmbAbstractWebAgentRequest.class.php 40 2007-10-04 15:52:39Z CatMan $
+ * @version $Id: lmbAbstractWebAgentRequest.class.php 6779 2008-02-08 12:35:40Z cmz $
  */
 abstract class lmbAbstractWebAgentRequest
 {
@@ -23,6 +23,7 @@ abstract class lmbAbstractWebAgentRequest
   protected $accept_charset = '';
   protected $headers;
   protected $content = '';
+  protected $default_charset = 'utf-8';
 
   function __construct()
   {
@@ -33,6 +34,11 @@ abstract class lmbAbstractWebAgentRequest
   function getCookies()
   {
   	return $this->cookies;
+  }
+  
+  function getDefaultCharset()
+  {
+    return $this->default_charset;
   }
 
   function setUserAgent($user_agent)
@@ -53,6 +59,11 @@ abstract class lmbAbstractWebAgentRequest
   function setContent($content)
   {
     $this->content = $content;
+  }
+  
+  function setDefaultCharset($charset)
+  {
+    $this->default_charset = $charset;
   }
 
   function clean()
