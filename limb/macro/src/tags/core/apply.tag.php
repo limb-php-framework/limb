@@ -19,22 +19,9 @@ class lmbMacroApplyTag extends lmbMacroTag
   {
     $name = $this->get('template');
 
-    $args = $this->_attributesIntoArray();
-
-    $arg_str = 'array(';
-    foreach($args as $key => $value)
-      $arg_str .= "'$key' => $value,";
-    $arg_str .= ')';
+    $arg_str = $this->attributesIntoArrayString();
 
     $code->writePHP('$this->_template'. $name . '(' . $arg_str . ');');
-  }
-
-  protected function _attributesIntoArray()
-  {
-    $arr = array();
-    foreach($this->attributes as $k => $attribute)
-      $arr[$k] = $this->getEscaped($k);
-    return $arr;
   }
 }
 

@@ -27,39 +27,51 @@ class lmbMacroTreeTag extends lmbMacroTag
 
     $before_branch = $this->_getTagsBeforeBranch();
     $after_branch = $this->_getTagsAfterBranch();
-    $branch = $this->findImmediateChildByClass('lmbMacroTreeBranchTag');
+    $branch = $this->findImmediateChildByClass('lmbMacroTreeItemTag');
 
     $tree = $this->get('using');
 
     $items = $code->generateVar();
     $counter = $code->generateVar();
+    $extra_params = $code->generateVar(); 
 
-    $method = $code->beginMethod('_render_tree'. uniqid(), array($items, $level));
-    $code->writePHP($counter . '=0;');
+    $this->method = $code->beginMethod('_render_tree'. uniqid(), array($items, $level, $extra_params . '= array()'));
+    
+    $code->writePHP("if($extra_params) extract($extra_params);"); 
 
-    $code->writePHP('foreach(' . $items . ' as ' . $as . ') {');
+    $code->writePHP($counter . "=0;\n");
 
+    $code->writePHP('foreach(' . $items . ' as ' . $as . ") {\n");
+
+    if($user_counter = $this->get('counter'))
+      $code->writePHP($user_counter . ' = ' . $counter . "+1;\n");
+     
     //rendering tags before branch
-    $code->writePHP('if(!' . $counter . ') {');
+    $code->writePHP('if(!' . $counter . ") {\n");
     foreach($before_branch as $tag)
       $tag->generate($code);
-    $code->writePHP('}');
+    $code->writePHP("}\n");
 
-    $branch->setRecursionMethod($method);
     $branch->generate($code);
 
-    $code->writePHP($counter . '++;');
-    $code->writePHP('}');//foreach
+    $code->writePHP($counter . "++;\n");
+    $code->writePHP("}\n");//foreach
 
     //rendering tags after branch
-    $code->writePHP('if(' . $counter . ') {');
+    $code->writePHP('if(' . $counter . ") {\n");
     foreach($after_branch as $tag)
       $tag->generate($code);
-    $code->writePHP('}');
+    $code->writePHP("}\n");
 
     $code->endMethod();
 
-    $code->writePHP('$this->' . $method . '(' . $tree . ', 0);');
+    $arg_str = $this->extraAttributesIntoArrayString();
+    $code->writePHP('$this->' . $this->method . '(' . $tree . ', 0' . ',' . $arg_str . ");\n");
+  }
+  
+  function getRecursionMethod()
+  {
+    return $this->method;
   }
 
   protected function _getTagsBeforeBranch()
@@ -67,7 +79,7 @@ class lmbMacroTreeTag extends lmbMacroTag
     $tags = array();
     foreach($this->children as $child)
     {
-      if(is_a($child, 'lmbMacroTreeBranchTag'))
+      if(is_a($child, 'lmbMacroTreeItemTag'))
         break;
       $tags[] = $child;
     }
@@ -82,10 +94,15 @@ class lmbMacroTreeTag extends lmbMacroTag
     {
       if($collect)
         $tags[] = $child;
-      if(is_a($child, 'lmbMacroTreeBranchTag'))
+      if(is_a($child, 'lmbMacroTreeItemTag'))
         $collect = true;
     }
     return $tags;
+  }
+  
+  function extraAttributesIntoArrayString()
+  {
+    return $this->attributesIntoArrayString($skip = array('as', 'using', 'counter', 'level'));
   }
 }
 

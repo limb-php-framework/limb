@@ -43,12 +43,7 @@ class lmbMacroIncludeTag extends lmbMacroTag
 
   function _generateDynamicaly($code)
   {
-    $args = $this->_attributesIntoArray();
-
-    $arg_str = 'array(';
-    foreach($args as $key => $value)
-      $arg_str .= "'$key' => $value,";
-    $arg_str .= ')';
+    $arg_str = $this->attributesIntoArrayString();
 
     $code->writePHP('$this->includeTemplate(' . $this->get('file') . ',' . $arg_str . ');');
   }
@@ -57,33 +52,13 @@ class lmbMacroIncludeTag extends lmbMacroTag
   {
     static $counter = 1;
 
-    list($keys, $vals) = $this->_attributesIntoArgs();
+    list($keys, $vals) = $this->attributesIntoArgs();
 
     $method = $code->beginMethod('__staticInclude' . ($counter++), $keys);
     parent :: _generateContent($code);
     $code->endMethod();
 
     $code->writePHP('$this->' . $method . '(' . implode(', ', $vals) . ');');
-  }
-
-  protected function _attributesIntoArgs()
-  {
-    $keys = array();
-    $vals = array();
-    foreach($this->attributes as $k => $attribute)
-    {
-      $keys[] = '$' . $k;
-      $vals[] = $this->getEscaped($k);
-    }
-    return array($keys, $vals);
-  }
-
-  protected function _attributesIntoArray()
-  {
-    $arr = array();
-    foreach($this->attributes as $k => $attribute)
-      $arr[$k] = $this->getEscaped($k);
-    return $arr;
   }
 }
 

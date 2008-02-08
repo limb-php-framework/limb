@@ -224,5 +224,42 @@ class lmbMacroTag extends lmbMacroNode
 
     }
   }
+  
+  function attributesIntoArgs()
+  {
+    $keys = array();
+    $vals = array();
+    foreach($this->attributes as $k => $attribute)
+    {
+      $keys[] = '$' . $k;
+      $vals[] = $this->getEscaped($k);
+    }
+    return array($keys, $vals);
+  }
+
+  function attributesIntoArray($skip = array())
+  {
+    $arr = array();
+    foreach($this->attributes as $k => $attribute)
+    {
+      if(in_array($k, $skip))
+        continue;
+      
+      $arr[$k] = $this->getEscaped($k);
+    }
+    return $arr;
+  }
+  
+  function attributesIntoArrayString($skip = array())
+  {
+    $args = $this->attributesIntoArray($skip);
+
+    $arg_str = 'array(';
+    foreach($args as $key => $value)
+      $arg_str .= "'$key' => $value,";
+    $arg_str .= ')';
+    
+    return $arg_str;
+  }
 }
 
