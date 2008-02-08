@@ -6,6 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 /**
  * class lmbMacroCompiler.
@@ -102,6 +103,7 @@ class lmbMacroCompiler
 
   static function writeFile($file, $data)
   {
+    
     $dirname = dirname($file);
     lmbFs :: mkdir($dirname);
 
