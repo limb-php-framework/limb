@@ -19,7 +19,7 @@ class lmbMacroPreprocessor
   function process(&$contents)
   {
     $contents = str_replace('<?=', '<?php echo ', $contents);
-    $contents = preg_replace('~<\?(?!php|=)~', '<?php ', $contents);    
+    $contents = preg_replace('~<\?(?!php|=|xml)~', '<?php ', $contents);    
     $contents = str_replace('$#', '$this->', $contents);
   }
 }

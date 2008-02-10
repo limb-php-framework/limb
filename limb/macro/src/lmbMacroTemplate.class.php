@@ -11,7 +11,6 @@ lmb_require('limb/macro/src/lmbMacroTemplateLocatorInterface.interface.php');
 lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/macro/src/lmbMacroException.class.php');
 
-
 /**
  * class lmbMacroTemplate.
  *
