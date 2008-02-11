@@ -12,7 +12,6 @@
  *
  * @tag include
  * @req_attributes file
- * @forbid_end_tag   
  * @package macro
  * @version $Id$
  */
@@ -22,20 +21,20 @@ class lmbMacroIncludeTag extends lmbMacroTag
   {
     parent :: preParse($compiler);
 
-    if(!$this->_isDynamic())
+    if(!$this->isDynamicInclude())
     {
       $compiler->parseTemplate($this->get('file'), $this);
     }
   }
 
-  function _isDynamic()
+  function isDynamicInclude()
   {
     return $this->isDynamic('file');
   }
 
   protected function _generateContent($code)
   {
-    if($this->_isDynamic())
+    if($this->isDynamicInclude())
       $this->_generateDynamicaly($code);
     else
       $this->_generateStaticaly($code);
@@ -43,22 +42,53 @@ class lmbMacroIncludeTag extends lmbMacroTag
 
   function _generateDynamicaly($code)
   {
+    $handlers_str = 'array(';
+    $methods = array();
+
+    //collecting {{into}} tags
+    if($intos = $this->_collectIntos())
+    {
+      foreach($intos as $into)
+      {
+        $args = $code->generateVar(); 
+        $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+        $code->writePHP("if($args) extract($args);"); 
+        $into->generateNow($code);
+        $code->endMethod();
+      }
+    }
+
+    foreach($methods as $slot => $method)
+      $handlers_str .= '"' . $slot . '"' . ' => array($this, "' . $method . '"),';
+
+    $handlers_str .= ')';
+
     $arg_str = $this->attributesIntoArrayString();
 
-    $code->writePHP('$this->includeTemplate(' . $this->get('file') . ',' . $arg_str . ');');
+    $code->writePHP('$this->includeTemplate(' . $this->get('file') . ', ' . $arg_str . ','. $handlers_str . ');');
+  }
+  
+  protected function _collectIntos()
+  {
+    return $this->findChildrenByClass('lmbMacroIncludeIntoTag');
   }
 
   function _generateStaticaly($code)
   {
-    static $counter = 1;
-
-    list($keys, $vals) = $this->attributesIntoArgs();
-
-    $method = $code->beginMethod('__staticInclude' . ($counter++), $keys);
-    parent :: _generateContent($code);
-    $code->endMethod();
-
-    $code->writePHP('$this->' . $method . '(' . implode(', ', $vals) . ');');
+    if($this->getBool('inline'))
+      parent :: _generateContent($code);
+    else
+    {
+      static $counter = 1;
+  
+      list($keys, $vals) = $this->attributesIntoArgs();
+  
+      $method = $code->beginMethod('__staticInclude' . ($counter++), $keys);
+      parent :: _generateContent($code);
+      $code->endMethod();
+  
+      $code->writePHP('$this->' . $method . '(' . implode(', ', $vals) . ');');
+    }
   }
 }
 

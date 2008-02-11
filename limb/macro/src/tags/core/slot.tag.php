@@ -12,6 +12,7 @@
  *
  * @tag slot
  * @package macro
+ * @forbid_end_tag       
  * @version $Id$
  */
 class lmbMacroSlotTag extends lmbMacroTag
@@ -21,18 +22,27 @@ class lmbMacroSlotTag extends lmbMacroTag
     $slot = $this->getNodeId();
     //calling slot handler in case of dynamic wrapping
     $code->writePHP('if(isset($this->__slot_handler_' . $slot . ')) {');
-    $code->writePHP('call_user_func_array($this->__slot_handler_' . $slot . ', array());');
+    $arg_str = $this->attributesIntoArrayString($skip = array('id', 'inline'));
+    $code->writePHP('call_user_func_array($this->__slot_handler_' . $slot . ', array(' . $arg_str . '));');
     $code->writePHP('}');
 
     //we need to isolate statically wrapped template variables via method call
     //in case of dynamic call we don't have children, hence the check
-    if($this->children)
+    if(!$this->getBool('inline'))
     {
-      $method = $code->beginMethod('__slotHandler' . uniqid());
+      $args = $code->generateVar(); 
+      $method = $code->beginMethod('__slotHandler' . uniqid(), array($args . '= array()'));
+      
+      $code->writePHP("if($args) extract($args);");
+      
       parent :: _generateContent($code);
+      
       $code->endMethod();
-      $code->writePHP('$this->' . $method . '()');
+      //$arg_str = $this->attributesIntoArrayString($skip = array('id', 'inline'));
+      $code->writePHP('$this->' . $method . '(' . $arg_str . ');');
     }
+    else
+      parent :: _generateContent($code);
   }
 }
 

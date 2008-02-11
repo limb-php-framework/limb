@@ -62,10 +62,12 @@ class lmbMacroTemplateExecutor
     extract($args);
   }
 
-  function includeTemplate($file, $vars = array())
+  function includeTemplate($file, $vars = array(), $slots_handlers = array())
   {
     $template = new lmbMacroTemplate($file, $this->__config);
     $template->setVars(get_object_vars($this));//global template vars
+    foreach($slots_handlers as $name => $handler)
+      $template->set('__slot_handler_' . $name, $handler);
     echo $template->render($vars);//local template vars
   }
 

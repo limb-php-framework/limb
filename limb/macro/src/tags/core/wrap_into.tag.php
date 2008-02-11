@@ -10,27 +10,30 @@
 /**
  * class lmbMacroIntoTag.
  *
- * @tag into
+ * @tag wrap:into
+ * @aliases into, wrap_into
  * @package macro
  * @version $Id$
  */
-class lmbMacroIntoTag extends lmbMacroTag
+class lmbMacroWrapIntoTag extends lmbMacroTag
 {
+  protected $is_dynamic;
+  
   function preParse($compiler)
   {
     parent :: preParse($compiler);
-
+    
     if($wrapper = $this->findParentByClass('lmbMacroWrapTag'))
     {
-      $is_dynamic = $wrapper->isDynamicWrap();  
+      $this->is_dynamic = $wrapper->isDynamicWrap();  
     }
     else
     {
       $wrapper = $this->findRoot();
-      $is_dynamic = false;  
+      $this->is_dynamic = false;  
     }
     
-    if(!$is_dynamic)
+    if(!$this->is_dynamic)
     {
       $tree_builder = $compiler->getTreeBuilder();
       $this->_insert($wrapper, $tree_builder, $this->get('slot'));
@@ -53,6 +56,17 @@ class lmbMacroIntoTag extends lmbMacroTag
     }
 
     $tree_builder->pushCursor($insertionPoint, $this->location);
+  }
+  
+  function generate($code)
+  {
+    if(!$this->is_dynamic)
+      parent :: generate($code);
+  }
+
+  function generateNow($code)
+  {
+    parent :: generate($code); 
   }
 }
 

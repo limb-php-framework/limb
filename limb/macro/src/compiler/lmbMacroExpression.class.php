@@ -41,18 +41,26 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
     //$var = $items[0];
     $expr .= $var . ' = ' . $items[0] . ';' . "\n";
     $code->writePHP($this->tmp . "='';\n");
-
+    
     for($i=1; $i < sizeof($items); $i++)
     {
       $item = $items[$i];
-      $expr .= "if((is_array({$var}) || ({$var} instanceof ArrayAccess)) && isset({$var}['{$item}'])) " .
-               "{ {$this->tmp} = {$var}['{$item}'];\n";
+      if(strpos($item, '->') === false)
+      {
+        $expr .= "if((is_array({$var}) || ({$var} instanceof ArrayAccess)) && isset({$var}['{$item}'])) " .
+                 "{ {$this->tmp} = {$var}['{$item}'];\n";
+      }
+      else
+        $expr .= "{$this->tmp} = {$var}{$item};\n";
       $var = $this->tmp;
     }
 
     //closing brackets
     for($i=1; $i < sizeof($items); $i++)
-      $expr .= "}else{ {$this->tmp} = '';}\n";
+    {
+      if(strpos($items[$i], '->') === false)
+        $expr .= "}else{ {$this->tmp} = '';}\n";
+    }
 
     $code->writePHP($expr);
   }
@@ -66,11 +74,26 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
 
     $path_items = array();
     $in_function = false;
-    
+
     $item = '';
     foreach($tokens as $token)
     {
-      if(is_scalar($token))
+      if(!is_scalar($token))
+      {
+        if($token[1] == '->' && !$in_function)
+        {
+          if($item != '$this') // $this-> is a special case
+          {
+            $path_items[] = $item;
+            $item = '->';
+          }
+          else
+            $item .= '->';
+          continue;
+        }
+        $item .= $token[1];
+      }
+      else
       {
         if($token == '(')
           $in_function = true;
@@ -82,11 +105,8 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
           $item = '';
           continue;
         }
-        
         $item .= $token;
       }
-      else
-        $item .= $token[1];
     }
     
     $path_items[] = $item;

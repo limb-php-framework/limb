@@ -53,6 +53,20 @@ class lmbMacroTagIncludeTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<body><p>Numbers: 1 2</p></body>');
   }
 
+  function testStaticInlineInclude()
+  {
+    $bar = '<body><?php $var2=2;?>{{include file="foo.html" inline="true"/}}</body>';
+    $foo = '<p>Number: <?php echo $var2;?></p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Number: 2</p></body>');
+  }
+
   function testStaticIncludeMixLocalAndTemplateVariables()
   {
     $bar = '<body><?php $var2=2;?>{{include file="foo.html" var1="1" var2="$var2"/}}</body>';
@@ -112,6 +126,45 @@ class lmbMacroTagIncludeTest extends lmbBaseMacroTest
 
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Fred Atkins!</p></body>');
-  }  
+  }
+
+  function testStaticIncludeWithChildIntoTagsAndVariables()
+  {
+    $bar = '<body><?php $var2=2;?>'.
+           '{{include file="foo.html" var1="1" var2="$var2"}}'.
+           '{{include:into slot="slot1"}}<b><?php echo $varA;?></b>{{/include:into}}'.
+           '{{include:into slot="slot2"}}<u><?php echo $varB;?></u>{{/include:into}}'.
+           '{{/include}}'.
+           '</body>';
+    $foo = '<p>Numbers: {{slot id="slot1" varA="$var1"/}} {{slot id="slot2" varB="$var2"/}}</p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Numbers: <b>1</b> <u>2</u></p></body>');
+  }
+
+  function testDynamicIncludeWithChildIntoTagsAndVariables()
+  {
+    $bar = '<body><?php $var2=2;?>'.
+           '{{include file="$#included" var1="1" var2="$var2"}}'.
+           '{{include:into slot="slot1"}}<b><?php echo $varA;?></b>{{/include:into}}'.
+           '{{include:into slot="slot2"}}<u><?php echo $varB;?></u>{{/include:into}}'.
+           '{{/include}}'.
+           '</body>';
+    $foo = '<p>Numbers: {{slot id="slot1" varA="$var1"/}} {{slot id="slot2" varB="$var2"/}}</p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('included', 'foo.html');
+
+    $out = $macro->render();
+    $this->assertEqual($out, '<body><p>Numbers: <b>1</b> <u>2</u></p></body>');
+  }
 }
 

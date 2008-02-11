@@ -158,6 +158,16 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<h1>aaa - 10</h1>');
   }
 
+  function testFunctionCallAfterPathBasedChunkWithParamsInOutputExpression()
+  {
+    $code = '<h1>{$#bar.extra->func2("aaa", $#foo)}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl->set('bar', array('extra' => new lmbMacroOutputExpressionTestClass()));
+    $tpl->set('foo', 10);
+    $out = $tpl->render();
+    $this->assertEqual($out, '<h1>aaa - 10</h1>');
+  }
+  
   function testPathAfterFunctionCallInOutputExpression()
   {
     $code = '<h1>{$#bar->func3().zoo}</h1>';

@@ -178,12 +178,10 @@ class lmbMacroNode
     {
       if(is_a($child, $class))
         $ret[] = $child;
-      else
-      {
-        $more_children = $child->findChildrenByClass($class);
-        if(count($more_children))
-          $ret = array_merge($ret, $more_children);
-      }
+      
+      $more_children = $child->findChildrenByClass($class);
+      if(count($more_children))
+        $ret = array_merge($ret, $more_children);
     }
     return $ret;
   }

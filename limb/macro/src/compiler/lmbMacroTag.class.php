@@ -231,7 +231,7 @@ class lmbMacroTag extends lmbMacroNode
     $vals = array();
     foreach($this->attributes as $k => $attribute)
     {
-      $keys[] = '$' . $k;
+      $keys[] = '$' . $attribute->getName();
       $vals[] = $this->getEscaped($k);
     }
     return array($keys, $vals);
@@ -242,10 +242,11 @@ class lmbMacroTag extends lmbMacroNode
     $arr = array();
     foreach($this->attributes as $k => $attribute)
     {
-      if(in_array($k, $skip))
+      $name = $attribute->getName();
+      if(in_array($name, $skip))
         continue;
       
-      $arr[$k] = $this->getEscaped($k);
+      $arr[$name] = $this->getEscaped($k);
     }
     return $arr;
   }

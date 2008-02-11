@@ -68,7 +68,7 @@ class lmbMacroWrapTag extends lmbMacroTag
 
   protected function _collectIntos()
   {
-    return $this->findImmediateChildrenByClass('lmbMacroIntoTag');
+    return $this->findChildrenByClass('lmbMacroWrapIntoTag');
   }
 
   protected function _generateContent($code)
@@ -83,14 +83,18 @@ class lmbMacroWrapTag extends lmbMacroTag
       {
         foreach($intos as $into)
         {
-          $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. uniqid());
-          $into->generate($code);
+          $args = $code->generateVar(); 
+          $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+          $code->writePHP("if($args) extract($args);"); 
+          $into->generateNow($code);
           $code->endMethod();
         }
       }
       else
       {
-        $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. uniqid());
+        $args = $code->generateVar(); 
+        $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+        $code->writePHP("if($args) extract($args);"); 
         parent :: _generateContent($code);
         $code->endMethod();
       }
