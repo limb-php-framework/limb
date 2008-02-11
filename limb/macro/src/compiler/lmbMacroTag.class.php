@@ -69,6 +69,14 @@ class lmbMacroTag extends lmbMacroNode
 
     return $this->attributes[strtolower($name)]->getValue();
   }
+  
+  function getAttributeObject($name)
+  {
+    if(!array_key_exists(strtolower($name), $this->attributes))
+      return;
+
+    return $this->attributes[strtolower($name)];
+  }
 
   function getEscaped($name)
   {

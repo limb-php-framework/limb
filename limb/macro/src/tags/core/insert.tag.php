@@ -8,33 +8,75 @@
  */
 
 /**
- * class lmbMacroIncludeTag.
+ * class lmbMacroWrapTag.
  *
- * @tag include
+ * @tag insert
+ * @aliases wrap,include
  * @req_attributes file
  * @package macro
  * @version $Id$
  */
-class lmbMacroIncludeTag extends lmbMacroTag
+class lmbMacroInsertTag extends lmbMacroTag
 {
+  protected $is_dynamic = false;
+
   function preParse($compiler)
   {
-    parent :: preParse($compiler);
+    if($this->has('in'))
+      $this->set('into', $this->get('in'));
 
-    if(!$this->isDynamicInclude())
+    if($this->has('with')) // for BC with old {{wrap}} tag
     {
-      $compiler->parseTemplate($this->get('file'), $this);
+      $att = $this->getAttributeObject('with');
+      $att->setName('file');
+      $this->add($att);
+    }
+
+    parent :: preParse($compiler);
+    
+    if($this->isDynamic('file'))
+      $this->is_dynamic = true;
+
+    if(!$this->is_dynamic)
+    {
+      $file = $this->get('file');
+      $compiler->parseTemplate($file, $this);
+
+      //if there's no 'into' attribute we consider that {{insert:into}} tags used instead
+      if($into = $this->get('into'))
+      {
+        $tree_builder = $compiler->getTreeBuilder();
+        $this->_insert($this, $tree_builder, $into);
+      }
     }
   }
 
-  function isDynamicInclude()
+  function _insert($wrapper, $tree_builder, $point)
   {
-    return $this->isDynamic('file');
+    $insertionPoint = $wrapper->findChild($point);
+    if(empty($insertionPoint))
+    {
+      $params = array('slot' => $point);
+      if($wrapper !== $this)
+      {
+        $params['parent_wrap_tag_file'] = $wrapper->getTemplateFile();
+        $params['parent_wrap_tag_line'] = $wrapper->getTemplateLine();
+      }
+
+      $this->raise('Wrap slot not found', $params);
+    }
+
+    $tree_builder->pushCursor($insertionPoint, $this->location);
+  }
+
+  protected function _collectIntos()
+  {
+    return $this->findChildrenByClass('lmbMacroInsertIntoTag');
   }
 
   protected function _generateContent($code)
   {
-    if($this->isDynamicInclude())
+    if($this->is_dynamic)
       $this->_generateDynamicaly($code);
     else
       $this->_generateStaticaly($code);
@@ -57,6 +99,14 @@ class lmbMacroIncludeTag extends lmbMacroTag
         $code->endMethod();
       }
     }
+    elseif($this->has('into'))
+    {
+      $args = $code->generateVar(); 
+      $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+      $code->writePHP("if($args) extract($args);"); 
+      parent :: _generateContent($code);
+      $code->endMethod();
+    }
 
     foreach($methods as $slot => $method)
       $handlers_str .= '"' . $slot . '"' . ' => array($this, "' . $method . '"),';
@@ -66,13 +116,8 @@ class lmbMacroIncludeTag extends lmbMacroTag
     $arg_str = $this->attributesIntoArrayString();
 
     $code->writePHP('$this->includeTemplate(' . $this->get('file') . ', ' . $arg_str . ','. $handlers_str . ');');
-  }
+  }  
   
-  protected function _collectIntos()
-  {
-    return $this->findChildrenByClass('lmbMacroIncludeIntoTag');
-  }
-
   function _generateStaticaly($code)
   {
     if($this->getBool('inline'))

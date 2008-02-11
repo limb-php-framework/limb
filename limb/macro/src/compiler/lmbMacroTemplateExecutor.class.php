@@ -68,6 +68,7 @@ class lmbMacroTemplateExecutor
     $template->setVars(get_object_vars($this));//global template vars
     foreach($slots_handlers as $name => $handler)
       $template->set('__slot_handler_' . $name, $handler);
+    $template->setChildExecutor($this);//from now we consider the wrapper to be a master variable context
     echo $template->render($vars);//local template vars
   }
 

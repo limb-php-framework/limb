@@ -30,6 +30,11 @@ class lmbMacroTagAttribute implements lmbMacroExpressionInterface
   {
     return $this->name;
   }
+  
+  function setName($name)
+  {
+    $this->name = $name;
+  }
 
   function addTextFragment($text)
   {
