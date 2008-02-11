@@ -19,7 +19,13 @@ class lmbMacroPreprocessor
   function process(&$contents)
   {
     $contents = str_replace('<?=', '<?php echo ', $contents);
-    $contents = preg_replace('~<\?(?!php|=|xml)~', '<?php ', $contents);    
+    $contents = preg_replace_callback('~(<\?xml\s+[^\?]+?\?>)~', array($this, 'xmlSpecialCase'), $contents);
+    $contents = preg_replace('~<\?(?!php|=|xml)~', '<?php ', $contents);        
     $contents = str_replace('$#', '$this->', $contents);
+  }
+  
+  function xmlSpecialCase($matches)
+  {    
+    return '<?php echo "' . str_replace('"', '\"', $matches[1]) . '";?>'; 
   }
 }
