@@ -12,7 +12,6 @@
  *  Very simple placeholder for {{apply:into}} tag
  * @tag template:slot
  * @package macro
- * @forbid_end_tag       
  * @version $Id$
  */
 class lmbMacroTemplateSlotTag extends lmbMacroTag

@@ -12,7 +12,6 @@
  *
  * @tag slot
  * @package macro
- * @forbid_end_tag       
  * @version $Id$
  */
 class lmbMacroSlotTag extends lmbMacroTag
