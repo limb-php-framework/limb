@@ -31,5 +31,42 @@ class lmbMacroTemplateTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, 'FOOHEYBAR');
   }
+
+  function testApplyTemplateInline()
+  {
+    $content = '{{template name="tpl1"}}' .  
+               '{$bar}' .                   
+               '{{/template}}' .              
+               '{{template name="tpl2"}}' .  
+               '{$foo}{$hey}' .                   
+               '{{/template}}' .
+               '<?php $hey = "HEY"; $foo = "FOO"; $bar = "BAR"; ?>'.
+               '{{apply template="tpl2" inline="true"/}}' .
+               '{{apply template="tpl1" inline="true"/}}';
+
+    $tpl = $this->_createTemplate($content, 'tree.html');
+
+    $macro = $this->_createMacro($tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'FOOHEYBAR');
+  }
+
+  function testApplyTemplateWithIntoTags()
+  {
+    $content = '{{template name="tpl1"}}' .  
+               '{{template:slot id="slotB"/}}{$bar}{{template:slot id="slotA"/}}' .                   
+               '{{/template}}' .              
+               '<?php $hey = "HEY"; ?>'.
+               '{{apply template="tpl1" bar="$hey"}}{{apply:into slot="slotA"}}Hello!{{/apply:into}}{{/apply}}'.
+               '{{apply template="tpl1" bar="AAA"}}{{apply:into slot="slotB"}}Wow!{{/apply:into}}{{/apply}}';
+
+    $tpl = $this->_createTemplate($content, 'tree.html');
+
+    $macro = $this->_createMacro($tpl);
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'HEYHello!Wow!AAA');
+  }
 }
 

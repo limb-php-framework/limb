@@ -8,7 +8,7 @@
  */
 
 /**
- * class lmbMacroIntoTag.
+ * class lmbMacroInsertIntoTag.
  *
  * @tag insert:into
  * @aliases into, wrap:into, include:into  

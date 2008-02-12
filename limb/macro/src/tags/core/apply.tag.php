@@ -20,8 +20,25 @@ class lmbMacroApplyTag extends lmbMacroTag
     $name = $this->get('template');
 
     $arg_str = $this->attributesIntoArrayString();
+    
+    if(!$template_tag_node = $this->findTemplateTagNode())
+      $this->raise('Template tag not found', array('template' => $name));
+    
+    $template_tag_node->setCurrentApplyTag($this);
 
-    $code->writePHP('$this->_template'. $name . '(' . $arg_str . ');');
+    if($this->getBool('inline'))
+      $template_tag_node->generateNow($code, $wrap_with_method = false);
+    else
+    {
+      $template_tag_node->generateNow($code);
+      $code->writePHP('$this->' . $template_tag_node->getMethod() . '(' . $arg_str . ');');
+    }
+  }
+  
+  function findTemplateTagNode()
+  {
+    $name = $this->get('template');
+    return $this->findUpChild('template_' . $name);
   }
 }
 

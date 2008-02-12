@@ -26,8 +26,6 @@ class lmbMacroSlotTag extends lmbMacroTag
     $code->writePHP('call_user_func_array($this->__slot_handler_' . $slot . ', array(' . $arg_str . '));');
     $code->writePHP('}');
 
-    //we need to isolate statically wrapped template variables via method call
-    //in case of dynamic call we don't have children, hence the check
     if(!$this->getBool('inline'))
     {
       $args = $code->generateVar(); 

@@ -13,17 +13,47 @@
  * @package macro
  * @version $Id$
  */
-class lmbMacroTemplateTag extends lmbMacroTag
+class lmbMacroTemplateTag extends lmbMacroPassiveTag
 {
-  function _generateContent($code)
+  protected $method;
+  protected $current_apply_tag = null;
+  
+  function preParse($compiler)
   {
-    $name = $this->get('name');
+    if($this->has('name'))
+      $this->set('id', 'template_' . $this->get('name'));
 
-    $args = $code->generateVar();
-    $code->beginMethod('_template'. $name, array($args . '= array()'));
-    $code->writePHP("if($args) extract($args);");
-    parent :: _generateContent($code);
-    $code->endMethod();
+    parent :: preParse($compiler);
+  }
+  
+  function generateNow($code, $wrap_with_method = true)
+  {
+    if($wrap_with_method)
+    {
+      $args = $code->generateVar();
+      $this->method = '_template' . uniqid();
+      $code->beginMethod($this->getMethod(), array($args . '= array()'));
+      $code->writePHP("if($args) extract($args);");
+      parent :: generateNow($code);
+      $code->endMethod();
+    }
+    else
+      parent :: generateNow($code);
+  }
+
+  function setCurrentApplyTag(lmbMacroApplyTag $apply_tag)
+  {
+    $this->current_apply_tag = $apply_tag;
+  }
+  
+  function getCurrentApplyTag()
+  {
+    return $this->current_apply_tag;
+  }
+  
+  function getMethod()
+  {
+    return $this->method;
   }
 }
 
