@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-require_once('limb/dbal/tests/common.inc.php');
+lmb_require('limb/dbal/tests/common.inc.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLTableFieldCriteria.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
@@ -26,21 +26,48 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->conn = new ConnectionTestStub();
   }
 
-  function testSelect()
+  function testSimpleSelect()
   {
     $sql = new lmbSelectRawQuery('SELECT * FROM test', $this->conn);
 
     $this->assertEqual($sql->toString(), 'SELECT * FROM test');
   }
 
-  function testNoFields()
+  function testReplaceFieldsHintByDefault()
   {
     $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
 
     $this->assertEqual($sql->toString(), 'SELECT * FROM test');
   }
 
-  function testAddFieldWithFields()
+  function testReplaceFieldsHintWhenFieldsExistInTemplate()
+  {
+    $sql = new lmbSelectRawQuery("SELECT t3 \n%fields%,t4 FROM test", $this->conn);
+
+    $this->assertEqual($sql->toString(), "SELECT t3 \n,t4 FROM test");
+  }
+
+  function testAddFieldWhenNoFieldsExistInTemplate()
+  {
+    $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
+
+    $sql->addField('t1');
+    $sql->addField('t2');
+
+    $this->assertEqual($sql->toString(), "SELECT 't1','t2' FROM test");
+  }
+
+  function testAddRawFieldWhenNoFieldsExistInTemplate()
+  {
+    $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
+
+    $sql->addRawField('t1');
+    $sql->addRawField('t2');
+
+    $this->assertEqual($sql->toString(), "SELECT t1,t2 FROM test");
+  }
+
+  function testAddFieldWhenFieldsExistInTemplate()
   {
     $sql = new lmbSelectRawQuery("SELECT t3 \n%fields%,t4 FROM test", $this->conn);
 
@@ -50,21 +77,14 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->assertEqual($sql->toString(), "SELECT t3 \n,'t1','t2',t4 FROM test");
   }
 
-  function testNoFieldsAdded()
+  function testAddRawFieldWhenFieldsExistInTemplate()
   {
     $sql = new lmbSelectRawQuery("SELECT t3 \n%fields%,t4 FROM test", $this->conn);
 
-    $this->assertEqual($sql->toString(), "SELECT t3 \n,t4 FROM test");
-  }
+    $sql->addRawField('t1');
+    $sql->addRawField('t2');
 
-  function testAddFieldNoFields()
-  {
-    $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
-
-    $sql->addField('t1');
-    $sql->addField('t2');
-
-    $this->assertEqual($sql->toString(), "SELECT 't1','t2' FROM test");
+    $this->assertEqual($sql->toString(), "SELECT t3 \n,t1,t2,t4 FROM test");
   }
 
   function testAddFieldWithAlias()
@@ -77,16 +97,49 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->assertEqual($sql->toString(), "SELECT 't1' as 'a1','t2' as 'a2' FROM test");
   }
   
-  function testAddAllFieldFromTable()
+  function testAddRawFieldWithAlias()
+  {
+    $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
+
+    $sql->addRawField('t1', 'a1');
+    $sql->addRawField('t2', 'a2');
+
+    $this->assertEqual($sql->toString(), "SELECT t1 as a1,t2 as a2 FROM test");
+  }
+
+  function testMixAddingRawAndRegularFields()
+  {
+    $sql = new lmbSelectRawQuery("SELECT %fields% FROM test", $this->conn);
+
+    $sql->addRawField('t1');
+    $sql->addField('t2', 'a2');
+    $sql->addRawField('t3', 'a3');
+    $sql->addField('t4');
+
+    $this->assertEqual($sql->toString(), "SELECT 't2' as 'a2','t4',t1,t3 as a3 FROM test");
+  }
+  
+  function testMixAddingRawAndRegularFieldsWhenFieldsExistInTemplate()
+  {
+    $sql = new lmbSelectRawQuery("SELECT a \n%fields%,b FROM test", $this->conn);
+
+    $sql->addRawField('t1');
+    $sql->addField('t2', 'a2');
+    $sql->addRawField('t3', 'a3');
+    $sql->addField('t4');
+
+    $this->assertEqual($sql->toString(), "SELECT a \n,'t2' as 'a2','t4',t1,t3 as a3,b FROM test");
+  }
+  
+  function testAddStarredFieldFromTable()
   {
     $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
     $sql->addField('t1.*');
 
     $this->assertEqual($sql->toString(), 'SELECT t1.* FROM test');
   }
-  
 
-  function testNoAddTable()
+  function testReplaceTableHintInTemplate()
   {
     $sql = new lmbSelectRawQuery('SELECT * FROM test %tables%', $this->conn);
 

@@ -21,6 +21,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   const DEFAULT_SQL_TEMPLATE = "SELECT %fields% FROM %tables% %left_join% %where% %group% %having% %order%";
 
   protected $_fields = array();
+  protected $_raw_fields = array();
   protected $_tables = array();
   protected $_left_join_constraints  = array();
   protected $_order = array();
@@ -49,6 +50,12 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   function getFields()
   {
     return array_keys($this->_fields);
+  }
+
+  function addRawField($field, $alias = null)
+  {
+    $this->_raw_fields[$field] = $alias;
+    return $this;
   }
 
   function addTable($table, $alias = null)
@@ -173,16 +180,29 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
       $fields .= $this->_conn->quoteIdentifier($field) .
                  ($alias ? ' as ' . $this->_conn->quoteIdentifier($alias) : '') . ',';
     }
+    if(count($this->_raw_fields) == 0)
+      $fields = rtrim($fields, ',');
+
+    foreach($this->_raw_fields as $field => $alias)
+    {
+      if(strpos($field, '*') !== false)
+      {
+        $fields .= $field . ',';
+        continue;
+      }
+      
+      $fields .= $field .  ($alias ? ' as ' . $alias : '') . ',';
+    }
     $fields = rtrim($fields, ',');
 
     if($this->_selectFieldsExists())
     {
-      if(count($this->_fields))
+      if(count($this->_fields) || count($this->_raw_fields))
         return ',' . $fields;
       else
         return '';
     }
-    elseif(count($this->_fields) == 0)
+    elseif(count($this->_fields) == 0 && count($this->_raw_fields) == 0)
       return '*';
     else
       return $fields;
