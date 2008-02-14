@@ -297,6 +297,17 @@ class lmbSelectRawQueryTest extends UnitTestCase
                        "SELECT * FROM test \nORDER BY 't1' ASC,'t2' DESC");
   }
 
+  function testAddRawOrderNoOrderClause()
+  {
+    $sql = new lmbSelectRawQuery("SELECT * FROM test \n%order%", $this->conn);
+
+    $sql->addRawOrder('rand1()');
+    $sql->addRawOrder('rand2()');
+
+    $this->assertEqual($sql->toString(),
+                       "SELECT * FROM test \nORDER BY rand1(),rand2()");
+  }
+
   function testAddOrderAsArray()
   {
     $sql = new lmbSelectRawQuery("SELECT * FROM test \n%order%", $this->conn);
@@ -314,6 +325,17 @@ class lmbSelectRawQueryTest extends UnitTestCase
 
     $this->assertEqual($sql->toString(),
                        "SELECT * FROM test ORDER BY\n 't1' ASC,'t2' DESC");
+  }
+
+  function testAddRawOrderWithOrderClause()
+  {
+    $sql = new lmbSelectRawQuery("SELECT * FROM test ORDER BY\n %order%", $this->conn);
+
+    $sql->addRawOrder('rand1()');
+    $sql->addRawOrder('rand2()');
+
+    $this->assertEqual($sql->toString(),
+                       "SELECT * FROM test ORDER BY\n rand1(),rand2()");
   }
 
   function testAddOrderWithOrderClause2()
@@ -334,6 +356,20 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->assertEqual($sql->toString(),
                        'SELECT * FROM test ORDER BY t0 DESC');
   }
+
+  function testMixRawAndRegularOrder()
+  {
+    $sql = new lmbSelectRawQuery("SELECT * FROM test \n%order%", $this->conn);
+
+    $sql->addRawOrder('rand1()');
+    $sql->addOrder('t1');
+    $sql->addRawOrder('rand2()');
+    $sql->addOrder('t2', 'DESC');
+
+    $this->assertEqual($sql->toString(),
+                       "SELECT * FROM test \nORDER BY rand1(),'t1' ASC,rand2(),'t2' DESC");
+  }
+
 
   function testNoGroupsAdded()
   {
