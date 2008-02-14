@@ -13,18 +13,27 @@ lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
 
 /**
  * class lmbAuditDbConnection.
- * Remembers queries for later analysis, especially useful in tests
+ * Remembers stats for later analysis, especially useful in tests
  * @package dbal
  * @version $Id$
  */
 class lmbAuditDbConnection extends lmbDbConnectionDecorator
 {
-  protected $queries = null;
+  protected $stats = null;
   
   function execute($sql)
   {
-    $this->queries[] = $sql;
-    return parent :: execute($sql);
+    $info = array('query' => $sql);
+    
+    $start_time = microtime(true);
+
+    $res = parent :: execute($sql);
+    
+    $info['time'] = round(microtime(true) - $start_time, 6);
+    
+    $this->stats[] = $info;
+    
+    return $res;
   }
   
   function newStatement($sql)
@@ -36,26 +45,30 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
   
   function countQueries()
   {
-    return sizeof($this->queries);
+    return sizeof($this->stats);
   }
   
   function resetStats()
   {
-    $this->queries = array();
+    $this->stats = array();
   }
   
   function getQueries($reg_exp = '')
   {
-    if(!$reg_exp)
-      return $this->queries;
-    
     $res = array();
-    foreach($this->queries as $query)
+    foreach($this->stats as $info)
     {
-      if(preg_match('/' . $reg_exp . '/i', $query))
+      $query = $info['query'];
+      if(!$reg_exp || preg_match('/' . $reg_exp . '/i', $query))
         $res[] = $query;
     }
+
     return $res;
+  }
+  
+  function getStats()
+  {
+    return $this->stats; 
   }
 }
 
