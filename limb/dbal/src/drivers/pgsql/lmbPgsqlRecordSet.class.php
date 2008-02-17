@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlRecord.class.php');
  * class lmbPgsqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecordSet.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbPgsqlRecordSet.class.php 6801 2008-02-17 18:27:54Z pachanga $
  */
 class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 {
@@ -54,7 +54,7 @@ class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 
       if(is_array($this->sort_params))
       {
-        if(preg_match('~\s+ORDER\s+BY\s+~i', $query))
+        if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $query))
           $query .= ',';
         else
           $query .= ' ORDER BY ';

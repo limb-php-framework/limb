@@ -52,7 +52,7 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
 
       if(is_array($this->sort_params))
       {
-        if(preg_match('~\s+ORDER\s+BY\s+~i', $query))
+        if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $query))
           $query .= ',';
         else
           $query .= ' ORDER BY ';

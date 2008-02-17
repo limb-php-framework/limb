@@ -16,7 +16,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciArraySet.class.php');
  * class lmbOciQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbOciQueryStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbOciQueryStatement.class.php 6801 2008-02-17 18:27:54Z pachanga $
  */
 class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatement
 {
@@ -46,7 +46,7 @@ class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatemen
 
   function addOrder($sort_params)
   {
-    if(preg_match('~\s+ORDER\s+BY\s+~i', $this->sql))
+    if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $this->sql))
       $this->sql .= ',';
     else
       $this->sql .= ' ORDER BY ';

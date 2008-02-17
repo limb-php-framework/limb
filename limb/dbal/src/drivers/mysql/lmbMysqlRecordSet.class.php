@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecord.class.php');
  * class lmbMysqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbMysqlRecordSet.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbMysqlRecordSet.class.php 6801 2008-02-17 18:27:54Z pachanga $
  */
 class lmbMysqlRecordSet extends lmbDbBaseRecordSet
 {
@@ -55,7 +55,7 @@ class lmbMysqlRecordSet extends lmbDbBaseRecordSet
 
       if(is_array($this->sort_params))
       {
-        if(preg_match('~\s+ORDER\s+BY\s+~i', $query))
+        if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $query))
           $query .= ',';
         else
           $query .= ' ORDER BY ';
