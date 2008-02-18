@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * Translates between form name attributes and tag displayname
  * attributes (human reabable).
  * @package wact
- * @version $Id: error.inc.php 6658 2007-12-26 07:31:49Z serega $
+ * @version $Id: error.inc.php 6802 2008-02-18 21:05:10Z 3dmax $
  */
 class WactFormFieldNameDictionary
 {
@@ -31,7 +31,7 @@ class WactFormFieldNameDictionary
   * @return string displayname attribute of the field
   * @access protected
   * @package wact
- * @version $Id: error.inc.php 6658 2007-12-26 07:31:49Z serega $
+ * @version $Id: error.inc.php 6802 2008-02-18 21:05:10Z 3dmax $
  */
 
   function getFieldName($field_name)
@@ -77,14 +77,16 @@ class WactFormErrorList extends ArrayIterator
     $error = parent :: current();
 
     $text = $error['message'];
-    
-    foreach($error['fields'] as $key => $fieldName)
+
+    $error_fields = $error['fields'];
+    foreach($error_fields as $key => $fieldName)
     {
       $replacement = '"' . $this->getFieldName($fieldName) . '"';
       $text = str_replace('{' . $key . '}', $replacement, $text);
     }
 
-    foreach($error['values'] as $key => $replacement)
+    $error_values = $error['values'];
+    foreach($error_values as $key => $replacement)
       $text = str_replace('{' . $key . '}', $replacement, $text);
 
     $error['message'] = $text;
