@@ -13,11 +13,10 @@ lmb_require('limb/dbal/src/drivers/oci/lmbOciRecord.class.php');
  * class lmbOciRecordSet.
  *
  * @package dbal
- * @version $Id: lmbOciRecordSet.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbOciRecordSet.class.php 6803 2008-02-20 12:16:17Z serega $
  */
 class lmbOciRecordSet extends lmbDbBaseRecordSet
 {
-  protected $queryId;
   protected $query;
   protected $original_stmt;
   protected $stmt;
@@ -39,8 +38,7 @@ class lmbOciRecordSet extends lmbDbBaseRecordSet
 
   function paginate($offset, $limit)
   {
-    $this->offset = $offset;
-    $this->limit = $limit;
+    parent :: paginate($offset, $limit);
     $this->need_pager = true;
     return $this;
   }

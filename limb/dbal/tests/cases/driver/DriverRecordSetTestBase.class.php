@@ -73,6 +73,15 @@ abstract class DriverRecordSetTestBase extends UnitTestCase
     $this->assertEqual($i, 2);
   }
 
+  function testPaganationAfterIterating()
+  {
+    for($this->cursor->rewind(), $i = 0; $this->cursor->valid(); $this->cursor->next(), $i++);
+    $this->assertEqual($i, 3);
+    $this->cursor->paginate($offset = 0, $limit = 2);
+    for($this->cursor->rewind(), $i = 0; $this->cursor->valid(); $this->cursor->next(), $i++);
+    $this->assertEqual($i, 2);
+  }
+
   function testPagerIterationPassingStringInsteadOfNumber()
   {
     $this->cursor->paginate($offset = ';Select * FROM some_table', $limit = 2);

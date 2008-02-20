@@ -16,6 +16,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbRecordSet.interface.php');
  */
 abstract class lmbDbBaseRecordSet implements lmbDbRecordSet
 {
+  protected $queryId;
   protected $offset;
   protected $limit;
   protected $sort_params;
@@ -24,6 +25,7 @@ abstract class lmbDbBaseRecordSet implements lmbDbRecordSet
   {
     $this->offset = (int)$offset;
     $this->limit = (int)$limit;
+    $this->freeQuery();
     return $this;
   }
 

@@ -14,11 +14,10 @@ lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlRecord.class.php');
  * class lmbPgsqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecordSet.class.php 6801 2008-02-17 18:27:54Z pachanga $
+ * @version $Id: lmbPgsqlRecordSet.class.php 6803 2008-02-20 12:16:17Z serega $
  */
 class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 {
-  protected $queryId;
   protected $query;
   protected $connection;
 

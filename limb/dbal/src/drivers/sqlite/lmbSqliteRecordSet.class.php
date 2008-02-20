@@ -17,7 +17,6 @@ lmb_require('limb/dbal/src/drivers/sqlite/lmbSqliteRecord.class.php');
  */
 class lmbSqliteRecordSet extends lmbDbBaseRecordSet
 {
-  protected $queryId;
   protected $query;
   protected $connection;
 
