@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6700 2008-01-18 09:27:02Z serega $
+ * @version $Id: lmbARRelationCollection.class.php 6804 2008-02-22 14:31:16Z korchasa $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -260,7 +260,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   function count()
   {
     $this->_ensureDataset();
-    return $this->dataset->count();
+    return (int) $this->dataset->count();
   }
   //end
 
