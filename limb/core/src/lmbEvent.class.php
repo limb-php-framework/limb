@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbDelegate.class.php');
  * Event object. In fact it's a collection of delegates
  * 
  * @package core
- * @version $Id: lmbEvent.class.php 6805 2008-02-26 09:05:08Z cmz $
+ * @version $Id: lmbEvent.class.php 6806 2008-02-26 15:58:38Z cmz $
  */
 class lmbEvent 
 {
@@ -76,7 +76,6 @@ class lmbEvent
   
   /**
    * Invoke all delegates containing in the event object.
-   * Stops invoking if delegate return a not null result
    *
    */
   function invokeAll()
@@ -85,6 +84,11 @@ class lmbEvent
     lmbDelegate::invokeAll($this->delegates, $args);
   }
   
+  /**
+   * Invoke all delegates containing in the event object.
+   * Stops invoking if delegate return a not null result
+   *
+   */
   function invokeChain()
   {
     $args = func_get_args();
