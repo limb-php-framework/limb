@@ -10,7 +10,7 @@
 /**
  * Object form of invoking an object method
  * @package core
- * @version $Id$
+ * @version $Id: lmbDelegate.class.php 6805 2008-02-26 09:05:08Z cmz $
  */
 class lmbDelegate
 {
@@ -77,6 +77,30 @@ class lmbDelegate
       return $this->is_valid;
     $this->is_valid = is_callable($this->php_callback);
     return $this->is_valid;
+  }
+    
+  function equal($delegate)
+  {
+    $delegate = self::objectify($delegate);
+    if(!$this->isValid() || !$delegate->isValid())
+      return false;
+      
+    $callback1 = $this->getCallback();
+    $callback2 = $delegate->getCallback();
+    
+    $array_cb1 = is_array($callback1);
+    $array_cb2 = is_array($callback2);
+    if($array_cb1 != $array_cb2)
+      return false;
+      
+    if($array_cb1)
+    {
+      return $callback1[0] === $callback2[0] && $callback1[1] == $callback2[1];
+    }
+    else
+    {
+      return $callback1 == $callback2;
+    }    
   }
 
   static function objectify($delegate)

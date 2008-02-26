@@ -182,5 +182,24 @@ class lmbDelegateTest extends UnitTestCase
     $this->assertFalse($s3->instance_called);
     $this->assertNull($s3->instance_arg);
   }
+  
+  function testEqual()
+  {
+    $s1 = new DelegateTestingStub();
+    $s2 = new DelegateTestingStub();
+    
+    $d1 = new lmbDelegate($s1, 'instanceMethod');
+    $d2 = new lmbDelegate($s2, 'instanceReturningMethod');
+    $d3 = new lmbDelegate($s1, 'instanceMethod');
+    $d4 = new lmbDelegate($s1, 'instanceReturningMethod');
+    $d5 = new lmbDelegate('DelegateTestingStubFunction');
+    $d6 = new lmbDelegate('DelegateTestingStubFunction');
+    
+    $this->assertFalse($d1->equal($d2));
+    $this->assertTrue($d1->equal($d3));
+    $this->assertFalse($d1->equal($d4));
+    $this->assertFalse($d1->equal($d6));
+    $this->assertTrue($d5->equal($d6));
+  }
 }
 
