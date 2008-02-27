@@ -10,12 +10,12 @@
 lmb_require('limb/core/src/lmbDelegate.class.php');
 
 /**
- * Event object. In fact it's a collection of delegates
+ * Delegates chain
  * 
  * @package core
- * @version $Id: lmbEvent.class.php 6806 2008-02-26 15:58:38Z cmz $
+ * @version $Id: lmbDelegatesChain.class.php 6810 2008-02-27 12:19:01Z cmz $
  */
-class lmbEvent 
+class lmbDelegatesChain 
 {
   
   /**
@@ -26,7 +26,7 @@ class lmbEvent
   protected $delegates = array();
   
   /**
-   * Find a delegate added to event
+   * Find a delegate added to chain
    *
    * @param mixed $delegate finding delegate 
    * @return mixed number of delegate or false if delegate is not found 
@@ -43,7 +43,7 @@ class lmbEvent
   }
   
   /**
-   * Return true if delegate was added to the event already 
+   * Return true if delegate was added to the chain already 
    *
    * @param mixed $delegete
    * @return boolean
@@ -64,7 +64,7 @@ class lmbEvent
   }
   
   /**
-   * Remove delegate from the event object
+   * Remove delegate from the chain
    *
    * @param mixed $delegete
    */
@@ -75,21 +75,11 @@ class lmbEvent
   }
   
   /**
-   * Invoke all delegates containing in the event object.
-   *
-   */
-  function invokeAll()
-  {
-    $args = func_get_args();
-    lmbDelegate::invokeAll($this->delegates, $args);
-  }
-  
-  /**
-   * Invoke all delegates containing in the event object.
+   * Invoke all delegates containing in the chain.
    * Stops invoking if delegate return a not null result
    *
    */
-  function invokeChain()
+  function invoke()
   {
     $args = func_get_args();
     return lmbDelegate::invokeChain($this->delegates, $args); 
