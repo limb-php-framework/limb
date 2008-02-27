@@ -19,7 +19,7 @@ lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
  */
 class lmbAuditDbConnection extends lmbDbConnectionDecorator
 {
-  protected $stats = null;
+  protected $stats = array();
   
   function execute($sql)
   {
