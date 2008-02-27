@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6694 2008-01-17 15:41:51Z serega $
+ * @version $Id: lmbARManyToManyCollection.class.php 6809 2008-02-27 11:45:36Z serega $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -57,11 +57,37 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
 
   function set($objects)
   {
-    $this->removeAll();
+    $existing_records = $this->_getExistingRecords($objects);
+    $linked_objects_ids = array_keys($existing_records);
+    
     foreach($objects as $object)
-      $this->add($object);
+    {
+      $id = $object->getId();
+      if(!isset($existing_records[$id]))
+        $this->add($object);
+      else
+        unset($existing_records[$id]);
+    }
+    
+    $to_remove_ids = array_keys($existing_records);
+    if(count($to_remove_ids))
+    {
+      $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
+      $table->delete(lmbSQLCriteria :: in($this->relation_info['foreign_field'], $to_remove_ids));
+    }
   }
-
+  
+  protected function _getExistingRecords($objects)
+  {
+    $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
+    $criteria = new lmbSQLCriteria();
+    $criteria->addAnd(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
+    $criteria->addAnd(new lmbSQLFieldCriteria($this->relation_info['foreign_field'], null, lmbSQLFieldCriteria :: IS_NOT_NULL));
+    $existing_records = $table->select($criteria);
+    
+    return lmbCollection :: toFlatArray($existing_records, $this->relation_info['foreign_field']);
+  }
+  
   protected function _removeRelatedRecords()
   {
     $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
@@ -74,8 +100,8 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
 
   protected function _saveObject($object, $error_list = null)
   {
-    $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
     $object->save($error_list);
+    $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
     $table->insert(array($this->relation_info['field'] => $this->owner->getId(),
                          $this->relation_info['foreign_field'] => $object->getId()));
   }

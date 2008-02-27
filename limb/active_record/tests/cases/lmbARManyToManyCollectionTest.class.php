@@ -498,6 +498,30 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
     $this->assertEqual($collection->at(1)->getTitle(), $group3->getTitle());
   }
   
+  function testSetDontReInsertSameRecordsIfTheyExists()
+  {
+    $group1 = $this->_initGroup();
+    $group2 = $this->_initGroup();
+    $group3 = $this->_initGroup();
+    $group4 = $this->_initGroup();
+
+    $user = $this->_createUserAndSave(array($group1, $group2, $group3));
+    
+    $table = lmbDBAL :: table('user2group_for_test', $this->conn);
+    $records = $table->select()->getArray();
+    $this->assertEqual(count($records), 3);
+    
+    $collection = new lmbARManyToManyCollection('groups', $user);
+    $collection->set(array($group1, $group2, $group3, $group4));
+
+    $new_records = $table->select()->getArray();
+    $this->assertEqual(count($new_records), 4);
+    $this->assertEqual($records[0]['id'], $new_records[0]['id']);
+    $this->assertEqual($records[1]['id'], $new_records[1]['id']);
+    $this->assertEqual($records[2]['id'], $new_records[2]['id']);
+    $this->assertEqual($new_records[3]['user_id'], $user->getId());
+  }
+  
   function testRemove_DeleteRecordAndCleanUpInternalIterator()
   {
     $group1 = $this->_initGroup();
