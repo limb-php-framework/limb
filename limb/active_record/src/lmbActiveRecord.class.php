@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6808 2008-02-27 11:43:56Z serega $
+ * @version $Id: lmbActiveRecord.class.php 6811 2008-02-27 13:05:08Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -950,8 +950,11 @@ class lmbActiveRecord extends lmbObject
         $this->_invokeListeners(self :: ON_BEFORE_UPDATE);
 
         if($need_validation && !$this->_validateUpdate())
+        {
+          $this->_is_being_saved = false;
           throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
                                            $this->_error_list);
+        }
 
         $this->_onSave();
 
@@ -974,8 +977,11 @@ class lmbActiveRecord extends lmbObject
         $this->_invokeListeners(self :: ON_BEFORE_CREATE);
 
         if($need_validation && !$this->_validateInsert())
+        {
+          $this->_is_being_saved = false;
           throw new lmbValidationException('ActiveRecord "' . get_class($this) . '" validation failed',
                                            $this->_error_list);
+        }
 
         $this->_onSave();
 

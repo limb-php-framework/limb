@@ -179,13 +179,44 @@ class lmbARValidationTest extends lmbARBaseTestCase
 
     $validator->expectOnce('setErrorList', array($error_list));
     $validator->expectOnce('validate', array(new ReferenceExpectation($object)));
-    $validator->setReturnValue('validate', true);
 
     $object->save($error_list);
 
     $this->assertEqual($this->db->count('test_one_table_object'), 1);
   }
 
+  function testDoubleInsert_FirstSaveValidationError_But_SecondSaveIsOk()
+  {
+    $object = $this->_createActiveRecord();
+
+    $validator = new MockValidator();
+    $object->setInsertValidator($validator);
+
+    $object->set('annotation', $annotation = 'Super annotation');
+    $object->set('content', $content = 'Super content');
+    $object->set('news_date', $news_date = '2005-01-10');
+
+    $error_list = new MockErrorList();
+    $error_list->setReturnValueAt(0, 'isValid', false);
+    $error_list->setReturnValueAt(1, 'isValid', true);
+    
+    try
+    {
+      $object->save($error_list);
+      $this->assertTrue(false);
+    }
+    catch(lmbValidationException $e)
+    {
+      $this->assertTrue(true);
+    }
+
+    $this->assertEqual($this->db->count('test_one_table_object'), 0);
+    
+    $object->save($error_list);
+
+    $this->assertEqual($this->db->count('test_one_table_object'), 1);
+  }
+  
   function testDontUpdateOnValidationError()
   {
     $object = $this->_createActiveRecordWithDataAndSave();
@@ -236,6 +267,38 @@ class lmbARValidationTest extends lmbARBaseTestCase
     $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $annotation);
   }
+  
+  function testDoubleUpdate_FirstSaveValidationError_But_SecondSaveIsOk()
+  {
+    $object = $this->_createActiveRecordWithDataAndSave();
+
+    $validator = new MockValidator();
+    $object->setUpdateValidator($validator);
+
+    $object->set('annotation', $annotation = 'Other annotation');
+
+    $error_list = new MockErrorList();
+    $error_list->setReturnValueAt(0, 'isValid', false);
+    $error_list->setReturnValueAt(1, 'isValid', true);
+    
+    try
+    {
+      $object->save($error_list);
+      $this->assertTrue(false);
+    }
+    catch(lmbValidationException $e)
+    {
+      $this->assertTrue(true);
+    }
+
+    $record = $this->db->selectRecord('test_one_table_object');
+    $this->assertNotEqual($record->get('annotation'), $annotation);
+    
+    $object->save($error_list);
+
+    $record = $this->db->selectRecord('test_one_table_object');
+    $this->assertEqual($record->get('annotation'), $annotation);
+  }  
 
   function testSaveSkipValidation()
   {

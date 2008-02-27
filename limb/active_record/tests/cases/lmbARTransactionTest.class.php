@@ -8,18 +8,6 @@
  */
 require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOneTableObjectFailing
 
-class TestOneTableObjectFailing extends lmbActiveRecord
-{
-  var $fail;
-  protected $_db_table_name = 'test_one_table_object';
-
-  protected function _onAfterSave()
-  {
-    if(is_object($this->fail))
-      throw $this->fail;
-  }
-}
-
 class lmbARTransactionTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('test_one_table_object');

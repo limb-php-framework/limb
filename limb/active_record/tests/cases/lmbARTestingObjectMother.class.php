@@ -4,6 +4,18 @@ class TestOneTableObject extends lmbActiveRecord
   protected $_db_table_name = 'test_one_table_object';
 }
 
+class TestOneTableObjectFailing extends lmbActiveRecord
+{
+  var $fail;
+  protected $_db_table_name = 'test_one_table_object';
+
+  protected function _onAfterSave()
+  {
+    if(is_object($this->fail))
+      throw $this->fail;
+  }
+}
+
 class PersonForTest extends lmbActiveRecord
 {
   public $save_count = 0;
