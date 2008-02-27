@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6756 2008-01-29 08:30:51Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 6808 2008-02-27 11:43:56Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -661,7 +661,7 @@ class lmbActiveRecord extends lmbObject
     $info = $this->getRelationInfo($relation);
 
     if(isset($info['collection']))
-      return new $info['collection']($relation, $this, $criteria);
+      return new $info['collection']($relation, $this, $criteria, $this->_db_conn);
     elseif($this->_hasOneToManyRelation($relation))
       return new lmbAROneToManyCollection($relation, $this, $criteria, $this->_db_conn);
     else if($this->_hasManyToManyRelation($relation))
@@ -1407,7 +1407,7 @@ class lmbActiveRecord extends lmbObject
       return new lmbCollection();
     else
     {
-      $params['criteria'] = new lmbSQLFieldCriteria($this->_primary_key_name, $ids, lmbSQLFieldCriteria :: IN);
+      $params['criteria'] = new lmbSQLFieldCriteria($this->_db_table_name .'.'.$this->_primary_key_name, $ids, lmbSQLFieldCriteria :: IN);
       return self :: find(get_class($this), $params, $this->_db_conn);
     }
   }
