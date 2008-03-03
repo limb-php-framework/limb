@@ -23,11 +23,25 @@ class lmbMacroTemplateLocatorSimple implements lmbMacroTemplateLocatorInterface
   }
 
   function locateSourceTemplate($file_name)
-  {                
-    $file_path = $this->config['tpl_scan_dirs'].'/'.$file_name;
-    if(!file_exists($file_path))
-      throw new lmbMacroException('template file not found', array('template' => $file_path));
-    return $file_path;
+  {         
+    if(lmb_is_path_absolute($file_name))
+      return $file_name;
+    
+    if(is_array($this->config['tpl_scan_dirs']))
+      $dirs = $this->config['tpl_scan_dirs'];
+    else
+      $dirs =  array($this->config['tpl_scan_dirs']);
+      
+    foreach($dirs as $dir)
+    {
+      $file_path = $dir . '/' . $file_name;
+      if(lmb_is_path_absolute($file_path) && file_exists($file_path))
+        return $file_path;
+      if($full_path = lmb_resolve_include_path($file_path))
+        return $full_path;
+    }
+    
+    throw new lmbMacroException('template file not found', array('template' => $file_path));
   }
 
   function locateCompiledTemplate($file_name)

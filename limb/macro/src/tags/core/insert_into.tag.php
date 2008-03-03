@@ -11,7 +11,8 @@
  * class lmbMacroInsertIntoTag.
  *
  * @tag insert:into
- * @aliases into, wrap:into, include:into  
+ * @aliases into, wrap:into, include:into
+ * @req_attributes slot 
  * @package macro
  * @version $Id$
  */

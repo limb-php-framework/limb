@@ -119,6 +119,18 @@ class lmbMacroOutputExpressionsTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'Hey');
   }
 
+  function testChainedOutputWithArrayIndexInPath()
+  {
+    $content = '{$#var.1.title}';
+
+    $macro = $this->_createMacroTemplate($content, 'tpl.html');
+
+    $macro->set('var', array(array('title' => 'First'), array('title' => 'Second')));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Second');
+  }
+
   function testBrokenChainOutputForMixedArraysAndObjects()
   {
     $content = '{$#var.foo.bar.baz}';

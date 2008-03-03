@@ -10,6 +10,7 @@
 /**
  * Repeat a portion of the template several times
  * @tag repeat
+ * @req_attributes times  
  * @package macro
  * @version $Id$
  */

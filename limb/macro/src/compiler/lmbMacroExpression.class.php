@@ -91,6 +91,15 @@ class lmbMacroExpression implements lmbMacroExpressionInterface
             $item .= '->';
           continue;
         }
+        elseif(strpos($token[1], '.') === 0)
+        {
+          if(!$in_function)
+          {
+            $path_items[] = $item;
+            $item = substr($token[1], 1);
+            continue;
+          }
+        }
         $item .= $token[1];
       }
       else
