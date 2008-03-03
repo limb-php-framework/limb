@@ -73,7 +73,6 @@
             {
               if (that.attr('src').match(/.*\.png([?].*)?$/i))// make sure it is png image
               {
-                alert(that.attr('src')+' ' + that.height());
                 // use source tag value if set
                 var source = (base && that.attr('src').substring(0,1)!='/') ? base + that.attr('src') : that.attr('src');
                 // apply filter

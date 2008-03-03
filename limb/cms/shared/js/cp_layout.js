@@ -290,25 +290,17 @@ function initDocumentStructure(){
   var container = jQuery('#container');
   var sidebar = jQuery('#sidebar');
   var toggle = jQuery('.sidebar_toggle');
-  container.css({
-                position:'absolute',
-                overflow: 'auto',
-                top: '38px',
-                left: '0',
-                zIndex: 10
-  });
-  sidebar.css({
-                position:'absolute',
-                overflow: 'hidden',
-                top: '38px',
-                left: '0',
-                zIndex: 20
-  });
+  var text = jQuery('.sidebar_toggle span.text');
 
   var bodyHeight = jQuery('body').height()-40;
   container.height(bodyHeight);
   sidebar.height(bodyHeight);
+
+  if (text.css('display')=='block')
+  return;
+
   toggle.height (bodyHeight -13);
+
 
 };
 
@@ -340,14 +332,16 @@ function initMainMenu(){
 
 /*============================== WINDOW READY ==============================*/
 jQuery(window).ready(function(){
+    /*SideBar Toggle*/
+    new CMS.SidebarToggle('sidebar_toggle');
+
     initDocumentStructure();
     jQuery(window).resize(initDocumentStructure);
 
     /*Nice Button*/
     jQuery('.button').wrap('<span class="button_wrapper"></span>');
 
-    /*SideBar Toggle*/
-    new CMS.SidebarToggle('sidebar_toggle');
+
 
     // Fiter up/down sliding control
     new CMS.Filter(ShowFilterDefault, HideFilterDefault);
