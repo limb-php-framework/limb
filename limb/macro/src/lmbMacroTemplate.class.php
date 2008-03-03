@@ -8,7 +8,7 @@
  */
 
 lmb_require('limb/macro/src/lmbMacroTemplateLocatorInterface.interface.php');
-lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
+lmb_require('limb/macro/src/lmbMacroTemplateLocatorSimple.class.php');
 lmb_require('limb/macro/src/lmbMacroException.class.php');
 
 /**
@@ -31,7 +31,7 @@ class lmbMacroTemplate
     $this->file = $file;
     $this->config = $config;        
     $this->_applyConfig($config);
-    $this->locator = $locator ? $locator : new lmbMacroTemplateLocator($this->config);
+    $this->locator = $locator ? $locator : new lmbMacroTemplateLocatorSimple($this->config);
   }
   
   protected function _applyConfig($config)
