@@ -1,5 +1,7 @@
-<flash_box target='flashbox'/>
-<list:list id='flashbox'>
+<?php
+  $flash_box = lmbToolkit :: instance()->getFlashBox()->getUnifiedList();
+?>
+<list:list from='$flash_box'>
 <div class='notify_zone'>
   <span onclick='jQuery(".notify_zone").fadeOut()' class='close'>Hide</span>
   <list:ITEM >
