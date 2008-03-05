@@ -63,20 +63,10 @@ class lmbMacroTemplate
   {     
     if(!$this->executor)
     {
-      $this->compiled_file = $this->locator->locateCompiledTemplate($this->file);
-
-      if($this->config['is_force_compile'] || !file_exists($this->compiled_file))
-      {
-        $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
-
-        $compiler = $this->_createCompiler();
-        $compiler->compile($this->file, $this->compiled_file, $macro_executor_class, 'render');
-        //appending macro executor class
-        file_put_contents($this->compiled_file, file_get_contents($this->compiled_file) .
-                                          "\n\$macro_executor_class='$macro_executor_class';");
-      }
+      list($this->compiled_file, $macro_executor_class) = $this->compile($this->file);
 
       include($this->compiled_file);
+      
       $this->executor = new $macro_executor_class($this->config);
     }
 
@@ -91,6 +81,24 @@ class lmbMacroTemplate
     $out = ob_get_contents();
     ob_end_clean();
     return $out;
+  }
+  
+  function compile($source_file)
+  {
+    $compiled_file = $this->locator->locateCompiledTemplate($source_file);
+
+    if($this->config['is_force_compile'] || !file_exists($compiled_file))
+    {
+      $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
+
+      $compiler = $this->_createCompiler();
+      $compiler->compile($source_file, $compiled_file, $macro_executor_class, 'render');
+      //appending macro executor class
+      file_put_contents($compiled_file, file_get_contents($compiled_file) .
+                                        "\n\$macro_executor_class='$macro_executor_class';");
+    }
+    
+    return array($compiled_file, $macro_executor_class);
   }
 
   protected function _createCompiler()
