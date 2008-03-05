@@ -36,8 +36,8 @@ class lmbDeleteQueryTest extends UnitTestCase
 
   function testDelete()
   {
-    $this->db->insert('test_db_table', array('id' => 100));
-    $this->db->insert('test_db_table', array('id' => 101));
+    $startId = $this->db->insert('test_db_table', array('description' => 'text1'));
+    $this->db->insert('test_db_table', array('description' => 'text2'));
 
     $query = new lmbDeleteQuery('test_db_table', $this->conn);
     $stmt = $query->getStatement();
@@ -49,33 +49,33 @@ class lmbDeleteQueryTest extends UnitTestCase
 
   function testDeleteWithCondition()
   {
-    $this->db->insert('test_db_table', array('id' => 100));
-    $this->db->insert('test_db_table', array('id' => 101));
-    $this->db->insert('test_db_table', array('id' => 102));
+    $startId = $this->db->insert('test_db_table', array('description' => 'text1'));
+    $this->db->insert('test_db_table', array('description' => 'text2'));
+    $this->db->insert('test_db_table', array('description' => 'text3'));
 
     $query = new lmbDeleteQuery('test_db_table', $this->conn);
-    $query->addCriteria(new lmbSQLFieldCriteria('id', 100));
+    $query->addCriteria(new lmbSQLFieldCriteria('id', $startId));
     $stmt = $query->getStatement();
     $stmt->execute();
 
     $rs = $this->db->select('test_db_table')->sort(array('id' => 'ASC'));
     $arr = $rs->getArray();
-    $this->assertEqual($arr[0]['id'], 101);
-    $this->assertEqual($arr[1]['id'], 102);
+    $this->assertEqual($arr[0]['id'], $startId+1);
+    $this->assertEqual($arr[1]['id'], $startId+2);
     $this->assertEqual(sizeof($arr), 2);
   }
 
   function testChaining()
   {
-    $this->db->insert('test_db_table', array('id' => 100));
-    $this->db->insert('test_db_table', array('id' => 101));
+    $startId = $this->db->insert('test_db_table', array('description' => 'text1'));
+    $this->db->insert('test_db_table', array('description' => 'text2'));
 
     $query = new lmbDeleteQuery('test_db_table', $this->conn);
-    $query->where('id=100')->execute();
+    $query->where($this->conn->quoteIdentifier('id') . '=' . intval($startId))->execute();
 
     $rs = $this->db->select('test_db_table');
     $arr = $rs->getArray();
-    $this->assertEqual($arr[0]['id'], 101);
+    $this->assertEqual($arr[0]['id'], $startId+1);
     $this->assertEqual(sizeof($arr), 1);
   }
 }
