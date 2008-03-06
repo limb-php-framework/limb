@@ -8,6 +8,7 @@
  */
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 @define('LIMB_TRANSLATIONS_INCLUDE_PATH', 'i18n/translations;limb/*/i18n/translations');
 
@@ -192,7 +193,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
     $cache = $this->_getCacheFile($file);
     if(!is_dir($dir = dirname($cache)))
-      mkdir($dir);
+      lmbFs::mkdir($dir, 0775);
     file_put_contents($this->_getCacheFile($file), serialize($dictionary->getTranslations()), LOCK_EX);
   }
 
@@ -201,5 +202,3 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
     return $this->cache_dir . '/i18n-qt/' . md5(realpath($file));
   }
 }
-
-
