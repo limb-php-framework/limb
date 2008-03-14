@@ -1,0 +1,121 @@
+CREATE OR REPLACE TABLE "test_one_table_object" (
+  "id" INT NOT NULL AUTOINC,
+  "annotation" blob,
+  "content" blob,
+  "news_date" date default NULL,
+  "ordr" int NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+CREATE OR REPLACE TABLE "test_auto_times_object" (
+  "id" INT NOT NULL AUTOINC,
+  "content" blob,
+  "ctime" int NULL,
+  "utime" int NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "test_one_table_typed_object" (
+  "id" INT NOT NULL AUTOINC,
+  "title" blob,
+  "kind" varchar(255) NOT NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE course_for_typed_test (
+ "id" INT NOT NULL AUTOINC,
+ "title" varchar(255) default NULL,
+ PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "lecture_for_typed_test" (
+  "id" INT NOT NULL AUTOINC,
+  "title" varchar(255) default NULL,
+  "course_id" int default NULL,
+  "kind" varchar(255) NOT NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+
+CREATE OR REPLACE TABLE social_security_for_test (
+"id" INT NOT NULL AUTOINC,
+"code" varchar(255) default NULL,
+PRIMARY   KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "person_for_test" (
+"id" INT NOT NULL AUTOINC,
+name varchar(255) default NULL,
+"ss_id" int default NULL,
+PRIMARY   KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "program_for_test" (
+ "id" INT NOT NULL AUTOINC,
+ "title" varchar(255) default NULL,
+ PRIMARY KEY  ("id")
+)  ;
+
+
+
+CREATE OR REPLACE TABLE "course_for_test" (
+ "id" INT NOT NULL AUTOINC,
+ "title" varchar(255) default NULL,
+ "program_id" int default NULL,
+ PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "lecture_for_test" (
+  "id" INT NOT NULL AUTOINC,
+  "title" varchar(255) default NULL,
+  "course_id" int default NULL,
+  "alt_course_id" int default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR TABLE "lesson_for_test" (
+  "id" INT NOT NULL AUTOINC,
+  "date_start" int default NULL,
+  "date_end" int default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "group_for_test" (
+  "id" INT NOT NULL AUTOINC,
+  "title" varchar(255)  default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "user_for_test" (
+  "id" INT NOT NULL AUTOINC,
+  "first_name" varchar(255)  default NULL,
+  "linked_object_id" int default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "user2group_for_test" (
+ "id" INT NOT NULL AUTOINC,
+ "user_id" int default NULL,
+ "group_id" int default NULL,
+ PRIMARY KEY  ("id")
+)  ;
+
+
+CREATE OR REPLACE TABLE "extended_user2group_for_test" (
+ "id" INT NOT NULL AUTOINC,
+ "user_id" int default NULL,
+ "group_id" int default NULL,
+ "other_id" int default NULL,
+ PRIMARY KEY  ("id")
+)  ;

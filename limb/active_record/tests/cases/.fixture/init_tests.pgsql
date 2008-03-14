@@ -15,7 +15,7 @@ CREATE TABLE test_auto_times_object (
   "id" SERIAL,
   "content" text,
   "ctime" int8 NULL,
-  "mtime" int8 NULL,
+  "utime" int8 NULL,
   PRIMARY KEY  (id)
 )  ;
 
