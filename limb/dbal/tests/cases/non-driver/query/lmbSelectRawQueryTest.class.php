@@ -508,5 +508,14 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->assertEqual($rs->count(), 1);
     $this->assertEqual($rs[0], true);
   }
+  
+  function testCountUsingDefaultConnection()
+  {
+    $sql = new lmbSelectRawQuery('SELECT 2');
+    $rs = $sql->fetch();
+    $this->assertEqual($rs->count(), 1);
+    $this->assertEqual($rs[0], true);
+  }
+  
 }
 
