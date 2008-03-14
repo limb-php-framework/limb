@@ -1,0 +1,45 @@
+DROP TABLE "test_one_table_object" CASCADE;
+
+CREATE TABLE "test_one_table_object" (
+  "id" INT NOT NULL AUTOINC,
+  "annotation" blob,
+  "content" blob,
+  "news_date" date default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+DROP TABLE "test_db_table" CASCADE;
+CREATE TABLE "test_db_table" (
+  "id" INT NOT NULL AUTOINC,
+  "description" blob,
+  "title" varchar(255) NOT NULL default '',
+  "ordr" int NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+DROP TABLE "test_one_table_object" CASCADE;
+CREATE TABLE "test_one_table_object" (
+  "id" INT NOT NULL AUTOINC,
+  "annotation" varchar(4000),
+  "content" varchar(4000),
+  "news_date" date default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+DROP TABLE "all_types_test" CASCADE;
+CREATE TABLE "all_types_test" (
+ "field_int" int default NULL,
+ "field_varchar" varchar(255) default NULL,
+ "field_char" varchar(11) default NULL,
+ "field_date" date default NULL,
+ "field_datetime" int default NULL,
+ "field_time" date default NULL,
+ "field_text" blob,
+ "field_smallint" int default NULL,
+ "field_bigint" int default NULL,
+ "field_blob" blob,
+ "field_float" float default NULL,
+ "field_decimal" decimal(10,0) default NULL,
+ "field_tinyint" int default NULL
+)   ;
+
