@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecord.class.php');
  * class lmbMysqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbMysqlRecordSet.class.php 6803 2008-02-20 12:16:17Z serega $
+ * @version $Id: lmbMysqlRecordSet.class.php 6834 2008-03-14 13:19:28Z svk $
  */
 class lmbMysqlRecordSet extends lmbDbBaseRecordSet
 {
@@ -134,7 +134,7 @@ class lmbMysqlRecordSet extends lmbDbBaseRecordSet
 
   function count()
   {
-    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->query) || preg_match('/\s+GROUP\s+BY\s+/is',$this->query)))
+    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->query) || preg_match('/\s+GROUP\s+BY\s+/is',$this->query)) && preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->query))
     {
       $rewritesql = preg_replace('/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ', $this->query);
       $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','', $rewritesql);
