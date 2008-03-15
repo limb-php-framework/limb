@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 6424 2007-10-16 08:12:07Z serega $
+ * @version $Id: lmbPgsqlConnection.class.php 6839 2008-03-15 08:57:44Z svk $
  */
 class lmbPgsqlConnection implements lmbDbConnection
 {
@@ -205,6 +205,11 @@ class lmbPgsqlConnection implements lmbDbConnection
   {
     $seq = "{$table}_{$colname}_seq";
     return (int)$this->newStatement("SELECT currval('$seq')")->getOneValue();
+  }
+  
+  function isValid()
+  {
+    return @pg_ping($this->getConnectionId());
   }
 }
 

@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6811 2008-02-27 13:05:08Z serega $
+ * @version $Id: lmbActiveRecord.class.php 6839 2008-03-15 08:57:44Z svk $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1613,7 +1613,7 @@ class lmbActiveRecord extends lmbObject
 
   function getInheritanceCondition()
   {
-    return ' LIKE "' . $this->_getInheritancePath() . '%"';
+    return " LIKE '" . $this->_getInheritancePath() . "%'";
   }
 
   protected function _getInheritancePath()
