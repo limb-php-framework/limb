@@ -27,7 +27,7 @@ class lmbSqliteRecord extends lmbDbBaseRecord
   {
     if(isset($this->properties[$name]))
       return $this->properties[$name];
-    if(LIMB_UNDEFINED != $default)
+    if(LIMB_UNDEFINED !== $default)
       return $default;
   }
 

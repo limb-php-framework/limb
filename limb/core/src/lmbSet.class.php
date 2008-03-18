@@ -27,7 +27,7 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
     if(isset($this->$name) && !$this->_isGuarded($name))
       return $this->$name;
     
-    if(LIMB_UNDEFINED != $default)
+    if(LIMB_UNDEFINED !== $default)
       return $default;
   }
 
