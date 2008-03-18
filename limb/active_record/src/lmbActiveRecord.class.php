@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6839 2008-03-15 08:57:44Z svk $
+ * @version $Id: lmbActiveRecord.class.php 6842 2008-03-18 11:19:03Z svk $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -607,7 +607,7 @@ class lmbActiveRecord extends lmbObject
       if($valueObject = $this->_getValueObject($property))
         return $valueObject;
 
-      return (LIMB_UNDEFINED != $default) ? $default : $valueObject;
+      return (LIMB_UNDEFINED !== $default) ? $default : $valueObject;
     }
 
     try
