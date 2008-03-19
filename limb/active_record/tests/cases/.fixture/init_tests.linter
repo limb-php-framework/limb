@@ -2,7 +2,7 @@ CREATE OR REPLACE TABLE "test_one_table_object" (
   "id" INT NOT NULL AUTOINC,
   "annotation" blob,
   "content" blob,
-  "news_date" date default NULL,
+  "news_date" varchar(255) default NULL,
   "ordr" int NULL,
   PRIMARY KEY  ("id")
 )  ;
@@ -24,7 +24,7 @@ CREATE OR REPLACE TABLE "test_one_table_typed_object" (
 )  ;
 
 
-CREATE OR REPLACE TABLE course_for_typed_test (
+CREATE OR REPLACE TABLE "course_for_typed_test" (
  "id" INT NOT NULL AUTOINC,
  "title" varchar(255) default NULL,
  PRIMARY KEY  ("id")
@@ -41,7 +41,7 @@ CREATE OR REPLACE TABLE "lecture_for_typed_test" (
 
 
 
-CREATE OR REPLACE TABLE social_security_for_test (
+CREATE OR REPLACE TABLE "social_security_for_test" (
 "id" INT NOT NULL AUTOINC,
 "code" varchar(255) default NULL,
 PRIMARY   KEY  ("id")
@@ -50,7 +50,7 @@ PRIMARY   KEY  ("id")
 
 CREATE OR REPLACE TABLE "person_for_test" (
 "id" INT NOT NULL AUTOINC,
-name varchar(255) default NULL,
+"name" varchar(255) default NULL,
 "ss_id" int default NULL,
 PRIMARY   KEY  ("id")
 )  ;
@@ -81,7 +81,7 @@ CREATE OR REPLACE TABLE "lecture_for_test" (
 )  ;
 
 
-CREATE OR TABLE "lesson_for_test" (
+CREATE OR REPLACE TABLE "lesson_for_test" (
   "id" INT NOT NULL AUTOINC,
   "date_start" int default NULL,
   "date_end" int default NULL,

@@ -19,9 +19,10 @@ class lmbARRecordSetJoinDecoratorTest extends lmbARBaseTestCase
     $lecture = new LectureForTest();
     $course_info = $lecture->getRelationInfo('course'); 
 
-    $db = new lmbSimpleDb(lmbToolkit :: instance()->getDefaultDbConnection());
-    $sql = 'SELECT lecture_for_test.*, course_for_test.id as course__id, course_for_test.title as course__title 
-            FROM lecture_for_test LEFT JOIN course_for_test ON course_for_test.id = lecture_for_test.course_id';
+    $conn = lmbToolkit :: instance()->getDefaultDbConnection();
+    $db = new lmbSimpleDb($conn);
+    $sql = 'SELECT ' . $conn->quoteIdentifier("lecture_for_test") . '.*, ' . $conn->quoteIdentifier("course_for_test.id") . ' as ' . $conn->quoteIdentifier("course__id") . ', ' . $conn->quoteIdentifier("course_for_test.title") . ' as ' . $conn->quoteIdentifier("course__title") . ' 
+            FROM ' . $conn->quoteIdentifier("lecture_for_test") . ' LEFT JOIN ' . $conn->quoteIdentifier("course_for_test") . ' ON ' . $conn->quoteIdentifier("course_for_test.id") . ' = ' . $conn->quoteIdentifier("lecture_for_test.course_id");
     $decorated = lmbDBAL :: fetch($sql);
 
     $iterator = new lmbARRecordSetJoinDecorator($decorated, new LectureForTest(), null, array('course' => $course_info));

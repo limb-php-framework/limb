@@ -234,8 +234,8 @@ class lmbAROneToOneRelationsTest extends lmbARBaseTestCase
 
     $person->destroy();
 
-    $this->assertNull(lmbActiveRecord :: findFirst('SocialSecurityForTest', array('criteria' => 'id = ' . $number_id)));
-    $this->assertNull(lmbActiveRecord :: findFirst('PersonForTest', array('criteria' => 'id = ' . $person_id)));
+    $this->assertNull(lmbActiveRecord :: findFirst('SocialSecurityForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $number_id)));
+    $this->assertNull(lmbActiveRecord :: findFirst('PersonForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $person_id)));
   }
 
   function testParentDeleteAllDeletesChildren()
@@ -253,8 +253,8 @@ class lmbAROneToOneRelationsTest extends lmbARBaseTestCase
 
     lmbActiveRecord :: delete('PersonForTest');
 
-    $this->assertNull(lmbActiveRecord :: findFirst('SocialSecurityForTest', array('criteria' => 'id = ' . $number_id)));
-    $this->assertNull(lmbActiveRecord :: findFirst('PersonForTest', array('criteria' => 'id = ' . $person_id)));
+    $this->assertNull(lmbActiveRecord :: findFirst('SocialSecurityForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $number_id)));
+    $this->assertNull(lmbActiveRecord :: findFirst('PersonForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $person_id)));
 
     $number2 = lmbActiveRecord :: findById('SocialSecurityForTest', $untouched_number->getId());
     $this->assertEqual($number2->getCode(), $untouched_number->getCode());
@@ -273,7 +273,7 @@ class lmbAROneToOneRelationsTest extends lmbARBaseTestCase
 
     $person->destroy();
 
-    $ss2 = lmbActiveRecord :: findFirst('SocialSecurityForTest', array('criteria' => 'id = ' . $number_id));
+    $ss2 = lmbActiveRecord :: findFirst('SocialSecurityForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $number_id));
     $this->assertEqual($ss2->getCode(), $number->getCode());
   }
 

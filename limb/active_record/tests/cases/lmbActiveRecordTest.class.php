@@ -319,14 +319,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
-    $found = lmbActiveRecord :: findFirst('TestOneTableObject', array('criteria' => 'id=' . $object1->getId()));
+    $found = lmbActiveRecord :: findFirst('TestOneTableObject', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId()));
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($found->get('id'), $object1->getId());
 
     //testing convenient alias
-    $found = TestOneTableObject :: findFirst(array('criteria' => 'id=' . $object1->getId()));
+    $found = TestOneTableObject :: findFirst(array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId()));
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
@@ -339,14 +339,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
-    $found = lmbActiveRecord :: findFirst('TestOneTableObject', 'id=' . $object1->getId());
+    $found = lmbActiveRecord :: findFirst('TestOneTableObject', lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId());
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($found->get('id'), $object1->getId());
 
     //testing convenient alias
-    $found = TestOneTableObject :: findFirst('id=' . $object1->getId());
+    $found = TestOneTableObject :: findFirst(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId());
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
@@ -359,14 +359,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
-    $found = lmbActiveRecord :: findFirst('TestOneTableObject', new lmbSQLRawCriteria('id=' . $object1->getId()));
+    $found = lmbActiveRecord :: findFirst('TestOneTableObject', new lmbSQLRawCriteria(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId()));
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($found->get('id'), $object1->getId());
 
     //testing convenient alias
-    $found = TestOneTableObject :: findFirst(new lmbSQLRawCriteria('id=' . $object1->getId()));
+    $found = TestOneTableObject :: findFirst(new lmbSQLRawCriteria(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId()));
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
@@ -379,14 +379,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
-    $found = lmbActiveRecord :: findFirst('TestOneTableObject', array('id=?', $object1->getId()));
+    $found = lmbActiveRecord :: findFirst('TestOneTableObject', array(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=?', $object1->getId()));
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($found->get('id'), $object1->getId());
 
     //testing convenient alias
-    $found = TestOneTableObject :: findFirst(array('id=?', $object1->getId()));
+    $found = TestOneTableObject :: findFirst(array(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=?', $object1->getId()));
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
@@ -430,14 +430,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object2 = $this->creator->createOneTableObject();
     $this->assertFalse($object2->isNew());
 
-    $found = lmbActiveRecord :: findOne('TestOneTableObject', 'id=' . $object1->getId());
+    $found = lmbActiveRecord :: findOne('TestOneTableObject', lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId());
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
     $this->assertEqual($found->get('id'), $object1->getId());
 
     //testing convenient alias
-    $found = TestOneTableObject :: findOne('id=' . $object1->getId());
+    $found = TestOneTableObject :: findOne(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object1->getId());
     $this->assertEqual($found->get('annotation'), $object1->get('annotation'));
     $this->assertEqual($found->get('content'), $object1->get('content'));
     $this->assertEqual($found->get('news_date'), $object1->get('news_date'));
@@ -532,14 +532,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    $rs = lmbActiveRecord :: find('TestOneTableObject', 'id=' . $object2->getId());
+    $rs = lmbActiveRecord :: find('TestOneTableObject', lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object2->getId());
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
     $this->assertFalse($rs->valid());
 
     //testing convenient alias
-    $rs = TestOneTableObject :: find('id=' . $object2->getId());
+    $rs = TestOneTableObject :: find(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object2->getId());
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -551,14 +551,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    $rs = lmbActiveRecord :: find('TestOneTableObject', array('id=?', $object2->getId()));
+    $rs = lmbActiveRecord :: find('TestOneTableObject', array(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=?', $object2->getId()));
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
     $this->assertFalse($rs->valid());
 
     //testing convenient alias
-    $rs = TestOneTableObject :: find(array('id=?', $object2->getId()));
+    $rs = TestOneTableObject :: find(array(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=?', $object2->getId()));
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -694,7 +694,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    $rs = lmbActiveRecord :: findBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
+    $rs = lmbActiveRecord :: findBySql('TestOneTableObject', 'select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -703,7 +703,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $this->assertFalse($rs->valid());
 
     //testing convenient alias
-    $rs = TestOneTableObject :: findBySql('select * from test_one_table_object order by id desc');
+    $rs = TestOneTableObject :: findBySql('select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');
     $rs->rewind();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
     $rs->next();
@@ -717,11 +717,11 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    $object = lmbActiveRecord :: findFirstBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
+    $object = lmbActiveRecord :: findFirstBySql('TestOneTableObject', 'select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');
     $this->assertEqual($object2->getId(), $object->getId());
 
     //testing convenient alias
-    $object = TestOneTableObject :: findFirstBySql('select * from test_one_table_object order by id desc');
+    $object = TestOneTableObject :: findFirstBySql('select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');
     $this->assertEqual($object2->getId(), $object->getId());
   }
 
@@ -730,11 +730,11 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    $object = lmbActiveRecord :: findOneBySql('TestOneTableObject', 'select * from test_one_table_object order by id desc');
+    $object = lmbActiveRecord :: findOneBySql('TestOneTableObject', 'select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');
     $this->assertEqual($object2->getId(), $object->getId());
 
     //testing convenient alias
-    $object = TestOneTableObject :: findOneBySql('select * from test_one_table_object order by id desc');
+    $object = TestOneTableObject :: findOneBySql('select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');
     $this->assertEqual($object2->getId(), $object->getId());
   }
 
@@ -976,7 +976,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    lmbActiveRecord :: updateRaw('TestOneTableObject', 'ordr=1');
+    lmbActiveRecord :: updateRaw('TestOneTableObject', lmbActiveRecord::getDefaultConnection()->quoteIdentifier("ordr") . '=1');
 
     $rs = lmbActiveRecord :: find('TestOneTableObject');
     $rs->rewind();
@@ -992,7 +992,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    TestOneTableObject :: updateRaw('ordr=1');
+    TestOneTableObject :: updateRaw(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("ordr") . '=1');
 
     $rs = TestOneTableObject :: find();
     $rs->rewind();
@@ -1008,7 +1008,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    lmbActiveRecord :: updateRaw('TestOneTableObject', array('content' => 'blah'), 'id=' . $object2->getId());
+    lmbActiveRecord :: updateRaw('TestOneTableObject', array('content' => 'blah'), lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object2->getId());
 
     $rs = lmbActiveRecord :: find('TestOneTableObject');
     $rs->rewind();
@@ -1024,7 +1024,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $object1 = $this->creator->createOneTableObject();
     $object2 = $this->creator->createOneTableObject();
 
-    TestOneTableObject :: updateRaw(array('content' => 'blah'), 'id=' . $object2->getId());
+    TestOneTableObject :: updateRaw(array('content' => 'blah'), lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '=' . $object2->getId());
 
     $rs = TestOneTableObject :: find();
     $rs->rewind();

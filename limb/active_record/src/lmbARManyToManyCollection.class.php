@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6809 2008-02-27 11:45:36Z serega $
+ * @version $Id: lmbARManyToManyCollection.class.php 6845 2008-03-19 15:45:47Z svk $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -42,8 +42,9 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     $join_table = $conn->quoteIdentifier($relation_info['table']);
     $field = $conn->quoteIdentifier($relation_info['field']);
     $foreign_field = $conn->quoteIdentifier($relation_info['foreign_field']);
+    $primary_field = $conn->quoteIdentifier($object->getPrimaryKeyName());
     
-    $sql = "SELECT %fields% FROM {$table} INNER JOIN {$join_table} ON {$table}.{$object->getPrimaryKeyName()} = {$join_table}.{$foreign_field}" . 
+    $sql = "SELECT %fields% FROM {$table} INNER JOIN {$join_table} ON {$table}.{$primary_field} = {$join_table}.{$foreign_field}" . 
            " %tables% %left_join% %where% %group% %having% %order%";
 
     $query = lmbARQuery :: create($class, $params, $conn, $sql); 

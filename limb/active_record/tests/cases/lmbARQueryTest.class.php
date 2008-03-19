@@ -218,7 +218,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $person1 = $this->creator->createPerson();
     $person2 = $this->creator->createPerson();
     
-    $this->db->delete('person_for_test', 'id = ' . $id);
+    $this->db->delete('person_for_test', $this->conn->quoteIdentifier("id") . '= ' . $id);
     
     $this->conn->resetStats();
     

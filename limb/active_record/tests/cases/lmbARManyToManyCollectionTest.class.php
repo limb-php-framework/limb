@@ -423,7 +423,7 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 
     $user = $this->_createUserAndSave(array($group1, $group2, $group3));
 
-    $groups = $user->getGroups()->find("group_id=" . $group1->getId());
+    $groups = $user->getGroups()->find(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("group_id") . "=" . $group1->getId());
     $this->assertEqual($groups->count(), 1);
     $this->assertEqual($groups->at(0)->getTitle(), $group1->getTitle());
   }
@@ -450,7 +450,7 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 
     $user = $this->_createUserAndSave(array($group1, $group2, $group3));
 
-    $group = $user->getGroups()->findFirst("group_id=" . $group1->getId() . " OR group_id=" . $group2->getId());
+    $group = $user->getGroups()->findFirst(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("group_id") . "=" . $group1->getId() . " OR " . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("group_id") . "=" . $group2->getId());
     $this->assertEqual($group->getTitle(), $group1->getTitle());
   }
 
@@ -462,7 +462,7 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 
     try
     {
-      $group = $user->getGroups()->findFirst("group_id=" . $g1->getId() . " OR group_id=" . $g2->getId());
+      $group = $user->getGroups()->findFirst(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("group_id") . "=" . $g1->getId() . " OR " . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("group_id") . "=" . $g2->getId());
       $this->assertTrue(false);
     }
     catch(lmbException $e){}

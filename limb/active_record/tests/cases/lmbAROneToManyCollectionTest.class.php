@@ -525,7 +525,7 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 
     $course = $this->_createCourseAndSave(array($l1, $l2, $l3));
 
-    $lectures = $course->getLectures()->find("id=" . $l1->getId());
+    $lectures = $course->getLectures()->find(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . "=" . $l1->getId());
     $this->assertEqual($lectures->count(), 1);
     $this->assertEqual($lectures->at(0)->getTitle(), $l1->getTitle());
   }
@@ -538,7 +538,7 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 
     try
     {
-      $lectures = $course->getLectures()->find("id=" . $l1->getId());
+      $lectures = $course->getLectures()->find(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . "=" . $l1->getId());
       $this->assertTrue(false);
     }
     catch(lmbException $e){}
@@ -552,7 +552,7 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 
     $course = $this->_createCourseAndSave(array($l1, $l2, $l3));
 
-    $lecture = $course->getLectures()->findFirst("id=" . $l1->getId() . " OR id=" . $l2->getId());
+    $lecture = $course->getLectures()->findFirst(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . "=" . $l1->getId() . " OR " . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . "=" . $l2->getId());
     $this->assertEqual($lecture->getTitle(), $l1->getTitle());
   }
 
@@ -564,7 +564,7 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 
     try
     {
-      $lecture = $course->getLectures()->findFirst("id=" . $l1->getId() . " OR id=" . $l2->getId());
+      $lecture = $course->getLectures()->findFirst(lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . "=" . $l1->getId() . " OR " . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . "=" . $l2->getId());
       $this->assertTrue(false);
     }
     catch(lmbException $e){}

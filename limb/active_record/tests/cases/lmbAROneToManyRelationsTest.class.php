@@ -300,8 +300,8 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $course2 = lmbActiveRecord :: findById('CourseForTest', $course->getId());
     $course2->destroy();
 
-    $this->assertNull(lmbActiveRecord :: findFirst('LectureForTest', array('criteria' => 'id = ' . $l1->getId())));
-    $this->assertNull(lmbActiveRecord :: findFirst('LectureForTest', array('criteria' => 'id = ' . $l2->getId())));
+    $this->assertNull(lmbActiveRecord :: findFirst('LectureForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $l1->getId())));
+    $this->assertNull(lmbActiveRecord :: findFirst('LectureForTest', array('criteria' => lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . '= ' . $l2->getId())));
   }
 
   function testNullifyOnDestroy()
