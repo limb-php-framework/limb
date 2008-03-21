@@ -54,6 +54,36 @@ class lmbLinterQueryStatement extends lmbLinterStatement implements lmbDbQuerySt
   {
     return new lmbLinterRecordSet($this->connection, $this);
   }
+  
+  function count()
+  {
+    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->original_sql) || preg_match('/\s+GROUP\s+BY\s+/is',$this->original_sql)) && preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->original_sql))
+    {
+      $rewritesql = preg_replace('/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ', $this->original_sql);
+      $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','', $rewritesql);
+
+      $queryId = $this->execute($rewritesql);
+      $count = linter_get_cursor_opt($queryId, CO_ROW_COUNT);
+      $row = linter_get_data_row($queryId);
+      $this->connection->closeCursor($queryId);
+      if (is_array($row))
+      {
+        return $row[0];
+      }
+      else
+      {
+        return 0;
+      }
+    }
+
+    // could not re-write the query, try a different method.
+    $queryId = $this->execute($this->sql);
+    $count = linter_get_cursor_opt($queryId, CO_ROW_COUNT);
+    $this->connection->closeCursor($queryId);
+    return $count;
+  }
+  
+   
 }
 
 

@@ -17,6 +17,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 class lmbLinterStatement implements lmbDbStatement
 {
   protected $sql;
+  protected $original_sql;
   protected $prepared_sql;
   protected $statement;
   protected $connection;
@@ -28,6 +29,7 @@ class lmbLinterStatement implements lmbDbStatement
   function __construct($connection, $sql)
   {
     $this->sql = $sql;
+    $this->original_sql = $sql;
     $this->connection = $connection;
   }
 
@@ -163,17 +165,40 @@ class lmbLinterStatement implements lmbDbStatement
       return $this->prepared_sql;
   }
 
-  function execute()
+  function execute($sql = "")
   {
+    if (!empty($sql))
+    {
+      $stored_sql = $this->sql;
+      $this->sql = $sql;
+    }
     $this->_prepareStatement();
     if ($this->prepRequired)
-      return $this->connection->pexecute($this->queryId, $this->prepParams);
+    {
+      $this->queryId = $this->connection->executeStatement($this);
+      $this->prepared_sql = null;
+      if (isset($stored_sql))
+      {
+        $this->sql = $stored_sql;
+      }
+      //$res = linter_execute($this->queryId, $this->prepParams);
+      //return $this->connection->pexecute($this->queryId, $this->prepParams);
+    }
     else
     {
       $this->queryId = $this->connection->execute($this->getSQL());
       $this->prepared_sql = null;
-      return $this->queryId;
+      if (isset($stored_sql))
+      {
+        $this->sql = $stored_sql;
+      }
     }
+    return $this->queryId;
+  }
+  
+  function getParams()
+  {
+    return $this->prepParams;
   }
   
   function setConnection($connection)
@@ -186,22 +211,6 @@ class lmbLinterStatement implements lmbDbStatement
     $this->connection->closeCursor($this->queryId);    
   }
   
-  
-  protected function _prepareStatement()
-  {
-    $sql = $this->checkForParams($this->sql);
-    if (!is_null($sql))
-    {
-      $this->queryId = $this->connection->prepare($sql);
-  
-      if($this->queryId < 0)
-      {
-        $this->connection->_raiseError();
-        return;
-      }
-    }
-  }
-  
   protected function check_type($param)
   {
     if (is_string($param)) 
@@ -210,11 +219,12 @@ class lmbLinterStatement implements lmbDbStatement
       return $param;
   }
   
-  protected function checkForParams($sql)
+  protected function _prepareStatement()
   {
     $newsql = '';
     $iter = 0;
     $nulls = false;
+    $sql = $this->sql;
 
     if (preg_match("#^select :(\w+):;?$#i", $sql, $m))
     {
@@ -223,12 +233,12 @@ class lmbLinterStatement implements lmbDbStatement
       {
         $sql = str_replace(":".$m[1].":", $this->check_type($this->parameters[$m[1]]), $sql);
         $this->prepared_sql = $sql;
-        return null;
+        return true;
       }
       else
       {
         $this->prepared_sql = "select null;";
-        return null;
+        return true;
       }
     }
     while(preg_match('/^(\'[^\']*?\')|(--[^(\n)]*?\n)|(:(?-U)\w+:(?U))|.+/Us', $sql, $matches))
@@ -263,10 +273,9 @@ class lmbLinterStatement implements lmbDbStatement
     else
       $this->prepRequired = false;
       
-    if ($nulls)
-      $this->prepared_sql = $newsql;
+    $this->prepared_sql = $newsql;
       
-    return $newsql;
+    return true;
   }
 
   function addOrder($sort_params)

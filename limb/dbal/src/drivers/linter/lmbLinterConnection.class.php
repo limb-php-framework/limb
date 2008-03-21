@@ -32,6 +32,7 @@ class lmbLinterConnection implements lmbDbConnection
   protected $cursorPool = array();
   protected $mode = null;
   protected $useConnection = false;
+  protected $debug = false;
   
 
   function __construct($config)
@@ -89,6 +90,11 @@ class lmbLinterConnection implements lmbDbConnection
     {
       $this->_raiseError($conn);
       $this->connectionId = null;
+      $this->log("Connection failed");
+    }
+    else
+    {
+      $this->log("Connected in mode ".$this->mode.". Connection #".$this->connectionId);
     }
 	
 
@@ -99,6 +105,7 @@ class lmbLinterConnection implements lmbDbConnection
 
   function __wakeup()
   {
+    $this->log("Wakeup called. Connection droppped");
     $this->connectionId = null;
   }
 
@@ -106,15 +113,37 @@ class lmbLinterConnection implements lmbDbConnection
   {
     if($this->connectionId > 0)
     {
-      linter_close_connect($this->connectionId);
+      $res = linter_close_connect($this->connectionId);
+      if ($res < 0)
+      {
+        $this->log("Disconnect failed: #".$this->connectionId);
+      }
+      else
+      {
+        $this->log("Disconnected: #".$this->connectionId);
+      }
+      $this->cursorPool = array();
       $this->connectionId = null;
     }
   }
 
+  function __destruct()
+  {
+    $this->disconnect();
+  }
+  
   function closeCursor($cursorId)
   {
-    linter_close_cursor($cursorId);
-    unset($this->cursorPool[$cursorId]);
+    $res = linter_close_cursor($cursorId);
+    if ($res < 0)
+    {
+      $this->log("Cursor closing failed: Connection: ".$this->connectionId."; cursor: ".$cursorId."; pool size: ".count($this->cursorPool));
+    }
+    else
+    {
+      unset($this->cursorPool[$cursorId]);
+      $this->log("Cursor closed: Connection: ".$this->connectionId."; cursor: ".$cursorId."; pool size: ".count($this->cursorPool));
+    }
   }
   
   function _raiseError($code, $conn_id = null, $args=array())
@@ -149,6 +178,7 @@ class lmbLinterConnection implements lmbDbConnection
         $err_row = $sys_err & 0xFFFF;
         $err_pos = $sys_err >> 16;
         $err_message .= sprintf(" at row %d, position %d", $err_row, $err_pos);
+        $err_message .= "Query: ".$args['sql'];
       }
       else
         $err_message .= sprintf(", system error %d", $sys_err);
@@ -189,6 +219,7 @@ class lmbLinterConnection implements lmbDbConnection
       linter_set_cursor_opt($result, CO_FETCH_BLOBS_AS_USUAL_DATA, 1);
 
       $this->cursorPool[$result] = "opened";
+      $this->log("Cursor opened. Connection: ".$this->connectionId."; cursor: ".$result."; pool size: ".count($this->cursorPool));
     }
     else
       $result = true;
@@ -201,11 +232,11 @@ class lmbLinterConnection implements lmbDbConnection
     if ($res < 0)
     {
       $res = $this->_raiseError($res, $this->useConnection ? $this->connectionId : $cur, array('sql' => $sql));
-//      if ($res != self::LINTER_EMPTY_DATASET)
-//      {
-//        var_dump($sql);
-//        var_dump($res);
-//      }
+      if ($res != self::LINTER_EMPTY_DATASET)
+      {
+        var_dump($sql);
+        var_dump($res);
+      }
       if (!$this->useConnection)
       {
         linter_close_cursor($cur);
@@ -217,17 +248,6 @@ class lmbLinterConnection implements lmbDbConnection
       return $cur;
   }
   
-  function prepare($sql)
-  {
-    $result = null;
-    $sql = $this->prepare_sql($sql);
-    
-    $result = $this->handle_cursor_pool();
-    
-    $res = linter_prepare($this->useConnection ? $this->connectionId : $result, $sql);
-    return $this->handle_call_result($res, $result, $sql);
-  }
-  
   function execute($sql)
   {
     $result = null;
@@ -236,13 +256,22 @@ class lmbLinterConnection implements lmbDbConnection
     $result = $this->handle_cursor_pool();
     $res = linter_exec_direct($this->useConnection ? $this->connectionId : $result, $sql);
     
+    $this->log("Query direct executed: $sql, result:$res");
     return $this->handle_call_result($res, $result, $sql);
   }
   
-  function pexecute($curId, $args)
+  function executeStatement($stmt)
   {
-    $result = linter_execute($curId, $args);
-    return $this->handle_call_result($result, $curId, "");
+    $sql = $stmt->getSQL();
+    $sql = $this->prepare_sql($sql);
+    $cursor = $this->handle_cursor_pool();
+    $res = linter_prepare($cursor, $sql);
+    $this->log("Query prepared: " . $sql . ", result: " . $res);
+    $cursor = $this->handle_call_result($res, $cursor, $sql);
+    
+    $res = linter_execute($cursor, $stmt->getParams());
+    $this->log("Prepared query executed: " . $sql . "Cursor: " . $cursor . ", result: " . $res);
+    return $this->handle_call_result($res, $cursor, $sql);
   }
   
   function cexecute($sql)
@@ -257,13 +286,16 @@ class lmbLinterConnection implements lmbDbConnection
   {
     $this->check_mode();
     $this->transactionCount += 1;
-    return $this->cexecute('set savepoint sp' . $this->transactionCount . ';');
+    $sql = 'set savepoint sp' . $this->transactionCount . ';';
+    return $this->cexecute($sql);
   }
 
   function commitTransaction()
   {
     $this->check_mode();
-    $result = $this->cexecute('commit to savepoint sp' . $this->transactionCount . ';');
+    if ($this->transactionCount === 0) return false;
+    $sql = 'commit to savepoint sp' . $this->transactionCount . ';';
+    $result = $this->cexecute($sql);
     if ($this->transactionCount) $this->transactionCount -= 1;
     return $result;
   }
@@ -272,7 +304,8 @@ class lmbLinterConnection implements lmbDbConnection
   {
     if ($this->transactionCount === 0) return false;
     $this->check_mode();
-    $result = $this->cexecute('rollback to savepoint sp' . $this->transactionCount . ';');
+    $sql = 'rollback to savepoint sp' . $this->transactionCount . ';';
+    $result = $this->cexecute($sql);
     if ($this->transactionCount) $this->transactionCount -= 1;
     return $result;
   }
@@ -281,9 +314,11 @@ class lmbLinterConnection implements lmbDbConnection
   {
     if (!($this->mode & TM_EXCLUSIVE))
     {
+      $mode = $this->mode;
       $this->disconnect();
       $this->mode |= TM_EXCLUSIVE;
       $this->connect();
+      //$this->mode = $mode;
     }
   }
   
@@ -422,6 +457,14 @@ class lmbLinterConnection implements lmbDbConnection
         break;
     }
     
+  }
+  
+  protected function log($message)
+  {
+    if ($this->debug)
+    {
+      error_log(date("Y-m-d H:i:s")."\t".$message."\t\n", 3, 'linter.log');
+    }
   }
 }
 
