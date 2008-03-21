@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6844 2008-03-18 17:10:33Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 6847 2008-03-21 10:41:38Z svk $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -845,7 +845,7 @@ class lmbActiveRecord extends lmbObject
   protected function _loadBelongsToObject($property)
   {
     return self :: findFirst($this->_belongs_to[$property]['class'],
-                             array('criteria' => $this->_belongs_to[$property]['field'] . ' = ' . (int)$this->getId()),
+                             array('criteria' => $this->_db_conn->quoteIdentifier($this->_belongs_to[$property]['field']) . ' = ' . (int)$this->getId()),
                              $this->_db_conn);
   }
 
@@ -1364,7 +1364,7 @@ class lmbActiveRecord extends lmbObject
   protected function _findById($id, $throw_exception)
   {
     if($object = self :: find(get_class($this),
-                              array('first', 'criteria' => $this->_primary_key_name . '=' . (int)$id),
+                              array('first', 'criteria' => $this->_db_conn->quoteIdentifier($this->_primary_key_name) . '=' . (int)$id),
                               $this->_db_conn))
       return $object;
     elseif($throw_exception)
@@ -1605,7 +1605,7 @@ class lmbActiveRecord extends lmbObject
   function addClassCriteria($criteria)
   {
     if($this->_isInheritable())
-      return lmbSQLCriteria :: objectify($criteria)->addAnd(array(self :: $_inheritance_field .
+      return lmbSQLCriteria :: objectify($criteria)->addAnd(array($this->_db_conn->quoteIdentifier(self :: $_inheritance_field) .
                                                                   $this->getInheritanceCondition()));
 
     return $criteria;
