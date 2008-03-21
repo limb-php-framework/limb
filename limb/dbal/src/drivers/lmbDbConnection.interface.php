@@ -11,7 +11,7 @@
  * interface lmbDbConnection.
  *
  * @package dbal
- * @version $Id: lmbDbConnection.interface.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbDbConnection.interface.php 6848 2008-03-21 13:44:08Z svk $
  */
 interface lmbDbConnection
 {
@@ -25,6 +25,7 @@ interface lmbDbConnection
   function rollbackTransaction();
   function newStatement($sql);
   function execute($sql);
+  function executeStatement($stmt);
   function getTypeInfo();
   function getDatabaseInfo();
   function getSequenceValue($table, $colname);

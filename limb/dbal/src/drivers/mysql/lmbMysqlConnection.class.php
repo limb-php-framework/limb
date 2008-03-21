@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 6424 2007-10-16 08:12:07Z serega $
+ * @version $Id: lmbMysqlConnection.class.php 6848 2008-03-21 13:44:08Z svk $
  */
 class lmbMysqlConnection implements lmbDbConnection
 {
@@ -118,6 +118,11 @@ class lmbMysqlConnection implements lmbDbConnection
       $this->_raiseError($sql);
     }
     return $result;
+  }
+  
+  function executeStatement($stmt)
+  {
+    return (bool) $this->execute($stmt->getSQL());
   }
 
   function beginTransaction()

@@ -99,6 +99,11 @@ class lmbSqliteConnection implements lmbDbConnection
     return $result;
   }
 
+  function executeStatement($stmt)
+  {
+    return (bool)$this->execute($stmt->getSQL());      
+  }
+  
   function beginTransaction()
   {
     $this->execute('BEGIN');

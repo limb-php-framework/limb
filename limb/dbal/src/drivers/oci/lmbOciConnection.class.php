@@ -21,7 +21,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
  * class lmbOciConnection.
  *
  * @package dbal
- * @version $Id: lmbOciConnection.class.php 6424 2007-10-16 08:12:07Z serega $
+ * @version $Id: lmbOciConnection.class.php 6848 2008-03-21 13:44:08Z svk $
  */
 class lmbOciConnection implements lmbDbConnection
 {
@@ -133,6 +133,7 @@ class lmbOciConnection implements lmbDbConnection
 
   function executeStatement($stmt)
   {
+    $stmt = $stmt->getStatement();
     $result = oci_execute($stmt, $this->tstate);
     if($result === false)
       $this->_raiseError($stmt);

@@ -9,7 +9,7 @@
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
 lmb_require('limb/core/src/lmbDecorator.class.php');
 
-lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
+lmbDecorator :: generate(get_class(lmbToolkit::instance()->getDefaultDbConnection()), 'lmbDbConnectionDecorator');
 
 /**
  * class lmbAuditDbConnection.
@@ -24,15 +24,20 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
   function execute($sql)
   {
     $info = array('query' => $sql);
-    
     $start_time = microtime(true);
-
     $res = parent :: execute($sql);
-    
     $info['time'] = round(microtime(true) - $start_time, 6);
-    
     $this->stats[] = $info;
-    
+    return $res;
+  }
+  
+  function executeStatement($stmt)
+  {
+    $info = array('query' => get_class($stmt));
+    $start_time = microtime(true);
+    $res = parent :: executeStatement($stmt);
+    $info['time'] = round(microtime(true) - $start_time, 6);
+    $this->stats[] = $info;
     return $res;
   }
   

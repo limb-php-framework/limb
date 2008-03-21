@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbMysqlStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlStatement.class.php 6697 2008-01-18 08:39:40Z serega $
+ * @version $Id: lmbMysqlStatement.class.php 6848 2008-03-21 13:44:08Z svk $
  */
 class lmbMysqlStatement implements lmbDbStatement
 {
@@ -192,7 +192,7 @@ class lmbMysqlStatement implements lmbDbStatement
 
   function execute()
   {
-    return (bool) $this->connection->execute($this->getSQL());
+    return $this->connection->executeStatement($this);
   }
 }
 

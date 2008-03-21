@@ -192,7 +192,7 @@ class lmbSqliteStatement implements lmbDbStatement
 
   function execute()
   {
-    return (bool)$this->connection->execute($this->getSQL());
+    return $this->connection->executeStatement($this);
   }
 }
 

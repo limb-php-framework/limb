@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 6839 2008-03-15 08:57:44Z svk $
+ * @version $Id: lmbPgsqlConnection.class.php 6848 2008-03-21 13:44:08Z svk $
  */
 class lmbPgsqlConnection implements lmbDbConnection
 {
@@ -129,6 +129,11 @@ class lmbPgsqlConnection implements lmbDbConnection
       $this->_raiseError($sql);
     }
     return $result;
+  }
+  
+  function executeStatement($stmt)
+  {
+      return $this->execute($stmt->getSQL());
   }
 
   function beginTransaction()
