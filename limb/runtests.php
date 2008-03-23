@@ -17,7 +17,9 @@ if($packages)
   foreach($packages as $pkg)
   {
     $runner = new lmbTestRunner();
-    $res &= $runner->run(new lmbTestTreeDirNode(dirname(__FILE__) . '/' . $pkg . '/tests/cases/'));
+    $path = dirname(__FILE__) . '/' . $pkg . '/tests/cases/';
+    if(is_dir($path))
+      $res &= $runner->run(new lmbTestTreeDirNode($path));
   }
 }
 else
