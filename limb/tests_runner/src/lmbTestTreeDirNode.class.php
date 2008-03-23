@@ -10,12 +10,13 @@ require_once(dirname(__FILE__) . '/lmbTestTreeShallowDirNode.class.php');
 require_once(dirname(__FILE__) . '/lmbTestTreeFileNode.class.php');
 require_once(dirname(__FILE__) . '/lmbDetachedFixture.class.php');
 require_once(dirname(__FILE__) . '/lmbTestFileFilter.class.php');
+require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
 
 /**
  * class lmbTestTreeDirNode.
  *
  * @package tests_runner
- * @version $Id: lmbTestTreeDirNode.class.php 6487 2007-11-04 23:35:34Z pachanga $
+ * @version $Id: lmbTestTreeDirNode.class.php 6850 2008-03-23 16:36:03Z pachanga $
  */
 class lmbTestTreeDirNode extends lmbTestTreeShallowDirNode
 {
