@@ -18,31 +18,70 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6503 2007-11-08 10:05:03Z wiliam $
+ * @version $Id: lmbMailer.class.php 6856 2008-03-25 12:58:31Z korchasa $
  */
 class lmbMailer
 {
   protected $attachments = array();
 
+  protected $_config_properties_map = array(
+    'phpmailer_dir' => 'PHPMAILER_DIR',
+    'use_phpmail' => 'LIMB_USE_PHPMAIL',
+    'smtp_host' => 'LIMB_SMTP_HOST',
+    'smtp_port' => 'LIMB_SMTP_PORT',
+    'smtp_auth' => 'LIMB_SMTP_AUTH',
+    'smtp_user' => 'LIMB_SMTP_USER',
+    'smtp_password' => 'LIMB_SMTP_PASSWORD'
+  );
+
+  public $phpmailer_dir;
+  public $use_phpmail;
+  public $smtp_host;
+  public $smtp_port;
+  public $smtp_auth;
+  public $smtp_user;
+  public $smtp_password;
+
+  function __construct($config = false)
+  {
+    $this->_setConfigFromDefinedContants();
+
+    if($config)
+      $this->setConfig($config);
+
+  }
+
+  protected function _setConfigFromDefinedContants()
+  {
+    foreach($this->_config_properties_map as $property_name => $define_name)
+      $this->$property_name = constant($define_name);
+  }
+
+  public function setConfig($config = array())
+  {
+    foreach($config as $property_name => $property_value)
+      $this->$property_name = $property_value;
+  }
+
   protected function _createMailer()
   {
-    include_once(PHPMAILER_DIR . '/class.phpmailer.php');
+    include_once($this->phpmailer_dir . '/class.phpmailer.php');
 
     $mailer = new PHPMailer();
     $mailer->LE = "\r\n";
 
-    if(LIMB_USE_PHPMAIL)
+    if($this->use_phpmail)
       return $mailer;
 
     $mailer->IsSMTP();
-    $mailer->Host = LIMB_SMTP_HOST;
-    $mailer->Port = LIMB_SMTP_PORT;
+    $mailer->Host = $this->smtp_host;
+    $mailer->Port = $this->smtp_port;
 
-    if(LIMB_SMTP_AUTH == true)
+    if($this->smtp_auth == true)
     {
       $mailer->SMTPAuth = true;
-      $mailer->Username = LIMB_SMTP_USER;
-      $mailer->Password = LIMB_SMTP_PASSWORD;
+      $mailer->Username = $this->smtp_user;
+      $mailer->Password = $this->smtp_password;
     }
     return $mailer;
   }
@@ -151,5 +190,3 @@ class lmbMailer
                              $attachment['type']);
   }
 }
-
-
