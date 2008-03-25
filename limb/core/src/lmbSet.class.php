@@ -173,14 +173,17 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
   function next()
   {
     $this->__current = next($this->__properties);
-    $this->__valid = $this->__current !== false;
+    $this->__counter++;
+    $this->__valid = $this->__size > $this->__counter;
   }
 
   function rewind()
   {
     $this->__properties = $this->_getUnguardedVars($this);
     $this->__current = reset($this->__properties);
-    $this->__valid = $this->__current !== false;
+    $this->__size = count($this->__properties);
+    $this->__counter = 0;
+    $this->__valid = $this->__size > $this->__counter;
   }
 
   function key()
@@ -188,5 +191,6 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
     return key($this->__properties);
   }
 }
+
 
 

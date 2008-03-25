@@ -206,6 +206,19 @@ class lmbSetTest extends UnitTestCase
 
     $this->assertEqual($array, $result);
   }
+
+  function testImplementsIteratorWithFalseElementsInArray()
+  {
+    $ds = new lmbSet($array = array('test1' => 'foo',
+                                    'test2' => false,
+                                    'test3' => 'bar'));
+
+    $result = array();
+    foreach($ds as $key => $value)
+      $result[$key] = $value;
+
+    $this->assertEqual($array, $result);
+  }
 }
 
 
