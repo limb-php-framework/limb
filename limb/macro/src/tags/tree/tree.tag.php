@@ -33,11 +33,11 @@ class lmbMacroTreeTag extends lmbMacroTag
 
     $items = $code->generateVar();
     $counter = $code->generateVar();
-    $extra_params = $code->generateVar(); 
+    $extra_params = $code->generateVar();
 
     $this->method = $code->beginMethod('_render_tree'. uniqid(), array($items, $level, $extra_params . '= array()'));
-    
-    $code->writePHP("if($extra_params) extract($extra_params);"); 
+
+    $code->writePHP("if($extra_params) extract($extra_params);");
 
     $code->writePHP($counter . "=0;\n");
 
@@ -45,7 +45,7 @@ class lmbMacroTreeTag extends lmbMacroTag
 
     if($user_counter = $this->get('counter'))
       $code->writePHP($user_counter . ' = ' . $counter . "+1;\n");
-     
+
     //rendering tags before branch
     $code->writePHP('if(!' . $counter . ") {\n");
     foreach($before_node as $tag)
@@ -57,18 +57,21 @@ class lmbMacroTreeTag extends lmbMacroTag
     $code->writePHP($counter . "++;\n");
     $code->writePHP("}\n");//foreach
 
+    $code = $this->_renderEmptyTag($code, $items);
+
     //rendering tags after branch
     $code->writePHP('if(' . $counter . ") {\n");
     foreach($after_node as $tag)
-      $tag->generate($code);
+      if(!$tag instanceof lmbMacroTreeEmptyTag)
+        $tag->generate($code);
     $code->writePHP("}\n");
-
     $code->endMethod();
 
     $arg_str = $this->extraAttributesIntoArrayString();
     $code->writePHP('$this->' . $this->method . '(' . $tree . ', 0' . ',' . $arg_str . ");\n");
+
   }
-  
+
   function getRecursionMethod()
   {
     return $this->method;
@@ -99,10 +102,21 @@ class lmbMacroTreeTag extends lmbMacroTag
     }
     return $tags;
   }
-  
+
   function extraAttributesIntoArrayString()
   {
     return $this->attributesIntoArrayString($skip = array('as', 'using', 'counter', 'level'));
   }
-}
 
+  protected function _renderEmptyTag($code, $items)
+  {
+    if($list_empty = $this->findImmediateChildByClass('lmbMacroTreeEmptyTag'))
+    {
+      $code->writePHP('if(count(' . $items . ') == 0) {');
+        $list_empty->generate($code);
+      $code->writePHP('}');
+    }
+
+    return $code;
+  }
+}
