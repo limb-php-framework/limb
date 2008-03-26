@@ -14,21 +14,21 @@ lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlRecord.class.php');
  * class lmbPgsqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecordSet.class.php 6833 2008-03-12 17:33:04Z svk $
+ * @version $Id: lmbPgsqlRecordSet.class.php 6858 2008-03-26 08:32:53Z svk $
  */
 class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 {
-  protected $query;
   protected $connection;
+  protected $stmt;
 
   protected $current;
   protected $valid;
   protected $key;
 
-  function __construct($connection, $queryString)
+  function __construct($connection, $statement)
   {
     $this->connection = $connection;
-    $this->query = $queryString;
+    $this->stmt = $statement;
   }
 
   function freeQuery()
@@ -37,6 +37,7 @@ class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
     {
       pg_free_result($this->queryId);
       $this->queryId = null;
+      $this->stmt->free();
     }
   }
 
@@ -45,30 +46,22 @@ class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
     if(isset($this->queryId) && is_resource($this->queryId) && pg_num_rows($this->queryId))
     {
       if(pg_result_seek($this->queryId, 0) === false)
-        $this->connection->_raiseError();
+        $this->connection->_raiseError("");
     }
     elseif(!$this->queryId)
     {
-      $query = $this->query;
 
+      $this->stmt->free();
       if(is_array($this->sort_params))
       {
-        if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $query))
-          $query .= ',';
-        else
-          $query .= ' ORDER BY ';
-        foreach($this->sort_params as $field => $order)
-          $query .= $this->connection->quoteIdentifier($field) . " $order,";
-
-        $query = rtrim($query, ',');
+        $this->stmt->addOrder($this->sort_params);
       }
 
       if($this->limit)
       {
-        $query .= ' LIMIT ' . $this->limit;
-        $query .= ' OFFSET ' . $this->offset;
+        $this->stmt->addLimit($this->offset, $this->limit);
       }
-      $this->queryId = $this->connection->execute($query);
+      $this->queryId = $this->stmt->execute();
     }
     $this->key = 0;
     $this->next();
@@ -97,23 +90,19 @@ class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
   {
     return $this->key;
   }
-
+  
   function at($pos)
   {
-    $query = $this->query;
+    $stmt = clone $this->stmt;
+    $stmt->free();
+    if($this->sort_params)
+      $stmt->addOrder($this->sort_params);
+    $stmt->addLimit($pos, 1);
 
-    if(is_array($this->sort_params))
-    {
-      $query .= ' ORDER BY ';
-      foreach($this->sort_params as $field => $order)
-        $query .= $this->connection->quoteIdentifier($field) . " $order,";
-      $query = rtrim($query, ',');
-    }
-
-    $queryId = $this->connection->execute($query . " LIMIT 1 OFFSET $pos");
-
+    $queryId = $stmt->execute();
     $res = pg_fetch_assoc($queryId);
     pg_free_result($queryId);
+    
     if($res)
     {
       $record = new lmbPgsqlRecord();
@@ -121,6 +110,7 @@ class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
       return $record;
     }
   }
+  
 
   function countPaginated()
   {
@@ -131,23 +121,7 @@ class lmbPgsqlRecordSet extends lmbDbBaseRecordSet
 
   function count()
   {
-    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->query) || preg_match('/\s+GROUP\s+BY\s+/is',$this->query)) && preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->query))
-    {
-      $rewritesql = preg_replace('/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ', $this->query);
-      $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is', '', $rewritesql);
-
-      $queryId = $this->connection->execute($rewritesql);
-      $row = pg_fetch_row($queryId);
-      pg_free_result($queryId);
-      if(is_array($row))
-        return $row[0];
-    }
-
-    // could not re-write the query, try a different method.
-    $queryId = $this->connection->execute($this->query);
-    $count = pg_num_rows($queryId);
-    pg_free_result($queryId);
-    return $count;
+    return $this->stmt->count();
   }
 }
 

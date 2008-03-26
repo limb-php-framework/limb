@@ -17,14 +17,14 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlArraySet.class.php');
  * class lmbPgsqlQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlQueryStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbPgsqlQueryStatement.class.php 6858 2008-03-26 08:32:53Z svk $
  */
 class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStatement
 {
   function getOneRecord()
   {
     $record = new lmbPgsqlRecord();
-    $queryId = $this->connection->execute($this->getSQL());
+    $queryId = $this->connection->executeStatement($this);
     $values = pg_fetch_assoc($queryId);
     $record->import($values);
     pg_free_result($queryId);
@@ -34,7 +34,7 @@ class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStat
 
   function getOneValue()
   {
-    $queryId = $this->connection->execute($this->getSQL());
+    $queryId = $this->connection->executeStatement($this);
     $row = pg_fetch_row($queryId);
     pg_free_result($queryId);
     if(is_array($row))
@@ -44,7 +44,7 @@ class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStat
   function getOneColumnAsArray()
   {
     $column = array();
-    $queryId = $this->connection->execute($this->getSQL());
+    $queryId = $this->connection->executeStatement($this);
     while(is_array($row = pg_fetch_row($queryId)))
       $column[] = $row[0];
     pg_free_result($queryId);
@@ -53,8 +53,36 @@ class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStat
 
   function getRecordSet()
   {
-    return new lmbPgsqlRecordSet($this->connection, $this->getSQL());
+    return new lmbPgsqlRecordSet($this->connection, $this);
   }
+  
+  function count()
+  {
+    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->sql) || preg_match('/\s+GROUP\s+BY\s+/is',$this->sql)) && preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->sql))
+    {
+      $rewritesql = preg_replace('/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ', $this->sql);
+      $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','', $rewritesql);
+
+      $queryId = $this->execute($rewritesql);
+      $row = pg_fetch_row($queryId);
+      pg_free_result($queryId);
+      if (is_array($row))
+      {
+        return $row[0];
+      }
+      else
+      {
+        return 0;
+      }
+    }
+
+    // could not re-write the query, try a different method.
+    $queryId = $this->execute($this->sql);
+    $count = pg_num_rows($queryId);
+    pg_free_result($queryId);
+    return $count;
+  }
+  
 }
 
 
