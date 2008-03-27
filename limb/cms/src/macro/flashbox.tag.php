@@ -16,19 +16,19 @@
   protected function _generateContent($code)
   {
   	if($this->get('as'))
-  	{  	  $using=$this->get('as');
+  	{  	  $to=$this->get('as');
   	}
-  	if($this->get('using'))
+  	if($this->get('to'))
   	{
-  	  $using=$this->get('using');
+  	  $to=$this->get('to');
   	}
     else
-      $using = '$flashbox';
+      $to = '$flashbox';
 
 
   	$method = $code->beginMethod('__flashbox_container');
 
-    $code->writePHP($using.'=$this->toolkit->getFlashBox()->getUnifiedList();');
+    $code->writePHP($to.'=$this->toolkit->getFlashBox()->getUnifiedList();');
   	$code->writePHP('$this->toolkit->getFlashBox()->reset();');
 
   	parent :: _generateContent($code);
