@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/exception/lmbException.class.php');
 lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
  * class lmbHttpResponse.
  *
  * @package net
- * @version $Id: lmbHttpResponse.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbHttpResponse.class.php 6866 2008-03-28 14:40:33Z korchasa $
  */
 class lmbHttpResponse
 {
@@ -182,12 +182,25 @@ class lmbHttpResponse
   {
     $this->_ensureTransactionStarted();
 
-    $this->cookies[] = array('name' => $name,
+    $this->cookies[$name] = array('name' => $name,
                              'value' => $value,
                              'expire' => $expire,
                              'path' => $path,
                              'domain' => $domain,
                              'secure' => $secure);
+  }
+
+  function getCookies()
+  {
+    return $this->cookies;
+  }
+
+  function removeCookie($name)
+  {
+    if(isset($this->cookies[$name]))
+      unset($this->cookies[$name]);
+
+    $this->setCookie($name, '', 1);
   }
 
   function readFile($file_path)
@@ -255,4 +268,3 @@ class lmbHttpResponse
       $this->start();
   }
 }
-
