@@ -18,11 +18,12 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6856 2008-03-25 12:58:31Z korchasa $
+ * @version $Id: lmbMailer.class.php 6865 2008-03-28 10:47:33Z svk $
  */
 class lmbMailer
 {
   protected $attachments = array();
+  protected $images = array();
 
   protected $_config_properties_map = array(
     'phpmailer_dir' => 'PHPMAILER_DIR',
@@ -95,6 +96,17 @@ class lmbMailer
       'type' => $type
     );
   }
+  
+  function embedImage($path, $cid, $name="", $encoding="base64", $type="application/octet-stream")
+  {
+    $this->images[] = array(
+      'path' => $path,
+      'cid' => $cid,
+      'name' => $name,
+      'encoding' => $encoding,
+      'type' => $type
+    );
+  }
 
   function sendPlainMail($recipients, $sender, $subject, $body, $charset = 'utf-8')
   {
@@ -106,6 +118,9 @@ class lmbMailer
     if(!empty($this->attachments))
       $this->_addAttachments($mailer);
 
+    if(!empty($this->images))
+      $this->_addEmbeddedImages($mailer);
+      
     $recipients = $this->processMailRecipients($recipients);
 
     foreach($recipients as $recipient)
@@ -134,6 +149,9 @@ class lmbMailer
     if(!empty($this->attachments))
       $this->_addAttachments($mailer);
 
+    if(!empty($this->images))
+      $this->_addEmbeddedImages($mailer);
+      
     if(!is_null($text))
       $mailer->AltBody = $text;
 
@@ -188,5 +206,17 @@ class lmbMailer
                              $attachment['name'],
                              $attachment['encoding'],
                              $attachment['type']);
+  }
+  
+  protected function _addEmbeddedImages($mailer)
+  {
+    foreach ($this->images as $image)
+    {
+      $mailer->AddEmbeddedImage($image['path'],
+                                $image['cid'],
+                                $image['name'],
+                                $image['encoding'],
+                                $image['type']);
+    }
   }
 }
