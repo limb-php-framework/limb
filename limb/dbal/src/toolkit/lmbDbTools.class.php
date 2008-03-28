@@ -16,12 +16,12 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6390 2007-10-07 06:24:26Z pachanga $
+ * @version $Id: lmbDbTools.class.php 6864 2008-03-28 10:40:16Z korchasa $
  */
 class lmbDbTools extends lmbAbstractTools
 {
-  protected $default_connection;
-  protected $default_db_config;
+  protected $_db_configs = array('dsn' => null);
+  protected $_connections = array('dsn' => null);
   protected $cache_db_info = true;
   protected $db_info = array();
   protected $db_tables = array();
@@ -30,8 +30,6 @@ class lmbDbTools extends lmbAbstractTools
   function setDbEnvironment($env)
   {
     $this->db_env = $env;
-    $this->default_db_config = null;
-    $this->default_connection = null;
   }
 
   function getDbEnvironment()
@@ -39,36 +37,46 @@ class lmbDbTools extends lmbAbstractTools
     return $this->db_env;
   }
 
-  function setDefaultDbDSN($dsn)
+  function setDbDSNByName($name, $dsn)
   {
     if(is_object($dsn))
-      $this->default_db_config = $dsn;
+      $this->_db_configs[$name] = $dsn;
     else
-      $this->default_db_config = new lmbDbDSN($dsn);
+      $this->_db_configs[$name] = new lmbDbDSN($dsn);
   }
 
-  function getDefaultDbDSN()
+  function setDefaultDbDSN($dsn)
   {
-    if(is_object($this->default_db_config))
-      return $this->default_db_config;
+    $this->setDbDSNByName('dsn', $dsn);
+  }
+
+  function getDbDSNByName($name)
+  {
+    if(isset($this->_db_configs[$name]) && is_object($this->_db_configs[$name]))
+      return $this->_db_configs[$name];
 
     $conf = $this->toolkit->getConf('db');
 
     //for BC 'dsn' overrides other db environments
-    if($dsn = $conf->get('dsn'))
+    if($dsn = $conf->get($name))
     {
-      $this->default_db_config = new lmbDbDSN($dsn);
+      $this->setDbDSNByName($name, new lmbDbDSN($dsn));
     }
     else
     {
       $env = $conf->get($this->db_env);
-      if(!is_array($env) || !isset($env['dsn']))
+      if(!is_array($env) || !isset($env[$name]))
         throw new lmbException("Could not find database connection settings for environment '{$this->db_env}'");
 
-      $this->default_db_config = new lmbDbDSN($env['dsn']);
+      $this->setDbDSNByName($name, new lmbDbDSN($env[$name]));
     }
 
-    return $this->default_db_config;
+    return $this->_db_configs[$name];
+  }
+
+  function getDefaultDbDSN()
+  {
+    return $this->getDbDSNByName('dsn');
   }
 
   function getDbDSN($env)
@@ -82,16 +90,31 @@ class lmbDbTools extends lmbAbstractTools
     return new lmbDbDSN($array['dsn']);
   }
 
+  function setDbConnectionByName($name, $conn)
+  {
+    $this->_connections[$name] = $conn;
+  }
+
+  function setDefaultDbConnection($conn)
+  {
+    $this->setDbConnectionByName('dsn', $conn);
+  }
+
+  function getDbConnectionByName($name)
+  {
+    if(isset($this->_connections[$name]) && is_object($this->_connections[$name]))
+      return $this->_connections[$name];
+
+    if(!is_object($dsn = $this->toolkit->getDbDSNByName($name)))
+      throw new lmbException($name . ' database DSN is not valid');
+
+    $this->setDbConnectionByName($name, $this->createDbConnection($dsn));
+    return $this->_connections[$name];
+  }
+
   function getDefaultDbConnection()
   {
-    if(is_object($this->default_connection))
-      return $this->default_connection;
-
-    if(!is_object($dsn = $this->toolkit->getDefaultDbDSN()))
-      throw new lmbException('Default database DSN is not valid');
-
-    $this->default_connection = $this->toolkit->createDbConnection($dsn);
-    return $this->default_connection;
+    return $this->getDbConnectionByName('dsn');
   }
 
   function createDbConnection($dsn)
@@ -134,11 +157,6 @@ class lmbDbTools extends lmbAbstractTools
     return $this->db_info[$id];
   }
 
-  function setDefaultDbConnection($conn)
-  {
-    $this->default_connection = $conn;
-  }
-
   function createTableGateway($table_name, $conn = null)
   {
     if(!$conn)
@@ -154,4 +172,3 @@ class lmbDbTools extends lmbAbstractTools
     return $db_table;
   }
 }
-
