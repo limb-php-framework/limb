@@ -1,0 +1,18 @@
+{{pager id="pager" items="15" pages_per_section="5"}}
+
+total items : {$total_items}. shown: from <b>{$begin_item_number}</b> to <b>{$end_item_number}</b>
+
+{{pager:first}}<a href="{$href}">&laquo;</a>{{/pager:first}}
+{{pager:prev}}<a href="{$href}">&lt;</a>{{/pager:prev}}
+
+{{pager:list}}
+{{pager:section}}<a href="{$href}">[{$section_begin_page}..{$section_end_page}]</a>{{/pager:section}}
+{{pager:current}}<b><a href="{$href}">{$number}</a></b>{{/pager:current}}
+{{pager:number}}<a href="{$href}">{$number}</a>{{/pager:number}}
+{{pager:separator}}-{{/pager:separator}}
+{{/pager:list}}
+
+{{pager:next}}<a href="{$href}">&gt;</a>{{/pager:next}}
+{{pager:last}}<a href="{$href}">&raquo;</a>{{/pager:last}}
+
+{{/pager}}
