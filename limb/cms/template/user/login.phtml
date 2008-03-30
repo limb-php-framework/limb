@@ -1,0 +1,58 @@
+<!-- Powered by LIMB | http://www.limb-project.com/ -->
+<!-- Designed by BIT | http://www.bit-creative.com/ -->
+<html>
+<head>
+  <title>Authorization</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+  <link rel=stylesheet type="text/css" href="/shared/cms/styles/cp.css" />
+  {{include file='_cms/js.phtml'/}}
+</head>
+<body id='login_form'>
+
+  <div id="login_form_wrapper">
+
+    <form method="POST" id='user_form' runat='server'>
+
+        <div id="logo_limb">
+          <span><img src="/shared/cms/images/limb_login.gif"  width='110' height='30' alt='LIMB'/></span>
+        </div>
+
+        <div id="form_body">
+
+          <h1>Control panel</h1>
+
+          {{wrap with="_cms/dialog_central_part.html"}}
+
+          <div class='field'>
+            <label for='login'>Login:</label>
+            <input type="text" name="login" id="login" value="" title="Login" class='input'/>
+          </div>
+
+          <div class='field'>
+            <label for='passwd'>Password:</label>
+            <input type="text" name="password" id="password" type="password" title="Password" class='input'/>
+            <input type="submit" name='submitted' value='Enter' class='button'>
+          </div>
+          <a href="/user/forgot_password">I forgot my password!</a>
+
+          <input type='hidden' name='redirect' value='{$#request.redirect}' runat='client'/>
+
+          {{/wrap}}
+
+          {{include file='_cms/notify_zone.phtml'/}}
+
+        </div>
+
+    </form>
+
+    <span class='shadow_bottom'><span class='left'></span><span class='center'></span><span class='right'></span></span>
+    <span class='shadow_left'><span class='top'></span><span class='center'></span><span class='bottom'></span></span>
+    <span class='shadow_right'><span class='top'></span><span class='center'></span><span class='bottom'></span></span>
+
+
+  </div>
+
+
+
+</body>
+</html>

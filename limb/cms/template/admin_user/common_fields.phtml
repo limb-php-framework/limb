@@ -1,0 +1,28 @@
+  <div class='required field'>
+    {{label for="login" errorclass='error_label'}}Логин:{{/label}}
+    {{input name="login" type="text" title="Логин" /}}
+  </div>
+
+  <div class='required field'>
+    {{label for="name" errorclass='error_label'}}Имя:{{/label}}
+    {{input name="name" type="text" title="Имя" />
+  </div>
+
+  <div class='required field'>
+    {{label for="email" errorclass='error_label'}}E-mail{{/label}}
+    {{input name="email" type="text" title="E-mail"/}}
+  </div>
+
+  <div class='field'>
+    {{label for="role_id" errorclass='error_label'}}Группа:{{/label}}
+    <?php
+      lmb_require('limb/cms/src/model/lmbCmsUserRoles.class.php');
+      $this->select_source=new lmbCmsUserRoles();
+      $this->select_source=$this->select_source->fetch();
+    ?>
+    {{select_options_export from="$#select_source" to="$#select_source_option" key_field="id" text_field="name"/}}
+    {{select id='role_id' name='role_id' options="$#select_source_option"}}
+      {{option prepend="true" value='0'}}Нет роли{{/option}}
+    {{/select}}
+  </div>
+

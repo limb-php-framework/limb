@@ -1,6 +1,7 @@
 <?php
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
 lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
+lmb_require('limb/cms/src/model/lmbCmsUser.class.php');
 
 class AdminUserController extends lmbController
 {
@@ -37,7 +38,10 @@ class AdminUserController extends lmbController
 
   function doDetail()
   {
-    $this->view->set('user', new lmbCmsUser((int)$this->request->get('id')));
+    if($id=$this->request->get('id'))
+    {
+      $this->view->set('user', new lmbCmsUser((int)$id));
+    }
   }
 
   protected function _import($item)
@@ -58,7 +62,16 @@ class AdminUserController extends lmbController
 
   function doDelete()
   {
-    $this->performCommand('limb/cms/src/command/lmbCmsDeleteObjectCommand', 'lmbCmsUser');
+    if($this->request->get('delete'))
+    {
+      foreach($this->request->getArray('ids') as $id)
+      {
+        $item = new lmbCmsUser((int)$id);
+        $item->destroy();
+      }
+      $this->closePopup();
+    }
+
   }
 
   function doChangePassword()

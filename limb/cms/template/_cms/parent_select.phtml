@@ -1,0 +1,45 @@
+<table width='100%' border='0' cellspacing='0' cellpadding='0' style="padding: 0 0 8px 0;">
+<tr>
+  <td width=120>
+    <label>Выбор родительского узла</label><br/>
+    <div id='parent_name' style='font-weight: bold;white-space:nowrap'>
+	{{optional for='{$#parent}'}}{$#parent.title} ( {$#parent.absolute_url_path} ){{/optional}}</div>
+  </td>
+  <td align=left>
+    <input type='hidden' name='parent_id' id='parent' />
+    <input type='button' value='...' onclick='return onButtonClick();' runat='client' style="width:20px"/>
+    <input type='button' value='Сбросить' onclick='return onResetClick();' runat='client'/>
+  </td>
+</tr>
+</table>
+
+<script type="text/javascript">
+function onButtonClick()
+{
+  new Limb.Window('{{route_url params="action:browse" /}}', 'parent_select');
+  return false;
+}
+
+function onResetClick()
+{
+  var parent_name_input = document.getElementById('parent_name');
+  if(!parent_name_input) return;
+  parent_name_input.innerHTML = '';
+
+  var parent_id = document.getElementById('parent');
+  if(!parent_id) return;
+  parent_id.value = '';
+}
+
+function SetUrl(url, id, parent_name)
+{
+  var parent_name_input = document.getElementById('parent_name');
+  if(!parent_name_input) return;
+  parent_name_input.innerHTML = parent_name + '(' + url + ')';
+
+  var parent_id = document.getElementById('parent');
+  if(!parent_id) return;
+  parent_id.value = id;
+}
+
+</script>

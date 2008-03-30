@@ -1,0 +1,12 @@
+{{fetch using='src/fetcher/BreadcrumbsFetcher' to="$crumbs"/>
+<div class="breadcrumbs">
+  {{list using='$crumbs'}}
+  &nbsp; &raquo; &nbsp;
+  {{list:item}}
+    <a href='{$path}'>{$title}</a>
+  {{list:glue}}
+    &nbsp; &raquo; &nbsp;
+  {{/list:glue}}
+  {{/list:item}}
+  {{/list}}
+</div>
