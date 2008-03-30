@@ -16,12 +16,12 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6864 2008-03-28 10:40:16Z korchasa $
+ * @version $Id: lmbDbTools.class.php 6869 2008-03-30 08:21:57Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
-  protected $_db_configs = array('dsn' => null);
-  protected $_connections = array('dsn' => null);
+  protected $db_configs = array('dsn' => null);
+  protected $connections = array('dsn' => null);
   protected $cache_db_info = true;
   protected $db_info = array();
   protected $db_tables = array();
@@ -37,23 +37,42 @@ class lmbDbTools extends lmbAbstractTools
     return $this->db_env;
   }
 
-  function setDbDSNByName($name, $dsn)
-  {
-    if(is_object($dsn))
-      $this->_db_configs[$name] = $dsn;
-    else
-      $this->_db_configs[$name] = new lmbDbDSN($dsn);
-  }
-
   function setDefaultDbDSN($dsn)
   {
     $this->setDbDSNByName('dsn', $dsn);
   }
 
+  function getDefaultDbDSN()
+  {
+    return $this->getDbDSNByName('dsn');
+  }
+
+  function isDefaultDbDsnAvailable()
+  {
+    try
+    {
+      $dsn = $this->getDefaultDbDSN();
+      if(!$dsn)
+        return true;
+    }
+    catch(lmbException $e)
+    {
+      return false;
+    }
+  }
+
+  function setDbDSNByName($name, $dsn)
+  {
+    if(is_object($dsn))
+      $this->db_configs[$name] = $dsn;
+    else
+      $this->db_configs[$name] = new lmbDbDSN($dsn);
+  }
+
   function getDbDSNByName($name)
   {
-    if(isset($this->_db_configs[$name]) && is_object($this->_db_configs[$name]))
-      return $this->_db_configs[$name];
+    if(isset($this->db_configs[$name]) && is_object($this->db_configs[$name]))
+      return $this->db_configs[$name];
 
     $conf = $this->toolkit->getConf('db');
 
@@ -71,12 +90,7 @@ class lmbDbTools extends lmbAbstractTools
       $this->setDbDSNByName($name, new lmbDbDSN($env[$name]));
     }
 
-    return $this->_db_configs[$name];
-  }
-
-  function getDefaultDbDSN()
-  {
-    return $this->getDbDSNByName('dsn');
+    return $this->db_configs[$name];
   }
 
   function getDbDSN($env)
@@ -92,24 +106,24 @@ class lmbDbTools extends lmbAbstractTools
 
   function setDbConnectionByName($name, $conn)
   {
-    $this->_connections[$name] = $conn;
-  }
-
-  function setDefaultDbConnection($conn)
-  {
-    $this->setDbConnectionByName('dsn', $conn);
+    $this->connections[$name] = $conn;
   }
 
   function getDbConnectionByName($name)
   {
-    if(isset($this->_connections[$name]) && is_object($this->_connections[$name]))
-      return $this->_connections[$name];
+    if(isset($this->connections[$name]) && is_object($this->connections[$name]))
+      return $this->connections[$name];
 
     if(!is_object($dsn = $this->toolkit->getDbDSNByName($name)))
       throw new lmbException($name . ' database DSN is not valid');
 
     $this->setDbConnectionByName($name, $this->createDbConnection($dsn));
-    return $this->_connections[$name];
+    return $this->connections[$name];
+  }
+
+  function setDefaultDbConnection($conn)
+  {
+    $this->setDbConnectionByName('dsn', $conn);
   }
 
   function getDefaultDbConnection()
