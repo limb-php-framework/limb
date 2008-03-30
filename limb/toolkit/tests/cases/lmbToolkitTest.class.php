@@ -119,16 +119,16 @@ class lmbToolkitTest extends UnitTestCase
 
     $toolkit = lmbToolkit :: save();
     $toolkit->foo();
-    $this->assertEqual($toolkit->getFooCounter(), 1);
-    $toolkit = lmbToolkit :: restore();
-
-    $toolkit->foo();
     $this->assertEqual($toolkit->getFooCounter(), 3);
 
     $toolkit = lmbToolkit :: save();
     $toolkit->foo();
-    $this->assertEqual($toolkit->getFooCounter(), 1);
+    $this->assertEqual($toolkit->getFooCounter(), 4);
+
     $toolkit = lmbToolkit :: restore();
+    $this->assertEqual($toolkit->getFooCounter(), 3);
+    $toolkit = lmbToolkit :: restore();
+    $this->assertEqual($toolkit->getFooCounter(), 2);
   }
 
   function testSaveAndRestoreAlwaysReturnTheSameToolkitInstance()

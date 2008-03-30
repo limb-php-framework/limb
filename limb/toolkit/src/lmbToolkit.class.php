@@ -40,7 +40,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6595 2007-12-06 20:10:05Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6868 2008-03-30 08:20:27Z pachanga $
  */
 class lmbToolkit extends lmbObject
 {
@@ -129,7 +129,10 @@ class lmbToolkit extends lmbObject
   {
     $toolkit = lmbToolkit :: instance();
 
-    $tools = lmbRegistry :: get('lmbToolkitToolsCopy');
+    //$tools = lmbRegistry :: get('lmbToolkitToolsCopy');
+    //$tools_copy = clone($tools);
+
+    $tools = $toolkit->_tools;
     $tools_copy = clone($tools);
 
     $toolkit->setTools($tools_copy);
@@ -142,7 +145,6 @@ class lmbToolkit extends lmbObject
 
     lmbRegistry :: set('lmbToolkitProperties', $toolkit->export());
     lmbRegistry :: save('lmbToolkitProperties');
-    $toolkit->reset(array());
 
     return $toolkit;
   }
@@ -162,6 +164,7 @@ class lmbToolkit extends lmbObject
     $tools = lmbRegistry :: get('lmbToolkitTools');
     $toolkit->setTools($tools);
 
+    $toolkit->reset();
     $toolkit->import(lmbRegistry :: get('lmbToolkitProperties'));
 
     return $toolkit;
