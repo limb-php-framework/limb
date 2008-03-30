@@ -62,7 +62,7 @@ class AdminUserController extends lmbController
 
   function doDelete()
   {
-    if($this->request->get('delete'))
+    if(($this->request->hasPost())&&($this->request->get('delete')))
     {
       foreach($this->request->getArray('ids') as $id)
       {
