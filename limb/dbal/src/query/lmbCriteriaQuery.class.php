@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbCriteriaQuery.
  *
  * @package dbal
- * @version $Id: lmbCriteriaQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbCriteriaQuery.class.php 6879 2008-03-31 19:58:19Z pachanga $
  */
 class lmbCriteriaQuery extends lmbTemplateQuery
 {
@@ -53,9 +53,7 @@ class lmbCriteriaQuery extends lmbTemplateQuery
 
     $implode = array();
     foreach($this->_criterias as $criteria)
-    {
-      $implode[] = $criteria->toStatementString($this->_stmt_values);
-    }
+      $implode[] = $criteria->toStatementString($this->_stmt_values, $this->_conn);
 
     $where = implode(' AND ', $implode);
 

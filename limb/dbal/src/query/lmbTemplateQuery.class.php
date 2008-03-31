@@ -11,7 +11,7 @@
  * class lmbTemplateQuery.
  *
  * @package dbal
- * @version $Id: lmbTemplateQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbTemplateQuery.class.php 6879 2008-03-31 19:58:19Z pachanga $
  */
 class lmbTemplateQuery
 {
@@ -75,7 +75,9 @@ class lmbTemplateQuery
 
   function getStatement()
   {
-    return $this->_conn->newStatement($this->toString());
+    $sql = $this->toString();
+    $stmt = $this->_conn->newStatement($sql);
+    return $stmt;
   }
 
   function execute()
