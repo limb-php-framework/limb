@@ -84,6 +84,7 @@ class lmbLinterConnection implements lmbDbConnection
       $this->mode = isset($this->config['extra']['mode']) ? $this->config['extra']['mode'] : TM_AUTOCOMMIT;
       
     $conn = @linter_open_connect($user, $password, $database, $this->mode);
+    
     $this->connectionId = $conn;
     
     if ($conn < 0)
@@ -95,6 +96,9 @@ class lmbLinterConnection implements lmbDbConnection
     else
     {
       $this->log("Connected in mode ".$this->mode.". Connection #".$this->connectionId);
+      linter_set_cursor_opt($this->connectionId, CO_NULL_AS_NULL_OBJECT, 1);
+      linter_set_cursor_opt($this->connectionId, CO_FETCH_BLOBS_AS_USUAL_DATA, 1);
+      //linter_set_cursor_opt($this->connectionId, CO_DECIMAL_AS_DOUBLE, 1);
     }
 	
 
@@ -216,7 +220,6 @@ class lmbLinterConnection implements lmbDbConnection
         $this->_raiseError($result);
         
       linter_set_cursor_opt($result, CO_DT_FORMAT, "YYYY-MM-DD HH:MI:SS");
-      linter_set_cursor_opt($result, CO_FETCH_BLOBS_AS_USUAL_DATA, 1);
 
       $this->cursorPool[$result] = "opened";
       $this->log("Cursor opened. Connection: ".$this->connectionId."; cursor: ".$result."; pool size: ".count($this->cursorPool));
@@ -262,6 +265,7 @@ class lmbLinterConnection implements lmbDbConnection
   
   function executeStatement($stmt)
   {
+    $this->useConnection = false;
     $sql = $stmt->getSQL();
     $sql = $this->prepare_sql($sql);
     $cursor = $this->handle_cursor_pool();

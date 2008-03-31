@@ -35,23 +35,23 @@ class lmbLinterStatement implements lmbDbStatement
 
   function setNull($name)
   {
-    $this->parameters[$name] = 'null';
+    $this->parameters[$name] = null;
   }
 
   function setSmallInt($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
+    $this->parameters[$name] = is_null($value) ?  null : intval($value);
   }
 
   function setInteger($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
+    $this->parameters[$name] = is_null($value) ?  null : intval($value);
   }
 
   function setFloat($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
-    'null' :
+    null :
     floatval($value);
   }
 
@@ -62,7 +62,7 @@ class lmbLinterStatement implements lmbDbStatement
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
       $this->parameters[$name] = $value;
     else
-      $this->parameters[$name] = 'null';
+      $this->parameters[$name] = null;
   }
 
   function setDecimal($name, $value)
@@ -72,31 +72,31 @@ class lmbLinterStatement implements lmbDbStatement
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
       $this->parameters[$name] = $value;
     else
-      $this->parameters[$name] = 'null';
+      $this->parameters[$name] = null;
   }
 
   function setBoolean($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
-    'null' :(($value) ?  "TRUE" : "FALSE");
+    null :(($value) ?  "TRUE" : "FALSE");
   }
 
   function setChar($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
-    'null' : $value;
+    null : $value;
   }
 
   function setVarChar($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
-    'null' : $value;
+    null : $value;
   }
 
   function setClob($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
-    'null' : $value;
+    null : $value;
   }
 
   protected function _setDate($name, $value, $format)
@@ -106,7 +106,7 @@ class lmbLinterStatement implements lmbDbStatement
     else if(is_string($value))
       $this->parameters[$name] = date($format, strtotime($value));
     else
-      $this->parameters[$name] = 'null';
+      $this->parameters[$name] = null;
   }
 
   function setDate($name, $value)
@@ -127,7 +127,7 @@ class lmbLinterStatement implements lmbDbStatement
   function setBlob($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
-    'null' : $value;
+    null : $value;
   }
 
   function nullDateValue()
@@ -250,7 +250,7 @@ class lmbLinterStatement implements lmbDbStatement
         if(!array_key_exists($param, $this->parameters))
           $this->parameters[$param] = null;
           
-        if (is_null($this->parameters[$param]) || $this->parameters[$param] == "null")
+        if (is_null($this->parameters[$param]))
         {
           $newsql .= 'null';
           $nulls = true;
