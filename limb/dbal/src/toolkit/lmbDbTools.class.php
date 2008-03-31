@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6873 2008-03-31 04:21:11Z svk $
+ * @version $Id: lmbDbTools.class.php 6874 2008-03-31 07:23:58Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -47,13 +47,15 @@ class lmbDbTools extends lmbAbstractTools
     return $this->getDbDSNByName('dsn');
   }
 
-  function isDefaultDbDsnAvailable()
+  function isDefaultDbDSNAvailable()
   {
     try
     {
       $dsn = $this->getDefaultDbDSN();
       if($dsn)
         return true;
+      else
+        return false;
     }
     catch(lmbException $e)
     {

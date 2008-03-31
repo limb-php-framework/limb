@@ -7,7 +7,7 @@ if(!defined('LIMB_VAR_DIR'))
 }
 
 require_once(dirname(__FILE__) . '/../../common.inc.php');
-if(!lmbToolkit::instance()->isDefaultDbDsnAvailable())
+if(!lmbToolkit::instance()->isDefaultDbDSNAvailable())
 {
   $dsn = 'sqlite://localhost/' . LIMB_VAR_DIR . '/sqlite_tests.db';
   echo "Using default sqlite test database '$dsn'\n";
