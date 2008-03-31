@@ -1,6 +1,7 @@
 <?php
 
 set_include_path(dirname(__FILE__) . '/../../../../');
+define('LIMB_VAR_DIR', dirname(__FILE__) . '/../../../var/');
 
 $mark = microtime(true);
 
@@ -9,11 +10,16 @@ require_once('limb/dbal/common.inc.php');
 
 echo "dbal common includes: " . (microtime(true) - $mark) . "\n";
 
-if($native_db = sqlite_open('/tmp/benchdb'))
+$db = LIMB_VAR_DIR . '/benchdb';
+if($native_db = sqlite_open($db))
 {
-  sqlite_query($native_db, 'CREATE TABLE foo (bar varchar(10))');
-  sqlite_query($native_db, "INSERT INTO foo VALUES ('some value')");
+  @sqlite_query($native_db, "DROP TABLE foo");
+  sqlite_query($native_db, 'CREATE TABLE foo (id INTEGER PRIMARY KEY, bar VARCHAR(10))');
+  for($i=0;$i<30;$i++)
+    sqlite_query($native_db, "INSERT INTO foo VALUES (null, 'some value$i')");
 }
+else
+  throw new Exception("Could not open sqlite db '$db'");
 
 $mark = microtime(true);
 
@@ -26,7 +32,7 @@ for($i=0;$i<1000;$i++)
 
 echo "native sqlite fetching: " . (microtime(true) - $mark) . "\n";
 
-$conn = lmbDBAL :: newConnection('sqlite://localhost//tmp/benchdb');
+$conn = lmbDBAL :: newConnection('sqlite://localhost/' . $db);
 
 $mark = microtime(true);
 
@@ -62,4 +68,4 @@ for($i=0;$i<1000;$i++)
 
 echo "lmbSqliteConnection :: newStatement(), getter: " . (microtime(true) - $mark) . "\n";
 
-unlink('/tmp/benchdb');
+@unlink('/tmp/benchdb');
