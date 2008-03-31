@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 6875 2008-03-31 12:08:36Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -162,9 +162,17 @@ class lmbHttpRequest extends lmbSet
   {
     $host = 'localhost';
     if(!empty($_SERVER['HTTP_HOST']))
-      list($host) = explode(':', $_SERVER['HTTP_HOST']);
+    {
+      $items = explode(':', $_SERVER['HTTP_HOST']);
+      $host = $items[0];
+      $port = isset($items[1]) ? $items[1] : null;
+    }
     elseif(!empty($_SERVER['SERVER_NAME']))
-      list($host) = explode(':', $_SERVER['SERVER_NAME']);
+    {
+      $items = explode(':', $_SERVER['SERVER_NAME']);
+      $host = $items[0];
+      $port = isset($items[1]) ? $items[1] : null;
+    }
 
     if(isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'], 'on'))
       $protocol = 'https';

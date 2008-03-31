@@ -131,9 +131,7 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testGetFilesMultipartException()
   {
-    $old = null;
-    if(isset($_SERVER['CONTENT_TYPE']))
-      $old = $_SERVER['CONTENT_TYPE'];
+    $old = @$_SERVER['CONTENT_TYPE'];
 
     $_SERVER['CONTENT_TYPE'] = 'blah';
 
@@ -150,6 +148,39 @@ class lmbHttpRequestTest extends UnitTestCase
     catch(lmbException $e){}
 
     $_SERVER['CONTENT_TYPE'] = $old;
+  }
+
+  function testInitByServerVariables()
+  {
+    $old_uri = @$_SERVER['REQUEST_URI'];
+    $old_host = @$_SERVER['HTTP_HOST'];
+    $old_port = @$_SERVER['SERVER_PORT'];
+
+    $_SERVER['REQUEST_URI'] = '/';
+    $_SERVER['HTTP_HOST'] = 'test.com';
+    $_SERVER['SERVER_PORT'] = '8080';
+
+    $request = new lmbHttpRequest();
+    $this->assertEqual($request->getRawUriString(), 'http://test.com:8080/');
+
+    $_SERVER['REQUEST_URI'] = $old_uri;
+    $_SERVER['HTTP_HOST'] = $old_host;
+    $_SERVER['SERVER_PORT'] = $old_port;
+  }
+
+  function testExtractPortFromHost()
+  {
+    $old_uri = @$_SERVER['REQUEST_URI'];
+    $old_host = @$_SERVER['HTTP_HOST'];
+
+    $_SERVER['REQUEST_URI'] = '/';
+    $_SERVER['HTTP_HOST'] = 'test.com:8787';
+
+    $request = new lmbHttpRequest();
+    $this->assertEqual($request->getRawUriString(), 'http://test.com:8787/');
+
+    $_SERVER['REQUEST_URI'] = $old_uri;
+    $_SERVER['HTTP_HOST'] = $old_host;
   }
 
   function testToString()
