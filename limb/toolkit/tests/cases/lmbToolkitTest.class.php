@@ -61,6 +61,16 @@ class TestIntersectingTools implements lmbToolkitTools
 
 class lmbToolkitTest extends UnitTestCase
 {
+  function setUp()
+  {
+    lmbToolkit :: save();
+  }
+
+  function tearDown()
+  {
+    lmbToolkit :: restore();
+  }
+
   function testInstance()
   {
     $this->assertIdentical(lmbToolkit :: instance(), lmbToolkit :: instance());
@@ -118,6 +128,7 @@ class lmbToolkitTest extends UnitTestCase
 
     $toolkit = lmbToolkit :: restore();
     $this->assertEqual($toolkit->getFooCounter(), 2);
+    lmbToolkit :: restore();
   }
 
   function testSaveAndRestoreAlwaysReturnTheSameToolkitInstance()

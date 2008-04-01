@@ -36,7 +36,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6885 2008-04-01 18:34:17Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6889 2008-04-01 21:03:04Z pachanga $
  */
 class lmbToolkit extends lmbObject
 {
@@ -58,21 +58,6 @@ class lmbToolkit extends lmbObject
   protected $_signatures_loaded = false;
 
   /**
-  * Sets new tools object and clear signatures cache
-  * @param lmbToolkitTools
-  */
-  protected function setTools($tools)
-  {
-    if(!is_array($tools))
-      $this->_tools = array($tools);
-    else
-      $this->_tools = $tools;
-
-    $this->_tools_signatures = array();
-    $this->_signatures_loaded = false;
-  }
-
-  /**
   * Follows Singleton pattern interface
   * Returns toolkit instance. Takes instance from {@link lmbRegistry)
   * If instance is not initialized yet - creates one with empty tools
@@ -86,6 +71,21 @@ class lmbToolkit extends lmbObject
 
     self :: $_instance = new lmbToolkit();
     return self :: $_instance;
+  }
+
+  /**
+  * Sets new tools object and clear signatures cache
+  * @param lmbToolkitTools
+  */
+  protected function setTools($tools)
+  {
+    if(!is_array($tools))
+      $this->_tools = array($tools);
+    else
+      $this->_tools = $tools;
+
+    $this->_tools_signatures = array();
+    $this->_signatures_loaded = false;
   }
 
   /**
@@ -121,7 +121,6 @@ class lmbToolkit extends lmbObject
 
     lmbRegistry :: set('__props', $toolkit->export());
     lmbRegistry :: save('__props');
-    //do we need to clone properties as well?
 
     return $toolkit;
   }
@@ -134,12 +133,19 @@ class lmbToolkit extends lmbObject
   {
     $toolkit = lmbToolkit :: instance();
 
-    $tools = lmbRegistry :: restore('__tools');
-    $props = lmbRegistry :: restore('__props');
+    lmbRegistry :: restore('__tools');
+    $tools = lmbRegistry :: get('__tools');
+    lmbRegistry :: restore('__props');
+    $props = lmbRegistry :: get('__props');
 
-    $toolkit->reset();
-    $toolkit->import($props);
-    $toolkit->setTools($tools);
+    if($props !== null)
+    {
+      $toolkit->reset();
+      $toolkit->import($props);
+    }
+
+    if($tools !== null)
+      $toolkit->setTools($tools);
 
     return $toolkit;
   }

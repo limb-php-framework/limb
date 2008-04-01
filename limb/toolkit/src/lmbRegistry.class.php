@@ -15,11 +15,11 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
  * Completely static class
  * @link http://www.phppatterns.com/docs/design/the_registry
  * @package toolkit
- * @version $Id: lmbRegistry.class.php 6885 2008-04-01 18:34:17Z pachanga $
+ * @version $Id: lmbRegistry.class.php 6889 2008-04-01 21:03:04Z pachanga $
  */
 class lmbRegistry
 {
-  protected static $cache = array(array());
+  protected static $cache = array();
 
   /**
   * Adds a value to the registry
@@ -63,10 +63,7 @@ class lmbRegistry
   static function restore($name)
   {
     if(isset(self :: $cache[$name]))
-    {
       array_shift(self :: $cache[$name]);
-      return self :: $cache[$name][0];
-    }
     else
       throw new lmbException("No such registry entry '$name'");
   }
