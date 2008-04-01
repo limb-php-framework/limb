@@ -8,10 +8,6 @@
  */
 lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
 lmb_require('limb/toolkit/src/lmbRegistry.class.php');
-lmb_require('limb/toolkit/src/lmbEmptyToolkitTools.class.php');
-lmb_require('limb/toolkit/src/lmbCompositeToolkitTools.class.php');
-lmb_require('limb/toolkit/src/lmbCompositeNonItersectingToolkitTools.class.php');
-lmb_require('limb/toolkit/src/lmbToolkitTools.interface.php');
 lmb_require('limb/core/src/lmbObject.class.php');
 
 /**
@@ -40,14 +36,18 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6868 2008-03-30 08:20:27Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6885 2008-04-01 18:34:17Z pachanga $
  */
 class lmbToolkit extends lmbObject
 {
   /**
-  * @var lmbToolkitTools Current tools
+  * @var lmbToolkit Toolkit singleton instance
   */
-  protected $_tools;
+  static protected $_instance = null;
+  /**
+  * @var array Current tools array
+  */
+  protected $_tools = array();
   /**
   * @var array Cached tools signatures that is methods supported by tools
   */
@@ -63,7 +63,11 @@ class lmbToolkit extends lmbObject
   */
   protected function setTools($tools)
   {
-    $this->_tools = $tools;
+    if(!is_array($tools))
+      $this->_tools = array($tools);
+    else
+      $this->_tools = $tools;
+
     $this->_tools_signatures = array();
     $this->_signatures_loaded = false;
   }
@@ -77,31 +81,11 @@ class lmbToolkit extends lmbObject
   */
   static function instance()
   {
-    self :: _ensureInstance();
-    return lmbRegistry :: get(__CLASS__);
-  }
+    if(is_object(self :: $_instance))
+      return self :: $_instance;
 
-  /**
-  * Ensures that instance of lmbToolkit class exists.
-  * If instance is not initialized yet - creates one with empty tools
-  * @see lmbRegistry
-  * @return void
-  */
-  static protected function _ensureInstance()
-  {
-    $instance = lmbRegistry :: get(__CLASS__);
-
-    if(is_object($instance))
-      return;
-
-    $instance = new lmbToolkit();
-    lmbRegistry :: set(__CLASS__, $instance);
-
-    $instance->setTools($tools = new lmbEmptyToolkitTools());
-
-    lmbRegistry :: set('lmbToolkitTools', $tools);
-    lmbRegistry :: set('lmbToolkitToolsCopy', clone($tools));
-    lmbRegistry :: set('lmbToolkitProperties', array());
+    self :: $_instance = new lmbToolkit();
+    return self :: $_instance;
   }
 
   /**
@@ -113,9 +97,6 @@ class lmbToolkit extends lmbObject
   {
     $toolkit = lmbToolkit :: instance();
     $toolkit->setTools($tools);
-
-    lmbRegistry :: set('lmbToolkitTools', $tools);
-    lmbRegistry :: set('lmbToolkitToolsCopy', clone($tools));
 
     return $toolkit;
   }
@@ -129,22 +110,18 @@ class lmbToolkit extends lmbObject
   {
     $toolkit = lmbToolkit :: instance();
 
-    //$tools = lmbRegistry :: get('lmbToolkitToolsCopy');
-    //$tools_copy = clone($tools);
-
     $tools = $toolkit->_tools;
-    $tools_copy = clone($tools);
+    $tools_copy = array();
+    foreach($toolkit->_tools as $tool)
+      $tools_copy[] = clone($tool);
 
+    lmbRegistry :: set('__tools', $tools);
+    lmbRegistry :: save('__tools');
     $toolkit->setTools($tools_copy);
 
-    lmbRegistry :: save('lmbToolkitTools');
-    lmbRegistry :: save('lmbToolkitToolsCopy');
-
-    lmbRegistry :: set('lmbToolkitTools', $tools);
-    lmbRegistry :: set('lmbToolkitToolsCopy', $tools_copy);
-
-    lmbRegistry :: set('lmbToolkitProperties', $toolkit->export());
-    lmbRegistry :: save('lmbToolkitProperties');
+    lmbRegistry :: set('__props', $toolkit->export());
+    lmbRegistry :: save('__props');
+    //do we need to clone properties as well?
 
     return $toolkit;
   }
@@ -157,45 +134,35 @@ class lmbToolkit extends lmbObject
   {
     $toolkit = lmbToolkit :: instance();
 
-    lmbRegistry :: restore('lmbToolkitTools');
-    lmbRegistry :: restore('lmbToolkitToolsCopy');
-    lmbRegistry :: restore('lmbToolkitProperties');
-
-    $tools = lmbRegistry :: get('lmbToolkitTools');
-    $toolkit->setTools($tools);
+    $tools = lmbRegistry :: restore('__tools');
+    $props = lmbRegistry :: restore('__props');
 
     $toolkit->reset();
-    $toolkit->import(lmbRegistry :: get('lmbToolkitProperties'));
+    $toolkit->import($props);
+    $toolkit->setTools($tools);
 
     return $toolkit;
   }
 
   /**
-  * Extends current tools with new tools
-  * Merges tools together using {@link lmbCompositeNonItersectingToolkitTools} that doesn't allow tools methods intersection
-  * @see lmbCompositeNonItersectingToolkitTools
+  * Extends current tools with new tool
   * @return lmbToolkit The only instance of lmbToolkit class
   */
-  static function extend($tools)
+  static function merge($tool)
   {
-    self :: _ensureInstance();
-
-    $tools_copy = lmbRegistry :: get('lmbToolkitToolsCopy');
-    return self :: setup(new lmbCompositeNonItersectingToolkitTools($tools_copy, $tools));
+    $toolkit = lmbToolkit :: instance();
+    $toolkit->add($tool);
+    return $toolkit;
   }
 
   /**
-  * Extends current tools with new tools
-  * Merges tools together using {@link lmbCompositeToolkitTools}
-  * @see lmbCompositeToolkitTools
-  * @return lmbToolkit The only instance of lmbToolkit class
+  * Extends current tools with new tool
   */
-  static function merge($tools)
+  function add($tool)
   {
-    self :: _ensureInstance();
-
-    $tools_copy = lmbRegistry :: get('lmbToolkitToolsCopy');
-    return self :: setup(new lmbCompositeToolkitTools($tools_copy, $tools));
+    $tools = $this->_tools;
+    array_unshift($tools, $tool);
+    $this->setTools($tools);
   }
 
   /**
@@ -214,7 +181,7 @@ class lmbToolkit extends lmbObject
   /**
   * Gets variable from toolkit
   * Checks if appropriate getter method in tools exists to delegate to
-  * @return void
+  * @return mixed
   */
   function get($var, $default = LIMB_UNDEFINED)
   {
@@ -224,20 +191,27 @@ class lmbToolkit extends lmbObject
       return parent :: get($var, $default);
   }
 
+  function has($var)
+  {
+    return $this->_hasGetMethodFor($var) || parent :: has($var);
+  }
+
+  /**
+  * Sets variable into toolkit directly
+  * @return void
+  */
   function setRaw($var, $value)
   {
     return parent :: _setRaw($var, $value);
   }
 
+  /**
+  * Gets variable from toolkit directly
+  * @return mixed
+  */
   function getRaw($var)
   {
     return parent :: _getRaw($var);
-  }
-
-
-  function has($var)
-  {
-    return $this->_hasGetMethodFor($var) || parent :: has($var);
   }
 
   /**
@@ -266,7 +240,17 @@ class lmbToolkit extends lmbObject
     if($this->_signatures_loaded)
       return;
 
-    $this->_tools_signatures = $this->_tools->getToolsSignatures();
+    $this->_tools_signatures = array();
+    foreach($this->_tools as $tool)
+    {
+      $signatures = $tool->getToolsSignatures();
+      foreach($signatures as $method => $obj)
+      {
+        if(!isset($this->_tools_signatures[$method]))
+          $this->_tools_signatures[$method] = $obj;
+      }
+    }
+
     $this->_signatures_loaded = true;
   }
 

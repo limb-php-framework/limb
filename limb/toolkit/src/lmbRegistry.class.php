@@ -15,7 +15,7 @@ lmb_require('limb/core/src/exception/lmbException.class.php');
  * Completely static class
  * @link http://www.phppatterns.com/docs/design/the_registry
  * @package toolkit
- * @version $Id: lmbRegistry.class.php 6238 2007-08-28 13:13:39Z pachanga $
+ * @version $Id: lmbRegistry.class.php 6885 2008-04-01 18:34:17Z pachanga $
  */
 class lmbRegistry
 {
@@ -52,7 +52,7 @@ class lmbRegistry
     if(isset(self :: $cache[$name]))
       array_unshift(self :: $cache[$name], array());
     else
-      throw new lmbException('no such registry entry', array('name' => $name));
+      throw new lmbException("No such registry entry '$name'");
   }
 
   /**
@@ -63,9 +63,12 @@ class lmbRegistry
   static function restore($name)
   {
     if(isset(self :: $cache[$name]))
+    {
       array_shift(self :: $cache[$name]);
+      return self :: $cache[$name][0];
+    }
     else
-      throw new lmbException('no such registry entry', array('name' => $name));
+      throw new lmbException("No such registry entry '$name'");
   }
 }
 
