@@ -179,9 +179,8 @@ class lmbObject implements lmbSetInterface
     if($this->_hasAttribute($name) && !$this->_isGuarded($name))
       return $this->_getRaw($name);
 
-    if(LIMB_UNDEFINED !== $default) {
+    if(LIMB_UNDEFINED !== $default)
       return $default;
-    }
     
     throw new lmbNoSuchPropertyException("No such property '$name' in " . get_class($this));
   }
