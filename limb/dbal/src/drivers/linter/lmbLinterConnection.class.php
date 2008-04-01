@@ -98,6 +98,7 @@ class lmbLinterConnection implements lmbDbConnection
       $this->log("Connected in mode ".$this->mode.". Connection #".$this->connectionId);
       linter_set_cursor_opt($this->connectionId, CO_NULL_AS_NULL_OBJECT, 1);
       linter_set_cursor_opt($this->connectionId, CO_FETCH_BLOBS_AS_USUAL_DATA, 1);
+      linter_set_cursor_opt($this->connectionId, CO_DT_FORMAT, "YYYY-MM-DD HH:MI:SS");
       //linter_set_cursor_opt($this->connectionId, CO_DECIMAL_AS_DOUBLE, 1);
     }
 	
@@ -219,8 +220,6 @@ class lmbLinterConnection implements lmbDbConnection
       if ($result < 0)
         $this->_raiseError($result);
         
-      linter_set_cursor_opt($result, CO_DT_FORMAT, "YYYY-MM-DD HH:MI:SS");
-
       $this->cursorPool[$result] = "opened";
       $this->log("Cursor opened. Connection: ".$this->connectionId."; cursor: ".$result."; pool size: ".count($this->cursorPool));
     }
