@@ -9,13 +9,6 @@ if(!defined('LIMB_VAR_DIR'))
 require_once(dirname(__FILE__) . '/../../common.inc.php');
 require_once('limb/dbal/src/lmbDbDump.class.php');
 
-if(!lmbToolkit::instance()->isDefaultDbDsnAvailable())
-{
-  $dsn = 'sqlite://localhost/' . LIMB_VAR_DIR . '/sqlite_tests.db';
-  echo "Using default sqlite test database '$dsn'\n";
-  lmbToolkit::instance()->setDefaultDbDSN($dsn);
-}
-
 $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
 $file = dirname(__FILE__) . '/../../init/init_tests.' . $type;
 if(file_exists($file))
