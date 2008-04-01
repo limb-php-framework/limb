@@ -6,20 +6,20 @@ require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestRunner.class.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeFilePathNode.class.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeGlobNode.class.php');
 
-$packages = null;
+$tests = array();
 if(sizeof($argv) > 1)
-  $packages = array_splice($argv, 1);
+  $tests = array_splice($argv, 1);
 
 
-if($packages)
+if($tests)
 {
   $paths = array();
   $res = true;
-  foreach($packages as $pkg)
+  foreach($tests as $test)
   {
     $runner = new lmbTestRunner();
-    $path = dirname(__FILE__) . '/' . $pkg . '/tests/cases/';
-    if(is_dir($path))
+    $path = dirname(__FILE__) . '/' . $test;
+    if(file_exists($path) || is_dir($path))
       $res &= $runner->run(new lmbTestTreeFilePathNode($path));
   }
 }
