@@ -9,7 +9,12 @@
 
 lmb_require(dirname(__FILE__).'/../../src/lmbImageKit.class.php');
 
-class lmbImageKitTest extends UnitTestCase {
+class lmbImageKitTest extends UnitTestCase 
+{
+  function skip()
+  {
+    $this->skipIf(!extension_loaded('gd'), 'GD extension not found. Test skipped.');
+  }
 
   function _getInputImage()
   {
@@ -24,13 +29,15 @@ class lmbImageKitTest extends UnitTestCase {
   function testCreateGdConvertor()
   {
     $conv = lmbImageKit::create('gd');
-
     $this->assertIsA($conv, 'lmbGdImageConvertor');
   }
 
   function testTraversing()
   {
-    lmbImageKit::load($this->_getInputImage())->apply('resize', array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->apply('rotate', array('angle' => 90))->save($this->_getOutputImage());
+    lmbImageKit::load($this->_getInputImage())->
+      apply('resize', array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->
+      apply('rotate', array('angle' => 90))->
+      save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 60);
@@ -39,7 +46,10 @@ class lmbImageKitTest extends UnitTestCase {
 
   function testTraversingByOverloading()
   {
-    lmbImageKit::load($this->_getInputImage())->resize(array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->rotate(array('angle' => 90))->save($this->_getOutputImage());
+    lmbImageKit::load($this->_getInputImage())->
+      resize(array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->
+      rotate(array('angle' => 90))->
+      save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 60);
@@ -51,4 +61,3 @@ class lmbImageKitTest extends UnitTestCase {
     @unlink($this->_getOutputImage());
   }
 }
-?>

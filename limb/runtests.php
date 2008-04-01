@@ -3,6 +3,7 @@ set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path(
 
 require_once(dirname(__FILE__) . '/tests_runner/common.inc.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestRunner.class.php');
+require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeFilePathNode.class.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeGlobNode.class.php');
 
 $packages = null;
@@ -19,7 +20,7 @@ if($packages)
     $runner = new lmbTestRunner();
     $path = dirname(__FILE__) . '/' . $pkg . '/tests/cases/';
     if(is_dir($path))
-      $res &= $runner->run(new lmbTestTreeDirNode($path));
+      $res &= $runner->run(new lmbTestTreeFilePathNode($path));
   }
 }
 else
