@@ -130,7 +130,8 @@ class lmbSqliteRecordSet extends lmbDbBaseRecordSet
 
   function count()
   {
-    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->query) || preg_match('/\s+GROUP\s+BY\s+/is',$this->query)))
+    if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->query) || preg_match('/\s+GROUP\s+BY\s+/is',$this->query)) &&
+       preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->query))
     {
       $rewritesql = preg_replace('/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ', $this->query);
       $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','', $rewritesql);
