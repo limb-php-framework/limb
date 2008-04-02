@@ -18,9 +18,10 @@ if($tests)
   foreach($tests as $test)
   {
     $runner = new lmbTestRunner();
-    $path = dirname(__FILE__) . '/' . $test;
-    if(file_exists($path) || is_dir($path))
-      $res &= $runner->run(new lmbTestTreeFilePathNode($path));
+    if(file_exists($test) || is_dir($test))
+      $res &= $runner->run(new lmbTestTreeFilePathNode($test));
+    else
+      echo "Test path '$test' is not valid, skipping\n";
   }
 }
 else
