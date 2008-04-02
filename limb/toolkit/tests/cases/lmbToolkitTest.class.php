@@ -73,7 +73,9 @@ class lmbToolkitTest extends UnitTestCase
 
   function testInstance()
   {
-    $this->assertIdentical(lmbToolkit :: instance(), lmbToolkit :: instance());
+    //there is a weird "recursion too deep" error on older versions of PHP
+    if(version_compare(phpversion(), '5.2.0', '>'))
+      $this->assertIdentical(lmbToolkit :: instance(), lmbToolkit :: instance());
   }
 
   function testNoSuchMethod()
