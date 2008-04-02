@@ -36,7 +36,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6889 2008-04-01 21:03:04Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6895 2008-04-02 13:49:22Z pachanga $
  */
 class lmbToolkit extends lmbObject
 {
@@ -56,6 +56,15 @@ class lmbToolkit extends lmbObject
   * @var boolean Flag if tools signatures were precached
   */
   protected $_signatures_loaded = false;
+  /**
+  * @var string Unique id of this toolkit
+  */
+  protected $_id;
+
+  function __construct()
+  {
+    $toolkit->_id = uniqid();
+  }
 
   /**
   * Follows Singleton pattern interface
@@ -115,12 +124,12 @@ class lmbToolkit extends lmbObject
     foreach($toolkit->_tools as $tool)
       $tools_copy[] = clone($tool);
 
-    lmbRegistry :: set('__tools', $tools);
-    lmbRegistry :: save('__tools');
+    lmbRegistry :: set('__tools' . $toolkit->_id, $tools);
+    lmbRegistry :: save('__tools' . $toolkit->_id);
     $toolkit->setTools($tools_copy);
 
-    lmbRegistry :: set('__props', $toolkit->export());
-    lmbRegistry :: save('__props');
+    lmbRegistry :: set('__props' . $toolkit->_id, $toolkit->export());
+    lmbRegistry :: save('__props' . $toolkit->_id);
 
     return $toolkit;
   }
@@ -133,10 +142,10 @@ class lmbToolkit extends lmbObject
   {
     $toolkit = lmbToolkit :: instance();
 
-    lmbRegistry :: restore('__tools');
-    $tools = lmbRegistry :: get('__tools');
-    lmbRegistry :: restore('__props');
-    $props = lmbRegistry :: get('__props');
+    lmbRegistry :: restore('__tools' . $toolkit->_id);
+    $tools = lmbRegistry :: get('__tools' . $toolkit->_id);
+    lmbRegistry :: restore('__props' . $toolkit->_id);
+    $props = lmbRegistry :: get('__props' . $toolkit->_id);
 
     if($props !== null)
     {
