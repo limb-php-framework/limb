@@ -28,25 +28,26 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
     $this->base_object = $base_object;
     $this->conn = $conn;
     if(is_string($join_relations))
-      $join_relations = array($join_relations => array());     
+      $join_relations = array($join_relations => array());
     $this->join_relations = $join_relations;
     $this->prefix = $prefix;
 
     parent :: __construct($record_set);
   }
-  
+
   function rewind()
   {
     foreach($this->join_relations as $relation_name => $params)
     {
       $relation_info = $this->base_object->getRelationInfo($relation_name);
+
       $object = new $relation_info['class'];
       if(isset($params['join']))
         $this->iterator = new lmbARRecordSetJoinDecorator($this->iterator, $object, $this->conn, $params['join'], $this->prefix . $relation_name . '__');
       if(isset($params['attach']))
         $this->iterator = new lmbARRecordSetAttachDecorator($this->iterator, $object, $this->conn, $params['attach'], $relation_name . '__');
     }
-    
+
     parent :: rewind();
   }
 
@@ -56,7 +57,7 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
       return null;
 
     $this->_extractPrefixedFieldsAsActiveRecords($record);
-    
+
     return $record;
   }
 
@@ -65,12 +66,13 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
     foreach($this->join_relations as $relation_name => $params)
     {
       $relation_info = $this->base_object->getRelationInfo($relation_name);
+
       if(isset($relation_info['can_be_null']) && $relation_info['can_be_null'] && !$record->get($this->prefix . $relation_info['field']))
         return;
-      
+
       $fields = new lmbSet();
       $prefix = $this->prefix . $relation_name . '__';
-      
+
       foreach($record->export() as $field => $value)
       {
         if(strpos($field, $prefix) === 0)
@@ -80,12 +82,24 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
           $record->remove($field);
         }
       }
-      
-      $related_object_class = $relation_info['class'];
-      $related_object = new $related_object_class(null, $this->conn);
+
+      $related_object = $this->_createObject($fields, $relation_info['class']);
       $related_object->loadFromRecord($fields);
       $record->set($this->prefix . $relation_name, $related_object);
     }
+  }
+
+  protected function _createObject($record, $default_class_name)
+  {
+    if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
+    {
+      $class = end(lmbActiveRecord :: decodeInheritancePath($path));
+      if(!class_exists($class))
+        throw new lmbException("Class '$class' not found");
+      return new $class(null, $this->conn);
+    }
+    else
+      return new $default_class_name(null, $this->conn);
   }
 
   function at($pos)
@@ -94,7 +108,7 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
       return null;
 
     $this->_extractPrefixedFieldsAsActiveRecords($record);
-    
+
     return $record;
   }
 }
