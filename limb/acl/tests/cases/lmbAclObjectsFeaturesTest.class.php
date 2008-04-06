@@ -7,16 +7,11 @@
 * @license    LGPL http://www.gnu.org/copyleft/lesser.html
 */
 lmb_require('limb/acl/src/lmbAcl.class.php');
-lmb_require('limb/acl/src/lmbAbstractRoleProvider.class.php');
-lmb_require('limb/acl/src/lmbAbstractResourceProvider.class.php');
+lmb_require('limb/acl/src/lmbRoleProviderInterface.interface.php');
+lmb_require('limb/acl/src/lmbResourceProviderInterface.interface.php');
 lmb_require('limb/acl/src/lmbRolesResolverInterface.interface.php');
 
-class Acl_Tests_Admin extends lmbAbstractRoleProvider
-{
-  public $_role = 'admin';
-}
-
-class Acl_Tests_User extends lmbAbstractRoleProvider
+class Acl_Tests_User implements lmbRoleProviderInterface
 {
   protected $is_logged_in;
   public $name;
@@ -35,21 +30,24 @@ class Acl_Tests_User extends lmbAbstractRoleProvider
   }
 }
 
-class Acl_Tests_Member extends lmbAbstractRoleProvider
+class Acl_Tests_Member implements lmbRoleProviderInterface
 {
-  public $name;
-  protected $_role = 'member';
+  public $name;  
 
   function __construct($name)
   {
     $this->name = $name;
   }
+  
+  function getRole()
+  {
+    return 'member';
+  }
 
 }
 
-class Acl_Tests_Article extends lmbAbstractResourceProvider implements lmbRolesResolverInterface
-{
-  protected $_resource = 'article';
+class Acl_Tests_Article implements lmbRolesResolverInterface, lmbResourceProviderInterface
+{  
 
   function getRoleFor($object)
   {
@@ -57,6 +55,11 @@ class Acl_Tests_Article extends lmbAbstractResourceProvider implements lmbRolesR
       return 'owner';
     if('Valtazar' === $object->name)
       return 'approver';
+  }
+  
+  function getResource()
+  {
+    return 'article';
   }
 }
 
@@ -69,13 +72,7 @@ class lmbAclObjectsFeatureTest extends UnitTestCase
     $this->acl = new lmbAcl();
   }
 
-  function testGetRoleDefinedByProperty()
-  {
-    $admin = new Acl_Tests_Admin();
-    $this->assertEqual('admin', $admin->getRole());
-  }
-
-  function testGetRoleFromOverridedMethod()
+  function testGetRole()
   {
     $user = new Acl_Tests_User($is_logged_in = false);
     $this->assertEqual('guest', $user->getRole());

@@ -207,12 +207,12 @@ class lmbAcl
       if($resolved_role = $resource->getRoleFor($role))
         $role = $resolved_role;
 
-    if($resource instanceof lmbAbstractResourceProvider)
+    if($resource instanceof lmbResourceProviderInterface )
       $resource = $resource->getResource();
 
     $this->_checkResource($resource);
 
-    if($role instanceof lmbAbstractRoleProvider)
+    if($role instanceof lmbRoleProviderInterface)
       $role = $role->getRole();
 
     if(!$this->isRoleExist($role))
