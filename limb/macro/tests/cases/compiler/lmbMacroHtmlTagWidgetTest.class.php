@@ -7,8 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
-require_once 'limb/wact/tests/cases/component/WactRuntimeComponentTest.class.php';
-
 class lmbMacroHtmlTagWidgetTest extends UnitTestCase
 {
   function setUp()

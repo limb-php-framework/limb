@@ -86,6 +86,8 @@ class lmbMacroTemplate
   function compile($source_file)
   {
     $compiled_file = $this->locator->locateCompiledTemplate($source_file);
+    
+    $macro_executor_class = null;
 
     if($this->config['is_force_compile'] || !file_exists($compiled_file))
     {
