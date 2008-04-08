@@ -124,22 +124,32 @@ class WactSelectMultipleComponent extends WactFormElementComponent
     if(!$select_field = $this->getAttribute('select_field'))
       $select_field = 'id';
 
+    $selected_items = array();
+    foreach ($values as $value)
+    {
+      if (is_scalar($value))
+        $selected_items[] = $value;
+      else
+        $selected_items[] = $value[$select_field];
+    }
     foreach($this->choice_list as $key => $choice)
     {
       $selected = false;
-      foreach($values as $value)
-      {
-        if(is_scalar($value) && $key == $value)
-        {
-          $selected = true;
-          break;
-        }
-        elseif(!is_scalar($value) && $value[$select_field] == $key)
-        {
-          $selected = true;
-          break;
-        }
-      }
+      if (in_array($key, $selected_items))
+        $selected = true;
+//      foreach($values as $value)
+//      {
+//        if(is_scalar($value) && $key == $value)
+//        {
+//          $selected = true;
+//          break;
+//        }
+//        elseif(!is_scalar($value) && $value[$select_field] == $key)
+//        {
+//          $selected = true;
+//          break;
+//        }
+//      }
 
       $this->option_handler->renderOption($key, $choice, $selected);
     }
