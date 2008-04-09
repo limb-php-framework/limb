@@ -17,11 +17,31 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
  */
 class lmbCacheApcBackend implements lmbCacheBackend
 {
+  function add($key, $value, $params = array()) 
+  {
+    if (array_key_exists("raw", $params))
+    {
+      return apc_add($key, $value, $this->_getTtl($params));
+    }
+    else
+    {
+      $container = new lmbSerializable($value);
+      return apc_add($key, serialize($container), $this->_getTtl($params));
+    }
+
+  }
+  
   function set($key, $value, $params = array()) 
   {
-    $container = new lmbSerializable($value);
-
-    apc_store($key, serialize($container), $this->_getTtl($params));
+    if (array_key_exists("raw", $params))
+    {
+      return apc_store($key, $value, $this->_getTtl($params));
+    }
+    else
+    {
+      $container = new lmbSerializable($value);
+      return apc_store($key, serialize($container), $this->_getTtl($params));
+    }
   }
 
   function get($key, $params = array())
@@ -29,8 +49,15 @@ class lmbCacheApcBackend implements lmbCacheBackend
     if (!$value = apc_fetch($key))
       return false;
 
-    $container = unserialize($value);
-    return $container->getSubject();
+    if (array_key_exists("raq", $params))
+    {
+      return $value;
+    }
+    else
+    {
+      $container = unserialize($value);
+      return $container->getSubject();
+    }
   }
 
   function delete($key, $params = array())
@@ -41,6 +68,14 @@ class lmbCacheApcBackend implements lmbCacheBackend
   function flush()
   {
     apc_clear_cache('user');
+  }
+  
+  function stat($params = array())
+  {
+    return apc_cache_info(
+        isset($params['cache_type']) ? $params['cache_type'] : "user",
+        isset($params['limited']) ? (bool) $params['limited'] : true
+    );
   }
   
   protected function _getTtl($params)

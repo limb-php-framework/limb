@@ -25,11 +25,30 @@ class lmbCacheMemcacheBackend implements lmbCacheBackend
     $this->_memcache->connect($host, $port);
   }
 
+  function add($key, $value, $params = array()) 
+  {
+    if (array_key_exists("raw", $params))
+    {
+      return $this->_memcache->add($key, $value, null, $this->_getTtl($params));
+    }
+    else
+    {
+      $container = new lmbSerializable($value);
+      return $this->_memcache->add($key, serialize($container), null, $this->_getTtl($params));
+    }
+  }
+  
   function set($key, $value, $params = array()) 
   {
-    $container = new lmbSerializable($value);
-
-    $this->_memcache->set($key, serialize($container), null, $this->_getTtl($params));
+    if (array_key_exists("raw", $params))
+    {
+      return $this->_memcache->set($key, $value, null, $this->_getTtl($params));
+    }
+    else
+    {
+      $container = new lmbSerializable($value);
+      return $this->_memcache->set($key, serialize($container), null, $this->_getTtl($params));
+    }
   }
 
   function get($key, $params = array())
@@ -37,8 +56,15 @@ class lmbCacheMemcacheBackend implements lmbCacheBackend
     if (!$value = $this->_memcache->get($key))
       return false;
         
-    $container = unserialize($value);
-    return $container->getSubject();
+    if (array_key_exists("raw", $params))
+    {
+      return $value;
+    }
+    else
+    {
+      $container = unserialize($value);
+      return $container->getSubject();
+    }
   }
 
   function delete($key, $params = array())
@@ -49,6 +75,15 @@ class lmbCacheMemcacheBackend implements lmbCacheBackend
   function flush()
   {
     $this->_memcache->flush();
+  }
+  
+  function stat($params = array())
+  {
+    return $this->_memcache->getStats(
+      isset($params['cache_type']) ? $params['cache_type'] : null,
+      isset($params['slabid']) ? $params['slabid'] : null,
+      isset($params['limit']) ? $params['limit'] : 100
+    );
   }
   
   protected function _getTtl($params)

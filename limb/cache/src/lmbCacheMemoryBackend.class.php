@@ -18,9 +18,19 @@ class lmbCacheMemoryBackend implements lmbCacheBackend
 {
   protected $_cache = array();
 
+  function add($key, $value, $params = array())
+  {
+    if (array_key_exists($key, $this->_cache))
+      return false;
+      
+    $this->_cache[$key] = $value;
+    return true;
+  }
+  
   function set($key, $value, $params = array())
   {
     $this->_cache[$key] = $value;
+    return true;
   }
 
   function get($key, $params = array())
@@ -39,6 +49,11 @@ class lmbCacheMemoryBackend implements lmbCacheBackend
   function flush()
   {
     $this->_cache = array();
+  }
+  
+  function stat($params = array())
+  {
+    return array();
   }
 }
 

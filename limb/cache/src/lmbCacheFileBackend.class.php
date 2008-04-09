@@ -32,14 +32,42 @@ class lmbCacheFileBackend implements lmbCacheBackend
     return $this->_cache_dir;
   }
 
+  function add($key, $value, $params = array())
+  {
+    $file = $this->getCacheDir() . '/' . $this->_getCacheFileName($key, $params);
+    if (file_exists($file))
+      return false;
+
+    if (array_key_exists("raw", $params))
+    {
+      lmbFs :: safeWrite($file, $value);
+      return true;
+    }
+    else
+    {
+      $container = new lmbSerializable($value);
+      lmbFs :: safeWrite($file, serialize($container));
+      return true;
+    }
+  }
+  
   function set($key, $value, $params = array())
   {
     $this->delete($key);
 
     $file = $this->getCacheDir() . '/' . $this->_getCacheFileName($key, $params);
 
-    $container = new lmbSerializable($value);
-    lmbFs :: safeWrite($file, serialize($container));
+    if (array_key_exists("raw", $params))
+    {
+      lmbFs :: safeWrite($file, $value);
+      return true;
+    }
+    else
+    {
+      $container = new lmbSerializable($value);
+      lmbFs :: safeWrite($file, serialize($container));
+      return true;
+    }
   }
 
   function get($key, $params = array())
@@ -54,8 +82,15 @@ class lmbCacheFileBackend implements lmbCacheBackend
         return false;
     }
 
-    $container = unserialize(file_get_contents($file));
-    return $container->getSubject();
+    if (array_key_exists("raw", $params))
+    {
+      return file_get_contents($file);
+    }
+    else
+    {
+      $container = unserialize(file_get_contents($file));
+      return $container->getSubject();
+    }
   }
 
   function delete($key, $params = array())
@@ -66,6 +101,11 @@ class lmbCacheFileBackend implements lmbCacheBackend
   function flush()
   {
     $this->_removeFileCache();
+  }
+  
+  function stat($params = array())
+  {
+    return array();
   }
 
   protected function _removeFileCache($key = false)

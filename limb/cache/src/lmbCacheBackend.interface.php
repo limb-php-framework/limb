@@ -15,8 +15,10 @@
  */
 interface lmbCacheBackend
 {
+  function add ($key, $value, $params = array());
   function set ($key, $value, $params = array());
   function get ($key, $params = array());
   function delete($key, $params = array());
   function flush();
+  function stat($params = array());
 }

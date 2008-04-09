@@ -39,6 +39,25 @@ abstract class lmbCacheBackendTest extends UnitTestCase
     $var = $this->cache->get(1);
     $this->assertEqual($v, $var);
   }
+  
+  function testAddLock()
+  {
+    $set = $this->cache->set(1, $v = 'value');
+    $add = $this->cache->add(1, $v = 'value');
+    
+    $this->assertTrue($set);
+    $this->assertFalse($add);
+    
+    $add2 = $this->cache->add(2, $v2 = 'value2');
+    $this->assertTrue($add2);
+    $this->assertEqual($v2, 'value2');
+    
+    $var = $this->cache->get(1);
+    $this->assertEqual($v, $var);
+    
+    $this->cache->set(2, 'new value');
+    $this->assertEqual($this->cache->get(2), 'new value');
+  }
 
   function testSetToCache()
   {
