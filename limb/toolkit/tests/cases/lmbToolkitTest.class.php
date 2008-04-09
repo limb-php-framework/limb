@@ -79,6 +79,30 @@ class lmbToolkitTest extends UnitTestCase
     catch(lmbException $e){}
   }
 
+  function testNonExistingSetterThrowsError()
+  {
+    $toolkit = new lmbToolkit();
+
+    try
+    {
+      $toolkit->setNonExistingStuff("bar");
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+  }
+
+  function testNonExistingGetterThrowsError()
+  {
+    $toolkit = new lmbToolkit();
+
+    try
+    {
+      $toolkit->getNonExistingStuff();
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+  }
+
   function testAddTools()
   {
     $toolkit = new lmbToolkit();

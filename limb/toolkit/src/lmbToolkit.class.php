@@ -36,7 +36,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6895 2008-04-02 13:49:22Z pachanga $
+ * @version $Id: lmbToolkit.class.php 6904 2008-04-09 19:22:54Z pachanga $
  */
 class lmbToolkit extends lmbObject
 {
@@ -242,7 +242,7 @@ class lmbToolkit extends lmbObject
     if(isset($this->_tools_signatures[$method]))
       return call_user_func_array(array($this->_tools_signatures[$method], $method), $args);
 
-    return parent :: __call($method, $args);
+    throw new lmbNoSuchMethodException("No such method '$method' exists in toolkit");
   }
 
   /**
