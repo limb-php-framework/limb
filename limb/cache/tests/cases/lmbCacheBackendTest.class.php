@@ -43,7 +43,7 @@ abstract class lmbCacheBackendTest extends UnitTestCase
   function testAddLock()
   {
     $set = $this->cache->set(1, $v = 'value');
-    $add = $this->cache->add(1, $v = 'value');
+    $add = $this->cache->add(1, $v_add = 'value_add');
     
     $this->assertTrue($set);
     $this->assertFalse($add);
