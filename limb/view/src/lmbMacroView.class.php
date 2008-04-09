@@ -69,9 +69,7 @@ class lmbMacroView extends lmbView
       $template->set('form_' . $form_id . '_datasource', $datasource);
 
     foreach($this->forms_errors as $form_id => $error_list)
-    {
       $template->set('form_' . $form_id . '_error_list', $error_list->getArray());
-    }
   }
 }
 
