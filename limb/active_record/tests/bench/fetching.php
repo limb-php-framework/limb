@@ -33,6 +33,7 @@ for($i=0;$i<1000;$i++)
 echo "native sqlite fetching: " . (microtime(true) - $mark) . "\n";
 
 $conn = lmbDBAL :: newConnection('sqlite://localhost/' . $db);
+
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
@@ -43,6 +44,17 @@ for($i=0;$i<1000;$i++)
 }
 
 echo "lmbDBAL :: fetch(), getter: " . (microtime(true) - $mark) . "\n";
+
+$mark = microtime(true);
+
+$rs = lmbDBAL :: fetch('SELECT bar FROM foo', $conn);
+for($i=0;$i<1000;$i++)
+{
+  foreach($rs as $record)
+   $bar = $record->get('bar');
+}
+
+echo "lmbDBAL :: fetch()(out of loop), getter: " . (microtime(true) - $mark) . "\n";
 
 class Foo extends lmbActiveRecord{}
 
@@ -61,6 +73,17 @@ echo "lmbActiveRecord fetching, getter: " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
+$rs = lmbActiveRecord :: find('Foo');
+for($i=0;$i<1000;$i++)
+{
+  foreach($rs as $obj)
+    $foo = $obj->get('bar');
+}
+
+echo "lmbActiveRecord fetching(out of loop), getter: " . (microtime(true) - $mark) . "\n";
+
+$mark = microtime(true);
+
 for($i=0;$i<1000;$i++)
 {
   $rs = lmbActiveRecord :: find('Foo');
@@ -69,6 +92,17 @@ for($i=0;$i<1000;$i++)
 }
 
 echo "lmbActiveRecord fetching, attr access: " . (microtime(true) - $mark) . "\n";
+
+$mark = microtime(true);
+
+$rs = lmbActiveRecord :: find('Foo');
+for($i=0;$i<1000;$i++)
+{
+  foreach($rs as $obj)
+    $foo = $obj->bar;
+}
+
+echo "lmbActiveRecord fetching(out of loop), attr access: " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
