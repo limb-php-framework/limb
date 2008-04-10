@@ -47,13 +47,13 @@ class lmbTestRunner
   {
     require_once(dirname(__FILE__) . '/../simpletest.inc.php');
 
-    $this->_startMemoryCheck();
+    $this->_startStats();
     $this->_startCoverage();
 
     $res = $this->_doRun($root_node, $path);
 
     $this->_endCoverage();
-    $this->_endMemoryCheck();
+    $this->_endStats();
     return $res;
   }
 
@@ -66,16 +66,16 @@ class lmbTestRunner
     return $test->run($this->_getReporter());
   }
 
-  protected function _startMemoryCheck()
+  protected function _startStats()
   {
     $this->start_time = microtime(true);
-    $this->start_memory_usage = memory_get_usage();
+    $this->start_memory_usage = function_exists('memory_get_usage') ? memory_get_usage() : 0;
   }
 
-  protected function _endMemoryCheck()
+  protected function _endStats()
   {
     $this->end_time = microtime(true);
-    $this->end_memory_usage = memory_get_usage();
+    $this->end_memory_usage = function_exists('memory_get_usage') ? memory_get_usage() : 0;
   }
 
   function getRunTime()
@@ -85,7 +85,10 @@ class lmbTestRunner
 
   function getMemoryUsage()
   {
-    return round(($this->end_memory_usage - $this->start_memory_usage) / 1024 /1024, 3);
+    $diff = $this->end_memory_usage - $this->start_memory_usage;
+    if($diff == 0)
+      return null;
+    return round($diff / 1024 /1024, 3);
   }
 
   protected function _startCoverage()

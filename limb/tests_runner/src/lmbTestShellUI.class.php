@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6913 2008-04-10 14:22:51Z korchasa $
+ * @version $Id: lmbTestShellUI.class.php 6919 2008-04-10 19:31:40Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -263,7 +263,8 @@ EOD;
     }
 
     echo 'Tests time: ' . $runner->getRuntime() . " sec.\n";
-    echo 'Tests memory: ' . $runner->getMemoryUsage() . " Mb.\n";
+    if($memory = $runner->getMemoryUsage())
+      echo 'Tests memory usage: ' . $memory . " Mb.\n";
 
     return $res;
   }
