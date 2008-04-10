@@ -37,6 +37,25 @@ function process_argv(&$argv)
   $argv = $new_argv;
 }
 
+function get_php_bin()
+{
+  ob_start();
+  phpinfo(INFO_GENERAL);
+  $info = ob_get_contents();
+  ob_end_clean();
+
+  $php_bin = $_ENV["_"];
+  $php_ini = "";
+
+  $lines = explode("\n", $info);
+  foreach($lines as $line)
+  {
+    if(preg_match('~^Loaded Configuration File\s*=>\s*(.*)$~', $line, $m))
+      $php_ini = "-c " . $m[1];
+  }
+  return $php_bin . " " . $php_ini;
+}
+
 process_argv($argv);
 
 if(sizeof($argv) > 1)
@@ -46,7 +65,10 @@ if(!$tests)
   $tests = glob("*/tests/cases");
 
 if($fork)
-  out("=========== Forking procees for each test ===========\n");
+{
+  $php_bin = get_php_bin();
+  out("=========== Forking procees for each test(PHP cmdline '$php_bin') ===========\n");
+}
 
 $res = true;
 foreach($tests as $test)
@@ -57,8 +79,7 @@ foreach($tests as $test)
 
     if($fork)
     {
-      //TODO: get rid of hardocoded php call here
-      system("php " . __FILE__ . " -q $test", $ret);
+      system($php_bin . " " . __FILE__ . " -q $test", $ret);
       if($ret != 0)
       {
         $res = false;
