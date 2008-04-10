@@ -47,13 +47,13 @@ class lmbTestRunner
   {
     require_once(dirname(__FILE__) . '/../simpletest.inc.php');
 
-    $this->_startStatsCheck();
+    $this->_startMemoryCheck();
     $this->_startCoverage();
 
     $res = $this->_doRun($root_node, $path);
 
     $this->_endCoverage();
-    $this->_stopStatsCheck();
+    $this->_endMemoryCheck();
     return $res;
   }
 
@@ -66,13 +66,13 @@ class lmbTestRunner
     return $test->run($this->_getReporter());
   }
 
-  protected function _startStatsCheck()
+  protected function _startMemoryCheck()
   {
     $this->start_time = microtime(true);
     $this->start_memory_usage = memory_get_usage();
   }
 
-  protected function _stopStatsCheck()
+  protected function _endMemoryCheck()
   {
     $this->end_time = microtime(true);
     $this->end_memory_usage = memory_get_usage();
