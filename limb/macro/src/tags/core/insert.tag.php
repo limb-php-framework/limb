@@ -86,6 +86,9 @@ class lmbMacroInsertTag extends lmbMacroTag
   {
     $handlers_str = 'array(';
     $methods = array();
+    
+    if($this->getBool('inline'))
+      $this->raise('Inline is not supported for dynamic case');      
 
     //collecting {{into}} tags
     if($intos = $this->_collectIntos())

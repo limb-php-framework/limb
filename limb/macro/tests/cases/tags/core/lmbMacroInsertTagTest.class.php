@@ -316,6 +316,27 @@ class lmbMacroInsertTagTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<body><p>Number: 2</p></body>');
   }
 
+  function testDynamicInlineIncludeThrowsException()
+  {
+    $bar = '<body><?php $var2=2;?>{{insert file="$#foo" inline="true"/}}</body>';
+    $foo = '<p>Number: <?php echo $var2;?></p>';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+
+    $macro = $this->_createMacro($bar_tpl);
+    $macro->set('foo', "foo.html");
+
+    try
+    {
+      $out = $macro->render();
+      $this->assertTrue(false);
+    }
+    catch(lmbMacroException $e)
+    {
+    }
+  }
+  
   function testStaticIncludeMixLocalAndTemplateVariables()
   {
     $bar = '<body><?php $var2=2;?>{{insert file="foo.html" var1="1" var2="$var2"/}}</body>';
