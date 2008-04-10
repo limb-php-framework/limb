@@ -21,8 +21,11 @@ class lmbTestRunner
   protected $coverage_include;
   protected $coverage_exclude;
   protected $coverage_report_dir;
+
   protected $start_time = 0;
   protected $end_time = 0;
+  protected $start_memory_usage = 0;
+  protected $end_memory_usage = 0;
 
   function setReporter($reporter)
   {
@@ -44,13 +47,13 @@ class lmbTestRunner
   {
     require_once(dirname(__FILE__) . '/../simpletest.inc.php');
 
-    $this->_startTimer();
+    $this->_startStatsCheck();
     $this->_startCoverage();
 
     $res = $this->_doRun($root_node, $path);
 
     $this->_endCoverage();
-    $this->_stopTimer();
+    $this->_stopStatsCheck();
     return $res;
   }
 
@@ -63,19 +66,26 @@ class lmbTestRunner
     return $test->run($this->_getReporter());
   }
 
-  protected function _startTimer()
+  protected function _startStatsCheck()
   {
     $this->start_time = microtime(true);
+    $this->start_memory_usage = memory_get_usage();
   }
 
-  protected function _stopTimer()
+  protected function _stopStatsCheck()
   {
     $this->end_time = microtime(true);
+    $this->end_memory_usage = memory_get_usage();
   }
 
   function getRunTime()
   {
     return round($this->end_time - $this->start_time, 3);
+  }
+
+  function getMemoryUsage()
+  {
+    return round(($this->end_memory_usage - $this->start_memory_usage) / 1024 /1024, 3);
   }
 
   protected function _startCoverage()
@@ -133,5 +143,3 @@ class lmbTestRunner
     return get_class($reporter) == 'DefaultReporter';
   }
 }
-
-

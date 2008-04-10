@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6709 2008-01-20 19:06:51Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6913 2008-04-10 14:22:51Z korchasa $
  */
 class lmbTestShellUI
 {
@@ -60,7 +60,7 @@ Usage:
   Advanced SimpleTest unit tests runner. Finds and executes unit tests within filesystem.
 Arguments:
   <file|dir> [<file1|dir1>, ... <fileN|dirN>] - a list of files/directories, globs are supported(e.g. '*')
-  KEY1=value1 [KEY2=value2, ... KEYN=valueN]  - a list of arbitrary key=value pairs which will be declared 
+  KEY1=value1 [KEY2=value2, ... KEYN=valueN]  - a list of arbitrary key=value pairs which will be declared
                                                 as constants using PHP define call
 Options:
   -h, --help                        Displays this help and exit
@@ -68,12 +68,12 @@ Options:
   -I, --include='filter1;filter2'   Sets file filters used for including test files during
                                     recursive traversal of directories.
                                     '*Test.class.php;*test.php;*Test.php' by default.
-  -G, --groups=group1[,group2]      Comma separated list of test groups defined in annotations 
-                                    tags which should be executed(e.g @group group1,group2) 
+  -G, --groups=group1[,group2]      Comma separated list of test groups defined in annotations
+                                    tags which should be executed(e.g @group group1,group2)
   -T, --tests=Foo[,Bar]             Comma separated list of test classes which should be
-                                    executed 
+                                    executed
   -M, --methods=testFoo[,testBar]   Comma separated list of test methods which should be
-                                    executed 
+                                    executed
   -C, --cover='path1;path2'         Sets paths delimitered with ';' which should be analyzed
                                     for test coverage(requires XDebug extension!)
   --cover-report=dir                Sets coverage report directory
@@ -110,7 +110,7 @@ EOD;
   {
     list(, $number, $status) = explode('-', trim(file_get_contents(dirname(__FILE__) . '/../VERSION')));
     $version = "limb_unit-$number-$status";
-    
+
     if(is_dir(dirname(__FILE__) . '/.svn'))
       $version .= "-dev";
 
@@ -124,7 +124,7 @@ EOD;
 
   static function getLongOpts()
   {
-    return array('help', 'version', 'include=', 'config=', 
+    return array('help', 'version', 'include=', 'config=',
                  'cover=', 'cover-report=', 'cover-exclude=',
                  'tests=', 'methods=', 'groups=');
   }
@@ -262,12 +262,13 @@ EOD;
       $this->_error($e->__toString());
     }
 
-    echo $runner->getRuntime() . " sec.\n";
+    echo 'Tests time: ' . $runner->getRuntime() . " sec.\n";
+    echo 'Tests memory: ' . $runner->getMemoryUsage() . " Mb.\n";
 
     return $res;
   }
 
-  protected function _phpLint($php_code, &$error = '') 
+  protected function _phpLint($php_code, &$error = '')
   {
     $php_code = preg_replace('~<\?php~', '', $php_code);
     $php_code = preg_replace('~\?>~', '', $php_code);
@@ -277,9 +278,7 @@ EOD;
     if(!$result)
       $error = ob_get_contents();
     ob_end_clean();
-    
+
     return $result;
   }
 }
-
-
