@@ -7,6 +7,5 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 require_once('limb/dbal/common.inc.php');
-//return lmbToolkit :: instance()->getDefaultDbConnection()->getType() != 'mysqli';
-return false;
+return lmbToolkit :: instance()->getDefaultDbConnection()->getType() != 'mysqli';
 
