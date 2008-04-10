@@ -1,0 +1,34 @@
+DROP TABLE IF EXISTS `test_one_table_object`;
+CREATE TABLE `test_one_table_object` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `annotation` text,
+  `content` text,
+  `news_date` date default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `test_db_table`;
+CREATE TABLE `test_db_table` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `description` text,
+  `title` varchar(255) NOT NULL default '',
+  `ordr` int(11) NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `all_types_test`;
+CREATE TABLE `all_types_test` (
+ `field_int` int(11) default NULL,
+ `field_varchar` varchar(255) default NULL,
+ `field_char` varchar(11) default NULL,
+ `field_date` date default NULL,
+ `field_datetime` datetime default NULL,
+ `field_time` time default NULL,
+ `field_text` text,
+ `field_smallint` smallint(6) default NULL,
+ `field_bigint` bigint(20) default NULL,
+ `field_blob` blob,
+ `field_float` float default NULL,
+ `field_decimal` decimal(10,0) default NULL,
+ `field_tinyint` tinyint(4) default NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
