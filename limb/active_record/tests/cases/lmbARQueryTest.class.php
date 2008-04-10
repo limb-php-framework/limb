@@ -701,7 +701,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($arr[0]->getCourses()->count(), 0);
     $this->assertEqual($arr[1]->getCourses()->count(), 0);
 
-    $this->assertEqual($this->conn->countQueries(), 0);
+    $this->assertEqual($this->conn->countQueries(), 2); // always do fetchi operations for not new owners of collections
   }  
 
   function testFetch_JoinWithWrongRelationType()

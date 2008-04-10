@@ -416,6 +416,26 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $this->assertIsA($arr[2]->getAltCourse(), 'CourseForTest');
     $this->assertEqual($arr[2]->getAltCourse()->getTitle(), $alt_course1->getTitle());
   }
+  
+  function testFetchFirstWithRelationObjectsUsingAttach_AndThenSave()
+  {
+    $course1 = $this->creator->createCourse();
+    $course2 = $this->creator->createCourse();
+    
+    $lecture1 = $this->creator->createLecture($course1);
+    $lecture2 = $this->creator->createLecture($course2);
+    $lecture3 = $this->creator->createLecture($course2);
+    
+    $course2_loaded = lmbActiveRecord :: findFirst('CourseForTest', array('criteria' => 'course_for_test.id = '. $course2->getId(), 'attach' => 'lectures'));
+    
+    $course2_loaded->setTitle('Some other title');
+    
+    $course2_loaded->save();
+    
+    $course2_loaded2 = lmbActiveRecord :: findFirst('CourseForTest', array('criteria' => 'course_for_test.id = '. $course2->getId(), 'attach' => 'lectures'));
+    $lectures = $course2_loaded2->getLectures();
+    $this->assertEqual(count($lectures), 2);
+  }
 
   function _initCourse()
   {

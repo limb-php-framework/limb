@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6804 2008-02-22 14:31:16Z korchasa $
+ * @version $Id: lmbARRelationCollection.class.php 6908 2008-04-10 07:33:05Z serega $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -42,6 +42,12 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     else
       $this->conn = lmbToolkit :: instance()->getDefaultDbConnection();
 
+    $this->reset();
+  }
+  
+  function setOwner($new_owner)
+  {
+    $this->owner = $new_owner;
     $this->reset();
   }
 
