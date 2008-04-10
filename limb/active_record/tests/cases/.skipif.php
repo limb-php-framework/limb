@@ -6,11 +6,14 @@ if(!defined('LIMB_VAR_DIR'))
     throw new Exception("Could not create LIMB_VAR_DIR at '" . LIMB_VAR_DIR . "' during tests execution");
 }
 
+if(!defined('LIMB_TEST_DB_DSN'))
+  define('LIMB_TEST_DB_DSN', 'sqlite://localhost/' . LIMB_VAR_DIR . '/sqlite_tests.db');
+
 require_once(dirname(__FILE__) . '/../../common.inc.php');
 
 if(!lmbToolkit::instance()->isDefaultDbDSNAvailable())
 {
-  $dsn = 'sqlite://localhost/' . LIMB_VAR_DIR . '/sqlite_tests.db';
+  $dsn = LIMB_TEST_DB_DSN;
   echo "Using default sqlite test database '$dsn'\n";
   lmbToolkit::instance()->setDefaultDbDSN($dsn);
 }
