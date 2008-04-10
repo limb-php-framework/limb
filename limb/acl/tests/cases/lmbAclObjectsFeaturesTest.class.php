@@ -95,26 +95,19 @@ class lmbAclObjectsFeatureTest extends UnitTestCase
   function testAclDynamicResolving()
   {
     $article = new Acl_Tests_Article();
+
     $member = new Acl_Tests_Member('Vasya');
     $owner = new Acl_Tests_Member('Bob');
-    $approver = new Acl_Tests_Member('Valtazar');
 
     $this->acl->addRole('member');
     $this->acl->addRole('owner', 'member');
-    $this->acl->addRole('approver', 'owner');
     $this->acl->addResource('article');
 
     $this->acl->allow('owner', 'article', 'edit');
-    $this->acl->allow('approver', 'article', 'disapprove');
 
     $this->assertFalse($this->acl->isAllowed($member, $article, 'edit'));
-    $this->assertFalse($this->acl->isAllowed($member, $article, 'disapprove'));
 
     $this->assertTrue($this->acl->isAllowed($owner, $article, 'edit'));
-    $this->assertFalse($this->acl->isAllowed($owner, $article, 'disapprove'));
-
-    $this->assertTrue($this->acl->isAllowed($approver, $article, 'edit'));
-    $this->assertTrue($this->acl->isAllowed($approver, $article, 'disapprove'));
   }
 
 }
