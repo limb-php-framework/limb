@@ -15,17 +15,23 @@
  */
 class lmbTestRunner
 {
+  static protected $current = null;
+
   protected $reporter;
   protected $coverage;
   protected $coverage_reporter;
   protected $coverage_include;
   protected $coverage_exclude;
   protected $coverage_report_dir;
-
   protected $start_time = 0;
   protected $end_time = 0;
   protected $start_memory_usage = 0;
   protected $end_memory_usage = 0;
+
+  static function getCurrent()
+  {
+    return self :: $current;
+  }
 
   function setReporter($reporter)
   {
@@ -47,13 +53,14 @@ class lmbTestRunner
   {
     require_once(dirname(__FILE__) . '/../simpletest.inc.php');
 
+    self :: $current = $this;
+
     $this->_startStats();
     $this->_startCoverage();
 
     $res = $this->_doRun($root_node, $path);
 
     $this->_endCoverage();
-    $this->_endStats();
     return $res;
   }
 
@@ -80,11 +87,13 @@ class lmbTestRunner
 
   function getRunTime()
   {
+    $this->_endStats();
     return round($this->end_time - $this->start_time, 3);
   }
 
   function getMemoryUsage()
   {
+    $this->_endStats();
     $diff = $this->end_memory_usage - $this->start_memory_usage;
     if($diff == 0)
       return null;

@@ -11,17 +11,84 @@
  * class lmbTestShellReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellReporter.class.php 6531 2007-11-20 12:22:57Z serega $
+ * @version $Id: lmbTestShellReporter.class.php 6925 2008-04-11 21:43:55Z pachanga $
  */
 class lmbTestShellReporter extends TextReporter
 {
+  protected $failed_tests = array();
+
+  function paintGroupStart($test_name, $size)
+  {
+    parent :: paintGroupStart($test_name, $size);
+  }
+
+  function paintGroupEnd($test_name)
+  {
+    parent :: paintGroupEnd($test_name);
+  }
+
+  function paintCaseStart($test_name)
+  {
+    parent :: paintCaseStart($test_name);
+  }
+
   function paintCaseEnd($test_name)
   {
     parent :: paintCaseEnd($test_name);
-
     echo $this->getTestCaseProgress() . " of " . $this->getTestCaseCount() . " done({$test_name})\n";
   }
-  
+
+  function paintMethodStart($test_name)
+  {
+    parent :: paintMethodStart($test_name);
+  }
+
+  function paintMethodEnd($test_name)
+  {
+    parent :: paintMethodEnd($test_name);
+  }
+
+  function paintSkip($message)
+  {
+    parent :: paintSkip($message);
+  }
+
+  function paintHeader($test_name) 
+  {
+    parent :: paintHeader($test_name);
+  }
+
+  function paintFooter($test_name) 
+  {
+    parent :: paintFooter($test_name);
+
+    $runner = lmbTestRunner :: getCurrent();
+    print 'Tests time: ' . $runner->getRuntime() . " sec.\n";
+    if($memory = $runner->getMemoryUsage())
+      print 'Tests memory usage: ' . $memory . " Mb.\n";
+
+    /*if($this->failed_tests)
+    {
+      print "=========== TESTS HAD ERRORS ===========\n";
+      print "Failed tests: [" . implode(", ", $this->failed_tests) . "]\n";
+    }
+    else
+      print "=========== ALL TESTS PASSED ===========\n";
+      */
+  }
+
+  function paintFail($message) 
+  {
+    parent :: paintFail($message);
+    $this->failed_tests[] = $this->_extractFileName($message);
+  }
+
+  function paintError($message) 
+  {
+    parent :: paintError($message);
+    $this->failed_tests[] = $this->_extractFileName($message);
+  }
+
   function paintException($exception) 
   {
     parent::paintException($exception);
@@ -37,5 +104,12 @@ class lmbTestShellReporter extends TextReporter
     print "Exception full message:\n";
     print $exception->__toString();
   }  
+
+  protected function _extractFileName($message)
+  {
+    $regex = "~.*\[([^\]]+)\s+line\s+(\d+)\].*~";
+    preg_match($regex, $message, $m);
+    return $m[1];
+  }
 }
 
