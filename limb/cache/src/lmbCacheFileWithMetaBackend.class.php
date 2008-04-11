@@ -38,23 +38,8 @@ class lmbCacheFileWithMetaBackend implements lmbCacheBackend
     if (file_exists($file))
       return false;
 
-    if(array_key_exists("ttl", $params))
-    {
-    	$meta=array('ttl' => $params['ttl']+time());
-    	$this->_setMetaData($key,$meta);
-    }
+    return $this->_doSet($key,$value,$file, $params);
 
-    if (array_key_exists("raw", $params))
-    {
-      lmbFs :: safeWrite($file, $value);
-      return true;
-    }
-    else
-    {
-      $container = new lmbSerializable($value);
-      lmbFs :: safeWrite($file, serialize($container));
-      return true;
-    }
   }
 
   function set($key, $value, $params = array())
@@ -63,12 +48,24 @@ class lmbCacheFileWithMetaBackend implements lmbCacheBackend
 
     $file = $this->getCacheDir() . '/' . $this->_getCacheFileName($key);
 
-   if(isset($params['ttl']))
-    {    	$meta=array('ttl' => $params['ttl']+time());
-    	$this->_setMetaData($key,$meta);
+    return $this->_doSet($key,$value,$file, $params);
+  }
+
+  function _doSet($key,$value,$file, $params)
+  {  	if(isset($params['ttl']))
+    {
+    	$meta['ttl']=$params['ttl']+time();
+    }
+  	if(isset($params['raw'])||in_array('raw',$params))
+    {
+    	$meta['raw']=true;
+    }
+    if(isset($meta) and is_array($meta))
+    {
+      $this->_setMetaData($key,$meta);
     }
 
-    if (array_key_exists("raw", $params))
+    if (isset($meta['raw']))
     {
       lmbFs :: safeWrite($file, $value);
       return true;
@@ -91,7 +88,7 @@ class lmbCacheFileWithMetaBackend implements lmbCacheBackend
         return false;
     }
 
-    if (array_key_exists("raw", $params))
+    if (isset($meta['raw']))
     {
       return file_get_contents($file);
     }
