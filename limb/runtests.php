@@ -51,7 +51,10 @@ function get_php_bin()
   foreach($lines as $line)
   {
     if(preg_match('~^Loaded Configuration File\s*=>\s*(.*)$~', $line, $m))
-      $php_ini = "-c " . $m[1];
+    {
+      if(file_exists($m[1]))
+        $php_ini = "-c " . $m[1];
+    }
   }
   return $php_bin . " " . $php_ini;
 }
