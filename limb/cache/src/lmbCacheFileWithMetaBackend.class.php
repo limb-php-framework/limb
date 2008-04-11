@@ -11,7 +11,7 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
 /**
- * class lmbCacheFileBackend.
+ * class lmbCacheFileWithMetaBackend.
  *
  * @package cache
  * @version $Id$
