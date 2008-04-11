@@ -44,7 +44,11 @@ function get_php_bin()
   $info = ob_get_contents();
   ob_end_clean();
 
-  $php_bin = $_ENV["_"];
+  if(isset($_ENV["_"]))
+    $php_bin = $_ENV["_"];
+  else
+    $php_bin = "php";//any better way to guess it otherwise?
+
   $php_ini = "";
 
   $lines = explode("\n", $info);
