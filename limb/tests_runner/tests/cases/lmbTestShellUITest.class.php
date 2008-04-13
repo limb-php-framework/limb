@@ -151,8 +151,8 @@ class lmbTestShellUITest extends lmbTestRunnerBase
 
   function testAutoDefineConstants()
   {
-    $c1 = "FOO_" . mt_rand();
-    $c2 = "FOO_" . mt_rand();
+    $c1 = "FOO_" . mt_rand() . "_H" . mt_rand();
+    $c2 = "FOO_" . mt_rand() . "_K" . mt_rand();
 
     $this->_createTestCase($f = LIMB_VAR_DIR . '/cases/foo_test.php', "%class%\n echo '$c1=' . $c1;echo '$c2=' . $c2;");
     $this->_execScript("$f $c1=hey $c2=wow", $screen);

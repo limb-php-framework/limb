@@ -46,8 +46,6 @@ class lmbTestOptions
     if(self :: $has_defaults)
       return;
 
-    //???
-
     self :: $has_defaults = true;
   }
 

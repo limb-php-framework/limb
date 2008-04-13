@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/lmbTestOptions.class.php');
  * class lmbTestShellUI.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellUI.class.php 6925 2008-04-11 21:43:55Z pachanga $
+ * @version $Id: lmbTestShellUI.class.php 6926 2008-04-13 07:15:26Z pachanga $
  */
 class lmbTestShellUI
 {
@@ -64,6 +64,7 @@ Arguments:
                                                 as constants using PHP define call
 Options:
   -h, --help                        Displays this help and exit
+  -V, --verbose                     Be extra verbose
   -c, --config=/file.php            PHP configuration file path
   -I, --include='filter1;filter2'   Sets file filters used for including test files during
                                     recursive traversal of directories.
@@ -119,12 +120,12 @@ EOD;
 
   static function getShortOpts()
   {
-    return 'hvI:c:C:T:M:G:';
+    return 'hVvI:c:C:T:M:G:';
   }
 
   static function getLongOpts()
   {
-    return array('help', 'version', 'include=', 'config=',
+    return array('help', 'verbose', 'version', 'include=', 'config=',
                  'cover=', 'cover-report=', 'cover-exclude=',
                  'tests=', 'methods=', 'groups=');
   }
@@ -175,6 +176,10 @@ EOD;
         case 'h':
         case '--help':
           $this->_help(0);
+          break;
+        case 'V':
+        case '--verbose':
+          lmbTestOptions :: set('verbose', true);
           break;
         case 'v':
         case '--version':

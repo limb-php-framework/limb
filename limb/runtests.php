@@ -9,7 +9,6 @@ require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeGlobNode.class.ph
 $fork = false;
 $quiet = false;
 $tests = array();
-$failed_tests = array();
 
 function out($msg)
 {
@@ -82,25 +81,17 @@ foreach($tests as $test)
 {
   if(file_exists($test) || is_dir($test))
   {
-    out("=========== Running tests from '$test' ===========\n");
-
     if($fork)
     {
       system($php_bin . " " . __FILE__ . " -q $test", $ret);
       if($ret != 0)
-      {
         $res = false;
-        $failed_tests[] = $test;
-      }
     }
     else
     {
       $runner = new lmbTestRunner();
       if(!$runner->run(new lmbTestTreeFilePathNode($test)))
-      {
         $res = false;
-        $failed_tests[] = $test;
-      }
     }
   }
   else
@@ -108,10 +99,7 @@ foreach($tests as $test)
 }
 
 if(!$res)
-{
-  out("=========== TESTS HAD ERRORS ===========\n");
-  out("Failed tests: [" . implode(", ", $failed_tests) . "]\n");
-}
+  out("=========== TESTS HAD ERRORS(see above) ===========\n");
 else
   out("=========== ALL TESTS PASSED ===========\n");
 

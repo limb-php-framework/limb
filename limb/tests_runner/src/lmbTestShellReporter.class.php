@@ -11,15 +11,23 @@
  * class lmbTestShellReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellReporter.class.php 6925 2008-04-11 21:43:55Z pachanga $
+ * @version $Id: lmbTestShellReporter.class.php 6926 2008-04-13 07:15:26Z pachanga $
  */
 class lmbTestShellReporter extends TextReporter
 {
   protected $failed_tests = array();
+  protected $first_group_test = false;
 
   function paintGroupStart($test_name, $size)
   {
     parent :: paintGroupStart($test_name, $size);
+
+    //TODO: make this less fragile
+    if(!$this->first_group_test && strpos($test_name, "Group test in") === 0)
+    {
+      $this->first_group_test = true;
+      print "=========== $test_name ===========\n";
+    }
   }
 
   function paintGroupEnd($test_name)
@@ -30,17 +38,24 @@ class lmbTestShellReporter extends TextReporter
   function paintCaseStart($test_name)
   {
     parent :: paintCaseStart($test_name);
+
+    if(lmbTestOptions :: get('verbose'))
+      print "======== $test_name ========\n";
   }
 
   function paintCaseEnd($test_name)
   {
     parent :: paintCaseEnd($test_name);
-    echo $this->getTestCaseProgress() . " of " . $this->getTestCaseCount() . " done({$test_name})\n";
+
+    print $this->getTestCaseProgress() . " of " . $this->getTestCaseCount() . " done({$test_name})\n";
   }
 
   function paintMethodStart($test_name)
   {
     parent :: paintMethodStart($test_name);
+
+    if(lmbTestOptions :: get('verbose'))
+      print "===== [$test_name] =====\n";
   }
 
   function paintMethodEnd($test_name)
@@ -55,7 +70,7 @@ class lmbTestShellReporter extends TextReporter
 
   function paintHeader($test_name) 
   {
-    parent :: paintHeader($test_name);
+    //don't show any header since it's shown in paintGroupStart
   }
 
   function paintFooter($test_name) 
@@ -67,26 +82,23 @@ class lmbTestShellReporter extends TextReporter
     if($memory = $runner->getMemoryUsage())
       print 'Tests memory usage: ' . $memory . " Mb.\n";
 
-    /*if($this->failed_tests)
+    if($this->failed_tests)
     {
-      print "=========== TESTS HAD ERRORS ===========\n";
-      print "Failed tests: [" . implode(", ", $this->failed_tests) . "]\n";
+      print "=========== FAILED TESTS  ===========\n";
+      print implode("\n", $this->failed_tests) . "\n";
     }
-    else
-      print "=========== ALL TESTS PASSED ===========\n";
-      */
   }
 
   function paintFail($message) 
   {
     parent :: paintFail($message);
-    $this->failed_tests[] = $this->_extractFileName($message);
+    $this->failed_tests[] = $this->_extractFileNameAndLine($message);
   }
 
   function paintError($message) 
   {
     parent :: paintError($message);
-    $this->failed_tests[] = $this->_extractFileName($message);
+    $this->failed_tests[] = $this->_extractFileNameAndLine($message);
   }
 
   function paintException($exception) 
@@ -105,11 +117,11 @@ class lmbTestShellReporter extends TextReporter
     print $exception->__toString();
   }  
 
-  protected function _extractFileName($message)
+  protected function _extractFileNameAndLine($message)
   {
     $regex = "~.*\[([^\]]+)\s+line\s+(\d+)\].*~";
     preg_match($regex, $message, $m);
-    return $m[1];
+    return $m[1] . ':' . $m[2];
   }
 }
 

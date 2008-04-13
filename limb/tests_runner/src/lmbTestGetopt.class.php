@@ -92,18 +92,21 @@ class lmbTestGetopt {
 
     function defineAndExtractConstants(&$argv)
     {
+        $filtered = array();
         for($i=0;$i<sizeof($argv);$i++) {
-          if(preg_match('~^[A-Z_][A-Z0-9_]+$~', $argv[$i])) {
+          //Windows cmd.exe uses '=' symbols as separators
+          //that's why we need to fetch the next argument as well
+          if(preg_match('~^[A-Z_][A-Z0-9_]+$~', $argv[$i]) && isset($argv[$i+1])) {
             @define($argv[$i], $argv[$i+1]);
-            unset($argv[$i]);
-            unset($argv[$i+1]);
             $i++;
           }
           elseif(preg_match('~^([A-Z_][A-Z0-9_]+)=(.*)$~', $argv[$i], $m)) {
             @define($m[1], $m[2]);
-            unset($argv[$i]);
+          } else {
+            $filtered[] = $argv[$i];
           }
         }
+        $argv = $filtered;
     }
 
     /**
