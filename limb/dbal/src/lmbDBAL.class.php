@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/toolkit.inc.php');
+require_once('limb/dbal/common.inc.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 6750 2008-01-25 13:36:19Z korchasa $
+ * @version $Id: lmbDBAL.class.php 6930 2008-04-14 11:22:49Z pachanga $
  */
 class lmbDBAL
 {

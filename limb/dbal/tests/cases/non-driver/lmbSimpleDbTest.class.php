@@ -178,6 +178,5 @@ class lmbSimpleDbTest extends UnitTestCase
   {
      $this->assertEqual($this->db->quote('foo'), $this->conn->quoteIdentifier('foo'));
   }
-
 }
 

@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbSimpleDb.class.php 6930 2008-04-14 11:22:49Z pachanga $
  */
 class lmbSimpleDb
 {
@@ -36,6 +36,11 @@ class lmbSimpleDb
   function getType()
   {
     return $this->conn->getType();
+  }
+
+  function execute($sql)
+  {
+    $this->conn->execute($sql);
   }
 
   function select($table, $criteria = null, $order = array())

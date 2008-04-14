@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6929 2008-04-14 11:02:24Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6930 2008-04-14 11:22:49Z pachanga $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
@@ -94,15 +94,19 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
       //array('id=1')
       if(!isset($args[1]) && isset($args[0]))
         return new lmbSQLCriteria($args[0]);
+
       //array('id=?', array(1))
-      elseif(isset($args[0]) && is_array($args[1]))
+      if(isset($args[0]) && is_array($args[1]))
         return new lmbSQLCriteria($args[0], $args[1]);
+
       //array('id=?', 1)
-      elseif(isset($args[0]))
+      if(isset($args[0]))
       {
         $sql = array_shift($args);
         return new lmbSQLCriteria($sql, $args);
       }
+
+      throw new lmbDbException("Unsupported criteria format passed as array", array('criteria' => $args));
     }
     //id=1
     elseif(is_string($args))
