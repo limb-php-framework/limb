@@ -27,10 +27,11 @@ class lmbSqliteManipulationStatement extends lmbSqliteStatement implements lmbDb
   {
     $sql = ltrim($this->getSQL());
 
+    //TODO: make it less fragile
     //this is a dirty hack for sqlite_changes which
-    //doesn't return proper value if there was not
-    if((stripos($sql, 'delete ') === 0 || stripos($sql, 'update '))
-       && stripos($sql, ' where ') === false)
+    //doesn't return proper value if there was no where condition
+    if((stripos($sql, 'delete ') === 0 || stripos($sql, 'update ') === 0)
+       && !preg_match('~\swhere\s~i', $sql))
       $sql .= " WHERE 1=1";
 
     return (bool)$this->connection->execute($sql);
