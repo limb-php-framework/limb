@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6390 2007-10-07 06:24:26Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 6929 2008-04-14 11:02:24Z pachanga $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
@@ -88,7 +88,7 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     if(is_array($args))
     {
       //array(new lmbSQLCriteria(..))
-      if(is_object($args[0]))
+      if(isset($args[0]) && is_object($args[0]))
         return $args[0];
 
       //array('id=1')
