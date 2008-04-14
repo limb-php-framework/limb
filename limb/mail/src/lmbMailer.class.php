@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-@define('PHPMAILER_DIR', dirname(__FILE__) . '/../lib/phpmailer-1.73/');
+@define('PHPMAILER_DIR', dirname(__FILE__) . '/../lib/phpmailer-2.1.0.beta2/');
 @define('LIMB_USE_PHPMAIL', false);
 @define('LIMB_SMTP_PORT', '25');
 @define('LIMB_SMTP_HOST', 'localhost');
@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6865 2008-03-28 10:47:33Z svk $
+ * @version $Id: lmbMailer.class.php 6933 2008-04-14 18:39:53Z alex433 $
  */
 class lmbMailer
 {
@@ -69,7 +69,7 @@ class lmbMailer
     include_once($this->phpmailer_dir . '/class.phpmailer.php');
 
     $mailer = new PHPMailer();
-    $mailer->LE = "\r\n";
+    $mailer->set('LE', "\r\n");
 
     if($this->use_phpmail)
       return $mailer;
@@ -193,7 +193,7 @@ class lmbMailer
 
       return null;
     }
-    elseif(preg_match('~("|\')?([^"\']+)("|\')?\s+<([^>]+)>~', $adressee, $matches))
+    elseif(preg_match('~("|\')?([^"\']+)("|\')?\s*<([^>]+)>~u', $adressee, $matches))
       return array('address' => $matches[4], 'name' => $matches[2]);
     else
       return array('address' => $adressee, 'name' => '');
