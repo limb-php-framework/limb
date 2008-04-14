@@ -36,10 +36,12 @@ class lmbCacheGroupDecorator implements lmbCacheBackend
 
     if (!$this->_groupKeyExists($key, $group))
       $this->_groups[$group][] = $key;
-      
+
+    $this->_cache->set('groups', $this->_groups);
+
     return $result;
   }
-  
+
   function set($key, $value, $params = array())
   {
     $group = $this->_getGroup($params);
@@ -47,7 +49,9 @@ class lmbCacheGroupDecorator implements lmbCacheBackend
 
     if (!$this->_groupKeyExists($key, $group))
       $this->_groups[$group][] = $key;
-      
+
+    $this->_cache->set('groups', $this->_groups);
+
     return $result;
   }
 
@@ -76,12 +80,14 @@ class lmbCacheGroupDecorator implements lmbCacheBackend
       $this->_cache->delete($this->_generateKey($key, $group));
 
     unset($this->_groups[$group]);
+    $this->_cache->set('groups', $this->_groups);
   }
 
   function flush()
   {
     $this->_cache->flush();
     $this->_groups = array();
+    $this->_cache->set('groups', $this->_groups);
   }
   
   function stat($params = array())

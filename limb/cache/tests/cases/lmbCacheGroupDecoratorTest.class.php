@@ -64,5 +64,8 @@ class lmbCacheGroupDecoratorTest extends lmbCacheFileBackendTest
     $var = $this->cache->get($key);
     $this->assertEqual($var, $v1);
   }
+  
+  //skip specific fileBackend test
+  function testCachedDiskFiles(){}
 
 }
