@@ -38,7 +38,7 @@ $Config['UserFilesPath'] = '/userfiles/' ;
 // user files directory. Usefull if you are using a virtual directory, symbolic
 // link or alias. Examples: 'C:\\MySite\\userfiles\\' or '/root/mysite/userfiles/'.
 // Attention: The above 'UserFilesPath' must point to the same directory.
-$Config['UserFilesAbsolutePath'] = '' ;
+$Config['UserFilesAbsolutePath'] = getenv('DOCUMENT_ROOT') . '/userfiles/' ;
 
 // Due to security issues with Apache modules, it is reccomended to leave the
 // following setting enabled.
