@@ -169,6 +169,17 @@ class lmbSQLCriteriaTest extends UnitTestCase
     $this->assertEqual($criteria->toStatementString(), "1 = 1");
   }
 
+  function testObjectifyNotSupportedArrayFormatException()
+  {
+    try
+    {
+      //actually this format could be useful as well...
+      $criteria = lmbSQLCriteria :: objectify(array('id' => 1));
+      $this->assertTrue(false);
+    }
+    catch(lmbDbException $e){}
+  }
+
   function testPassRawCriteriaToConstructor()
   {
     $criteria = new lmbSQLCriteria('2 = 2');
