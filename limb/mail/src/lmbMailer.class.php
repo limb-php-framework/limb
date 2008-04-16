@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6933 2008-04-14 18:39:53Z alex433 $
+ * @version $Id: lmbMailer.class.php 6937 2008-04-16 16:22:37Z pachanga $
  */
 class lmbMailer
 {
@@ -172,7 +172,7 @@ class lmbMailer
 
   function processMailRecipients($recipients)
   {
-    if(!is_array($recipients))
+    if(!is_array($recipients) || isset($recipients['name']))
        $recipients = array($recipients);
     $result = array();
     foreach($recipients as $recipient)
