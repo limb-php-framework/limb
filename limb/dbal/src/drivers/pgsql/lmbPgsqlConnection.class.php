@@ -19,12 +19,13 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 6858 2008-03-26 08:32:53Z svk $
+ * @version $Id: lmbPgsqlConnection.class.php 6938 2008-04-17 04:54:41Z svk $
  */
 class lmbPgsqlConnection implements lmbDbConnection
 {
   protected $connectionId;
   protected $config;
+  protected $statement_number = 0;
 
   function __construct($config)
   {
@@ -43,6 +44,11 @@ class lmbPgsqlConnection implements lmbDbConnection
       $this->connect();
     }
     return $this->connectionId;
+  }
+  
+  function getStatementNumber()
+  {
+      return ++$this->statement_number;
   }
 
   function getHash()

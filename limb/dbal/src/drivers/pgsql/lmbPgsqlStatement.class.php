@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbPgsqlStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlStatement.class.php 6858 2008-03-26 08:32:53Z svk $
+ * @version $Id: lmbPgsqlStatement.class.php 6938 2008-04-17 04:54:41Z svk $
  */
 class lmbPgsqlStatement implements lmbDbStatement
 {
@@ -196,7 +196,7 @@ class lmbPgsqlStatement implements lmbDbStatement
     $sql = $this->_handleBindVars($this->sql);
     if (empty($this->statement_name) || !is_resource($this->statement))
     {
-      $this->statement_name = uniqid(time());
+      $this->statement_name = "pgsql_statement_" . $this->connection->getStatementNumber();
       $this->statement = pg_prepare($this->connection->getConnectionId(), $this->statement_name, $sql);
     }    
     if(!$this->statement)
@@ -263,6 +263,8 @@ class lmbPgsqlStatement implements lmbDbStatement
     return $this->sql;
   }
 
+  
+  
   function getPrepParams()
   {
     return $this->prepParams;
