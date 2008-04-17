@@ -165,6 +165,29 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($macro->render(), 'List#John:Pavel|Peter:Harry|Roman:Sergey!');
   }
 
+  function testTwoGluesInsideNestingLists()
+  {
+    $list = '{{list using="$#list1" as="$item1"}}'.
+            '{{list:item}}'.
+              '{{list using="$#list2" as="$item2"}}'.
+              '{{list:item}}'.            
+              '<?=$item1?>' . '<?=$item2?>' .
+              '{{list:glue}} - {{/list:glue}}'.
+              '{{/list:item}}'.
+              '{{/list}}' .
+            '{{list:glue}}:{{/list:glue}}'.
+            '{{/list:item}}'.
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list1', array('X', 'Y'));
+    $macro->set('list2', array('A', 'B'));
+
+    $this->assertEqual($macro->render(), 'XA - XB:YA - YB');
+  }
+  
   function testListFillTagWithRatio()
   {
     $list = '{{list using="$#list" as="$item"}}List#'.

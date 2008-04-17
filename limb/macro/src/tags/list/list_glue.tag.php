@@ -28,15 +28,17 @@ class lmbMacroListGlueTag extends lmbMacroTag
     if($this->has('every'))
       $this->set('step', $this->get('every'));
   }
-
-  protected function _generateContent($code)
+  
+  // called by parent {{list}} tag (lmbMacroListTag)
+  function generateInitCode($code)
   {
     $step_var = $this->getStepVar($code);
     $helper_var = $this->getHelperVar($code);
-
+    
     $code->writePHP("if(!isset({$helper_var})){\n");
     $code->registerInclude('limb/macro/src/tags/list/lmbMacroListGlueHelper.class.php');
     $code->writePHP($helper_var . " = new lmbMacroListGlueHelper();\n");
+    $code->writePHP("}\n");
 
     if($step = $this->get('step'))
       $code->writePHP($step_var . " = {$step};\n");
@@ -47,9 +49,13 @@ class lmbMacroListGlueTag extends lmbMacroTag
     $list = $this->findParentByClass('lmbMacroListTag');
     $source_var = $list->getSourceVar();
     $code->writePhp($helper_var . "->setTotalItems(count($source_var));\n");
+  }
 
-    $code->writePHP("}\n");
-
+  protected function _generateContent($code)
+  {
+    $step_var = $this->getStepVar($code);
+    $helper_var = $this->getHelperVar($code);
+    
     $code->writePhp($helper_var . "->next();\n");
 
     $code->writePhp("if ( " . $helper_var  . "->shouldDisplay()){\n");
@@ -61,8 +67,11 @@ class lmbMacroListGlueTag extends lmbMacroTag
     {
       foreach($separators as $separator)
       {
-        $code->writePhp('if (' . $separator->getStepVar($code) . ' < ' . $step_var . ') ');
-        $code->writePhp($separator->getHelperVar($code) . "->skipNext();\n");
+        if($separator->getNodeId() != $this->getNodeId())
+        {
+          $code->writePhp('if (' . $separator->getStepVar($code) . ' < ' . $step_var . ') ');
+          $code->writePhp($separator->getHelperVar($code) . "->skipNext();\n");
+        }
       }
     }
 

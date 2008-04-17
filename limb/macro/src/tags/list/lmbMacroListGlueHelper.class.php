@@ -47,6 +47,9 @@ class lmbMacroListGlueHelper
   function setTotalItems($total_items)
   {
     $this->total = $total_items;
+    $this->total_counter = 0;
+    $this->step_counter = 0;
+    $this->skip_next = false;
   }
 
   function shouldDisplay()

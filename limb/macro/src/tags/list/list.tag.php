@@ -44,6 +44,8 @@ class lmbMacroListTag extends lmbMacroTag
 
     $this->_prepareSourceVar($code);
 
+    $this->_initializeGlueTags($code);
+    
     $code->writePHP('foreach(' . $this->source_var . ' as ' . $as . ') {');
 
     if($user_counter = $this->get('counter'))
@@ -90,6 +92,16 @@ class lmbMacroListTag extends lmbMacroTag
     }
 
     $this->_renderEmptyTag($code);
+  }
+  
+  protected function _initializeGlueTags($code)
+  {
+    if(!$list_item_tag = $this->findChildByClass('lmbMacroListItemTag'))
+      $this->raise('{{list:item}} tag is not found for {{list}} tag but required');
+    
+    $glue_tags = $list_item_tag->findImmediateChildrenByClass('lmbMacroListGlueTag');
+    foreach($glue_tags as $glue_tag)
+      $glue_tag->generateInitCode($code);
   }
 
   function getCounterVar()
