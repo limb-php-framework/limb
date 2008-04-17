@@ -81,7 +81,7 @@ class lmbMacroTokenizer
       //php found
       else
       {
-        $php_end = strpos($this->rawtext, '?>', $start);
+        $php_end = strpos($this->rawtext, '?>', $php_start);
         //php end found
         if($php_end !== false)
         {

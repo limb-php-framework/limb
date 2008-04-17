@@ -53,6 +53,14 @@ class lmbMacroTagAcceptanceTest extends lmbBaseMacroTest
     $this->assertEqual($out, '<h1>foo!bar</h1>');
   }
 
+ function testTagsInsideXmlBlock_WithOtherPhpBlockNearby()
+  {
+    $code = '<?xml version="1.0" encoding="utf-8" ?><h1><?php echo "hi!"; ?>{{foo/}}{{bar/}}</h1>';
+    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $out = $tpl->render();
+    $this->assertEqual($out, '<?xml version="1.0" encoding="utf-8" ?><h1>hi!foo!bar</h1>');
+  }
+
   function testCompositeTagAttributes()
   {
     $code = '<h1>{{zoo attr="Test_{$#var}_{$#foo}"/}}</h1>';

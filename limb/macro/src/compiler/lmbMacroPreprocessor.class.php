@@ -26,6 +26,6 @@ class lmbMacroPreprocessor
   
   function xmlSpecialCase($matches)
   {    
-    return '<?php echo "' . str_replace('"', '\"', $matches[1]) . '";?>'; 
+    return '<?php echo "' . str_replace('"', '\"', $matches[1]) . '"; ?>'; 
   }
 }
