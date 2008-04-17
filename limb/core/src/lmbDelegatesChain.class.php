@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbDelegate.class.php');
  * Delegates chain
  * 
  * @package core
- * @version $Id: lmbDelegatesChain.class.php 6810 2008-02-27 12:19:01Z cmz $
+ * @version $Id: lmbDelegatesChain.class.php 6942 2008-04-17 17:38:14Z svk $
  */
 class lmbDelegatesChain 
 {
@@ -86,4 +86,3 @@ class lmbDelegatesChain
   }
   
 }
-?>

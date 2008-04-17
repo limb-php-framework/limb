@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-require_once('limb/wact/src/locator/WactTemplateLocator.interface.php');
+lmb_require('limb/wact/src/locator/WactTemplateLocator.interface.php');
 
 /**
  * class lmbWactTemplateLocator.
