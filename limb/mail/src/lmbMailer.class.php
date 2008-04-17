@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6937 2008-04-16 16:22:37Z pachanga $
+ * @version $Id: lmbMailer.class.php 6941 2008-04-17 11:50:51Z pachanga $
  */
 class lmbMailer
 {
@@ -174,6 +174,7 @@ class lmbMailer
   {
     if(!is_array($recipients) || isset($recipients['name']))
        $recipients = array($recipients);
+
     $result = array();
     foreach($recipients as $recipient)
     {
