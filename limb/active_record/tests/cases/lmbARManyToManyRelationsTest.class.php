@@ -61,7 +61,33 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
     $this->assertEqual($rs->current()->getTitle(), $group2->getTitle());
     $this->assertEqual($rs->current()->getId(), $group2->getId());
   }
-
+  
+  function testSetRelation()
+  {
+    $user1 = $this->creator->initUser();
+    $user2 = $this->creator->initUser();
+      
+    $group1 = $this->creator->initGroup();
+    $group2 = $this->creator->initGroup();
+      
+    $user1->addToGroups($group1);
+    $user1->addToGroups($group2);
+    $user2->addToGroups($group1);
+    $user2->addToGroups($group2);
+      
+    $user1->save();
+    $user2->save();
+    $this->assertEqual($user1->getGroups()->count(), 2);
+    $this->assertEqual($user2->getGroups()->count(), 2);
+    
+    $user1->getGroups()->set(array($group1));
+    $user1->save();
+    $user2->save();
+     
+    $this->assertEqual($user1->getGroups()->count(), 1);
+    $this->assertEqual($user2->getGroups()->count(), 2);
+  }
+  
   function testLoadShouldNotMixTables()
   {
     $user1 = $this->creator->initUser();

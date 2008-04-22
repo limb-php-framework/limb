@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 6845 2008-03-19 15:45:47Z svk $
+ * @version $Id: lmbARManyToManyCollection.class.php 6944 2008-04-22 05:12:34Z svk $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -74,7 +74,11 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     if(count($to_remove_ids))
     {
       $table = new lmbTableGateway($this->relation_info['table'], $this->conn);
-      $table->delete(lmbSQLCriteria :: in($this->relation_info['foreign_field'], $to_remove_ids));
+      //$table->delete(lmbSQLCriteria :: in($this->relation_info['foreign_field'], $to_remove_ids));
+      $criteria = new lmbSqlCriteria();
+      $criteria->addAnd(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
+      $criteria->addAnd(new lmbSQLFieldCriteria($this->relation_info['foreign_field'], $to_remove_ids, lmbSQLFieldCriteria :: IN));
+      $table->delete($criteria);
     }
   }
   
