@@ -102,14 +102,14 @@ class lmbMysqliStatement implements lmbDbStatement
   {
     $this->parameters[$name] = is_null($value) ?
     'null' :
-    "'" . mysqli_real_escape_string($this->connection->getConnectionId(), (string) $value) . "'";
+    "'" . $this->_escape_string((string) $value) . "'";
   }
 
   function setClob($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
     'null' :
-    "'" . mysqli_real_escape_string((string) $value) . "'";
+    "'" . $this->_escape_string((string) $value) . "'";
   }
   
   protected function _escape_string($string)
