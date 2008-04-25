@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 abstract class DriverRecordSetTestBase extends UnitTestCase
@@ -88,7 +88,7 @@ abstract class DriverRecordSetTestBase extends UnitTestCase
     for($this->cursor->rewind(), $i = 0; $this->cursor->valid(); $this->cursor->next(), $i++);
     $this->assertEqual($i, 2);
   }
-  
+
   function testCount()
   {
     $sql = "SELECT * FROM founding_fathers";
@@ -165,6 +165,20 @@ abstract class DriverRecordSetTestBase extends UnitTestCase
     $this->assertEqual($rs->at(0)->get('first'), 'Benjamin');
     $this->assertEqual($rs->at(1)->get('first'), 'Alexander');
     $this->assertEqual($rs->at(2)->get('first'), 'George');
+  }
+
+  function testGetFlatArray()
+  {
+    $sql = "SELECT first FROM founding_fathers";
+    $rs = $this->connection->newStatement($sql)->getRecordSet();
+
+    $flat_array = array(
+      array('first' => 'George'),
+      array('first' => 'Alexander'),
+      array('first' => 'Benjamin'),
+    );
+
+    $this->assertIdentical($flat_array, $rs->getFlatArray());
   }
 }
 
