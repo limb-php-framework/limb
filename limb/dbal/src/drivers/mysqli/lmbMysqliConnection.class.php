@@ -56,22 +56,22 @@ class lmbMysqliConnection implements lmbDbConnection
     $this->connectionId = mysqli_connect($this->config['host'],
                                         $this->config['user'],
                                         $this->config['password']);
-					
+
     if($this->connectionId === false)
     {
       $this->_raiseError();
     }
-    
+
     if(mysqli_select_db( $this->connectionId, $this->config['database']) === false)
     {
       $this->_raiseError();
     }
-    
+
     if(isset($this->config['charset']) && $charset = $this->config['charset'])
     {
-      mysqli_query($this->connectionId, "SET NAMES '$charset'");
+      $this->execute("SET NAMES '$charset'");
     }
-    
+
   }
 
   function __wakeup()
@@ -119,7 +119,7 @@ class lmbMysqliConnection implements lmbDbConnection
     }
     return $result;
   }
-  
+
   function executeStatement($stmt)
   {
     return (bool) $this->execute($stmt->getSQL());
