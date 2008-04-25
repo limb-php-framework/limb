@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
@@ -20,6 +20,7 @@ class lmbMysqliTypeInfo extends lmbDbTypeInfo
   function getNativeToColumnTypeMapping()
   {
     return array(
+      'bit' => LIMB_DB_TYPE_INTEGER,
       'tinyint' => LIMB_DB_TYPE_SMALLINT,
       'smallint' => LIMB_DB_TYPE_SMALLINT,
       'mediumint' => LIMB_DB_TYPE_INTEGER,
