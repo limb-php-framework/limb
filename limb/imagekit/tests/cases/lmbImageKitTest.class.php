@@ -55,6 +55,12 @@ class lmbImageKitTest extends UnitTestCase
     $this->assertEqual($width, 60);
     $this->assertEqual($height, 50);
   }
+  
+  function testPassingParamsToConvertor()
+  {
+    lmbImageKit::load($this->_getInputImage(), '', 'gd', '', array('add_filters_scan_dirs' => dirname(__FILE__).'/../var/filters'))
+      ->test();
+  }
 
   function tearDown()
   {

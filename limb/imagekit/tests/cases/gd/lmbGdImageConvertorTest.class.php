@@ -21,9 +21,9 @@ class lmbGdImageConvertorTest extends UnitTestCase {
     return dirname(__FILE__).'/../../var/output.jpg';
   }
 
-  function _getConvertor()
+  function _getConvertor($params = array())
   {
-    return new lmbGdImageConvertor();
+    return new lmbGdImageConvertor($params);
   }
 
   function testApply()
@@ -64,6 +64,23 @@ class lmbGdImageConvertorTest extends UnitTestCase {
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 60);
     $this->assertEqual($height, 50);
+  }
+  
+  function testFilterLocator()
+  {
+    $path = dirname(__FILE__).'/../../var/filters';    
+    $conv = $this->_getConvertor(array('add_filters_scan_dirs' => $path));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
+    $conv = $this->_getConvertor(array('add_filters_scan_dirs' => array($path)));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
+    $conv = $this->_getConvertor(array('filters_scan_dirs' => $path));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
+    $conv = $this->_getConvertor(array('filters_scan_dirs' => array($path)));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
   }
 
   function testCheckSupportConv()

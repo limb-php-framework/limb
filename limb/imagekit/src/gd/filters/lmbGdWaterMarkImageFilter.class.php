@@ -12,7 +12,7 @@ lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdWaterMarkImageFilter.class.php 6553 2007-11-29 15:41:27Z cmz $
+ * @version $Id: lmbGdWaterMarkImageFilter.class.php 6960 2008-04-26 20:45:33Z cmz $
  */
 class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
 {
@@ -23,18 +23,43 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
     $height = $container->getHeight();
     $wm_cont = new lmbGdImageContainer();
     $wm_cont->load($this->getWaterMark());
-    list($x, $y) = $this->calcPosition($this->getX(), $this->getY(), $width, $height);
+    $wm_width = $this->getXCenter() ? $wm_cont->getWidth() : false;
+    $wm_height = $this->getYCenter() ? $wm_cont->getHeight() : false;
+    list($x, $y) = $this->calcPosition($this->getX(), $this->getY(), $width, $height, $wm_width, $wm_height);
     imagecopymerge($container->getResource(), $wm_cont->getResource(), $x, $y, 0, 0, $wm_cont->getWidth(), $wm_cont->getHeight(), 100 - $this->getOpacity());
   }
 
-  function calcPosition($x, $y, $width, $height)
+  /**
+   * Calculate position of a watermark
+   *
+   * @param int $x x position of watermark
+   * @param int $y y position of watermark
+   * @param int $width width of a marked image
+   * @param int $height height of a marked image
+   * @param mixed $wm_width width of a watermark
+   * @param mixed $wm_height height of a watermark 
+   * @return array (x, y)
+   */
+  function calcPosition($x, $y, $width, $height, $wm_width = false, $wm_height = false)
   {
-  	if($x >= 0 && $y >= 0)
-      return array($x, $y);
-    if($x < 0)
-      $x += $width;
-    if($y < 0)
-      $y += $height;
+    if($wm_width !== false)
+    {
+      $x += round(($width - $wm_width) / 2);
+    }
+    else
+    {
+      if($x < 0)
+        $x += $width;      
+    }
+    if($wm_height !== false)
+    {
+      $y += round(($height - $wm_height) / 2);
+    }
+    else
+    {
+      if($y < 0)
+        $y += $height;      
+    }
     return array($x, $y);
   }
 
@@ -56,6 +81,16 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
   function getOpacity()
   {
     return $this->getParam('opacity', 0);
+  }
+  
+  function getXCenter()
+  {
+    return $this->getParam('xcenter', false);
+  }
+    
+  function getYCenter()
+  {
+    return $this->getParam('ycenter', false);
   }
 }
 ?>

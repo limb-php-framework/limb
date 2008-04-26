@@ -22,9 +22,9 @@ class lmbImImageConvertorTest extends UnitTestCase
     return dirname(__FILE__).'/../../var/output1.jpg';
   }
 
-  function _getConvertor()
+  function _getConvertor($params = array())
   {
-    return new lmbImImageConvertor();
+    return new lmbImImageConvertor($params);
   }
 
   function testApply()
@@ -74,6 +74,23 @@ class lmbImImageConvertorTest extends UnitTestCase
     $this->assertTrue($conv->isSupportConversion('', 'jpeg', 'gif'));
     $this->assertTrue($conv->isSupportConversion($this->_getInputImage()));
     $this->assertFalse($conv->isSupportConversion($this->_getInputImage(), '', 'zxzx'));
+  }
+
+  function testFilterLocator()
+  {
+    $path = dirname(__FILE__).'/../../var/filters';    
+    $conv = $this->_getConvertor(array('add_filters_scan_dirs' => $path));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
+    $conv = $this->_getConvertor(array('add_filters_scan_dirs' => array($path)));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
+    $conv = $this->_getConvertor(array('filters_scan_dirs' => $path));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
+    $conv = $this->_getConvertor(array('filters_scan_dirs' => array($path)));
+    $conv->load($this->_getInputImage());
+    $conv->apply('test');
   }
 
   function tearDown()

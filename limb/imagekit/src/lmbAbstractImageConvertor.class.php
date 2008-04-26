@@ -7,16 +7,25 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
+lmb_require('limb/fs/src/lmbFileLocationsList.class.php');
+lmb_require('limb/fs/src/lmbFileLocator.class.php');
+
 /**
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageConvertor.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id: lmbAbstractImageConvertor.class.php 6960 2008-04-26 20:45:33Z cmz $
  */
 abstract class lmbAbstractImageConvertor
 {
   protected $container = null;
-
+  protected $params;
+  
+  function __construct($params = array())
+  {    
+    $this->params = $params;
+  }
+  
   function __call($name, $args)
   {
     $params = (isset($args[0]) && is_array($args[0])) ? $args[0] : array();
@@ -28,6 +37,30 @@ abstract class lmbAbstractImageConvertor
     $filter = $this->createFilter($name, $params);
     $filter->apply($this->container);
     return $this;
+  }
+  
+  /**
+   * Return filter locator
+   *
+   * @return lmbFileLocator
+   */
+  protected function getFilterLocator()
+  {
+    $dirs = array();
+    if(is_array($this->params['filters_scan_dirs']))
+      $dirs = $this->params['filters_scan_dirs'];
+    else
+      $dirs['filters_scan_dirs'] = $this->params['filters_scan_dirs'];
+      
+    if(isset($this->params['add_filters_scan_dirs']))
+    {
+      if(is_array($this->params['add_filters_scan_dirs']))
+        $dirs = array_merge($dirs, $this->params['add_filters_scan_dirs']);
+      else
+        $dirs[] = $this->params['add_filters_scan_dirs'];
+    }
+    
+    return new lmbFileLocator(new lmbFileLocationsList($dirs));
   }
 
   function load($file_name, $type = '')
@@ -62,10 +95,10 @@ abstract class lmbAbstractImageConvertor
     return $this;
   }
 
-  protected function loadFilter($dir, $name, $prefix)
+  protected function loadFilter($name, $prefix)
   {
     $class = 'lmb'.$prefix.ucfirst($name).'ImageFilter';
-    $full_path = $dir.'/'.$class.'.class.php';
+    $full_path = $this->getFilterLocator()->locate($class.'.class.php');
     lmb_require($full_path);
     return $class;
   }

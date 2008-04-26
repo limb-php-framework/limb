@@ -51,33 +51,47 @@ class lmbGdWaterMarkImageFilterTest extends UnitTestCase
 
   function testParams()
   {
-    $filter = new lmbGdWaterMarkImageFilter(array('water_mark' => 'input.jpg', 'x' => 90, 'y' => 100, 'opacity' => 20));
+    $filter = new lmbGdWaterMarkImageFilter(array('water_mark' => 'input.jpg', 'x' => 90, 'y' => 100, 'opacity' => 20, 'xcenter' => true, 'ycenter' => true));
 
     $this->assertEqual($filter->getWaterMark(), 'input.jpg');
     $this->assertEqual($filter->getX(), 90);
     $this->assertEqual($filter->getY(), 100);
     $this->assertEqual($filter->getOpacity(), 20);
+    $this->assertTrue($filter->getXCenter());
+    $this->assertTrue($filter->getYCenter());
   }
 
   function testCalcPosition()
   {
     $filter = new lmbGdWaterMarkImageFilter(array());
 
-    $result = $filter->calcPosition(10, 100, 150, 250);
+    $result = $filter->calcPosition(10, 100, 150, 250, false, false);
     $this->assertEqual($result[0], 10);
     $this->assertEqual($result[1], 100);
 
-    $result = $filter->calcPosition(-10, 100, 150, 250);
+    $result = $filter->calcPosition(-10, 100, 150, 250, false, false);
     $this->assertEqual($result[0], 140);
     $this->assertEqual($result[1], 100);
 
-    $result = $filter->calcPosition(10, -100, 150, 250);
+    $result = $filter->calcPosition(10, -100, 150, 250, false, false);
     $this->assertEqual($result[0], 10);
     $this->assertEqual($result[1], 150);
 
-    $result = $filter->calcPosition(-10, -100, 150, 250);
+    $result = $filter->calcPosition(-10, -100, 150, 250, false, false);
     $this->assertEqual($result[0], 140);
     $this->assertEqual($result[1], 150);
+    
+    $result = $filter->calcPosition(0, 0, 150, 250, 10, false);
+    $this->assertEqual($result[0], 70);
+    $this->assertEqual($result[1], 0);
+    
+    $result = $filter->calcPosition(0, 0, 150, 250, false, 10);
+    $this->assertEqual($result[0], 0);
+    $this->assertEqual($result[1], 120);
+    
+    $result = $filter->calcPosition(-5, 5, 150, 250, 20, 10);
+    $this->assertEqual($result[0], 60);
+    $this->assertEqual($result[1], 125);
   }
 
   function tearDown()

@@ -9,12 +9,12 @@
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id: lmbImageKit.class.php 6960 2008-04-26 20:45:33Z cmz $
  */
 class lmbImageKit
 {
 
-  static function create($library = 'gd', $dir = '')
+  static function create($library = 'gd', $dir = '', $params = array())
   {
     if(defined('LIMB_IMAGE_LIBRARY'))
       $library = LIMB_IMAGE_LIBRARY;
@@ -28,12 +28,12 @@ class lmbImageKit
 
     lmb_require($class_path);
 
-    return new $image_class_name();
+    return new $image_class_name($params);
   }
 
-  static function load($file_name, $type = '', $library = 'gd', $dir = '')
+  static function load($file_name, $type = '', $library = 'gd', $dir = '', $params = array())
   {
-  	$convertor = self::create($library, $dir);
+  	$convertor = self::create($library, $dir, $params);
     $convertor->load($file_name, $type);
     return $convertor;
   }
