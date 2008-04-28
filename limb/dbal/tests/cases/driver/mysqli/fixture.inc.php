@@ -23,6 +23,7 @@ function DriverMysqliSetup($conn)
   $sql = "
         CREATE TABLE standard_types (
             id int(11) NOT null auto_increment,
+            type_bit bit,	    
             type_smallint smallint,
             type_integer integer,
             type_boolean smallint,
