@@ -34,7 +34,7 @@ class lmbMysqliConnection implements lmbDbConnection
 
   function getType()
   {
-    return 'mysql';
+    return 'mysqli';
   }
 
   function getConnectionId()
