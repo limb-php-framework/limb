@@ -25,7 +25,7 @@ class lmbMysqliStatement implements lmbDbStatement
     $this->statement = $sql;
     $this->connection = $connection;
   }
-  
+
   function setConnection($connection)
   {
     $this->connection = $connection;
@@ -34,6 +34,11 @@ class lmbMysqliStatement implements lmbDbStatement
   function setNull($name)
   {
     $this->parameters[$name] = 'null';
+  }
+
+  function setBit($name, $value)
+  {
+    $this->parameters[$name] = decbin($value);
   }
 
   function setSmallInt($name, $value)
@@ -111,7 +116,7 @@ class lmbMysqliStatement implements lmbDbStatement
     'null' :
     "'" . $this->_escape_string((string) $value) . "'";
   }
-  
+
   protected function _escape_string($string)
   {
     return mysqli_real_escape_string($this->connection->getConnectionId(), $string);

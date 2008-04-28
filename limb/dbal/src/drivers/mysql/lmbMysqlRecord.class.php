@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbMysqlRecord.
  *
  * @package dbal
- * @version $Id: lmbMysqlRecord.class.php 6844 2008-03-18 17:10:33Z pachanga $
+ * @version $Id: lmbMysqlRecord.class.php 6969 2008-04-28 09:41:25Z korchasa $
  */
 class lmbMysqlRecord extends lmbDbBaseRecord
 {
@@ -27,7 +27,7 @@ class lmbMysqlRecord extends lmbDbBaseRecord
   {
     if(isset($this->properties[$name]))
       return $this->properties[$name];
-    
+
     if(LIMB_UNDEFINED !== $default)
       return $default;
   }
@@ -61,6 +61,12 @@ class lmbMysqlRecord extends lmbDbBaseRecord
   function reset()
   {
     $this->properties = array();
+  }
+
+  function getBit($name)
+  {
+    $value = $this->get($name);
+    return is_null($value) ?  null : bindec($value);
   }
 
   function getInteger($name)

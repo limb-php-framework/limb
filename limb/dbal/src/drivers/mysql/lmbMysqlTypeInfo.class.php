@@ -13,14 +13,14 @@ lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
  * class lmbMysqlTypeInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlTypeInfo.class.php 6959 2008-04-25 14:29:00Z korchasa $
+ * @version $Id: lmbMysqlTypeInfo.class.php 6969 2008-04-28 09:41:25Z korchasa $
  */
 class lmbMysqlTypeInfo extends lmbDbTypeInfo
 {
   function getNativeToColumnTypeMapping()
   {
     return array(
-      'bit' => LIMB_DB_TYPE_INTEGER,
+      'bit' => LIMB_DB_TYPE_BIT,
       'tinyint' => LIMB_DB_TYPE_SMALLINT,
       'smallint' => LIMB_DB_TYPE_SMALLINT,
       'mediumint' => LIMB_DB_TYPE_INTEGER,

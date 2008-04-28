@@ -20,7 +20,7 @@ class lmbMysqliTypeInfo extends lmbDbTypeInfo
   function getNativeToColumnTypeMapping()
   {
     return array(
-      'bit' => LIMB_DB_TYPE_INTEGER,
+      'bit' => LIMB_DB_TYPE_BIT,
       'tinyint' => LIMB_DB_TYPE_SMALLINT,
       'smallint' => LIMB_DB_TYPE_SMALLINT,
       'mediumint' => LIMB_DB_TYPE_INTEGER,

@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbMysqlStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlStatement.class.php 6848 2008-03-21 13:44:08Z svk $
+ * @version $Id: lmbMysqlStatement.class.php 6969 2008-04-28 09:41:25Z korchasa $
  */
 class lmbMysqlStatement implements lmbDbStatement
 {
@@ -25,7 +25,7 @@ class lmbMysqlStatement implements lmbDbStatement
     $this->statement = $sql;
     $this->connection = $connection;
   }
-  
+
   function setConnection($connection)
   {
     $this->connection = $connection;
@@ -34,6 +34,11 @@ class lmbMysqlStatement implements lmbDbStatement
   function setNull($name)
   {
     $this->parameters[$name] = 'null';
+  }
+
+  function setBit($name, $value)
+  {
+    $this->parameters[$name] = decbin($value);
   }
 
   function setSmallInt($name, $value)
