@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 define('LIMB_DB_TYPE_SMALLINT',   10);
 define('LIMB_DB_TYPE_INTEGER',    11);
@@ -25,17 +25,20 @@ define('LIMB_DB_TYPE_TIME',       52);
 define('LIMB_DB_TYPE_BLOB',       60);
 define('LIMB_DB_TYPE_CLOB',       70);
 
+define('LIMB_DB_TYPE_BIT',        80);
+
 /**
  * class lmbDbTypeInfo.
  *
  * @package dbal
- * @version $Id: lmbDbTypeInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbDbTypeInfo.class.php 6968 2008-04-28 09:39:28Z korchasa $
  */
 class lmbDbTypeInfo
 {
   function getColumnTypeList()
   {
     return array(
+      LIMB_DB_TYPE_BIT,
       LIMB_DB_TYPE_SMALLINT,
       LIMB_DB_TYPE_INTEGER,
       LIMB_DB_TYPE_BOOLEAN,
@@ -55,6 +58,7 @@ class lmbDbTypeInfo
   function getNativeToColumnTypeMapping()
   {
     return array(
+      'bit' => LIMB_DB_TYPE_BIT,
       'tinyint' => LIMB_DB_TYPE_SMALLINT,
       'smallint' => LIMB_DB_TYPE_SMALLINT,
       'mediumint' => LIMB_DB_TYPE_INTEGER,
@@ -97,6 +101,7 @@ class lmbDbTypeInfo
   function getColumnTypeAccessors()
   {
     return array(
+      LIMB_DB_TYPE_BIT => 'setBit',
       LIMB_DB_TYPE_SMALLINT => 'setInteger',
       LIMB_DB_TYPE_INTEGER => 'setInteger',
       LIMB_DB_TYPE_BOOLEAN => 'setBoolean',
@@ -116,6 +121,7 @@ class lmbDbTypeInfo
   function getColumnTypeGetters()
   {
     return array(
+      LIMB_DB_TYPE_BIT => 'getBit',
       LIMB_DB_TYPE_SMALLINT => 'getInteger',
       LIMB_DB_TYPE_INTEGER => 'getInteger',
       LIMB_DB_TYPE_BOOLEAN => 'getBoolean',
