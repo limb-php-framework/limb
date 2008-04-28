@@ -12,7 +12,7 @@ lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 /**
  * Change output type
  * @package imagekit
- * @version $Id: lmbGdOutputImageFilter.class.php 6553 2007-11-29 15:41:27Z cmz $
+ * @version $Id: lmbGdOutputImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbGdOutputImageFilter extends lmbAbstractImageFilter {
 
@@ -27,4 +27,3 @@ class lmbGdOutputImageFilter extends lmbAbstractImageFilter {
   }
 
 }
-?>

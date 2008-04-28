@@ -11,7 +11,7 @@
  * Exception 'Image type is not supported'
  * 
  * @package imagekit
- * @version $Id: lmbImageTypeNotSupportedException.class.php 6610 2007-12-11 15:35:05Z cmz $
+ * @version $Id: lmbImageTypeNotSupportedException.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbImageTypeNotSupportedException extends lmbException 
 {
@@ -22,4 +22,3 @@ class lmbImageTypeNotSupportedException extends lmbException
   }
 
 }
-?>

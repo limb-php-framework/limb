@@ -12,7 +12,7 @@ lmb_require('limb/imagekit/src/gd/filters/lmbGdCropImageFilter.class.php');
 
 /**
  * @package imagekit
- * @version $Id: lmbGdCropImageFilterTest.class.php 6960 2008-04-26 20:45:33Z cmz $
+ * @version $Id: lmbGdCropImageFilterTest.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbGdCropImageFilterTest extends UnitTestCase
 {

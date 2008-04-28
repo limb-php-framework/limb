@@ -22,4 +22,3 @@ class lmbImageLibraryNotInstalledException extends lmbException
   }
 
 }
-?>

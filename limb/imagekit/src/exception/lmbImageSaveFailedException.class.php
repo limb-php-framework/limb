@@ -11,7 +11,7 @@
  * Exception 'Image save is failed'
  * 
  * @package imagekit
- * @version $Id: lmbImageSaveFailedException.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbImageSaveFailedException.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbImageSaveFailedException extends lmbException 
 {
@@ -22,4 +22,3 @@ class lmbImageSaveFailedException extends lmbException
   }
 
 }
-?>

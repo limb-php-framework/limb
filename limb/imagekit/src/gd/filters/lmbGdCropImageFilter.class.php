@@ -12,7 +12,7 @@ lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 /**
  * Crop image filter
  * @package imagekit
- * @version $Id: lmbGdCropImageFilter.class.php 6960 2008-04-26 20:45:33Z cmz $
+ * @version $Id: lmbGdCropImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbGdCropImageFilter extends lmbAbstractImageFilter
 {
@@ -65,4 +65,3 @@ class lmbGdCropImageFilter extends lmbAbstractImageFilter
   }
 
 }
-?>

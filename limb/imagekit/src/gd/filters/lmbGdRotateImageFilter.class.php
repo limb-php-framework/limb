@@ -12,7 +12,7 @@ lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 /**
  * Rotate image filter
  * @package imagekit
- * @version $Id: lmbGdRotateImageFilter.class.php 6553 2007-11-29 15:41:27Z cmz $
+ * @version $Id: lmbGdRotateImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbGdRotateImageFilter extends lmbAbstractImageFilter
 {
@@ -40,4 +40,3 @@ class lmbGdRotateImageFilter extends lmbAbstractImageFilter
     return $this->parseHexColor($bgcolor);
   }
 }
-?>

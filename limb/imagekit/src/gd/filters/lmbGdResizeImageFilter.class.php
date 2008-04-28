@@ -12,7 +12,7 @@ lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdResizeImageFilter.class.php 6553 2007-11-29 15:41:27Z cmz $
+ * @version $Id: lmbGdResizeImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {
@@ -58,4 +58,3 @@ class lmbGdResizeImageFilter extends lmbAbstractImageFilter
     return $this->getParam('save_min_size', false);
   }
 }
-?>

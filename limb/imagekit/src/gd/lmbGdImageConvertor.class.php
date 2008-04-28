@@ -16,7 +16,7 @@ lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.cl
  * GD image convertor
  *
  * @package imagekit
- * @version $Id: lmbGdImageConvertor.class.php 6960 2008-04-26 20:45:33Z cmz $
+ * @version $Id: lmbGdImageConvertor.class.php 6963 2008-04-28 04:04:31Z svk $
  */
 class lmbGdImageConvertor extends lmbAbstractImageConvertor
 {
@@ -59,4 +59,3 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
            lmbGdImageContainer::supportSaveType($dest_type);
   }
 }
-?>
