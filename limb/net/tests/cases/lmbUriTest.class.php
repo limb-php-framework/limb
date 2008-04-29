@@ -36,26 +36,40 @@ class lmbUriTest extends UnitTestCase
 
   function testCreate_FileProtocolWithoutHost_OnUnix()
   {
-    $str = 'file://some_dir';
+    $str = 'file:///dir';
 
     $uri = new lmbUri($str);
 
     $this->assertEqual($uri->getProtocol(), 'file');
     $this->assertEqual($uri->getHost(), '');
 
-    $this->assertEqual($uri->getPath(), '/some_dir');
+    $this->assertEqual($uri->getPath(), '/dir');
   }
 
   function testCreate_FileProtocolWithoutHost_OnWindows()
   {
-    $str = 'file://c:/some_dir';
+    $str = 'file://c:/dir';
 
     $uri = new lmbUri($str);
 
     $this->assertEqual($uri->getProtocol(), 'file');
     $this->assertEqual($uri->getHost(), '');
 
-    $this->assertEqual($uri->getPath(), 'c:/some_dir');
+    $this->assertEqual($uri->getPath(), 'c:/dir');
+  }
+
+
+  function testCreate_FileProtocolWithHost()
+  {
+    $str = 'file://user:pass@localhost/dir/file';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->getProtocol(), 'file');
+    $this->assertEqual($uri->getUser(), 'user');
+    $this->assertEqual($uri->getPassword(), 'pass');
+    $this->assertEqual($uri->getHost(), 'localhost');
+    $this->assertEqual($uri->getPath(), '/dir/file');
   }
 
   function testInvalidUriThrowsException()

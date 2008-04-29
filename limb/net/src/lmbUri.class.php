@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 6972 2008-04-29 09:04:20Z korchasa $
+ * @version $Id: lmbUri.class.php 6973 2008-04-29 11:18:43Z korchasa $
  */
 class lmbUri extends lmbSet
 {
@@ -70,8 +70,11 @@ class lmbUri extends lmbSet
 
   protected function _fixFileProtocol($url)
   {
-    if('/' != substr($url, 0, strlen('file:///')))
-      $url = str_replace('file://', 'file:///', $url);
+    $matches = array();
+    if(preg_match('/^file:\/\/([a-zA-Z]?:[\/].*)/', $url, $matches))
+      $url = 'file:///' . $matches[1];
+    //if('/' != substr($url, 0, strlen('file:///')))
+//      $url = str_replace('file://', 'file:///', $url);
     return $url;
   }
 
