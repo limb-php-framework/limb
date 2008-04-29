@@ -1,3 +1,4 @@
+
 <?php
 /*
  * Limb PHP Framework
@@ -7,23 +8,27 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbObject.class.php');
+lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
 
 /**
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 6975 2008-04-29 11:58:42Z korchasa $
+ * @version $Id: lmbConf.class.php 6976 2008-04-29 12:33:32Z korchasa $
  */
 class lmbConf extends lmbObject
 {
+  protected $_file;
+
   function __construct($file)
   {
     $conf = array();
+    $this->_file = $file;
 
-    if(!include($file))
-      throw new lmbException("Config file '$file' not found");
+    if(!include($this->_file))
+      throw new lmbException("Config file '$this->_file' not found");
 
-    if($override_file = $this->_getOverrideFile($file))
+    if($override_file = $this->_getOverrideFile($this->_file))
     {
       $original = $conf;
       include($override_file);
@@ -41,6 +46,17 @@ class lmbConf extends lmbObject
       return $override_file_name;
     else
       return false;
+  }
+
+  function get($name, $default = LIMB_UNDEFINED)
+  {
+    try {
+      return parent::get($name, $default);
+    }
+    catch (lmbNoSuchPropertyException $e)
+    {
+      throw new lmbNoSuchPropertyException('Option ' . $name . ' not found in ' . $this->_file);
+    }
   }
 }
 

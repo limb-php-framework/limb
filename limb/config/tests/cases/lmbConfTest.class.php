@@ -40,14 +40,12 @@ class lmbConfTest extends UnitTestCase
     $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
 
     try {
-      $a = $conf->get('some_not_existed_option');
+      $conf->get('some_not_existed_option');
       $this->fail();
-    } catch (lmbException $e)
+    }
+    catch (lmbNoSuchPropertyException $e)
     {
       $this->pass();
     }
-
   }
 }
-
-
