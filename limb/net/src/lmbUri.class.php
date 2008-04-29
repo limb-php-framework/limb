@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbUri.class.php 6972 2008-04-29 09:04:20Z korchasa $
  */
 class lmbUri extends lmbSet
 {
@@ -30,7 +30,7 @@ class lmbUri extends lmbSet
   function __construct($str='')
   {
     if($str)
-      $this->reset($str);
+      $this->parse($str);
   }
 
   static function addQueryItems($url, $items=array())
@@ -62,7 +62,17 @@ class lmbUri extends lmbSet
    */
   function parse($uri)
   {
+    if('file' == substr($uri, 0, 4))
+      $uri = $this->_fixFileProtocol($uri);
+
     $this->reset($uri);
+  }
+
+  protected function _fixFileProtocol($url)
+  {
+    if('/' != substr($url, 0, strlen('file:///')))
+      $url = str_replace('file://', 'file:///', $url);
+    return $url;
   }
 
   function reset($str = null)

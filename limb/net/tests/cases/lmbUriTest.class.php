@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/net/src/lmbUri.class.php');
 
@@ -32,6 +32,30 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->getPathElement(0), '');
     $this->assertEqual($uri->getPathElement(1), 'test.php');
     $this->assertEqual($uri->getPathElement(2), 'test');
+  }
+
+  function testCreate_FileProtocolWithoutHost_OnUnix()
+  {
+    $str = 'file://some_dir';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->getProtocol(), 'file');
+    $this->assertEqual($uri->getHost(), '');
+
+    $this->assertEqual($uri->getPath(), '/some_dir');
+  }
+
+  function testCreate_FileProtocolWithoutHost_OnWindows()
+  {
+    $str = 'file://c:/some_dir';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->getProtocol(), 'file');
+    $this->assertEqual($uri->getHost(), '');
+
+    $this->assertEqual($uri->getPath(), 'c:/some_dir');
   }
 
   function testInvalidUriThrowsException()
