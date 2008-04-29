@@ -1,4 +1,3 @@
-
 <?php
 /*
  * Limb PHP Framework
@@ -14,7 +13,7 @@ lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 6976 2008-04-29 12:33:32Z korchasa $
+ * @version $Id: lmbConf.class.php 6977 2008-04-29 14:07:16Z korchasa $
  */
 class lmbConf extends lmbObject
 {
