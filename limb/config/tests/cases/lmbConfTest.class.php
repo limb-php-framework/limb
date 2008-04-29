@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/config/src/lmbConf.class.php');
 
@@ -33,6 +33,20 @@ class lmbConfTest extends UnitTestCase
       $result[$key] = $value;
 
     $this->assertEqual($result, array('foo' => 1, 'bar' => 2));
+  }
+
+  function testGetNotExistedOption()
+  {
+    $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
+
+    try {
+      $a = $conf->get('some_not_existed_option');
+      $this->fail();
+    } catch (lmbException $e)
+    {
+      $this->pass();
+    }
+
   }
 }
 
