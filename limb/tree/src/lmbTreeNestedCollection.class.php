@@ -12,13 +12,14 @@ lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
  * class lmbTreeNestedCollection.
  *
  * @package tree
- * @version $Id: lmbTreeNestedCollection.class.php 6618 2007-12-19 13:07:21Z serega $
+ * @version $Id: lmbTreeNestedCollection.class.php 6978 2008-04-30 14:45:48Z serega $
  */
 class lmbTreeNestedCollection extends lmbCollectionDecorator
 {
   protected $node_field = 'id';
   protected $parent_field = 'parent_id';
-
+  protected $children_field = 'children';
+  
   function setNodeField($name)
   {
     $this->node_field = $name;
@@ -29,6 +30,11 @@ class lmbTreeNestedCollection extends lmbCollectionDecorator
     $this->parent_field = $name;
   }
 
+  function setChildrenField($name)
+  {
+    $this->children_field = $name;
+  }
+  
   function rewind()
   {
     parent :: rewind();
@@ -68,7 +74,7 @@ class lmbTreeNestedCollection extends lmbCollectionDecorator
         $children = array();
         $pos = sizeof($nested_array) - 1;
         self :: _doMakeNested($rs, $children, $prev_item_id, $level + 1);
-        $nested_array[$pos]['children'] = $children;
+        $nested_array[$pos][$this->children_field] = $children;
       }
       else
         return;
