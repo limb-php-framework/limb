@@ -22,6 +22,19 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'Bob Todd ');
   }
 
+  function testGroupVisibilityConditionForPreAndPostListTags()
+  {
+    $list = '{{list using="$#list" as="$item"}}<?if(false){?>Junk1<?}?>{{list:item}}<?=$item?> {{/list:item}}<?if(false){?>Junk2<?}?>{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Bob Todd ');
+  }
+
   function testListUsingDefaultItem()
   {
     $list = '{{list using="$#list"}}{{list:item}}<?=$item?> {{/list:item}}{{/list}}';

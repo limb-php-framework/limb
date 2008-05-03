@@ -57,25 +57,25 @@ class lmbMacroListTag extends lmbMacroTag
     $found_item_tag = false;
     $postponed_nodes = array();
 
+    //tags before {{list:item}} should be rendered only once when counter is 0
+    $code->writePHP('if(' . $this->counter_var . ' == 0) {');
     foreach($this->children as $child)
     {
       //we want to skip some of  {{list:*}} tags, since they are rendered manually
       if(!$this->_isOneOfListTags($child))
       {
-        //tags before {{list:item}} should be rendered only once when counter is 0
         if(!$found_item_tag)
         {
-          $code->writePHP('if(' . $this->counter_var . ' == 0) {');
           $child->generate($code);
-          $code->writePHP('}');
         }
-        //otherwise we collect them to display later
+        //collectng postponed nodes to display later
         else
           $postponed_nodes[] = $child;
       }
       elseif(is_a($child, 'lmbMacroListItemTag'))
       {
         $found_item_tag = true;
+        $code->writePHP('}');
         $child->generate($code);
       }
     }
@@ -84,12 +84,10 @@ class lmbMacroListTag extends lmbMacroTag
     $code->writePHP('}');
 
     //tags after {{list:item}} should be rendered only if there were any items
+    $code->writePHP('if(' . $this->counter_var . ' > 0) {');
     foreach($postponed_nodes as $node)
-    {
-      $code->writePHP('if(' . $this->counter_var . ' > 0) {');
       $node->generate($code);
-      $code->writePHP('}');
-    }
+    $code->writePHP('}');
 
     $this->_renderEmptyTag($code);
   }
