@@ -7,11 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/core/src/lmbBacktrace.class.php');
 lmb_require('limb/core/src/lmbDecorator.class.php');
 
 lmbDecorator :: generate(get_class(lmbToolkit::instance()->getDefaultDbConnection()), 'lmbDbConnectionDecorator');
-
-lmb_require('limb/log/src/lmbBacktrace.class.php');
 
 /**
  * class lmbAuditDbConnection.

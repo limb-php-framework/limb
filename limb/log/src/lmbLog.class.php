@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/log/src/lmbLogEntry.class.php');
-lmb_require('limb/log/src/lmbBacktrace.class.php');
+lmb_require('limb/core/src/lmbBacktrace.class.php');
 
 /**
  * class lmbLog.
