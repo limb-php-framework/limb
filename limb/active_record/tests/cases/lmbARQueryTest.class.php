@@ -336,6 +336,43 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($this->conn->countQueries(), 0);
   }
   
+  function testFetch_Attach_RelatedHasMany_WithCriteriaForAttach()
+  {
+    $course1 = $this->creator->createCourse();
+    $course2 = $this->creator->createCourse();
+    
+    $lecture1 = $this->creator->createLecture($course1, null, 'ZZZ');
+    $lecture2 = $this->creator->createLecture($course2, null, 'CCC');
+    $lecture3 = $this->creator->createLecture($course1, null, 'AAA');
+    
+    $query = lmbARQuery :: create('CourseForTest', array(), $this->conn);
+    $arr = $query->eagerAttach('lectures', array('criteria' => lmbSQLCriteria :: equal('title', 'CCC')))->fetch()->getArray();
+    
+    $this->conn->resetStats();
+    
+    $this->assertIsA($arr[0], 'CourseForTest');
+    $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
+    $lectures = $arr[0]->getLectures();
+    $this->assertEqual(count($lectures), 0);
+    
+    $this->assertIsA($arr[1], 'CourseForTest');
+    $this->assertEqual($arr[1]->getTitle(), $course2->getTitle());
+    $lectures = $arr[1]->getLectures();
+    $this->assertEqual(count($lectures), 1);
+    $this->assertEqual($lectures[0]->getId(), $lecture2->getId());
+    $this->assertEqual($lectures[0]->getTitle(), 'CCC');
+    
+    $this->assertEqual($this->conn->countQueries(), 0);
+    
+    // let's change the first course and save it. The lectures should stay in database
+    $arr[0]->setTitle('Changed');
+    $arr[0]->save();
+    
+    $loaded_course = new CourseForTest($course1->getId());
+    $lectures = $loaded_course->getLectures();
+    $this->assertEqual(count($lectures), 2);
+  }
+  
   function testFetch_Attach_WithEmptyRS_ForRelatedHasMany()
   {
     $this->conn->resetStats();
@@ -701,7 +738,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($arr[0]->getCourses()->count(), 0);
     $this->assertEqual($arr[1]->getCourses()->count(), 0);
 
-    $this->assertEqual($this->conn->countQueries(), 2); // always do fetchi operations for not new owners of collections
+    $this->assertEqual($this->conn->countQueries(), 0);
   }  
 
   function testFetch_JoinWithWrongRelationType()

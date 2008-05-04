@@ -154,6 +154,8 @@ class lmbARRecordSetAttachDecorator extends lmbCollectionDecorator
           $collection->setOwner($object);
           if(isset($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]))
             $collection->setDataset(new lmbCollection($this->loaded_attaches[$relation_name][$object->get($this->prefix . $this->base_object->getPrimaryKeyName())]));
+          else
+            $collection->setDataset(new lmbCollection());
           $fields->set($this->prefix . $relation_name, $collection);
         break;
       }
