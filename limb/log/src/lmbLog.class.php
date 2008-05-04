@@ -131,7 +131,7 @@ class lmbLog
       return;
 
     if(!$backtrace)
-      $backtrace = new backtrace(3);
+      $backtrace = new lmbBacktrace(3);
 
     $this->_write(lmbLog :: INFO, $message, $params, $backtrace);
   }
