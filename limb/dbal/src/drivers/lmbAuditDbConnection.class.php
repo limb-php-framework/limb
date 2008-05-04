@@ -11,6 +11,8 @@ lmb_require('limb/core/src/lmbDecorator.class.php');
 
 lmbDecorator :: generate(get_class(lmbToolkit::instance()->getDefaultDbConnection()), 'lmbDbConnectionDecorator');
 
+lmb_require('limb/log/src/lmbBacktrace.class.php');
+
 /**
  * class lmbAuditDbConnection.
  * Remembers stats for later analysis, especially useful in tests
@@ -24,6 +26,7 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
   function execute($sql)
   {
     $info = array('query' => $sql);
+    $info['trace'] = $this->getTrace();
     $start_time = microtime(true);
     $res = parent :: execute($sql);
     $info['time'] = round(microtime(true) - $start_time, 6);
@@ -33,7 +36,8 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
   
   function executeStatement($stmt)
   {
-    $info = array('query' => get_class($stmt));
+    $info = array('query' => $stmt->getSQL());
+    $info['trace'] = $this->getTrace();
     $start_time = microtime(true);
     $res = parent :: executeStatement($stmt);
     $info['time'] = round(microtime(true) - $start_time, 6);
@@ -69,6 +73,14 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
     }
 
     return $res;
+  }
+  
+  function getTrace() {
+  	$trace_length = 8;
+  	$offset = 4; // getting rid of useless trace elements
+  	
+  	$trace = new lmbBacktrace($trace_length, $offset);
+  	return $trace->toString();
   }
   
   function getStats()
