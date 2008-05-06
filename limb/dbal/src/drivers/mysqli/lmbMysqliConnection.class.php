@@ -14,6 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqliInsertStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliManipulationStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliTypeInfo.class.php');
+lmb_require(dirname(__FILE__) . '/lmbMysqliTableInfo.class.php');
 
 /**
  * class lmbMysqlConnection.
