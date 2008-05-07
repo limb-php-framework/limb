@@ -278,5 +278,20 @@ class lmbMacroWrapTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, '<body>Main: <p>Numbers: <b>1</b> <u>2</u></p>  Extra: Wow!</body>');
   }
+
+  function testIncludeAfterSlot()
+  {
+    $layout = 'Slot:{{slot id="content"/}} Include:{{include file="include.phtml"/}}';
+    $content = '{{wrap with="layout.phtml" into="content"}}Hi!{{/wrap}}';
+    $include = "Bob";
+
+    $layout_tpl = $this->_createTemplate($layout, 'layout.phtml');
+    $content_tpl = $this->_createTemplate($content, 'content.phtml');
+    $include_tpl = $this->_createTemplate($include, 'include.phtml');
+
+    $macro = $this->_createMacro($content_tpl);
+    $out = $macro->render();
+    $this->assertEqual($out, 'Slot:Hi! Include:Bob');
+  }
 }
 

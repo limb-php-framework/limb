@@ -18,6 +18,7 @@
  */
 class lmbMacroInsertTag extends lmbMacroTag
 {
+  protected static $static_includes_counter = 0;
   protected $is_dynamic = false;
 
   function preParse($compiler)
@@ -127,11 +128,9 @@ class lmbMacroInsertTag extends lmbMacroTag
       parent :: _generateContent($code);
     else
     {
-      static $counter = 1;
-  
       list($keys, $vals) = $this->attributesIntoArgs();
   
-      $method = $code->beginMethod('__staticInclude' . ($counter++), $keys);
+      $method = $code->beginMethod('__staticInclude' . (++self :: $static_includes_counter), $keys);
       parent :: _generateContent($code);
       $code->endMethod();
   
