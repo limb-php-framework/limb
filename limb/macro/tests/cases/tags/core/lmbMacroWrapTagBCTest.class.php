@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroWrapTagTest extends lmbBaseMacroTest
+class lmbMacroWrapTagBCTest extends lmbBaseMacroTest
 {
   function testSimpleStaticWrap()
   {

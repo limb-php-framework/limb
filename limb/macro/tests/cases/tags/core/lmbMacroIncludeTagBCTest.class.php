@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroTagIncludeTest extends lmbBaseMacroTest
+class lmbMacroTagIncludeBCTest extends lmbBaseMacroTest
 {
   function testSimpleStaticInclude()
   {
