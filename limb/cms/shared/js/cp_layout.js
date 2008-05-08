@@ -289,18 +289,10 @@ Limb.Class('CMS.SidebarToggle',
 function initDocumentStructure(){
   var container = jQuery('#container');
   var sidebar = jQuery('#sidebar');
-  var toggle = jQuery('.sidebar_toggle');
-  var text = jQuery('.sidebar_toggle span.text');
 
   var bodyHeight = jQuery('body').height()-40;
   container.height(bodyHeight);
   sidebar.height(bodyHeight);
-
-  if (text.css('display')=='block')
-  return;
-
-  toggle.height (bodyHeight -13);
-
 
 };
 
@@ -335,8 +327,11 @@ jQuery(window).ready(function(){
     /*SideBar Toggle*/
     new CMS.SidebarToggle('sidebar_toggle');
 
-    initDocumentStructure();
-    jQuery(window).resize(initDocumentStructure);
+    if(!jQuery.browser.msie)
+    {
+      initDocumentStructure();
+      jQuery(window).resize(initDocumentStructure);
+    }
 
     /*Nice Button*/
     jQuery('.button').wrap('<span class="button_wrapper"></span>');
