@@ -13,11 +13,13 @@ class lmbMacroFormRefererTagTest extends lmbBaseMacroTest
 
   function setUp()
   {
+    parent :: setUp();
     $this->prev_ref = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "";
   }
 
   function tearDown()
   {
+    parent :: tearDown();
     $_SERVER["HTTP_REFERER"] = $this->prev_ref;
   }
 
