@@ -15,6 +15,7 @@
  */
 class lmbMacroTextNode extends lmbMacroNode
 {
+  protected static $trim = false;
   protected $contents;
 
   function __construct($location, $text)
@@ -25,8 +26,17 @@ class lmbMacroTextNode extends lmbMacroNode
 
   function generate($code_writer)
   {
-    $code_writer->writeHtml($this->contents);
+    if(self :: $trim)
+      $code_writer->writeHtml(trim($this->contents));
+    else
+      $code_writer->writeHtml($this->contents);
+
     parent :: generate($code_writer);
+  }
+
+  static function setTrim($flag = true)
+  {
+    self :: $trim = $flag;
   }
 
   function getText()
