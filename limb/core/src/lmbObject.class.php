@@ -68,15 +68,17 @@ lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
  */
 class lmbObject implements lmbSetInterface
 {
+  protected $_dynamic_properties = array();
+  
   /**
    * Constructor.
    * Fills internals properties if any
    * @param array properties array
    */
-  function __construct($attributes = array())
+  function __construct($properties = array())
   {
-    if($attributes)
-      $this->import($attributes);
+    if($properties)
+      $this->import($properties);
   }
   /**
    * Returns class name using PHP built in get_class
@@ -105,10 +107,10 @@ class lmbObject implements lmbSetInterface
     if(!is_array($values))
       return;
 
-    foreach($values as $name => $value)
+    foreach($values as $property => $value)
     {
-      if(!$this->_isGuarded($name))
-        $this->_setRaw($name, $value);
+      if(!$this->_isGuarded($property))
+        $this->_setRaw($property, $value);
     }
   }
   /**
@@ -133,17 +135,27 @@ class lmbObject implements lmbSetInterface
    */
   function has($name)
   {
-    return $this->_hasAttribute($name) || $this->_mapPropertyToMethod($name);
+    return $this->_hasProperty($name) || $this->_mapPropertyToMethod($name);
   }
 
-  protected function _hasAttribute($name)
+  protected function _hasProperty($name)
   {
     return property_exists($this, $name);
   }
 
-  function getAttributesNames()
+  function getPropertiesNames()
   {
     return array_keys($this->export());
+  }
+  
+  /**
+   * Alias for getPropertiesNames
+   *
+   * @deprecated 
+   */
+  function getAttributesNames()
+  {
+    return $this->getPropertiesNames();
   }
 
   /**
@@ -152,7 +164,7 @@ class lmbObject implements lmbSetInterface
    */
   function remove($name)
   {
-    if($this->_hasAttribute($name) && !$this->_isGuarded($name))
+    if($this->_hasProperty($name) && !$this->_isGuarded($name))
       unset($this->$name);
   }
 
@@ -161,7 +173,7 @@ class lmbObject implements lmbSetInterface
    */
   function reset()
   {
-    foreach($this->getAttributesNames() as $name)
+    foreach($this->getPropertiesNames() as $name)
       unset($this->$name);
   }
 
@@ -176,7 +188,7 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
 
-    if($this->_hasAttribute($name) && !$this->_isGuarded($name))
+    if($this->_hasProperty($name) && !$this->_isGuarded($name))
       return $this->_getRaw($name);
 
     if(LIMB_UNDEFINED !== $default)
@@ -191,23 +203,24 @@ class lmbObject implements lmbSetInterface
    * @param string property name
    * @param mixed value
    */
-  function set($name, $value)
-  {
-    if($method = $this->_mapPropertyToSetMethod($name))
+  function set($property, $value)
+  {    
+    if($method = $this->_mapPropertyToSetMethod($property))
       return $this->$method($value);
 
-    if(!$this->_isGuarded($name))
-      $this->_setRaw($name, $value);
+    if(!$this->_isGuarded($property))
+      $this->_setRaw($property, $value);
   }
 
   protected function _getRaw($name)
   {
-    if($this->_hasAttribute($name))
+    if($this->_hasProperty($name))
       return $this->$name;
   }
 
   protected function _setRaw($name, $value)
   {
+    $this->_dynamic_properties[$name] = $name;
     $this->$name = $value;
   }
 
@@ -295,19 +308,24 @@ class lmbObject implements lmbSetInterface
 
   protected function _mapPropertyToSetMethod($property)
   {
+    if($this->_isGuarded($property))
+      $property = substr($property, 1);
+      
     $method = 'set' . lmb_camel_case($property);
     if(method_exists($this, $method))
       return $method;
-  }
+  }  
 
   /**
    * __set  an alias of set()
    * @see set, offsetSet
    */
-  public function __set($name,$value)
+  public function __set($property,$value)
   {
-    if(!$this->_isGuarded($name))
-      $this->$name = $value;
+    if(in_array($property, $this->_dynamic_properties))
+      $this->$property = $value;
+    else     
+      $this->set($property, $value);    
   }
 
   /**
@@ -315,9 +333,9 @@ class lmbObject implements lmbSetInterface
    * @see get,  offsetGet
    * @return mixed
    */
-  public function __get($name)
+  public function __get($property)
   {
-    return $this->get($name);
+    return $this->get($property);
   }
 
   /**

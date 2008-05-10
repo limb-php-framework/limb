@@ -44,6 +44,23 @@ class ObjectTestVersion2 extends lmbObject
 {
 }
 
+class ObjectTestVersion3 extends lmbObject 
+{
+  protected $protected;
+  public $getter_called = false;  
+  public $setter_called = false;
+  
+  function setProtected()
+  {
+    $this->setter_called = true;
+  }
+  
+  function getProtected()
+  {
+    $this->getter_called = true;
+  }
+}
+
 class lmbObjectTest extends UnitTestCase
 {
   function testHasAttribute()
@@ -338,6 +355,14 @@ class lmbObjectTest extends UnitTestCase
     $object2->set('bar', 1);
     $object2->get('bar');
     $this->assertTrue(true);
+  }
+  
+  function testAccessByMethodForProtectedProperties()
+  {
+    $obj = new ObjectTestVersion3();
+    $obj->protected = $obj->protected;
+    $this->assertTrue($obj->setter_called);
+    $this->assertTrue($obj->getter_called);
   }
 }
 
