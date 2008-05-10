@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbPgsqlRecord.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecord.class.php 6844 2008-03-18 17:10:33Z pachanga $
+ * @version $Id: lmbPgsqlRecord.class.php 6995 2008-05-10 12:33:35Z svk $
  */
 class lmbPgsqlRecord extends lmbDbBaseRecord
 {
@@ -60,6 +60,12 @@ class lmbPgsqlRecord extends lmbDbBaseRecord
   function reset()
   {
     $this->properties = array();
+  }
+
+  function getBit($name)
+  {
+    $value = $this->get($name);
+    return is_null($value) ?  null : (int) $value;
   }
 
   function getInteger($name)

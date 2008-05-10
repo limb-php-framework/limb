@@ -12,13 +12,14 @@ lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
  * class lmbPgsqlTypeInfo.
  *
  * @package dbal
- * @version $Id: lmbPgsqlTypeInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbPgsqlTypeInfo.class.php 6995 2008-05-10 12:33:35Z svk $
  */
 class lmbPgsqlTypeInfo extends lmbDbTypeInfo
 {
   function getNativeToColumnTypeMapping()
   {
     return array(
+      'bit' => LIMB_DB_TYPE_SMALLINT,
       'tinyint' => LIMB_DB_TYPE_SMALLINT,
       'smallint' => LIMB_DB_TYPE_SMALLINT,
       'mediumint' => LIMB_DB_TYPE_INTEGER,

@@ -10,7 +10,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
 lmb_require('limb/core/src/lmbBacktrace.class.php');
 lmb_require('limb/core/src/lmbDecorator.class.php');
 
-lmbDecorator :: generate(get_class(lmbToolkit::instance()->getDefaultDbConnection()), 'lmbDbConnectionDecorator');
+lmbDecorator :: generate('lmbDbConnection', 'lmbDbConnectionDecorator');
 
 /**
  * class lmbAuditDbConnection.
@@ -74,7 +74,8 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
     return $res;
   }
   
-  function getTrace() {
+  function getTrace() 
+  {
   	$trace_length = 8;
   	$offset = 4; // getting rid of useless trace elements
   	
@@ -86,6 +87,12 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
   {
     return $this->stats; 
   }
+  
+  function __call($method, $args)
+  {
+    return call_user_func_array(array($this->original, $method), $args);
+  }
+  
 }
 
 

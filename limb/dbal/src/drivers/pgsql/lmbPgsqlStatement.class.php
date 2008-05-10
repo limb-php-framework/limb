@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbPgsqlStatement.
  *
  * @package dbal
- * @version $Id: lmbPgsqlStatement.class.php 6938 2008-04-17 04:54:41Z svk $
+ * @version $Id: lmbPgsqlStatement.class.php 6995 2008-05-10 12:33:35Z svk $
  */
 class lmbPgsqlStatement implements lmbDbStatement
 {
@@ -50,6 +50,11 @@ class lmbPgsqlStatement implements lmbDbStatement
     $this->parameters[$name] = is_null($value) ?  null : intval($value);
   }
 
+  function setBit($name, $value)
+  {
+    $this->parameters[$name] = is_null($value) ?  null : intval($value);
+  }
+  
   function setFloat($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
