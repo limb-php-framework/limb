@@ -363,6 +363,16 @@ class lmbObjectTest extends UnitTestCase
     $obj->protected = $obj->protected;
     $this->assertTrue($obj->setter_called);
     $this->assertTrue($obj->getter_called);
-  }
+    
+    $obj = new ObjectTestVersion3();
+    $obj['protected'] = $obj['protected'];
+    $this->assertTrue($obj->setter_called);
+    $this->assertTrue($obj->getter_called);
+    
+    $obj = new ObjectTestVersion3();
+    $obj->set('protected', $obj->get('protected'));
+    $this->assertTrue($obj->setter_called);
+    $this->assertTrue($obj->getter_called);    
+  }  
 }
 
