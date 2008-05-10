@@ -32,7 +32,7 @@ class lmbMacroOutputExpressionNode extends lmbMacroNode
   function generate($code)
   {
     $this->expression->preGenerate($code);
-    $code->writePHP('echo ' . $this->expression->getValue() .  ";\n");
+    $code->writePHP('echo ' . $this->expression->getValue() .  ";");
   }
 }
 
