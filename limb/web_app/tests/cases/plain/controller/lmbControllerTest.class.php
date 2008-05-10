@@ -202,7 +202,7 @@ class lmbControllerTest extends UnitTestCase
     $controller = new TestingController();
     $controller->setCurrentAction('without_popup');
     $controller->performAction();
-    $this->assertPattern('~^Default dummy output~', $this->toolkit->getResponse()->getResponseString());
+    $this->assertEqual('', $this->toolkit->getResponse()->getResponseString());
   }
 
 }

@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6747 2008-01-25 07:35:18Z serega $
+ * @version $Id: lmbController.class.php 6991 2008-05-10 08:23:17Z pachanga $
  */
 class lmbController
 {
@@ -164,9 +164,6 @@ class lmbController
 
       if(is_string($res))
         $this->response->write($res);
-      elseif($this->response->isEmpty() && is_a($this->view, 'lmbDummyView'))
-        $this->response->write('Default dummy output for controller "' .
-                               get_class($this) . '" action "' . $this->current_action . '"');
 
       return $res;
     }
