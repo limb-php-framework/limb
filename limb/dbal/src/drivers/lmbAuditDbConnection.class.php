@@ -88,10 +88,6 @@ class lmbAuditDbConnection extends lmbDbConnectionDecorator
     return $this->stats; 
   }
   
-  function __call($method, $args)
-  {
-    return call_user_func_array(array($this->original, $method), $args);
-  }
   
 }
 
