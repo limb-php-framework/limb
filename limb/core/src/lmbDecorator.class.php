@@ -31,11 +31,6 @@ class lmbDecorator
 
   function __call($method, $args = array())
   {
-    return $this->___invoke($method, $args);
-  }
-  
-  protected function ___invoke($method, $args = array())
-  {
     return call_user_func_array(array($this->original, $method), $args);
   }
 }

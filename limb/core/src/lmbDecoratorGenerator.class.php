@@ -74,7 +74,7 @@ class lmbDecoratorGenerator
 
       $code .= "    " . lmbReflectionHelper :: getSignature($this->_class, $method) . " {\n";
       $code .= "        \$args = func_get_args();\n";
-      $code .= "        return \$this->___invoke(\"$method\", \$args);\n";
+      $code .= "        return \$this->__call(\"$method\", \$args);\n";
       $code .= "    }\n";
     }
     return $code;
