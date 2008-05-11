@@ -21,5 +21,50 @@ class lmbMacroNospaceTagTest extends lmbBaseMacroTest
     
     $this->assertEqual($page->render(), " Todd  Bob Hey\n Tomm"); 
   }
+
+  function testTrimSpace()
+  {
+    $template = '{{trim}}   Bob    {{/trim}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $this->assertEqual($page->render(), 'Bob');
+  }
+
+  function testMixTrimAndNoTrim()
+  {
+    $template = ' Todd {{trim}}   Bob    {{/trim}} Hey';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $this->assertEqual($page->render(), ' Todd Bob Hey'); 
+  }
+
+  function testSpace()
+  {
+    $template = '{{trim}}{{sp}}Bob{{sp}}{{/trim}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $this->assertEqual($page->render(), ' Bob '); 
+  }
+
+  function testNewline()
+  {
+    $template = '{{trim}}{{nl}}Bob{{nl}}{{/trim}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $this->assertEqual($page->render(), "\nBob\n"); 
+  }
+
+  function testTab()
+  {
+    $template = '{{trim}}{{tab}}Bob{{tab}}{{/trim}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    
+    $this->assertEqual($page->render(), "\tBob\t"); 
+  }
 }
 
