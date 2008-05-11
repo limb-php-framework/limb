@@ -9,22 +9,17 @@
 
 class lmbMacroNospaceTagTest extends lmbBaseMacroTest
 {
-  function testTrimSpace()
+  function testNospace()
   {
-    $template = '{{nospace}}   Bob    {{/nospace}}';
+    $template = " Todd {{-
+    
+    }} Bob {{-
+    
+    }}Hey\n Tomm";
 
     $page = $this->_createMacroTemplate($template, 'tpl.html');
     
-    $this->assertEqual($page->render(), 'Bob');
-  }
-
-  function testMixTrimAndNoTrim()
-  {
-    $template = ' Todd {{nospace}}   Bob    {{/nospace}} Hey';
-
-    $page = $this->_createMacroTemplate($template, 'tpl.html');
-    
-    $this->assertEqual($page->render(), ' Todd Bob Hey'); 
+    $this->assertEqual($page->render(), " Todd  Bob Hey\n Tomm"); 
   }
 }
 
