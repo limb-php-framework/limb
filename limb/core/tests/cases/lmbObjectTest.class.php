@@ -47,17 +47,21 @@ class ObjectTestVersion2 extends lmbObject
 class ObjectTestVersion3 extends lmbObject 
 {
   protected $protected;
-  public $getter_called = false;  
-  public $setter_called = false;
+  protected $protected2;
   
-  function setProtected()
+  public $getter_called_count = 0;  
+  public $setter_called_count = 0;
+  
+  function setProtected($value)
   {
-    $this->setter_called = true;
+    $this->setter_called_count++;
+    $this->protected = $value;
   }
   
   function getProtected()
   {
-    $this->getter_called = true;
+    $this->getter_called_count++;
+    return $this->protected;
   }
 }
 
@@ -357,22 +361,46 @@ class lmbObjectTest extends UnitTestCase
     $this->assertTrue(true);
   }
   
-  function testAccessByMethodForProtectedProperties()
+  function testBetterCheckForAccessByMethod()
   {
     $obj = new ObjectTestVersion3();
-    $obj->protected = $obj->protected;
-    $this->assertTrue($obj->setter_called);
-    $this->assertTrue($obj->getter_called);
+    $obj->protected = 'value';
+    $this->assertEqual($obj->setter_called_count, 1);
+    $this->assertEqual($obj->protected, 'value');
+    $this->assertEqual($obj->getter_called_count, 1);
+
+    $obj = new ObjectTestVersion3();
+    $obj['protected'] = 'value';
+    $this->assertEqual($obj->setter_called_count, 1);
+    $this->assertEqual($obj['protected'], 'value');
+    $this->assertEqual($obj->getter_called_count, 1);
     
     $obj = new ObjectTestVersion3();
-    $obj['protected'] = $obj['protected'];
-    $this->assertTrue($obj->setter_called);
-    $this->assertTrue($obj->getter_called);
-    
-    $obj = new ObjectTestVersion3();
-    $obj->set('protected', $obj->get('protected'));
-    $this->assertTrue($obj->setter_called);
-    $this->assertTrue($obj->getter_called);    
+    $obj->set('protected', 'value');
+    $this->assertEqual($obj->setter_called_count, 1);
+    $this->assertEqual($obj->get('protected'), 'value');
+    $this->assertEqual($obj->getter_called_count, 1);    
   }  
+  
+  function _testAccessByMethodForProtectedPropertiesSeveralTimes()
+  {
+    $obj = new ObjectTestVersion3();
+    $obj->protected = 'value1';
+    $obj->protected = 'value2';
+    $this->assertEqual($obj->setter_called_count, 2);
+    $this->assertEqual($obj->protected, 'value2');
+    
+    $obj = new ObjectTestVersion3();
+    $obj['protected'] = 'value1';
+    $obj['protected'] = 'value2';
+    $this->assertEqual($obj->setter_called_count, 2);
+    $this->assertEqual($obj['protected'], 'value2');
+    
+    $obj = new ObjectTestVersion3();
+    $obj->set('protected', 'value1');
+    $obj->set('protected', 'value2');
+    $this->assertEqual($obj->setter_called_count, 2);
+    $this->assertEqual($obj->get('protected'), 'value1');
+  }
 }
 
