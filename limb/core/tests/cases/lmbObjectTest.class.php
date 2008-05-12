@@ -417,8 +417,8 @@ class lmbObjectTest extends UnitTestCase
   {
     $obj = new ObjectTestVersion3();
     $obj->rawSet($obj->rawGet());
-    $this->assertFalse($obj->setter_called);
-    $this->assertFalse($obj->getter_called);
+    $this->assertIdentical(0, $obj->setter_called_count);
+    $this->assertIdentical(0, $obj->getter_called_count);
   }  
 }
 
