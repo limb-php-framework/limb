@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbHandle.class.php');
  * class lmbWebApplication.
  *
  * @package web_app
- * @version $Id: lmbWebApplication.class.php 6993 2008-05-10 09:40:36Z pachanga $
+ * @version $Id: lmbWebApplication.class.php 7002 2008-05-12 05:16:37Z pachanga $
  */
 class lmbWebApplication extends lmbFilterChain
 {
@@ -22,10 +22,23 @@ class lmbWebApplication extends lmbFilterChain
   protected $pre_dispatch_filters = array();
   protected $pre_action_filters = array();
   protected $pre_view_filters = array();
+  protected $request_dispatcher = null;
 
   function setDefaultControllerName($name)
   {
     $this->default_controller_name = $name;
+  }
+
+  function setRequestDispatcher($disp)
+  {
+    $this->request_dispatcher = $disp;
+  }
+
+  protected function  _getRequestDispatcher()
+  {
+    if(!is_object($this->request_dispatcher))
+      return new lmbHandle('limb/web_app/src/request/lmbRoutesRequestDispatcher');
+    return $this->request_dispatcher;
   }
 
   function addPreDispatchFilter($filter)
@@ -57,7 +70,7 @@ class lmbWebApplication extends lmbFilterChain
     $this->_addFilters($this->pre_dispatch_filters);
 
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbRequestDispatchingFilter',
-                                        array(new lmbHandle('limb/web_app/src/request/lmbRoutesRequestDispatcher'), 
+                                        array($this->_getRequestDispatcher(), 
                                               $this->default_controller_name)));
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbResponseTransactionFilter'));
 
