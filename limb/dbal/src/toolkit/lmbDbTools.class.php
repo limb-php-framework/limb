@@ -16,12 +16,13 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 6874 2008-03-31 07:23:58Z pachanga $
+ * @version $Id: lmbDbTools.class.php 7009 2008-05-12 21:27:12Z korchasa $
  */
 class lmbDbTools extends lmbAbstractTools
 {
-  protected $db_configs = array('dsn' => null);
-  protected $connections = array('dsn' => null);
+  protected $dsnes_available = array('dsn' => null);
+  protected $dsnes_active = array();
+  protected $dsnes_names = array('dsn' => null);
   protected $cache_db_info = true;
   protected $db_info = array();
   protected $db_tables = array();
@@ -29,12 +30,12 @@ class lmbDbTools extends lmbAbstractTools
 
   function setDbEnvironment($env)
   {
-    $this->db_env = $env;
+    $this->dsnes_available = $env;
   }
 
   function getDbEnvironment()
   {
-    return $this->db_env;
+    return $this->dsnes_available;
   }
 
   function setDefaultDbDSN($dsn)
@@ -62,37 +63,58 @@ class lmbDbTools extends lmbAbstractTools
       return false;
     }
   }
-
-  function setDbDSNByName($name, $dsn)
+  
+  protected function _getDbDsnHash($dsn)
   {
     if(is_object($dsn))
-      $this->db_configs[$name] = $dsn;
-    else
-      $this->db_configs[$name] = new lmbDbDSN($dsn);
+      $dsn = $dsn->toString();      
+    return md5($dsn);
   }
-
-  function getDbDSNByName($name)
+  
+  protected function _tryLoadDsnFromEnvironment($conf, $name)
+  {    
+    $env = $conf->get($this->db_env);
+    if(!is_array($env) || !isset($env[$name]))
+      throw new lmbException("Could not find database connection settings for environment '{$this->db_env}'");
+    return $env[$name];
+  }
+  
+  protected function _loadDbDsnFromConfig($name)
   {
-    if(isset($this->db_configs[$name]) && is_object($this->db_configs[$name]))
-      return $this->db_configs[$name];
-
     $conf = $this->toolkit->getConf('db');
 
     //for BC 'dsn' overrides other db environments
-    if($dsn = $conf->get($name))
-    {
-      $this->setDbDSNByName($name, new lmbDbDSN($dsn));
-    }
-    else
-    {
-      $env = $conf->get($this->db_env);
-      if(!is_array($env) || !isset($env[$name]))
-        throw new lmbException("Could not find database connection settings for environment '{$this->db_env}'");
+    $dsn = ($conf->has($name))
+      ? $conf->get($name)
+      : $this->_tryLoadDsnFromEnvironment($conf, $name);
+    
+    $this->setDbDSNByName($name, new lmbDbDSN($dsn));
+    
+    return $dsn;
+  }
 
-      $this->setDbDSNByName($name, new lmbDbDSN($env[$name]));
-    }
+  function setDbDSNByName($name, $dsn)
+  {
+    if(!is_object($dsn))
+      $dsn = new lmbDbDSN($dsn);
+    
+    $this->dsnes_names[$name] = $this->_getDbDsnHash($dsn);
+    $this->dsnes_available[$this->dsnes_names[$name]] = $dsn;
+  }
 
-    return $this->db_configs[$name];
+  function getDbDSNByName($name)
+  {  
+    if(isset($this->dsnes_names[$name]))
+      $dsn = $this->dsnes_names[$name];
+    else 
+    {
+      $dsn = $this->_loadDbDsnFromConfig($name);
+    }
+      
+    if(isset($this->dsnes_available[$dsn]) && is_object($this->dsnes_available[$dsn]))
+      return $this->dsnes_available[$dsn];    
+
+    return $this->dsnes_available[$this->_getDbDsnHash($dsn)];
   }
 
   function getDbDSN($env)
@@ -105,22 +127,38 @@ class lmbDbTools extends lmbAbstractTools
 
     return new lmbDbDSN($array['dsn']);
   }
+  
+  function getDbConnectionByDsn($dsn)
+  {
+    $dsn_hash = $this->_getDbDsnHash($dsn);
+    
+    if(isset($this->dsnes_active[$dsn_hash]) && is_object($this->dsnes_active[$dsn_hash]))
+      return $this->dsnes_active[$dsn_hash];
 
+    $this->setDbConnectionByDsn($dsn, $this->createDbConnection($dsn));
+    return $this->dsnes_active[$dsn_hash];
+  }
+  
+  function setDbConnectionByDsn($dsn, $conn)
+  {
+    $this->dsnes_active[$this->_getDbDsnHash($dsn)] = $conn;
+  }
+  
   function setDbConnectionByName($name, $conn)
   {
-    $this->connections[$name] = $conn;
+    $this->dsnes_active[$name] = $conn;
   }
 
   function getDbConnectionByName($name)
   {
-    if(isset($this->connections[$name]) && is_object($this->connections[$name]))
-      return $this->connections[$name];
+    if(isset($this->dsnes_active[$name]) && is_object($this->dsnes_active[$name]))
+      return $this->dsnes_active[$name];
 
     if(!is_object($dsn = $this->toolkit->getDbDSNByName($name)))
       throw new lmbException($name . ' database DSN is not valid');
 
     $this->setDbConnectionByName($name, $this->createDbConnection($dsn));
-    return $this->connections[$name];
+    return $this->dsnes_active[$name];
   }
 
   function setDefaultDbConnection($conn)

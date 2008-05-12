@@ -80,13 +80,37 @@ class lmbDbToolsTest extends UnitTestCase
 
   function testSetDbConnectionByName()
   {
-    $connection = $this->tools->createDbConnection(new lmbDbDSN($this->config['dsn']));
-    $another_connection = $this->tools->createDbConnection(new lmbDbDSN($this->config['another_dsn']));
+    $dsn = new lmbDbDSN($this->config['dsn']);
+    $another_dsn = new lmbDbDSN($this->config['another_dsn']);
+    
+    $connection = $this->tools->createDbConnection($dsn);
+    $another_connection = $this->tools->createDbConnection($another_dsn);
 
-    $this->assertEqual($connection, $this->tools->getDefaultDbConnection());
+    $this->assertIdentical($connection, $this->tools->getDbConnectionByName('dsn'));
 
     $this->tools->setDbConnectionByName('dsn', $another_connection);
 
-    $this->assertIdentical($another_connection, $this->tools->getDefaultDbConnection());
+    $this->assertIdentical($another_connection, $this->tools->getDbConnectionByName('dsn'));
+  }  
+  
+  function testGetDbConnectionByDsn()
+  {
+    $connection = $this->tools->createDbConnection(new lmbDbDSN($this->config['another_dsn']));
+    $this->assertIdentical($connection, $this->tools->getDbConnectionByDsn(new lmbDbDSN($this->config['another_dsn'])));
   }
+  
+  function testSetDbConnectionByDsn()
+  {
+    $dsn = new lmbDbDSN($this->config['dsn']);
+    $another_dsn = new lmbDbDSN($this->config['another_dsn']);
+    
+    $connection = $this->tools->createDbConnection($dsn);
+    $another_connection = $this->tools->createDbConnection($another_dsn);
+
+    $this->assertIdentical($connection, $this->tools->getDbConnectionByDsn($dsn));
+
+    $this->tools->setDbConnectionByDsn($dsn, $another_connection);
+
+    $this->assertIdentical($another_connection, $this->tools->getDbConnectionByDsn($dsn));
+  }  
 }
