@@ -382,7 +382,7 @@ class lmbObjectTest extends UnitTestCase
     $this->assertEqual($obj->getter_called_count, 1);    
   }  
   
-  function _testAccessByMethodForProtectedPropertiesSeveralTimes()
+  function testAccessByMethodForProtectedPropertiesSeveralTimes()
   {
     $obj = new ObjectTestVersion3();
     $obj->protected = 'value1';
@@ -400,7 +400,7 @@ class lmbObjectTest extends UnitTestCase
     $obj->set('protected', 'value1');
     $obj->set('protected', 'value2');
     $this->assertEqual($obj->setter_called_count, 2);
-    $this->assertEqual($obj->get('protected'), 'value1');
+    $this->assertEqual($obj->get('protected'), 'value2');
   }
 }
 
