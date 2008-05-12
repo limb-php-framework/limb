@@ -63,6 +63,16 @@ class ObjectTestVersion3 extends lmbObject
     $this->getter_called_count++;
     return $this->protected;
   }
+  
+  function rawSet($value)
+  {
+    $this->_setRaw('protected', $value);
+  }
+  
+  function rawGet()
+  {
+    return $this->_getRaw('protected');
+  }
 }
 
 class lmbObjectTest extends UnitTestCase
@@ -402,5 +412,13 @@ class lmbObjectTest extends UnitTestCase
     $this->assertEqual($obj->setter_called_count, 2);
     $this->assertEqual($obj->get('protected'), 'value2');
   }
+  
+  function testRawSetDoNotCallTheMagick()
+  {
+    $obj = new ObjectTestVersion3();
+    $obj->rawSet($obj->rawGet());
+    $this->assertFalse($obj->setter_called);
+    $this->assertFalse($obj->getter_called);
+  }  
 }
 
