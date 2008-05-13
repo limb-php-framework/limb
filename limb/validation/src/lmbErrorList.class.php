@@ -13,7 +13,7 @@ lmb_require('limb/validation/src/lmbErrorMessage.class.php');
  * Holds a list of validation errors
  * @see lmbErrorMessage
  * @package validation
- * @version $Id: lmbErrorList.class.php 6707 2008-01-18 16:20:43Z alex433 $
+ * @version $Id: lmbErrorList.class.php 7014 2008-05-13 11:11:06Z conf $
  */
 class lmbErrorList extends lmbCollection
 {
@@ -48,4 +48,18 @@ class lmbErrorList extends lmbCollection
   {
     return $this->isEmpty();
   }
+  
+  /**
+  * Returns all processed error list with formatted messages
+  * @see lmbErrorList :: addError()
+  * @return string
+  */
+  function getReadable()
+  {
+    $result = array();
+    foreach ($this as $error)
+      $result[] = $error->getReadable();
+
+    return $result;
+  }  
 }
