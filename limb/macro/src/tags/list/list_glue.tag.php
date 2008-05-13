@@ -67,7 +67,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
     {
       foreach($separators as $separator)
       {
-        if($separator->getNodeId() != $this->getNodeId())
+        if(!$separator->isIndependent() && $separator->getNodeId() != $this->getNodeId())
         {
           $code->writePhp('if (' . $separator->getStepVar($code) . ' < ' . $step_var . ') ');
           $code->writePhp($separator->getHelperVar($code) . "->skipNext();\n");
@@ -78,6 +78,11 @@ class lmbMacroListGlueTag extends lmbMacroTag
     parent :: _generateContent($code);
 
     $code->writePhp("}\n");
+  }
+  
+  function isIndependent()
+  {
+    return $this->has('independent') && $this->getBool('independent');
   }
 
   function getStepVar($code)

@@ -178,6 +178,23 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($macro->render(), 'List#John:Pavel|Peter:Harry|Roman:Sergey!');
   }
 
+  function testIndependentGlue()
+  {
+    $list = '{{list using="$#list" as="$item"}}List#'.
+            '{{list:item}}<?=$item?>' .
+            '{{list:glue step="2" independent="true"}}:{{/list:glue}}'.
+            '{{list:glue step="3"}}|{{/list:glue}}'.
+            '{{/list:item}}!'.
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('John', 'Pavel', 'Peter', 'Harry', 'Roman', 'Sergey', 'Alex', 'Vlad'));
+
+    $this->assertEqual($macro->render(), 'List#JohnPavel:Peter|Harry:RomanSergey:|AlexVlad!');
+  }
+
   function testTwoGluesInsideNestingLists()
   {
     $list = '{{list using="$#list1" as="$item1"}}'.
