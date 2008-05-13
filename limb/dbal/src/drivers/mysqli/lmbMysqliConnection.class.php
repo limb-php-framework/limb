@@ -55,8 +55,8 @@ class lmbMysqliConnection implements lmbDbConnection
   function connect()
   {
     $this->connectionId = mysqli_connect($this->config['host'],
-                                        $this->config['user'],
-                                        $this->config['password']);
+                                         $this->config['user'],
+                                         $this->config['password']);
 
     if($this->connectionId === false)
     {

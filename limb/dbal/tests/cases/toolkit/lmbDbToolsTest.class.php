@@ -29,7 +29,7 @@ class lmbDbToolsTest extends UnitTestCase
       'dsn' => 'mysql://root:test@localhost/hello_from_foo?charset=cp1251',
       'another_dsn' => 'sqlite://kraynopp:pasha@ksu/kadrs?charset=utf8'
     );
-    lmbToolkit::instance()->setConf('db', new lmbSet($this->config));
+    lmbToolkit :: instance()->setConf('db', new lmbSet($this->config));
     $this->tools->setDefaultDbConnection($this->tools->createDbConnection(new lmbDbDSN($this->config['dsn'])));
   }
   
@@ -113,4 +113,12 @@ class lmbDbToolsTest extends UnitTestCase
 
     $this->assertIdentical($another_connection, $this->tools->getDbConnectionByDsn($dsn));
   }  
+  
+  function testGettingConnectionsByNameAndDSNReturnsTheSameConnectionObject()
+  {
+    $connection_by_name = $this->tools->getDbConnectionByName('another_dsn');
+    $connection_by_dsn = $this->tools->getDbConnectionByDsn($this->config['another_dsn']);
+    $this->assertReference($connection_by_name, $connection_by_dsn);
+  }
+  
 }

@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7009 2008-05-12 21:27:12Z korchasa $
+ * @version $Id: lmbDbTools.class.php 7011 2008-05-13 07:10:10Z serega $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -146,19 +146,18 @@ class lmbDbTools extends lmbAbstractTools
   
   function setDbConnectionByName($name, $conn)
   {
-    $this->dsnes_active[$name] = $conn;
+    if(!is_object($dsn = $this->toolkit->getDbDSNByName($name)))
+      throw new lmbException($name . ' database DSN is not valid');
+    
+    return $this->setDbConnectionByDsn($dsn, $conn);
   }
 
   function getDbConnectionByName($name)
   {
-    if(isset($this->dsnes_active[$name]) && is_object($this->dsnes_active[$name]))
-      return $this->dsnes_active[$name];
-
     if(!is_object($dsn = $this->toolkit->getDbDSNByName($name)))
       throw new lmbException($name . ' database DSN is not valid');
-
-    $this->setDbConnectionByName($name, $this->createDbConnection($dsn));
-    return $this->dsnes_active[$name];
+    
+    return $this->getDbConnectionByDsn($dsn);
   }
 
   function setDefaultDbConnection($conn)
