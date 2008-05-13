@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7015 2008-05-13 12:02:24Z serega $
+ * @version $Id: lmbDbTools.class.php 7016 2008-05-13 12:05:06Z serega $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -192,7 +192,7 @@ class lmbDbTools extends lmbAbstractTools
 
       lmb_require($file);
     }
-    return new $class($dsn);
+    return new $class($dsn, $dsn->toString());
   }
 
   function cacheDbInfo($flag = true)
