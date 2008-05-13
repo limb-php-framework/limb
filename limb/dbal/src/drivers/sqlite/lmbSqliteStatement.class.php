@@ -36,6 +36,11 @@ class lmbSqliteStatement implements lmbDbStatement
     $this->parameters[$name] = 'null';
   }
 
+  function setBit($name, $value)
+  {
+    $this->parameters[$name] = decbin($value);
+  } 
+  
   function setSmallInt($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);

@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7011 2008-05-13 07:10:10Z serega $
+ * @version $Id: lmbDbTools.class.php 7015 2008-05-13 12:02:24Z serega $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -66,9 +66,17 @@ class lmbDbTools extends lmbAbstractTools
   
   protected function _getDbDsnHash($dsn)
   {
-    if(is_object($dsn))
-      $dsn = $dsn->toString();      
-    return md5($dsn);
+    $dsn = self :: castToDsnObject($dsn);
+    return md5($dsn->toString());
+  }
+  
+  static function castToDsnObject($dsn)
+  {
+    if(is_object($dsn) && ($dsn instanceof lmbDbDSN))
+      return $dsn;
+    if(is_object($dsn) && ($dsn instanceof lmbSet))
+      new lmbDbDSN($dsn->export());
+    return new lmbDbDSN($dsn);
   }
   
   protected function _tryLoadDsnFromEnvironment($conf, $name)
@@ -95,8 +103,7 @@ class lmbDbTools extends lmbAbstractTools
 
   function setDbDSNByName($name, $dsn)
   {
-    if(!is_object($dsn))
-      $dsn = new lmbDbDSN($dsn);
+    $dsn = self :: castToDsnObject($dsn);
     
     $this->dsnes_names[$name] = $this->_getDbDsnHash($dsn);
     $this->dsnes_available[$this->dsnes_names[$name]] = $dsn;
@@ -172,8 +179,7 @@ class lmbDbTools extends lmbAbstractTools
 
   function createDbConnection($dsn)
   {
-    if(!is_object($dsn))
-      $dsn = new lmbDbDSN($dsn);
+    $dsn = self :: castToDsnObject($dsn);
 
     $driver = $dsn->getDriver();
     $class = 'lmb' . ucfirst($driver) . 'Connection';

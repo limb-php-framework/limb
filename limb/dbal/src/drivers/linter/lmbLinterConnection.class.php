@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
 lmb_require(dirname(__FILE__) . '/lmbLinterQueryStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbLinterDropStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbLinterInsertStatement.class.php');
@@ -21,25 +21,18 @@ lmb_require(dirname(__FILE__) . '/lmbLinterTypeInfo.class.php');
  * @package dbal
  * @version $Id: $
  */
-class lmbLinterConnection implements lmbDbConnection
+class lmbLinterConnection extends lmbDbBaseConnection
 {
   const CURSOR_POOL_LIMIT = 64;
   const LINTER_EMPTY_DATASET = -18;
   
   protected $connectionId;
-  protected $config;
   protected $transactionCount = 0;
   protected $cursorPool = array();
   protected $mode = null;
   protected $useConnection = false;
   protected $debug = false;
   
-
-  function __construct($config)
-  {
-    $this->config = $config;
-  }
-
   function getType()
   {
     return 'linter';
@@ -51,11 +44,6 @@ class lmbLinterConnection implements lmbDbConnection
       $this->connect();
       
     return $this->connectionId;
-  }
-
-  function getHash()
-  {
-    return crc32(serialize($this->config));
   }
 
   function getConfigValue($param = null)
@@ -101,12 +89,7 @@ class lmbLinterConnection implements lmbDbConnection
       linter_set_cursor_opt($this->connectionId, CO_DT_FORMAT, "YYYY-MM-DD HH:MI:SS");
       //linter_set_cursor_opt($this->connectionId, CO_DECIMAL_AS_DOUBLE, 1);
     }
-	
-
-
   }
-  
-  
 
   function __wakeup()
   {

@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
-lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciQueryStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciInsertStatement.class.php');
@@ -21,25 +21,14 @@ lmb_require(dirname(__FILE__) . '/lmbOciRecord.class.php');
  * class lmbOciConnection.
  *
  * @package dbal
- * @version $Id: lmbOciConnection.class.php 6848 2008-03-21 13:44:08Z svk $
+ * @version $Id: lmbOciConnection.class.php 7015 2008-05-13 12:02:24Z serega $
  */
-class lmbOciConnection implements lmbDbConnection
+class lmbOciConnection extends lmbDbBaseConnection
 {
   protected $connectionId;
-  protected $config;
 
   //Transaction state. Should be either OCI_COMMIT_ON_SUCCESS or OCI_DEFAULT
   protected $tstate = OCI_COMMIT_ON_SUCCESS;
-
-  function __construct($config)
-  {
-    $this->config = $config;
-  }
-
-  function getConfig()
-  {
-    return $this->config;
-  }
 
   function getType()
   {
@@ -51,11 +40,6 @@ class lmbOciConnection implements lmbDbConnection
     if(!isset($this->connectionId))
       $this->connect();
     return $this->connectionId;
-  }
-
-  function getHash()
-  {
-    return crc32(serialize($this->config));
   }
 
   //based on Creole code

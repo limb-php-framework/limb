@@ -11,13 +11,14 @@
  * interface lmbDbConnection.
  *
  * @package dbal
- * @version $Id: lmbDbConnection.interface.php 6848 2008-03-21 13:44:08Z svk $
+ * @version $Id: lmbDbConnection.interface.php 7015 2008-05-13 12:02:24Z serega $
  */
 interface lmbDbConnection
 {
   function getType();
   function getConnectionId();
   function getHash();
+  function getDsnString();
   function connect();
   function disconnect();
   function beginTransaction();

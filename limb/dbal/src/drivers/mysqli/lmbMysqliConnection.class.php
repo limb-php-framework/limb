@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliQueryStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliInsertStatement.class.php');
@@ -22,16 +22,9 @@ lmb_require(dirname(__FILE__) . '/lmbMysqliTableInfo.class.php');
  * @package dbal
  * @version $Id: lmbMysqlConnection.class.php 6848 2008-03-21 13:44:08Z svk $
  */
-class lmbMysqliConnection implements lmbDbConnection
+class lmbMysqliConnection extends lmbDbBaseConnection
 {
-
   protected $connectionId;
-  protected $config;
-
-  function __construct($config)
-  {
-    $this->config = $config;
-  }
 
   function getType()
   {
@@ -45,11 +38,6 @@ class lmbMysqliConnection implements lmbDbConnection
       $this->connect();
     }
     return $this->connectionId;
-  }
-
-  function getHash()
-  {
-    return crc32(serialize($this->config));
   }
 
   function connect()

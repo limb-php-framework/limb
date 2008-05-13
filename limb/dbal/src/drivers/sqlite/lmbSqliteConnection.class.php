@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteQueryStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbSqliteInsertStatement.class.php');
@@ -23,16 +23,10 @@ lmb_require(dirname(__FILE__) . '/lmbSqliteRecord.class.php');
  * @package dbal
  * @version $Id$
  */
-class lmbSqliteConnection implements lmbDbConnection
+class lmbSqliteConnection extends lmbDbBaseConnection
 {
   protected $connectionId;
-  protected $config;
   protected $in_transaction = false;
-
-  function __construct($config)
-  {
-    $this->config = $config;
-  }
 
   function getType()
   {
@@ -45,11 +39,6 @@ class lmbSqliteConnection implements lmbDbConnection
       $this->connect();
 
     return $this->connectionId;
-  }
-
-  function getHash()
-  {
-    return crc32(serialize($this->config));
   }
 
   function connect()

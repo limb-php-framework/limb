@@ -20,8 +20,9 @@ class lmbSqliteTypeInfo extends lmbDbTypeInfo
   function getNativeToColumnTypeMapping()
   {
     return array(
-      'tinyint' => LIMB_DB_TYPE_SMALLINT,
-      'smallint' => LIMB_DB_TYPE_SMALLINT,
+      'bit' => LIMB_DB_TYPE_INTEGER,
+      'tinyint' => LIMB_DB_TYPE_INTEGER,
+      'smallint' => LIMB_DB_TYPE_INTEGER,
       'mediumint' => LIMB_DB_TYPE_INTEGER,
       'int' => LIMB_DB_TYPE_INTEGER,
       'integer' => LIMB_DB_TYPE_INTEGER,

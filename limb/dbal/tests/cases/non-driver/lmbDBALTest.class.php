@@ -33,7 +33,7 @@ class lmbDBALTest extends UnitTestCase
 
   function testSetDefaultDSN()
   {
-    lmbDBAL :: setDefaultDSN($boo = new lmbObject());
+    lmbDBAL :: setDefaultDSN($boo = new lmbDbDSN('mysql://localhost/db_name'));
     $this->assertEqual($this->toolkit->getDefaultDbDSN(), $boo);
   }
 

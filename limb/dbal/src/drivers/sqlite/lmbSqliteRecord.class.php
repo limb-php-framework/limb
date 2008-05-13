@@ -77,6 +77,12 @@ class lmbSqliteRecord extends lmbDbBaseRecord
     $this->properties = array();
   }
 
+  function getBit($name)
+  {
+    $value = $this->get($name);
+    return is_null($value) ?  null : bindec($value);
+  }
+  
   function getInteger($name)
   {
     $value = $this->get($name);

@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/src/drivers/lmbDbConnection.interface.php');
+lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlQueryStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlDropStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbPgsqlInsertStatement.class.php');
@@ -19,18 +19,12 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 6938 2008-04-17 04:54:41Z svk $
+ * @version $Id: lmbPgsqlConnection.class.php 7015 2008-05-13 12:02:24Z serega $
  */
-class lmbPgsqlConnection implements lmbDbConnection
+class lmbPgsqlConnection extends lmbDbBaseConnection
 {
   protected $connectionId;
-  protected $config;
   protected $statement_number = 0;
-
-  function __construct($config)
-  {
-    $this->config = $config;
-  }
 
   function getType()
   {
@@ -49,11 +43,6 @@ class lmbPgsqlConnection implements lmbDbConnection
   function getStatementNumber()
   {
       return ++$this->statement_number;
-  }
-
-  function getHash()
-  {
-    return crc32(serialize($this->config));
   }
 
   function connect()
