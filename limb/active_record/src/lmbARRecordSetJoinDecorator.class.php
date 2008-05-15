@@ -83,23 +83,9 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
         }
       }
 
-      $related_object = $this->_createObject($fields, $relation_info['class']);
-      $related_object->loadFromRecord($fields);
+      $related_object = lmbARRecordSetDecorator :: createObjectFromRecord($fields, $relation_info['class'], $this->conn); 
       $record->set($this->prefix . $relation_name, $related_object);
     }
-  }
-
-  protected function _createObject($record, $default_class_name)
-  {
-    if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
-    {
-      $class = end(lmbActiveRecord :: decodeInheritancePath($path));
-      if(!class_exists($class))
-        throw new lmbException("Class '$class' not found");
-      return new $class(null, $this->conn);
-    }
-    else
-      return new $default_class_name(null, $this->conn);
   }
 
   function at($pos)

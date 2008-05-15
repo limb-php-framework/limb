@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 6847 2008-03-21 10:41:38Z svk $
+ * @version $Id: lmbActiveRecord.class.php 7018 2008-05-15 11:53:30Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -2164,6 +2164,28 @@ class lmbActiveRecord extends lmbObject
     if(isset(self :: $_global_listeners[$type]))
       lmbDelegate :: invokeAll(self :: $_global_listeners[$type], array($this));
   }
+  
+  function __wakeup()
+  {
+    $toolkit = lmbToolkit :: instance();
+    $this->_db_conn = $toolkit->getDbConnectionByDsn($this->_db_conn->dsn);
+
+    $this->_db_meta_info = $toolkit->getActiveRecordMetaInfo($this, $this->_db_conn);
+    $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
+
+    $this->_db_table = $this->_db_meta_info->getDbTable();
+    $this->_db_table->setPrimaryKeyName($this->_primary_key_name);
+    $this->_db_table_name = $this->_db_table->getTableName();
+  }
+  
+  function __sleep()
+  {
+    $this->_db_conn_dsn = $this->_db_conn->getDsnString(); 
+    
+    $vars = array_keys(get_object_vars($this));
+    $vars = array_diff($vars, array('_db_conn', '_db_table', '_db_meta_info'));
+    return $vars;
+  }  
 }
 
 

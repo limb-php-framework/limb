@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 6694 2008-01-17 15:41:51Z serega $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7018 2008-05-15 11:53:30Z serega $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -34,35 +34,33 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     if(!$record = parent :: current())
       return null;
 
-    return $this->_createObjectFromRecord($record);
+    return self :: createObjectFromRecord($record, $this->class_path, $this->conn);
   }
 
-  protected function _createObjectFromRecord($record)
-  {
-    $object = $this->_createObject($record);
-    $object->loadFromRecord($record);
-    return $object;
-  }
-  
-  protected function _createObject($record)
+  static function createObjectFromRecord($record, $default_class_name, $conn)
   {
     if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
     {
-      $class = end(lmbActiveRecord :: decodeInheritancePath($path));
-      if(!class_exists($class))
-        throw new lmbException("Class '$class' not found");
-      return new $class(null, $this->conn);
+      $class_name = end(lmbActiveRecord :: decodeInheritancePath($path));
+      if(!class_exists($class_name))
+        throw new lmbException("Class '$class_name' not found");
     }
     else
-      return lmbClassPath :: create($this->class_path, array(null, $this->conn));
-  }
+      $class_name = $default_class_name;
+      
+    $object = new $class_name(null, $conn);
+    
+    $object->loadFromRecord($record);
+    
+    return $object;
+  }  
 
   function at($pos)
   {
     if(!$record = parent :: at($pos))
       return null;
 
-    return $this->_createObjectFromRecord($record);
+    return self :: createObjectFromRecord($record, $this->class_path, $this->conn);
   }
 }
 

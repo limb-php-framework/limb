@@ -488,7 +488,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $rs->next();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
   }
-
+  
   function testFindAllWithCriteria()
   {
     $object1 = $this->creator->createOneTableObject();
