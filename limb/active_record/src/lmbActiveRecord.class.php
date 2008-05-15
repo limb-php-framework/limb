@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7018 2008-05-15 11:53:30Z serega $
+ * @version $Id: lmbActiveRecord.class.php 7019 2008-05-15 12:18:46Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -57,6 +57,12 @@ class lmbActiveRecord extends lmbObject
    *  @see lmbDbConnection
    */
   protected $_db_conn;
+  
+  /**
+   * @var string current database connection dsn
+   */
+  protected $_db_conn_dsn; 
+  
   /**
    * @var object lmbTableGateway instance used to access underlying db table
    */
@@ -204,6 +210,8 @@ class lmbActiveRecord extends lmbObject
     else
       $this->_db_conn = self :: getDefaultConnection();
 
+    $this->_db_conn_dsn = $this->_db_conn->getDsnString(); 
+      
     $this->_db_meta_info = lmbToolkit :: instance()->getActiveRecordMetaInfo($this, $this->_db_conn);
     $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
 
@@ -2168,7 +2176,7 @@ class lmbActiveRecord extends lmbObject
   function __wakeup()
   {
     $toolkit = lmbToolkit :: instance();
-    $this->_db_conn = $toolkit->getDbConnectionByDsn($this->_db_conn->dsn);
+    $this->_db_conn = $toolkit->getDbConnectionByDsn($this->_db_conn_dsn);
 
     $this->_db_meta_info = $toolkit->getActiveRecordMetaInfo($this, $this->_db_conn);
     $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
@@ -2180,8 +2188,6 @@ class lmbActiveRecord extends lmbObject
   
   function __sleep()
   {
-    $this->_db_conn_dsn = $this->_db_conn->getDsnString(); 
-    
     $vars = array_keys(get_object_vars($this));
     $vars = array_diff($vars, array('_db_conn', '_db_table', '_db_meta_info'));
     return $vars;
