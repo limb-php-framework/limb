@@ -15,10 +15,17 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 6875 2008-03-31 12:08:36Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 7021 2008-05-16 13:11:56Z hidrarg $
  */
 class lmbHttpRequest extends lmbSet
 {
+
+  const get = 'get';
+  const uri = 'uri';
+  const post = 'post';
+  const cookies = 'cookies';
+  const files = 'files';
+
   protected $uri;
   protected $request = array();
   protected $get = array();
@@ -211,7 +218,7 @@ class lmbHttpRequest extends lmbSet
     {
       if(is_object($value))
         continue;
-      $query .= $key . '=' . $value . '&';
+      $query .= $key . '=' . urlencode($value) . '&';
     }
 
     $uri = clone($this->uri);

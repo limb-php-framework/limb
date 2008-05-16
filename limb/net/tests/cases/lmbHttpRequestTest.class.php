@@ -210,6 +210,22 @@ class lmbHttpRequestTest extends UnitTestCase
 
     $this->assertEqual($request->get('a'), 1);
   }
+
+  function testToString_ValidForConstruct_LmbHttpRequest_IfAttributeNoValidStringURL()
+  {
+    $request = new lmbHttpRequest('http://test.com?z=1',
+                                array('b' => array('c' => '&m=7')),
+                                array('d' => '?&n=9#top'));
+    $request = new lmbHttpRequest($request->toString());
+
+    $this->assertEqual($request->get('z'), 1);
+    $this->assertEqual($request->get('b'), array('c' => '&m=7'));
+    $this->assertEqual($request->get('d'), '?&n=9#top');
+    $this->assertEqual($request->getUri()->getAnchor(), '');
+
+    $this->assertNull($request->get('m'));
+    $this->assertNull($request->get('n'));
+  }
 }
 
 
