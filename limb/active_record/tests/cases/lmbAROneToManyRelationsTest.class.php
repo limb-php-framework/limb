@@ -436,6 +436,23 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $lectures = $course2_loaded2->getLectures();
     $this->assertEqual(count($lectures), 2);
   }
+  
+  function testSaveWithLessReferenceCount()
+  {
+      $course1 = $this->creator->createCourse();
+      $lecture1 = $this->creator->createLecture($course1);
+      $lecture2 = $this->creator->createLecture($course1);
+      $lecture3 = $this->creator->createLecture($course1);
+      $course1->save();
+      $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
+      $course_arr = $course1->export();
+      $lect_arr = $course1->getLectures()->getIds();
+      array_pop($lect_arr);
+      $course_arr['lectures'] = $lect_arr;
+      $course1->import($course_arr);
+      $course1->save();
+      $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
+  }
 
   function _initCourse()
   {
