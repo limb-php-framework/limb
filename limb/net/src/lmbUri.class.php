@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 6974 2008-04-29 11:20:46Z korchasa $
+ * @version $Id: lmbUri.class.php 7020 2008-05-16 13:06:40Z hidrarg $
  */
 class lmbUri extends lmbSet
 {
@@ -296,7 +296,7 @@ class lmbUri extends lmbSet
       $string = '';
 
     if(in_array('path', $parts))
-      $string .= $this->path;
+      $string .= $this->getPath();
 
     if(in_array('query', $parts))
     {
@@ -356,9 +356,7 @@ class lmbUri extends lmbSet
 
   function addQueryItem($name, $value)
   {
-    $this->query_items[$name] = is_array($value) ?
-      lmbArrayHelper :: arrayMapRecursive('urlencode', $value) :
-      urlencode($value);
+    $this->query_items[$name] = $value;
   }
 
   function getQueryItem($name)
@@ -420,7 +418,7 @@ class lmbUri extends lmbSet
     foreach($flat_array as $key => $value)
     {
       if($value != '' ||  is_null($value))
-        $query_items[] = $key . '=' . $value;
+        $query_items[] = $key . '=' . urlencode($value);
       else
         $query_items[] = $key;
     }
@@ -437,11 +435,11 @@ class lmbUri extends lmbSet
   protected function _parseQueryString($query_string)
   {
     parse_str($query_string, $arr);
-
+    
     foreach($arr as $key => $item)
     {
       if(!is_array($item))
-        $arr[$key] = rawurldecode($item);
+        $arr[$key] = urldecode($item);
     }
 
     return $arr;

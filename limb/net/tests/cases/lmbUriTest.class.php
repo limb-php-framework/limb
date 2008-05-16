@@ -584,6 +584,16 @@ class lmbUriTest extends UnitTestCase
     $uri = new lmbUri('index.html?wow=' . urlencode('what a nice weather'));
     $this->assertEqual($uri->getQueryItem('wow'), 'what a nice weather');
   }
+
+  function testToString_IfAttributeNoValidStringURL()
+  {
+    $str = 'http://admin:test@localhost:81/test.php?foo=' . urlencode('10&b=11') . '#23';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->toString(), $str);
+  }
+
 }
 
 
