@@ -15,6 +15,7 @@ lmb_require('limb/acl/src/lmbAclException.class.php');
 class lmbAcl
 {
   protected $_default_policy;
+  protected $_default_inherits_policy;
   
   protected $_roles = array();
   protected $_resources = array();
@@ -22,8 +23,9 @@ class lmbAcl
   public $_resources_rules = array();
   public $_privileges_rules = array();  
 
-  function __construct($default_policy = false)
+  function __construct($default_inherits_policy = true, $default_policy = false)
   {
+    $this->_default_inherits_policy = $default_inherits_policy;
     $this->_default_policy = $default_policy;
   }
 
@@ -137,7 +139,7 @@ class lmbAcl
     else
     {
       if(!array_key_exists($privelege, $this->_roles_rules[$role]))
-        return false;
+        return $this->_default_policy;
       return $this->_roles_rules[$role][$privelege];
     }
   }
@@ -233,8 +235,8 @@ class lmbAcl
       return $this->_getRoleRule($role, $privilege);
 
     foreach($this->getRoleInherits($role) as $inherit)
-      if($this->isAllowed($inherit, $resource, $privilege))
-        return true;
+      if($this->_default_inherits_policy == $this->isAllowed($inherit, $resource, $privilege))
+        return $this->_default_inherits_policy;
       
     return $this->_default_policy;
   }

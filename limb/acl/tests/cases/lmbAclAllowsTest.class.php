@@ -67,7 +67,7 @@ class lmbAclAllowsTest extends UnitTestCase
   
   function testDefaultPolicy()
   {
-    $acl = new lmbAcl($default_policy = true);
+    $acl = new lmbAcl(true, $default_policy = true);
     $acl->addRole('guest');
     $acl->addResource('news');
     $this->assertTrue($acl->isAllowed('guest', 'news', 'view'));
@@ -185,9 +185,9 @@ class lmbAclAllowsTest extends UnitTestCase
     $this->assertFalse($acl->isAllowed('spy', 'secret', 'view'));
   }  
   
-  function testAllowAndDenyWithInherits_AllowingIndependedFromInheritsDefinition()
+  function testAllowAndDenyWithInherits_DefaultInheritsPolicyisAllow()
   {
-    $acl = new lmbAcl();
+    $acl = new lmbAcl($default_inherits_policy = true);
     
     $acl->addRole('user');
     $acl->addRole('intruder');
@@ -200,5 +200,22 @@ class lmbAclAllowsTest extends UnitTestCase
     
     $this->assertTrue($acl->isAllowed('firstly user'));
     $this->assertTrue($acl->isAllowed('firstly intruder'));
+  }  
+  
+  function testAllowAndDenyWithInherits_DefaultInheritsPolicyisDeny()
+  {
+    $acl = new lmbAcl($default_inherits_policy = false);
+    
+    $acl->addRole('user');
+    $acl->addRole('intruder');
+    
+    $acl->addRole('firstly user', array('user', 'intruder'));
+    $acl->addRole('firstly intruder', array('intruder', 'user'));
+            
+    $acl->allow('user');
+    $acl->deny('intruder');
+    
+    $this->assertFalse($acl->isAllowed('firstly user'));
+    $this->assertFalse($acl->isAllowed('firstly intruder'));
   }  
 }
