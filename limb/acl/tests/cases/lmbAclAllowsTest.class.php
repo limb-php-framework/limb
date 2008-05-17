@@ -218,4 +218,30 @@ class lmbAclAllowsTest extends UnitTestCase
     $this->assertFalse($acl->isAllowed('firstly user'));
     $this->assertFalse($acl->isAllowed('firstly intruder'));
   }  
+  
+  function testHasDenials()
+  {
+    $acl = new lmbAcl();
+    
+    $acl->addRole('intruder');
+    $acl->addRole('spy', 'intruder');
+    
+    $acl->deny('intruder');
+    
+    $this->assertTrue($acl->hasDenials('intruder'));
+    $this->assertTrue($acl->hasDenials('spy'));
+  }  
+  
+  function testHasAllows()
+  {
+    $acl = new lmbAcl();
+    
+    $acl->addRole('guest');
+    $acl->addRole('user', 'guest');
+    
+    $acl->allow('guest');
+    
+    $this->assertTrue($acl->hasAllows('guest'));
+    $this->assertTrue($acl->hasAllows('user'));
+  }  
 }

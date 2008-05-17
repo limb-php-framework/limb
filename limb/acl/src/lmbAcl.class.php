@@ -14,8 +14,8 @@ lmb_require('limb/acl/src/lmbAclException.class.php');
 
 class lmbAcl
 {
-  protected $_default_policy;
-  protected $_default_inherits_policy;
+  protected $_not_found_policy_allow;
+  protected $_inherits_policy_allow;
   
   protected $_roles = array();
   protected $_resources = array();
@@ -23,10 +23,10 @@ class lmbAcl
   public $_resources_rules = array();
   public $_privileges_rules = array();  
 
-  function __construct($default_inherits_policy = true, $default_policy = false)
+  function __construct($inherits_policy_allow = true, $not_found_policy_allow = false)
   {
-    $this->_default_inherits_policy = $default_inherits_policy;
-    $this->_default_policy = $default_policy;
+    $this->_inherits_policy_allow = $inherits_policy_allow;
+    $this->_not_found_policy_allow = $not_found_policy_allow;
   }
 
   function addRole($role, $parents = array())
@@ -139,7 +139,7 @@ class lmbAcl
     else
     {
       if(!array_key_exists($privelege, $this->_roles_rules[$role]))
-        return $this->_default_policy;
+        return $this->_not_found_policy_allow;
       return $this->_roles_rules[$role][$privelege];
     }
   }
@@ -201,44 +201,78 @@ class lmbAcl
   {
     return $this->_privileges_rules[$role][$resource][$privilege];
   }
+  
+  protected function _checkRole($role)
+  {
+    if(!$this->isRoleExist($role))
+      throw new lmbAclException('Role not exist', array('role' => $role));   
+  }
 
   protected function _checkResource($resource)
   {
     if(!is_null($resource) && !$this->isResourceExist($resource))
       throw new lmbAclException('Resource not exist', array('resource' => $resource));
   }
-
-  function isAllowed($role, $resource = null, $privilege = null)
+  
+  protected function _processRoleAndResource($role, $resource)
   {
     if($resource instanceof lmbRolesResolverInterface)
       if($resolved_role = $resource->getRoleFor($role))
         $role = $resolved_role;
-
-    if($resource instanceof lmbResourceProviderInterface )
-      $resource = $resource->getResource();
-
-    $this->_checkResource($resource);
-
+        
     if($role instanceof lmbRoleProviderInterface)
       $role = $role->getRole();
 
-    if(!$this->isRoleExist($role))
-      throw new lmbAclException('Role not exist', array('role' => $role));   
+    $this->_checkRole($role);
+        
+    if($resource instanceof lmbResourceProviderInterface )
+      $resource = $resource->getResource();
+    
+    $this->_checkResource($resource);
+      
+    return array($role, $resource);
+  }
+
+  function isAllowed($role, $resource = null, $privilege = null)
+  {
+    if($this->_inherits_policy_allow)
+      if($this->hasAllows($role, $resource, $privilege))
+        return true;
+    else 
+      if($this->hasDenials($role, $resource, $privilege))
+        return false;
+    
+    return $this->_not_found_policy_allow;
+  }
+  
+  function _hasRule($rule, $role, $resource = null, $privilege = null)
+  {
+    list($role, $resource) = $this->_processRoleAndResource($role, $resource);
 
     if($this->_isExistPrivilegeRule($role, $resource, $privilege))
-      return $this->_getPrivilegeRule($role, $resource, $privilege);
+      return ($rule === $this->_getPrivilegeRule($role, $resource, $privilege));
 
     if($this->_isExistResourceRule($role, $resource))
-      return $this->_getResourceRule($role, $resource);
+      return ($rule === $this->_getResourceRule($role, $resource));
 
     if($this->_isExistRoleRule($role, $privilege))
-      return $this->_getRoleRule($role, $privilege);
+      return ($rule === $this->_getRoleRule($role, $privilege));
 
     foreach($this->getRoleInherits($role) as $inherit)
-      if($this->_default_inherits_policy == $this->isAllowed($inherit, $resource, $privilege))
-        return $this->_default_inherits_policy;
+      if($rule === $this->isAllowed($inherit, $resource, $privilege))
+        return true;
       
-    return $this->_default_policy;
+    return false;
+  }
+  
+  function hasDenials($role, $resource = null, $privilege = null)
+  {
+    return $this->_hasRule(false, $role, $resource, $privilege);
+  }
+  
+  function hasAllows($role, $resource = null, $privilege = null)
+  {
+    return $this->_hasRule(true, $role, $resource, $privilege);
   }
 
   function setRule($role, $resource = null, $privileges = array(), $rule)
@@ -246,8 +280,7 @@ class lmbAcl
     if(!is_array($privileges))
       $privileges = array($privileges);
 
-    if(!$this->isRoleExist($role))
-      throw new lmbAclException('Role not exist', array('role' => $role));
+    $this->_checkRole($role);
 
     if(is_null($resource))
       return $this->_applyRoleRule($role, $rule, $privileges);
