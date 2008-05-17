@@ -14,13 +14,18 @@ lmb_require('limb/acl/src/lmbAclException.class.php');
 
 class lmbAcl
 {
+  protected $_default_policy;
+  
   protected $_roles = array();
   protected $_resources = array();
   public $_roles_rules = array();
   public $_resources_rules = array();
-  public $_privileges_rules = array();
+  public $_privileges_rules = array();  
 
-  function __construct() {}
+  function __construct($default_policy = false)
+  {
+    $this->_default_policy = $default_policy;
+  }
 
   function addRole($role, $parents = array())
   {
@@ -111,7 +116,7 @@ class lmbAcl
     if(!array_key_exists($role, $this->_roles_rules))
       return false;
     if(is_array($this->_roles_rules[$role]))
-      return in_array($privilege, $this->_roles_rules[$role]);
+      return array_key_exists($privilege, $this->_roles_rules[$role]);
     return true;
   }
 
@@ -216,11 +221,7 @@ class lmbAcl
       $role = $role->getRole();
 
     if(!$this->isRoleExist($role))
-      throw new lmbAclException('Role not exist', array('role' => $role));
-
-    foreach($this->getRoleInherits($role) as $inherit)
-      if($this->isAllowed($inherit, $resource, $privilege))
-        return true;
+      throw new lmbAclException('Role not exist', array('role' => $role));   
 
     if($this->_isExistPrivilegeRule($role, $resource, $privilege))
       return $this->_getPrivilegeRule($role, $resource, $privilege);
@@ -231,7 +232,11 @@ class lmbAcl
     if($this->_isExistRoleRule($role, $privilege))
       return $this->_getRoleRule($role, $privilege);
 
-    return false;
+    foreach($this->getRoleInherits($role) as $inherit)
+      if($this->isAllowed($inherit, $resource, $privilege))
+        return true;
+      
+    return $this->_default_policy;
   }
 
   function setRule($role, $resource = null, $privileges = array(), $rule)
