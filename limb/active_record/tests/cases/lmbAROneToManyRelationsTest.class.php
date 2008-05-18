@@ -26,6 +26,26 @@ class CourseForTestWithNullifyRelationProperty extends lmbActiveRecord
                                                    'nullify' => true));
 }
 
+class CourseWithNullableLectures extends lmbActiveRecord
+{
+  protected $_db_table_name = 'course_for_test';
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'LectureIndependentFromCourse',
+                                                   'nullify' => true),
+                               );
+}
+
+class LectureIndependentFromCourse extends lmbActiveRecord
+{
+  protected $_db_table_name = 'lecture_for_test';
+  protected $_many_belongs_to = array('course' => array('field' => 'course_id',
+                                                        'class' => 'CourseWithNullableLectures',
+                                                        'can_be_null' => true),
+                                      );
+}
+
+
+
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 
 class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
@@ -437,15 +457,15 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $this->assertEqual(count($lectures), 2);
   }
   
-  function testSaveWithLessReferenceCount()
+  function testImportAndSaveNullableRelataions()
   {
-    $course = new NullifyCourse();
+    $course = new CourseWithNullableLectures();
     $course->setTitle("Title");
-    $lecture1 = new CanBeNullLecture();
+    $lecture1 = new LectureIndependentFromCourse();
     $lecture1->setTitle("Lecture 1");
-    $lecture2 = new CanBeNullLecture();
+    $lecture2 = new LectureIndependentFromCourse();
     $lecture2->setTitle("Lecture 2");
-    $lecture3 = new CanBeNullLecture();
+    $lecture3 = new LectureIndependentFromCourse();
     $lecture3->setTitle("Lecture 3");
     $course->setLectures(array($lecture1, $lecture2, $lecture3));
     $course->save();
@@ -460,20 +480,19 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
   }
   
-  function testSwapRelations()
+  function testSwapNullableRelations()
   {
-      
-    $course1 = new NullifyCourse();
-    $lectA = new CanBeNullLecture();
+    $course1 = new CourseWithNullableLectures();
+    $lectA = new LectureIndependentFromCourse();
     $lectA->setTitle("Lecture A");
-    $lectB = new CanBeNullLecture();
+    $lectB = new LectureIndependentFromCourse();
     $lectB->setTitle("Lecture B");
     $course1->setLectures(array($lectA, $lectB));
     $course1->setTitle("Course 1");
-    $course2 = new NullifyCourse();
-    $lectC = new CanBeNullLecture();
+    $course2 = new CourseWithNullableLectures();
+    $lectC = new LectureIndependentFromCourse();
     $lectC->setTitle("Lecture C");
-    $lectD = new CanBeNullLecture();
+    $lectD = new LectureIndependentFromCourse();
     $lectD->setTitle("Lecture D");
     $course2->setLectures(array($lectC, $lectD));
     $course2->setTitle("Course 2");
@@ -489,7 +508,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     {
       $course1->import($c1);
       $course1->save();
-      $course2 = new NullifyCourse($course2->getId());
+      $course2 = new CourseWithNullableLectures($course2->getId());
       $course2->import($c2);
       $c2 = $course2->save();
     }
