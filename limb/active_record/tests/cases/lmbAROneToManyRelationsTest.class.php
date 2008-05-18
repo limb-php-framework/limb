@@ -439,43 +439,62 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
   
   function testSaveWithLessReferenceCount()
   {
-      $course1 = $this->creator->createCourse();
-      $lecture1 = $this->creator->createLecture($course1);
-      $lecture2 = $this->creator->createLecture($course1);
-      $lecture3 = $this->creator->createLecture($course1);
-      $course1->save();
-      $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
-      $course_arr = $course1->export();
-      $lect_arr = $course1->getLectures()->getIds();
-      array_pop($lect_arr);
-      $course_arr['lectures'] = $lect_arr;
-      $course1->import($course_arr);
-      $course1->save();
-      $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
+    $course = new NullifyCourse();
+    $course->setTitle("Title");
+    $lecture1 = new CanBeNullLecture();
+    $lecture1->setTitle("Lecture 1");
+    $lecture2 = new CanBeNullLecture();
+    $lecture2->setTitle("Lecture 2");
+    $lecture3 = new CanBeNullLecture();
+    $lecture3->setTitle("Lecture 3");
+    $course->setLectures(array($lecture1, $lecture2, $lecture3));
+    $course->save();
+    $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
+    
+    $course_arr = $course->export();
+    $lect_arr = $course->getLectures()->getIds();
+    array_pop($lect_arr);
+    $course_arr['lectures'] = $lect_arr;
+    $course->import($course_arr);
+    $course->save();
+    $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
   }
   
   function testSwapRelations()
   {
-      $course1 = $this->creator->createCourse();
-      $lectA = $this->creator->createLecture($course1);
-      $lectB = $this->creator->createLecture($course1);
-      $course2 = $this->creator->createCourse();
-      $lectC = $this->creator->createLecture($course2);
-      $lectD = $this->creator->createLecture($course2);
+      
+    $course1 = new NullifyCourse();
+    $lectA = new CanBeNullLecture();
+    $lectA->setTitle("Lecture A");
+    $lectB = new CanBeNullLecture();
+    $lectB->setTitle("Lecture B");
+    $course1->setLectures(array($lectA, $lectB));
+    $course1->setTitle("Course 1");
+    $course2 = new NullifyCourse();
+    $lectC = new CanBeNullLecture();
+    $lectC->setTitle("Lecture C");
+    $lectD = new CanBeNullLecture();
+    $lectD->setTitle("Lecture D");
+    $course2->setLectures(array($lectC, $lectD));
+    $course2->setTitle("Course 2");
+    
+    $course1->save();
+    $course2->save();
+    $c1 = $course1->export();
+    $c2 = $course2->export();
+    $c1['lectures'] = $course2->getLectures()->getIds();
+    $c2['lectures'] = $course1->getLectures()->getIds();
+    
+    try 
+    {
+      $course1->import($c1);
       $course1->save();
-      $course2->save();
-      $c1 = $course1->export();
-      $c2 = $course2->export();
-      $c1['lectures'] = $course2->getLectures()->getIds();
-      $c2['lectures'] = $course1->getLectures()->getIds();
-      try {
-        $course1->import($c1);
-        $course2->import($c2);
-        $c1 = $course1->save();
-        $c2 = $course2->save();
-      }
-      catch (lmbARException $e){ }
-      $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 4);
+      $course2 = new NullifyCourse($course2->getId());
+      $course2->import($c2);
+      $c2 = $course2->save();
+    }
+    catch (lmbARException $e){ }
+    $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 4);
   }
 
   function _initCourse()

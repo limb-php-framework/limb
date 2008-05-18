@@ -64,6 +64,25 @@ class CourseForTest extends lmbActiveRecord
   }
 }
 
+class NullifyCourse extends lmbActiveRecord
+{
+  protected $_db_table_name = 'course_for_test';
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'CanBeNullLecture',
+                                                   'nullify' => true),
+                               );
+}
+
+class CanBeNullLecture extends lmbActiveRecord
+{
+  protected $_db_table_name = 'lecture_for_test';
+  protected $_many_belongs_to = array('course' => array('field' => 'course_id',
+                                                        'class' => 'NullifyCourse',
+                                                        'can_be_null' => true),
+                                      );
+}
+
+
 class LectureForTest extends lmbActiveRecord
 {
   protected $_db_table_name = 'lecture_for_test';

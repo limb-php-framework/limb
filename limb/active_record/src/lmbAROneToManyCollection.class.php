@@ -12,7 +12,7 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbAROneToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbAROneToManyCollection.class.php 6694 2008-01-17 15:41:51Z serega $
+ * @version $Id: lmbAROneToManyCollection.class.php 7027 2008-05-18 10:40:17Z svk $
  */
 class lmbAROneToManyCollection extends lmbARRelationCollection
 {
@@ -59,7 +59,15 @@ class lmbAROneToManyCollection extends lmbARRelationCollection
     }
 
     foreach($old_objects as $obj)
-      $obj->destroy();
+    {
+      if (array_key_exists('nullify', $this->relation_info) && $this->relation_info['nullify'])
+      {
+        $obj->set($this->relation_info['field'], null);
+        $obj->save();
+      }
+      else
+        $obj->destroy();
+    }
   }
 
   protected function _removeRelatedRecords()
