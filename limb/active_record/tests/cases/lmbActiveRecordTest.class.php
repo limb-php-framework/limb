@@ -701,6 +701,8 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $this->assertEqual($object1->getId(), $rs->current()->getId());
     $rs->next();
     $this->assertFalse($rs->valid());
+    
+    $this->assertEqual($rs->getIds(), array($object2->getId(), $object1->getId()));
 
     //testing convenient alias
     $rs = TestOneTableObject :: findBySql('select * from ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("test_one_table_object") . ' order by ' . lmbActiveRecord::getDefaultConnection()->quoteIdentifier("id") . ' desc');

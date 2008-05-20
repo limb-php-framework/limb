@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7018 2008-05-15 11:53:30Z serega $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7030 2008-05-20 07:53:33Z serega $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -61,6 +61,14 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
       return null;
 
     return self :: createObjectFromRecord($record, $this->class_path, $this->conn);
+  }
+  
+  function getIds()
+  {
+    $result = array();
+    foreach($this->getArray() as $record)
+      $result[] = $record->getId();
+    return $result;
   }
 }
 

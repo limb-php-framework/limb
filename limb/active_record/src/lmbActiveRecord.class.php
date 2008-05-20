@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7019 2008-05-15 12:18:46Z serega $
+ * @version $Id: lmbActiveRecord.class.php 7030 2008-05-20 07:53:33Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1879,7 +1879,7 @@ class lmbActiveRecord extends lmbObject
    *  @param string wrapper class name
    *  @param object database connection object
    */
-  function decorateRecordSet($rs, $class, $conn = null)
+  static function decorateRecordSet($rs, $class, $conn = null)
   {
     if(!is_object($conn))
       $conn = self :: getDefaultConnection();
