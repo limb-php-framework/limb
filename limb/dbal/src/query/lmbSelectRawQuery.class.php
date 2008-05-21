@@ -52,6 +52,14 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     return array_keys($this->_fields);
   }
 
+  function setFields($fields)
+  {
+    $this->_fields = array();
+    foreach($fields as $alias => $field);
+    $this->_fields[$field] = $alias;
+    return $this;
+  }
+
   function addRawField($field, $alias = null)
   {
     $this->_raw_fields[$field] = $alias;
@@ -86,14 +94,14 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     }
     else
       $this->_order[] = $this->_conn->quoteIdentifier($field) . " $type";
-      
+
     return $this;
   }
 
   function addRawOrder($field)
   {
     $this->_order[] = $field;
-      
+
     return $this;
   }
 
@@ -145,7 +153,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
       $connect_by = array($table . '.' . $field => $connect_table . '.' . $connect_field);
     else
       $connect_by = array($table_alias . '.' . $field => $connect_table . '.' . $connect_field);
-    
+
     $this->_left_join_constraints[] = array('table' => $table,
                                             'connect_by' => $connect_by,
                                             'alias' => $table_alias);
@@ -183,7 +191,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
         $fields .= $field . ',';
         continue;
       }
-      
+
       $fields .= $this->_conn->quoteIdentifier($field) .
                  ($alias ? ' as ' . $this->_conn->quoteIdentifier($alias) : '') . ',';
     }
@@ -197,7 +205,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
         $fields .= $field . ',';
         continue;
       }
-      
+
       $fields .= $field .  ($alias ? ' as ' . $alias : '') . ',';
     }
     $fields = rtrim($fields, ',');
