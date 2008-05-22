@@ -103,5 +103,20 @@ class lmbMacroPaginateTagTest extends lmbBaseMacroTest
     $expected = 'BobToddSerega';
     $this->assertEqual($page->render(), $expected);
   }  
+
+  function testPaginateWithPager_TotalItemsByAttribute()
+  {
+    $template = '{{paginate iterator="$#test_iterator" pager="test_pager" total_items="2"/}}'.
+                 '{{list using="$#test_iterator" as="$item"}}{{list:item}}{$item}{{/list:item}}{{/list}}'.
+                 '{{pager id="test_pager" items="2"/}}';
+
+    $_GET['test_pager'] = 2; // offset = 2 since the second page
+                  
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    $page->set('test_iterator', new lmbArrayIterator(array('Ivan', 'Pavel', 'Mike', 'Bob', 'Todd')));
+
+    $expected = 'IvanPavel'; // since forced to know about only 2 elements in array 
+    $this->assertEqual($page->render(), $expected);
+  }
 }
 
