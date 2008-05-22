@@ -18,7 +18,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 6616 2007-12-18 15:54:59Z pachanga $
+ * @version $Id: lmbTableGateway.class.php 7034 2008-05-22 03:50:49Z vasiatka $
  */
 class lmbTableGateway
 {
@@ -320,6 +320,19 @@ class lmbTableGateway
         $filtered[$key] = $value;
     }
     return $filtered;
+  }
+
+  function __wakeup()
+  {
+    $toolkit = lmbToolkit :: instance();
+  }
+
+  function __sleep()
+  {
+    $this->getTableInfo();
+    $vars = array_keys(get_object_vars($this));
+    $vars = array_diff($vars, array('_toolkit'));
+    return $vars;
   }
 }
 
