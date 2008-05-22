@@ -18,7 +18,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 7034 2008-05-22 03:50:49Z vasiatka $
+ * @version $Id: lmbTableGateway.class.php 7036 2008-05-22 06:21:35Z vasiatka $
  */
 class lmbTableGateway
 {
@@ -324,7 +324,7 @@ class lmbTableGateway
 
   function __wakeup()
   {
-    $toolkit = lmbToolkit :: instance();
+    $this->_toolkit = lmbToolkit :: instance();
   }
 
   function __sleep()
