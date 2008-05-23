@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7035 2008-05-22 04:03:41Z vasiatka $
+ * @version $Id: lmbActiveRecord.class.php 7040 2008-05-23 08:44:46Z alex433 $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -2104,61 +2104,61 @@ class lmbActiveRecord extends lmbObject
     self :: $_global_listeners[$type][] = lmbDelegate :: objectify($callback);
   }
 
-  function registerGlobalOnBeforeSaveCallback($callback)
+  static function registerGlobalOnBeforeSaveCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_BEFORE_SAVE, $args);
   }
 
-  function registerGlobalOnAfterSaveCallback($callback)
+  static function registerGlobalOnAfterSaveCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_AFTER_SAVE, $args);
   }
 
-  function registerGlobalOnBeforeUpdateCallback($callback)
+  static function registerGlobalOnBeforeUpdateCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_BEFORE_UPDATE, $args);
   }
 
-  function registerGlobalOnUpdateCallback($callback)
+  static function registerGlobalOnUpdateCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_UPDATE, $args);
   }
 
-  function registerGlobalOnAfterUpdateCallback($callback)
+  static function registerGlobalOnAfterUpdateCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_AFTER_UPDATE, $args);
   }
 
-  function registerGlobalOnBeforeCreateCallback($callback)
+  static function registerGlobalOnBeforeCreateCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_BEFORE_CREATE, $args);
   }
 
-  function registerGlobalOnCreateCallback($callback)
+  static function registerGlobalOnCreateCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_CREATE, $args);
   }
 
-  function registerGlobalOnAfterCreateCallback($callback)
+  static function registerGlobalOnAfterCreateCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_AFTER_CREATE, $args);
   }
 
-  function registerGlobalOnBeforeDestroyCallback($callback)
+  static function registerGlobalOnBeforeDestroyCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_BEFORE_DESTROY, $args);
   }
 
-  function registerGlobalOnAfterDestroyCallback($callback)
+  static function registerGlobalOnAfterDestroyCallback($callback)
   {
     $args = func_get_args();
     self :: registerGlobalCallback(self :: ON_AFTER_DESTROY, $args);
