@@ -38,7 +38,10 @@ class lmbMacroFilterDictionary
     if(!$config['is_force_scan'] && $this->_loadCache())
       return;
 
-    foreach($config['filters_scan_dirs'] as $dir)
+    //compatibility with PHP 5.1.6
+    $filters_scan_dirs = $config['filters_scan_dirs'];
+
+    foreach($filters_scan_dirs as $dir)
     {
       foreach(lmb_glob($dir . '/*.filter.php') as $file)
         $this->registerFromFile($file);
@@ -71,19 +74,19 @@ class lmbMacroFilterDictionary
   function register($filter_info)
   {
     $names = array(strtolower($filter_info->getName()));
-    
+
     $aliases = $filter_info->getAliases();
     if(count($aliases))
     {
       $aliases = array_map('strtolower', $aliases);
       $names = array_merge($names, $aliases);
     }
-    
+
     foreach($names as $filter_name)
     {
       if(isset($this->info[$filter_name]))
         return;
-  
+
       $this->info[$filter_name] = $filter_info;
     }
   }
