@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 6908 2008-04-10 07:33:05Z serega $
+ * @version $Id: lmbARRelationCollection.class.php 7041 2008-05-23 11:33:25Z alex433 $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -211,7 +211,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   {
     $this->_ensureDataset();
 
-    if(is_a($this->dataset, 'lmbCollection'))
+    if($this->dataset instanceof lmbCollection)
     {
       foreach($this->dataset as $object)
         $this->_saveObject($object, $error_list);

@@ -36,7 +36,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 6904 2008-04-09 19:22:54Z pachanga $
+ * @version $Id: lmbToolkit.class.php 7041 2008-05-23 11:33:25Z alex433 $
  */
 class lmbToolkit extends lmbObject
 {
@@ -63,7 +63,7 @@ class lmbToolkit extends lmbObject
 
   function __construct()
   {
-    $toolkit->_id = uniqid();
+    $this->_id = uniqid();
   }
 
   /**
