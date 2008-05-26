@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 6878 2008-03-31 15:55:58Z wiliam $
+ * @version $Id: lmbIp.class.php 7043 2008-05-26 09:04:06Z korchasa $
  */
 class lmbIp
 {
@@ -82,17 +82,19 @@ class lmbIp
   {
     return ip2long($ip) !== false;
   }
-  
+
   static function getRealIp()
   {
-   if(!empty($_SERVER['HTTP_CLIENT_IP'])) 
+   if(!empty($_SERVER['HTTP_CLIENT_IP']))
      return $_SERVER['HTTP_CLIENT_IP'];
-   
+
    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
     return $_SERVER['HTTP_X_FORWARDED_FOR'];
-   
-   else
+
+   elseif (!empty($_SERVER['REMOTE_ADDR']))
      return $_SERVER['REMOTE_ADDR'];
+
+   return NULL;
   }
 }
 
