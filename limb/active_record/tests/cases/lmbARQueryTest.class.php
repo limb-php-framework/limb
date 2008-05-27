@@ -47,6 +47,19 @@ class lmbARQueryTest extends lmbARBaseTestCase
     $this->assertEqual($arr[1]->getAnnotation(), $object2->getAnnotation());
   }
   
+  function testGetRecordSetWIthSort()
+  {
+    $object1 = $this->creator->createOneTableObject(10);
+    $object2 = $this->creator->createOneTableObject(20);
+    
+    $query = lmbARQuery :: create('TestOneTableObject', array('sort' => array('ordr' => 'DESC')), $this->conn);
+    $iterator = $query->getRecordSet();
+    $arr = $iterator->getArray();
+    
+    $this->assertEqual($arr[0]->get('annotation'), $object2->getAnnotation());
+    $this->assertEqual($arr[1]->get('annotation'), $object1->getAnnotation());
+  }
+  
   function testFetch_Join_RelatedHasOneObject()
   {
     $person1 = $this->creator->createPerson();

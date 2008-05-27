@@ -74,6 +74,13 @@ class lmbARQuery extends lmbSelectRawQuery
       $this->sort_params[$field] = $type;
   }
   
+  function getRecordSet()
+  {
+    $rs = parent :: getRecordSet();
+    $rs->sort($this->sort_params);
+    return $rs;
+  }
+  
   function fetch($decorate = true)
   {
     $this->_applyJoins($this->base_object, $this->join_relations);
