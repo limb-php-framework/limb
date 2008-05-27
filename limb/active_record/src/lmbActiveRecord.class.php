@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7040 2008-05-23 08:44:46Z alex433 $
+ * @version $Id: lmbActiveRecord.class.php 7044 2008-05-27 07:55:49Z alex433 $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1240,7 +1240,7 @@ class lmbActiveRecord extends lmbObject
     return false;
   }
 
-  protected static function _isClass($name)
+  static protected function _isClass($name)
   {
     if(!is_scalar($name) || !$name)
       return false;
@@ -1248,7 +1248,7 @@ class lmbActiveRecord extends lmbObject
     return ctype_alnum("$name") && !ctype_digit("$name");
   }
 
-  protected function _getCallingClass()
+  static protected function _getCallingClass()
   {
     //once PHP-5.3 LSB patch is available we'll use get_called_class
     //currently it's a quite a slow implementation and it doesn't
