@@ -57,6 +57,7 @@ class lmbMacroCompiler
     $this->parseTemplate($source_file, $root_node);
 
     $generated_code = $this->_generateTemplateCode($class, $render_func, $root_node);
+    $generated_code = '<?php /* This file is generated from ' . $source_file . '*/?>' . $generated_code; 
     self :: writeFile($compiled_file, $generated_code);
   }
 
@@ -103,7 +104,6 @@ class lmbMacroCompiler
 
   static function writeFile($file, $data)
   {
-    
     $dirname = dirname($file);
     lmbFs :: mkdir($dirname);
 
