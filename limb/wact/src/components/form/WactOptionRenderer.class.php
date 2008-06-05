@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 require_once 'limb/wact/src/components/form/form.inc.php';
@@ -23,7 +23,6 @@ class WactOptionRenderer
   * Renders an option, sending directly to display.
   * Called from WactSelectSingleComponent or WactSelectMultipleComponent
   * in their renderContents() method
-  * @todo XTHML: selected="selected"
   * @param string value to place within the option value attribute
   * @param string contents of the option tag
   * @param boolean whether the option is selected or not
@@ -35,7 +34,7 @@ class WactOptionRenderer
     echo htmlspecialchars($key, ENT_QUOTES);
     echo '"';
     if ($selected) {
-        echo " selected=\"true\"";
+        echo " selected=\"selected\"";
     }
     echo '>';
     if (empty($contents)) {

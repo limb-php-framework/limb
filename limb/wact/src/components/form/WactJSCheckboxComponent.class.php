@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactJSCheckboxComponent.
  *
  * @package wact
- * @version $Id: WactJSCheckboxComponent.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: WactJSCheckboxComponent.class.php 7053 2008-06-05 11:35:34Z 3dmax $
  */
 class WactJSCheckboxComponent extends WactCheckableInputComponent
 {
@@ -42,7 +42,7 @@ class WactJSCheckboxComponent extends WactCheckableInputComponent
     $title = $this->getAttribute('title');
     $title = $title ? 'title=\''.$title.'\'' : '';
 
-    echo "<input type='checkbox' id='{$box_id}' {$checked} {$js} {$title}>";
+    echo "<input type='checkbox' id='{$box_id}' {$checked} {$js} {$title} />";
   }
 }
 
