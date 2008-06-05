@@ -412,6 +412,7 @@ class lmbMPTree implements lmbTree
     switch($this->_conn->getType())
     {
       case 'mysql':
+      case 'mysqli':      
       case 'pgsql':
         if($limit === null)
           return " SUBSTRING({$string} FROM {$offset}) ";
