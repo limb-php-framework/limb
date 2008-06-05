@@ -13,6 +13,7 @@ require_once('limb/calendar/src/lmbDate3SelectWidget.class.php');
  * @tag date3select
  * @forbid_end_tag
  * @req_attributes id
+ * @suppress_attributes lang year_class show_default min_year max_year
  * @package calendar
  * @version $Id: $
 */
@@ -46,19 +47,15 @@ class lmbDate3SelectTag extends WactInputTag
     $widget = new lmbDate3SelectWidget($lang, $year_class, $month_class, $day_class, $show_default);
     if ($min_year)
     {
-      $widget -> setMinYear(intval($min_year));
+      $widget->setMinYear(intval($min_year));
     }
     if ($max_year)
     {
-      $widget -> setMaxYear(intval($max_year));
+      $widget->setMaxYear(intval($max_year));
     }
-    
 
     $code->writeHTML($widget->loadFiles() .
                      $widget->makeFields($this->getAttribute('id') ));
-
   }
-
 }
-
 

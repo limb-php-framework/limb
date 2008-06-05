@@ -50,6 +50,12 @@ DateWidget.prototype.init = function()
   this.setup_options(this.day_select, this.day_options(this.year, this.month), this.day);
 }
 
+DateWidget.prototype.change = function()
+{
+  this.remove_options(this.day_select);
+  this.setup_options(this.day_select, this.day_options(this.year, this.month), this.day);
+}
+
 DateWidget.prototype.setValue = function()
 {
   this.control.value = parseInt(this.year) + "-" + this.zerofill((parseInt(this.month)), 2) + "-" + this.zerofill(parseInt(this.day), 2);
@@ -58,7 +64,7 @@ DateWidget.prototype.setValue = function()
     this.control.value = "";
   }
   this.value = this.control.value;
-  if (!this.show_default && !this.value) 
+  if (!this.show_default && !this.value)
   {
     this.setDefaultValue();
   }
@@ -75,17 +81,16 @@ DateWidget.prototype.handle_change = function(field)
 {
   switch (field)
   {
-    case "month":
-      this.month = this.month_select.value;
-      this.init();
-    break;
     case "day":
       this.day = this.day_select.value;
-      this.init();
+    break;
+    case "month":
+      this.month = this.month_select.value;
+      this.change();
     break;
     case "year":
       this.year = this.year_select.value;
-      this.init();
+      this.change();
     break;
   }
 }
@@ -97,11 +102,11 @@ DateWidget.prototype.year_options = function()
   {
     if (Calendar._DEFOPT)
     {
-     	opts[opts.length] = {value: -1, text:Calendar._DEFOPT['year']};
+      opts[opts.length] = {value: -1, text:Calendar._DEFOPT['year']};
     }
     else
     {
-     	opts[opts.length] = {value: -1, text: '---'};
+      opts[opts.length] = {value: -1, text: '---'};
     }
   }
   for (var i=this.max_year; i>=this.min_year; i--)
@@ -172,7 +177,7 @@ DateWidget.prototype.day_options = function(y, m)
       maxday = 31;
     break;
   }
-  
+
   for (var i=1; i<=maxday; i++)
   {
     opts[opts.length] = {value: i, text: i};
