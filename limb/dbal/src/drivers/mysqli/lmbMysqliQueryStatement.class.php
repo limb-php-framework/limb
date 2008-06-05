@@ -9,8 +9,6 @@
 
 lmb_require('limb/dbal/src/drivers/lmbDbQueryStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqliStatement.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqliRecord.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqliRecordSet.class.php');
 
 /**
  * class lmbMysqliQueryStatement.
