@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -316,7 +316,7 @@ class lmbMPTree implements lmbTree
       $sql = "SELECT " . $this->_getSelectFields() . "
               FROM {$this->_node_table}
               WHERE {$this->_parent_id}=$parent_id AND
-                    {$this->_identifier}='$path'"; 
+                    {$this->_identifier}='$path'";
       $stmt = $this->_conn->newStatement($sql);
       if(!$node = $stmt->getOneRecord())
         return null;
@@ -395,6 +395,7 @@ class lmbMPTree implements lmbTree
   {
     switch($this->_conn->getType())
     {
+      case 'mysqli':
       case 'mysql':
         $str = implode(',', $values);
         return " CONCAT({$str}) ";
@@ -411,8 +412,8 @@ class lmbMPTree implements lmbTree
   {
     switch($this->_conn->getType())
     {
+      case 'mysqli':
       case 'mysql':
-      case 'mysqli':      
       case 'pgsql':
         if($limit === null)
           return " SUBSTRING({$string} FROM {$offset}) ";
