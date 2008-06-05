@@ -9,14 +9,12 @@
 
 lmb_require('limb/dbal/src/drivers/lmbDbQueryStatement.interface.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlStatement.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlRecord.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlRecordSet.class.php');
 
 /**
  * class lmbMysqlQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlQueryStatement.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbMysqlQueryStatement.class.php 7056 2008-06-05 14:07:20Z serega $
  */
 class lmbMysqlQueryStatement extends lmbMysqlStatement implements lmbDbQueryStatement
 {

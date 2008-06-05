@@ -14,12 +14,14 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlInsertStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlManipulationStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlStatement.class.php');
 lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
+lmb_require(dirname(__FILE__) . '/lmbMysqlRecord.class.php');
+lmb_require(dirname(__FILE__) . '/lmbMysqlRecordSet.class.php');
 
 /**
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 7015 2008-05-13 12:02:24Z serega $
+ * @version $Id: lmbMysqlConnection.class.php 7056 2008-06-05 14:07:20Z serega $
  */
 class lmbMysqlConnection extends lmbDbBaseConnection
 {
