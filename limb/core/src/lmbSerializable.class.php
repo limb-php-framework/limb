@@ -76,7 +76,8 @@ class lmbSerializable
     foreach($classes as $class)
     {
       $reflect = new ReflectionClass($class);
-      $this->class_paths[] = $reflect->getFileName();
+      if(!$reflect->isInternal())
+        $this->class_paths[] = $reflect->getFileName();
     }
   }
 

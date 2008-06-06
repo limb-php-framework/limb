@@ -60,6 +60,20 @@ class lmbSerializableTest extends UnitTestCase
     $this->assertEqual(lmbSerializable :: extractSerializedClasses($serialized), array('SerializableTestChildStub'));
   }
 
+  function testSerializeUnserializeInternalClass()
+  {
+    if(!class_exists('StdObject'))
+      return;
+
+    $obj = new StdObject;
+    $obj->foo = "foo";
+    $container = new lmbSerializable($obj);
+
+    $file = $this->_writeToFile(serialize($container));
+    $this->_phpSerializedObjectCall($file, '->foo', "foo");
+    unlink($file);
+  }
+
   function _writeToFile($serialized)
   {
     $tmp_serialized_file = LIMB_VAR_DIR . '/serialized.' . mt_rand();
