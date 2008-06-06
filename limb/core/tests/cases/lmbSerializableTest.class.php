@@ -60,18 +60,25 @@ class lmbSerializableTest extends UnitTestCase
     $this->assertEqual(lmbSerializable :: extractSerializedClasses($serialized), array('SerializableTestChildStub'));
   }
 
-  function testSerializeUnserializeInternalClass()
+  function testSerializingUnserializeInternalClassThrowsException()
   {
     if(!class_exists('StdObject'))
+    {
+      echo "Notice: Could not check internal class serializing \n";
       return;
+    }
 
     $obj = new StdObject;
     $obj->foo = "foo";
     $container = new lmbSerializable($obj);
 
-    $file = $this->_writeToFile(serialize($container));
-    $this->_phpSerializedObjectCall($file, '->foo', "foo");
-    unlink($file);
+    try
+    {
+      serialize($container);
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
+
   }
 
   function _writeToFile($serialized)

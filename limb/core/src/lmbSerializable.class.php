@@ -76,8 +76,9 @@ class lmbSerializable
     foreach($classes as $class)
     {
       $reflect = new ReflectionClass($class);
-      if(!$reflect->isInternal())
-        $this->class_paths[] = $reflect->getFileName();
+      if($reflect->isInternal())
+        throw new lmbException("Class '$class' can't be serialized since it's an iternal PHP class, consider omitting object of this class by providing custom __sleep, __wakeup handlers");
+      $this->class_paths[] = $reflect->getFileName();
     }
   }
 
