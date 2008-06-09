@@ -40,11 +40,10 @@ class LectureIndependentFromCourse extends lmbActiveRecord
   protected $_db_table_name = 'lecture_for_test';
   protected $_many_belongs_to = array('course' => array('field' => 'course_id',
                                                         'class' => 'CourseWithNullableLectures',
-                                                        'can_be_null' => true),
+                                                        'can_be_null' => true,
+                                                        'throw_exception_on_not_found' => false),
                                       );
 }
-
-
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 
@@ -202,6 +201,44 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $lecture3 = lmbActiveRecord :: findById('LectureForTest', $lecture2->getId());
     $this->assertEqual($lecture3->getCourse()->getTitle(), $course->getTitle());
     $this->assertEqual($lecture3->getAltCourse()->getTitle(), $course->getTitle());
+  }
+
+  function testLoadingNonExistingParentThrowsExceptionByDefault()
+  {
+    $course = $this->_initCourse();
+
+    $lecture = new LectureForTest();
+    $lecture->setTitle('Physics');
+    $lecture->setCourse($course);
+    $lecture->save();
+    
+    $this->db->delete('course_for_test', 'id = '. $course->getId());
+
+    $lecture2 = lmbActiveRecord :: findById('LectureForTest', $lecture->getId());
+    try
+    {
+      $lecture2->getCourse();
+      $this->assertTrue(false);
+    }
+    catch(lmbARNotFoundException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
+  
+  function testLoadingNonExistingParent_NOT_ThrowsException_IfSpecialFlagUsedForRelationDefinition()
+  {
+    $course = $this->_initCourse();
+
+    $lecture = new LectureIndependentFromCourse();
+    $lecture->setTitle('Physics');
+    $lecture->setCourse($course);
+    $lecture->save();
+    
+    $this->db->delete('course_for_test', 'id = '. $course->getId());
+
+    $lecture2 = lmbActiveRecord :: findById('LectureIndependentFromCourse', $lecture->getId());
+    $this->assertNull($lecture2->getCourse());
   }
 
   function testSettingNullParentObject()

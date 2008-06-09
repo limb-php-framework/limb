@@ -16,6 +16,15 @@ class PersonForTestNoCascadeDelete extends lmbActiveRecord
                                                          'cascade_delete' => false));
 }
 
+class PersonForTestWithNotRequiredSocialSecurity extends lmbActiveRecord
+{
+  protected $_db_table_name = 'person_for_test';
+  protected $_has_one = array('social_security' => array('field' => 'ss_id',
+                                                         'class' => 'SocialSecurityForTest',
+                                                         'can_be_null' => true,
+                                                         'throw_exception_on_not_found' => false));
+}
+
 class PersonForTestWithRequiredSocialSecurity extends lmbActiveRecord
 {
   protected $_db_table_name = 'person_for_test';
@@ -205,6 +214,42 @@ class lmbAROneToOneRelationsTest extends lmbARBaseTestCase
     $this->assertEqual($person2->getName(), $person->getName());
     $this->assertEqual($number2->getId(), $number->getId());
     $this->assertEqual($number2->getCode(), $number->getCode());
+  }
+  
+  function testLoadNonExistingChildObject_ThrowsExceptionByDefault()
+  {
+    $person = $this->creator->initPerson();
+    $number = $this->creator->initSocialSecurity();
+    $person->setSocialSecurity($number);
+    $person->save();
+    
+    $this->db->delete('social_security_for_test', 'id = '. $number->getId());
+
+    $person2 = lmbActiveRecord :: findById('PersonForTest', $person->getId());
+
+    try
+    {
+      $person2->getSocialSecurity();
+      $this->assertTrue(false);
+    }
+    catch(lmbARNotFoundException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
+
+  function testLoadNonExistingChildObject_NOT_ThrowsException_IfSpecialFlagUsedInRelationDefinition()
+  {
+    $person = $this->creator->initPerson();
+    $number = $this->creator->initSocialSecurity();
+    $person->setSocialSecurity($number);
+    $person->save();
+    
+    $this->db->delete('social_security_for_test', 'id = '. $number->getId());
+
+    $person2 = lmbActiveRecord :: findById('PersonForTestWithNotRequiredSocialSecurity', $person->getId());
+
+    $this->assertNull($person2->getSocialSecurity());
   }
 
   function testGenericGetLoadsParentObject()

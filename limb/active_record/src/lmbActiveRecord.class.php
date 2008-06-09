@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7047 2008-05-30 09:18:09Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7059 2008-06-09 12:28:30Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -862,9 +862,15 @@ class lmbActiveRecord extends lmbObject
     $value = $this->_getRaw($this->_many_belongs_to[$property]['field']);
     if(!$value && $this->_canManyBelongsToObjectBeNull($property))
       return null;
+    
+    if(isset($this->_many_belongs_to[$property]['throw_exception_on_not_found']))
+      $throw_exception = $this->_many_belongs_to[$property]['throw_exception_on_not_found'];
+    else
+      $throw_exception = true;
 
     return self :: findById($this->_many_belongs_to[$property]['class'],
                             $this->get($this->_many_belongs_to[$property]['field']),
+                            $throw_exception, 
                             $this->_db_conn);
   }
 
@@ -873,9 +879,15 @@ class lmbActiveRecord extends lmbObject
     $value = $this->_getRaw($this->_has_one[$property]['field']);
     if(!$value && $this->_canHasOneObjectBeNull($property))
       return null;
+    
+    if(isset($this->_has_one[$property]['throw_exception_on_not_found']))
+      $throw_exception = $this->_has_one[$property]['throw_exception_on_not_found'];
+    else
+      $throw_exception = true;
 
     return self :: findById($this->_has_one[$property]['class'],
                             $this->get($this->_has_one[$property]['field']),
+                            $throw_exception,
                             $this->_db_conn);
   }
 
