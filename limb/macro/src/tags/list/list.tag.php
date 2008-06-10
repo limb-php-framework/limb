@@ -46,7 +46,13 @@ class lmbMacroListTag extends lmbMacroTag
 
     $this->_initializeGlueTags($code);
     
-    $code->writePHP('foreach(' . $this->source_var . ' as ' . $as . ') {');
+    $key = '';
+    
+    if ($key_var = $this->get('key')) {
+    	$key = $key_var . ' => ';
+    }
+    
+    $code->writePHP('foreach(' . $this->source_var . ' as ' . $key . $as . ') {');
 
     if($user_counter = $this->get('counter'))
       $code->writePHP($user_counter . ' = ' . $this->counter_var . '+1;');

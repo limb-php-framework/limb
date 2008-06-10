@@ -102,6 +102,19 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'Nothing');
   }
 
+  function testKeyValue()
+  {
+    $list = '{{list using="$#list" as="$item" key="$name"}}{{list:item}}{$name} is {$item}, {{/list:item}}{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob' => 'god', 'Todd' => 'odd', 'zero', 1 => 'one'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Bob is god, Todd is odd, 0 is zero, 1 is one, ');
+  }
+  
   function testParity()
   {
     $list = '{{list using="$#list" as="$item" parity="$parity"}}{{list:item}}{$parity}-{$item} {{/list:item}} !{{/list}}';
