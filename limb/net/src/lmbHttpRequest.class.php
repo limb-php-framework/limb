@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7021 2008-05-16 13:11:56Z hidrarg $
+ * @version $Id: lmbHttpRequest.class.php 7061 2008-06-20 05:57:50Z conf $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -106,19 +106,19 @@ class lmbHttpRequest extends lmbSet
       return $file;
   }
 
-  function getRequest($key = null)
+  function getRequest($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('request', $key);
+    return $this->_get('request', $key, $default);
   }
 
-  function getGet($key = null)
+  function getGet($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('get', $key);
+    return $this->_get('get', $key, $default);
   }
 
-  function getPost($key = null)
+  function getPost($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('post', $key);
+    return $this->_get('post', $key, $default);
   }
 
   function hasPost()
@@ -135,9 +135,9 @@ class lmbHttpRequest extends lmbSet
     $this->pretend_post = $flag;
   }
 
-  function getCookie($key = null)
+  function getCookie($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('cookies', $key);
+    return $this->_get('cookies', $key, $default);
   }
 
   function getSafe($var)
@@ -145,14 +145,23 @@ class lmbHttpRequest extends lmbSet
     return htmlspecialchars(parent :: get($var));
   }
 
-  protected function _get($var, $key = null)
+  protected function _get($var, $key = null, $default = LIMB_UNDEFINED)
   {
     if(is_null($key))
       return $this->$var;
 
     $arr = $this->$var;
-    if(isset($arr[$key]))
+ 	if (is_array($key)) {
+    	$ret = array();
+    	foreach($key as $item) {
+    		$ret[$item] = (isset($arr[$item])?$arr[$item]:null);
+    	}
+    	return $ret;
+    } elseif(isset($arr[$key])) {
       return $arr[$key];
+    } elseif ($default != LIMB_UNDEFINED) {
+      return $default;
+    }
   }
 
   function getUri()

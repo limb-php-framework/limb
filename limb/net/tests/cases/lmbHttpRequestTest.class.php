@@ -49,30 +49,51 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getRequest(), array('c' => 1, 'd' => 2));
     $this->assertEqual($request->getRequest('c'), 1);
     $this->assertNull($request->getRequest('b'), 1);
+    
+    $this->assertEqual($request->getRequest('b', 1), 1); // test for default values
+    $this->assertEqual($request->getRequest(array('b', 'c', 'd')), array('b' => null, 'c' => 1, 'd' => 2));
   }
 
   function testGetGet()
   {
-    $request = new lmbHttpRequest('http://test.com', array('c' => 1));
-    $this->assertEqual($request->getGet(), array('c' => 1));
+  	$get = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
+    $request = new lmbHttpRequest('http://test.com', $get);
+    $this->assertEqual($request->getGet(), $get);
     $this->assertEqual($request->getGet('c'), 1);
     $this->assertNull($request->getGet('b'), 1);
+        
+    $this->assertEqual($request->getGet('sambo', 'cool'), 'cool'); // test for default values
+    $field_names = array('ju', 'kung', 'sambo');
+    
+    $this->assertEqual($request->getGet($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));        
   }
 
   function testGetPost()
   {
-    $request = new lmbHttpRequest('http://test.com', array(), array('c' => 1));
-    $this->assertEqual($request->getPost(), array('c' => 1));
+  	$post = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
+    $request = new lmbHttpRequest('http://test.com', array(), $post);
+    $this->assertEqual($request->getPost(), $post);
     $this->assertEqual($request->getPost('c'), 1);
     $this->assertNull($request->getPost('b'), 1);
+        
+    $this->assertEqual($request->getPost('sambo', 'cool'), 'cool'); // test for default values
+    $field_names = array('ju', 'kung', 'sambo');
+    
+    $this->assertEqual($request->getPost($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));    
   }
 
   function testGetCookie()
   {
-    $request = new lmbHttpRequest('http://test.com', array(), array(), array('c' => 1));
-    $this->assertEqual($request->getCookie(), array('c' => 1));
+  	$cookie = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
+    $request = new lmbHttpRequest('http://test.com', array(), array(), $cookie);
+    $this->assertEqual($request->getCookie(), $cookie);
     $this->assertEqual($request->getCookie('c'), 1);
     $this->assertNull($request->getCookie('b'), 1);
+    
+    $this->assertEqual($request->getCookie('sambo', 'cool'), 'cool'); // test for default values
+    $field_names = array('ju', 'kung', 'sambo');
+    
+    $this->assertEqual($request->getCookie($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));    
   }
 
   function testGetFiles()
