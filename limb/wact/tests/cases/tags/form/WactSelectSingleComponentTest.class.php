@@ -250,9 +250,8 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     foreach ($choices as $key => $choice )
     {
       $testOut .= '<option value="'.$key.'"';
-      if ( $key == $selected ) {
-        $testOut .= ' selected="true"';
-      }
+      if ( $key == $selected )
+        $testOut .= ' selected="selected"';
       $testOut .='>'.$key.'</option>';
     }
 
@@ -275,14 +274,14 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form runat="server">'.
                   '<select id="test" name="mySelect" runat="server">'.
                   '<option value="1">"test1"</option>'.
-                  '<option value="2" selected="true">\'test2\'</option>'.
+                  '<option value="2" selected="selected">\'test2\'</option>'.
                   '</select>'.
                 '</form>';
     $expected_template =
                 '<form>'.
                   '<select id="test" name="mySelect">'.
                   '<option value="1">&quot;test1&quot;</option>'.
-                  '<option value="2" selected="true">\&#039;test2\&#039;</option>'.
+                  '<option value="2" selected="selected">\&#039;test2\&#039;</option>'.
                   '</select>'.
                 '</form>';
     $this->registerTestingTemplate('/tags/form/controls/select/select_with_options_default.html', $template);
@@ -297,7 +296,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
     $template = '<form runat="server">'.
                   '<select id="test" name="mySelect" runat="server">'.
                   '<option value="1" prepend="true">"test1"</option>'.
-                  '<option value="4" selected="true">\'test4\'</option>'.
+                  '<option value="4" selected="selected">\'test4\'</option>'.
                   '</select>'.
                 '</form>';
     $expected_template =
@@ -306,7 +305,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
                   '<option value="1">&quot;test1&quot;</option>'.
                   '<option value="2">test2</option>'.
                   '<option value="3">test3</option>'.
-                  '<option value="4" selected="true">\&#039;test4\&#039;</option>'.
+                  '<option value="4" selected="selected">\&#039;test4\&#039;</option>'.
                   '</select>'.
                 '</form>';
     $this->registerTestingTemplate('/tags/form/controls/select/merge_select_options.html', $template);
@@ -331,7 +330,7 @@ class WactSelectSingleComponentTest extends WactTemplateTestCase
                 '<form name="my_form">'.
                   '<select id="test" name="mySelect">'.
                   '<option value="1">test1</option>'.
-                  '<option value="2" selected="true">test2</option>'.
+                  '<option value="2" selected="selected">test2</option>'.
                   '</select>'.
                 '</form>';
     $this->registerTestingTemplate('/tags/form/controls/select/select_with_options.html', $template);

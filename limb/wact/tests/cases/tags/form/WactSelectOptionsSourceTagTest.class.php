@@ -176,7 +176,7 @@ class WactSelectOptionsSourceTagTest extends WactTemplateTestCase
 
     $this->assertEqual($page->capture(),
                        '<form>'.
-                       '<select id="select" name="select"><option value="" selected="true">select</option><option value="4">red</option><option value="5">blue</option></select>'.
+                       '<select id="select" name="select"><option value="" selected="selected">select</option><option value="4">red</option><option value="5">blue</option></select>'.
                        '</form>');
   }
 }

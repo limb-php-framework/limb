@@ -79,7 +79,7 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     foreach ( $choices as $key => $choice ) {
       $testOut .= '<option value="'.$key.'"';
       if ( in_array($key,$selected) ) {
-        $testOut .= ' selected="true"';
+        $testOut .= ' selected="selected"';
       }
       $testOut .='>'.$choice.'</option>';
     }
@@ -123,7 +123,7 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     foreach ( $choices as $key => $choice ) {
       $testOut .= '<option value="'.$key.'"';
       if ( in_array($key,$selected) ) {
-        $testOut .= ' selected="true"';
+        $testOut .= ' selected="selected"';
       }
       $testOut .='>'.$choice.'</option>';
     }
@@ -194,17 +194,17 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
   {
     $template = '<form runat="server">'.
                   '<select id="test" name="mySelect[]" runat="server" multiple="true">'.
-                  '<option value="foo" selected="true">"test1"</option>'.
+                  '<option value="foo" selected="selected">"test1"</option>'.
                   '<option value="bar">\'test2\'</option>'.
-                  '<option value="zoo" selected="true">test3</option>'.
+                  '<option value="zoo" selected="selected">test3</option>'.
                   '</select>'.
                 '</form>';
     $expected_template =
                 '<form>'.
                   '<select id="test" name="mySelect[]" multiple="true">'.
-                  '<option value="foo" selected="true">&quot;test1&quot;</option>'.
+                  '<option value="foo" selected="selected">&quot;test1&quot;</option>'.
                   '<option value="bar">\&#039;test2\&#039;</option>'.
-                  '<option value="zoo" selected="true">test3</option>'.
+                  '<option value="zoo" selected="selected">test3</option>'.
                   '</select>'.
                 '</form>';
     $this->registerTestingTemplate('/tags/form/controls/selectmultiple/select_with_options_default.html', $template);
@@ -219,16 +219,16 @@ class WactSelectMultipleComponentTest extends WactTemplateTestCase
     $template = '<form name="my_form" runat="server">'.
                   '<select id="test" name="mySelect[]" runat="server" multiple="true">'.
                   '<option value="1">test1</option>'.
-                  '<option value="2" selected="true">test2</option>'.
+                  '<option value="2" selected="selected">test2</option>'.
                   '<option value="3">test3</option>'.
                   '</select>'.
                 '</form>';
     $expected_template =
                 '<form name="my_form">'.
                   '<select id="test" name="mySelect[]" multiple="true">'.
-                  '<option value="1" selected="true">test1</option>'.
+                  '<option value="1" selected="selected">test1</option>'.
                   '<option value="2">test2</option>'.
-                  '<option value="3" selected="true">test3</option>'.
+                  '<option value="3" selected="selected">test3</option>'.
                   '</select>'.
                 '</form>';
     $this->registerTestingTemplate('/tags/form/controls/selectmultiple/select_with_options.html', $template);

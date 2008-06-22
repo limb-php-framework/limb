@@ -36,7 +36,7 @@ class WactSelectWithGroupedOptionsTagTest extends WactTemplateTestCase
 
     $expected = '<form id="my_form"><select id="my_selector" name="my_selector">'.
                 '<optgroup label="&nbsp;Names" >'.
-                '<option value="5">Ivan</option><option value="10" selected="true">Mike</option>'.
+                '<option value="5">Ivan</option><option value="10" selected="selected">Mike</option>'.
                 '</optgroup>'.
                 '<optgroup label="&nbsp;Last Names" other_option="any_value" >'.
                 '<option value="1">Voronov</option><option value="2">Kirov</option>'.
@@ -70,7 +70,7 @@ class WactSelectWithGroupedOptionsTagTest extends WactTemplateTestCase
     $expected = '<form id="my_form"><select id="my_selector" name="my_selector">'.
                 '<optgroup label="&nbsp;Groups" >'.
                 '<optgroup label="&nbsp;&nbsp;Students" >'.
-                '<option value="3">Sherbakov</option><option value="4" selected="true">Vasiliev</option>'.
+                '<option value="3">Sherbakov</option><option value="4" selected="selected">Vasiliev</option>'.
                 '</optgroup>'.
                 '</optgroup>'.
                 '</select></form>';

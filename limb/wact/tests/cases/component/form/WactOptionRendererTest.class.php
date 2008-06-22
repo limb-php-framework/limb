@@ -61,7 +61,7 @@ class WactOptionRendererTest extends UnitTestCase
     $this->renderer->renderOption('foo','bar',TRUE);
     $out = ob_get_contents();
     ob_end_clean();
-    $this->assertEqual($out,'<option value="foo" selected="true">bar</option>');
+    $this->assertEqual($out,'<option value="foo" selected="selected">bar</option>');
   }
 }
 
