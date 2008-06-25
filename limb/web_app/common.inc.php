@@ -9,14 +9,14 @@
 
 /**
  * @package web_app
- * @version $Id: common.inc.php 6352 2007-10-01 18:03:00Z pachanga $
+ * @version $Id: common.inc.php 7076 2008-06-25 14:54:31Z korchasa $
  */
 require_once('limb/core/common.inc.php');
 
 lmb_require_optional('limb/dbal/common.inc.php');
 lmb_require_optional('limb/active_record/common.inc.php');
 
-lmb_require(dirname(__FILE__) . '/toolkit.inc.php');
-lmb_require(dirname(__FILE__) . '/http.inc.php');
+lmb_require('limb/web_app/toolkit.inc.php');
+lmb_require('limb/web_app/http.inc.php');
 
 
