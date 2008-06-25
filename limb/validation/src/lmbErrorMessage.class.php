@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
-lmb_require('limb/validation/src/lmbErrorMessage.class.php');
 
 /**
  * Single validation error message.
