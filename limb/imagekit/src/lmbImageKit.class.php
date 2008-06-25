@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 7079 2008-06-25 16:32:37Z korchasa $
+ * @version $Id: lmbImageKit.class.php 7080 2008-06-25 16:37:40Z korchasa $
  */
 class lmbImageKit
 {
@@ -32,6 +32,8 @@ class lmbImageKit
     {
       throw new lmbFileNotFoundException($class_path, 'image library not found');
     }
+
+    return $convertor;
   }
 
   static function load($file_name, $type = '', $library = 'gd', $dir = '', $params = array())
