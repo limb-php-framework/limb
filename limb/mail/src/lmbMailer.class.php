@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-@define('PHPMAILER_DIR', dirname(__FILE__) . '/../lib/phpmailer-2.1.0.beta2/');
+@define('PHPMAILER_VERSION_NAME', 'phpmailer-2.1.0.beta2');
 @define('LIMB_USE_PHPMAIL', false);
 @define('LIMB_SMTP_PORT', '25');
 @define('LIMB_SMTP_HOST', 'localhost');
@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 6941 2008-04-17 11:50:51Z pachanga $
+ * @version $Id: lmbMailer.class.php 7072 2008-06-25 14:45:59Z korchasa $
  */
 class lmbMailer
 {
@@ -26,7 +26,7 @@ class lmbMailer
   protected $images = array();
 
   protected $_config_properties_map = array(
-    'phpmailer_dir' => 'PHPMAILER_DIR',
+    'phpmailer_version_name' => 'PHPMAILER_VERSION_NAME',
     'use_phpmail' => 'LIMB_USE_PHPMAIL',
     'smtp_host' => 'LIMB_SMTP_HOST',
     'smtp_port' => 'LIMB_SMTP_PORT',
@@ -66,7 +66,7 @@ class lmbMailer
 
   protected function _createMailer()
   {
-    include_once($this->phpmailer_dir . '/class.phpmailer.php');
+    include_once('limb/mail/lib/' .  $this->phpmailer_version_name . '/class.phpmailer.php');
 
     $mailer = new PHPMailer();
     $mailer->set('LE', "\r\n");
@@ -96,7 +96,7 @@ class lmbMailer
       'type' => $type
     );
   }
-  
+
   function embedImage($path, $cid, $name="", $encoding="base64", $type="application/octet-stream")
   {
     $this->images[] = array(
@@ -120,7 +120,7 @@ class lmbMailer
 
     if(!empty($this->images))
       $this->_addEmbeddedImages($mailer);
-      
+
     $recipients = $this->processMailRecipients($recipients);
 
     foreach($recipients as $recipient)
@@ -151,7 +151,7 @@ class lmbMailer
 
     if(!empty($this->images))
       $this->_addEmbeddedImages($mailer);
-      
+
     if(!is_null($text))
       $mailer->AltBody = $text;
 
@@ -208,7 +208,7 @@ class lmbMailer
                              $attachment['encoding'],
                              $attachment['type']);
   }
-  
+
   protected function _addEmbeddedImages($mailer)
   {
     foreach ($this->images as $image)
