@@ -12,6 +12,11 @@ lmb_require(dirname(__FILE__).'/../../../../src/gd/filters/lmbGdRotateImageFilte
 
 class lmbGdRotateImageFilterTest extends UnitTestCase {
 
+  function skip()
+  {
+    $this->skipIf(!function_exists('imagerotate'), 'imagerotate() function does not exist. Test skipped.');
+  }
+
   function _getInputImage()
   {
     return dirname(__FILE__).'/../../../var/input.jpg';

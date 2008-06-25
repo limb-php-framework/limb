@@ -9,8 +9,12 @@
 
 lmb_require(dirname(__FILE__).'/../../../src/im/lmbImImageConvertor.class.php');
 
-class lmbImImageConvertorTest extends UnitTestCase 
+class lmbImImageConvertorTest extends UnitTestCase
 {
+  function skip()
+  {
+    $this->skipIf(!function_exists('imagerotate'), 'imagerotate() function does not exist. Test skipped.');
+  }
 
   function _getInputImage()
   {
@@ -53,6 +57,7 @@ class lmbImImageConvertorTest extends UnitTestCase
 
   function testApplyBatch()
   {
+
     $batch = array(
       array('resize' => array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false, 'xxx' => true)),
       array('rotate' => array('angle' => 90))
@@ -78,7 +83,7 @@ class lmbImImageConvertorTest extends UnitTestCase
 
   function testFilterLocator()
   {
-    $path = dirname(__FILE__).'/../../var/filters';    
+    $path = dirname(__FILE__).'/../../var/filters';
     $conv = $this->_getConvertor(array('add_filters_scan_dirs' => $path));
     $conv->load($this->_getInputImage());
     $conv->apply('test');

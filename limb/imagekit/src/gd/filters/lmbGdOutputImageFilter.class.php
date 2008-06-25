@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Change output type
  * @package imagekit
- * @version $Id: lmbGdOutputImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
+ * @version $Id: lmbGdOutputImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 class lmbGdOutputImageFilter extends lmbAbstractImageFilter {
 

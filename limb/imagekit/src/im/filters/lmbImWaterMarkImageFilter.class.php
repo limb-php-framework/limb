@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Watermark image filter

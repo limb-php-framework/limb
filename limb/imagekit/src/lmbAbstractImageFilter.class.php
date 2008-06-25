@@ -7,13 +7,13 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/lmbAbstractImageContainer.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageContainer.class.php');
 
 /**
  * Abstract image filter
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageFilter.class.php 6607 2007-12-09 15:21:52Z svk $
+ * @version $Id: lmbAbstractImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 abstract class lmbAbstractImageFilter
 {

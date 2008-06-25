@@ -9,11 +9,12 @@
 
 lmb_require(dirname(__FILE__).'/../../src/lmbImageKit.class.php');
 
-class lmbImageKitTest extends UnitTestCase 
+class lmbImageKitTest extends UnitTestCase
 {
   function skip()
   {
     $this->skipIf(!extension_loaded('gd'), 'GD extension not found. Test skipped.');
+    $this->skipIf(!function_exists('imagerotate'), 'imagerotate() function does not exist. Test skipped.');
   }
 
   function _getInputImage()
@@ -55,7 +56,7 @@ class lmbImageKitTest extends UnitTestCase
     $this->assertEqual($width, 60);
     $this->assertEqual($height, 50);
   }
-  
+
   function testPassingParamsToConvertor()
   {
     lmbImageKit::load($this->_getInputImage(), '', 'gd', '', array('add_filters_scan_dirs' => dirname(__FILE__).'/../var/filters'))

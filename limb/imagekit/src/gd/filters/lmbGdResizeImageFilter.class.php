@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdResizeImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
+ * @version $Id: lmbGdResizeImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {

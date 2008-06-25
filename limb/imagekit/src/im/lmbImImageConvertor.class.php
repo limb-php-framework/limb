@@ -7,31 +7,30 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../lmbAbstractImageConvertor.class.php');
-lmb_require(dirname(__FILE__).'/lmbImImageContainer.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageConvertor.class.php');
+lmb_require('limb/imagekit/src/im/lmbImImageContainer.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.class.php');
-
 
 /**
  * Imagick image convertor
  *
  * @package imagekit
- * @version $Id: lmbImImageConvertor.class.php 6960 2008-04-26 20:45:33Z cmz $
+ * @version $Id: lmbImImageConvertor.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 class lmbImImageConvertor extends lmbAbstractImageConvertor
 {
-  
+
   function __construct($params = array())
   {
     if (!class_exists('Imagick'))
       throw new lmbImageLibraryNotInstalledException('ImageMagick');
-      
+
     if(!isset($params['filters_scan_dirs']))
-      $params['filters_scan_dirs'] = dirname(__FILE__).'/filters';
+      $params['filters_scan_dirs'] = 'limb/imagekit/src/im/filters';
     parent::__construct($params);
   }
-  
+
   protected function createFilter($name, $params)
   {
     $class = $this->loadFilter($name, 'Im');

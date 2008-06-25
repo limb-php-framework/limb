@@ -7,8 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../lmbAbstractImageConvertor.class.php');
-lmb_require(dirname(__FILE__).'/lmbGdImageContainer.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageConvertor.class.php');
+lmb_require('limb/imagekit/src/gd/lmbGdImageContainer.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.class.php');
 
@@ -16,7 +16,7 @@ lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.cl
  * GD image convertor
  *
  * @package imagekit
- * @version $Id: lmbGdImageConvertor.class.php 6963 2008-04-28 04:04:31Z svk $
+ * @version $Id: lmbGdImageConvertor.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 class lmbGdImageConvertor extends lmbAbstractImageConvertor
 {
@@ -25,12 +25,12 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
   {
     if (!function_exists('gd_info'))
       throw new lmbImageLibraryNotInstalledException('gd');
-      
+
     if(!isset($params['filters_scan_dirs']))
-      $params['filters_scan_dirs'] = dirname(__FILE__).'/filters';
+      $params['filters_scan_dirs'] = 'limb/imagekit/src/gd/filters';
     parent::__construct($params);
   }
-    
+
   protected function createFilter($name, $params)
   {
     $class = $this->loadFilter($name, 'Gd', $params);

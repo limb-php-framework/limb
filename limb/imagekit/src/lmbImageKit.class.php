@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 6960 2008-04-26 20:45:33Z cmz $
+ * @version $Id: lmbImageKit.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 class lmbImageKit
 {
@@ -21,7 +21,7 @@ class lmbImageKit
 
     $image_class_name = 'lmb' . ucfirst($library) . 'ImageConvertor';
 
-    $class_path = dirname(__FILE__) .  '/'.  $library . '/' . $image_class_name . '.class.php';
+    $class_path = 'limb/imagekit/src/' .  $library . '/' . $image_class_name . '.class.php';
 
     if(!file_exists($class_path))
       throw new lmbFileNotFoundException($class_path, 'image library not found');

@@ -11,6 +11,11 @@ lmb_require(dirname(__FILE__).'/../../../src/gd/lmbGdImageConvertor.class.php');
 
 class lmbGdImageConvertorTest extends UnitTestCase {
 
+  function skip()
+  {
+    $this->skipIf(!function_exists('imagerotate'), 'imagerotate() function does not exist. Test skipped.');
+  }
+
   function _getInputImage()
   {
     return dirname(__FILE__).'/../../var/input.jpg';
@@ -65,10 +70,10 @@ class lmbGdImageConvertorTest extends UnitTestCase {
     $this->assertEqual($width, 60);
     $this->assertEqual($height, 50);
   }
-  
+
   function testFilterLocator()
   {
-    $path = dirname(__FILE__).'/../../var/filters';    
+    $path = dirname(__FILE__).'/../../var/filters';
     $conv = $this->_getConvertor(array('add_filters_scan_dirs' => $path));
     $conv->load($this->_getInputImage());
     $conv->apply('test');

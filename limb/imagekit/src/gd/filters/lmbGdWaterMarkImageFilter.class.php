@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../../lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdWaterMarkImageFilter.class.php 6963 2008-04-28 04:04:31Z svk $
+ * @version $Id: lmbGdWaterMarkImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
  */
 class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
 {
@@ -37,7 +37,7 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
    * @param int $width width of a marked image
    * @param int $height height of a marked image
    * @param mixed $wm_width width of a watermark
-   * @param mixed $wm_height height of a watermark 
+   * @param mixed $wm_height height of a watermark
    * @return array (x, y)
    */
   function calcPosition($x, $y, $width, $height, $wm_width = false, $wm_height = false)
@@ -49,7 +49,7 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
     else
     {
       if($x < 0)
-        $x += $width;      
+        $x += $width;
     }
     if($wm_height !== false)
     {
@@ -58,7 +58,7 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
     else
     {
       if($y < 0)
-        $y += $height;      
+        $y += $height;
     }
     return array($x, $y);
   }
@@ -82,12 +82,12 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
   {
     return $this->getParam('opacity', 0);
   }
-  
+
   function getXCenter()
   {
     return $this->getParam('xcenter', false);
   }
-    
+
   function getYCenter()
   {
     return $this->getParam('ycenter', false);

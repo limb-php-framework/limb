@@ -7,10 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require(dirname(__FILE__).'/../lmbAbstractImageContainer.class.php');
-lmb_require(dirname(__FILE__).'/../exception/lmbImageTypeNotSupportedException.class.php');
-lmb_require(dirname(__FILE__).'/../exception/lmbImageCreateFailedException.class.php');
-lmb_require(dirname(__FILE__).'/../exception/lmbImageSaveFailedException.class.php');
+lmb_require('limb/imagekit/src/im/lmbAbstractImageContainer.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageTypeNotSupportedException.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageCreateFailedException.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageSaveFailedException.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
 /**
@@ -39,7 +39,7 @@ class lmbImImageContainer extends lmbAbstractImageContainer
       }
       $this->out_type = $type;
     }
-    
+
     parent::setOutputType($type);
   }
 
