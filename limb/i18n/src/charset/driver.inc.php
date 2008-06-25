@@ -9,7 +9,7 @@
 
 /**
  * @package i18n
- * @version $Id: driver.inc.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: driver.inc.php 7070 2008-06-25 14:04:40Z korchasa $
  */
 lmb_require('limb/i18n/src/charset/lmbSingleByteCharsetDriver.class.php');
 
@@ -28,7 +28,7 @@ function lmb_get_charset_driver()
 
 if(!lmb_get_charset_driver())
 {
-  include_once(dirname(__FILE__) . '/lmbSingleByteCharsetDriver.class.php');
+  lmb_require('limb/i18n/src/charset/lmbSingleByteCharsetDriver.class.php');
   lmb_use_charset_driver(new lmbSingleByteCharsetDriver());
 }
 
