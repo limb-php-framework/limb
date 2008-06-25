@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/core/src/lmbHandle.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 
-@define('LMB_RULES_DIR', 'limb/validation/src/rule');
+@define('LIMB_RULES_INCLUDE_PATH', 'limb/validation/src/rule');
 
 /**
  * Builds new or fills with the rules existing lmbValidator object, simplifying constructing rules
@@ -64,7 +64,7 @@ class lmbValidatorBuilder {
    */
   static function addRules($rules_lists, lmbValidator $validator) {
   	if(!is_array($rules_lists)) {
-  		return null; // there must be at least 1 list of rules per field
+  		return;
   	}
 
   	foreach($rules_lists as $field => $list) {
@@ -136,11 +136,11 @@ class lmbValidatorBuilder {
   	if(isset(self :: $user_rules[$rule_name])) {
   		return $user_rules[$rule_name];
   	} elseif(isset(self :: $rules_shortcuts[$rule_name])) {
-  		return LMB_RULES_DIR . '/' . self :: getLmbRule(self :: $rules_shortcuts[$rule_name]);
+  		return LIMB_RULES_INCLUDE_PATH . '/' . self :: getLmbRule(self :: $rules_shortcuts[$rule_name]);
   	} elseif(strpos($rule_name, 'lmb') === 0) { // $rule_name is exactly limb filename
-  		return LMB_RULES_DIR . '/' . $rule_name;
+  		return LIMB_RULES_INCLUDE_PATH . '/' . $rule_name;
   	} else {
-  		return LMB_RULES_DIR . '/' . self :: getLmbRule($rule_name);
+  		return LIMB_RULES_INCLUDE_PATH . '/' . self :: getLmbRule($rule_name);
   	}
   }
   
