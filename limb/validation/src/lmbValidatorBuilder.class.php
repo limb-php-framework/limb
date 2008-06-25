@@ -61,38 +61,41 @@ class lmbValidatorBuilder {
    * 	);  
    * 
    * @param object  $validator  (optional)
-   * @return object fully built validator
    */
-  static function addRules($rules_lists, $validator = null) {
-  	if (!$validator) {
-  		$validator = new lmbValidator();
-  	}
-  	
-  	if (!is_array($rules_lists)) {
+  static function addRules($rules_lists, lmbValidator $validator) {
+  	if(!is_array($rules_lists)) {
   		return null; // there must be at least 1 list of rules per field
   	}
 
   	foreach($rules_lists as $field => $list) {
   		
-  		if (is_string($list)) {
+  		if(is_string($list)) {
   			$list = explode('|', $list);
   		}
   		  		
   		foreach($list as $rule_name => $rule) { // by default $rule has simple format
   			$error = '';
   			
-  			if (is_string($rule_name)) { // extended format  				
+  			if(is_string($rule_name)) { // extended format  				
   				$error = $rule;
   				$rule = $rule_name;  				
   			}  			
   			
-  			if ($object_rule = self::parseRule($field, $rule, $error)) {
+  			if($object_rule = self :: parseRule($field, $rule, $error)) {
   				$validator->addRule($object_rule);	
   			}  			
   		}
   	}
-  	
-  	return $validator;
+  }
+
+  /**
+  * @return object fully built validator
+  */
+  static function build($rules_list)
+  {
+    $validator = new lmbValidator();
+    self :: addRules($rules_list, $validator);
+    return $validator;
   }
   
   /**
@@ -107,37 +110,37 @@ class lmbValidatorBuilder {
   	
   	$params = array();
   	
-  	if (!preg_match('/^([^\[]+)(\[(.+)\])?$/i', $rule, $matches)) { // let's parse the rule
+  	if(!preg_match('/^([^\[]+)(\[(.+)\])?$/i', $rule, $matches)) { // let's parse the rule
   		return null;
   	}
   	  	
   	$rule_name = $matches[1];
-  	if (isset($matches[3])) {
+  	if(isset($matches[3])) {
   		$params = explode(',', $matches[3]);  		
   	}
   	
   	array_unshift($params, $field); // field must be the first in params
   	
-  	if (!empty($error)) {
+  	if(!empty($error)) {
   		array_push($params, $error); // but error the last
   	}
   	
-  	$params = self::trim($params);
+  	$params = self :: trim($params);
   	
-  	$path_to_rule = self::getPathByRuleName($rule_name);
+  	$path_to_rule = self :: getPathByRuleName($rule_name);
   	
   	return new lmbHandle($path_to_rule, $params);
   }
   
   static function getPathByRuleName($rule_name) {
-  	if (isset(self::$user_rules[$rule_name])) {
+  	if(isset(self :: $user_rules[$rule_name])) {
   		return $user_rules[$rule_name];
-  	} elseif (isset(self::$rules_shortcuts[$rule_name])) {
-  		return LMB_RULES_DIR . '/' . self::getLmbRule(self::$rules_shortcuts[$rule_name]);
-  	} elseif (strpos($rule_name, 'lmb') === 0) { // $rule_name is exactly limb filename
+  	} elseif(isset(self :: $rules_shortcuts[$rule_name])) {
+  		return LMB_RULES_DIR . '/' . self :: getLmbRule(self :: $rules_shortcuts[$rule_name]);
+  	} elseif(strpos($rule_name, 'lmb') === 0) { // $rule_name is exactly limb filename
   		return LMB_RULES_DIR . '/' . $rule_name;
   	} else {
-  		return LMB_RULES_DIR . '/' . self::getLmbRule($rule_name);
+  		return LMB_RULES_DIR . '/' . self :: getLmbRule($rule_name);
   	}
   }
   
@@ -146,7 +149,7 @@ class lmbValidatorBuilder {
   }
   
   static function registerRule($name, $path) {
-  	self::$user_rules[$name] = $path;
+  	self :: $user_rules[$name] = $path;
   }
   
   static function trim($arr) {  	
