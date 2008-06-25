@@ -13,7 +13,7 @@ lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
  * class lmbHttpResponse.
  *
  * @package net
- * @version $Id: lmbHttpResponse.class.php 6866 2008-03-28 14:40:33Z korchasa $
+ * @version $Id: lmbHttpResponse.class.php 7073 2008-06-25 14:47:31Z korchasa $
  */
 class lmbHttpResponse
 {
@@ -64,7 +64,7 @@ class lmbHttpResponse
 
   protected function _getDefaultRedirectStrategy()
   {
-    lmb_require(dirname(__FILE__) . '/lmbHttpRedirectStrategy.class.php');
+    lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
     return new lmbHttpRedirectStrategy();
   }
 
