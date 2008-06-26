@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 6748 2008-01-25 07:45:03Z serega $
+ * @version $Id: common.inc.php 7083 2008-06-26 14:33:13Z vasiatka $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -221,7 +221,7 @@ function lmb_under_scores($str)
 
 function lmb_humanize($str)
 {
-  return str_replace('_', ' ', lmb_uder_scores($str));
+  return str_replace('_', ' ', lmb_under_scores($str));
 }
 
 lmb_require('limb/core/src/exception/lmbException.class.php');
