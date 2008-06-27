@@ -23,7 +23,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
   function testAddRulesFromSimpleString()
   {
     $rules = array();
-    $rules['login'] = "required|matches[bbb]|size_range[5, 8]|lmbIdentifierRule.class.php";
+    $rules['login'] = "required|matches[bbb]|size_range[5, 8]|lmbIdentifierRule";
     
     $calls_counter = 0;
     
@@ -74,11 +74,12 @@ class lmbValidatorBuilderTest extends UnitTestCase
     lmbValidatorBuilder :: addRules($rules, $this->validator);
   }
     
-  function testAddRulesFromArrayWithCustomError()
+  function testAddRulesFromArrayWithCustomArguments()
   {
     $errors = array(
       'email' => 'Email error',
-      'pattern' => 'Not a digit'    
+      'pattern' => 'Not a digit',
+      'size_range' => 'Size range error!'  
     );
         
     $rules = array();
@@ -88,6 +89,11 @@ class lmbValidatorBuilderTest extends UnitTestCase
       'size_range[5, 8]',
       'email' => $errors['email'],
       'pattern[/\d+/]' => $errors['pattern'],
+      'lmbSizeRangeRule[5, 8]' => array( // params [5, 8] will be ignored because of args have array type
+        'min' => 10,
+        'max' => 15,
+        'error' => $errors['size_range']  // keys (min, max, error) are ignored, the order of args is still important
+      )
     );
     
     $calls_counter = 0;
@@ -132,6 +138,17 @@ class lmbValidatorBuilderTest extends UnitTestCase
         )
       )
     );
+        
+   $this->validator->expectAt(
+      $calls_counter++,
+      "addRule", 
+      array(
+        new EqualExpectation(
+          new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule.class.php', array('login', 10, 15, $errors['size_range']))
+        )
+      )
+    );
+    
         
     lmbValidatorBuilder :: addRules($rules, $this->validator);
   }

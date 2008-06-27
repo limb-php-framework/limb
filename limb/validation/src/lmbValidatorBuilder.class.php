@@ -81,15 +81,15 @@ class lmbValidatorBuilder
 
       foreach($list as $rule_name => $rule) // by default $rule has simple format
       {
-        $error = '';
+        $args = '';
 
         if(is_string($rule_name)) // extended format
         {
-          $error = $rule;
+          $args = $rule;
           $rule = $rule_name;
         }
 
-        if($object_rule = self :: parseRule($field, $rule, $error))
+        if($object_rule = self :: parseRule($field, $rule, $args))
         {
           $validator->addRule($object_rule);
         }
@@ -112,10 +112,10 @@ class lmbValidatorBuilder
    *
    * @param string $field
    * @param string $rule
-   * @param string $error
+   * @param mixed $args
    * @return object 
    */  
-  protected static function parseRule($field, $rule, $error = '') 
+  protected static function parseRule($field, $rule, $args = '') 
   {
 
     $params = array();
@@ -126,18 +126,23 @@ class lmbValidatorBuilder
     }
 
     $rule_name = $matches[1];
-    if(isset($matches[3])) 
+    
+    if (is_array($args) && $args) // args in array overlay args in square brackets
+    {
+      $params = array_values($args);
+    }
+    elseif(isset($matches[3]))
     {
       $params = explode(',', $matches[3]);
     }
-
+    
     array_unshift($params, $field); // field must be the first in params
 
-    if(!empty($error)) 
+    if (is_string($args) && $args) // if $args is a string, then it's a custom error message
     {
-      array_push($params, $error); // but error the last
+      array_push($params, $args); // and must be the last in the $params 
     }
-
+    
     $params = self :: trim($params);
 
     $path_to_rule = self :: getPathByRuleName($rule_name);
@@ -157,7 +162,7 @@ class lmbValidatorBuilder
     } 
     elseif(strpos($rule_name, 'lmb') === 0) // $rule_name is exactly limb filename
     { 
-      return LIMB_RULES_INCLUDE_PATH . '/' . $rule_name;
+      return LIMB_RULES_INCLUDE_PATH . '/' . $rule_name . '.class.php';
     } 
     else 
     {
