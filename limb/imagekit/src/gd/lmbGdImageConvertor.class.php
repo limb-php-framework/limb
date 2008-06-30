@@ -16,7 +16,7 @@ lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.cl
  * GD image convertor
  *
  * @package imagekit
- * @version $Id: lmbGdImageConvertor.class.php 7071 2008-06-25 14:33:29Z korchasa $
+ * @version $Id: lmbGdImageConvertor.class.php 7086 2008-06-30 13:52:27Z serega $
  */
 class lmbGdImageConvertor extends lmbAbstractImageConvertor
 {
@@ -27,7 +27,8 @@ class lmbGdImageConvertor extends lmbAbstractImageConvertor
       throw new lmbImageLibraryNotInstalledException('gd');
 
     if(!isset($params['filters_scan_dirs']))
-      $params['filters_scan_dirs'] = 'limb/imagekit/src/gd/filters';
+      $params['filters_scan_dirs'] = dirname(__FILE__) . '/filters';
+    
     parent::__construct($params);
   }
 

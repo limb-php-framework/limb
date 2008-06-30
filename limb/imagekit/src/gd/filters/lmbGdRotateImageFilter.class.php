@@ -12,7 +12,7 @@ lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 /**
  * Rotate image filter
  * @package imagekit
- * @version $Id: lmbGdRotateImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
+ * @version $Id: lmbGdRotateImageFilter.class.php 7086 2008-06-30 13:52:27Z serega $
  */
 class lmbGdRotateImageFilter extends lmbAbstractImageFilter
 {
@@ -25,10 +25,6 @@ class lmbGdRotateImageFilter extends lmbAbstractImageFilter
     $bgcolor = $this->getBgColor();
     $cur_im = $container->getResource();
     $bg = imagecolorallocate($cur_im, $bgcolor['red'], $bgcolor['green'], $bgcolor['blue']);
-
-    lmb_require('limb/core/src/lmbBacktrace.class.php');
-    $back = new lmbBacktrace();
-    echo $back->toString();
     $im = imagerotate($cur_im, $angle, $bg);
     $container->replaceResource($im);
   }

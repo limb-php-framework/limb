@@ -16,7 +16,7 @@ lmb_require('limb/imagekit/src/exception/lmbImageLibraryNotInstalledException.cl
  * Imagick image convertor
  *
  * @package imagekit
- * @version $Id: lmbImImageConvertor.class.php 7071 2008-06-25 14:33:29Z korchasa $
+ * @version $Id: lmbImImageConvertor.class.php 7086 2008-06-30 13:52:27Z serega $
  */
 class lmbImImageConvertor extends lmbAbstractImageConvertor
 {
@@ -27,7 +27,7 @@ class lmbImImageConvertor extends lmbAbstractImageConvertor
       throw new lmbImageLibraryNotInstalledException('ImageMagick');
 
     if(!isset($params['filters_scan_dirs']))
-      $params['filters_scan_dirs'] = 'limb/imagekit/src/im/filters';
+      $params['filters_scan_dirs'] = dirname(__FILE__) . '/filters';
     parent::__construct($params);
   }
 
