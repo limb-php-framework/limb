@@ -35,6 +35,18 @@ class lmbErrorMessage extends lmbObject
     return $text;
   }  
 
+  function renameFields($new_field_names) 
+  {
+    
+    if(!is_array($new_field_names)) 
+    {
+      return;
+    }
+      
+    $new_fields = str_replace(array_keys($new_field_names), $new_field_names, $this->getFields());
+    $this->setFields($new_fields);   
+  }
+  
   function __toString()
   {
       return $this->getReadable();

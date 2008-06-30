@@ -26,5 +26,30 @@ class lmbErrorListTest extends UnitTestCase
     $this->assertEqual($errors[0]['fields'], array('foo'));
     $this->assertEqual($errors[0]['values'], array('FOO'));
   }
-}
+  
+  function testRenameFields()
+  {
+    $list = new lmbErrorList();
+    
+    $list->addError($message = '{Field_1} is field and {Field_2} also is a field', 
+      array('Field_1' => 'login', 'Field_2' => 'password'));
+    $list->addError($message = "The greatest {Field_1}'s story is '{Field_2} and {Field_3}'", 
+      array('Field_1' => 'that man', 'Field_2' => 'that guy', 'Field_3' => 'that girl'));
 
+    $new_field_names = array(
+      'login' => 'custom_login',
+      'password' => 'custom_password',
+      'that man' => 'Shakespeare',
+      'that guy' => 'Romeo',
+      'that girl' => 'Juliet'
+    );
+  
+    $list->renameFields($new_field_names);
+   
+    $errors = $list->export();
+   
+    $this->assertEqual($errors[0]['fields'], array('Field_1' => 'custom_login', 'Field_2' => 'custom_password'));
+    $this->assertEqual($errors[1]['fields'], array('Field_1' => 'Shakespeare', 'Field_2' => 'Romeo', 'Field_3' => 'Juliet'));   
+  }
+  
+}
