@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 6991 2008-05-10 08:23:17Z pachanga $
+ * @version $Id: lmbController.class.php 7087 2008-07-03 09:40:14Z conf $
  */
 class lmbController
 {
@@ -73,6 +73,7 @@ class lmbController
   protected $validator;
   protected $form_id;
   protected $in_popup = true;
+  protected $is_forwarded = false;
   
   function __construct()
   {
@@ -150,6 +151,11 @@ class lmbController
 
   function performAction()
   {
+    if($this->is_forwarded)
+    {
+      return false;
+    }
+    
     if(method_exists($this, $this->_mapCurrentActionToMethod()))
     {
       if($template_path = $this->findTemplateForAction($this->current_action))
@@ -282,6 +288,7 @@ class lmbController
   
   function forward($controller_name, $action)
   {
+    $this->is_forwarded = true;
     $controller = $this->toolkit->createController($controller_name);
     $controller->setCurrentAction($action);
     return $controller->performAction();

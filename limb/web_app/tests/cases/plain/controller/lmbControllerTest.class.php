@@ -64,6 +64,16 @@ class TestingController extends lmbController
 
 class SecondTestingController extends lmbController {}
 
+class TestingForwardController extends lmbController
+{
+  function __construct()
+  {
+    parent::__construct();
+    
+    $this->forward('testing', 'write');
+  }
+}
+
 class lmbControllerTest extends UnitTestCase
 {
   protected $toolkit;
@@ -187,6 +197,13 @@ class lmbControllerTest extends UnitTestCase
   {
     $controller = new lmbController();
     $this->assertEqual($controller->forward('testing', 'write'), "Hi!");
+  }
+
+  function testForwardInConstructor()
+  {
+    $testController = new TestingForwardController();
+    $this->assertEqual($this->toolkit->getResponse()->getResponseString(), 'Hi!');
+    $this->assertFalse($testController->performAction());
   }
 
   function testClosePopup()
