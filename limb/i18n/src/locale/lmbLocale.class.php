@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
@@ -26,7 +26,7 @@ lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
  * currency/funds are specified by the ISO 4217
  * http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90.xalter
  * @package i18n
- * @version $Id: lmbLocale.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbLocale.class.php 7088 2008-07-03 10:03:56Z korchasa $
  */
 class lmbLocale
 {
@@ -88,7 +88,7 @@ class lmbLocale
 
   function initLocaleSettings($config)
   {
-    if(!is_a($config, 'lmbIni'))
+    if(!$config instanceof lmbIni)
       throw new lmbException('Config object must be an lmbIni instance', array('config' => $config));
 
     $this->_initCountrySettings($config);

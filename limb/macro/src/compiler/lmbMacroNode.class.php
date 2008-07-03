@@ -18,9 +18,9 @@ class lmbMacroNode
   protected $node_id;
   protected $children = array();
   protected $parent;
-  
+
   static protected $counter = 1;
-  
+
   /**
   * @var lmbMacroSourceLocation
   */
@@ -138,7 +138,7 @@ class lmbMacroNode
       }
     }
   }
-  
+
   /**
    * Sometimes it is useful to find node located in another tree branch, eg:
    *  <code>
@@ -156,12 +156,12 @@ class lmbMacroNode
       return $this->parent->findUpChild($id);
   }
 
-  
+
   function findChildByClass($class)
   {
     foreach($this->children as $child)
     {
-      if(is_a($child, $class))
+      if($child instanceof $class)
         return $child;
       else
       {
@@ -176,9 +176,9 @@ class lmbMacroNode
     $ret = array();
     foreach($this->children as $child)
     {
-      if(is_a($child, $class))
+      if($child instanceof  $class)
         $ret[] = $child;
-      
+
       $more_children = $child->findChildrenByClass($class);
       if(count($more_children))
         $ret = array_merge($ret, $more_children);
@@ -190,7 +190,7 @@ class lmbMacroNode
   {
     foreach($this->children as $child)
     {
-      if(is_a($child, $class))
+      if($child instanceof $class)
         return $child;
     }
   }
@@ -200,7 +200,7 @@ class lmbMacroNode
     $result = array();
     foreach($this->children as $child)
     {
-      if(is_a($child, $class))
+      if($child instanceof $class)
         $result[] = $child;
     }
     return $result;
@@ -210,19 +210,19 @@ class lmbMacroNode
   {
     $parent = $this->parent;
 
-    while($parent && !is_a($parent, $class))
+    while($parent && (!$parent instanceof $class))
       $parent = $parent->parent;
 
     return $parent;
   }
-  
+
   function findRoot()
   {
     $root = $this;
     while ($root->parent != NULL)
       $root = $root->parent;
     return $root;
-  }   
+  }
 
   function preParse(){}
 

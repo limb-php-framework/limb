@@ -20,7 +20,7 @@ class lmbDateTime extends lmbObject
   const HOUR = 3600;
   const DAY = 86400;
   const WEEK = 604800;
-  
+
   //YYYY-MM-DD HH:MM:SS timezone
   const DATE_ISO_REGEX = '~^(([0-9]{4})-([0-9]{2})-([0-9]{2}))?((?(1)\s+)([0-9]{2}):([0-9]{2}):?([0-9]{2})?)?$~';
 
@@ -51,7 +51,7 @@ class lmbDateTime extends lmbObject
       $this->second = (int)$second;
       $this->tz     = $tz;
     }
-    elseif(is_a($year_or_date, 'lmbDateTime'))
+    elseif($year_or_date instanceof lmbDateTime)
     {
       $this->_copy($year_or_date);
     }
@@ -80,7 +80,7 @@ class lmbDateTime extends lmbObject
 
   /**
    * Wrapper around constructor
-   * 
+   *
    * It can be useful since the following is not allowed in PHP 'new lmbDateTime(..)->addDay(..)->'
    *
    * @param integer $year_or_date
@@ -149,13 +149,13 @@ class lmbDateTime extends lmbObject
     $date = new self((int)$stamp);
     return $date->getIsoDate();
   }
-  
+
   static function stampToShortIso($stamp)
   {
     $date = new $class((int)$stamp);
     return $date->getIsoShortDate();
   }
-  
+
   function _createTimeZoneObject($code=null)
   {
     lmb_require('limb/datetime/src/lmbDateTimeZone.class.php');

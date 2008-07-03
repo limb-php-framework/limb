@@ -82,7 +82,7 @@ class lmbMacroTreeTag extends lmbMacroTag
     $tags = array();
     foreach($this->children as $child)
     {
-      if(is_a($child, 'lmbMacroTreeNodeTag'))
+      if($child instanceof lmbMacroTreeNodeTag)
         break;
       $tags[] = $child;
     }
@@ -97,7 +97,7 @@ class lmbMacroTreeTag extends lmbMacroTag
     {
       if($collect)
         $tags[] = $child;
-      if(is_a($child, 'lmbMacroTreeNodeTag'))
+      if($child instanceof lmbMacroTreeNodeTag)
         $collect = true;
     }
     return $tags;

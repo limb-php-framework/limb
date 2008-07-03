@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSetInterface.interface.php');
 
@@ -26,7 +26,7 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
   {
     if(isset($this->$name) && !$this->_isGuarded($name))
       return $this->$name;
-    
+
     if(LIMB_UNDEFINED !== $default)
       return $default;
   }
@@ -83,7 +83,7 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
 
   function merge($values)
   {
-    if(is_array($values) || is_a($values, 'ArrayAccess'))
+    if(is_array($values) || ($values instanceof ArrayAccess))
     {
       foreach($values as $name => $value)
         $this->set($name, $value);

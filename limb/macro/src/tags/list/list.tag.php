@@ -10,7 +10,7 @@
 /**
  * The parent compile time component for lists
  * @tag list
- * @aliases list:list 
+ * @aliases list:list
  * @req_attributes using
  * @package macro
  * @version $Id$
@@ -19,12 +19,12 @@ class lmbMacroListTag extends lmbMacroTag
 {
   protected $counter_var_var;
   protected $count_source = false;
-  
+
   function preParse($compiler)
   {
     if(!$this->has('using') && $this->has('for'))
       $this->set('using', $this->get('for'));
-    
+
     return parent :: preParse($compiler);
   }
 
@@ -45,13 +45,13 @@ class lmbMacroListTag extends lmbMacroTag
     $this->_prepareSourceVar($code);
 
     $this->_initializeGlueTags($code);
-    
+
     $key = '';
-    
+
     if ($key_var = $this->get('key')) {
     	$key = $key_var . ' => ';
     }
-    
+
     $code->writePHP('foreach(' . $this->source_var . ' as ' . $key . $as . ') {');
 
     if($user_counter = $this->get('counter'))
@@ -78,7 +78,7 @@ class lmbMacroListTag extends lmbMacroTag
         else
           $postponed_nodes[] = $child;
       }
-      elseif(is_a($child, 'lmbMacroListItemTag'))
+      elseif($child instanceof lmbMacroListItemTag)
       {
         $found_item_tag = true;
         $code->writePHP('}');
@@ -97,12 +97,12 @@ class lmbMacroListTag extends lmbMacroTag
 
     $this->_renderEmptyTag($code);
   }
-  
+
   protected function _initializeGlueTags($code)
   {
     if(!$list_item_tag = $this->findChildByClass('lmbMacroListItemTag'))
       $this->raise('{{list:item}} tag is not found for {{list}} tag but required');
-    
+
     $glue_tags = $list_item_tag->findImmediateChildrenByClass('lmbMacroListGlueTag');
     foreach($glue_tags as $glue_tag)
       $glue_tag->generateInitCode($code);
@@ -125,7 +125,7 @@ class lmbMacroListTag extends lmbMacroTag
 
     foreach($classes as $class)
     {
-      if(is_a($node, $class))
+      if($node instanceof $class)
         return true;
     }
     return false;
@@ -142,7 +142,7 @@ class lmbMacroListTag extends lmbMacroTag
     $code->writePHP("{$temp_using} = {$using};\n");
     $code->writePHP("\nif(!is_array({$temp_using}) && !({$temp_using} instanceof Iterator)) {\n");
       $code->writePHP("{$temp_using} = array();}\n");
-    
+
     if($this->count_source)
     {
       $code->writePHP($this->source_var . " = array();\n");
