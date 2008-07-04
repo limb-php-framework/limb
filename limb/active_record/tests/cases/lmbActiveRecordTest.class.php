@@ -97,7 +97,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     unset($object['annotation']); // Does not make any sence since db fields always available
     $this->assertTrue(isset($object['annotation']));
   }
-  
+
   function testGetWithDefaultValue()
   {
     $object = new TestOneTableObject();
@@ -270,6 +270,18 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
   function testFindByIdReturnsNullIfNotFound()
   {
     $this->assertNull(lmbActiveRecord :: findById('TestOneTableObject', -1000, false));
+  }
+
+  function testFindByIdsSaveOrder()
+  {
+    $object1 = $this->creator->createOneTableObject();
+    $object2 = $this->creator->createOneTableObject();
+
+    $ids = array($object2->getId(), $object1->getId());
+
+    $found = lmbActiveRecord :: findByIds('TestOneTableObject', $ids);
+
+    $this->assertEqual($found->at(0)->getId(), $object2->getId());
   }
 
   function testLoadById()
@@ -488,7 +500,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $rs->next();
     $this->assertEqual($object2->getId(), $rs->current()->getId());
   }
-  
+
   function testFindAllWithCriteria()
   {
     $object1 = $this->creator->createOneTableObject();
@@ -634,42 +646,42 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $lecture1 = $this->creator->createLecture($course1, $alt_course1);
     $lecture2 = $this->creator->createLecture($course2, $alt_course2);
     $lecture3 = $this->creator->createLecture($course1, $alt_course2);
-    
+
     $rs = lmbActiveRecord :: find('LectureForTest', array('join' => 'course, alt_course'));
     $arr = $rs->getArray();
 
     //make sure we really eager fetching
-    $this->db->delete('course_for_test'); 
-    
+    $this->db->delete('course_for_test');
+
     $this->assertEqual($arr[0]->getId(), $lecture1->getId());
     $this->assertEqual($arr[0]->getCourse()->getTitle(), $course1->getTitle());
     $this->assertEqual($arr[0]->getAltCourse()->getTitle(), $alt_course1->getTitle());
-    
+
     $this->assertEqual($arr[1]->getId(), $lecture2->getId());
     $this->assertEqual($arr[1]->getCourse()->getTitle(), $course2->getTitle());
     $this->assertEqual($arr[1]->getAltCourse()->getTitle(), $alt_course2->getTitle());
-    
+
     $this->assertEqual($arr[2]->getId(), $lecture3->getId());
     $this->assertEqual($arr[2]->getCourse()->getTitle(), $course1->getTitle());
     $this->assertEqual($arr[2]->getAltCourse()->getTitle(), $alt_course2->getTitle());
   }
-  
+
   function testFindAttachRelatedObjects_HasMany()
   {
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
-    
+
     $lecture1 = $this->creator->createLecture($course1, null, 'ZZZ');
     $lecture2 = $this->creator->createLecture($course2, null, 'CCC');
     $lecture3 = $this->creator->createLecture($course1, null, 'AAA');
     $lecture4 = $this->creator->createLecture($course1, null, 'BBB');
-    
+
     $rs = lmbActiveRecord :: find('CourseForTest', array('attach' => array('lectures' => array('sort' => array('title' => 'ASC')))));
     $arr = $rs->getArray();
-    
+
     //make sure we really eager fetching
     $this->db->delete('lecture_for_test');
-    
+
     $this->assertIsA($arr[0], 'CourseForTest');
     $this->assertEqual($arr[0]->getTitle(), $course1->getTitle());
     $lectures = $arr[0]->getLectures();
@@ -680,14 +692,14 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $this->assertEqual($lectures[1]->getTitle(), 'BBB');
     $this->assertEqual($lectures[2]->getId(), $lecture1->getId());
     $this->assertEqual($lectures[2]->getTitle(), 'ZZZ');
-    
+
     $this->assertIsA($arr[1], 'CourseForTest');
     $this->assertEqual($arr[1]->getTitle(), $course2->getTitle());
     $lectures = $arr[1]->getLectures();
     $this->assertEqual(count($lectures), 1);
     $this->assertEqual($lectures[0]->getId(), $lecture2->getId());
     $this->assertEqual($lectures[0]->getTitle(), 'CCC');
-  }  
+  }
 
   function testFindBySql()
   {
@@ -701,7 +713,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $this->assertEqual($object1->getId(), $rs->current()->getId());
     $rs->next();
     $this->assertFalse($rs->valid());
-    
+
     $this->assertEqual($rs->getIds(), array($object2->getId(), $object1->getId()));
 
     //testing convenient alias
