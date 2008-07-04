@@ -178,9 +178,13 @@ class lmbCollection implements lmbCollectionInterface
     return (is_array($values) || is_object($values));
   }
 
-  function add($item)
+  function add($item, $offset = false)
   {
-    $this->dataset[] = $item;
+    if($offset)
+      $this->dataset[$offset] = $item;
+    else
+      $this->dataset[] = $item;
+
     $this->iteratedDataset = null;
   }
 
@@ -205,19 +209,18 @@ class lmbCollection implements lmbCollectionInterface
   //ArrayAccess interface
   function offsetExists($offset)
   {
-    return !is_null($this->offsetGet($offset));
+    return isset($this->dataset[$offset]);
   }
 
   function offsetGet($offset)
   {
-    if(is_numeric($offset))
-      return $this->at((int)$offset);
+    return $this->at((int)$offset);
   }
 
   function offsetSet($offset, $value)
   {
     if(!isset($offset))
-      $this->add($value);
+      $this->add($value, $offset);
   }
 
   function offsetUnset($offset){}
