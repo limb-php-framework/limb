@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7059 2008-06-09 12:28:30Z serega $
+ * @version $Id: lmbActiveRecord.class.php 7094 2008-07-06 18:56:52Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -957,11 +957,11 @@ class lmbActiveRecord extends lmbObject
     {
       $this->_is_being_saved = true;
 
-      $this->_savePreRelations();
-
       $this->_onBeforeSave();
 
       $this->_invokeListeners(self :: ON_BEFORE_SAVE);
+
+      $this->_savePreRelations();
 
       if(!$this->isNew() && $this->isDirty())
       {
