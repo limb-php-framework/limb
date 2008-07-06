@@ -140,7 +140,7 @@ class lmbMacroListTag extends lmbMacroTag
     $item_var = $code->generateVar();
 
     $code->writePHP("{$temp_using} = {$using};\n");
-    $code->writePHP("\nif(!is_array({$temp_using}) && !({$temp_using} instanceof Iterator)) {\n");
+    $code->writePHP("\nif(!is_array({$temp_using}) && !({$temp_using} instanceof Iterator) && !({$temp_using} instanceof IteratorAggregate)) {\n");
       $code->writePHP("{$temp_using} = array();}\n");
 
     if($this->count_source)

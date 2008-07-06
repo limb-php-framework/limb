@@ -322,5 +322,19 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
 
     $this->assertEqual($macro->render(), 'List#JohnPavelSerega');
   }  
+  
+  function testIterationUsingIteratorAggregate()
+  {
+    $list = '{{list using="$#list" as="$item"}}{{list:item}}<?=$item?> {{/list:item}}{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $array = new ArrayObject(array('Bob', 'Todd'));
+    $macro->set('list', $array);
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'Bob Todd ');
+  }
 }
 
