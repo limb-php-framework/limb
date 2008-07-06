@@ -272,18 +272,6 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
     $this->assertNull(lmbActiveRecord :: findById('TestOneTableObject', -1000, false));
   }
 
-  function testFindByIdsSaveOrder()
-  {
-    $object1 = $this->creator->createOneTableObject();
-    $object2 = $this->creator->createOneTableObject();
-
-    $ids = array($object2->getId(), $object1->getId());
-
-    $found = lmbActiveRecord :: findByIds('TestOneTableObject', $ids);
-
-    $this->assertEqual($found->at(0)->getId(), $object2->getId());
-  }
-
   function testLoadById()
   {
     $object1 = $this->creator->createOneTableObject();
