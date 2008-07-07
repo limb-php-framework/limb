@@ -185,6 +185,15 @@ class lmbSimpleDbTest extends UnitTestCase
     $this->assertEqual($this->db->select('test_db_table')->count(), 0);
   }
 
+  function testQuery()
+  {
+    $this->db->insert('test_db_table', array('title' =>  'wow', 'description' => 'descr'));
+    $arr = $this->db->query("SELECT * from test_db_table")->getArray();
+    $this->assertEqual(sizeof($arr), 1);
+    $this->assertEqual($arr[0]["title"], 'wow');
+    $this->assertEqual($arr[0]["description"], 'descr');
+  }
+
   function testQuote()
   {
      $this->assertEqual($this->db->quote('foo'), $this->conn->quoteIdentifier('foo'));
