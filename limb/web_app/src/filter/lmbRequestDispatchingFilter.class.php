@@ -13,15 +13,17 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbRequestDispatchingFilter.
  *
  * @package web_app
- * @version $Id: lmbRequestDispatchingFilter.class.php 7097 2008-07-08 06:09:25Z conf $
+ * @version $Id: lmbRequestDispatchingFilter.class.php 7098 2008-07-08 21:10:04Z pachanga $
  */
 class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 {
+  protected $toolkit;
   protected $dispatcher;
   protected $default_controller_name;
 
   function __construct($dispatcher, $default_controller_name = 'not_found')
   {
+    $this->toolkit = lmbToolkit :: instance();
     $this->dispatcher = $dispatcher;
     $this->setDefaultControllerName($default_controller_name);
   }
@@ -33,9 +35,7 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 
   function run($filter_chain)
   {
-    $toolkit = lmbToolkit :: instance();
-
-    $dispatched_params = $this->dispatcher->dispatch($toolkit->getRequest());
+    $dispatched_params = $this->dispatcher->dispatch($this->toolkit->getRequest());
 
     $this->_putOtherParamsToRequest($dispatched_params);
     
@@ -48,7 +48,7 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
     else
       $controller = $this->_createDefaultController();
 
-    $toolkit->setDispatchedController($controller);
+    $this->toolkit->setDispatchedController($controller);
 
     $filter_chain->next();
   }
@@ -60,11 +60,11 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 
     try
     {
-      $controller = lmbToolkit :: instance()->createController($dispatched_params['controller']);
+      $controller = $this->toolkit->createController($dispatched_params['controller']);
     }
     catch(lmbException $e)
     {
-      $controller = lmbToolkit :: instance()->createController($this->default_controller_name);
+      $controller = $this->toolkit->createController($this->default_controller_name);
     }
 
     return $controller;
@@ -72,14 +72,14 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 
   protected function _createDefaultController()
   {
-    $controller = lmbToolkit :: instance()->createController($this->default_controller_name);
+    $controller = $this->toolkit->createController($this->default_controller_name);
     $controller->setCurrentAction($controller->getDefaultAction());
     return $controller;
   }
 
   protected function _putOtherParamsToRequest($dispatched_params)
   {
-    lmbToolkit :: instance()->getRequest()->merge($dispatched_params);
+    $this->toolkit->getRequest()->merge($dispatched_params);
   }
 }
 

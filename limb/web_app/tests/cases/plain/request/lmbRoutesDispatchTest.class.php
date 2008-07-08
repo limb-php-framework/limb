@@ -13,7 +13,7 @@ class lmbRoutesDispatchTest extends UnitTestCase
 {
   function setUp()
   {
-    $toolkit = lmbToolkit :: save();
+    lmbToolkit :: save();
   }
 
   function tearDown()

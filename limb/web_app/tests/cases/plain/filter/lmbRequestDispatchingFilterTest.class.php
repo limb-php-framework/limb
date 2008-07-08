@@ -23,12 +23,19 @@ class lmbRequestDispatchingTestingController extends lmbController
   {
     $this->name = $name;
     parent :: __construct();
-    
-    $this->param = $this->request->get('param', null);
   }
-  
+
   function doDisplay()
   {
+  }
+}
+
+class RememberRequestParamsController extends lmbController
+{
+  function __construct()
+  {
+    parent :: __construct();
+    $this->param = $this->request->get('param', null);
   }
 }
 
@@ -85,20 +92,6 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
     lmbToolkit :: restore();
   }
 
-  protected function _setUpMocks($dispatched_params, $controller = null, $default_controller_name = '')
-  {
-    $this->chain->expectOnce('next');
-
-    $this->dispatcher->expectOnce('dispatch', array($this->request));
-    $this->dispatcher->setReturnValue('dispatch', $dispatched_params);
-
-    if($controller)
-    {
-      $this->mock_tools->expectArgumentsAt(0, 'createController', array($controller->getName()));
-      $this->mock_tools->setReturnValueAt(0, 'createController', $controller, array($controller->getName()));
-    }
-  }
-
   function testSetDispatchedRequestInToolkit()
   {
     $controller = new lmbRequestDispatchingTestingController($controller_name = 'SomeController');
@@ -110,7 +103,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $this->filter->run($this->chain);
 
-    $this->assertDispatchedOk($controller, 'display', __LINE__);
+    $this->_assertDispatchedOk($controller, 'display', __LINE__);
   }
 
   function testUseDefaultActionFromControllerIsActionWasNotDispatchedFromRequest()
@@ -123,7 +116,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $this->filter->run($this->chain);
 
-    $this->assertDispatchedOk($controller, $controller->getDefaultAction(), __LINE__);
+    $this->_assertDispatchedOk($controller, $controller->getDefaultAction(), __LINE__);
   }
 
   function testUse404ControllerIfNoSuchActionInDispatchedController()
@@ -143,7 +136,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
     $this->filter->setDefaultControllerName('404');
     $this->filter->run($this->chain);
 
-    $this->assertDispatchedOk($not_found_controller, $not_found_controller->getDefaultAction(), __LINE__);
+    $this->_assertDispatchedOk($not_found_controller, $not_found_controller->getDefaultAction(), __LINE__);
   }
 
   function testControllerParamIsEmpty()
@@ -158,7 +151,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $this->filter->run($this->chain);
 
-    $this->assertDispatchedOk($controller, 'display', __LINE__);
+    $this->_assertDispatchedOk($controller, 'display', __LINE__);
   }
 
   function testNoSuchController()
@@ -176,7 +169,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $this->filter->run($this->chain);
 
-    $this->assertDispatchedOk($controller, 'display', __LINE__);
+    $this->_assertDispatchedOk($controller, 'display', __LINE__);
   }
 
   function testPutOtherParamsToRequest()
@@ -190,7 +183,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $this->filter->run($this->chain);
 
-    $this->assertDispatchedOk($controller, $controller->getDefaultAction(), __LINE__);
+    $this->_assertDispatchedOk($controller, $controller->getDefaultAction(), __LINE__);
 
     $this->assertEqual($this->request->get('id'), 150);
     $this->assertEqual($this->request->get('extra'), 'bla-bla');
@@ -198,23 +191,47 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
   
   function testIsRequestAvailableInControllerConstructor() 
   {
-    $dispatched_params = array('controller' => 'SomeController',
+    //this is quite a "hacky" trick which removes the fixture toolkit, this should be refactored
+    //alas, this means the whole test suite must be reconsidered as well
+    lmbToolkit :: restore();
+    lmbToolkit :: save();
+
+    $dispatched_params = array('controller' => 'RememberRequestParams',
                                'param' => 150);
 
-    $controller = new lmbRequestDispatchingTestingController('SomeController');
-    $this->_setUpMocks($dispatched_params, $controller);
+    $this->_setUpMocks($dispatched_params);
 
     $this->filter->run($this->chain);
 
+    $controller = $this->toolkit->getDispatchedController();
     $this->assertEqual($controller->param, $dispatched_params['param']);
+
+    //trick again...
+    lmbToolkit :: restore();
+    lmbToolkit :: save();
   }
 
-  function assertDispatchedOk($controller, $action, $line)
+  protected function _assertDispatchedOk($controller, $action, $line)
   {
     $dispatched_request = $this->toolkit->getDispatchedController();
     $this->assertEqual($dispatched_request->getName(), $controller->getName(), '%s ' . $line);
     $this->assertEqual($dispatched_request->getCurrentAction(), $action, '%s ' . $line);
   }
+
+  protected function _setUpMocks($dispatched_params, $controller = null)
+  {
+    $this->chain->expectOnce('next');
+
+    $this->dispatcher->expectOnce('dispatch', array($this->request));
+    $this->dispatcher->setReturnValue('dispatch', $dispatched_params);
+
+    if($controller)
+    {
+      $this->mock_tools->expectArgumentsAt(0, 'createController', array($controller->getName()));
+      $this->mock_tools->setReturnValueAt(0, 'createController', $controller, array($controller->getName()));
+    }
+  }
+
 }
 
 

@@ -57,7 +57,6 @@ class lmbRoutesRequestDispatcherTest extends UnitTestCase
     $this->assertEqual($result['action'], 'admin_display');
   }
 
-
   function testNormalizeUrl()
   {
     $config_array = array(array('path' => '/:controller/:action'));
@@ -73,7 +72,6 @@ class lmbRoutesRequestDispatcherTest extends UnitTestCase
 
     $this->request->getUri()->parse('/blog////index');
     $result = $dispatcher->dispatch($this->request);
-
     $this->assertEqual($result['controller'], 'blog');
     $this->assertEqual($result['action'], 'index');
 
