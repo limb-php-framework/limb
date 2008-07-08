@@ -72,15 +72,6 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
     return $this->removeAll();
   }
 
-  function import($values)
-  {
-    if(!is_array($values))
-      return;
-
-    foreach($values as $name => $value)
-      $this->set($name, $value);
-  }
-
   function merge($values)
   {
     if(is_array($values) || ($values instanceof ArrayAccess))
@@ -88,6 +79,11 @@ class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of 
       foreach($values as $name => $value)
         $this->set($name, $value);
     }
+  }
+
+  function import($values)
+  {
+    $this->merge($values);
   }
 
   function export()
