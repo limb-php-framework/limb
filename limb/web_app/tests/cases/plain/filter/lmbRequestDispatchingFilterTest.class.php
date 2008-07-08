@@ -23,6 +23,8 @@ class lmbRequestDispatchingTestingController extends lmbController
   {
     $this->name = $name;
     parent :: __construct();
+    
+    $this->param = $this->request->get('param', null);
   }
   
   function doDisplay()
@@ -124,7 +126,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
     $this->assertDispatchedOk($controller, $controller->getDefaultAction(), __LINE__);
   }
 
-  function testUse404ControllerIsNoSuchActionInDispatchedController()
+  function testUse404ControllerIfNoSuchActionInDispatchedController()
   {
     $dispatched_params = array('controller' => $controller_name = 'SomeController',
                                'action' => 'no_such_action');
@@ -192,6 +194,19 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $this->assertEqual($this->request->get('id'), 150);
     $this->assertEqual($this->request->get('extra'), 'bla-bla');
+  }
+  
+  function testIsRequestAvailableInControllerConstructor() 
+  {
+    $dispatched_params = array('controller' => 'SomeController',
+                               'param' => 150);
+
+    $controller = new lmbRequestDispatchingTestingController('SomeController');
+    $this->_setUpMocks($dispatched_params, $controller);
+
+    $this->filter->run($this->chain);
+
+    $this->assertEqual($controller->param, $dispatched_params['param']);
   }
 
   function assertDispatchedOk($controller, $action, $line)
