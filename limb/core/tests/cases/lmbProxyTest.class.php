@@ -54,28 +54,6 @@ class lmbProxyTest extends UnitTestCase
     $this->assertEqual($proxy->create_calls, 1);
   }
 
-  function testGetHashDontResolveProxy()
-  {
-    $wrapped = new lmbObject();
-    $proxy = new ProxyTestingStub($wrapped);
-
-    $this->assertNotEqual($proxy->getHash(), $wrapped->getHash());
-    $this->assertEqual($proxy->create_calls, 0);
-  }
-
-  function testGetHash()
-  {
-    $wrapped = new lmbObject();
-    $proxy = new ProxyTestingStub($wrapped);
-
-    $this->assertNotEqual($proxy->getHash(), $wrapped->getHash());
-
-    $proxy->changed = true;
-
-    $this->assertEqual($proxy->getHash(), $wrapped->getHash());
-    $this->assertEqual($proxy->create_calls, 1);
-  }
-
   function testGetClass()
   {
     $wrapped = new lmbObject();

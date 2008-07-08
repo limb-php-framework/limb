@@ -27,18 +27,6 @@ abstract class lmbProxy
   protected $original;
 
   /**
-  * Returns hash string for original object
-  * @return string
-  */
-  function getHash()
-  {
-    if(!$this->is_resolved)
-      return md5(serialize($this));
-
-    return $this->resolve()->getHash();
-  }
-
-  /**
   * Creates original object
   */
   abstract protected function _createOriginalObject();

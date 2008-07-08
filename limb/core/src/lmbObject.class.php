@@ -89,15 +89,7 @@ class lmbObject implements lmbSetInterface
   {
     return get_class($this);
   }
-  /**
-   * Returns object's hash in md5 form
-   * @see md5
-   * @return string
-   */
-  function getHash()
-  {
-    return md5(serialize($this));
-  }
+
   /**
    * Merges existing properties with new ones
    * @param array

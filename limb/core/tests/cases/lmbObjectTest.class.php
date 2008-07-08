@@ -325,15 +325,6 @@ class lmbObjectTest extends UnitTestCase
     $this->assertEqual($object->_guarded, 'yeah');
   }
 
-  function testGetHash()
-  {
-    $o1 = new lmbObject();
-    $o2 = new lmbObject();
-
-    $this->assertNotNull($o1->getHash());
-    $this->assertEqual($o1->getHash(), $o2->getHash());
-  }
-
   function testGetClass()
   {
     $o1 = new lmbObject();
