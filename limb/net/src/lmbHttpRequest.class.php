@@ -15,11 +15,10 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7061 2008-06-20 05:57:50Z conf $
+ * @version $Id: lmbHttpRequest.class.php 7100 2008-07-08 21:12:39Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
-
   const get = 'get';
   const uri = 'uri';
   const post = 'post';
@@ -62,6 +61,7 @@ class lmbHttpRequest extends lmbSet
 
     $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post, $this->files);
 
+    //TODO: think about potential risk of overwriting system attributes!
     foreach($this->request as $k => $v)
       $this->set($k, $v);
   }
@@ -151,17 +151,17 @@ class lmbHttpRequest extends lmbSet
       return $this->$var;
 
     $arr = $this->$var;
- 	if (is_array($key)) {
-    	$ret = array();
-    	foreach($key as $item) {
-    		$ret[$item] = (isset($arr[$item])?$arr[$item]:null);
-    	}
-    	return $ret;
-    } elseif(isset($arr[$key])) {
+    if(is_array($key)) 
+    {
+      $ret = array();
+      foreach($key as $item)
+        $ret[$item] = (isset($arr[$item]) ? $arr[$item] : null);
+      return $ret;
+    } 
+    elseif(isset($arr[$key]))
       return $arr[$key];
-    } elseif ($default != LIMB_UNDEFINED) {
+    elseif($default != LIMB_UNDEFINED)
       return $default;
-    }
   }
 
   function getUri()
