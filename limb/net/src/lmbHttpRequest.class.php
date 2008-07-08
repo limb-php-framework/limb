@@ -15,16 +15,10 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7100 2008-07-08 21:12:39Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 7102 2008-07-08 21:26:09Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
-  const get = 'get';
-  const uri = 'uri';
-  const post = 'post';
-  const cookies = 'cookies';
-  const files = 'files';
-
   protected $uri;
   protected $request = array();
   protected $get = array();
