@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7095 2008-07-07 05:38:40Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7104 2008-07-09 14:46:44Z slevin $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -862,7 +862,7 @@ class lmbActiveRecord extends lmbObject
     $value = $this->_getRaw($this->_many_belongs_to[$property]['field']);
     if(!$value && $this->_canManyBelongsToObjectBeNull($property))
       return null;
-    
+
     if(isset($this->_many_belongs_to[$property]['throw_exception_on_not_found']))
       $throw_exception = $this->_many_belongs_to[$property]['throw_exception_on_not_found'];
     else
@@ -870,7 +870,7 @@ class lmbActiveRecord extends lmbObject
 
     return self :: findById($this->_many_belongs_to[$property]['class'],
                             $this->get($this->_many_belongs_to[$property]['field']),
-                            $throw_exception, 
+                            $throw_exception,
                             $this->_db_conn);
   }
 
@@ -879,7 +879,7 @@ class lmbActiveRecord extends lmbObject
     $value = $this->_getRaw($this->_has_one[$property]['field']);
     if(!$value && $this->_canHasOneObjectBeNull($property))
       return null;
-    
+
     if(isset($this->_has_one[$property]['throw_exception_on_not_found']))
       $throw_exception = $this->_has_one[$property]['throw_exception_on_not_found'];
     else
@@ -1665,7 +1665,8 @@ class lmbActiveRecord extends lmbObject
 
   static function getInheritanceClass($obj)
   {
-    return end(self :: decodeInheritancePath($obj[self :: $_inheritance_field]));
+    $decoded_path = self :: decodeInheritancePath($obj[self :: $_inheritance_field]);
+    return end($decoded_path);
   }
 
   /**
@@ -2204,13 +2205,13 @@ class lmbActiveRecord extends lmbObject
     $this->_db_table->setPrimaryKeyName($this->_primary_key_name);
     $this->_db_table_name = $this->_db_table->getTableName();
   }
-  
+
   function __sleep()
   {
     $vars = array_keys(get_object_vars($this));
     $vars = array_diff($vars, array('_db_conn', '_db_table', '_db_meta_info'));
     return $vars;
-  }    
+  }
 }
 
 

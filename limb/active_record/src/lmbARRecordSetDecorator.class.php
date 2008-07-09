@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7030 2008-05-20 07:53:33Z serega $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7104 2008-07-09 14:46:44Z slevin $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -41,19 +41,20 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
   {
     if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
     {
-      $class_name = end(lmbActiveRecord :: decodeInheritancePath($path));
+      $class_name = lmbActiveRecord :: getInheritanceClass($record);
+
       if(!class_exists($class_name))
         throw new lmbException("Class '$class_name' not found");
     }
     else
       $class_name = $default_class_name;
-      
+
     $object = new $class_name(null, $conn);
-    
+
     $object->loadFromRecord($record);
-    
+
     return $object;
-  }  
+  }
 
   function at($pos)
   {
@@ -62,7 +63,7 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
 
     return self :: createObjectFromRecord($record, $this->class_path, $this->conn);
   }
-  
+
   function getIds()
   {
     $result = array();
