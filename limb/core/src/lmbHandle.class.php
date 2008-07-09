@@ -51,7 +51,9 @@ class lmbHandle extends lmbProxy
 
   protected function _getClassName($class_path)
   {
-    $items = explode('.', end(explode('/', $class_path)));
+    $decoded_class_path = explode('/', $class_path);
+    $items = explode('.', end($decoded_class_path));
+
     return $items[0];
   }
 
