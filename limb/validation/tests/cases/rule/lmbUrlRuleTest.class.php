@@ -111,6 +111,19 @@ class lmbUrlRuleTest extends lmbValidationRuleTestCase
 
     $rule->validate($dataspace, $this->error_list);
   }
+  
+  function testUrlRuleWithBadTextWithoutAllowableSchemes()
+  {    
+    $rule = new lmbUrlRule('testfield');
+    
+    $dataspace = new lmbSet();
+    $dataspace->set('testfield', 'as@#$@$%ADGasjdkjf');
+        
+    $this->error_list->expectOnce('addError');
+    
+    $rule->validate($dataspace, $this->error_list);
+  }
+  
 }
 
 
