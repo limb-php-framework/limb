@@ -6,6 +6,8 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
+@define('LIMB_RULES_INCLUDE_PATH', 'limb/*/src/validation/rule;limb/*/src/rule;');
+
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbValidatorBuilder.class.php');
 
@@ -18,12 +20,13 @@ class lmbValidatorBuilderTest extends UnitTestCase
   function setUp()
   {
     $this->validator = new MockValidator();
+
   }
 
   function testAddRulesFromSimpleString()
   {
     $rules = array();
-    $rules['login'] = "required|matches[bbb]|size_range[5, 8]|lmbIdentifierRule";
+    $rules['login'] = "required|matches[bbb]|size_range[5, 8]|identifier";
     
     $calls_counter = 0;
     
@@ -33,7 +36,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbRequiredRule.class.php', array('login'))
+          new lmbHandle('limb/*/src/rule/lmbRequiredRule.class.php', array('login'))
         )
       )
     );
@@ -44,7 +47,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbMatchRule.class.php', array('login', 'bbb'))
+          new lmbHandle('limb/*/src/rule/lmbMatchRule.class.php', array('login', 'bbb'))
         )
       )
     );
@@ -55,7 +58,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule.class.php', array('login', 5, 8))
+          new lmbHandle('limb/*/src/rule/lmbSizeRangeRule.class.php', array('login', 5, 8))
         )
       )
     );
@@ -66,7 +69,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbIdentifierRule.class.php', array('login'))
+          new lmbHandle('limb/*/src/rule/lmbIdentifierRule.class.php', array('login'))
         )
       )
     );
@@ -89,7 +92,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       'size_range[5, 8]',
       'email' => $errors['email'],
       'pattern[/\d+/]' => $errors['pattern'],
-      'lmbSizeRangeRule[5, 8]' => array( // params [5, 8] will be ignored because of args have array type
+      'size_range[5, 8]' => array( // params [5, 8] will be ignored because of args have array type
         'min' => 10,
         'max' => 15,
         'error' => $errors['size_range']  // keys (min, max, error) are ignored, the order of args is still important
@@ -104,7 +107,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbRequiredRule.class.php', array('login'))
+          new lmbHandle('limb/*/src/rule/lmbRequiredRule.class.php', array('login'))
         )
       )
     );
@@ -114,7 +117,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule.class.php', array('login', 5, 8))
+          new lmbHandle('limb/*/src/rule/lmbSizeRangeRule.class.php', array('login', 5, 8))
         )
       )
     );
@@ -124,7 +127,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbEmailRule.class.php', array('login', $errors['email']))
+          new lmbHandle('limb/*/src/rule/lmbEmailRule.class.php', array('login', $errors['email']))
         )
       )
     );
@@ -134,7 +137,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbPatternRule.class.php', array('login', '/\d+/', $errors['pattern']))
+          new lmbHandle('limb/*/src/rule/lmbPatternRule.class.php', array('login', '/\d+/', $errors['pattern']))
         )
       )
     );
@@ -144,12 +147,37 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/validation/src/rule/lmbSizeRangeRule.class.php', array('login', 10, 15, $errors['size_range']))
+          new lmbHandle('limb/*/src/rule/lmbSizeRangeRule.class.php', array('login', 10, 15, $errors['size_range']))
         )
       )
     );
     
         
     lmbValidatorBuilder :: addRules($rules, $this->validator);
+  }
+  
+  function testAddCustomRules()
+  {         
+    $rules = array();
+    $rules['login'] = array(
+      "unique_table_field" => array(
+        'table' => 'user',
+        'field' => 'login'
+      )
+    );
+    
+    $calls_counter = 0;
+
+    $this->validator->expectAt(
+      $calls_counter++,
+      "addRule", 
+      array(
+        new EqualExpectation(
+          new lmbHandle('limb/*/src/validation/rule/lmbUniqueTableFieldRule.class.php', array('login', 'user', 'login'))
+        )
+      )
+    );
+    
+    lmbValidatorBuilder :: addRules($rules, $this->validator);    
   }
 }
