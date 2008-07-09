@@ -65,15 +65,15 @@ class lmbI18NClipMacroFilterTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'фреймворк');
   }
 
-  // can't implement this since PHP has some bugs with /b modifier in multibyte mode
-  function _testLongStringWordBoundary()
+  // don't know if boundary condition works for all cases. Should work for the simple ones.
+  function testLongStringWordBoundary()
   {
-    $code = '{$#var|i18n_clip:11,1,"...", "y"}';
+    $code = '{$#var|i18n_clip:12,0,"...", "y"}';
     $tpl = $this->_createMacroTemplate($code, 'clip_with_word_bound.html');
     $var = "фреймворк для веб-приложений";
     $tpl->set('var', $var);
     $out = $tpl->render();
-    $this->assertEqual($out, 'реймворк для...');
+    $this->assertEqual($out, 'фреймворк для...');
   }
 
   function testPathBasedDBELengthLimit()
