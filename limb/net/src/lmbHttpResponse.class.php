@@ -13,7 +13,7 @@ lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
  * class lmbHttpResponse.
  *
  * @package net
- * @version $Id: lmbHttpResponse.class.php 7073 2008-06-25 14:47:31Z korchasa $
+ * @version $Id: lmbHttpResponse.class.php 7111 2008-07-10 09:34:17Z korchasa $
  */
 class lmbHttpResponse
 {
@@ -156,14 +156,34 @@ class lmbHttpResponse
       ($status != 304 &&  $status != 412));//???
   }
 
-  function headersSent()
+  function isHeadersSent()
   {
     return sizeof($this->headers) > 0;
   }
 
-  function fileSent()
+  /**
+   *@deprecated
+   *@see self::isHeadersSent()
+   *@return bool
+   */
+  function headersSent()
+  {
+    return $this->isHeadersSent();
+  }
+
+  function isFileSent()
   {
     return !empty($this->response_file_path);
+  }
+
+  /**
+   *@deprecated
+   *@see self::isFileSent()
+   *@return bool
+   */
+  function fileSent()
+  {
+    return $this->isFileSent();
   }
 
   function reload()
@@ -171,11 +191,27 @@ class lmbHttpResponse
     $this->redirect($_SERVER['PHP_SELF']);
   }
 
-  function header($header)
+
+  /**
+   * Add header
+   * @param string $header
+   */
+  function addHeader($header)
   {
     $this->_ensureTransactionStarted();
 
     $this->headers[] = $header;
+  }
+
+  /**
+   * Add header
+   * @deprecated
+   * @see self::addHeader
+   * @param string $header
+   */
+  function header($header)
+  {
+    $this->addHeader($header);
   }
 
   function setCookie($name, $value, $expire = 0, $path = '/', $domain = '', $secure = false)

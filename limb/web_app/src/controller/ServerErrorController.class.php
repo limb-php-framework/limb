@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
@@ -19,7 +19,7 @@ class ServerErrorController extends lmbController
 {
   function doDisplay()
   {
-    $this->response->header('HTTP/1.x 500 Server Error');
+    $this->response->addHeader('HTTP/1.x 500 Server Error');
     $this->resetView();
     $this->setTemplate('server_error.html');
   }

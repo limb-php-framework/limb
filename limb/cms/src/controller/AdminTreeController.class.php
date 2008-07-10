@@ -94,8 +94,8 @@ class AdminTreeController extends lmbController
       $parent_id = $this->request->get('parent_id');
       foreach($this->request->getArray('ids') as $id)
       {
-        $tree = lmbToolkit :: instance()->getCmsTree();  
-        $tree->moveNode($id, $parent_id); 
+        $tree = lmbToolkit :: instance()->getCmsTree();
+        $tree->moveNode($id, $parent_id);
       }
       $this->closePopup();
     }
@@ -126,12 +126,12 @@ class AdminTreeController extends lmbController
 
   protected function _setXmlHeaders()
   {
-    $this->response->header('Expires: Mon, 26 Jul 1997 05:00:00 GMT') ;
-    $this->response->header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT') ;
-    $this->response->header('Cache-Control: no-store, no-cache, must-revalidate') ;
-    $this->response->header('Cache-Control: post-check=0, pre-check=0', false) ;
-    $this->response->header('Pragma: no-cache') ;
-    $this->response->header( 'Content-Type:text/xml; charset=utf-8' ) ;
+    $this->response->addHeader('Expires: Mon, 26 Jul 1997 05:00:00 GMT') ;
+    $this->response->addHeader('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT') ;
+    $this->response->addHeader('Cache-Control: no-store, no-cache, must-revalidate') ;
+    $this->response->addHeader('Cache-Control: post-check=0, pre-check=0', false) ;
+    $this->response->addHeader('Pragma: no-cache') ;
+    $this->response->addHeader( 'Content-Type:text/xml; charset=utf-8' ) ;
   }
 }
 

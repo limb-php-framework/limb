@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 //inspired by http://alexandre.alapetite.net/doc-alex/php-http-304/
 
@@ -15,7 +15,7 @@ define('LIMB_HTTP_CACHE_TYPE_PUBLIC', 1);
  * class lmbHttpCache.
  *
  * @package net
- * @version $Id: lmbHttpCache.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbHttpCache.class.php 7111 2008-07-10 09:34:17Z korchasa $
  */
 class lmbHttpCache
 {
@@ -91,30 +91,30 @@ class lmbHttpCache
 
   protected function _write412Response($response)
   {
-    $response->header('HTTP/1.1 412 Precondition Failed');
-    $response->header('Cache-Control: protected, max-age=0, must-revalidate');
-    $response->header('Content-Type: text/plain');
+    $response->addHeader('HTTP/1.1 412 Precondition Failed');
+    $response->addHeader('Cache-Control: protected, max-age=0, must-revalidate');
+    $response->addHeader('Content-Type: text/plain');
 
     $response->write("HTTP/1.1 Error 412 Precondition Failed: Precondition request failed positive evaluation\n");
   }
 
   protected function _write304Response($response)
   {
-    $response->header('HTTP/1.0 304 Not Modified');
-    $response->header('Etag: ' . $this->getEtag());
-    $response->header('Pragma: ');
-    $response->header('Cache-Control: ');
-    $response->header('Last-Modified: ');
-    $response->header('Expires: ');
+    $response->addHeader('HTTP/1.0 304 Not Modified');
+    $response->addHeader('Etag: ' . $this->getEtag());
+    $response->addHeader('Pragma: ');
+    $response->addHeader('Cache-Control: ');
+    $response->addHeader('Last-Modified: ');
+    $response->addHeader('Expires: ');
   }
 
   protected function _writeCachingResponse($response)
   {
-    $response->header('Cache-Control: ' . $this->_getCacheControl()); //rfc2616-sec14.html#sec14.9
-    $response->header('Last-Modified: ' . $this->formatLastModifiedTime());
-    $response->header('Etag: ' . $this->getEtag());
-    $response->header('Pragma: ');
-    $response->header('Expires: ');
+    $response->addHeader('Cache-Control: ' . $this->_getCacheControl()); //rfc2616-sec14.html#sec14.9
+    $response->addHeader('Last-Modified: ' . $this->formatLastModifiedTime());
+    $response->addHeader('Etag: ' . $this->getEtag());
+    $response->addHeader('Pragma: ');
+    $response->addHeader('Expires: ');
   }
 
   protected function _getCacheControl()
