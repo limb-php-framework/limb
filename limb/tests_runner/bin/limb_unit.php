@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /*
  * Limb PHP Framework
@@ -10,7 +9,7 @@
 
 /**
  * @package tests_runner
- * @version $Id: limb_unit.php 7111 2008-07-10 09:34:17Z korchasa $
+ * @version $Id: limb_unit.php 7112 2008-07-10 10:02:16Z korchasa $
  */
 require_once(dirname(__FILE__) . '/../src/lmbTestShellUI.class.php');
 
