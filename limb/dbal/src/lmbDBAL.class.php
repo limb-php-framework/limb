@@ -10,12 +10,14 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbBulkInsertQuery.class.php');
 
 /**
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 7065 2008-06-25 12:00:59Z korchasa $
+ * @version $Id: lmbDBAL.class.php 7109 2008-07-10 07:09:25Z serega $
  */
 class lmbDBAL
 {
@@ -94,6 +96,26 @@ class lmbDBAL
     return new lmbSelectQuery($table, $conn);
   }
 
+  /**
+   * @param string $table
+   * @param [lmbDbConnection] $conn
+   * @return lmbInsertQuery
+   */
+  static function insertQuery($table, $conn = null)
+  {
+    return new lmbInsertQuery($table, $conn);
+  }
+
+  /**
+   * @param string $table
+   * @param [lmbDbConnection] $conn
+   * @return lmbBulkInsertQuery
+   */
+  static function bulkInsertQuery($table, $conn = null)
+  {
+    return new lmbBulkInsertQuery($table, $conn);
+  }
+  
   /**
    * @param string $table
    * @param [lmbDbConnection] $conn
