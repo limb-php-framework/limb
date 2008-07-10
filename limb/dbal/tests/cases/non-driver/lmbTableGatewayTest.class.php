@@ -62,7 +62,7 @@ class lmbTableGatewayTest extends UnitTestCase
     $this->assertEqual($record->get('description'), 'wow!');
     $this->assertEqual($record->get('id'), $id);
   }
-
+  
 //  function testInsertUpdatesSequenceIfAutoIncrementFieldWasSet()
 //  {
 //    $id = $this->db_table_test->insert(array('id' => 4, 'title' =>  'wow', 'description' => 'wow!'));

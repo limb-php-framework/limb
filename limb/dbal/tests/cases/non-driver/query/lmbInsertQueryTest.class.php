@@ -7,32 +7,9 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
-lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 
-class lmbInsertQueryTest extends UnitTestCase
+class lmbInsertQueryTest extends lmbQueryBaseTestCase
 {
-  var $query;
-  var $db;
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: instance();
-    $this->conn = $toolkit->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    $this->db->delete('test_db_table');
-  }
-
   function testInsert()
   {
     $startId = $this->db->insert('test_db_table', array('description' => 'text1'));

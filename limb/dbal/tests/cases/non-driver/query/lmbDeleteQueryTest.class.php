@@ -6,34 +6,10 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
-lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 
-class lmbDeleteQueryTest extends UnitTestCase
+class lmbDeleteQueryTest extends lmbQueryBaseTestCase
 {
-  protected $query;
-  protected $db;
-
-  function setUp()
-  {
-    $toolkit = lmbToolkit :: instance();
-    $this->conn = $toolkit->getDefaultDbConnection();
-    $this->db = new lmbSimpleDb($this->conn);
-
-    $this->_dbCleanUp();
-  }
-
-  function tearDown()
-  {
-    $this->_dbCleanUp();
-  }
-
-  function _dbCleanUp()
-  {
-    $this->db->delete('test_db_table');
-  }
-
   function testDelete()
   {
     $startId = $this->db->insert('test_db_table', array('description' => 'text1'));

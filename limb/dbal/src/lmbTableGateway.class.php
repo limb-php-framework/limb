@@ -18,7 +18,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 7036 2008-05-22 06:21:35Z vasiatka $
+ * @version $Id: lmbTableGateway.class.php 7108 2008-07-10 06:58:15Z serega $
  */
 class lmbTableGateway
 {
@@ -168,7 +168,7 @@ class lmbTableGateway
 
     return (int)$this->_stmt->insertId($this->_primary_key_name);
   }
-
+  
   function update($set, $criteria = null)
   {
     if(is_array($set))
