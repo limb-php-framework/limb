@@ -29,5 +29,26 @@ class lmbBulkInsertQueryTest extends lmbQueryBaseTestCase
     $this->assertEqual($arr[1]['description'], 'some other description');
     $this->assertEqual($arr[1]['title'], 'some other title');
   }
+  
+  function testExecuteDoesNothingIfNotSetsSpecified()
+  {
+    $query = new lmbBulkInsertQuery('test_db_table', $this->conn);
+    $query->execute();
+  }
+
+  function testGetStatementThrowsExceptionIfNotSetsSpecified()
+  {
+    $query = new lmbBulkInsertQuery('test_db_table', $this->conn);
+    try
+    {
+      $query->getStatement();
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
+  
 }
 

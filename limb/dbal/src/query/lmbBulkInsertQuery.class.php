@@ -68,6 +68,9 @@ class lmbBulkInsertQuery extends lmbTemplateQuery
   {
     $stmt = parent :: getStatement();
     
+    if(!count($this->_sets))
+      throw new lmbException('Bulk insert query does not have any sets to insert');
+    
     foreach($this->_sets as $index => $set)
     {
       foreach($this->_fields as $field)
@@ -78,5 +81,11 @@ class lmbBulkInsertQuery extends lmbTemplateQuery
 
     return $stmt;
   }  
+  
+  function execute()
+  {
+    if(count($this->_sets))
+      return parent :: execute();
+  }
 }
 
