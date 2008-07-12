@@ -12,7 +12,7 @@ lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
  * class lmbRoutesRequestDispatcher.
  *
  * @package web_app
- * @version $Id: lmbRoutesRequestDispatcher.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbRoutesRequestDispatcher.class.php 7114 2008-07-12 14:59:47Z serega $
  */
 class lmbRoutesRequestDispatcher implements lmbRequestDispatcher
 {
@@ -45,6 +45,8 @@ class lmbRoutesRequestDispatcher implements lmbRequestDispatcher
 
     if($action = $request->get('action'))
       $result['action'] = $action;
+    if($controller = $request->get('controller'))
+      $result['controller'] = $controller;
     return $result;
   }
 

@@ -57,6 +57,23 @@ class lmbRoutesRequestDispatcherTest extends UnitTestCase
     $this->assertEqual($result['action'], 'admin_display');
   }
 
+  function testUseControllerNameFromRequestEvenIfMatchedByRoutes()
+  {
+    $config_array = array(array('path' => '/:controller/:action'));
+    $routes = new lmbRoutes($config_array);
+    $this->toolkit->setRoutes($routes);
+
+    $this->request->getUri()->parse('/news/display');
+    $this->request->set('action', 'admin_display'); // !!!
+    $this->request->set('controller', 'my_controller'); // !!!
+
+    $dispatcher = new lmbRoutesRequestDispatcher();
+    $result = $dispatcher->dispatch($this->request);
+
+    $this->assertEqual($result['controller'], 'my_controller');
+    $this->assertEqual($result['action'], 'admin_display');
+  }
+
   function testNormalizeUrl()
   {
     $config_array = array(array('path' => '/:controller/:action'));
