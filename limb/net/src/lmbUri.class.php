@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 7020 2008-05-16 13:06:40Z hidrarg $
+ * @version $Id: lmbUri.class.php 7115 2008-07-12 17:29:27Z pachanga $
  */
 class lmbUri extends lmbSet
 {
@@ -30,7 +30,7 @@ class lmbUri extends lmbSet
   function __construct($str='')
   {
     if($str)
-      $this->parse($str);
+      $this->reset($str);
   }
 
   static function addQueryItems($url, $items=array())
@@ -57,25 +57,6 @@ class lmbUri extends lmbSet
     return $url . implode('&', $str_params_arr) . $fragment;
   }
 
-  /**
-   * @deprecated
-   */
-  function parse($uri)
-  {
-    if('file' == substr($uri, 0, 4))
-      $uri = $this->_fixFileProtocol($uri);
-
-    $this->reset($uri);
-  }
-
-  protected function _fixFileProtocol($url)
-  {
-    $matches = array();
-    if(preg_match('/^file:\/\/([a-zA-Z]?:[\/].*)/', $url, $matches))
-      $url = 'file:///' . $matches[1];
-    return $url;
-  }
-
   function reset($str = null)
   {
     $this->user        = '';
@@ -89,6 +70,9 @@ class lmbUri extends lmbSet
 
     if(!$str)
       return;
+
+    if('file' == substr($str, 0, 4))
+      $str = $this->_fixFileProtocol($str);
 
     if(!$urlinfo = @parse_url($str))
       throw new lmbException("URI '$str' is not valid");
@@ -130,6 +114,22 @@ class lmbUri extends lmbSet
         break;
       }
     }
+  }
+
+  /**
+   * @deprecated
+   */
+  function parse($uri)
+  {
+    $this->reset($uri);
+  }
+
+  protected function _fixFileProtocol($url)
+  {
+    $matches = array();
+    if(preg_match('/^file:\/\/([a-zA-Z]?:[\/].*)/', $url, $matches))
+      $url = 'file:///' . $matches[1];
+    return $url;
   }
 
   function getProtocol()
