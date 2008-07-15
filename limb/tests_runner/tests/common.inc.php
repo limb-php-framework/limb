@@ -14,7 +14,7 @@ class GeneratedTestClass
 
   function __construct($body = '%class%')
   {
-    $this->class_name = 'GenClass_' . mt_rand(1, 10000);
+    $this->class_name = 'GenClass_' . mt_rand(1, 10000) . uniqid();
     $this->body = $body;
   }
 
