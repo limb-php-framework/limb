@@ -230,7 +230,7 @@ class lmbRequireTest extends UnitTestCase
   {
     try
     {
-      @lmb_require($file = 'foo_' . mt_rand() . '.inc.php');
+      @lmb_require($file = 'foo_' . mt_rand() . uniqid() . '.inc.php');
     }
     catch(lmbException $e)
     {
@@ -250,12 +250,12 @@ class lmbRequireTest extends UnitTestCase
 
   function testRequireOptionalDoesntThrowExceptionForNonExistingFile()
   {
-    lmb_require_optional($file = 'foo_' . mt_rand() . '.inc.php');
+    lmb_require_optional($file = 'foo_' . mt_rand() . uniqid() . '.inc.php');
   }
 
   function testRequireOptionalGlobDoesntThrowExceptionForNonExistingFiles()
   {
-    lmb_require_optional($file = 'foo_' . mt_rand() . '*.php');
+    lmb_require_optional($file = 'foo_' . mt_rand() . uniqid() . '*.php');
   }
 
   function _locateIncludeOnceLine($file, $start_line)
@@ -307,7 +307,7 @@ class lmbRequireTest extends UnitTestCase
 
   function _rnd()
   {
-    return mt_rand(1, 1000);
+    return mt_rand(1, 1000) . uniqid();
   }
 
   function _write($file, $contents='')

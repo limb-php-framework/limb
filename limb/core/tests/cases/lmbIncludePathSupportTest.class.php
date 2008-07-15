@@ -108,7 +108,7 @@ class lmbIncludePathSupportTest extends UnitTestCase
 
   function _rnd()
   {
-    return mt_rand(1, 1000);
+    return mt_rand(1, 1000) . uniqid();
   }
 
   function rm_dir($path)

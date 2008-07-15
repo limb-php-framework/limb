@@ -107,7 +107,7 @@ class lmbDelegateTest extends UnitTestCase
 
   function testInvalidFunctionDelegatee()
   {
-    $delegate = new lmbDelegate('Foo' . mt_rand());
+    $delegate = new lmbDelegate('Foo' . mt_rand() . uniqid());
     try
     {
       $delegate->invoke();

@@ -167,12 +167,12 @@ class lmbRequireClassTest extends UnitTestCase
 
   function _rndName()
   {
-    return 'Foo' . mt_rand(1, 1000);
+    return 'Foo' . mt_rand(1, 1000) . uniqid();
   }
 
   function _rnd()
   {
-    return mt_rand(1, 1000);
+    return mt_rand(1, 1000) . uniqid();
   }
 
   function _write($file, $contents='')

@@ -83,7 +83,7 @@ class lmbSerializableTest extends UnitTestCase
 
   function _writeToFile($serialized)
   {
-    $tmp_serialized_file = LIMB_VAR_DIR . '/serialized.' . mt_rand();
+    $tmp_serialized_file = LIMB_VAR_DIR . '/serialized.' . mt_rand() . uniqid();
     file_put_contents($tmp_serialized_file, $serialized);
     return $tmp_serialized_file;
   }
