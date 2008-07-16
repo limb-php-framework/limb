@@ -63,7 +63,7 @@ abstract class lmbMacroSelectWidget extends lmbMacroFormElementWidget
     echo htmlspecialchars($key, ENT_QUOTES);
     echo '"';
     if ($selected) {
-        echo " selected=\"true\"";
+        echo " selected=\"selected\"";
     }
     echo '>';
     if (empty($option)) {

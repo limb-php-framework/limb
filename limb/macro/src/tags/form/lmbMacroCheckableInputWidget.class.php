@@ -27,7 +27,7 @@ class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
   function renderAttributes()
   {
     if($this->isChecked())
-      $this->setAttribute('checked', 'true');
+      $this->setAttribute('checked', 'checked');
     else
       $this->removeAttribute('checked');
 

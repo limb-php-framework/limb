@@ -28,7 +28,7 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
     $page->set('options', array('ff0000' => 'red', '00ff00' => 'green'));
     $page->set('selected_value', '00ff00');
     
-    $expected = '<select name="my_select"><option value="ff0000">red</option><option value="00ff00" selected="true">green</option></select>';
+    $expected = '<select name="my_select"><option value="ff0000">red</option><option value="00ff00" selected="selected">green</option></select>';
     $this->assertEqual($page->render(), $expected);
   }
 
@@ -40,7 +40,7 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
     $page->set('options', array('>>' => '<<', '"' => '""'));
     $page->set('selected_value', '"');
     
-    $expected = '<select name="my_select"><option value="&gt;&gt;">&lt;&lt;</option><option value="&quot;" selected="true">&quot;&quot;</option></select>';
+    $expected = '<select name="my_select"><option value="&gt;&gt;">&lt;&lt;</option><option value="&quot;" selected="selected">&quot;&quot;</option></select>';
     $this->assertEqual($page->render(), $expected);
   }
   
@@ -52,7 +52,7 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
     $page->set('options', array('ff0000' => 'red', '00ff00' => 'green'));
     $page->set('selected_value_object', new lmbObject(array('my_color' => '00ff00', 'id' => 'ff0000')));
     
-    $expected = '<select name="my_select"><option value="ff0000">red</option><option value="00ff00" selected="true">green</option></select>';
+    $expected = '<select name="my_select"><option value="ff0000">red</option><option value="00ff00" selected="selected">green</option></select>';
     $this->assertEqual($page->render(), $expected);
   }
 
@@ -66,7 +66,7 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
     
     $expected = '<form name="my_form">'.
                 '<select name="my_select">'.
-                '<option value="ff0000">red</option><option value="00ff00" selected="true">green</option>'.
+                '<option value="ff0000">red</option><option value="00ff00" selected="selected">green</option>'.
                 '</select>'.
                 '</form>';
     $this->assertEqual($page->render(), $expected);
@@ -76,13 +76,13 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
   {
     $template = '{{select name="my_select"}}'.
                 '{{option value="1"}}test1{{/option}}'.
-                '{{option value="2" selected="true"}}test2{{/option}}'.
+                '{{option value="2" selected="selected"}}test2{{/option}}'.
                 '{{/select}}';
     $page = $this->_createMacroTemplate($template, 'tpl.html');
 
     $expected = '<select name="my_select">'.
                 '<option value="1">test1</option>'.
-                '<option value="2" selected="true">test2</option>'.
+                '<option value="2" selected="selected">test2</option>'.
                 '</select>';
     $this->assertEqual($page->render(), $expected);
   }
@@ -91,7 +91,7 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
   {
     $template = '{{select name="my_select" options="$#options"}}'.
                 '{{option value="1" prepend="true"}}test1{{/option}}'.
-                '{{option value="4" selected="true"}}test4{{/option}}'.
+                '{{option value="4" selected="selected"}}test4{{/option}}'.
                 '{{/select}}';
                 
     $page = $this->_createMacroTemplate($template, 'tpl.html');
@@ -102,7 +102,7 @@ class lmbMacroSingleSelectTagTest extends lmbBaseMacroTest
                 '<option value="1">test1</option>'.
                 '<option value="2">test2</option>'.
                 '<option value="3">test3</option>'.
-                '<option value="4" selected="true">test4</option>'.
+                '<option value="4" selected="selected">test4</option>'.
                 '</select>';
     
     $this->assertEqual($page->render(), $expected);

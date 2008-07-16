@@ -29,7 +29,7 @@ class lmbMacroMultipleSelectTagTest extends lmbBaseMacroTest
     $page->set('selected_value', array('00ff00', '0000ff'));
     
     $expected = '<select id="my_select" name="my_select[]" multiple="true">'.
-                '<option value="ff0000">red</option><option value="00ff00" selected="true">green</option><option value="0000ff" selected="true">blue</option>'.
+                '<option value="ff0000">red</option><option value="00ff00" selected="selected">green</option><option value="0000ff" selected="selected">blue</option>'.
                 '</select>';
     $this->assertEqual($page->render(), $expected);
   }
@@ -44,7 +44,7 @@ class lmbMacroMultipleSelectTagTest extends lmbBaseMacroTest
                                                                 array('my_color' => '0000ff', 'id' => 'whatever'))));
     
     $expected = '<select id="my_select" name="my_select[]" multiple="true">'.
-                '<option value="ff0000">red</option><option value="00ff00" selected="true">green</option><option value="0000ff" selected="true">blue</option>'.
+                '<option value="ff0000">red</option><option value="00ff00" selected="selected">green</option><option value="0000ff" selected="selected">blue</option>'.
                 '</select>';
     $this->assertEqual($page->render(), $expected);
   }
@@ -59,7 +59,7 @@ class lmbMacroMultipleSelectTagTest extends lmbBaseMacroTest
     
     $expected = '<form name="my_form">'.
                 '<select id="my_select" name="my_select[]" multiple="true">'.
-                '<option value="ff0000">red</option><option value="00ff00" selected="true">green</option><option value="0000ff" selected="true">blue</option>'.
+                '<option value="ff0000">red</option><option value="00ff00" selected="selected">green</option><option value="0000ff" selected="selected">blue</option>'.
                 '</select>'.
                 '</form>';
     $this->assertEqual($page->render(), $expected);

@@ -14,14 +14,14 @@ class lmbMacroInputRadioTagTest extends lmbBaseMacroTest
   {
     $template = '{{form id="my_form"}}'.
                 '{{input type="radio" id="r1" name="my_input" value="foo"/}}'.
-                '{{input type="radio" id="r2" name="my_input" value="bar" checked="true" /}}'.
+                '{{input type="radio" id="r2" name="my_input" value="bar" checked="checked" /}}'.
                 '{{/form}}';
 
     $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('form_my_form_datasource', array("my_input" => 'foo'));
 
     $expected = '<form id="my_form">'.
-                '<input type="radio" id="r1" name="my_input" value="foo" checked="true" />'.
+                '<input type="radio" id="r1" name="my_input" value="foo" checked="checked" />'.
                 '<input type="radio" id="r2" name="my_input" value="bar" />'.
                 '</form>';
     $this->assertEqual($page->render(), $expected);
@@ -31,14 +31,14 @@ class lmbMacroInputRadioTagTest extends lmbBaseMacroTest
   {
     $template = '{{form id="my_form"}}'.
                 '{{input type="radio" id="r0" name="my_input" value="0"/}}'.
-                '{{input type="radio" id="r1" name="my_input" value="1" checked="true" /}}'.
+                '{{input type="radio" id="r1" name="my_input" value="1" checked="checked" /}}'.
                 '{{input type="radio" id="r2" name="my_input" value="2"/}}'.
                 '{{/form}}';
     $page = $this->_createMacroTemplate($template, 'tpl.html');
 
     $expected = '<form id="my_form">'.
                 '<input type="radio" id="r0" name="my_input" value="0" />'.
-                '<input type="radio" id="r1" name="my_input" value="1" checked="true" />'.
+                '<input type="radio" id="r1" name="my_input" value="1" checked="checked" />'.
                 '<input type="radio" id="r2" name="my_input" value="2" />'.
                 '</form>';
 

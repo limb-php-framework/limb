@@ -23,24 +23,24 @@ class lmbMacroJsCheckboxTagTest extends lmbBaseMacroTest
 
   function testRenderHiddenWithCheckedCheckbox()
   {
-    $template = '{{js_checkbox name="my_checkbox" value="$#var" checked="true"/}}';
+    $template = '{{js_checkbox name="my_checkbox" value="$#var" checked="checked"/}}';
 
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
     $page->set('var', 1);     
     
-    $expected = '<input checked="true" type="checkbox" value="1" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
+    $expected = '<input checked="checked" type="checkbox" value="1" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
                 '<input type="hidden" id="_my_checkbox" name="my_checkbox" value="1" />';
     $this->assertEqual($page->render(), $expected);
   }
   
   function testChecked_With_CheckedValueAttribute()
   {
-    $template = '{{js_checkbox name="my_checkbox" checked_value="$#var" checked="true"/}}';
+    $template = '{{js_checkbox name="my_checkbox" checked_value="$#var" checked="checked"/}}';
 
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
     $page->set('var', 1);     
     
-    $expected = '<input checked="true" type="checkbox" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
+    $expected = '<input checked="checked" type="checkbox" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
                 '<input type="hidden" id="_my_checkbox" name="my_checkbox" value="1" />';
     $this->assertEqual($page->render(), $expected);
     
@@ -48,7 +48,7 @@ class lmbMacroJsCheckboxTagTest extends lmbBaseMacroTest
 
   function testNotChecked_With_CheckedValueAttribute_And_ValueAttribute()
   {
-    $template = '{{js_checkbox name="my_checkbox" checked_value="$#var" value="1" checked="true"/}}';
+    $template = '{{js_checkbox name="my_checkbox" checked_value="$#var" value="1" checked="checked"/}}';
 
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
     $page->set('var', 2);     
