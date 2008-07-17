@@ -6,7 +6,6 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-@define('LIMB_RULES_INCLUDE_PATH', 'limb/*/src/validation/rule;limb/*/src/rule;');
 
 lmb_require('limb/validation/src/lmbValidator.class.php');
 lmb_require('limb/validation/src/lmbValidatorBuilder.class.php');
@@ -173,7 +172,7 @@ class lmbValidatorBuilderTest extends UnitTestCase
       "addRule", 
       array(
         new EqualExpectation(
-          new lmbHandle('limb/*/src/validation/rule/lmbUniqueTableFieldRule.class.php', array('login', 'user', 'login'))
+          new lmbHandle('limb/web_app/src/validation/rule/lmbUniqueTableFieldRule.class.php', array('login', 'user', 'login'))
         )
       )
     );

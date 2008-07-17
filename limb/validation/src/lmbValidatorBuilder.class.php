@@ -144,7 +144,7 @@ class lmbValidatorBuilder
 
   static function getPathByRuleName($rule_name) 
   {
-    $start_dirs = explode(PATH_SEPARATOR, LIMB_RULES_INCLUDE_PATH);
+    $start_dirs = explode(';', LIMB_RULES_INCLUDE_PATH);
     $rule_file_name = self :: getLmbRule($rule_name);    
     foreach($start_dirs as $dir)
     {      
