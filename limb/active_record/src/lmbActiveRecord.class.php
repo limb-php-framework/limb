@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7123 2008-07-18 14:35:41Z conf $
+ * @version $Id: lmbActiveRecord.class.php 7124 2008-07-18 21:02:24Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -716,7 +716,7 @@ class lmbActiveRecord extends lmbObject
       
       parent :: set($property, $value);
       
-      // if property is a table field and did not really changed, don't mark it dirty
+      // if property is a table field and was not really changed, don't mark it dirty
       if(!($this->_db_meta_info->hasColumn($property) && ($old_value === $value)))
       {
         $this->_markDirtyProperty($property);
