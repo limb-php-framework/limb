@@ -76,6 +76,20 @@ class lmbARDirtyTest extends lmbARBaseTestCase
     $this->assertEqual($str, '|on_before_save||on_after_save|');
   }
 
+  function testSettingSameTablePropertyValueDoesntMakeObjectDirty() 
+  {
+    $object = new TestOneTableObject();
+    $object->setContent('whatever');
+    $object->save();
+    $this->assertFalse($object->isDirty());
+    
+    $object->setContent($object->getContent());
+    $this->assertFalse($object->isDirty());
+    
+    $object->setContent('whatever else');
+    $this->assertTrue($object->isDirty());    
+  }
+  
   function testSettingNewParentObjectDoesntMakeNewObjectDirty()
   {
     $course = new CourseForTest();
