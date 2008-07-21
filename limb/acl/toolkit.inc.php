@@ -12,7 +12,5 @@
  * @version $Id$
  */
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
-lmb_require('limb/acl/src/lmbAclTools.class.php');
+lmb_require('limb/acl/src/toolkit/lmbAclTools.class.php');
 lmbToolkit :: merge(new lmbAclTools());
-
-
