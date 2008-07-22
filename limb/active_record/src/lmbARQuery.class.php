@@ -61,11 +61,15 @@ class lmbARQuery extends lmbSelectRawQuery
   
   protected function _addFieldsForObject($object, $table_name = '', $prefix = '', $magic_params = array())
   {
-    $lazy_attributes = array(); 
-    if(!isset($magic_params['with_lazy_attributes']))
-      $lazy_attributes = $object->getLazyAttributes();
-    elseif(is_array($magic_params['with_lazy_attributes']))
-      $lazy_attributes = $magic_params['with_lazy_attributes'];
+    $lazy_attributes = $object->getLazyAttributes();
+    
+    if(isset($magic_params['with_lazy_attributes']))
+    {
+      if(!is_array($magic_params['with_lazy_attributes']))
+        $lazy_attributes = array();
+      else
+        $lazy_attributes = array_diff($lazy_attributes, $magic_params['with_lazy_attributes']);
+    }
     
     $fields = $object->getDbTable()->getColumnsForSelect($table_name, $lazy_attributes, $prefix);
     foreach($fields as $field => $alias)

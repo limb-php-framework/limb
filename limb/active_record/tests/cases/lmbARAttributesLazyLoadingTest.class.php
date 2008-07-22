@@ -29,7 +29,7 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $this->_checkLazyness($object2, $annotation, $content);
   }
 
-  function testForceToLoadLazyAttributes()
+  function testForceToLoadAllLazyAttributes()
   {
     $object1 = $this->_createActiveRecord('Some annotation', 'Some content');
     $object2 = $this->_createActiveRecord('Some other annotation', 'Some other content');
@@ -42,6 +42,19 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $this->assertTrue(array_key_exists('content', $arr[1]->exportRaw()));
   }
 
+  function testForceToLoadSomeLazyAttributes()
+  {
+    $object1 = $this->_createActiveRecord('Some annotation', 'Some content');
+    $object2 = $this->_createActiveRecord('Some other annotation', 'Some other content');
+    
+    $query = lmbARQuery :: create('LazyTestOneTableObject', $params = array('with_lazy_attributes' => array('annotation')));
+    $arr = $query->fetch()->getArray();
+    $this->assertTrue(array_key_exists('annotation', $arr[0]->exportRaw()));
+    $this->assertFalse(array_key_exists('content', $arr[0]->exportRaw()));
+    $this->assertTrue(array_key_exists('annotation', $arr[1]->exportRaw()));
+    $this->assertFalse(array_key_exists('content', $arr[1]->exportRaw()));
+  }
+  
   function testLazyWorksOkForEagerJoin_OneToOneRelations()
   {
     $person = new PersonForLazyAttributesTest();
@@ -59,6 +72,25 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $lazy_object2 = $person_loaded->getLazyObject(); 
     $this->_checkLazyness($lazy_object2, $annotation, $content);
   }
+
+  function testForceToLoadAllLazyAttributes_ForEagerJoin_OneToOneRelations()
+  {
+    $person = new PersonForLazyAttributesTest();
+    $person->setName('Some name');
+    
+    $lazy_object = $this->_createActiveRecord($annotation = 'Some annotation', $content = 'Some content');
+    $person->set('lazy_object', $lazy_object);
+
+    $person->save();
+    
+    $person_loaded = lmbActiveRecord :: findOne('PersonForLazyAttributesTest', 
+                                                array('criteria' => 'person_for_test.id = ' . $person->getId(),
+                                                      'join' => array('lazy_object' => array('with_lazy_attributes' => ''))));
+    
+    $lazy_object2 = $person_loaded->getLazyObject(); 
+    $this->assertTrue(array_key_exists('annotation', $lazy_object2->exportRaw()));
+    $this->assertTrue(array_key_exists('content', $lazy_object2->exportRaw()));
+ }
   
   function testLazyWorksOkForEagerJoin_ForParentObject_OneToOneRelations()
   {
