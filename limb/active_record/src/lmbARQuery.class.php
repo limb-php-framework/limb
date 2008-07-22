@@ -88,7 +88,9 @@ class lmbARQuery extends lmbSelectRawQuery
     $rs = parent :: fetch();
 
     if($decorate)
+    {
       $rs = new lmbARRecordSetDecorator($rs, $this->base_class_name, $this->_conn);
+    }
     
     $rs = $this->_decorateWithJoinDecorator($rs);
     

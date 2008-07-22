@@ -7,12 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class LazyTestOneTableObject extends lmbActiveRecord
-{
-  protected $_db_table_name = 'test_one_table_object';
-  protected $_lazy_attributes = array('annotation', 'content');
-}
-
 class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('test_one_table_object'); 
@@ -35,6 +29,58 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $this->_checkLazyness($object2, $annotation, $content);
   }
 
+  function testLazyWorksOkForEagerJoin_OneToOneRelations()
+  {
+    $person = new PersonForLazyAttributesTest();
+    $person->setName('Some name');
+    
+    $lazy_object = $this->_createActiveRecord($annotation = 'Some annotation', $content = 'Some content');
+    $person->set('lazy_object', $lazy_object);
+
+    $person->save();
+    
+    $person_loaded = lmbActiveRecord :: findOne('PersonForLazyAttributesTest', 
+                                                array('criteria' => 'person_for_test.id = ' . $person->getId(),
+                                                      'join' => 'lazy_object'));
+    
+    $lazy_object2 = $person_loaded->getLazyObject(); 
+    $this->_checkLazyness($lazy_object2, $annotation, $content);
+  }
+  
+  function testLazyWorksOkForEagerJoin_ForParentObject_OneToOneRelations()
+  {
+    $person = new PersonForLazyAttributesTest();
+    $person->setName($name = 'Some name');
+    
+    $lazy_object = $this->_createActiveRecord($annotation = 'Some annotation', $content = 'Some content');
+    $person->set('lazy_object', $lazy_object);
+
+    $person->save();
+    
+    $person_loaded = lmbActiveRecord :: findOne('PersonForLazyAttributesTest', 
+                                                array('criteria' => 'person_for_test.id = ' . $person->getId(),
+                                                      'join' => 'lazy_object'));
+    $this->assertFalse(array_key_exists('name', $person_loaded->exportRaw()));
+  }
+
+  function testLazyWorksOkForEagerAttach_OneToOneRelations()
+  {
+    $person = new PersonForLazyAttributesTest();
+    $person->setName('Some name');
+    
+    $lazy_object = $this->_createActiveRecord($annotation = 'Some annotation', $content = 'Some content');
+    $person->set('lazy_object', $lazy_object);
+
+    $person->save();
+    
+    $person_loaded = lmbActiveRecord :: findOne('PersonForLazyAttributesTest', 
+                                                array('criteria' => 'person_for_test.id = ' . $person->getId(),
+                                                      'attach' => 'lazy_object'));
+    
+    $lazy_object2 = $person_loaded->getLazyObject(); 
+    $this->_checkLazyness($lazy_object2, $annotation, $content);
+  }
+  
   function testExportIsNotLazy()
   {
     $object = $this->_createActiveRecord($annotation = 'Some annotation', $content = 'Some content');

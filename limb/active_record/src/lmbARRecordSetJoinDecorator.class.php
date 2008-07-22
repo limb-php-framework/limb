@@ -72,8 +72,13 @@ class lmbARRecordSetJoinDecorator extends lmbCollectionDecorator
 
       $fields = new lmbSet();
       $prefix = $this->prefix . $relation_name . '__';
+      
+      if($record instanceof lmbActiveRecord)
+        $data = $record->exportRaw();
+      else
+        $data = $record->export();
 
-      foreach($record->export() as $field => $value)
+      foreach($data as $field => $value)
       {
         if(strpos($field, $prefix) === 0)
         {

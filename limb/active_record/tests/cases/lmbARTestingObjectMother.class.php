@@ -16,6 +16,12 @@ class TestOneTableObjectFailing extends lmbActiveRecord
   }
 }
 
+class LazyTestOneTableObject extends lmbActiveRecord
+{
+  protected $_db_table_name = 'test_one_table_object';
+  protected $_lazy_attributes = array('annotation', 'content');
+}
+
 class PersonForTest extends lmbActiveRecord
 {
   public $save_count = 0;
@@ -27,6 +33,15 @@ class PersonForTest extends lmbActiveRecord
   {
     $this->save_count++;
   }
+}
+
+class PersonForLazyAttributesTest extends lmbActiveRecord
+{
+  protected $_db_table_name = 'person_for_test';
+  protected $_has_one = array('lazy_object' => array('field' => 'ss_id',
+                                                     'class' => 'LazyTestOneTableObject',
+                                                     'can_be_null' => true));
+  protected $_lazy_attributes = array('name');
 }
 
 class SocialSecurityForTest extends lmbActiveRecord
