@@ -29,6 +29,19 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $this->_checkLazyness($object2, $annotation, $content);
   }
 
+  function testForceToLoadLazyAttributes()
+  {
+    $object1 = $this->_createActiveRecord('Some annotation', 'Some content');
+    $object2 = $this->_createActiveRecord('Some other annotation', 'Some other content');
+    
+    $query = lmbARQuery :: create('LazyTestOneTableObject', $params = array('with_lazy_attributes' => ''));
+    $arr = $query->fetch()->getArray();
+    $this->assertTrue(array_key_exists('annotation', $arr[0]->exportRaw()));
+    $this->assertTrue(array_key_exists('content', $arr[0]->exportRaw()));
+    $this->assertTrue(array_key_exists('annotation', $arr[1]->exportRaw()));
+    $this->assertTrue(array_key_exists('content', $arr[1]->exportRaw()));
+  }
+
   function testLazyWorksOkForEagerJoin_OneToOneRelations()
   {
     $person = new PersonForLazyAttributesTest();

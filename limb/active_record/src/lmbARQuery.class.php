@@ -18,7 +18,7 @@ class lmbARQuery extends lmbSelectRawQuery
   protected $attach_relations = array();
   protected $sort_params = array();
   
-  function __construct($base_class_name, $conn, $sql = '')
+  function __construct($base_class_name, $conn, $sql = '', $magic_params = array())
   {
     $this->base_class_name = $base_class_name;
     $this->base_object = new $this->base_class_name(null, $conn);
@@ -27,7 +27,7 @@ class lmbARQuery extends lmbSelectRawQuery
     {
       parent :: __construct($conn);
       $this->addTable($this->base_object->getTableName());
-      $this->_addFieldsForObject($this->base_object);
+      $this->_addFieldsForObject($this->base_object, '', '', $magic_params);
     }
     else
     {
@@ -59,9 +59,15 @@ class lmbARQuery extends lmbSelectRawQuery
     return $this->eagerAttach($relation_name, $params);
   }
   
-  protected function _addFieldsForObject($object, $table_name = '', $prefix = '')
+  protected function _addFieldsForObject($object, $table_name = '', $prefix = '', $magic_params = array())
   {
-    $fields = $object->getDbTable()->getColumnsForSelect($table_name, $object->getLazyAttributes(), $prefix);
+    $lazy_attributes = array(); 
+    if(!isset($magic_params['with_lazy_attributes']))
+      $lazy_attributes = $object->getLazyAttributes();
+    elseif(is_array($magic_params['with_lazy_attributes']))
+      $lazy_attributes = $magic_params['with_lazy_attributes'];
+    
+    $fields = $object->getDbTable()->getColumnsForSelect($table_name, $lazy_attributes, $prefix);
     foreach($fields as $field => $alias)
       $this->addField($field, $alias);
   }
@@ -123,7 +129,7 @@ class lmbARQuery extends lmbSelectRawQuery
       
       $class_name = $relation_info['class'];
       $object = new $class_name(null, $this->_conn);
-      $this->_addFieldsForObject($object, $prefix . $relation_name, $prefix . $relation_name . '__');
+      $this->_addFieldsForObject($object, $prefix . $relation_name, $prefix . $relation_name . '__', $params);
       
       $relation_type = $base_object->getRelationType($relation_name);
       switch($relation_type)
@@ -175,7 +181,7 @@ class lmbARQuery extends lmbSelectRawQuery
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
     
     $object = new $class_name;
-    $query = new lmbARQuery($class_name, $conn, $sql);
+    $query = new lmbARQuery($class_name, $conn, $sql, $params);
 
     if(isset($params['criteria']) && $params['criteria'])
       $criteria = lmbSQLCriteria :: objectify($params['criteria']); 
