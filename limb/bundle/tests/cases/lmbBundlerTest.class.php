@@ -8,7 +8,7 @@ class lmbBundlerTest extends UnitTestCase
 
   function __construct()
   {
-    $this->fixture_dir = dirname(__FILE__).'/../fixture/';
+    $this->fixture_dir = realpath(dirname(__FILE__).'/../fixture') . DIRECTORY_SEPARATOR;    
   }
 
   function testGetDependenciesFromFile()
@@ -39,7 +39,7 @@ class lmbBundlerTest extends UnitTestCase
     $includes = $bundler->getIncludes();
 
     $this->assertEqual(5, count($includes));
-    $this->assertTrue(strpos($includes[0], './require.php'));
+    $this->assertTrue(strpos($includes[0], 'require.php'));
     $this->assertTrue(false !== strpos($includes[0], $this->fixture_dir));
     $this->assertTrue(strpos($includes[1], 'require_once.php'));
     $this->assertTrue(false !== strpos($includes[1], $this->fixture_dir));
@@ -78,13 +78,13 @@ class lmbBundlerTest extends UnitTestCase
     $includes = $bundler->getIncludes();
 
     $this->assertEqual(4, count($includes));
-    $this->assertTrue(strpos($includes[0], './require.php'));
+    $this->assertEqual($includes[0], $this->fixture_dir . 'require.php');
     $this->assertTrue(false === strpos($includes[0], $fixture_sub_folder));
   }
 
   function testGetNewDependencies_properlyResolveIncludePaths_findNotInFirstIncludePath()
   {
-    $fixture_sub_folder = $this->fixture_dir . '/subfolder/';
+    $fixture_sub_folder = realpath($this->fixture_dir . '/subfolder') . DIRECTORY_SEPARATOR;
 
     $bundler = new lmbBundler($include_path = $this->fixture_dir . PATH_SEPARATOR . $fixture_sub_folder);
 
@@ -94,7 +94,7 @@ class lmbBundlerTest extends UnitTestCase
     $includes = $bundler->getIncludes();
 
     $this->assertEqual(2, count($includes));
-    $this->assertTrue(strpos($includes[0], 'sub_folder.php'));
+    $this->assertEqual($includes[0], $fixture_sub_folder . 'sub_folder.php');
     $this->assertTrue(false !== strpos($includes[0], $fixture_sub_folder));
   }
 

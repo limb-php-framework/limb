@@ -1,5 +1,7 @@
 <?php
 
+require_once('limb/core/common.inc.php');
+
 class lmbBundler
 {
   static public $regexp_for_requires = '/^\s*((lmb_)?require(_once)?)\s*\([\'|\"]([a-zA-z0-9\-_.\/]+).*$/m';
@@ -9,7 +11,7 @@ class lmbBundler
 
   function __construct($include_path, $verbose = false)
   {
-    $this->include_paths = explode(':', $include_path);
+    $this->include_paths = explode(PATH_SEPARATOR, $include_path);
     foreach($this->include_paths as $key => $path)
     {
       if(!strlen($path))
@@ -42,11 +44,8 @@ class lmbBundler
     {
       $full_path = $include_path . '/' . $file;
 
-      if(!file_exists($full_path)) {
-        continue;
-      } else {
-        $file_path = $full_path;
-        break;
+      if(file_exists($full_path)) {
+        return $full_path;
       }
     }
 
@@ -55,7 +54,8 @@ class lmbBundler
 
   function isPathAbsolute($path)
   {
-    return ('/' === $path{0});
+    //return ('/' === $path{0});
+    return lmb_is_path_absolute($path);
   }
 
   function add($file)
@@ -127,7 +127,7 @@ class lmbBundler
     echo $without_tags ? '' : "<?php\n";
     foreach(array_unique($this->_includes) as $file)
     {
-      echo "//-----------".$file."------------".PHP_EOL;
+//      echo "//-----------".$file."------------".PHP_EOL;
       echo self::cleanUpFile($file);
     }
   }
