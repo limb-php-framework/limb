@@ -17,7 +17,7 @@ lmb_require('limb/dbal/src/query/lmbBulkInsertQuery.class.php');
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 7109 2008-07-10 07:09:25Z serega $
+ * @version $Id: lmbDBAL.class.php 7130 2008-07-23 10:43:27Z conf $
  */
 class lmbDBAL
 {
@@ -147,6 +147,19 @@ class lmbDBAL
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
     $stmt = $conn->newStatement($sql);
     return $stmt->getRecordSet();
+  }  
+  
+  /**
+   * @param string $sql
+   * @param [lmbDbConnection] $conn
+   * @return lmbDbRecord
+   */
+  static function fetchOneRow($sql, $conn = null)
+  {
+    if(!$conn)
+      $conn = lmbToolkit :: instance()->getDefaultDbConnection();
+    $stmt = $conn->newStatement($sql);
+    return $stmt->getOneRecord();
   }
 
   /**
