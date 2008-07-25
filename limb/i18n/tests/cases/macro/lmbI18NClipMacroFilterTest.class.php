@@ -34,6 +34,18 @@ class lmbI18NClipMacroFilterTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, 'что');
   }
+  
+  
+  function testLengthLimitAsVariable()
+  {
+    $code = '{$#var|i18n_clip:$#limit}';
+    $tpl = $this->_createMacroTemplate($code, 'length_limit.html');
+    $var = "что-то";
+    $tpl->set('var', $var);
+    $tpl->set('limit', 3);
+    $out = $tpl->render();
+    $this->assertEqual($out, 'что');
+  }
 
   function testLengthLimitAndOffset()
   {
