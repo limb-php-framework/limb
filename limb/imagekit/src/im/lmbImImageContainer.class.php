@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/im/lmbAbstractImageContainer.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageContainer.class.php');
 lmb_require('limb/imagekit/src/exception/lmbImageTypeNotSupportedException.class.php');
 lmb_require('limb/imagekit/src/exception/lmbImageCreateFailedException.class.php');
 lmb_require('limb/imagekit/src/exception/lmbImageSaveFailedException.class.php');
@@ -150,7 +150,7 @@ class lmbImImageContainer extends lmbAbstractImageContainer
 
   function __destruct()
   {
-  	$this->destroyImage();
+    $this->destroyImage();
   }
 }
 
