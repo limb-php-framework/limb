@@ -11,7 +11,7 @@
  * class lmbRoutes.
  *
  * @package web_app
- * @version $Id: lmbRoutes.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbRoutes.class.php 7133 2008-07-29 12:46:15Z conf $
  */
 class lmbRoutes
 {
@@ -192,6 +192,11 @@ class lmbRoutes
     {
       if(strpos($path, ':'.$param_name) === false)
         continue;
+      
+      if (isset($route['defaults'][$param_name]) && ($route['defaults'][$param_name] === $param_value)) {
+        unset($params[$param_name]); // default params will be substituted lower
+        continue;
+      }
 
       $path = str_replace(':'. $param_name, $param_value, $path);
       unset($params[$param_name]);
@@ -202,8 +207,20 @@ class lmbRoutes
 
     if(isset($route['defaults']))
     {
+      // we define here required default params for building right url, 
+      // other params at the end of the path can be omitted.
+      if (preg_match_all('|(:\w+/?)+(?=/\w+)|', $path, $required_params))
+        $required_params= $required_params[0];     
+     
       foreach($route['defaults'] as $param_name => $param_value)
-        $path = str_replace(':'. $param_name, $param_value, $path);
+      {
+        if(!in_array(':' . $param_name, $required_params))
+          $param_value = '';
+          
+        $path = str_replace(':' . $param_name, $param_value, $path);
+      }
+      
+      $path = preg_replace('~/+~', '/', $path);
     }
 
     if(strpos($path, "/:") !== false)

@@ -50,7 +50,7 @@ class lmbRoutesToUrlTest extends UnitTestCase
                           'defaults' => array('action' => 'display')));
 
     $routes = new lmbRoutes($config);
-    $this->assertEqual($routes->toUrl(array('controller' => 'news'), 'default'), '/news/display');
+    $this->assertEqual($routes->toUrl(array('controller' => 'news'), 'default'), '/news/');
   }
 
   function testThrowExceptionIfNotEnoughParams()
@@ -135,6 +135,31 @@ class lmbRoutesToUrlTest extends UnitTestCase
   function _processUrlResult(&$path, $route)
   {
     $path = str_replace('/admin_', '/admin/', $path);
+  }
+  
+  function testRemoveUnneededDefaultParamsFromUrl()
+  {
+    $config = array(
+      'default' => array(
+        'path' => '/users/:user/:controller/:action/:id/',
+        'defaults' => array(
+          'user' => 'admin',
+          'controller' => 'blog',
+          'action' => 'display',
+          'id' => 0
+        )
+      )
+    );
+    
+    $routes = new lmbRoutes($config);
+    
+    $this->assertEqual($routes->toUrl(array()), '/users/');
+    $this->assertEqual($routes->toUrl(array('user' => 'bob')), '/users/bob/');
+    $this->assertEqual($routes->toUrl(array('user' => 'admin')), '/users/');
+    $this->assertEqual($routes->toUrl(array('user' => 'bob', 'action' => 'index')), '/users/bob/blog/index/');
+    $this->assertEqual($routes->toUrl(array('controller' => 'article')), '/users/admin/article/');
+    $this->assertEqual($routes->toUrl(array('controller' => 'article', 'id' => 5)), '/users/admin/article/display/5/');
+    $this->assertEqual($routes->toUrl(array('user' => 'admin', 'action' => 'display', 'id' => 0)), '/users/');
   }
 }
 
