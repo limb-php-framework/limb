@@ -244,4 +244,20 @@ class lmbAclAllowsTest extends UnitTestCase
     $this->assertTrue($acl->hasAllows('guest'));
     $this->assertTrue($acl->hasAllows('user'));
   }  
+
+  /**
+   *@todo
+   */
+  function estResourceInherits_WithPrivelegies()
+  {
+    $acl = new lmbAcl();
+    $acl->addRole('user');
+    
+    $acl->addResource('news');
+    $acl->addResource('secret', 'news');
+       
+    $acl->allow('user', 'news', 'view');
+                
+    $this->assertTrue($acl->isAllowed('user', 'secret', 'view'));
+  } 
 }
