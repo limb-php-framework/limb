@@ -245,10 +245,7 @@ class lmbAclAllowsTest extends UnitTestCase
     $this->assertTrue($acl->hasAllows('user'));
   }  
 
-  /**
-   *@todo
-   */
-  function TODO_testResourceInherits_WithPrivelegies()
+  function testResourceInherits_WithPrivelegies()
   {
     $acl = new lmbAcl();
     $acl->addRole('user');
@@ -260,4 +257,23 @@ class lmbAclAllowsTest extends UnitTestCase
                 
     $this->assertTrue($acl->isAllowed('user', 'secret', 'view'));
   } 
+  
+  function testResourceInheritsAndRoleInheritsOverlap()
+  {    
+    $acl = new lmbAcl();
+    $acl->addRole('user');
+    $acl->addRole('fbi', 'user');
+       
+    $acl->addResource('news');
+    $acl->addResource('secret', 'news');
+    
+    $acl->allow('user', 'news', 'view');   
+    $acl->deny('user', 'secret', 'view');
+    
+    $this->assertTrue($acl->isAllowed('user', 'news', 'view'));
+    $this->assertFalse($acl->isAllowed('user', 'secret', 'view'));
+    $this->assertTrue($acl->isAllowed('fbi', 'news', 'view'));
+    // role inherits and resource inherits conflict, role inherits should have the priority
+    $this->assertFalse($acl->isAllowed('fbi', 'secret', 'view'));
+  }
 }

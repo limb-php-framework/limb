@@ -37,7 +37,7 @@ class lmbAcl
     foreach($parents as $parent)
     {
       if(!$this->isRoleExist($parent))
-      throw new lmbAclException('Parent role not exist', array(
+      throw new lmbAclException('Parent role does not exist', array(
         'role' => $role,
         'parent' => $parent,
       ));
@@ -65,10 +65,12 @@ class lmbAcl
     if(!count($inherits))
       return array();
 
+      
+    $merged_inherits = $inherits;
     foreach($inherits as $inherit)
-      $inherits  = array_merge($inherits, $this->getRoleInherits($inherit));
+      $merged_inherits  = array_merge($merged_inherits, $this->getRoleInherits($inherit));
 
-    return $inherits;
+    return $merged_inherits;
   }
 
   function addResource($resource, $parents = array())
@@ -79,15 +81,15 @@ class lmbAcl
     foreach($parents as $parent)
     {
       if(!$this->isResourceExist($parent))
-      throw new lmbAclException('Parent role not exist', array(
-        'role' => $resource,
+      throw new lmbAclException('Parent resource does not exist', array(
+        'resource' => $resource,
         'parent' => $parent,
       ));
     }
 
     $this->_resources[$resource] = $parents;
 
-    return true;
+    return $this;
   }
 
   function getResources()
@@ -107,10 +109,12 @@ class lmbAcl
     if(!count($inherits))
       return array();
 
+    $merged_inherits = $inherits;
+    
     foreach($inherits as $inherit)
-      $inherits  = array_merge($inherits, $this->getResourceInherits($inherit));
+      $merged_inherits  = array_merge($merged_inherits, $this->getResourceInherits($inherit));
 
-    return $inherits;
+    return $merged_inherits;
   }
 
   protected function _isExistRoleRule($role, $privilege)
@@ -229,7 +233,6 @@ class lmbAcl
       $resource = $resource->getResource();
     
     $this->_checkResource($resource);
-      
     return array($role, $resource);
   }
 
@@ -257,10 +260,20 @@ class lmbAcl
 
     if($this->_isExistRoleRule($role, $privilege))
       return ($rule === $this->_getRoleRule($role, $privilege));
-
+      
+    $has_denials = false;
     foreach($this->getRoleInherits($role) as $inherit)
+    {
+      $has_denials = $this->hasDenials($inherit, $resource, $privilege) || $has_denials;
       if($rule === $this->isAllowed($inherit, $resource, $privilege))
         return true;
+    }
+    
+    // check resource inherits only if role inherits does NOT have any denials
+    if(!is_null($resource) && !$has_denials)
+      foreach($this->getResourceInherits($resource) as $inherit)
+        if($rule === $this->isAllowed($role, $inherit, $privilege))
+          return true;                 
       
     return false;
   }
