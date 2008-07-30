@@ -248,7 +248,7 @@ class lmbAclAllowsTest extends UnitTestCase
   /**
    *@todo
    */
-  function estResourceInherits_WithPrivelegies()
+  function TODO_testResourceInherits_WithPrivelegies()
   {
     $acl = new lmbAcl();
     $acl->addRole('user');
