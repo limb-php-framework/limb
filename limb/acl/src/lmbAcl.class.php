@@ -16,6 +16,7 @@ class lmbAcl
 {
   protected $_not_found_policy_allow;
   protected $_inherits_policy_allow;
+  protected $_debug = false;
   
   protected $_roles = array();
   protected $_resources = array();
@@ -259,21 +260,18 @@ class lmbAcl
       return ($rule === $this->_getResourceRule($role, $resource));
 
     if($this->_isExistRoleRule($role, $privilege))
-      return ($rule === $this->_getRoleRule($role, $privilege));
-      
-    $has_denials = false;
+      return ($rule === $this->_getRoleRule($role, $privilege));      
+        
     foreach($this->getRoleInherits($role) as $inherit)
-    {
-      $has_denials = $this->hasDenials($inherit, $resource, $privilege) || $has_denials;
-      if($rule === $this->isAllowed($inherit, $resource, $privilege))
+      if($this->_hasRule($rule, $inherit, $resource, $privilege))
         return true;
-    }
-    
-    // check resource inherits only if role inherits does NOT have any denials
-    if(!is_null($resource) && !$has_denials)
+        
+    if(!is_null($resource))
       foreach($this->getResourceInherits($resource) as $inherit)
-        if($rule === $this->isAllowed($role, $inherit, $privilege))
-          return true;                 
+        if($this->_hasRule($rule, $role, $inherit, $privilege))
+        // if no conficts with this rule, apply resource inheritance
+          if (!$this->_hasRule(!$rule, $role, $resource, $privilege))
+            return true;
       
     return false;
   }
@@ -317,5 +315,16 @@ class lmbAcl
   {
     $this->setRule($role, $resource, $privileges, false);
   }
-
+  
+  function log($message)
+  {
+    if ($this->_debug) {
+      echo $message . "\n";
+    }
+  }
+  
+  function setDebugMode($mode)
+  {
+    $this->_debug = $mode;
+  }
 }

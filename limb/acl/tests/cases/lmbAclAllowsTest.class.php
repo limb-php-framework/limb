@@ -276,4 +276,41 @@ class lmbAclAllowsTest extends UnitTestCase
     // role inherits and resource inherits conflict, role inherits should have the priority
     $this->assertFalse($acl->isAllowed('fbi', 'secret', 'view'));
   }
+  
+  function testHasAllowsAndHasDenialsWithResourceAndRoleInherits()
+  {    
+    $acl = $this->acl;
+    
+    $acl->addRole('caveman');
+    $acl->addRole('russian', 'caveman');
+    
+    $acl->addResource('food');
+    $acl->addResource('meat', 'food');
+    
+    $acl->addResource('water');
+    $acl->addResource('vodka', 'water');
+    
+    $acl->allow('caveman', 'food');
+    $acl->allow('russian', 'water');
+
+    $this->assertFalse($acl->hasDenials('caveman', 'food'));
+    $this->assertFalse($acl->hasDenials('caveman', 'meat'));
+    $this->assertFalse($acl->hasDenials('caveman', 'water'));  
+    $this->assertFalse($acl->hasDenials('caveman', 'vodka')); // fixed here
+    
+    $this->assertFalse($acl->hasDenials('russian', 'food'));
+    $this->assertFalse($acl->hasDenials('russian', 'meat'));
+    $this->assertFalse($acl->hasDenials('russian', 'water'));
+    $this->assertFalse($acl->hasDenials('russian', 'vodka')); // here
+
+    $this->assertTrue($acl->hasAllows('caveman', 'food'));
+    $this->assertTrue($acl->hasAllows('caveman', 'meat'));
+    $this->assertFalse($acl->hasAllows('caveman', 'water'));
+    $this->assertFalse($acl->hasAllows('caveman', 'vodka'));
+    
+    $this->assertTrue($acl->hasAllows('russian', 'food'));
+    $this->assertTrue($acl->hasAllows('russian', 'meat'));
+    $this->assertTrue($acl->hasAllows('russian', 'water'));
+    $this->assertTrue($acl->hasAllows('russian', 'vodka')); // and here
+  }
 }
