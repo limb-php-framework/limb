@@ -11,7 +11,7 @@
  * class lmbRoutes.
  *
  * @package web_app
- * @version $Id: lmbRoutes.class.php 7133 2008-07-29 12:46:15Z conf $
+ * @version $Id: lmbRoutes.class.php 7138 2008-08-04 07:31:09Z conf $
  */
 class lmbRoutes
 {
@@ -209,9 +209,15 @@ class lmbRoutes
     {
       // we define here required default params for building right url, 
       // other params at the end of the path can be omitted.
-      if (preg_match_all('|(:\w+/?)+(?=/\w+)|', $path, $required_params))
-        $required_params= $required_params[0];     
-     
+      $required_params = array();
+      if (preg_match_all('|(:\w+/?)+(?=/\w+)|', $path, $matched_params))
+      {
+        foreach($matched_params[0] as $param)
+        {
+          $required_params = array_merge(explode('/', $param), $required_params);
+        }
+      }
+
       foreach($route['defaults'] as $param_name => $param_value)
       {
         if(!in_array(':' . $param_name, $required_params))

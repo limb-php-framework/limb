@@ -160,6 +160,7 @@ class lmbRoutesToUrlTest extends UnitTestCase
     $this->assertEqual($routes->toUrl(array('controller' => 'article')), '/users/admin/article/');
     $this->assertEqual($routes->toUrl(array('controller' => 'article', 'id' => 5)), '/users/admin/article/display/5/');
     $this->assertEqual($routes->toUrl(array('user' => 'admin', 'action' => 'display', 'id' => 0)), '/users/');
+    $this->assertEqual($routes->toUrl(array('user' => 'admin', 'id' => 19)), '/users/admin/blog/display/19/');    
   }
 }
 
