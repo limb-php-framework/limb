@@ -13,7 +13,7 @@ lmb_require('limb/net/src/lmbHttpRedirectStrategy.class.php');
  * class lmbHttpResponse.
  *
  * @package net
- * @version $Id: lmbHttpResponse.class.php 7111 2008-07-10 09:34:17Z korchasa $
+ * @version $Id: lmbHttpResponse.class.php 7139 2008-08-12 14:26:03Z korchasa $
  */
 class lmbHttpResponse
 {
@@ -234,9 +234,12 @@ class lmbHttpResponse
   function removeCookie($name)
   {
     if(isset($this->cookies[$name]))
+    {
+      $cookie = $this->cookies[$name];
       unset($this->cookies[$name]);
+    }
 
-    $this->setCookie($name, '', 1);
+    $this->setCookie($name, '', 1, $cookie['path'], $cookie['domain'], $cookie['secure']);
   }
 
   function readFile($file_path)
