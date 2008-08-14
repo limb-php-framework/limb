@@ -793,6 +793,27 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     $this->assertEqual($this->conn->countQueries(), 0);    
   }
+  
+  function testGroup()
+  {
+  	$course1 = $this->creator->createCourse();
+  	$lecture1 = $this->creator->createLecture($course1);
+  	$lecture2 = $this->creator->createLecture($course1);
+  	
+  	$course2 = $this->creator->createCourse();
+  	$lecture3 = $this->creator->createLecture($course2);
+  	$lecture4 = $this->creator->createLecture($course2);
+  	
+  	$query = lmbARQuery :: create('LectureForTest', array('group' => 'course.id'), $this->conn);
+  	$rs = $query->eagerJoin('course')->fetch();
+  	
+  	$this->assertEqual($rs->count(), 2);
+  	
+  	$arr = $rs->getArray();
+  	$this->assertEqual(count($arr), 2);
+  	$this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
+  	$this->assertEqual($arr[1]->getTitle(), $lecture3->getTitle());
+  }
 }
 
 
