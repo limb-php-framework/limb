@@ -14,7 +14,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbARRelationCollection.
  *
  * @package active_record
- * @version $Id: lmbARRelationCollection.class.php 7041 2008-05-23 11:33:25Z alex433 $
+ * @version $Id: lmbARRelationCollection.class.php 7141 2008-08-14 07:08:38Z korchasa $
  */
 abstract class lmbARRelationCollection implements lmbCollectionInterface
 {
@@ -44,7 +44,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
 
     $this->reset();
   }
-  
+
   function setOwner($new_owner)
   {
     $this->owner = $new_owner;
@@ -61,7 +61,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     $this->is_owner_new = $this->owner->isNew();
     $this->dataset = null;
   }
-  
+
   function setDataset($dataset)
   {
     $this->dataset = $dataset;
@@ -85,7 +85,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
 
     if(is_string($magic_params) || is_object($magic_params))
       $magic_params = array('criteria' => lmbSQLCriteria :: objectify($magic_params));
-    
+
     if(isset($this->default_params['criteria']))
     {
       if(isset($magic_params['criteria']))
@@ -93,17 +93,17 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
       else
         $magic_params['criteria'] = $this->default_params['criteria'];
     }
-    
+
     if(!isset($magic_params['sort']) && isset($this->default_params['sort']))
       $magic_params['sort'] = $this->default_params['sort'];
-    
+
     $magic_params['join'] = $this->join_relations;
     $magic_params['attach'] = $this->attach_relations;
-    
+
     $query = $this->_createARQuery($magic_params);
-    
+
     $rs = $query->fetch();
-    
+
     return $this->_applyDecorators($rs);
   }
 
@@ -114,7 +114,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     if($rs->valid())
       return $rs->current();
   }
-  
+
   function join($relation_name, $params = array())
   {
     $this->join_relations[$relation_name] = $params;
@@ -131,14 +131,30 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   {
     if(!isset($params['sort']) && isset($relation_info['sort_params']))
       $params['sort'] = $relation_info['sort_params'];
-    
+
     $query = call_user_func_array(array($calling_class, 'createCoreARQueryForRelation'), array($relation_info, $conn, $params));
-    
+
     return $query;
   }
-  
-  abstract static function createCoreARQueryForRelation($relation_info, $conn, $params = array());
-  
+
+  /**
+   *
+   * add implementation for compatibility with 5.2.X and older
+   * (abstract static methods can be only in interfaces)
+   * @see http://bugs.php.net/bug.php?id=38219
+   *
+   *
+   * @abstract
+   * @static
+   * @param array $relation_info
+   * @param lmbDbConnection $conn
+   * @param array $params
+   */
+  static function createCoreARQueryForRelation($relation_info, $conn, $params = array())
+  {
+    throw new lmbException('It\'s a abstract method.');
+  }
+
   abstract protected function _createARQuery($magic_params = array());
 
   static function applySortParams($query, $relation_info, $sort_params = array())
@@ -148,7 +164,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
       $query->order($sort_params);
       return;
     }
-    
+
     if(isset($relation_info['sort_params']) &&
        is_array($relation_info['sort_params']) &&
        count($relation_info['sort_params']))
@@ -302,7 +318,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
     }
     else
     {
-      // we want to give users ability to change sort params at any time so we just save the last sort params 
+      // we want to give users ability to change sort params at any time so we just save the last sort params
       //  and apply them at the last moment in find() method or even deeper
       $this->default_params['sort'] = $params;
     }
