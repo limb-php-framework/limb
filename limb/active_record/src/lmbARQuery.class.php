@@ -208,6 +208,9 @@ class lmbARQuery extends lmbSelectRawQuery
     $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $object->getDefaultSortParams();
     $query->order($sort_params);
 
+    if (isset($params['group']) && $params['group'])
+    	$query->group($params['group']);
+    
     $join = (isset($params['join']) && $params['join']) ? $params['join'] : array();
     if(!is_array($join))
       $join = explode(',', $join);
