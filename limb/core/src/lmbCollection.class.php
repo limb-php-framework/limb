@@ -113,6 +113,9 @@ class lmbCollection implements lmbCollectionInterface
     if(!is_null($this->iteratedDataset))
       return;
 
+    if(is_array($this->dataset))
+      ksort($this->dataset, SORT_NUMERIC);
+
     if(!$this->limit)
     {
       $this->iteratedDataset = $this->dataset;
@@ -178,9 +181,9 @@ class lmbCollection implements lmbCollectionInterface
     return (is_array($values) || is_object($values));
   }
 
-  function add($item, $offset = false)
+  function add($item, $offset = NULL)
   {
-    if($offset)
+    if(NULL !== $offset)
       $this->dataset[$offset] = $item;
     else
       $this->dataset[] = $item;
@@ -219,8 +222,7 @@ class lmbCollection implements lmbCollectionInterface
 
   function offsetSet($offset, $value)
   {
-    if(!isset($offset))
-      $this->add($value, $offset);
+    $this->add($value, $offset);
   }
 
   function offsetUnset($offset){}
