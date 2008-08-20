@@ -13,7 +13,7 @@ lmb_require('limb/validation/src/lmbErrorMessage.class.php');
  * Holds a list of validation errors
  * @see lmbErrorMessage
  * @package validation
- * @version $Id: lmbErrorList.class.php 7085 2008-06-30 05:12:28Z conf $
+ * @version $Id: lmbErrorList.class.php 7151 2008-08-20 17:54:44Z korchasa $
  */
 class lmbErrorList extends lmbCollection
 {
@@ -64,11 +64,8 @@ class lmbErrorList extends lmbCollection
   }
 
   function renameFields($new_field_names) 
-  {
-    foreach($this as $key => $message) 
-    {
-      $message->renameFields($new_field_names);
-      $this[$key] = $message;
-    }
+  {   
+    foreach($this as $message)
+      $message->renameFields($new_field_names);      
   }
 }
