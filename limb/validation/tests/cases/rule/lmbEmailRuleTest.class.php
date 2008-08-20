@@ -102,6 +102,21 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
 
     $rule->validate($dataspace, $this->error_list);
   }
+
+  function testEmailRuleDoubleErrorWithCustomMessage()
+  {
+    $rule = new lmbEmailRule('testfield',$error="my custom error");
+
+    $dataspace = new lmbSet();
+    $dataspace->set('testfield', 'не@правильное.мыло');
+
+    $this->error_list->expectOnce('addError',
+                                  array($error,
+                                  array('Field'=>'testfield'),
+                                  array()));
+
+    $rule->validate($dataspace, $this->error_list);
+  }
 }
 
 

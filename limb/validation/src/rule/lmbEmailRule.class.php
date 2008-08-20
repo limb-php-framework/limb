@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 /**
  * Checks that field value is a valid Email address.
  * @package validation
- * @version $Id: lmbEmailRule.class.php 6396 2007-10-08 13:13:58Z 3dmax $
+ * @version $Id: lmbEmailRule.class.php 7147 2008-08-20 06:32:33Z vasiatka $
  */
 class lmbEmailRule extends lmbDomainRule
 {
@@ -25,6 +25,12 @@ class lmbEmailRule extends lmbDomainRule
     }
     else
       $this->error('{Field} must contain a @ character.');
+  }
+  
+  function error($message, $values = array(), $i18n_params = array())
+  {
+    if($this->is_valid)
+      parent::error($message, $values = array(), $i18n_params = array());
   }
 
   protected function _checkUser($value)
