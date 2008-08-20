@@ -12,4 +12,4 @@
  * @version $Id$
  */
 require_once('limb/core/common.inc.php');
-
+require_once(dirname(__FILE__) . '/toolkit.inc.php');
