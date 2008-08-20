@@ -101,7 +101,9 @@ class lmbCollection implements lmbCollectionInterface
   }
 
   function next()
-  {
+  { 
+    $this->_setupIteratedDataset();
+       
     $values = next($this->iteratedDataset);
     $this->current = $this->_getCurrent($values);
     $this->key = key($this->iteratedDataset);

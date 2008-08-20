@@ -193,6 +193,14 @@ class lmbCollectionTest extends UnitTestCase
     $this->assertTrue(isset($arr['C']));
     $this->assertEqual($arr['C'], array('x' => 'C'));
   }
+  
+  function testOffset_ProperInitializationOnNextMethodCall()
+  {
+    $collection = new lmbCollection();    
+    $collection->add($some_object = new lmbSet());
+    foreach ($collection as $key => $value)
+      $collection[$key] = $value;    
+  }
 
 }
 
