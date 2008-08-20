@@ -11,7 +11,7 @@
  * class lmbRoutes.
  *
  * @package web_app
- * @version $Id: lmbRoutes.class.php 7138 2008-08-04 07:31:09Z conf $
+ * @version $Id: lmbRoutes.class.php 7148 2008-08-20 07:03:49Z conf $
  */
 class lmbRoutes
 {
@@ -114,7 +114,7 @@ class lmbRoutes
     $index = 0;
     foreach($matched_params as $matched_item)
       if($param_name = $named_params[$index++])
-        $result[$param_name] = $matched_item;
+        $result[$param_name] = urldecode($matched_item);
 
     return $result;
   }

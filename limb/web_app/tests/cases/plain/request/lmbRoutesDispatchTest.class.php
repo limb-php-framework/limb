@@ -202,7 +202,25 @@ class lmbRoutesDispatchTest extends UnitTestCase
     $this->assertEqual($result['action'], 'last_articles');
     $this->assertFalse(isset($result['year']));
   }
-
+    
+  function testUrlWithUrlEncodedParams()
+  {      
+    $config = array(
+      array(
+        'path' => '/:controller/:action/:email',
+        'requirements' => array(
+          'email' => '/^[a-z@.-]+$/i'
+        )
+      )
+    );
+    $routes = new lmbRoutes($config);
+    $result = $routes->dispatch('/blog/display/bob-sinclar%40yahoo.com');
+    
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'display');
+    $this->assertEqual($result['email'], 'bob-sinclar@yahoo.com');        
+  }
+  
   function testApplyDispatchFilter()
   {
     $config = array(array('path' => '/:controller/:action',
