@@ -14,17 +14,19 @@ lmb_require('limb/core/src/lmbSet.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7104 2008-07-09 14:46:44Z slevin $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7153 2008-08-21 06:36:14Z pachanga $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
   protected $class_path;
   protected $conn;
+  protected $lazy_attributes;
 
-  function __construct($record_set, $class_path, $conn = null)
+  function __construct($record_set, $class_path, $conn = null, $lazy_attributes = null)
   {
     $this->class_path = $class_path;
     $this->conn = $conn;
+    $this->lazy_attributes = $lazy_attributes;
 
     parent :: __construct($record_set);
   }
@@ -34,10 +36,10 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     if(!$record = parent :: current())
       return null;
 
-    return self :: createObjectFromRecord($record, $this->class_path, $this->conn);
+    return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
   }
 
-  static function createObjectFromRecord($record, $default_class_name, $conn)
+  static function createObjectFromRecord($record, $default_class_name, $conn, $lazy_attributes = null)
   {
     if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
     {
@@ -50,6 +52,8 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
       $class_name = $default_class_name;
 
     $object = new $class_name(null, $conn);
+    if(is_array($lazy_attributes))
+      $object->setLazyAttributes($lazy_attributes);
 
     $object->loadFromRecord($record);
 
@@ -61,7 +65,7 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     if(!$record = parent :: at($pos))
       return null;
 
-    return self :: createObjectFromRecord($record, $this->class_path, $this->conn);
+    return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
   }
 
   function getIds()

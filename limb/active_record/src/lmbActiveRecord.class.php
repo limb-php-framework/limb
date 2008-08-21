@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7124 2008-07-18 21:02:24Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7153 2008-08-21 06:36:14Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -546,7 +546,6 @@ class lmbActiveRecord extends lmbObject
     try
     {
       return parent :: __call($method, $args);
-
     }
     catch(lmbNoSuchMethodException $e)
     {
@@ -590,6 +589,11 @@ class lmbActiveRecord extends lmbObject
   function getLazyAttributes()
   {
     return $this->_lazy_attributes;
+  }
+
+  function setLazyAttributes($lazy_attributes)
+  {
+    $this->_lazy_attributes = $lazy_attributes;
   }
 
   function has($property)
@@ -1394,11 +1398,28 @@ class lmbActiveRecord extends lmbObject
    *  @param integer object id
    *  @return object
    */
-  protected function _findById($id, $throw_exception)
+  protected function _findById($id_or_arr, $throw_exception)
   {
-    if($object = self :: find(get_class($this),
-                              array('first', 'criteria' => $this->_db_conn->quoteIdentifier($this->_primary_key_name) . '=' . (int)$id),
-                              $this->_db_conn))
+    if(is_array($id_or_arr))
+    {
+      if(!isset($id_or_arr['id']))
+        throw new lmbARException("Criteria attribute 'id' is required for findById");
+
+      $params = $id_or_arr;
+      //avoiding possible recursion
+      unset($params['id']);
+      array_unshift($params, 'first');
+      $id = (int)$id_or_arr['id'];
+      $params['criteria'] = $this->_db_conn->quoteIdentifier($this->_primary_key_name) . '=' . $id;
+    }
+    else
+    {
+      $id = (int)$id_or_arr;
+      $params = array('first', 'criteria' => $this->_db_conn->quoteIdentifier($this->_primary_key_name) . '=' . $id);
+    }
+
+    //TODO: use instance _find method here instead
+    if($object = self :: find(get_class($this), $params, $this->_db_conn))
       return $object;
     elseif($throw_exception)
       throw new lmbARNotFoundException(get_class($this), $id);
@@ -1569,7 +1590,7 @@ class lmbActiveRecord extends lmbObject
 
     if(self :: _isCriteria($magic_params))
       $params = array('criteria' => $magic_params);
-    elseif(is_int($magic_params))
+    elseif(is_int($magic_params) || (is_array($magic_params) && isset($magic_params['id'])))
       return self :: findById($class_name, $magic_params, false, $conn);
     elseif(is_null($magic_params))
       $params = array();
@@ -1582,6 +1603,7 @@ class lmbActiveRecord extends lmbObject
       throw new lmbARException("Could not find class '$class_name'");
 
     $obj = new $class_name(null, $conn);
+
     return $obj->_find($params);
   }
   /**
@@ -1592,7 +1614,13 @@ class lmbActiveRecord extends lmbObject
    */
   protected function _find($params = array())
   {
-    $query = lmbARQuery :: create(get_class($this), $params, $this->_db_conn);
+    if(isset($params['fields']) && is_array($params['fields']))
+    {
+      $this->_lazy_attributes = array_diff($this->_db_table_fields, $params['fields']);
+      unset($this->_lazy_attributes[$this->getPrimaryKeyName()]);
+    }
+
+    $query = lmbARQuery :: create($this, $params, $this->_db_conn);
     $rs = $query->fetch();
 
     $return_first = false;
