@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7153 2008-08-21 06:36:14Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7159 2008-08-22 21:42:14Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1363,7 +1363,7 @@ class lmbActiveRecord extends lmbObject
    */
   protected function _findFirst($params)
   {
-    return self :: find(get_class($this), $params, $this->_db_conn);
+    return $this->_find($params);
   }
   /**
    *  Finds one instance of object in database using object id, this method is actually a wrapper around find()
@@ -1418,8 +1418,7 @@ class lmbActiveRecord extends lmbObject
       $params = array('first', 'criteria' => $this->_db_conn->quoteIdentifier($this->_primary_key_name) . '=' . $id);
     }
 
-    //TODO: use instance _find method here instead
-    if($object = self :: find(get_class($this), $params, $this->_db_conn))
+    if($object = $this->_find($params))
       return $object;
     elseif($throw_exception)
       throw new lmbARNotFoundException(get_class($this), $id);
@@ -1468,7 +1467,7 @@ class lmbActiveRecord extends lmbObject
     else
     {
       $params['criteria'] = new lmbSQLFieldCriteria($this->_db_table_name .'.'.$this->_primary_key_name, $ids, lmbSQLFieldCriteria :: IN);
-      return self :: find(get_class($this), $params, $this->_db_conn);
+      return $this->_find($params);
     }
   }
   /**
@@ -1479,7 +1478,7 @@ class lmbActiveRecord extends lmbObject
    */
   function getDataset($magic_params = array())
   {
-    return self :: find(get_class($this), $magic_params, $this->_db_conn);
+    return $this->_find($magic_params);
   }
   /**
    *  Finds a collection of objects in database using raw SQL
@@ -1709,7 +1708,7 @@ class lmbActiveRecord extends lmbObject
    */
   function loadById($id)
   {
-    $object = self :: findById(get_class($this), $id, true, $this->_db_conn);
+    $object = $this->_findById($id, true);
     $this->importRaw($object->exportRaw());
     $this->_resetDirty();
     $this->_is_new = false;
