@@ -219,22 +219,42 @@ class lmbAcl
       throw new lmbAclException('Resource not exist', array('resource' => $resource));
   }
   
+  protected function _mergeRoles($role1, $role2)
+  {
+    if (!is_array($role1))
+      $role1 = array($role1);
+    
+    if (!is_array($role2))
+      $role2 = array($role2);
+    
+    return array_unique(array_merge($role1, $role2));
+  }
+  
   protected function _processRoleAndResource($role, $resource)
   {
+    $roles = array();
+    
     if($resource instanceof lmbRolesResolverInterface)
       if($resolved_role = $resource->getRoleFor($role))
-        $role = $resolved_role;
-        
+        $roles = $this->_mergeRoles($roles, $resolved_role);
+   
     if($role instanceof lmbRoleProviderInterface)
-      $role = $role->getRole();
-
-    $this->_checkRole($role);
-        
+      $roles = $this->_mergeRoles($roles, $role->getRole());
+     
+    // role is not an object, it's a raw role by itself
+    if (!$roles)
+      $roles = $this->_mergeRoles($roles, $role);
+            
+    foreach($roles as $role)
+    {
+      $this->_checkRole($role);  
+    }
+    
     if($resource instanceof lmbResourceProviderInterface )
       $resource = $resource->getResource();
     
     $this->_checkResource($resource);
-    return array($role, $resource);
+    return array($roles, $resource);
   }
 
   function isAllowed($role, $resource = null, $privilege = null)
@@ -251,27 +271,30 @@ class lmbAcl
   
   function _hasRule($rule, $role, $resource = null, $privilege = null)
   {
-    list($role, $resource) = $this->_processRoleAndResource($role, $resource);
-
-    if($this->_isExistPrivilegeRule($role, $resource, $privilege))
-      return ($rule === $this->_getPrivilegeRule($role, $resource, $privilege));
-
-    if($this->_isExistResourceRule($role, $resource))
-      return ($rule === $this->_getResourceRule($role, $resource));
-
-    if($this->_isExistRoleRule($role, $privilege))
-      return ($rule === $this->_getRoleRule($role, $privilege));      
-        
-    foreach($this->getRoleInherits($role) as $inherit)
-      if($this->_hasRule($rule, $inherit, $resource, $privilege))
-        return true;
-        
-    if(!is_null($resource))
-      foreach($this->getResourceInherits($resource) as $inherit)
-        if($this->_hasRule($rule, $role, $inherit, $privilege))
-        // if no conficts with this rule, apply resource inheritance
-          if (!$this->_hasRule(!$rule, $role, $resource, $privilege))
-            return true;
+    list($roles, $resource) = $this->_processRoleAndResource($role, $resource);
+    
+    foreach($roles as $role) 
+    {
+      if($this->_isExistPrivilegeRule($role, $resource, $privilege))
+        return ($rule === $this->_getPrivilegeRule($role, $resource, $privilege));
+  
+      if($this->_isExistResourceRule($role, $resource))
+        return ($rule === $this->_getResourceRule($role, $resource));
+  
+      if($this->_isExistRoleRule($role, $privilege))
+        return ($rule === $this->_getRoleRule($role, $privilege));      
+          
+      foreach($this->getRoleInherits($role) as $inherit)
+        if($this->_hasRule($rule, $inherit, $resource, $privilege))
+          return true;
+          
+      if(!is_null($resource))
+        foreach($this->getResourceInherits($resource) as $inherit)
+          if($this->_hasRule($rule, $role, $inherit, $privilege))
+          // if no conficts with this rule, apply resource inheritance
+            if (!$this->_hasRule(!$rule, $role, $resource, $privilege))
+              return true;      
+    }
       
     return false;
   }

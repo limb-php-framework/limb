@@ -51,10 +51,17 @@ class Acl_Tests_Article implements lmbRolesResolverInterface, lmbResourceProvide
 
   function getRoleFor($object)
   {
+    $roles = array();   
+    
     if('Bob' === $object->name)
-      return 'owner';
+      $roles[] = 'owner';
     if('Valtazar' === $object->name)
-      return 'approver';
+    {
+      $roles[] = 'approver';
+      $roles[] = 'daemon';
+    }      
+      
+    return $roles;
   }
   
   function getResource()
@@ -86,10 +93,10 @@ class lmbAclObjectsFeatureTest extends UnitTestCase
     $article = new Acl_Tests_Article();
 
     $user = new Acl_Tests_Member('Bob');
-    $this->assertEqual('owner', $article->getRoleFor($user));
+    $this->assertEqual(array('owner'), $article->getRoleFor($user));
 
     $user = new Acl_Tests_Member('Valtazar');
-    $this->assertEqual('approver', $article->getRoleFor($user));
+    $this->assertEqual(array('approver', 'daemon'), $article->getRoleFor($user));
   }
 
   function testAclDynamicResolving()
@@ -108,6 +115,26 @@ class lmbAclObjectsFeatureTest extends UnitTestCase
     $this->assertFalse($this->acl->isAllowed($member, $article, 'edit'));
 
     $this->assertTrue($this->acl->isAllowed($owner, $article, 'edit'));
+  }
+  
+  function testMultipleRoles()
+  {
+    $article = new Acl_Tests_Article();
+
+    $approver = new Acl_Tests_Member('Valtazar');  
+    
+    $this->acl->addRole('member');
+            
+    $this->acl->addRole('daemon');
+    $this->acl->addRole('approver');
+        
+    $this->acl->addResource('article');
+    
+    $this->acl->allow('approver', 'article', 'edit');
+    $this->acl->allow('daemon', 'article', 'burn');
+  
+    $this->assertTrue($this->acl->isAllowed($approver, $article, 'edit'));
+    $this->assertTrue($this->acl->isAllowed($approver, $article, 'burn'));
   }
 
 }
