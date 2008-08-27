@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7159 2008-08-22 21:42:14Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7161 2008-08-27 07:38:33Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -505,11 +505,17 @@ class lmbActiveRecord extends lmbObject
         $object->save($this->_error_list);
       $object_id = $object->getId();
       if($this->_getRaw($info['field']) != $object_id)
+      {
         $this->_setRaw($info['field'], $object->getId());
+        $this->_markDirtyProperty($info['field']);    
+      }
     }
     elseif(is_null($object) && $this->isDirtyProperty($property) &&
            isset($info['can_be_null']) && $info['can_be_null'])
+    {
       $this->_setRaw($info['field'], null);
+      $this->_markDirtyProperty($info['field']);
+    }
   }
 
   protected function _savePostRelations()
@@ -797,6 +803,13 @@ class lmbActiveRecord extends lmbObject
   {
     return isset($this->_dirty_props[$property]);
   }
+  
+  function resetPropertyDirtiness($property)
+  {
+    if(isset($this->_dirty_props[$property]))
+      unset($this->_dirty_props[$property]);
+  }
+  
   /**
    *  Maps property name to "addTo" form, e.g. "property_name" => "addToPropertyName"
    *  @param string
@@ -999,7 +1012,7 @@ class lmbActiveRecord extends lmbObject
 
         $this->_setAutoTimes();
 
-        $this->_updateDbRecord($this->_propertiesToDbFields());
+        $this->_updateDbRecord($this->_propertiesToDbFields($only_dirty_properties = true));
 
         $this->_onAfterUpdate();
 
@@ -1058,7 +1071,8 @@ class lmbActiveRecord extends lmbObject
 
   protected function _updateDbRecord($values)
   {
-    return $this->_db_table->updateById($this->id, $values);
+    if(count($values))
+      return $this->_db_table->updateById($this->id, $values);
   }
 
   protected function _insertDbRecord($values)
@@ -1066,9 +1080,18 @@ class lmbActiveRecord extends lmbObject
     return $this->_db_table->insert($values);
   }
 
-  protected function _propertiesToDbFields()
+  protected function _propertiesToDbFields($only_dirty_properties = false)
   {
     $fields = $this->export();
+    
+    if($only_dirty_properties)
+    {
+      foreach($fields as $field => $value)
+      {
+        if(!$this->isDirtyProperty($field))
+          unset($fields[$field]);
+      }
+    }
 
     if($this->isNew() && $this->_isInheritable())
       $fields[self :: $_inheritance_field] = $this->_getInheritancePath();
@@ -1091,7 +1114,10 @@ class lmbActiveRecord extends lmbObject
       $this->_setRaw(self :: $_ctime_field, time());
 
     if($this->_hasUpdateTime())
+    {
       $this->_setRaw(self :: $_utime_field, time());
+      $this->_markDirtyProperty(self :: $_utime_field);
+    }
   }
 
   protected function _hasUpdateTime()

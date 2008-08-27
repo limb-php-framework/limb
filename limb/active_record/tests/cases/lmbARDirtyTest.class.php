@@ -75,6 +75,45 @@ class lmbARDirtyTest extends lmbARBaseTestCase
     ob_end_clean();
     $this->assertEqual($str, '|on_before_save||on_after_save|');
   }
+  
+  function testUpdateOnlyDirtyFieldsInDbForNotNewObject()
+  {
+    $object = new TestOneTableObject();
+    $object->setAnnotation('some annotation');
+    $object->setContent($initial_content = 'some content');
+    $object->save();
+    
+    $object->setAnnotation('some other annotation');
+    $object->setContent('some other content');
+    
+    $object->resetPropertyDirtiness('content'); // suppose we don't want to save this field
+    
+    $object->save();
+    
+    $loaded_object = lmbActiveRecord :: findById('TestOneTableObject', $object->getId());
+    $this->assertEqual($loaded_object->getAnnotation(), $object->getAnnotation());
+    $this->assertEqual($loaded_object->getContent(), $initial_content);
+  }
+
+  function testUpdateWhileNoDirtyFields()
+  {
+    $object = new TestOneTableObject();
+    $object->setAnnotation($initial_annotation = 'some annotation');
+    $object->setContent($initial_content = 'some content');
+    $object->save();
+    
+    $object->setAnnotation('some other annotation');
+    $object->setContent('some other content');
+    
+    $object->resetPropertyDirtiness('content');
+    $object->resetPropertyDirtiness('annotation');
+    
+    $object->save();
+    
+    $loaded_object = lmbActiveRecord :: findById('TestOneTableObject', $object->getId());
+    $this->assertEqual($loaded_object->getAnnotation(), $initial_annotation);
+    $this->assertEqual($loaded_object->getContent(), $initial_content);
+  }
 
   function testSettingSameTablePropertyValueDoesntMakeObjectDirty() 
   {
