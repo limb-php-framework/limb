@@ -19,7 +19,7 @@ class lmbCliInputTest extends UnitTestCase
 
     $this->assertNull($cli->getOption('f'));
     $this->assertNull($cli->getOptionValue('f'));
-    $this->assertFalse($cli->isOptionPresent('f'));
+    $this->assertFalse($cli->hasOption('f'));
     $this->assertEqual($cli->getOptionValue('f', 'wow'), 'wow');
     $this->assertNull($cli->getArgument(0));
     $this->assertEqual($cli->getArgument(0, 'wow'), 'wow');
@@ -162,6 +162,41 @@ class lmbCliInputTest extends UnitTestCase
     $this->assertEqual($cli->getOptionValue('z'), 3);
   }
 
+  function testLongOptionsWithNonAlphabeticChars()
+  {
+    $argv = array('foo.php', '--foo-Bar=1', '--bar-foo_now', 2, '--zoo', 3);
+
+    $cli = new lmbCliInput('f|foo-Bar=;b|bar-foo_now=;z|zoo=');
+
+    $this->assertTrue($cli->read($argv));
+    $this->assertEqual($cli->getOptionValue('f'), 1);
+    $this->assertEqual($cli->getOptionValue('b'), 2);
+    $this->assertEqual($cli->getOptionValue('z'), 3);
+  }
+
+  function testShortOptionsWithUppercaseChars()
+  {
+    $argv = array('foo.php', '-B', '-C', 2);
+
+    $cli = new lmbCliInput('B;C=');
+
+    $this->assertTrue($cli->read($argv));
+    $this->assertTrue($cli->hasOption('B'));
+    $this->assertEqual($cli->getOptionValue('C'), 2);
+  }
+
+  function testShortOptionsWithNumberChars()
+  {
+    $argv = array('foo.php', '-1', '-2');
+
+    $cli = new lmbCliInput('1;2;3');
+
+    $this->assertTrue($cli->read($argv));
+    $this->assertTrue($cli->hasOption('1'));
+    $this->assertTrue($cli->hasOption('2'));
+    $this->assertFalse($cli->hasOption('3'));
+  }
+
   function testReadMixedOptionsArgsComeFirst()
   {
     $argv = array('foo.php', 'arg1', '--opt1', 'opt1', 'arg2');
@@ -179,10 +214,10 @@ class lmbCliInputTest extends UnitTestCase
     $cli = new lmbCliInput('i;b;k');
 
     $this->assertTrue($cli->read($argv));
-    $this->assertTrue($cli->isOptionPresent('i'));
-    $this->assertTrue($cli->isOptionPresent('b'));
-    $this->assertTrue($cli->isOptionPresent('k'));
-    $this->assertFalse($cli->isOptionPresent('z'));
+    $this->assertTrue($cli->hasOption('i'));
+    $this->assertTrue($cli->hasOption('b'));
+    $this->assertTrue($cli->hasOption('k'));
+    $this->assertFalse($cli->hasOption('z'));
   }
 
   function testOptionsGluingWithLastValue()
@@ -203,7 +238,7 @@ class lmbCliInputTest extends UnitTestCase
     $cli = new lmbCliInput();
     $cli->strictMode(false);
     $this->assertTrue($cli->read($argv));
-    $this->assertTrue($cli->isOptionPresent('opt1'));
+    $this->assertTrue($cli->hasOption('opt1'));
     $this->assertEqual($cli->getArguments(), array('arg1', 'arg2', 'arg3'));
   }
 }

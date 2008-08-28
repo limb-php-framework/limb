@@ -11,7 +11,7 @@
  * class lmbCliInput.
  *
  * @package cli
- * @version $Id: lmbCliInput.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbCliInput.class.php 7162 2008-08-28 06:12:44Z pachanga $
  */
 class lmbCliInput
 {
@@ -98,12 +98,18 @@ class lmbCliInput
     }
   }
 
-  function isOptionPresent($name)
+  function hasOption($name)
   {
     if($option = $this->getOption($name))
       return $option->isPresent();
 
     return false;
+  }
+
+  //@obsolete
+  function isOptionPresent($name)
+  {
+    return $this->hasOption($name);
   }
 
   function getOptionValue($name, $default = null)
@@ -162,7 +168,7 @@ class lmbCliInput
       if(!$item)
         continue;
 
-      if(preg_match('~^(?:((\w)\|(\w+))|(\w\b)|(\w+)?)(=)?~', $item, $m))
+      if(preg_match('~^(?:((\w)\|([a-zA-Z0-9-_]+))|(\w\b)|([a-zA-Z0-9-_]+)?)(=)?~', $item, $m))
       {
         $req = isset($m[6]) ? lmbCliOption :: VALUE_REQ : lmbCliOption :: VALUE_NO;
 
@@ -172,9 +178,13 @@ class lmbCliInput
           $opt = new lmbCliOption($m[4], $req);
         elseif($m[5])
           $opt = new lmbCliOption($m[5], $req);
+        else
+          throw new lmbCliException("Invalid option descriptor '$item'");
 
         $opts[] = $opt;
       }
+      else
+        throw new lmbCliException("Invalid option descriptor '$item'");
     }
     return $opts;
   }
@@ -232,7 +242,7 @@ class lmbCliInput
 
   protected function _extractLongOption($arg, &$option, &$value = null)
   {
-    if(!preg_match('~^--([a-z][a-z0-9]+)(=(.*))?$~', $arg, $m))
+    if(!preg_match('~^--([a-zA-Z0-9][-_a-zA-Z0-9]+)(=(.*))?$~', $arg, $m))
       return false;
 
     $option = $m[1];
@@ -242,7 +252,7 @@ class lmbCliInput
 
   protected function _extractShortOption($arg, &$option, &$value = null)
   {
-    if(!preg_match('~^-([a-z][^=\s]*)((=|\s+)(.*))?$~', $arg, $m))
+    if(!preg_match('~^-([a-zA-Z0-9][^=\s]*)((=|\s+)(.*))?$~', $arg, $m))
       return false;
 
     $option = $m[1];
