@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbCriteriaQuery.
  *
  * @package dbal
- * @version $Id: lmbCriteriaQuery.class.php 6879 2008-03-31 19:58:19Z pachanga $
+ * @version $Id: lmbCriteriaQuery.class.php 7165 2008-08-29 11:15:26Z serega $
  */
 class lmbCriteriaQuery extends lmbTemplateQuery
 {
@@ -23,6 +23,7 @@ class lmbCriteriaQuery extends lmbTemplateQuery
   function addCriteria($criteria)
   {
     $this->_criterias[] = lmbSQLCriteria :: objectify($criteria);
+    $this->_registerHint('where');
     return $this;
   }
 

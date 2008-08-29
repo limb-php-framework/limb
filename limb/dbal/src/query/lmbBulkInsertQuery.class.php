@@ -24,6 +24,9 @@ class lmbBulkInsertQuery extends lmbTemplateQuery
   {
     $this->_table = $table;
     parent :: __construct("INSERT INTO %table% (%fields%) VALUES %values%", $conn);
+    $this->_registerHint('table');
+    $this->_registerHint('values');
+    $this->_registerHint('fields');
   }
 
   function addSet($set)

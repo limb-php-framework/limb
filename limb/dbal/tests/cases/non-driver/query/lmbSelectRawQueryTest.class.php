@@ -36,7 +36,6 @@ class lmbSelectRawQueryTest extends UnitTestCase
   function testReplaceFieldsHintByDefault()
   {
     $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
-
     $this->assertEqual($sql->toString(), 'SELECT * FROM test');
   }
 
@@ -226,12 +225,20 @@ class lmbSelectRawQueryTest extends UnitTestCase
                        "SELECT * FROM test \nWHERE c1=:c1:");
   }
 
-  function testAddConditionNoHint()
+  function testAddConditionNoHintThrowsException()
   {
     $sql = new lmbSelectRawQuery("SELECT * FROM test WHERE 1=1", $this->conn);
 
     $sql->addCriteria(new lmbSQLRawCriteria('c1=:c1:'));
-    $this->assertEqual($sql->toString(), "SELECT * FROM test WHERE 1=1");
+    try
+    {
+      $sql->toString();
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e)
+    {
+      $this->assertTrue(true);
+    }
   }
 
   function testAddSeveralConditions()
@@ -515,17 +522,31 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $this->assertEqual($rs->count(), 1);
   }
 
-  /*function testQueryWithLimit()
+  function testQueryWithLimit()
   {
     $sql = new lmbSelectRawQuery('SELECT %fields% FROM %tables% %left_join% %where% %group% %having% %order% LIMIT 10',
-                                 lmbToolkit :: instance()->getDefaultDbConnection());
+                                 $this->conn);
 
     $string = $sql->addTable('test_db_table')->field('id')->where('id=2')->toString();
-    
-    $this->assertEqual($string,
-                      'SELECT "id" FROM "test_db_table"  WHERE id=2    LIMIT 10');
+    $this->assertEqual($string, "SELECT 'id' FROM 'test_db_table'  WHERE id=2    LIMIT 10");
+  }
+  
+  function testThrowExceptionOnActionWIthNotExistingPlaholder()
+  {
+    $sql = new lmbSelectRawQuery("SELECT * FROM test ", $this->conn);
 
-    //$rs = $sql->fetch();
-  }*/
+    $sql->addTable('test2');
+    $sql->addTable('test3');
 
+    try
+    {
+      $sql->toString();
+      $this->assertTrue(false, 'An exception should be thrown');
+    }
+    catch(lmbException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
+  
 }

@@ -39,6 +39,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   function addField($field, $alias = null)
   {
     $this->_fields[$field] = $alias;
+    $this->_registerHint('fields');
     return $this;
   }
 
@@ -55,20 +56,22 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   function setFields($fields)
   {
     $this->_fields = array();
-    foreach($fields as $alias => $field);
-    $this->_fields[$field] = $alias;
+    foreach($fields as $alias => $field)
+      $this->_fields[$field] = $alias;
     return $this;
   }
 
   function addRawField($field, $alias = null)
   {
     $this->_raw_fields[$field] = $alias;
+    $this->_registerHint('fields');
     return $this;
   }
 
   function addTable($table, $alias = null)
   {
     $this->_tables[] = array($table, $alias);
+    $this->_registerHint('tables');
     return $this;
   }
 
@@ -95,13 +98,14 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     else
       $this->_order[] = $this->_conn->quoteIdentifier($field) . " $type";
 
+    $this->_registerHint('order');
     return $this;
   }
 
   function addRawOrder($field)
   {
     $this->_order[] = $field;
-
+    $this->_registerHint('order');
     return $this;
   }
 
@@ -118,6 +122,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   function addGroupBy($group)
   {
     $this->_group_by[] = $group;
+    $this->_registerHint('group');
     return $this;
   }
 
@@ -134,6 +139,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   function addHaving($criteria)
   {
     $this->_having[] = lmbSQLCriteria :: objectify($criteria);
+    $this->_registerHint('having');
     return $this;
   }
 
@@ -157,6 +163,7 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
     $this->_left_join_constraints[] = array('table' => $table,
                                             'connect_by' => $connect_by,
                                             'alias' => $table_alias);
+    $this->_registerHint('left_join');    
     return $this;
   }
 
@@ -168,6 +175,14 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
   function getJoins()
   {
     return $this->_left_join_constraints;
+  }
+  
+  function toString()
+  {
+    if(!count($this->_fields) && !count($this->_raw_fields) && !$this->_selectFieldsExists() && $this->_fromClauseExists())
+      $this->addRawField('*');
+    
+    return parent :: toString();
   }
 
   function getRecordSet()
@@ -367,21 +382,15 @@ class lmbSelectRawQuery extends lmbCriteriaQuery
 
   protected function _selectTablesExists()
   {
-    return preg_match('~(?<=\Wfrom)\s+\S+(where|order|group)?~si', $this->_getNoHintsSQL());
+    if(!preg_match('~(?<=\Wfrom)((.*?)(?=(where|order|group|limit))|.*)~si', $this->_getNoHintsSQL(), $matches))
+      return false;
+    
+    return (boolean)strlen(trim($matches[1]));
   }
 
-  protected function _whereClauseExists(&$args = '')
+  protected function _fromClauseExists()
   {
-    //primitive check if WHERE was already in sql
-    //!!!make it better later
-    if(preg_match('~(?<=\Wfrom).+where\s+(.*)~si', $this->_getNoHintsSQL(), $matches))
-    {
-      if(preg_match('~([a-zA-Z].*)(group|order)?$~si', $matches[1], $args_matches))
-        $args = $args_matches[1];
-
-      return true;
-    }
-    return false;
+    return preg_match('~from\s+~si', $this->_getNoHintsSQL());
   }
 }
 

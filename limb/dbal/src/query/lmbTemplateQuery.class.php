@@ -11,14 +11,14 @@
  * class lmbTemplateQuery.
  *
  * @package dbal
- * @version $Id: lmbTemplateQuery.class.php 6879 2008-03-31 19:58:19Z pachanga $
+ * @version $Id: lmbTemplateQuery.class.php 7165 2008-08-29 11:15:26Z serega $
  */
 class lmbTemplateQuery
 {
   protected $_template_sql;
   protected $_no_hints_sql;
   protected $_conn;
-  protected $_hints;
+  protected $_hints = array();
 
   function __construct($template_sql, $conn=null)
   {
@@ -27,22 +27,24 @@ class lmbTemplateQuery
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
     $this->_conn = $conn;
   }
+  
+  function _registerHint($hint)
+  {
+    $this->_hints[$hint] = $hint;
+  }
 
   function getConnection()
   {
     return $this->_conn;
   }
 
-  protected function _declareHints()
+  protected function _findHintsInTemplateSql()
   {
-    if($this->_hints !== null)
-      return $this->_hints;
-
     if(preg_match_all('~%([a-z_]+)%~', $this->_template_sql, $m))
-      $this->_hints = $m[1];
+      $result = $m[1];
     else
-      $this->_hints = array();
-    return $this->_hints;
+      $result = array();
+    return $result;
   }
 
   function _wrapHint($hint)
@@ -50,20 +52,28 @@ class lmbTemplateQuery
     return "%$hint%";
   }
 
-  function _getWrappedHints()
+  function _findAndWrapHintsFromTemplateSql()
   {
-    return array_map(array($this, '_wrapHint'), $this->_declareHints());
+    return array_map(array($this, '_wrapHint'), $this->_findHintsInTemplateSql());
   }
 
   function _fillHints()
   {
-    $hints = $this->_declareHints();
     $result = array();
-    foreach($hints as $hint)
+    foreach($this->_hints as $hint)
     {
       $method = '_get' . lmb_camel_case($hint) . 'Hint';
-      $result[$this->_wrapHint($hint)] = $this->$method();
+      $wrapped_hint = $this->_wrapHint($hint);
+      if(!strpos($this->_template_sql, $wrapped_hint))
+        throw new lmbException('Hint ' . $wrapped_hint . ' is not found in template sql "' . $this->_template_sql . '"');
+      $result[$wrapped_hint] = $this->$method();
     }
+    
+    $hints_in_template_sql = $this->_findAndWrapHintsFromTemplateSql();
+    foreach($hints_in_template_sql as $hint)
+      if(!isset($result[$hint]))
+        $result[$hint] = "";
+    
     return $result;
   }
 
@@ -91,7 +101,7 @@ class lmbTemplateQuery
       return $this->_no_hints_sql;
 
     $result = array();
-    foreach($this->_getWrappedHints() as $hint)
+    foreach($this->_findAndWrapHintsFromTemplateSql() as $hint)
       $result[$hint] = '';
 
     $this->_no_hints_sql = strtr($this->_template_sql, $result);

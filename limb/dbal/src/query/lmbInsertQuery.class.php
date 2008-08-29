@@ -14,7 +14,7 @@ define('LIMB_INSERT_QUERY_NON_VALUE', uniqid());
  * class lmbInsertQuery.
  *
  * @package dbal
- * @version $Id: lmbInsertQuery.class.php 6221 2007-08-07 07:24:35Z pachanga $
+ * @version $Id: lmbInsertQuery.class.php 7165 2008-08-29 11:15:26Z serega $
  */
 class lmbInsertQuery extends lmbTemplateQuery
 {
@@ -26,11 +26,14 @@ class lmbInsertQuery extends lmbTemplateQuery
   {
     $this->_table = $table;
     parent :: __construct("INSERT INTO %table% (%fields%) VALUES (%values%)", $conn);
+    $this->_registerHint('table');
+    $this->_registerHint('values');
   }
 
   function addField($field, $value = LIMB_INSERT_QUERY_NON_VALUE)
   {
     $this->_fields[$field] = $value;
+    $this->_registerHint('fields');
   }
 
   protected function _getTableHint()
