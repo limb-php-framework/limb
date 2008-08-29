@@ -514,4 +514,18 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $rs = $sql->fetch();
     $this->assertEqual($rs->count(), 1);
   }
+
+  /*function testQueryWithLimit()
+  {
+    $sql = new lmbSelectRawQuery('SELECT %fields% FROM %tables% %left_join% %where% %group% %having% %order% LIMIT 10',
+                                 lmbToolkit :: instance()->getDefaultDbConnection());
+
+    $string = $sql->addTable('test_db_table')->field('id')->where('id=2')->toString();
+    
+    $this->assertEqual($string,
+                      'SELECT "id" FROM "test_db_table"  WHERE id=2    LIMIT 10');
+
+    //$rs = $sql->fetch();
+  }*/
+
 }
