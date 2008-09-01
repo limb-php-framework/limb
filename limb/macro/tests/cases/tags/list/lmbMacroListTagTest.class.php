@@ -174,6 +174,23 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'List:BobTodd||Marry!');
   }
 
+  function testListWithGlueWithStepAsVariablee()
+  {
+    $list = '{{list using="$#list" as="$item"}}List:'.
+            '{{list:item}}<?=$item?>{{list:glue step="{$#var_step}"}}||{{/list:glue}}'.
+            '{{/list:item}}!' .
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('Bob', 'Todd', 'Marry'));
+    $macro->set('var_step', 2);
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'List:BobTodd||Marry!');
+  }
+
   function testTwoDependentGlues()
   {
     $list = '{{list using="$#list" as="$item"}}List#'.

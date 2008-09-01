@@ -19,6 +19,7 @@ class lmbMacroListGlueTag extends lmbMacroTag
 {
   protected $step_var;
   protected $helper_var;
+  protected $pregenerated_attributes = false;
 
   function preParse($compiler)
   {
@@ -29,9 +30,20 @@ class lmbMacroListGlueTag extends lmbMacroTag
       $this->set('step', $this->get('every'));
   }
   
+  function _preGenerateAttributes($code_writer)
+  {
+    if($this->pregenerated_attributes)
+      return;
+    
+    $this->pregenerated_attributes = true;
+    parent :: _preGenerateAttributes($code_writer);
+  }
+  
   // called by parent {{list}} tag (lmbMacroListTag)
   function generateInitCode($code)
   {
+    $this->_preGenerateAttributes($code);
+    
     $step_var = $this->getStepVar($code);
     $helper_var = $this->getHelperVar($code);
     
@@ -40,8 +52,8 @@ class lmbMacroListGlueTag extends lmbMacroTag
     $code->writePHP($helper_var . " = new lmbMacroListGlueHelper();\n");
     $code->writePHP("}\n");
 
-    if($step = $this->get('step'))
-      $code->writePHP($step_var . " = {$step};\n");
+    if($this->has('step'))
+      $code->writePHP($step_var . " = " . $this->get('step') . ";\n");
     else
       $code->writePHP($step_var . " = 1;\n");
 
