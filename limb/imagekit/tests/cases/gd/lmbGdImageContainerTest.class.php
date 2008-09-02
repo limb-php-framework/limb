@@ -80,6 +80,26 @@ class lmbGdImageContainerTest extends UnitTestCase {
 
     $this->assertEqual($cont->getOutputType(), 'gif');
   }
+  
+  function testSave_ParamQuality()
+  {
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
+    $cont->setOutputType('jpeg');
+    $cont->save($this->_getOutputImage(), 100);
+    
+    clearstatcache();
+    $size_quality_100 = filesize($this->_getOutputImage());
+    
+    $cont->load($this->_getInputImage());
+    $cont->setOutputType('jpeg');
+    $cont->save($this->_getOutputImage(), 0);
+    
+    clearstatcache();
+    $size_quality_0 = filesize($this->_getOutputImage());
+    
+    $this->assertTrue($size_quality_0 < $size_quality_100);
+  }
 
   function tearDown()
   {

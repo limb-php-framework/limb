@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFileLocator.class.php');
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageConvertor.class.php 6960 2008-04-26 20:45:33Z cmz $
+ * @version $Id: lmbAbstractImageConvertor.class.php 7167 2008-09-02 13:19:21Z hidrarg $
  */
 abstract class lmbAbstractImageConvertor
 {
@@ -86,11 +86,11 @@ abstract class lmbAbstractImageConvertor
     return $this;
   }
 
-  function save($file_name = null, $type = '')
+  function save($file_name = null, $type = '', $quality = null)
   {
     if($type)
       $this->container->setOutputType($type);
-    $this->container->save($file_name);
+    $this->container->save($file_name, $quality);
     $this->container = null;
     return $this;
   }

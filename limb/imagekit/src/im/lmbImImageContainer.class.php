@@ -60,7 +60,7 @@ class lmbImImageContainer extends lmbAbstractImageContainer
     $this->img_type = $this->img->getImageFormat();
   }
 
-  function save($file_name = null)
+  function save($file_name = null, $quality = null)
   {
     $type = $this->out_type;
     if(!$type)
@@ -71,6 +71,13 @@ class lmbImImageContainer extends lmbAbstractImageContainer
 
     $this->img->setImageFormat($type);
     $this->img->setImageFilename($file_name);
+    
+    if(!is_null($quality) && strtolower($type) == 'jpeg')
+    {
+      $this->img->setCompression(imagick::COMPRESSION_JPEG);
+      $this->img->setCompressionQuality($quality);
+    }
+    
     if (!$this->img->writeImage($file_name))
       throw new lmbImageSaveFailedException($file_name);
 

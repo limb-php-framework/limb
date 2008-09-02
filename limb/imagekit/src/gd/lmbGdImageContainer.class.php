@@ -17,7 +17,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * GD image container
  *
  * @package imagekit
- * @version $Id: lmbGdImageContainer.class.php 7071 2008-06-25 14:33:29Z korchasa $
+ * @version $Id: lmbGdImageContainer.class.php 7167 2008-09-02 13:19:21Z hidrarg $
  */
 class lmbGdImageContainer extends lmbAbstractImageContainer
 {
@@ -70,7 +70,7 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     $this->img_type = $type;
   }
 
-  function save($file_name = null)
+  function save($file_name = null, $quality = null)
   {
     $type = $this->output_type;
     if(!$type)
@@ -79,8 +79,13 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     if(!self::supportSaveType($type))
       throw new lmbImageTypeNotSupportedException($type);
 
-    $imagefunc = 'image'.$type;
-    if(!@$imagefunc($this->img, $file_name))
+    $imagefunc = 'image'.$type;  
+    if(!is_null($quality) && strtolower($type) == 'jpeg')
+      $result = @$imagefunc($this->img, $file_name, $quality);
+    else
+      $result = @$imagefunc($this->img, $file_name);
+      
+    if(!$result)
       throw new lmbImageSaveFailedException($file_name);
 
     $this->destroyImage();
