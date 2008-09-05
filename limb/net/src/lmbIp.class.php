@@ -11,11 +11,11 @@
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 7043 2008-05-26 09:04:06Z korchasa $
+ * @version $Id: lmbIp.class.php 7168 2008-09-05 09:36:27Z slevin $
  */
 class lmbIp
 {
-  function encodeIpRange($ip_begin, $ip_end)
+  static function encodeIpRange($ip_begin, $ip_end)
   {
     // Returns ip adressess array with in range $ip_begin - $ip_end
     if ( !self::isValid($ip_begin) || !self::isValid($ip_end) )
@@ -66,19 +66,19 @@ class lmbIp
     return $ip_list;
   }
 
-  function encode($ip)
+  static function encode($ip)
   {
     // 1.2.3.4 -> 0x01020304 as int
     return ip2long($ip);
   }
 
-  function decode($numeric_ip)
+  static function decode($numeric_ip)
   {
     // 0x01020304 as int -> 1.2.3.4
     return long2ip($numeric_ip);
   }
 
-  function isValid($ip)
+  static function isValid($ip)
   {
     return ip2long($ip) !== false;
   }
