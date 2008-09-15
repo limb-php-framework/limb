@@ -162,5 +162,33 @@ class lmbRoutesToUrlTest extends UnitTestCase
     $this->assertEqual($routes->toUrl(array('user' => 'admin', 'action' => 'display', 'id' => 0)), '/users/');
     $this->assertEqual($routes->toUrl(array('user' => 'admin', 'id' => 19)), '/users/admin/blog/display/19/');    
   }
+  
+  function testToUrlChecksRequirements()
+  {
+    $config = array(
+      'default' => array(
+        'path' => '/:controller/:action/',
+        'requirements' => array(
+          'controller' => '/^blog$/',
+          'action' => '/^[a-z]+$/'        
+        )
+      )    
+    );
+    
+    $routes = new lmbRoutes($config);
+        
+    $this->assertEqual($routes->toUrl(array('controller' => 'blog', 'action' => 'edit')), '/blog/edit/');
+    
+    try 
+    {
+      $routes->toUrl(array('controller' => 'admin', 'action' => '123edit'));
+      $routes->toUrl(array('controller' => 'zzz', 'action' => 'edit'));
+      $routes->toUrl(array('controller' => 'blog', 'action' => '@#%'));
+      $this->fail("Some routes do NOT match required params!");
+    } catch (lmbException $e) 
+    {      
+      $this->assertPattern('/route .* not found .*/i', $e->getMessage());
+    }    
+  }  
 }
 

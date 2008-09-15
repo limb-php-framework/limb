@@ -11,7 +11,7 @@
  * class lmbRoutes.
  *
  * @package web_app
- * @version $Id: lmbRoutes.class.php 7148 2008-08-20 07:03:49Z conf $
+ * @version $Id: lmbRoutes.class.php 7169 2008-09-15 10:06:20Z conf $
  */
 class lmbRoutes
 {
@@ -188,6 +188,11 @@ class lmbRoutes
   {
     $path = $route['path'];
 
+    if(!$this->_routeParamsMeetRequirements($route, $params)) 
+    {
+      return "";
+    }
+    
     foreach($params as $param_name => $param_value)
     {
       if(strpos($path, ':'.$param_name) === false)
