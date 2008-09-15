@@ -227,23 +227,29 @@ class lmbMacroPagerHelper
     if($this->display_sections)
       return $this->isDisplayedSection();
 
-    $half_windows_size = ($this->pages_in_middle - 1) / 2;
+    if (($this->pages_in_middle / 2) == intval($this->pages_in_middle / 2))
+      $this->pages_in_middle--;
+
+    $half_windows_size = intval(($this->pages_in_middle - 1) / 2)+0.1;
+    //fb($this->page_counter,$this->current_page);
     return (
     
         $this->page_counter <= $this->pages_in_sides ||
         $this->page_counter > $this->total_page_count - $this->pages_in_sides ||
         
         ($this->current_page < $half_windows_size &&
-        $this->page_counter < $this->pages_in_middle) ||
+        $this->page_counter < $this->pages_in_middle + 1) ||
         ($this->total_page_count - $this->current_page + 1 < $half_windows_size &&
-        $this->total_page_count - $this->page_counter + 1 < $this->pages_in_middle) ||
+        $this->total_page_count - $this->page_counter + 1 < $this->pages_in_middle + 1) ||
         
-        ($this->page_counter >= $this->current_page - $half_windows_size &&
-        $this->page_counter <= $this->current_page + $half_windows_size) ||
+        ($this->page_counter > $this->current_page - $half_windows_size &&
+        $this->page_counter < $this->current_page + $half_windows_size) ||
         ($this->page_counter == $this->pages_in_sides + 1 &&
         $this->page_counter == $this->current_page - $half_windows_size - 1) ||
+        
         ($this->page_counter == $this->total_page_count - $this->pages_in_sides &&
         $this->page_counter == $this->current_page + $half_windows_size + 1)
+        );
   }
 
   function isDisplayedSection()
