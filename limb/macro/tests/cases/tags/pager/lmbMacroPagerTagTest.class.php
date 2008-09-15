@@ -68,7 +68,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 'from:{$begin_item_number}|to:{$end_item_number}' .
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 40);
 
     $_GET['test_pager'] = 2;
@@ -91,7 +91,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{pager:last}}L-{$href}|{{/pager:last}}' .
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 5);
 
     $expected = '';
@@ -110,7 +110,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 40);
 
     $expected = 'C-test.com|1|'.
@@ -130,7 +130,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 30);
 
     $_GET['test_pager'] = 3;
@@ -154,7 +154,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 65);
 
     $_GET['test_pager'] = 7;
@@ -174,7 +174,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 65);
 
     $_GET['test_pager'] = 7;
@@ -193,7 +193,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 65);
 
     $_GET['test_pager'] = 7;
@@ -212,7 +212,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 55);
 
     $_GET['test_pager'] = 7;
@@ -231,12 +231,52 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    $page->set('items_count', 35);
+
+    $_GET['test_pager'] = 5;
+
+    $expected = 'N-1|N-2|N-3|N-4|C-5|N-6|N-7|';
+    $this->assertEqual($page->render(), $expected);
+  }
+
+  function testElipsesMiddleCountAlwaysDisplayed()
+  {
+    $template = '{{pager id="test_pager" items="2" pages_in_middle="9" total_items="$#items_count" pages_in_sides="0"}}'.
+                '{{pager:list}}'.
+                '{{pager:current}}C-{$number}|{{/pager:current}}' .
+                '{{pager:number}}N-{$number}|{{/pager:number}}' .
+                '{{pager:elipses}}...{{/pager:elipses}}' .
+                '{{/pager:list}}'.
+                '{{/pager}}';
+
+    //always 8 items in middle
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
+    $page->set('items_count', 35);
+
+    $_GET['test_pager'] = 2;
+
+
+    $expected = 'N-1|C-2|N-3|N-4|N-5|N-6|N-7|N-8|N-9|...';
+    $this->assertEqual($page->render(), $expected);
+
+    //always 9 items in middle
+    $page = $this->_createMacroTemplate($template, 'tpl2.html');
     $page->set('items_count', 35);
 
     $_GET['test_pager'] = 6;
 
-    $expected = 'N-1|N-2|N-3|N-4|N-5|C-6|N-7|';
+
+    $expected = '...N-2|N-3|N-4|N-5|C-6|N-7|N-8|N-9|N-10|...';
+    $this->assertEqual($page->render(), $expected);
+
+    //if pages count less than pages_in_middle
+    $page = $this->_createMacroTemplate($template, 'tpl3.html');
+    $page->set('items_count', 5);
+
+    $_GET['test_pager'] = 2;
+
+    $expected = 'N-1|C-2|N-3|';
     $this->assertEqual($page->render(), $expected);
   }
 
@@ -250,7 +290,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{/pager:list}}'.
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 60);
 
     $_GET['test_pager'] = 3;
@@ -272,7 +312,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{pager:last:disabled}}|-L{{/pager:last:disabled}}' .
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 1);
 
     $expected = 'F-|P-||-X|-L';
@@ -289,7 +329,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{pager:last:disabled}}|-L{{/pager:last:disabled}}' .
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 3);
 
     $_GET['test_pager'] = 2;
@@ -308,7 +348,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{pager:last:disabled}}|-L{{/pager:last:disabled}}' .
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 20);
 
     $expected = 'F-|P-|';
@@ -325,7 +365,7 @@ class lmbMacroPagerTagTest extends lmbBaseMacroTest
                 '{{pager:last:disabled}}|-L{{/pager:last:disabled}}' .
                 '{{/pager}}';
 
-    $page = $this->_createMacroTemplate($template, 'tpl.html');                 
+    $page = $this->_createMacroTemplate($template, 'tpl.html');
     $page->set('items_count', 20);
 
     $_GET['test_pager'] = 2;
