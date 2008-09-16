@@ -11,7 +11,7 @@
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 7168 2008-09-05 09:36:27Z slevin $
+ * @version $Id: lmbIp.class.php 7173 2008-09-16 11:15:52Z korchasa $
  */
 class lmbIp
 {
@@ -95,6 +95,14 @@ class lmbIp
      return $_SERVER['REMOTE_ADDR'];
 
    return NULL;
+  }
+
+  static function getRemoteIp()
+  {
+    if (!empty($_SERVER['REMOTE_ADDR']))
+     return $_SERVER['REMOTE_ADDR'];
+
+    return NULL;
   }
 }
 
