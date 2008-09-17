@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7102 2008-07-08 21:26:09Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 7174 2008-09-17 10:33:37Z conf $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -154,7 +154,7 @@ class lmbHttpRequest extends lmbSet
     } 
     elseif(isset($arr[$key]))
       return $arr[$key];
-    elseif($default != LIMB_UNDEFINED)
+    elseif($default !== LIMB_UNDEFINED)
       return $default;
   }
 
