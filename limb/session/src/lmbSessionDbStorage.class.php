@@ -12,12 +12,12 @@ lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
 
 /**
  * lmbSessionDbStorage store session data in database.
- * sys_session db table used to store session data.
- * The structure of sys_session db table can be found in limb/session/init/ folder.
+ * lmb_session db table used to store session data.
+ * The structure of lmb_session db table can be found in limb/session/init/ folder.
  * @todo Check client ip while reading session.
  * @todo Allow to set any db table name to store session data in.
  * @see lmbSessionStartupFilter
- * @version $Id: lmbSessionDbStorage.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbSessionDbStorage.class.php 7179 2008-09-17 17:48:31Z Forumsky $
  * @package session
  */
 class lmbSessionDbStorage implements lmbSessionStorage
@@ -80,13 +80,13 @@ class lmbSessionDbStorage implements lmbSessionStorage
   }
 
   /**
-   * Read a single row from <b>sys_session</b> db table and returns <b>session_data</b> column
+   * Read a single row from <b>lmb_session</b> db table and returns <b>session_data</b> column
    * @param string session ID
    * @return mixed
    */
   function storageRead($session_id)
   {
-    $rs = $this->db->select('sys_session', new lmbSQLFieldCriteria('session_id', $session_id));
+    $rs = $this->db->select('lmb_session', new lmbSQLFieldCriteria('session_id', $session_id));
     $rs->rewind();
     if($rs->valid())
       return $rs->current()->get('session_data');
@@ -95,7 +95,7 @@ class lmbSessionDbStorage implements lmbSessionStorage
   }
 
   /**
-   * Creates new or updates existing row in <b>sys_session</b> db table
+   * Creates new or updates existing row in <b>lmb_session</b> db table
    * @param string session ID
    * @param mixed session data
    * @return void
@@ -103,33 +103,33 @@ class lmbSessionDbStorage implements lmbSessionStorage
   function storageWrite($session_id, $value)
   {
     $crit = new lmbSQLFieldCriteria('session_id', $session_id);
-    $rs = $this->db->select('sys_session', $crit);
+    $rs = $this->db->select('lmb_session', $crit);
 
     $data = array('last_activity_time' => time(),
                   'session_data' => $value);
 
     if($rs->count() > 0)
-      $this->db->update('sys_session', $data, $crit);
+      $this->db->update('lmb_session', $data, $crit);
     else
     {
       $data['session_id'] = "{$session_id}";
-      $this->db->insert('sys_session', $data, null);
+      $this->db->insert('lmb_session', $data, null);
     }
   }
 
   /**
-   * Removed a row from <b>sys_session</b> db table
+   * Removed a row from <b>lmb_session</b> db table
    * @param string session ID
    * @return void
    */
   function storageDestroy($session_id)
   {
-    $this->db->delete('sys_session',
+    $this->db->delete('lmb_session',
                       new lmbSQLFieldCriteria('session_id', $session_id));
   }
 
   /**
-   * Checks if storage is still valid. If session if not valid - removes it's row from <b>sys_session</b> db table
+   * Checks if storage is still valid. If session if not valid - removes it's row from <b>lmb_session</b> db table
    * Prefers class attribute {@link $max_life_time} if it's not NULL.
    * @param integer system session max life time
    * @return void
@@ -139,7 +139,7 @@ class lmbSessionDbStorage implements lmbSessionStorage
     if($this->max_life_time)
       $max_life_time = $this->max_life_time;
 
-    $this->db->delete('sys_session',
+    $this->db->delete('lmb_session',
                       new lmbSQLFieldCriteria('last_activity_time', time() - $max_life_time, lmbSQLFieldCriteria::LESS));
   }
 }

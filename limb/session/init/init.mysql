@@ -1,6 +1,6 @@
-drop table if exists `sys_session`;
+drop table if exists `lmb_session`;
 
-CREATE TABLE `sys_session` (
+CREATE TABLE `lmb_session` (
   `session_id` varchar(50) NOT NULL default '',
   `session_data` blob NOT NULL,
   `last_activity_time` bigint(11) unsigned default NULL,

@@ -1,5 +1,5 @@
 
-DROP TABLE IF EXISTS `sys_session`;
+DROP TABLE IF EXISTS `lmb_session`;
 CREATE TABLE `sys_session` (
   `session_id` varchar(50) NOT NULL default '',
   `session_data` blob NOT NULL,
