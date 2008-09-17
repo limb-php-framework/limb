@@ -373,12 +373,6 @@ class lmbNSTree implements lmbTree
 
     $this->_ensureUniqueSiblingIdentifier($values[$this->_identifier], $parent_node);
 
-    $values[$this->_id] = $this->_getNextNodeInsertId();
-    $values[$this->_parent_id] = $parent_node['id'];
-    $values[$this->_left] = $parent_node['c_right'];
-    $values[$this->_right] = $parent_node['c_right']+1;
-    $values[$this->_level] = $parent_node['level']+1;
-
     // creating a place for the record being inserted
     $sql = "UPDATE {$this->_node_table}
             SET {$this->_left}= CASE WHEN {$this->_left}>{$parent_node['c_right']} THEN {$this->_left}+2 ELSE {$this->_left} END,
@@ -387,9 +381,13 @@ class lmbNSTree implements lmbTree
     $stmt = $this->_conn->newStatement($sql);
     $stmt->execute();
 
-    $this->_db_table->insert($values);
-
-    return $values[$this->_id];
+    $values[$this->_parent_id] = $parent_node['id'];
+    $values[$this->_left] = $parent_node['c_right'];
+    $values[$this->_right] = $parent_node['c_right']+1;
+    $values[$this->_level] = $parent_node['level']+1;
+    
+    $id = $this->_db_table->insert($values);
+    return $id;
   }
 
   protected function _createRootNode()

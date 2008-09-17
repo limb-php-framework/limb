@@ -382,15 +382,6 @@ class lmbMPTree implements lmbTree
     $this->_db_table->updateById($node['id'], $values);
   }
 
-  function _getNextNodeInsertId()
-  {
-    //if field is autoincremented why do we need it?
-    $sql = "SELECT MAX({$this->_id}) as m FROM {$this->_node_table}";
-    $stmt = $this->_conn->newStatement($sql);
-    $max = $stmt->getOneValue();
-    return isset($max) ? $max + 1 : 1;
-  }
-
   function _dbConcat($values)
   {
     switch($this->_conn->getType())
@@ -434,15 +425,14 @@ class lmbMPTree implements lmbTree
   protected function _createRootNode()
   {
     $values = array();
-    $values[$this->_id] = $this->_getNextNodeInsertId();
-    $values[$this->_path] = '/' . $values[$this->_id] . '/';
     $values[$this->_level] = 0;
     $values[$this->_parent_id] = 0;
     $values[$this->_identifier] = '';
 
-    $this->_db_table->insert($values);
+    $id = $this->_db_table->insert($values);
+    $this->_db_table->updateById($id, array($this->_path => '/' . $id . '/'));
 
-    return $values[$this->_id];
+    return $id;
   }
 
   protected function _ensureNode($node)
@@ -479,14 +469,15 @@ class lmbMPTree implements lmbTree
 
     $this->_ensureUniqueSiblingIdentifier($values[$this->_identifier], $parent_id);
 
-    $values[$this->_id] = $this->_getNextNodeInsertId();
     $values[$this->_level] = $parent_node['level'] + 1;
     $values[$this->_parent_id] = $parent_id;
-    $values[$this->_path] = $parent_node['path'] . $values[$this->_id] . '/';
 
-    $this->_db_table->insert($values);
+    $id = $this->_db_table->insert($values);
+    $path = $parent_node['path'] . $id . '/';
+    
+    $this->_db_table->updateById($id, array($this->_path => $path));
 
-    return $values[$this->_id];
+    return $id;
   }
 
   function deleteNode($node)
