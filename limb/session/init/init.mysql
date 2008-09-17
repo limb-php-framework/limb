@@ -4,6 +4,5 @@ CREATE TABLE `sys_session` (
   `session_id` varchar(50) NOT NULL default '',
   `session_data` blob NOT NULL,
   `last_activity_time` bigint(11) unsigned default NULL,
-  PRIMARY KEY  (`session_id`),
-  KEY `user_id` (`user_id`)
+  PRIMARY KEY  (`session_id`)
 ) ENGINE=InnoDb DEFAULT CHARSET=utf8;

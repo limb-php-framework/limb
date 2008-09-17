@@ -50,14 +50,12 @@ class lmbSessionDbStorageTest extends UnitTestCase
     $this->db->insert('sys_session',
                           array('session_id' => $id = 'fghprty121as',
                                 'session_data' => $data = 'global_user|O:4:"user":12:{s:3:"_id";...',
-                                'last_activity_time' => 10,
-                                'user_id' => 1), null);
+                                'last_activity_time' => 10), null);
 
     $this->db->insert('sys_session',
                           array('session_id' => 'junk',
                                 'session_data' => 'global_user|O:4:"user":12:{s:3:"_id";...',
-                                'last_activity_time' => 10,
-                                'user_id' => 2), null);
+                                'last_activity_time' => 10), null);
 
     $this->assertEqual($data, $this->driver->storageRead($id));
   }
@@ -72,8 +70,7 @@ class lmbSessionDbStorageTest extends UnitTestCase
     $this->db->insert('sys_session',
                           array('session_id' => 'junk',
                                 'session_data' => 'global_user|O:4:"user":12:{s:3:"_id";...',
-                                'last_activity_time' => 10,
-                                'user_id' => 1), null);
+                                'last_activity_time' => 10), null);
 
 
     $this->assertIdentical(false, $this->driver->storageRead('no_such_session'));
