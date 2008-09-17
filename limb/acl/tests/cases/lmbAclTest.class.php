@@ -19,7 +19,7 @@ class lmbAclTest extends UnitTestCase
   {
     $this->acl = new lmbAcl();
   }
-  
+
   function testAddAndGetRoles()
   {
     $this->assertIdentical(count($this->acl->getRoles()), 0);
@@ -27,6 +27,20 @@ class lmbAclTest extends UnitTestCase
     $this->acl->addRole('guest');
     $this->assertIdentical(count($this->acl->getRoles()), 1);
     $this->assertTrue($this->acl->isRoleExist('guest'));
+  }
+
+  function testAddRole_Duplicate()
+  {
+    $this->acl->addRole('guest');
+    try
+    {
+      $this->acl->addRole('guest');
+      $this->fail();
+    }
+    catch (Exception $e)
+    {
+      $this->pass();
+    }
   }
 
   function testRoleInherits()
@@ -77,6 +91,20 @@ class lmbAclTest extends UnitTestCase
     $this->assertTrue($this->acl->isResourceExist('content'));
   }
 
+  function testAddResource_Duplicate()
+  {
+    $this->acl->addResource('content');
+    try
+    {
+      $this->acl->addResource('content');
+      $this->fail();
+    }
+    catch (Exception $e)
+    {
+      $this->pass();
+    }
+  }
+
   function testResourceInherits()
   {
     $acl = new lmbAcl();
@@ -114,5 +142,5 @@ class lmbAclTest extends UnitTestCase
     $inherits = $acl->getResourceInherits('news');
     $this->assertTrue(in_array('articles', $inherits));
     $this->assertTrue(in_array('content', $inherits));
-  }  
+  }
 }

@@ -17,12 +17,12 @@ class lmbAcl
   protected $_not_found_policy_allow;
   protected $_inherits_policy_allow;
   protected $_debug = false;
-  
+
   protected $_roles = array();
   protected $_resources = array();
   public $_roles_rules = array();
   public $_resources_rules = array();
-  public $_privileges_rules = array();  
+  public $_privileges_rules = array();
 
   function __construct($inherits_policy_allow = true, $not_found_policy_allow = false)
   {
@@ -34,6 +34,11 @@ class lmbAcl
   {
     if(!is_array($parents))
       $parents = array($parents);
+
+    if($this->isRoleExist($role))
+      throw new lmbAclException('That role already exists', array(
+        'role' => $role,
+      ));
 
     foreach($parents as $parent)
     {
@@ -66,7 +71,6 @@ class lmbAcl
     if(!count($inherits))
       return array();
 
-      
     $merged_inherits = $inherits;
     foreach($inherits as $inherit)
       $merged_inherits  = array_merge($merged_inherits, $this->getRoleInherits($inherit));
@@ -78,6 +82,11 @@ class lmbAcl
   {
     if(!is_array($parents))
       $parents = array($parents);
+
+    if($this->isResourceExist($resource))
+      throw new lmbAclException('That resource already exists', array(
+        'resource' => $resource,
+      ));
 
     foreach($parents as $parent)
     {
@@ -111,7 +120,7 @@ class lmbAcl
       return array();
 
     $merged_inherits = $inherits;
-    
+
     foreach($inherits as $inherit)
       $merged_inherits  = array_merge($merged_inherits, $this->getResourceInherits($inherit));
 
@@ -206,11 +215,11 @@ class lmbAcl
   {
     return $this->_privileges_rules[$role][$resource][$privilege];
   }
-  
+
   protected function _checkRole($role)
   {
     if(!$this->isRoleExist($role))
-      throw new lmbAclException('Role not exist', array('role' => $role));   
+      throw new lmbAclException('Role not exist', array('role' => $role));
   }
 
   protected function _checkResource($resource)
@@ -218,41 +227,41 @@ class lmbAcl
     if(!is_null($resource) && !$this->isResourceExist($resource))
       throw new lmbAclException('Resource not exist', array('resource' => $resource));
   }
-  
+
   protected function _mergeRoles($role1, $role2)
   {
     if (!is_array($role1))
       $role1 = array($role1);
-    
+
     if (!is_array($role2))
       $role2 = array($role2);
-    
+
     return array_unique(array_merge($role1, $role2));
   }
-  
+
   protected function _processRoleAndResource($role, $resource)
   {
     $roles = array();
-    
+
     if($resource instanceof lmbRolesResolverInterface)
       if($resolved_role = $resource->getRoleFor($role))
         $roles = $this->_mergeRoles($roles, $resolved_role);
-   
+
     if($role instanceof lmbRoleProviderInterface)
       $roles = $this->_mergeRoles($roles, $role->getRole());
-     
+
     // role is not an object, it's a raw role by itself
     if (!$roles)
       $roles = $this->_mergeRoles($roles, $role);
-            
+
     foreach($roles as $role)
     {
-      $this->_checkRole($role);  
+      $this->_checkRole($role);
     }
-    
+
     if($resource instanceof lmbResourceProviderInterface )
       $resource = $resource->getResource();
-    
+
     $this->_checkResource($resource);
     return array($roles, $resource);
   }
@@ -262,48 +271,48 @@ class lmbAcl
     if($this->_inherits_policy_allow)
       if($this->hasAllows($role, $resource, $privilege))
         return true;
-    else 
+    else
       if($this->hasDenials($role, $resource, $privilege))
         return false;
-    
+
     return $this->_not_found_policy_allow;
   }
-  
+
   function _hasRule($rule, $role, $resource = null, $privilege = null)
   {
     list($roles, $resource) = $this->_processRoleAndResource($role, $resource);
-    
-    foreach($roles as $role) 
+
+    foreach($roles as $role)
     {
       if($this->_isExistPrivilegeRule($role, $resource, $privilege))
         return ($rule === $this->_getPrivilegeRule($role, $resource, $privilege));
-  
+
       if($this->_isExistResourceRule($role, $resource))
         return ($rule === $this->_getResourceRule($role, $resource));
-  
+
       if($this->_isExistRoleRule($role, $privilege))
-        return ($rule === $this->_getRoleRule($role, $privilege));      
-          
+        return ($rule === $this->_getRoleRule($role, $privilege));
+
       foreach($this->getRoleInherits($role) as $inherit)
         if($this->_hasRule($rule, $inherit, $resource, $privilege))
           return true;
-          
+
       if(!is_null($resource))
         foreach($this->getResourceInherits($resource) as $inherit)
           if($this->_hasRule($rule, $role, $inherit, $privilege))
           // if no conficts with this rule, apply resource inheritance
             if (!$this->_hasRule(!$rule, $role, $resource, $privilege))
-              return true;      
+              return true;
     }
-      
+
     return false;
   }
-  
+
   function hasDenials($role, $resource = null, $privilege = null)
   {
     return $this->_hasRule(false, $role, $resource, $privilege);
   }
-  
+
   function hasAllows($role, $resource = null, $privilege = null)
   {
     return $this->_hasRule(true, $role, $resource, $privilege);
@@ -338,14 +347,14 @@ class lmbAcl
   {
     $this->setRule($role, $resource, $privileges, false);
   }
-  
+
   function log($message)
   {
     if ($this->_debug) {
       echo $message . "\n";
     }
   }
-  
+
   function setDebugMode($mode)
   {
     $this->_debug = $mode;
