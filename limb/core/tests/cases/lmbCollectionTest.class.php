@@ -105,17 +105,19 @@ class lmbCollectionTest extends UnitTestCase
     $this->assertEqual($iterator->current(), $item2);
   }
 
-  function testAddToPosition()
+  function testAddToPositionAndSortByKeys()
   {
     $item1 = new lmbSet(array(1));
     $item2 = new lmbSet(array(2));
 
-    $iterator = new lmbCollection();
+    $iterator = new lmbCollection(array(), $sort_items_by_key = true);
     $this->assertTrue($iterator->isEmpty());
     $iterator->add($item1, 1);
     $this->assertFalse($iterator->isEmpty());
     $iterator->add($item2, 0);
-
+    
+    $iterator->sortByKeys();
+    
     $iterator->rewind();
 
     $this->assertTrue($iterator->valid());

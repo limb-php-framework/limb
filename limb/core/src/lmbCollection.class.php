@@ -109,14 +109,17 @@ class lmbCollection implements lmbCollectionInterface
     $this->key = key($this->iteratedDataset);
     $this->valid = $this->_isValid($values);
   }
+  
+  function sortByKeys()
+  {
+    if(is_array($this->dataset))
+      ksort($this->dataset, SORT_NUMERIC);
+  }
 
   protected function _setupIteratedDataset()
   {
     if(!is_null($this->iteratedDataset))
       return;
-
-    if(is_array($this->dataset))
-      ksort($this->dataset, SORT_NUMERIC);
 
     if(!$this->limit)
     {
