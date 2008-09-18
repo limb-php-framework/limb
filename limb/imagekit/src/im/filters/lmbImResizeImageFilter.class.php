@@ -41,12 +41,13 @@ class lmbImResizeImageFilter extends lmbAbstractImageFilter
     $dst_h = $this->getHeight();
     if(!$dst_h)
       $dst_h = $src_h;
-    return array($dst_w, $dst_h);
+    //return array($dst_w, $dst_h);
+    return $this->calcSize($src_w, $src_h, $dst_w, $dst_h, $this->getPreserveAspectRatio(), $this->getSaveMinSize());
   }
 
   function getWidth()
   {
-  	return $this->getParam('width');
+    return $this->getParam('width');
   }
 
   function getHeight()
