@@ -12,7 +12,7 @@ lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdResizeImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
+ * @version $Id: lmbGdResizeImageFilter.class.php 7182 2008-09-18 09:16:13Z slevin $
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {
@@ -34,13 +34,13 @@ class lmbGdResizeImageFilter extends lmbAbstractImageFilter
     $dst_h = $this->getheight();
     if(!$dst_h)
       $dst_h = $src_h;
-    //return array($dst_w, $dst_h);
+
     return $this->calcSize($src_w, $src_h, $dst_w, $dst_h, $this->getPreserveAspectRatio(), $this->getSaveMinSize());
   }
 
   function getWidth()
   {
-  	return $this->getParam('width');
+    return $this->getParam('width');
   }
 
   function getHeight()
