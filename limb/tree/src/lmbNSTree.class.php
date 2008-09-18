@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/lmbTableGateway.class.php');
@@ -347,15 +347,6 @@ class lmbNSTree implements lmbTree
     return ($this->getNode($id) !== null);
   }
 
-  function _getNextNodeInsertId()
-  {
-    $sql = "SELECT MAX({$this->_id}) as m FROM ". $this->_node_table;
-    $stmt = $this->_conn->newStatement($sql);
-    $max = $stmt->getOneValue();
-
-    return isset($max) ? $max + 1 : 1;
-  }
-
   function _dbIn($column_name, $values)
   {
     $in_ids = implode("','", $values);
@@ -385,7 +376,7 @@ class lmbNSTree implements lmbTree
     $values[$this->_left] = $parent_node['c_right'];
     $values[$this->_right] = $parent_node['c_right']+1;
     $values[$this->_level] = $parent_node['level']+1;
-    
+
     $id = $this->_db_table->insert($values);
     return $id;
   }
@@ -393,16 +384,15 @@ class lmbNSTree implements lmbTree
   protected function _createRootNode()
   {
     $values = array();
-    $values[$this->_id] = $this->_getNextNodeInsertId();
-    $values[$this->_parent_id] = $this->_getNextNodeInsertId();
+    $values[$this->_parent_id] = 0;
     $values[$this->_left] = 1;
     $values[$this->_right] = 2;
     $values[$this->_level] = 0;
     $values[$this->_identifier] = '';
 
-    $this->_db_table->insert($values);
+    $id = $this->_db_table->insert($values);
 
-    return $values[$this->_id];
+    return $id;
   }
 
   protected function _ensureNode($node)
