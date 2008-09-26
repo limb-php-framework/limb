@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 /**
  * Checks that field value is a valid Email address.
  * @package validation
- * @version $Id: lmbEmailRule.class.php 7149 2008-08-20 07:04:39Z vasiatka $
+ * @version $Id: lmbEmailRule.class.php 7185 2008-09-26 11:49:50Z conf $
  */
 class lmbEmailRule extends lmbDomainRule
 {
@@ -39,7 +39,7 @@ class lmbEmailRule extends lmbDomainRule
 
   protected function _checkUser($value)
   {
-    if (!preg_match('/^[a-z0-9]+([_.-][a-z0-9]+|[_])*$/i', $value))
+    if (!preg_match('/^[a-z0-9_]+([_.-][a-z0-9]+|[_])*$/i', $value))
         $this->error('Invalid user in {Field}.');
   }
 
