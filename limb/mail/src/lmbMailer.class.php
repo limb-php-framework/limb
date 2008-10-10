@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-@define('PHPMAILER_VERSION_NAME', 'phpmailer-2.1.0.beta2');
+@define('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
 @define('LIMB_USE_PHPMAIL', false);
 @define('LIMB_SMTP_PORT', '25');
 @define('LIMB_SMTP_HOST', 'localhost');
@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7072 2008-06-25 14:45:59Z korchasa $
+ * @version $Id: lmbMailer.class.php 7186 2008-10-10 15:16:52Z vasiatka $
  */
 class lmbMailer
 {
