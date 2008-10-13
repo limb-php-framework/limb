@@ -97,5 +97,15 @@ class lmbI18NClipMacroFilterTest extends lmbBaseMacroTest
     $out = $tpl->render();
     $this->assertEqual($out, 'что');
   }
+
+  function testQuoteRegexPatterns()
+  {
+    $code = '{$#var|i18n_clip:16,0,"...", "y"}';
+    $tpl = $this->_createMacroTemplate($code, 'clip_with_regex_pattern.html');
+    $var = "(фреймворк.*) для веб-приложений";
+    $tpl->set('var', $var);
+    $out = $tpl->render();
+    $this->assertEqual($out, '(фреймворк.*) для...');
+  }
 }
 

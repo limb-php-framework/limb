@@ -45,30 +45,29 @@ class lmbI18NMacroClipFilter extends lmbMacroFilter
     $suffix = '';
 
     $value = $this->base->getValue();
-    switch (count($this->params)) {
-    case 1:
-      return 'lmb_substr('. $value .','. 0 .','. $this->params[0] .')';
-      break;
-    case 2:
-      return 'lmb_substr('. $value .','. $this->params[1] .','. $this->params[0]. ')';
-      break;
-    case 3:
-        return 'lmb_substr(' . $value .','. $this->params[1] .','. $this->params[0] .') . ' . $this->suffix_var;
-      break;
-    case 4:
-      $limit = $this->params[0];
-      $offset = $this->params[1];
-      $word_wrap = $this->params[3];
+    switch(count($this->params)) 
+    {
+      case 1:
+        return 'lmb_substr('. $value .','. 0 .','. $this->params[0] .')';
+        break;
+      case 2:
+        return 'lmb_substr('. $value .','. $this->params[1] .','. $this->params[0]. ')';
+        break;
+      case 3:
+          return 'lmb_substr(' . $value .','. $this->params[1] .','. $this->params[0] .') . ' . $this->suffix_var;
+        break;
+      case 4:
+        $limit = $this->params[0];
+        $offset = $this->params[1];
+        $word_wrap = $this->params[3];
 
-      if (strtoupper(substr($word_wrap,0,1)) != 'N')
-      {
-        return "(lmb_preg_match('~^(' .{$this->chunk_var} . '[^\s]*)~ism', lmb_substr($value, $offset), \$match) ? \$match[1] . {$this->suffix_var} : '')"; 
-      }
-      else
-        return 'lmb_substr('. $value .','. $offset. ','. $limit .')' . $suffix;
-      break;
-    default:
-        throw new lmbMacroException('Wrong number of filter params(1..4)');
+        if(strtoupper(substr($word_wrap,0,1)) != 'N')
+          return "(lmb_preg_match('~^(' . preg_quote({$this->chunk_var}) . '[^\s]*)~ism', lmb_substr($value, $offset), \$match) ? \$match[1] . {$this->suffix_var} : '')"; 
+        else
+          return 'lmb_substr('. $value .','. $offset. ','. $limit .')' . $suffix;
+        break;
+      default:
+          throw new lmbMacroException('Wrong number of filter params(1..4)');
     }
   }
 }
