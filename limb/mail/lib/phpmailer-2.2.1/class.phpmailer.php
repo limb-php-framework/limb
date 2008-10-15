@@ -1374,7 +1374,8 @@ class PHPMailer {
     }
 
     // Chomp the last linefeed
-    $encoded = substr($encoded, 0, -strlen($this->LE));
+    //$encoded = substr($encoded, 0, -strlen($this->LE));
+    $encoded = substr($encoded, 0, -strlen("\n"));
     return $encoded;
   }
 
