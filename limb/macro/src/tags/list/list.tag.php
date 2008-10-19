@@ -145,9 +145,10 @@ class lmbMacroListTag extends lmbMacroTag
 
     if($this->count_source)
     {
+      $key_var = $code->generateVar();
       $code->writePHP($this->source_var . " = array();\n");
-      $code->writePHP('foreach(' . $temp_using . " as $item_var) {\n");
-        $code->writePHP($this->source_var . "[] = $item_var;\n");
+      $code->writePHP('foreach(' . $temp_using . " as $key_var => $item_var) {\n");
+        $code->writePHP($this->source_var . "[$key_var] = $item_var;\n");
       $code->writePHP("}\n");
     }
     else

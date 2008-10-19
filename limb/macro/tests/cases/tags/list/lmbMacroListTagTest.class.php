@@ -158,6 +158,22 @@ class lmbMacroListTagTest extends lmbBaseMacroTest
     $this->assertEqual($out, 'List:Bob||Todd||Marry!');
   }
 
+  function testListWithGlueAndKey()
+  {
+    $list = '{{list using="$#list" as="$item" key="$field"}}'.
+            '{{list:item}}<?=$field?>:<?=$item?>{{list:glue}},{{/list:glue}}'.
+            '{{/list:item}}!' .
+            '{{/list}}';
+
+    $list_tpl = $this->_createTemplate($list, 'list.html');
+
+    $macro = $this->_createMacro($list_tpl);
+    $macro->set('list', array('login' => 'exists', 'password' => 'required', 'email' => 'not_valid'));
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'login:exists,password:required,email:not_valid!');
+  }
+
   function testListWithGlueWithStep()
   {
     $list = '{{list using="$#list" as="$item"}}List:'.
