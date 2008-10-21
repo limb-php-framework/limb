@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7186 2008-10-10 15:16:52Z vasiatka $
+ * @version $Id: lmbMailer.class.php 7190 2008-10-21 13:09:59Z conf $
  */
 class lmbMailer
 {
@@ -121,6 +121,8 @@ class lmbMailer
     if(!empty($this->images))
       $this->_addEmbeddedImages($mailer);
 
+    $this->_addRepliesTo($mailer);
+    
     $recipients = $this->processMailRecipients($recipients);
 
     foreach($recipients as $recipient)
@@ -137,6 +139,11 @@ class lmbMailer
     return $mailer->Send();
   }
 
+  function addReplyTo($replyTo) 
+  {
+    $this->replyTo[] = $replyTo;
+  }
+  
   function sendHtmlMail($recipients, $sender, $subject, $html, $text = null, $charset = 'utf-8')
   {
     $mailer = $this->_createMailer();
@@ -151,6 +158,8 @@ class lmbMailer
 
     if(!empty($this->images))
       $this->_addEmbeddedImages($mailer);
+    
+    $this->_addRepliesTo($mailer);
 
     if(!is_null($text))
       $mailer->AltBody = $text;
@@ -219,5 +228,16 @@ class lmbMailer
                                 $image['encoding'],
                                 $image['type']);
     }
+  }
+  
+  protected function _addRepliesTo($mailer) 
+  {
+    if (!$this->replyTo)
+      return;
+    
+    $recipients = $this->processMailRecipients($this->replyTo);
+    
+    foreach($recipients as $recipient)
+      $mailer->AddReplyTo($recipient['address'], $recipient['name']);
   }
 }
