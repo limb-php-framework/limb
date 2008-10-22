@@ -18,12 +18,13 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7190 2008-10-21 13:09:59Z conf $
+ * @version $Id: lmbMailer.class.php 7191 2008-10-22 13:49:00Z conf $
  */
 class lmbMailer
 {
   protected $attachments = array();
   protected $images = array();
+  protected $replyTo = array();
 
   protected $_config_properties_map = array(
     'phpmailer_version_name' => 'PHPMAILER_VERSION_NAME',
