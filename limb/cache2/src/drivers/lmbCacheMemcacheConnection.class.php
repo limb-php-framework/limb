@@ -70,9 +70,31 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
     return $value;
   }
 
-  function delete($key)
+  function delete($key, $timeout = 0)
   {
-    return $this->_getMemcache()->delete($this->_resolveKey($key));
+    return $this->_getMemcache()->delete($this->_resolveKey($key), $timeout);
+  }
+
+  function increment($key, $value = 1)
+  {
+    return $this->_getMemcache()->increment($this->_resolveKey($key), $value);
+  }
+
+  function decrement($key, $value = 1)
+  {
+    return $this->_getMemcache()->decrement($this->_resolveKey($key), $value);
+  }
+
+  function safeIncrement($key, $value = 1, $ttl = false)
+  {
+    $this->add($key, 0, $ttl);
+    return $this->increment($key, $value);
+  }
+
+  function safeDecrement($key, $value = 1, $ttl = false)
+  {
+    $this->add($key, 0, $ttl);
+    return $this->decrement($key, $value);
   }
 
   function flush()
@@ -80,5 +102,4 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
     $this->_getMemcache()->flush();
     usleep($this->flush_pause);
   }
-
 }

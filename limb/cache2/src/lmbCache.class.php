@@ -31,12 +31,7 @@ class lmbCache
 
     if(!class_exists($class))
     {
-      var_dump('aaaa');
-      $file = 'limb/cache2/src/drivers/' . $class . '.class.php';
-
-      var_dump($file);
-      die();
-
+      $file = DIRNAME(__FILE__).'/drivers/' . $class . '.class.php';
       if(!file_exists($file))
         throw new lmbException("Cache driver '$driver' file not found for DSN '" . $dsn->toString() . "'!");
 
