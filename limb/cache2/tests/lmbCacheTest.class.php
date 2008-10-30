@@ -20,7 +20,7 @@ class lmbCacheTest extends UnitTestCase
 
   function testCacheFileCreation()
   {
-    $cache_dir = LIMB_VAR_DIR . '/some_dir';
+    $cache_dir = str_replace('\\', '/', LIMB_VAR_DIR) . '/some_dir';
     $cache = lmbCache::createConnection('file://' . $cache_dir);
     $this->assertTrue('file' , $cache->getType());
     $this->assertEqual($cache_dir , $cache->getCacheDir());
