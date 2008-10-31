@@ -24,7 +24,7 @@ class lmbImWaterMarkImageFilter extends lmbAbstractImageFilter
     $wm_cont = new Imagick();
     $wm_cont->readImage($this->getWaterMark());
     list($x, $y) = $this->calcPosition($this->getX(), $this->getY(), $width, $height);
-    $container->getResource()->compositeImage($wm_cont, Imagick::COMPOSITE_DARKEN, $x, $y, Imagick::CHANNEL_ALL);
+    $container->getResource()->compositeImage($wm_cont, Imagick::COMPOSITE_OVER, $x, $y, Imagick::CHANNEL_ALL);
   }
 
   function calcPosition($x, $y, $width, $height)
