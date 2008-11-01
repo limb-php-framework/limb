@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/cache2/src/lmbNonTransparentCache.interface.php');
+lmb_require('limb/cache2/src/drivers/lmbCacheConnection.interface.php');
 
 /**
  * interface lmbCacheAbstractConnection.
@@ -15,10 +15,16 @@ lmb_require('limb/cache2/src/lmbNonTransparentCache.interface.php');
  * @package cache
  * @version $Id$
  */
-abstract class lmbCacheAbstractConnection implements lmbNonTransparentCache
+abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 {
   protected $dsn;
   protected $prefix;
+  /**
+   * Operations lock ttl
+   *
+   * @var integer
+   */
+  protected $inc_dec_ttl = 1;
 
   function __construct(lmbUri $dsn)
   {
@@ -75,6 +81,81 @@ abstract class lmbCacheAbstractConnection implements lmbNonTransparentCache
     }
 
     return $values;
+  }
+
+  protected function _getLockName($key, $lock_name)
+  {
+    if(!$lock_name)
+      $lock_name = 'lock';
+
+    return $key.'_'.$lock_name;
+  }
+
+  function lock($key, $ttl = false, $lock_name = false)
+  {
+    return $this->add($this->_getLockName($key,$lock_name), '1', $ttl);
+  }
+
+  function unlock($key, $lock_name = false)
+  {
+    return $this->delete($this->_getLockName($key, $lock_name));
+  }
+
+  function increment($key, $value = 1, $ttl = false)
+  {
+    if(is_null($current_value = $this->get($key)))
+      return false;
+
+    if(!$this->lock($key, $this->inc_dec_ttl, 'inc_dec'))
+      return false;
+
+    $new_value = $current_value + $value;
+
+    $this->set($key, $new_value, $ttl);
+
+    $this->unlock($key, 'inc_dec');
+
+    return $new_value;
+  }
+
+  function decrement($key, $value = 1, $ttl = false)
+  {
+    if(is_null($current_value = $this->get($key)))
+      return false;
+
+    if(!$this->lock($key, $this->inc_dec_ttl, 'inc_dec'))
+      return false;
+
+    $new_value = $current_value - $value;
+
+    if($new_value < 0)
+      $new_value = 0;
+
+    $this->set($key, $new_value, $ttl);
+
+    $this->unlock($key, 'inc_dec');
+
+    return $new_value;
+  }
+
+  function safeIncrement($key, $value = 1, $ttl = false)
+  {
+    if($result = $this->increment($key, $value))
+      return $result;
+
+    $this->add($key, 0, $ttl);
+
+    return $this->increment($key, $value);
+  }
+
+  function safeDecrement($key, $value = 1, $ttl = false)
+  {
+    if($result = $this->decrement($key, $value))
+      return $result;
+
+    $this->add($key, 0, $ttl);
+
+    return $this->decrement($key, $value);
   }
 
   abstract function getType();

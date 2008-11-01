@@ -6,10 +6,10 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/cache2/src/lmbNonTransparentCache.interface.php');
+lmb_require('limb/cache2/src/drivers/lmbCacheConnection.interface.php');
 // inspired by MintCache by gfranxman (see http://www.djangosnippets.org/snippets/155/)
 
-class lmbMintCache implements lmbNonTransparentCache
+class lmbMintCache implements lmbCacheConnection
 {
   protected $cache;
   protected $fake_ttl;

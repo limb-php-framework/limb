@@ -17,6 +17,9 @@ lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
  */
 class lmbCacheApcConnection extends lmbCacheAbstractConnection
 {
+  protected $_was_delete = false;
+  protected $_deleted = array();
+
   function getType()
   {
     return 'apc';
@@ -37,6 +40,9 @@ class lmbCacheApcConnection extends lmbCacheAbstractConnection
 
   function _getSingleKeyValue($resolved_key)
   {
+    if($this->_was_delete && in_array($resolved_key, $this->_deleted))
+      return null;
+
     $value = apc_fetch($resolved_key);
     if($value === false)
       return NULL;
@@ -49,6 +55,8 @@ class lmbCacheApcConnection extends lmbCacheAbstractConnection
   function delete($key)
   {
     $key = $this->_resolveKey($key);
+    $this->_deleted[] = $key;
+    $this->_was_delete = true;
     return apc_delete($key);
   }
 

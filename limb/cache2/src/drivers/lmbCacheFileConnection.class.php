@@ -123,7 +123,7 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
     if(!file_exists($ttl_file_name))
       return $cache_file_name;
 
-    if((int) file_get_contents($ttl_file_name) < time())
+    if((int) file_get_contents($ttl_file_name) <= time())
         return NULL;
       else
         return $cache_file_name;

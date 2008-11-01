@@ -11,7 +11,9 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
   {
     $key = $this->_resolveKey($key);
 
-    if(isset($this->_caches[$key]))
+    if(isset($this->_caches[$key]) && (
+      !isset($this->_caches[$key]['ttl']) || $this->_caches[$key]['ttl'] > time())
+    )
       return false;
 
     return $this->set($key, $value, $ttl);
@@ -40,7 +42,7 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
 
     $cache = $this->_caches[$resolved_key];
 
-    if(isset($cache['ttl']) && $cache['ttl'] < time())
+    if(isset($cache['ttl']) && $cache['ttl'] <= time())
       return null;
 
     $container = unserialize($cache['value']);
