@@ -6,8 +6,8 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/cache2/lmbNonTransparentCache.interface.php');
-lmb_require('limb/cache2/lmbCacheLog.class.php');
+lmb_require('limb/cache2/src/lmbNonTransparentCache.interface.php');
+lmb_require('limb/cache2/src/lmbCacheLog.class.php');
 lmb_require('limb/core/src/lmbBacktrace.class.php');
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 
