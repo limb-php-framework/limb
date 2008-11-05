@@ -20,11 +20,6 @@ class lmbCacheLoggedConnection extends lmbCacheAbstractConnection
   protected $default_ttl;
   protected $logger;
 
-  const OPERATION_ADD = 'ADD';
-  const OPERATION_SET = 'SET';
-  const OPERATION_GET = 'GET';
-  const OPERATION_DELETE = 'DELETE';
-
   function __construct($cache_connection, $cache_name, $file = false)
   {
     $this->cache_connection = $cache_connection;
@@ -47,7 +42,7 @@ class lmbCacheLoggedConnection extends lmbCacheAbstractConnection
   {
     $time = microtime(true);
     $result = $this->cache_connection->add($key, $value, $ttl);
-    $this->logger->addRecord($key, self::OPERATION_ADD, microtime(true) - $time, $result);
+    $this->logger->addRecord($key, lmbCache::OPERATION_ADD, microtime(true) - $time, $result);
     return $result;
   }
 
@@ -55,7 +50,7 @@ class lmbCacheLoggedConnection extends lmbCacheAbstractConnection
   {
     $time = microtime(true);
     $value = $this->cache_connection->set($key, $value, $ttl);
-    $this->logger->addRecord($key, self::OPERATION_SET, microtime(true) - $time, $value);
+    $this->logger->addRecord($key, lmbCache::OPERATION_SET, microtime(true) - $time, $value);
     return $value;
   }
 
@@ -63,7 +58,7 @@ class lmbCacheLoggedConnection extends lmbCacheAbstractConnection
   {
     $time = microtime(true);
     $value = $this->cache_connection->get($key);
-    $this->logger->addRecord($key, self::OPERATION_GET, microtime(true) - $time, !is_null($value));
+    $this->logger->addRecord($key, lmbCache::OPERATION_GET, microtime(true) - $time, !is_null($value));
     return $value;
   }
 
@@ -71,7 +66,7 @@ class lmbCacheLoggedConnection extends lmbCacheAbstractConnection
   {
     $time = microtime(true);
     $value = $this->cache_connection->delete($key);
-    $this->logger->addRecord($key, self::OPERATION_DELETE, microtime(true) - $time, (bool) $value);
+    $this->logger->addRecord($key, lmbCache::OPERATION_DELETE, microtime(true) - $time, (bool) $value);
     return $value;
   }
 
@@ -94,10 +89,10 @@ class lmbCacheLoggedConnection extends lmbCacheAbstractConnection
   {
     $queries = array();
     $operation_names = array(
-      self::OPERATION_ADD => 'ADD',
-      self::OPERATION_GET => 'GET',
-      self::OPERATION_SET => 'SET',
-      self::OPERATION_DELETE => 'DELETE',
+      lmbCache::OPERATION_ADD => 'ADD',
+      lmbCache::OPERATION_GET => 'GET',
+      lmbCache::OPERATION_SET => 'SET',
+      lmbCache::OPERATION_DELETE => 'DELETE',
     );
 
     foreach ($this->messages as $message)

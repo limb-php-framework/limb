@@ -16,6 +16,15 @@ lmb_require('limb/net/src/lmbUri.class.php');
  */
 class lmbCache
 {
+  const OPERATION_ADD = 'ADD';
+  const OPERATION_SET = 'SET';
+  const OPERATION_GET = 'GET';
+  const OPERATION_DELETE = 'DELETE';
+  const OPERATION_LOCK = 'LOCK';
+  const OPERATION_UNLOCK = 'UNLOCK';
+  const OPERATION_INCREMENT = 'INCREMENT';
+  const OPERATION_DECREMENT = 'DECREMENT';
+
   /**
    * @param string $dsn
    * @return lmbCacheAbstractConnection
