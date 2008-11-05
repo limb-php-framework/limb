@@ -1,4 +1,6 @@
 <?php
+lmb_require('limb/cache2/src/logs/lmbCacheLog.interface.php');
+
 class lmbCacheLogMemory implements lmbCacheLog
 {
   protected static $instance = null;
@@ -16,13 +18,19 @@ class lmbCacheLogMemory implements lmbCacheLog
 
   function addRecord($key, $operation, $time, $result) {
     $this->records[] = array(
-      'key' => '',
+      'key' => $key,
+      'operation' => $operation,
+      'time' => $time,
+      'result' => $result
     );
 
   }
 
   function getStatistic() {}
-  function getRecords() {}
+  function getRecords()
+  {
+    return $this->records;
+  }
 
 
 }

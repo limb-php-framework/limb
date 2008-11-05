@@ -1,11 +1,11 @@
 <?php
+lmb_require('limb/cache2/src/logs/lmbCacheLog.interface.php');
+
 class lmbCacheLogFile implements lmbCacheLog
 {
   protected static $instance = null;
 
-  const PREFIX_MISS = 'miss';
-  const PREFIX_HIT = 'hit';
-
+  protected $log_file;
   protected $log_file_pointer;
 
   static function instance($log_file = false)
@@ -19,10 +19,28 @@ class lmbCacheLogFile implements lmbCacheLog
 
   function __construct($log_file)
   {
-    $this->log_file_pointer = fopen($log_file, 'a+');
+    $this->log_file = $log_file;
+    $this->log_file_pointer = fopen($this->log_file, 'a+');
   }
 
-  function addRecord($key, $operation, $time, $result){}
+  function addRecord($key, $operation, $time, $result)
+  {
+    $params = array($key, $operation, $time, (int) $result);
+    fwrite($this->log_file_pointer, implode(' ', $params).PHP_EOL);
+  }
+
+  function getRecords(){
+    $result = array();
+    foreach(file($this->log_file) as $record_str)
+    {
+      list($record['key'], $record['operation'], $record['time'], $record['result']) = explode(' ', trim($record_str));
+      $record['result'] = (bool) $record['result'];
+      $record['time'] = (integer) $record['time'];
+      $result[] = array_reverse($record);
+    }
+    return $result;
+  }
+
   function getStatistic(){}
-  function getRecords(){}
+
 }
