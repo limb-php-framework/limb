@@ -35,10 +35,10 @@ class lmbARBaseTestCase extends UnitTestCase
 
     lmbToolkit :: restore();
     
-    $connection = lmbToolkit :: instance() -> getDefaultDbConnection();
+    $connection = lmbToolkit :: instance()->getDefaultDbConnection();
     
-    if (method_exists($connection, 'isValid'))
-      if (!$connection->isValid())
+    if(method_exists($connection, 'isValid'))
+      if(!$connection->isValid())
         $connection->connect();
     
   }

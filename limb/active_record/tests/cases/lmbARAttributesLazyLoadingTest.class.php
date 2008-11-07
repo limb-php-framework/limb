@@ -187,6 +187,32 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $this->assertEqual($object2->getContent(), $content);
   }
 
+  function testLazyFieldsInOneToManyRelations()
+  {
+    $course = $this->creator->createCourse();
+
+    $l1 = $this->creator->createLecture($course);
+    $l1->setTitle('Lecture1');
+    $l1->save();
+    $l2 = $this->creator->createLecture($course);
+    $l2->setTitle('Lecture2');
+    $l2->save();
+
+    //all fields are lazy
+    $lectures = $course->getLectures()->find(array('fields' => array()));
+    $this->assertEqual(sizeof($lectures), 2);
+
+    $fields1 = $lectures[0]->exportRaw();
+    $this->assertFalse(isset($fields1['title']));
+    //lazy loading kicks in
+    $this->assertEqual($lectures[0]->getTitle(), 'Lecture1');
+
+    $fields2 = $lectures[1]->exportRaw();
+    $this->assertFalse(isset($fields2['title']));
+    //lazy loading kicks in
+    $this->assertEqual($lectures[0]->getTitle(), 'Lecture1');
+  }
+
   protected function _checkLazyness($object, $annotation, $content)
   {
     $this->assertTrue($object->has('news_date'));

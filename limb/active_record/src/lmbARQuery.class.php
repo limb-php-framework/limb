@@ -69,6 +69,9 @@ class lmbARQuery extends lmbSelectRawQuery
   
   protected function _addFieldsForObject($object, $table_name = '', $prefix = '', $magic_params = array())
   {
+    if(isset($magic_params['fields']) && is_array($magic_params['fields']))
+      $object->setLazyAttributesExcept($magic_params['fields']);
+
     $lazy_attributes = $object->getLazyAttributes();
     
     if(isset($magic_params['with_lazy_attributes']))
@@ -214,7 +217,7 @@ class lmbARQuery extends lmbSelectRawQuery
     $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $object->getDefaultSortParams();
     $query->order($sort_params);
 
-    if (isset($params['group']) && $params['group'])
+    if(isset($params['group']) && $params['group'])
     	$query->group($params['group']);
     
     $join = (isset($params['join']) && $params['join']) ? $params['join'] : array();

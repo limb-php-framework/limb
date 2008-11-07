@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7161 2008-08-27 07:38:33Z serega $
+ * @version $Id: lmbActiveRecord.class.php 7204 2008-11-07 06:13:16Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -600,6 +600,14 @@ class lmbActiveRecord extends lmbObject
   function setLazyAttributes($lazy_attributes)
   {
     $this->_lazy_attributes = $lazy_attributes;
+
+    //primary key should never be lazy
+    unset($this->_lazy_attributes[$this->getPrimaryKeyName()]);
+  }
+
+  function setLazyAttributesExcept($non_lazy_attributes)
+  {
+    $this->setLazyAttributes(array_diff($this->_db_table_fields, $non_lazy_attributes));
   }
 
   function has($property)
@@ -1640,10 +1648,7 @@ class lmbActiveRecord extends lmbObject
   protected function _find($params = array())
   {
     if(isset($params['fields']) && is_array($params['fields']))
-    {
-      $this->_lazy_attributes = array_diff($this->_db_table_fields, $params['fields']);
-      unset($this->_lazy_attributes[$this->getPrimaryKeyName()]);
-    }
+      $this->setLazyAttributesExcept($params['fields']);
 
     $query = lmbARQuery :: create($this, $params, $this->_db_conn);
     $rs = $query->fetch();
