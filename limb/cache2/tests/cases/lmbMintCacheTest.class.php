@@ -8,7 +8,6 @@
  */
 
 lmb_require('limb/cache2/src/lmbMintCache.class.php');
-lmb_require(dirname(__FILE__) . '/drivers/lmbCacheConnectionTest.class.php');
 lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
 
 Mock :: generate('lmbCacheAbstractConnection', 'MockCacheConnection');

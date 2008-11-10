@@ -66,7 +66,12 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
 
     if(false === $value)
       return NULL;
-
+      
+    if(is_array($key))      
+      foreach ($key as $one_key)
+        if(!isset($value[$one_key]))
+          $value[$one_key] = NULL;
+          
     return $value;
   }
 

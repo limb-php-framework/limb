@@ -7,7 +7,7 @@
 * @license    LGPL http://www.gnu.org/copyleft/lesser.html
 */
 lmb_require('limb/core/src/lmbObject.class.php');
-lmb_require('limb/cache2/src/lmbCache.class.php');
+lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
 
 class CacheableFooBarClass{}
 
@@ -24,7 +24,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   function setUp()
   {
-    $this->cache = lmbCache::createConnection($this->dsn);
+    $this->cache = lmbCacheFactory::createConnection($this->dsn);
   }
 
   function tearDownAll()
@@ -53,13 +53,27 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
   {
     $id1 = $this->_getUniqueId();
     $id2 = $this->_getUniqueId();
+    $id3 = $this->_getUniqueId();
+    
     $this->cache->set($id1, $v1 = 'value1');
     $this->cache->set($id2, $v2 = 'value2');
 
-    $var = $this->cache->get(array($id1, $id2, $this->_getUniqueId()));
+    $var = $this->cache->get(array($id1, $id2, $id3));
 
     $this->assertEqual($v1, $var[$id1]);
     $this->assertEqual($v2, $var[$id2]);
+    $this->assertNull($var[$id3]);
+  }
+  
+  function testGet_Positive_Multiple_WithZero()
+  {
+    $id1 = $this->_getUniqueId();
+    
+    $this->cache->add($id1, $v1 = 0);
+
+    $var = $this->cache->get(array($id1));
+
+    $this->assertEqual($v1, $var[$id1]);
   }
 
   function testGet_Positive_FalseValue()
@@ -168,11 +182,11 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     if(!is_object($dsn))
     $dsn = new lmbUri($dsn);
 
-    $cache = lmbCache::createConnection($dsn);
+    $cache = lmbCacheFactory::createConnection($dsn);
 
     $dsn_with_prefix = clone($dsn);
     $dsn_with_prefix->addQueryItem('prefix', 'foo');
-    $cache_with_prefix = lmbCache::createConnection($dsn_with_prefix);
+    $cache_with_prefix = lmbCacheFactory::createConnection($dsn_with_prefix);
 
     $cache->set('bar', 42);
     $cache_with_prefix->set('bar', 24);
@@ -186,8 +200,8 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $request_code = '
     //require_once("'.'/tests/cases/common_tests_setup.php");
     //require_once("'.'/setup.php");
-    lmb_require("limb/cache2/src/lmbCache.class.php");
-    $cache = lmbCache::createConnection("'.$this->dsn.'");
+    lmb_require("limb/cache2/src/lmbCacheFactory.class.php");
+    $cache = lmbCacheFactory::createConnection("'.$this->dsn.'");
     exit($cache->get('.$id.'));';
 
     $status = '';

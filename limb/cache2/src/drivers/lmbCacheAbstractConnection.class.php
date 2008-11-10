@@ -73,11 +73,8 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     else
     {
       $values = array();
-      foreach($keys as $key)
-      {
-        if(!is_null($value = $this->_getSingleKeyValue($key)))
-          $values[$key] = $value;
-      }
+      foreach($keys as $key)     
+        $values[$key] = $this->_getSingleKeyValue($key);
     }
 
     return $values;

@@ -1,5 +1,7 @@
 <?php
 
+lmb_require('limb/cache2/src/lmbCache.interface.php');
+
 abstract class lmbCacheLogTest extends UnitTestCase
 {
   /**
