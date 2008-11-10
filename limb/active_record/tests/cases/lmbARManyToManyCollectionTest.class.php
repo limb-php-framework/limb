@@ -82,7 +82,6 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 
     $this->assertEqual(sizeof($arr), 0);
   }
-  
 
   function testSaveWithExistingOwnerDoesNothing()
   {
