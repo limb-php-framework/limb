@@ -138,20 +138,11 @@ class lmbTestRunner
   {
     if(!$this->reporter)
     {
-      if($this->_simpleTestDefaultReporterInstalled())
-      {
-        require_once(dirname(__FILE__) . '/lmbTestShellReporter.class.php');
-        SimpleTest :: prefer(new lmbTestShellReporter());
-      }
+      require_once(dirname(__FILE__) . '/lmbTestShellReporter.class.php');
+      SimpleTest :: prefer(new lmbTestShellReporter());
       return clone(SimpleTest :: preferred(array('SimpleReporter', 'SimpleReporterDecorator')));
     }
     else
       return clone($this->reporter);
-  }
-
-  protected function _simpleTestDefaultReporterInstalled()
-  {
-    $reporter = SimpleTest :: preferred(array('SimpleReporter', 'SimpleReporterDecorator'));
-    return get_class($reporter) == 'DefaultReporter';
   }
 }
