@@ -19,7 +19,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbDictionaryUpdater.
  *
  * @package i18n
- * @version $Id: lmbDictionaryUpdater.class.php 6241 2007-08-29 05:46:06Z pachanga $
+ * @version $Id: lmbDictionaryUpdater.class.php 7211 2008-11-10 21:16:09Z pachanga $
  */
 class lmbDictionaryUpdater
 {
@@ -43,6 +43,7 @@ class lmbDictionaryUpdater
     $loader = new lmbFsDictionaryExtractor();
     $loader->registerFileParser('.html', new lmbWACTDictionaryExtractor());
     $loader->registerFileParser('.php', new lmbPHPDictionaryExtractor());
+    $loader->registerFileParser('.phtml', new lmbPHPDictionaryExtractor());
 
     $dicts = array();
     $iterator = new lmbFsRecursiveIterator($source_dir);
