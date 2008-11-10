@@ -210,7 +210,7 @@ class lmbARAttributesLazyLoadingTest extends lmbARBaseTestCase
     $fields2 = $lectures[1]->exportRaw();
     $this->assertFalse(isset($fields2['title']));
     //lazy loading kicks in
-    $this->assertEqual($lectures[0]->getTitle(), 'Lecture1');
+    $this->assertEqual($lectures[1]->getTitle(), 'Lecture2');
   }
 
   protected function _checkLazyness($object, $annotation, $content)
