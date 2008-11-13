@@ -26,8 +26,11 @@ class lmbMacroRuntimeWidgetHtmlTag extends lmbMacroRuntimeWidgetTag
   protected function _generateBeforeContent($code_writer)
   {
     parent :: _generateBeforeContent($code_writer);
-    
+
     $this->_generateBeforeOpeningTag($code_writer);
+
+    $this->_generateDynamicAttributes($code_writer);
+    
     $this->_generateOpeningTag($code_writer);
     $this->_generateAfterOpeningTag($code_writer);
   }
@@ -49,8 +52,6 @@ class lmbMacroRuntimeWidgetHtmlTag extends lmbMacroRuntimeWidgetTag
 
   protected function _generateOpeningTag($code)
   {
-    $this->_generateDynamicAttributes($code);
-
     $code->writeHTML("<{$this->html_tag}");
 
     $code->writePHP($this->getRuntimeVar() . '->renderAttributes();');

@@ -17,7 +17,7 @@
  */
 class lmbMacroListTag extends lmbMacroTag
 {
-  protected $counter_var_var;
+  protected $counter_var;
   protected $count_source = false;
 
   function preParse($compiler)
