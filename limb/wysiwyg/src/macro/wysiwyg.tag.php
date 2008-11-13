@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/tags/form/textarea.tag.php');
+lmb_require('limb/macro/src/tags/form/textarea.class.php');
 
 /**
  * Macro wysiwyg tag
@@ -53,6 +53,16 @@ class lmbMacroWysiwygTag extends lmbMacroTextAreaTag
        $this->set('profile', $this->profile);
      }
   }
+  
+  // rewriting parent behaviour since we don't need to render <wisywyg> tag 
+  protected function _generateOpeningTag($code_writer)
+  {
+    $this->_generateWidget($code_writer);
+  }
+
+  protected function _generateClosingTag($code_writer)
+  {
+  }  
 
   protected function _generateContent($code)
   {
