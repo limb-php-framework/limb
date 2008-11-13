@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS `lmb_cache2`;
+CREATE TABLE  `lmb_cache2` (
+  `key` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `ttl` int(11) NOT NULL default '0',
+  `is_locked` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`key`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
