@@ -7,32 +7,90 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
-lmb_require('limb/cache2/src/lmbCache.class.php');
-
+lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
+lmb_require('limb/cache2/src/lmbMintCache.class.php');
+lmb_require('limb/cache2/src/lmbLoggedCache.class.php');
 /**
  * class lmbCacheTools.
  *
  * @package cache
- * @version $Id: lmbCacheTools.class.php 6588 2007-12-05 22:10:21Z alex433 $
+ * @version $Id: lmbCacheTools.class.php $
  */
 class lmbCacheTools extends lmbAbstractTools
 {
-  protected $_cache;
+  protected $_cache = array();
 
-  function getCache()
+  function getCache($name = 'default')
   {
-    if(is_object($this->_cache))
-      return $this->_cache;
-    
-    $dsn = lmbToolkit::instance()->getConf('cache')->get('dsn');
-    $this->_cache = lmbCache::createConnection($dsn);
-
-    return $this->_cache;
+    return $this->getCacheByName($name);
   }
 
-  function setCache($cache)
+  function getCacheByName($name)
   {
-    $this->_cache = $cache;
+    if(isset($this->_cache[$name]) && is_object($this->_cache[$name]))
+      return $this->_cache[$name];
+
+    $this->_cache[$name] = $this->createCache($name);  
+
+    return $this->_cache[$name];
+  }
+  
+  function createCache($name)
+  {
+    $conf = $this->toolkit->getConf('cache');
+    
+    $backend = $this->createCacheConnectionByName($name);
+    
+    try
+    {
+      if($conf->get('mint_cache_enabled'))
+        $backend = new lmbMintCache($backend);  
+    }
+    catch (Exception $e) {}
+    try
+    {
+      if($conf->get('cache_log_enabled'))
+        $backend = new lmbLoggedCache($backend, $name);
+    }
+    catch (Exception $e) {}
+    
+    return $backend; 
+  }
+  
+  function createCacheConnectionByName($name)
+  {
+    $conf = $this->toolkit->getConf('cache');
+      
+    if($conf->get('cache_enabled'))
+    {
+
+      try
+      {
+        $dsn = lmbToolkit::instance()->getConf('cache')->get($name.'_cache_dsn');
+        return $this->createCacheConnectionByDSN($dsn);
+      }
+      catch (Exception $e)
+      {
+        return $this->createCacheFakeConnection();
+      }
+    }
+    else
+      return $this->createCacheFakeConnection();
+  }
+
+  function createCacheFakeConnection()
+  {
+    return $this->createCacheConnectionByDSN('fake://localhost/');
+  }
+  
+  function createCacheConnectionByDSN($dsn)
+  {
+    return lmbCacheFactory :: createConnection($dsn);
+  }
+  
+  function setCache($cache, $name = 'default')
+  {
+    $this->_cache[$name] = $cache;
   }
 }
 
