@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/macro/src/tags/form/lmbMacroFormElementTag.class.php');
-require_once('limb/calendar/src/lmbDate3SelectWidget.class.php');
 
 /**
  * @tag date3select
@@ -19,8 +18,8 @@ require_once('limb/calendar/src/lmbDate3SelectWidget.class.php');
 class lmbDate3SelectTag extends lmbMacroFormElementTag
 {
   protected $html_tag = 'input';    
-  protected $widget_class_name = 'lmbMacroInputWidget';
-  protected $widget_include_file = 'limb/macro/src/tags/form/lmbMacroInputWidget.class.php';  
+  protected $widget_class_name = 'lmbDate3SelectWidget';
+  protected $widget_include_file = 'limb/calendar/src/lmbDate3SelectWidget.class.php';  
 
   function preParse($compiler)
   {
@@ -32,29 +31,7 @@ class lmbDate3SelectTag extends lmbMacroFormElementTag
   protected function _generateAfterClosingTag($code)
   {
     parent :: _generateAfterClosingTag($code);
-
-    if(!$lang = $this->get('lang'))
-      $lang = 'en';
-
-    $year_class = $this->get('year_class');
-    $month_class = $this->get('year_class');
-    $day_class = $this->get('year_class');
-    $show_default = $this->getBool('show_default');
-    $min_year = $this->get('min_year');
-    $max_year = $this->get('max_year');
-
-    $widget = new lmbDate3SelectWidget($lang, $year_class, $month_class, $day_class, $show_default);
-    
-    if ($min_year)
-      $widget->setMinYear(intval($min_year));
-    
-    if ($max_year)
-      $widget->setMaxYear(intval($max_year));
-    
-
-    $code->writeHTML($widget->loadFiles() . $widget->makeFields($this->get('id')));
+    $widget = $this->getRuntimeVar();
+    $code->writePHP("{$widget}->renderDate3Select();\n");
   }
-
 }
-
-
