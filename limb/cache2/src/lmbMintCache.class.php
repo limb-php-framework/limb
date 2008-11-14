@@ -73,6 +73,11 @@ class lmbMintCache implements lmbCacheConnection
       return NULL;
     }
   }
+  
+  function getType()
+  {
+    return $this->cache->getType();
+  }
 
   function delete($key)
   {

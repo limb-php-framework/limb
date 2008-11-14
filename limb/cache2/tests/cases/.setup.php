@@ -8,3 +8,4 @@ if(!defined('LIMB_VAR_DIR'))
 
 require_once(dirname(__FILE__) . '/../../common.inc.php');
 require_once(dirname(__FILE__) . '/../../../config/common.inc.php');
+require_once(dirname(__FILE__) . '/../../../fs/src/lmbFs.class.php');
