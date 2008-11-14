@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/macro/src/tags/form/textarea.class.php');
+lmb_require('limb/macro/src/tags/form/textarea.tag.php');
 
 /**
  * Macro wysiwyg tag
