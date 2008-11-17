@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 
@@ -14,7 +14,7 @@ define('LIMB_INSERT_QUERY_NON_VALUE', uniqid());
  * class lmbInsertQuery.
  *
  * @package dbal
- * @version $Id: lmbInsertQuery.class.php 7165 2008-08-29 11:15:26Z serega $
+ * @version $Id: lmbInsertQuery.class.php 7224 2008-11-17 15:57:24Z korchasa $
  */
 class lmbInsertQuery extends lmbTemplateQuery
 {
@@ -34,6 +34,7 @@ class lmbInsertQuery extends lmbTemplateQuery
   {
     $this->_fields[$field] = $value;
     $this->_registerHint('fields');
+    return $this;
   }
 
   protected function _getTableHint()
