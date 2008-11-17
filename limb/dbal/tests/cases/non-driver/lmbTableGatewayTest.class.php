@@ -62,7 +62,41 @@ class lmbTableGatewayTest extends UnitTestCase
     $this->assertEqual($record->get('description'), 'wow!');
     $this->assertEqual($record->get('id'), $id);
   }
-  
+
+  function testInsertOnDuplicateKeyUpdate()
+  {
+    $current_connection = lmbToolkit::instance()->getDefaultDbConnection();
+    $is_supported = lmbInsertOnDuplicateUpdateQuery::isSupportedByDbConnection($current_connection);
+    if(!$is_supported)
+    {
+      echo "Skip: ".$current_connection->getType()." not support insert on duplicate update queries \n";
+      return;
+    }
+
+    $id = $this->db_table_test->insertOnDuplicateUpdate(array('title' =>  'wow',
+                                             'description' => 'wow!',
+                                             'junk!!!' => 'junk!!!'));
+
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
+    $record = $stmt->getOneRecord();
+
+    $this->assertEqual($record->get('title'), 'wow');
+    $this->assertEqual($record->get('description'), 'wow!');
+    $this->assertEqual($record->get('id'), $id);
+
+    $id = $this->db_table_test->insertOnDuplicateUpdate(array('id' => $id,
+                                             'title' =>  'wow',
+                                             'description' => 'new wow!',
+                                             'junk!!!' => 'junk!!!'));
+
+    $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
+    $record = $stmt->getOneRecord();
+
+    $this->assertEqual($record->get('title'), 'wow');
+    $this->assertEqual($record->get('description'), 'new wow!');
+    $this->assertEqual($record->get('id'), $id);
+  }
+
 //  function testInsertUpdatesSequenceIfAutoIncrementFieldWasSet()
 //  {
 //    $id = $this->db_table_test->insert(array('id' => 4, 'title' =>  'wow', 'description' => 'wow!'));

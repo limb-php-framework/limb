@@ -10,8 +10,14 @@ lmb_require('limb/dbal/src/query/lmbBulkInsertQuery.class.php');
 
 class lmbBulkInsertQueryTest extends lmbQueryBaseTestCase
 {
+  function skip()
+  {
+    $current_connection = lmbToolkit::instance()->getDefaultDbConnection();
+    $this->skipIf(!lmbBulkInsertQuery::isSupportedByDbConnection($current_connection));
+  }
+
   function testInsert()
-  { 
+  {
     $query = new lmbBulkInsertQuery('test_db_table', $this->conn);
     $query->addSet(array('id' => 2, 'title' => 'some title', 'description' => 'some description'));
     $query->addSet(array('id' => 4, 'title' => 'some other title', 'description' => 'some other description'));
@@ -29,7 +35,7 @@ class lmbBulkInsertQueryTest extends lmbQueryBaseTestCase
     $this->assertEqual($arr[1]['description'], 'some other description');
     $this->assertEqual($arr[1]['title'], 'some other title');
   }
-  
+
   function testExecuteDoesNothingIfNotSetsSpecified()
   {
     $query = new lmbBulkInsertQuery('test_db_table', $this->conn);
@@ -49,6 +55,6 @@ class lmbBulkInsertQueryTest extends lmbQueryBaseTestCase
       $this->assertTrue(true);
     }
   }
-  
+
 }
 

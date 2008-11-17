@@ -10,6 +10,7 @@ lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbInsertOrUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
@@ -18,7 +19,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 7108 2008-07-10 06:58:15Z serega $
+ * @version $Id: lmbTableGateway.class.php 7226 2008-11-17 16:00:35Z korchasa $
  */
 class lmbTableGateway
 {
@@ -168,7 +169,32 @@ class lmbTableGateway
 
     return (int)$this->_stmt->insertId($this->_primary_key_name);
   }
-  
+
+  function insertOnDuplicateUpdate($row)
+  {
+    $filtered_row = $this->_filterRow($row);
+    if(!count($filtered_row))
+      throw new lmbException('All fields filtered!! Insert statement must contain atleast one field!');
+
+    $query = new lmbInsertOnDuplicateUpdateQuery($this->_db_table_name, $this->_conn);
+    $values = array();
+    $update_sequence = false;
+    foreach($filtered_row as $key => $value)
+    {
+      if(is_null($value) && $this->isAutoIncrement($key))
+        continue;
+
+      $query->addField($key);
+      $values[$key] = $value;
+    }
+
+    $this->_stmt = $query->getStatement($this->_conn);
+
+    $this->_bindValuesToStatement($this->_stmt, $values);
+
+    return (int)$this->_stmt->insertId($this->_primary_key_name);
+  }
+
   function update($set, $criteria = null)
   {
     if(is_array($set))
