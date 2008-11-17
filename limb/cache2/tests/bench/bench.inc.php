@@ -27,31 +27,37 @@ function draw_text_report($result_array) {
   global $operations;
   
   echo 'data type | ';
-  foreach($operations as $operation)
+  foreach($operations as $operation => $probability)
   {
     echo $operation.' | ';
   }
   echo PHP_EOL;      
   
+  $tests_times_sum = 0;
+  $syntetic_times_sum = 0;
+  
   foreach($result_array as $data_type_name => $results_for_data_type) {
     echo $data_type_name;
     echo ' | ';    
-    foreach($results_for_data_type as $results_for_data_type) {    
-      echo round(ITERATIONS_COUNT / $results_for_data_type).' | '; 
+    foreach($results_for_data_type as $operation => $results_for_operation) {    
+      echo round(ITERATIONS_COUNT / $results_for_operation).' | '; 
+      $tests_times_sum += $results_for_operation;
+      $syntetic_times_sum += $operations[$operation] * $results_for_operation / 100;
     }    
     echo PHP_EOL;
   }
+  
+  echo 'tests time sum: ' . $tests_times_sum . PHP_EOL;
+  echo 'syntetic time sum: ' . $syntetic_times_sum . PHP_EOL;
 }
 
 function bench_cacher($cacher) {
   global $data, $operations;  
   $cacher->flush();
   $result = array();
-  foreach($data as $type => $value) {
-    foreach($operations as $operation) {
-      $result[$type][$operation] = make_test($cacher, $operation, $value);
-    }
-  }
+  foreach($data as $type => $value)
+    foreach($operations as $operation => $probability)
+        $result[$type][$operation] = make_test($cacher, $operation, $value);
   
   return $result;
 }

@@ -65,9 +65,20 @@ $data = array(
   'string 512 chars'  => $string_512,
   'string 4096 chars'  => $string_4096,
   'string 10240 chars'  => $string_10240,  
-  'array'   => $array,  
-  'object'  => $object
+//  'array'   => $array,  
+//  'object'  => $object
 );
 
-$operations = array('add','get','set','delete', 'lock', 'unlock', 'increment', 'decrement', 'safeIncrement', 'safeDecrement');
+$operations = array(
+  'add' => 5,
+  'get' => 77,
+  'set' => 5,
+  'delete' => 5,
+  'lock' => 1,
+  'unlock' => 1,
+  'increment' => 1,
+  'decrement' => 1,
+  'safeIncrement' => 2,
+  'safeDecrement' => 2
+);
 $operations_with_data = array('add', 'set');
