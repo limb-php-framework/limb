@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 
@@ -33,8 +33,9 @@ class lmbBulkInsertQuery extends lmbTemplateQuery
   {
     foreach($set as $field => $value)
       $this->_fields[$field] = $field;
-    
+
     $this->_sets[] = $set;
+    return $this;
   }
 
   protected function _getTableHint()
@@ -57,23 +58,23 @@ class lmbBulkInsertQuery extends lmbTemplateQuery
       {
         if(!isset($set[$field]))
           throw new lmbException('Field "' . '" not found in set ' . print_r($set, true));
-        
+
         $values[] = ":{$index}_{$field}:";
       }
-      
+
       $set_strings[] = '(' . implode(',', $values) . ')';
     }
 
     return implode(',', $set_strings);
   }
-  
+
   function getStatement()
   {
     $stmt = parent :: getStatement();
-    
+
     if(!count($this->_sets))
       throw new lmbException('Bulk insert query does not have any sets to insert');
-    
+
     foreach($this->_sets as $index => $set)
     {
       foreach($this->_fields as $field)
@@ -83,12 +84,21 @@ class lmbBulkInsertQuery extends lmbTemplateQuery
     }
 
     return $stmt;
-  }  
-  
+  }
+
   function execute()
   {
     if(count($this->_sets))
       return parent :: execute();
+  }
+
+  /**
+   * @param lmbDbConnection $connection
+   */
+  static function isSupportedByDbConnection($connection)
+  {
+    $supported_types = array('mysql', 'mysqli');
+    return in_array($connection->getType(), $supported_types);
   }
 }
 
