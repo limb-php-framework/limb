@@ -104,7 +104,7 @@ CREATE OR REPLACE TABLE "user_for_test" (
 )  ;
 
 
-CREATE OR REPLACE TABLE "user2group_for_test" (
+CREATE OR REPLACE TABLE "user_for_test2group_for_test" (
  "id" INT NOT NULL AUTOINC,
  "user_id" int default NULL,
  "group_id" int default NULL,
@@ -112,7 +112,7 @@ CREATE OR REPLACE TABLE "user2group_for_test" (
 )  ;
 
 
-CREATE OR REPLACE TABLE "extended_user2group_for_test" (
+CREATE OR REPLACE TABLE "extended_user_for_test2group_for_test" (
  "id" INT NOT NULL AUTOINC,
  "user_id" int default NULL,
  "group_id" int default NULL,

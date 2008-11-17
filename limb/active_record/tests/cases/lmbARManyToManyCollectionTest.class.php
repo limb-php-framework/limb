@@ -28,13 +28,13 @@ class UserForTestWithSpecialRelationTable extends lmbActiveRecord
 
   protected $_has_many_to_many = array('groups' => array('field' => 'user_id',
                                                          'foreign_field' => 'group_id',
-                                                         'table' => 'extended_user2group_for_test',
+                                                         'table' => 'extended_user_for_test2group_for_test',
                                                          'class' => 'GroupForTest'));
 }
 
 class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('group_for_test', 'user_for_test', 'user2group_for_test', 'extended_user2group_for_test'); 
+  protected $tables_to_cleanup = array('group_for_test', 'user_for_test', 'user_for_test2group_for_test', 'extended_user_for_test2group_for_test'); 
 
   function testAddToWithExistingOwner()
   {
@@ -319,7 +319,7 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
     $collection->add($group1);
     $collection->add($group2);
 
-    $db_table = new lmbTableGateway('extended_user2group_for_test');
+    $db_table = new lmbTableGateway('extended_user_for_test2group_for_test');
     $db_table->insert(array('user_id' => $user->getId(),
                             'other_id' => 100));
 
@@ -507,7 +507,7 @@ class lmbARManyToManyCollectionTest extends lmbARBaseTestCase
 
     $user = $this->_createUserAndSave(array($group1, $group2, $group3));
     
-    $table = lmbDBAL :: table('user2group_for_test', $this->conn);
+    $table = lmbDBAL :: table('user_for_test2group_for_test', $this->conn);
     $records = $table->select()->getArray();
     $this->assertEqual(count($records), 3);
     

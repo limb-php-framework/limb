@@ -220,30 +220,30 @@ CREATE OR REPLACE TRIGGER user_for_test_trigger
 BEFORE INSERT ON user_for_test REFERENCING NEW AS NEW FOR EACH ROW
 BEGIN IF :NEW.ID IS NULL THEN SELECT user_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
 /
-BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE user2group_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE user_for_test2group_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE SEQUENCE user2group_for_test_seq;
+CREATE SEQUENCE user_for_test2group_for_test;
 /
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE user2group_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE user_for_test2group_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE user2group_for_test (
+CREATE TABLE user_for_test2group_for_test (
   id number NOT NULL,
   user_id number default NULL,
   group_id number default NULL,
   PRIMARY KEY  (id)
 );
 /
-CREATE OR REPLACE TRIGGER user2group_for_test_trigger
-BEFORE INSERT ON user2group_for_test REFERENCING NEW AS NEW FOR EACH ROW
-BEGIN IF :NEW.ID IS NULL THEN SELECT user2group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+CREATE OR REPLACE TRIGGER user_for_test2group_for_test_trigger
+BEFORE INSERT ON user_for_test2group_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT user_for_test2group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
 /
-BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE extended_user2group_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE extended_user_for_test2group_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE SEQUENCE extended_user2group_for_test_seq;
+CREATE SEQUENCE extended_user_for_test2group_for_test_seq;
 /
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE extended_user2group_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE extended_user_for_test2group_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE extended_user2group_for_test (
+CREATE TABLE extended_user_for_test2group_for_test (
   id number NOT NULL,
   user_id number default NULL,
   group_id number default NULL,
@@ -251,6 +251,6 @@ CREATE TABLE extended_user2group_for_test (
   PRIMARY KEY  (id)
 );
 /
-CREATE OR REPLACE TRIGGER extended_user2group_for_test_trigger
-BEFORE INSERT ON extended_user2group_for_test REFERENCING NEW AS NEW FOR EACH ROW
-BEGIN IF :NEW.ID IS NULL THEN SELECT extended_user2group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+CREATE OR REPLACE TRIGGER extended_user_for_test2group_for_test_trigger
+BEFORE INSERT ON extended_user_for_test2group_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT extended_user_for_test2group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;

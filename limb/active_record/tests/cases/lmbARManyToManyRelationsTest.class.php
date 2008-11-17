@@ -15,14 +15,14 @@ class UserForTestWithCustomCollection extends lmbActiveRecord
 
   protected $_has_many_to_many = array('groups' => array('field' => 'user_id',
                                                          'foreign_field' => 'group_id',
-                                                         'table' => 'user2group_for_test',
+                                                         'table' => 'user_for_test2group_for_test',
                                                          'class' => 'GroupForTest',
                                                          'collection' => 'GroupsForTestCollectionStub'));
 }
 
 class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('user_for_test', 'group_for_test', 'user2group_for_test', 'test_one_table_object'); 
+  protected $tables_to_cleanup = array('user_for_test', 'group_for_test', 'user_for_test2group_for_test', 'test_one_table_object'); 
 
   function testMapPropertyToField()
   {
@@ -209,7 +209,7 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
     $user3 = lmbActiveRecord :: findById('UserForTest', $user1->getId());
     $user3->destroy();
 
-    $this->assertEqual($this->db->count('user2group_for_test'), 2);
+    $this->assertEqual($this->db->count('user_for_test2group_for_test'), 2);
 
     $user4 = lmbActiveRecord :: findById('UserForTest', $user2->getId());
     $groups = $user4->getGroups();

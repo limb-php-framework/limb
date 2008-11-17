@@ -28,7 +28,7 @@ class LessonForTestWithCustomImport extends lmbActiveRecord
 class lmbARImportTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test', 'test_one_table_object', 
-                                       'user_for_test', 'group_for_test', 'user2group_for_test', 
+                                       'user_for_test', 'group_for_test', 'user_for_test2group_for_test', 
                                        'person_for_test', 'social_security_for_test'); 
   
   function testImportingObjectCallsItsExportMethod()

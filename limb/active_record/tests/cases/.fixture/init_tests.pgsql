@@ -118,18 +118,18 @@ CREATE TABLE user_for_test (
   PRIMARY KEY  (id)
 )  ;
 
-DROP TABLE user2group_for_test CASCADE;
+DROP TABLE user_for_test2group_for_test CASCADE;
 
-CREATE TABLE user2group_for_test (
+CREATE TABLE user_for_test2group_for_test (
  "id" SERIAL,
  "user_id" int8 default NULL,
  "group_id" int8 default NULL,
  PRIMARY KEY  (id)
 )  ;
 
-DROP TABLE extended_user2group_for_test CASCADE;
+DROP TABLE extended_user_for_test2group_for_test CASCADE;
 
-CREATE TABLE extended_user2group_for_test (
+CREATE TABLE extended_user_for_test2group_for_test (
  "id" SERIAL,
  "user_id" int8 default NULL,
  "group_id" int8 default NULL,

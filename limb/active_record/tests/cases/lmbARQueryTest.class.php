@@ -418,7 +418,7 @@ class lmbARQueryTest extends lmbARBaseTestCase
     
     //make sure we really eager fetching
     $this->db->delete('group_for_test');
-    $this->db->delete('user2group_for_test');
+    $this->db->delete('user_for_test2group_for_test');
 
     $this->conn->resetStats();
     

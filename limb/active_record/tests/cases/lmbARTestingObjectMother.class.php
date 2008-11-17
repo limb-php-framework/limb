@@ -109,7 +109,7 @@ class GroupForTest extends lmbActiveRecord
 
   protected $_has_many_to_many = array('users' => array('field' => 'group_id',
                                                         'foreign_field' => 'user_id',
-                                                        'table' => 'user2group_for_test',
+                                                        'table' => 'user_for_test2group_for_test',
                                                         'class' => 'UserForTest'));
 
   protected $_test_validator;
@@ -134,7 +134,7 @@ class UserForTest extends lmbActiveRecord
 
   protected $_has_many_to_many = array('groups' => array('field' => 'user_id',
                                                          'foreign_field' => 'group_id',
-                                                         'table' => 'user2group_for_test',
+                                                         'table' => 'user_for_test2group_for_test',
                                                          'class' => 'GroupForTest'));
 
   protected $_has_one = array('linked_object' => array('field' => 'linked_object_id',

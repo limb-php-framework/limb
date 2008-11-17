@@ -105,16 +105,16 @@ CREATE TABLE `user_for_test` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `user2group_for_test`;
-CREATE TABLE `user2group_for_test` (
+DROP TABLE IF EXISTS `user_for_test2group_for_test`;
+CREATE TABLE `user_for_test2group_for_test` (
  `id` bigint(20) NOT NULL auto_increment,
  `user_id` bigint(20) default NULL,
  `group_id` bigint(20) default NULL,
  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `extended_user2group_for_test`;
-CREATE TABLE `extended_user2group_for_test` (
+DROP TABLE IF EXISTS `extended_user_for_test2group_for_test`;
+CREATE TABLE `extended_user_for_test2group_for_test` (
  `id` bigint(20) NOT NULL auto_increment,
  `user_id` bigint(20) default NULL,
  `group_id` bigint(20) default NULL,
