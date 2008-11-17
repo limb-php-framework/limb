@@ -90,6 +90,18 @@ class lmbSerializable
     else
       return array();
   }
+  
+  static function serialize($raw_data)
+  {
+    $container = new lmbSerializable($raw_data);
+    return serialize($container);
+  }
+  
+  static function unserialize($serialized_data)
+  {
+    $container = unserialize($serialized_data);
+    return $container->getSubject();
+  }
 }
 
 
