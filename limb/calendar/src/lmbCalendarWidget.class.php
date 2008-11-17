@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
+lmb_require('limb/macro/src/tags/form/lmbMacroInputWidget.class.php');
+
 /**
  *  This class implements a simple PHP wrapper for the calendar.  It
  *  allows you to easily include all the calendar files and setup the
@@ -14,7 +16,7 @@
  * @package calendar
  * @version $Id$
  */
-class lmbCalendarWidget
+class lmbCalendarWidget extends lmbMacroInputWidget
 {
   protected $newline = "\n";
   protected $calendar_lib_path;
@@ -23,14 +25,24 @@ class lmbCalendarWidget
   protected $calendar_lang_file;
   protected $calendar_setup_file;
   protected $calendar_theme_file;
-  protected $calendar_options;
+  protected $calendar_options = array();
 
-  function __construct($lang              = 'en',
-                       $stripped          = true,
-                       $theme             = 'calendar-win2k-1',
-                       $calendar_lib_path = '/shared/calendar/js/')
+  function renderCalendar()
   {
-    if($stripped)
+    $this->_initCalendar();
+    echo $this->loadFiles();
+    echo $this->makeButton(array(),
+                           array('src' => $this->getAttribute('src')));
+  }
+
+  protected function _initCalendar()
+  {
+    $theme = 'calendar-win2k-1';
+    $calendar_lib_path = '/shared/calendar/js/';
+    $lang = $this->getAttribute('lang') ? $this->getAttribute('lang') : 'en';
+    $format = $this->getAttribute('format') ? $this->getAttribute('format') : '%Y-%m-%d';
+    
+    if($this->getBoolAttribute('stripped'))
     {
       $this->calendar_file = 'calendar_stripped.js';
       $this->calendar_setup_file = 'calendar-setup_stripped.js';
@@ -40,17 +52,20 @@ class lmbCalendarWidget
       $this->calendar_file = 'calendar.js';
       $this->calendar_setup_file = 'calendar-setup.js';
     }
+    
     $this->calendar_lang_file = 'lang/calendar-' . $lang . '.js';
     $this->calendar_theme_file = $theme.'.css';
     $this->calendar_lib_path = preg_replace('/\/+$/', '/', $calendar_lib_path);
-    $this->calendar_options = array('ifFormat' => '%Y-%m-%d',
-                                    'daFormat' => '%Y-%m-%d');
+
+    
+    $this->setOption('ifFormat', $format);
+    $this->setOption('daFormat', $format);
   }
 
   function setOption($name, $value)
   {
     $this->calendar_options[$name] = $value;
-  } 
+  }
 
   function loadFiles()
   {
@@ -79,8 +94,9 @@ class lmbCalendarWidget
     return $code;
   }
 
-  function makeButton($field_id, $cal_options = array(), $field_attributes = array())
+  function makeButton($cal_options = array(), $field_attributes = array())
   {
+    $field_id = $this->getRuntimeId();
     $id = $this->_genId();
     
     if(isset($field_attributes['src']) && $field_attributes['src'])
