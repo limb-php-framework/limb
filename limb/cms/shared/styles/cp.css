@@ -108,22 +108,22 @@
       .border_b .r {background: url(../images/bgr/border/rb.gif) no-repeat left top;float:right;width:4px;height:4px}
 
   /*LIST*/
-    .list {clear:both;padding:0;margin:0 0 60px;_height:1%}
-    .popup .list {margin:0 10px;}
-    .list tr.odd {background-color:#ffffff;}
-    .list tr.even {background-color:#f9f9f9;}
-    .list table {width:100%;border-right:1px solid #bbbbbb;}
-      .list th {padding:13px 8px;background: #e5e5e5 url(../images/bgr/th_border.gif) repeat-y left top;border:1px solid #bbbbbb;border-width:1px 0;text-align:left;white-space:nowrap;}
-      .list td {padding:5px 8px;background-image: url(../images/bgr/td_border.gif);background-position:left top;background-repeat:repeat-y;border-top:1px solid #dddddd;text-align:left;vertical-align:middle;}
-        .list td.actions {white-space:nowrap}
-        .list td.actions img{vertical-align:middle;margin:5px;white-space:nowrap}
-        .list th.selector {width:23px;}
-        .list th.orders {width:42px}
-        .list input.order {height:1.5em;width:3.4em;border:1px inset #aaa;padding:2px 3px 0;}
-        .list ul {margin:0;padding:0;}
-        .list ul li {list-style-type:none;margin:3px;}
-    .list .list_actions {background: #e5e5e5;border:1px solid #bbb;padding:3px 8px;font-size:0;clear:both}
-      .list .list_actions .button_wrapper {margin:0 10px 0 0;}
+    .list, .list_without_filter {clear:both;padding:0;margin:0 0 60px;_height:1%}
+    .popup .list, .popup .list_without_filter {margin:0 10px;}
+    .list tr.odd, .list_without_filter tr.odd {background-color:#ffffff;}
+    .list tr.even, .list_without_filter tr.even {background-color:#f9f9f9;}
+    .list table, .list_without_filter table {width:100%;border-right:1px solid #bbbbbb;}
+      .list th, .list_without_filter th {padding:13px 8px;background: #e5e5e5 url(../images/bgr/th_border.gif) repeat-y left top;border:1px solid #bbbbbb;border-width:1px 0;text-align:left;white-space:nowrap;}
+      .list td, .list_without_filter td {padding:5px 8px;background-image: url(../images/bgr/td_border.gif);background-position:left top;background-repeat:repeat-y;border-top:1px solid #dddddd;text-align:left;vertical-align:middle;}
+        .list td.actions, .list_without_filter td.actions {white-space:nowrap}
+        .list td.actions img, .list_without_filter td.actions img {vertical-align:middle;margin:5px;white-space:nowrap}
+        .list th.selector, .list_without_filter th.selector {width:23px;}
+        .list th.orders, .list_without_filter th.orders {width:42px}
+        .list input.order, .list_without_filter input.order {height:1.5em;width:3.4em;border:1px inset #aaa;padding:2px 3px 0;}
+        .list ul, .list_without_filter ul {margin:0;padding:0;}
+        .list ul li, .list_without_filter ul li {list-style-type:none;margin:3px;}
+    .list .list_actions, .list_without_filter .list_actions {background: #e5e5e5;border:1px solid #bbb;padding:3px 8px;font-size:0;clear:both}
+      .list .list_actions .button_wrapper, .list_without_filter .list_actions .button_wrapper {margin:0 10px 0 0;}
     .priority {width: 30px; text-align: right;}
 
   /*FILTER*/
