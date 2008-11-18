@@ -87,5 +87,15 @@ class lmbMacroFormElementWidget extends lmbMacroHtmlTagWidget
         return $ds[$id];
     }
   }
+
+  function renderAttributes()
+  {
+    foreach(array('readonly', 'disabled') as $attribute)
+    {
+      if(!$this->getBoolAttribute($attribute, false))
+        $this->removeAttribute($attribute);
+    }
+    parent :: renderAttributes();
+  }
 }
 
