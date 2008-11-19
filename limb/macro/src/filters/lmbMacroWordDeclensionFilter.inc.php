@@ -8,7 +8,10 @@
  */ 
 
 function lmb_macro_choose_declension_by_number($number, $singular_form, $plural_main_form, $plural_other_form)
-{
+{  
+  if(substr($number, -2) == 11)
+    return $plural_main_form;
+  
   if(substr($number, -1) == 1)
     return $singular_form;
 
