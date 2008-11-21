@@ -10,7 +10,7 @@ lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
 lmb_require('limb/dbal/src/query/lmbUpdateQuery.class.php');
-lmb_require('limb/dbal/src/query/lmbInsertOrUpdateQuery.class.php');
+lmb_require('limb/dbal/src/query/lmbInsertOnDuplicateUpdateQuery.class.php');
 lmb_require('limb/dbal/src/query/lmbDeleteQuery.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
@@ -19,7 +19,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 7226 2008-11-17 16:00:35Z korchasa $
+ * @version $Id: lmbTableGateway.class.php 7240 2008-11-21 17:29:56Z korchasa $
  */
 class lmbTableGateway
 {
