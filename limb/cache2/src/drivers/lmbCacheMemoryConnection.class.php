@@ -6,31 +6,28 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
 class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
 {
   protected $_caches = array();
+  protected $_cache_ttls = array();
 
   function add ($key, $value, $ttl = false)
   {
     $key = $this->_resolveKey($key);
 
     if(isset($this->_caches[$key]) && (
-      !isset($this->_caches[$key]['ttl']) || $this->_caches[$key]['ttl'] > time())
+      !isset($this->_cache_ttls[$key]) || $this->_cache_ttls[$key] > time())
     )
       return false;
 
     return $this->set($key, $value, $ttl);
-  }
+  }  
 
   function set($key, $value, $ttl = false)
   {
     $key = $this->_resolveKey($key);
 
-    $container = new lmbSerializable($value);
-
-    $cache = array('value' => serialize($container));
-
     if($ttl)
-      $cache['ttl'] = time() + $ttl;
-
-    $this->_caches[$key] = $cache;
+      $this->_cache_ttls[$key] = $ttl + time();
+      
+    $this->_caches[$key] = $this->_createContainer($value);
 
     return true;
   }
@@ -39,14 +36,16 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
   {
     if(!isset($this->_caches[$resolved_key]))
       return null;
-
-    $cache = $this->_caches[$resolved_key];
-
-    if(isset($cache['ttl']) && $cache['ttl'] <= time())
+      
+    if(
+      isset($this->_cache_ttls[$resolved_key])
+      && $this->_cache_ttls[$resolved_key] <= time()
+    )
       return null;
 
-    $container = unserialize($cache['value']);
-    return $container->getSubject();
+    $container = $this->_caches[$resolved_key];
+    
+    return $this->_getDataFromContainer($container);
   }
 
   function delete($key)

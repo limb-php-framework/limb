@@ -19,5 +19,15 @@ class lmbCacheApcConnectionTest extends lmbCacheConnectionTest
   function skip()
   {
     $this->skipIf(!extension_loaded('apc'), 'APC extension not found. Test skipped.');
+  }  
+  
+  function testGetWithTtl_sameThread()
+  {
+    // APC cache all variables in one thread 
+  }
+  
+  function testGetWithTtl_differentThread()
+  {
+    // APC works strange in cli mode
   }
 }

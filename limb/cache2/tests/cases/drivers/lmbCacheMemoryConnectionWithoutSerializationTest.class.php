@@ -8,17 +8,18 @@
  */
 
 lmb_require('limb/cache2/src/drivers/lmbCacheMemoryConnection.class.php');
-lmb_require(dirname(__FILE__) . '/lmbCacheConnectionTest.class.php');
+lmb_require(dirname(__FILE__) . '/lmbCacheMemoryConnectionTest.class.php');
 
-class lmbCacheMemoryConnectionTest extends lmbCacheConnectionTest
+class lmbCacheMemoryConnectionWithoutSerializationTest extends lmbCacheMemoryConnectionTest
 {
   function __construct()
-  {
-    $this->dsn = 'memory:/';
+  {    
+    $this->dsn = 'memory:?need_serialization=0';
   }
   
-  function testGetWithTtl_differentThread()
+  function testObjectClone()
   {
-    //memory not share between threads
+    // can't work without serilization
   }
+  
 }

@@ -19,6 +19,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 {
   protected $dsn;
   protected $prefix;
+  protected $need_serialization = true;
   /**
    * Operations lock ttl
    *
@@ -60,6 +61,22 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     }
 
     return $new_keys;
+  }
+  
+  function _getDataFromContainer($container)
+  {
+    if($this->need_serialization)
+      return lmbSerializable::unserialize($container);
+    else 
+      return $container;
+  }
+  
+  function _createContainer($data)
+  {
+    if($this->need_serialization)
+      return lmbSerializable::serialize($data);
+    else 
+      return $data;    
   }
 
   function get($keys)

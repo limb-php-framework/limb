@@ -63,18 +63,17 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
     $key = $this->_resolveKey($key);
 
     $this->delete($key);
-
-    $file = $this->_getCacheFileName($key);
-
-    $container = new lmbSerializable($value);
-    lmbFs :: safeWrite($file, serialize($container));
-
-    if(!$ttl)
-      return true;
-
-    $ttl_file = $this->_getCacheTtlFileName($key);
-    lmbFs :: safeWrite($ttl_file, (string) ($ttl + time()));
-    return true;
+    
+    if($ttl)
+    {
+      $ttl_file = $this->_getCacheTtlFileName($key);
+      lmbFs :: safeWrite($ttl_file, (string) ($ttl + time()));      
+    }
+    
+    $file = $this->_getCacheFileName($key);    
+    lmbFs :: safeWrite($file, $this->_createContainer($value));
+    
+    return true;    
   }
 
   function _getSingleKeyValue($resolved_key)
@@ -82,8 +81,7 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
     if (is_null($file = $this->_getCacheFile($resolved_key)))
       return NULL;
 
-    $container = unserialize(file_get_contents($file));
-    return $container->getSubject();
+    return $this->_getDataFromContainer(file_get_contents($file));
   }
 
   function delete($key)

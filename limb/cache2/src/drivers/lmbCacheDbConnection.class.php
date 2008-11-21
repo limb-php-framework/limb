@@ -36,6 +36,35 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     return 'Db';
   }
   
+  function lock($key)
+  {
+    $resolved_key = $this->_resolveKey($key);
+    
+    $lock = $this->db_table->selectFirstRecord('`key` = \''.$resolved_key.'\'');
+    
+    if($lock['is_locked'])
+      return false;      
+    
+    try {
+      $this->db_table->insertOnDuplicateUpdate(array(
+        'key' => $resolved_key,
+        'is_locked' => true,        
+      ));
+      return true;
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }    
+  }
+  
+  function unlock($key)
+  {
+    $resolved_key = $this->_resolveKey($key);
+    
+    $this->db_table->update(array('is_locked' => false), '`key` = '.$resolved_key);    
+  }
+  
   function add ($key, $value, $ttl = false)
   {    
     $resolved_key = $this->_resolveKey($key);
@@ -44,10 +73,9 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
       $ttl += time();
       
     try {
-      $container = new lmbSerializable($value);
       $this->db_table->insert(array(
         'key' => $resolved_key,
-        'value' => serialize($container),
+        'value' => lmbSerializable::serialize($value),
         'ttl' => $ttl
       ));
       return true;
@@ -58,10 +86,25 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     }    
   }
   
-  function set ($key, $value, $ttl = false)
+  function set($key, $value, $ttl = false)
   {
-    $this->delete($key);
-    $this->add($key, $value, $ttl);
+    $resolved_key = $this->_resolveKey($key);
+    
+    if($ttl)
+      $ttl += time();
+      
+    try {
+      $this->db_table->insertOnDuplicateUpdate(array(
+        'key' => $resolved_key,
+        'value' => lmbSerializable::serialize($value),
+        'ttl' => $ttl
+      ));
+      return true;
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }
   }
   
   function _getSingleKeyValue ($key)
@@ -76,9 +119,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     if($ttl && $ttl < time())
       return NULL;
       
-    $container = unserialize($record['value']);
-    
-    return $container->getSubject();
+    return lmbSerializable::unserialize($record['value']);
   }
   
   function delete($key)

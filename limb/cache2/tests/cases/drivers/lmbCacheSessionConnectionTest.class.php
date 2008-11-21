@@ -7,18 +7,21 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/cache2/src/drivers/lmbCacheMemoryConnection.class.php');
+lmb_require('limb/cache2/src/drivers/lmbCacheSessionConnection.class.php');
 lmb_require(dirname(__FILE__) . '/lmbCacheConnectionTest.class.php');
 
-class lmbCacheMemoryConnectionTest extends lmbCacheConnectionTest
+class lmbCacheSessionConnectionTest extends lmbCacheConnectionTest
 {
+  protected $storage_init_file = 'limb/web_app/common.inc.php';
+  
   function __construct()
-  {
-    $this->dsn = 'memory:/';
+  {    
+    $this->dsn = 'session:';
+    parent::__construct();
   }
   
   function testGetWithTtl_differentThread()
   {
-    //memory not share between threads
+    //session not share between threads
   }
 }

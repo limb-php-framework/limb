@@ -21,9 +21,17 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
    * @var lmbCacheAbstractConnection
    */
   protected $cache;
+  
+  protected $storage_init_file;
+  
+  function __construct()
+  {
+    if($this->storage_init_file)
+      lmb_require($this->storage_init_file);
+  }
 
   function setUp()
-  {
+  {    
     $this->cache = lmbCacheFactory::createConnection($this->dsn);
   }
 
@@ -105,11 +113,11 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     {
       $this->cache->set($id = $this->_getUniqueId(), $v2);
       $cache_value = $this->cache->get($id);
-      $this->assertEqual($cache_value, $v2);
+      $this->assertIdentical($cache_value, $v2);
     }
 
     $cache_value = $this->cache->get($first_id);
-    $this->assertEqual($cache_value, $v1);
+    $this->assertIdentical($cache_value, $v1);
   }
 
   function testDelete()
@@ -136,18 +144,24 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $this->assertFalse($this->cache->get($id2));
   }
 
-  function testGetWithTtlFalse()
+  function testGetWithTtl_sameThread()
   {
-    $this->cache->set($id = $this->_getUniqueId(), 'value', $ttl = 1);
+    $value = 'value';
+    $this->cache->set($id_short = $this->_getUniqueId(), $value, $ttl = 1);
+    $this->cache->set($id_long = $this->_getUniqueId(), $value, $ttl = 10);
     sleep(2);
-    $this->assertFalse($this->_makeGetFromDifferentThread($id));
+    $this->assertNull($this->cache->get($id_short));
+    $this->assertIdentical($value, $this->cache->get($id_long));        
   }
-
-  function testGetWithTtlTrue()
+  
+  function testGetWithTtl_differentThread()
   {
-    $val = 'value';
-    $this->cache->set($id = $this->_getUniqueId(), $val, $ttl = 3600);
-    $this->assertEqual($val, $this->cache->get($id));
+    $value = 'value';
+    $this->cache->set($id_short = $this->_getUniqueId(), $value, $ttl = 1);
+    $this->cache->set($id_long = $this->_getUniqueId(), $value, $ttl = 10);
+    sleep(2);
+    $this->assertNull($this->_makeGetFromDifferentThread($id_short));
+    $this->assertIdentical($value, $this->_makeGetFromDifferentThread($id_long));
   }
 
   function testProperSerializing()
@@ -172,8 +186,8 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $obj->set('foo', 'new value');
 
     $cached_obj = $this->cache->get($id);
-    $this->assertIsA($cached_obj, 'lmbObject');
-    $this->assertEqual($value, $cached_obj->get('foo'));
+    if($this->assertIsA($cached_obj, 'lmbObject'))    
+      $this->assertEqual($value, $cached_obj->get('foo'));
   }
 
   function testWithPrefix_NotIntercepting()
@@ -193,48 +207,87 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
     $this->assertEqual(42, $cache->get('bar'));
   }
+  
+  function testIncrementAndDecrement()
+  {
+    $key = $this->_getUniqueId();
+
+    $this->assertFalse($this->cache->increment($key));
+
+    $this->cache->set($key, "string");
+    $this->assertEqual(1, $this->cache->increment($key));
+    
+    $this->cache->set($key, 0);
+    $this->assertEqual(1, $this->cache->increment($key));
+    
+    $this->cache->increment($key, 10);
+    $this->assertEqual(11, $this->cache->get($key));
+
+    $this->cache->decrement($key, 1);
+    $this->assertEqual(10, $this->cache->get($key));
+
+    $this->cache->decrement($key, 100);
+    $this->assertEqual(0, $this->cache->get($key));
+  }
+
+  function testSafeIncrement()
+  {
+    $key = $this->_getUniqueId();
+    $this->assertEqual(1, $this->cache->safeIncrement($key));
+  }
+
+  function testSafeDecrement()
+  {
+    $key = $this->_getUniqueId();
+    $this->assertEqual(0, $this->cache->safeDecrement($key));
+    $this->assertFalse(null === $this->cache->get($key));
+  }
+  
+  function testLock()
+  {
+    $this->assertTrue($this->cache->lock($id = $this->_getUniqueId()));
+    $this->assertFalse($this->cache->lock($id));
+  }
+  
+  function testUnlock()
+  {
+    $this->assertTrue($this->cache->lock($id = $this->_getUniqueId()));
+    $this->cache->unlock($id);
+    $this->assertTrue($this->cache->lock($id));
+  }
 
   protected function _makeGetFromDifferentThread($id)
   {
-    return;
-    $request_code = '
-    //require_once("'.'/tests/cases/common_tests_setup.php");
-    //require_once("'.'/setup.php");
-    lmb_require("limb/cache2/src/lmbCacheFactory.class.php");
-    $cache = lmbCacheFactory::createConnection("'.$this->dsn.'");
-    exit($cache->get('.$id.'));';
+    $limb_dir = realpath(dirname(__FILE__).'/../../../../../');
+    
+    $request_code = 'set_include_path("'.$limb_dir.'" . PATH_SEPARATOR . get_include_path());';
+    $request_code .= 'require_once("'.dirname(__FILE__).'/../.setup.php");'.PHP_EOL;
+    
+    if($this->storage_init_file)
+      $request_code .= 'lmb_require("'.$this->storage_init_file.'");'.PHP_EOL;
+      
+    if(defined('LIMB_DB_DSN'))
+      $request_code .= '@define("LIMB_DB_DSN", "'.LIMB_DB_DSN.'");'.PHP_EOL;      
+      
+    if(defined('LIMB_VAR_DIR'))
+      $request_code .= '@define("LIMB_VAR_DIR", "'.LIMB_VAR_DIR.'");'.PHP_EOL;      
+      
+    $request_code .= 'lmb_require("limb/cache2/src/lmbCacheFactory.class.php");'.PHP_EOL;
+    $request_code .= '$cache = lmbCacheFactory::createConnection("'.$this->dsn.'");'.PHP_EOL;
+    $request_code .= 'echo serialize($cache->get('.$id.'));'.PHP_EOL;
 
-    $status = '';
-    passthru('php -r \''.$request_code . '\'', $status);
-    return (bool) $status;
+    $output = '';
+    exec('php -r \''.$request_code . '\'', $output);
+    
+    return unserialize(implode('', $output));
   }
 
   function _getCachedValues()
   {
-    return array($this->_createNullValue(),
-    $this->_createScalarValue(),
-    $this->_createArrayValue(),
-    $this->_createObjectValue());
+    return array(NULL,
+      'some value',
+      array('some value'),
+      new CacheableFooBarClass(),
+   );
   }
-
-  function _createNullValue()
-  {
-    return null;
-  }
-
-  function _createScalarValue()
-  {
-    return 'some value';
-  }
-
-  function _createArrayValue()
-  {
-    return array('some value');
-  }
-
-  function _createObjectValue()
-  {
-    return new CacheableFooBarClass();
-  }
-
 }

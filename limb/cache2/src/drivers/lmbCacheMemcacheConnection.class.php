@@ -18,6 +18,7 @@ lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
 class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
 {
   static $_connected_servers;
+  public $default_host = 'localhost';
   public $default_port = 11211;
   public $flush_pause = 1000000;
   protected $_server_id;
@@ -25,9 +26,12 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
   function __construct(lmbUri $dsn)
   {
     parent::__construct($dsn);
+    
+    if(!$this->dsn->getHost())
+      $this->dsn->setHost($this->default_host);
 
     if(!$this->dsn->getPort())
-      $this->dsn->setPort($this->default_port);
+      $this->dsn->setPort($this->default_port);    
 
     $this->_server_id = $dsn->toString(array('host', 'port'));
   }

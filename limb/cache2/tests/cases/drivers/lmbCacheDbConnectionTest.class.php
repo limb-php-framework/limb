@@ -12,10 +12,10 @@ lmb_require(dirname(__FILE__) . '/lmbCacheConnectionTest.class.php');
 
 require_once('limb/dbal/src/lmbDbDump.class.php');
 
-lmb_require('limb/dbal/common.inc.php');
-
 class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
 {  
+  protected $storage_init_file = 'limb/dbal/common.inc.php';
+  
   function setUp()
   {
     $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();    
@@ -34,6 +34,7 @@ class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
    
   function __construct()
   {    
-    $this->dsn = 'db://dsn?table=lmb_cache2';
+    $this->dsn = 'db://dsn?table=lmb_cache2';    
+    parent::__construct();
   }
 }
