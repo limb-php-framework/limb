@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7083 2008-06-26 14:33:13Z vasiatka $
+ * @version $Id: common.inc.php 7250 2008-11-24 23:55:05Z korchasa $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -222,6 +222,33 @@ function lmb_under_scores($str)
 function lmb_humanize($str)
 {
   return str_replace('_', ' ', lmb_under_scores($str));
+}
+
+function lmb_plural($word)
+{
+  $plural_rules = array(
+    '/person$/' => 'people', # person, salesperson
+    '/man$/' => 'men', # man, woman, spokesman
+    '/child$/' => 'children', # child
+    '/(?:([^f])fe|([lr])f)$/' => '\1\2ves', # half, safe, wife
+    '/([ti])um$/' => '\1a', # datum, medium
+    '/(x|ch|ss|sh)$/' => '\1es', # search, switch, fix, box, process, address
+    '/series$/' => '\1series',
+    '/([^aeiouy]|qu)ies$/' => '\1y',
+    '/([^aeiouy]|qu)y$/' => '\1ies', # query, ability, agency    
+    '/sis$/' => 'ses', # basis, diagnosis    
+    '/(.*)status$/' => '\1statuses',
+    '/s$/' => 's', # no change (compatibility)
+    '/$/' => 's'
+  );
+  
+  $result = $word;
+  foreach($plural_rules as $pattern => $repl)
+  {
+    $result = preg_replace ($pattern, $repl, $word);
+    if ($result!= $word) break;
+  }
+  return $result; 
 }
 
 lmb_require('limb/core/src/exception/lmbException.class.php');

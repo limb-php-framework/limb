@@ -41,5 +41,16 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_under_scores('_FooBarZoo'), '_foo_bar_zoo');
     $this->assertEqual(lmb_under_scores('_FooBarZoo_'), '_foo_bar_zoo_');
   }
+  
+  function testPlural()
+  {
+    //$this->assertEqual(lmb_plural('dog'), 'dogs');
+    $this->assertEqual(lmb_plural('glass'), 'glasses');
+    $this->assertEqual(lmb_plural('dictionary'), 'dictionaries');    
+    $this->assertEqual(lmb_plural('boy'), 'boys');    
+    $this->assertEqual(lmb_plural('half'), 'halves');
+    $this->assertEqual(lmb_plural('man'), 'men');
+  }
+  
 }
 
