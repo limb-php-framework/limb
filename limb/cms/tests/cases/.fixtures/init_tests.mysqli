@@ -199,3 +199,4 @@ CREATE TABLE `article_for_creator` (
  PRIMARY KEY  (`id`),
  KEY  `user_for_creator_id` (`user_for_creator_id`) 
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+

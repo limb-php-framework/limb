@@ -12,6 +12,10 @@ require_once(dirname(__FILE__) . '/lmbCmsTestCase.class.php');
 if(lmbToolkit::instance()->isDefaultDbDSNAvailable())
 {
   require_once('limb/dbal/src/lmbDbDump.class.php');
-  $this->dump = new lmbDbDump(dirname(__FILE__) . '/.fixtures/init_tests.mysql');
+  $db_connection_type = lmbToolkit::instance()->getDefaultDbConnection()->getType();  
+  $fixture_file = dirname(__FILE__) . '/.fixtures/init_tests.' . $db_connection_type;
+  if(!file_exists($fixture_file))
+    throw new lmbException('fixture for '.$db_connection_type.' not available');
+  $this->dump = new lmbDbDump($fixture_file);
   $this->dump->load();
 }
