@@ -1,7 +1,0 @@
-DROP TABLE IF EXISTS `lmb_cache2`;
-CREATE TABLE "test_one_table_object" (
-  "key" varchar(255) PRIMARY KEY,
-  "value" text,
-  "ttl" integer default 0,
-  "is_locked" integer(1) default 0
-);
