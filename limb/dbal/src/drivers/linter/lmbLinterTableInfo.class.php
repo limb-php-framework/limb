@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
 lmb_require('limb/dbal/src/drivers/linter/lmbLinterColumnInfo.class.php');
@@ -37,7 +37,7 @@ class lmbLinterTableInfo extends lmbDbTableInfo
 
       while(is_array($row = linter_fetch_array($result)))
       {
-        $column = new lmbLinterColumnInfo($this, $row['COLUMN_NAME'], str_replace(" AUTOINC", "", $row['TYPE_NAME']), $row['COLUMN_SIZE'], 
+        $column = new lmbLinterColumnInfo($this, $row['COLUMN_NAME'], str_replace(" AUTOINC", "", $row['TYPE_NAME']), $row['COLUMN_SIZE'],
                       $row['DECIMAL_DIGITS'], $row['NULLABLE'], null, (strpos($row['TYPE_NAME'], 'AUTOINC') !== false)
         );
         $name = $row['COLUMN_NAME'];
@@ -47,7 +47,7 @@ class lmbLinterTableInfo extends lmbDbTableInfo
 
       $this->isColumnsLoaded = true;
   }
-  
+
   function getPrimaryKey()
   {
 	  $sql = 'SELECT * FROM PRIMARY_KEYS WHERE TABLE_NAME = \'%s\'';
@@ -55,20 +55,25 @@ class lmbLinterTableInfo extends lmbDbTableInfo
 		$stmt = $this->database->getConnection()->newStatement($sql);
 		$rs = $stmt->getRecordset();
 		$keys = array();
-		
+
 		foreach ($rs as $k => $record)
 		  $keys[] = $record->get('COLUMN_NAME');
-		  
+
 		$rs->freeQuery();
-		return $keys;		
-    
+		return $keys;
+
   }
-  
+
   function getDatabase()
   {
     return $this->database;
   }
 
+  function loadIndexes()
+  {
+    lmb_require('limb/core/src/exception/lmbNotYetImplementedException.class.php');
+    throw new lmbNotYetImplementedException();
+  }
 }
 
 

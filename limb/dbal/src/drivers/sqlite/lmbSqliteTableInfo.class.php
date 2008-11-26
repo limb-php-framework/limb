@@ -82,6 +82,12 @@ class lmbSqliteTableInfo extends lmbDbTableInfo
       $this->isColumnsLoaded = true;
     }
   }
+
+  function loadIndexes()
+  {
+    lmb_require('limb/core/src/exception/lmbNotYetImplementedException.class.php');
+    throw new lmbNotYetImplementedException();
+  }
 }
 
 

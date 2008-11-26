@@ -12,18 +12,43 @@ error_reporting(E_ALL);
 function DriverMysqliSetup($conn)
 {
   DriverMysqliExec($conn, 'DROP TABLE IF EXISTS founding_fathers;');
+
   $sql = "CREATE TABLE founding_fathers (
             id int(11) NOT null auto_increment,
             first varchar(50) NOT null default '',
             last varchar(50) NOT null default '',
-            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDB";
+            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDb";
   DriverMysqliExec($conn, $sql);
 
+  DriverMysqliExec($conn, 'TRUNCATE `founding_fathers`');
+  $inserts = array(
+        "INSERT INTO founding_fathers VALUES (1, 'George', 'Washington');",
+        "INSERT INTO founding_fathers VALUES (2, 'Alexander', 'Hamilton');",
+        "INSERT INTO founding_fathers VALUES (3, 'Benjamin', 'Franklin');"
+  );
+
+
+  DriverMysqliExec($conn, 'DROP TABLE IF EXISTS indexes;');
+
+  $sql = "CREATE TABLE `indexes` (
+            `primary` int(11) NOT null auto_increment,
+            `common` int(11) NOT null default 0,
+            `unique` int(11) NOT null default 0,
+            PRIMARY KEY (`primary`),
+            KEY (`common`),
+            UNIQUE `named_index` (`unique`)
+            ) AUTO_INCREMENT=0 TYPE=MEMORY";
+  DriverMysqliExec($conn, $sql);
+
+  DriverMysqliExec($conn, 'TRUNCATE `indexes`');
+
+
   DriverMysqliExec($conn, 'DROP TABLE IF EXISTS standard_types');
+
   $sql = "
         CREATE TABLE standard_types (
             id int(11) NOT null auto_increment,
-            type_bit bit,	    
+            type_bit bit,
             type_smallint smallint,
             type_integer integer,
             type_boolean smallint,
@@ -40,14 +65,7 @@ function DriverMysqliSetup($conn)
             PRIMARY KEY (id)) AUTO_INCREMENT=4";
   DriverMysqliExec($conn, $sql);
 
-  DriverMysqliExec($conn, 'TRUNCATE founding_fathers');
-  DriverMysqliExec($conn, 'TRUNCATE standard_types');
-
-  $inserts = array(
-        "INSERT INTO founding_fathers VALUES (1, 'George', 'Washington');",
-        "INSERT INTO founding_fathers VALUES (2, 'Alexander', 'Hamilton');",
-        "INSERT INTO founding_fathers VALUES (3, 'Benjamin', 'Franklin');"
-    );
+  DriverMysqliExec($conn, 'TRUNCATE `standard_types`');
 
   foreach($inserts as $sql)
     DriverMysqliExec($conn, $sql);

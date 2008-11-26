@@ -2,12 +2,14 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
+lmb_require('limb/dbal/src/drivers/lmbDbIndexInfo.class.php');
 lmb_require('limb/dbal/src/drivers/mysqli/lmbMysqliColumnInfo.class.php');
+lmb_require('limb/dbal/src/drivers/mysqli/lmbMysqliIndexInfo.class.php');
 
 /**
  * class lmbMysqliTableInfo.
@@ -19,6 +21,7 @@ class lmbMysqliTableInfo extends lmbDbTableInfo
 {
   protected $isExisting = false;
   protected $isColumnsLoaded = false;
+  protected $isIndexesLoaded = false;
   protected $database;
 
   function __construct($database, $name, $isExisting = false)
@@ -41,7 +44,7 @@ class lmbMysqliTableInfo extends lmbDbTableInfo
       $connection = $this->database->getConnection();
       $queryId = $connection->execute("SHOW COLUMNS FROM `" . $this->name . "`");
 
-      while($row = Mysqli_fetch_assoc($queryId))
+      while($row = mysqli_fetch_assoc($queryId))
       {
         $name = $row['Field'];
         $isNullable =($row['Null'] == 'YES');
@@ -83,6 +86,34 @@ class lmbMysqliTableInfo extends lmbDbTableInfo
       }
       $this->isColumnsLoaded = true;
     }
+  }
+
+  //Based on code from loadColumns()
+  function loadIndexes()
+  {
+    if(!$this->isExisting || $this->isIndexesLoaded)
+      return;
+
+    $connection = $this->database->getConnection();
+    $queryId = $connection->execute("SHOW INDEX FROM `" . $this->name . "`");
+
+    while($row = mysqli_fetch_assoc($queryId))
+    {
+      $column_name = $row['Column_name'];
+
+      $name =$row['Key_name'];
+      if('PRIMARY' == $name)
+        $name = $column_name;
+
+      $type = lmbDbIndexInfo::TYPE_COMMON;
+      if($row['Non_unique'] == 1)
+        $type = lmbDbIndexInfo::TYPE_UNIQUE;
+      elseif($row['Key_name'] == 'PRIMARY')
+        $type = lmbDbIndexInfo::TYPE_PRIMARY;
+
+      $this->indexes[$name] = new lmbMysqliIndexInfo($this, $column_name, $name, $type);
+    }
+    $this->isIndexesLoaded = true;
   }
 }
 

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
 lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlColumnInfo.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlColumnInfo.class.php');
  * class lmbPgsqlTableInfo.
  *
  * @package dbal
- * @version $Id: lmbPgsqlTableInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbPgsqlTableInfo.class.php 7258 2008-11-26 10:00:57Z korchasa $
  */
 class lmbPgsqlTableInfo extends lmbDbTableInfo
 {
@@ -154,6 +154,12 @@ class lmbPgsqlTableInfo extends lmbDbTableInfo
       $arrRetVal['length'] = sprintf("%ld",($intTypmod - 4));
     }
     return $arrRetVal;
+  }
+
+  function loadIndexes()
+  {
+    lmb_require('limb/core/src/exception/lmbNotYetImplementedException.class.php');
+    throw new lmbNotYetImplementedException();
   }
 }
 

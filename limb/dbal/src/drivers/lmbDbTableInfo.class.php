@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
 
@@ -12,12 +12,13 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * abstract class lmbDbTableInfo.
  *
  * @package dbal
- * @version $Id: lmbDbTableInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbDbTableInfo.class.php 7258 2008-11-26 10:00:57Z korchasa $
  */
 abstract class lmbDbTableInfo
 {
   protected $name;
   protected $columns = array();
+  protected $indexes = array();
   protected $canonicalHandler;
   protected $cached_columns = array();
 
@@ -64,6 +65,7 @@ abstract class lmbDbTableInfo
   }
 
   abstract function loadColumns();
+  abstract function loadIndexes();
 
   function hasColumn($name)
   {
@@ -104,6 +106,32 @@ abstract class lmbDbTableInfo
     $this->loadColumns();
     $result = array();
     foreach(array_keys($this->columns) as $name)
+      $result[$name] = $name;
+    return $result;
+  }
+
+  function hasIndex($name)
+  {
+    $this->loadIndexes();
+    return array_key_exists($name, $this->indexes);
+  }
+
+  function getIndex($name)
+  {
+    $this->loadIndexes();
+    if(!array_key_exists($name, $this->indexes))
+    {
+      throw new lmbDbException("Index '$name' does not exist");
+    }
+
+    return $this->indexes[$name];
+  }
+
+  function getIndexList()
+  {
+    $this->loadIndexes();
+    $result = array();
+    foreach(array_keys($this->indexes) as $name)
       $result[$name] = $name;
     return $result;
   }
