@@ -106,7 +106,7 @@ class lmbMysqliTableInfo extends lmbDbTableInfo
         $name = $column_name;
 
       $type = lmbDbIndexInfo::TYPE_COMMON;
-      if($row['Non_unique'] == 1)
+      if($row['Non_unique'] == 0)
         $type = lmbDbIndexInfo::TYPE_UNIQUE;
       elseif($row['Key_name'] == 'PRIMARY')
         $type = lmbDbIndexInfo::TYPE_PRIMARY;

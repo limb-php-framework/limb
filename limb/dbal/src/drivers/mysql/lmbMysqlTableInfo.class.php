@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlIndexInfo.class.php');
  * class lmbMysqlTableInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlTableInfo.class.php 7258 2008-11-26 10:00:57Z korchasa $
+ * @version $Id: lmbMysqlTableInfo.class.php 7260 2008-11-26 12:39:00Z korchasa $
  */
 class lmbMysqlTableInfo extends lmbDbTableInfo
 {
@@ -106,7 +106,7 @@ class lmbMysqlTableInfo extends lmbDbTableInfo
         $name = $column_name;
 
       $type = lmbDbIndexInfo::TYPE_COMMON;
-      if($row['Non_unique'] == 1)
+      if($row['Non_unique'] == 0)
         $type = lmbDbIndexInfo::TYPE_UNIQUE;
       elseif($row['Key_name'] == 'PRIMARY')
         $type = lmbDbIndexInfo::TYPE_PRIMARY;
