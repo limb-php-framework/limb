@@ -79,7 +79,7 @@ abstract class DriverTableInfoTestBase extends DriverMetaTestBase
 
     $table = $this->database_info->getTable('indexes');
 
-    $this->assertTrue($table->hasIndex('primary'));
+    $this->assertTrue($table->hasIndex('primary_column'));
     $this->assertFalse($table->hasIndex('tiabaltu_index'));
   }
 
@@ -90,7 +90,7 @@ abstract class DriverTableInfoTestBase extends DriverMetaTestBase
 
     $table = $this->database_info->getTable('indexes');
 
-    $index = $table->getIndex('primary');
+    $index = $table->getIndex('primary_column');
     $this->assertIsA($index, 'lmbDbIndexInfo');
   }
 
@@ -102,7 +102,26 @@ abstract class DriverTableInfoTestBase extends DriverMetaTestBase
     $table = $this->database_info->getTable('indexes');
 
     $this->assertEqual($table->getIndexList(),
-          array('primary' => 'primary', 'named_index' => 'named_index', 'common' => 'common'));
+      array('primary_column' => 'primary_column',
+            'unique_column_named_index' => 'unique_column_named_index',
+            'common_column' => 'common_column'));
+  }
+
+  function testGetIndexForColumn()
+  {
+    if(!$this->_isIndexImplemented())
+      return;
+
+    $table = $this->database_info->getTable('indexes');
+
+    $index = $table->getIndexForColumn('primary_column');
+    if($this->assertIsA($index, 'lmbDbIndexInfo'))
+      $this->assertIdentical('primary_column', $index->getName());
+
+    $index = $table->getIndexForColumn('unique_column');
+    if($this->assertIsA($index, 'lmbDbIndexInfo'))
+      $this->assertIdentical('unique_column_named_index', $index->getName());
+
   }
 }
 

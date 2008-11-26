@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * abstract class lmbDbTableInfo.
  *
  * @package dbal
- * @version $Id: lmbDbTableInfo.class.php 7258 2008-11-26 10:00:57Z korchasa $
+ * @version $Id: lmbDbTableInfo.class.php 7259 2008-11-26 11:10:26Z korchasa $
  */
 abstract class lmbDbTableInfo
 {
@@ -134,6 +134,20 @@ abstract class lmbDbTableInfo
     foreach(array_keys($this->indexes) as $name)
       $result[$name] = $name;
     return $result;
+  }
+
+  function getIndexForColumn($column)
+  {
+    if(is_object($column))
+      $column = $column->getName();
+
+    $this->loadIndexes();
+    foreach ($this->indexes as $index)
+    {
+      if($column == $index->getColumnName())
+        return $index;
+    }
+    return null;
   }
 }
 

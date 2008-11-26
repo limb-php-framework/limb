@@ -25,12 +25,12 @@ function DriverMysqlSetup($conn)
 
   DriverMysqlExec($conn, 'DROP TABLE IF EXISTS `indexes`');
   $sql = "CREATE TABLE `indexes` (
-            `primary` int(11) NOT null auto_increment,
-            `common` int(11) NOT null default 0,
-            `unique` int(11) NOT null default 0,
-            PRIMARY KEY (`primary`),
-            KEY (`common`),
-            UNIQUE `named_index` (`unique`)
+            `primary_column` int(11) NOT null auto_increment,
+            `common_column` int(11) NOT null default 0,
+            `unique_column` int(11) NOT null default 0,
+            PRIMARY KEY (`primary_column`),
+            KEY (`common_column`),
+            UNIQUE `unique_column_named_index` (`unique_column`)
             ) AUTO_INCREMENT=0 TYPE=MEMORY";
   DriverMysqlExec($conn, $sql);
 
