@@ -61,6 +61,14 @@ abstract class DriverTableInfoTestBase extends DriverMetaTestBase
     $this->assertEqual($this->table_info->getColumnList(),
           array('id' => 'id', 'first' => 'first', 'last' => 'last'));
   }
+  
+  function testGetColumns()
+  {
+    $columns = $this->table_info->getColumns();
+    if($this->assertTrue(isset($columns['id'])))
+      if($this->assertIsA($columns['id'], 'lmbDbColumnInfo'))
+        $this->assertEqual($columns['id']->getName(), 'id');    
+  }
 
 
   function _isIndexImplemented()
