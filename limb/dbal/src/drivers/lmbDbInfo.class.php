@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * abstract class lmbDbInfo.
  *
  * @package dbal
- * @version $Id: lmbDbInfo.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbDbInfo.class.php 7266 2008-12-01 09:12:50Z korchasa $
  */
 abstract class lmbDbInfo
 {
@@ -49,8 +49,18 @@ abstract class lmbDbInfo
     $this->loadTables();
     return array_keys($this->tables);
   }
+  
+  function getTables()
+  {
+    $tables = array();
+    foreach ($this->getTableList() as $table_name)
+      $tables[$table_name] = $this->getTable($table_name);
+    return $tables;
+  }
 
   abstract function loadTables();
+  
+  
 }
 
 
