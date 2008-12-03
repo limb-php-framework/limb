@@ -246,7 +246,7 @@ class lmbObject implements lmbSetInterface
   }
   /**#@-*/
 
-  protected function __call($method, $args = array())
+  public function __call($method, $args = array())
   {
     if($property = $this->_mapGetToProperty($method))
     {

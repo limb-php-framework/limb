@@ -42,7 +42,7 @@ class lmbTestGetopt {
     /**
      * Parses the command-line options.
      *
-     * The first parameter to this function should be the list of command-line
+     * The first parameter to this static function should be the list of command-line
      * arguments without the leading reference to the running program.
      *
      * The second parameter is a string of allowed short options. Each of the
@@ -63,7 +63,7 @@ class lmbTestGetopt {
      *
      * Long and short options can be mixed.
      *
-     * Most of the semantics of this function are based on GNU getopt_long().
+     * Most of the semantics of this static function are based on GNU getopt_long().
      *
      * @param array  $args           an array of command-line arguments
      * @param string $short_options  specifies the list of allowed short options
@@ -75,22 +75,22 @@ class lmbTestGetopt {
      * @access public
      *
      */
-    function getopt2($args, $short_options, $long_options = null)
+    static function getopt2($args, $short_options, $long_options = null)
     {
         return lmbTestGetopt::doGetopt(2, $args, $short_options, $long_options);
     }
 
     /**
-     * This function expects $args to start with the script name (POSIX-style).
+     * This static function expects $args to start with the script name (POSIX-style).
      * Preserved for backwards compatibility.
      * @see getopt2()
      */
-    function getopt($args, $short_options, $long_options = null)
+    static function getopt($args, $short_options, $long_options = null)
     {
         return lmbTestGetopt::doGetopt(1, $args, $short_options, $long_options);
     }
 
-    function defineAndExtractConstants(&$argv)
+    static function defineAndExtractConstants(&$argv)
     {
         $filtered = array();
         for($i=0;$i<sizeof($argv);$i++) {
@@ -112,7 +112,7 @@ class lmbTestGetopt {
     /**
      * The actual implementation of the argument parsing code.
      */
-    function doGetopt($version, $args, $short_options, $long_options = null)
+    static function doGetopt($version, $args, $short_options, $long_options = null)
     {
         if (empty($args)) {
             return array(array(), array());
@@ -164,7 +164,7 @@ class lmbTestGetopt {
      * @access private
      *
      */
-    function _parseShortOption($arg, $short_options, &$opts, &$args)
+    static function _parseShortOption($arg, $short_options, &$opts, &$args)
     {
         for ($i = 0; $i < strlen($arg); $i++) {
             $opt = $arg{$i};
@@ -209,7 +209,7 @@ class lmbTestGetopt {
      * @access private
      *
      */
-    function _isShortOpt($arg)
+    static function _isShortOpt($arg)
     {
         return strlen($arg) == 2 && $arg[0] == '-' && preg_match('/[a-zA-Z]/', $arg[1]);
     }
@@ -218,7 +218,7 @@ class lmbTestGetopt {
      * @access private
      *
      */
-    function _isLongOpt($arg)
+    static function _isLongOpt($arg)
     {
         return strlen($arg) > 2 && $arg[0] == '-' && $arg[1] == '-' &&
             preg_match('/[a-zA-Z]+$/', substr($arg, 2));
@@ -228,7 +228,7 @@ class lmbTestGetopt {
      * @access private
      *
      */
-    function _parseLongOption($arg, $long_options, &$opts, &$args)
+    static function _parseLongOption($arg, $long_options, &$opts, &$args)
     {
         @list($opt, $opt_arg) = explode('=', $arg, 2);
         $opt_len = strlen($opt);
@@ -286,7 +286,7 @@ class lmbTestGetopt {
     * @access public
     * @return mixed the $argv PHP array or PEAR error if not registered
     */
-    function readPHPArgv()
+    static function readPHPArgv()
     {
         global $argv;
         if (!is_array($argv)) {

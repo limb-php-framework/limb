@@ -3,7 +3,7 @@
  *  Base include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage UnitTester
- *  @version    $Id: test_case.php 7198 2008-11-01 11:57:17Z korchasa $
+ *  @version    $Id: test_case.php 7271 2008-12-03 19:59:30Z idler $
  */
 
 /**#@+
@@ -594,12 +594,12 @@ class TestSuite {
      *    @param SimpleReporter $reporter    Current test reporter.
      *    @access public
      */
-    function run(&$reporter) {
+    function run($reporter) {
         $reporter->paintGroupStart($this->getLabel(), $this->getSize());
         for ($i = 0, $count = count($this->_test_cases); $i < $count; $i++) {
             if (is_string($this->_test_cases[$i])) {
                 $class = $this->_test_cases[$i];
-                $test = &new $class();
+                $test = new $class();
                 $test->run($reporter);
                 unset($test);
             } else {

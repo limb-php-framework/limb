@@ -3,7 +3,7 @@
  *  base include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage MockObjects
- *  @version    $Id: mock_objects.php 7198 2008-11-01 11:57:17Z korchasa $
+ *  @version    $Id: mock_objects.php 7271 2008-12-03 19:59:30Z idler $
  */
 
 /**#@+
@@ -151,7 +151,7 @@ class ParametersExpectation extends SimpleExpectation {
         $descriptions = array();
         if (is_array($args)) {
             foreach ($args as $arg) {
-                $dumper = &new SimpleDumper();
+                $dumper = new SimpleDumper();
                 $descriptions[] = $dumper->describeValue($arg);
             }
         }
@@ -1320,7 +1320,7 @@ class MockGenerator {
         $code .= $this->_addMethodList(array_merge($methods, $this->_reflection->getMethods()));
         $code .= "\n";
         $code .= "    function " . $this->_mock_class . "() {\n";
-        $code .= "        \$this->_mock = &new " . $this->_mock_base . "();\n";
+        $code .= "        \$this->_mock = new " . $this->_mock_base . "();\n";
         $code .= "        \$this->_mock->disableExpectationNameChecks();\n";
         $code .= "    }\n";
         $code .= $this->_chainMockReturns();
@@ -1346,7 +1346,7 @@ class MockGenerator {
         $code .= $this->_addMethodList($methods);
         $code .= "\n";
         $code .= "    function " . $this->_mock_class . "() {\n";
-        $code .= "        \$this->_mock = &new " . $this->_mock_base . "();\n";
+        $code .= "        \$this->_mock = new " . $this->_mock_base . "();\n";
         $code .= "        \$this->_mock->disableExpectationNameChecks();\n";
         $code .= "    }\n";
         $code .= $this->_chainMockReturns();

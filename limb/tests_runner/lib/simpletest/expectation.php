@@ -3,7 +3,7 @@
  *    base include file for SimpleTest
  *    @package    SimpleTest
  *    @subpackage    UnitTester
- *    @version    $Id: expectation.php 7198 2008-11-01 11:57:17Z korchasa $
+ *    @version    $Id: expectation.php 7271 2008-12-03 19:59:30Z idler $
  */
 
 /**#@+
@@ -467,7 +467,7 @@ class ReferenceExpectation extends SimpleExpectation {
      *    @return boolean              True if correct.
      *    @access public
      */
-    function test(&$compare) {
+    function test($compare) {
         return SimpleTestCompatibility::isReference($this->_value, $compare);
     }
 

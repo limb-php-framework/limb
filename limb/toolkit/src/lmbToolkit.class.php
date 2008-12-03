@@ -36,7 +36,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 7145 2008-08-17 07:49:43Z svk $
+ * @version $Id: lmbToolkit.class.php 7271 2008-12-03 19:59:30Z idler $
  */
 class lmbToolkit extends lmbObject
 {
@@ -235,7 +235,7 @@ class lmbToolkit extends lmbObject
   * @param array Method arguments
   * @return mixed
   */
-  protected function __call($method, $args = array())
+  public function __call($method, $args = array())
   {
     $this->_ensureSignatures();
 
