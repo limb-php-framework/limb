@@ -12,7 +12,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 @define('LIMB_WACT_TAGS_INCLUDE_PATH', 'src/wact;limb/*/src/wact;limb/wact/src/tags;src/template/tags;limb/*/src/template/tags;limb/wact/src/tags');
 @define('LIMB_MACRO_TAGS_INCLUDE_PATH', 'src/macro;limb/*/src/macro;limb/macro/src/tags');
 @define('LIMB_MACRO_FILTERS_INCLUDE_PATH', 'src/macro;limb/*/src/macro;limb/macro/src/filters');
-@define('LIMB_SUPPORTED_VIEW_TYPES', '.html=lmbWactView;.phtml=lmbMacroView');
+@define('LIMB_SUPPORTED_VIEW_TYPES', '.phtml=lmbMacroView;.html=lmbWactView');
 
 /**
  * class lmbViewTools.
