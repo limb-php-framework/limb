@@ -1,9 +1,10 @@
 DROP TABLE IF EXISTS `class_name`;
 CREATE TABLE `class_name` (
   `id` int(11) NOT NULL auto_increment,
-  `title` varchar(255) character set utf8 collate utf8_bin default NULL,
+  `title` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `document`;
 CREATE TABLE `document` (
   `id` bigint(20) NOT NULL auto_increment,
@@ -15,6 +16,7 @@ CREATE TABLE `document` (
   KEY `node_id` (`node_id`),
   KEY `actual_docs` (`is_published`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `file_object`;
 CREATE TABLE `file_object` (
   `id` int(11) NOT NULL auto_increment,
@@ -27,6 +29,7 @@ CREATE TABLE `file_object` (
   PRIMARY KEY  (`id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `image`;
 CREATE TABLE `image` (
   `id` bigint(20) NOT NULL auto_increment,
@@ -37,6 +40,7 @@ CREATE TABLE `image` (
   PRIMARY KEY  (`id`),
   KEY `node_id` (`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `news_item`;
 CREATE TABLE `news_item` (
   `id` bigint(20) NOT NULL auto_increment,
@@ -46,6 +50,7 @@ CREATE TABLE `news_item` (
   `news_date` int(11) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `node`;
 CREATE TABLE `node` (
   `id` int(11) NOT NULL auto_increment,
@@ -72,3 +77,25 @@ CREATE TABLE `node` (
   KEY `identifier` (`identifier`,`level`),
   KEY `ultra_id` (`ultra_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE  `user` (
+  `id` int(11) NOT NULL auto_increment,
+  `email` varchar(255) default NULL,
+  `name` varchar(255) default NULL,
+  `hashed_password` varchar(32) default NULL,
+  `generated_password` varchar(32) default NULL,
+  `login` varchar(50) default NULL,
+  `role_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `login` (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `user` VALUES(
+  1,
+  'support@limb-project.com', 
+  'Admin',
+  md5('password'),
+  NULL,
+  'admin',
+  2
+);
