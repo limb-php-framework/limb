@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -83,11 +83,11 @@ class lmbReflectionHelper
     if($method == '__set')
       return 'function __set($key, $value)';
 
-    if(!is_callable(array($name, $method)))
-      return "function $method()";
-
     if(self :: _isInterfaceMethod($name, $method))
       return self :: _getFullSignature($name, $method);
+
+    if(!is_callable(array($name, $method)))
+      return "function $method()";
 
     return "function $method()";
   }
@@ -122,4 +122,3 @@ class lmbReflectionHelper
     return str_replace(array('[', ']', ' '), '', $name);
   }
 }
-
