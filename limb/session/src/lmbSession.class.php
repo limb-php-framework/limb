@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSerializable.class.php');
 
@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
  * Wrapper class for global $_SESSION variable
  *
  * @see lmbWebAppTools :: getSession()
- * @version $Id: lmbSession.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbSession.class.php 7293 2008-12-08 15:41:39Z idler $
  * @package session
  */
 class lmbSession
@@ -65,6 +65,16 @@ class lmbSession
   }
 
   /**
+   * Returns value from session by key
+   * @param string $key variable name
+   * @return mixed
+   */
+  function __get($key)
+  {
+    return $this->get($key);
+  }
+
+  /**
    * Sets variable into session
    * Automatically wraps objects with {@link lmbSerializable}
    * that helps to prevent <b>"class is not defined"</b> error while restoring session
@@ -80,6 +90,16 @@ class lmbSession
       $_SESSION[$name] = $value;
 
     $this->touched_names[$name] = true;
+  }
+
+  /**
+   * Sets variable into session
+   * @param string $key variable name
+   * @param mixed $value value
+   * @return void
+   */
+  function __set($key,$value){
+	$this->set($key,$value);
   }
 
   /**
@@ -166,4 +186,3 @@ class lmbSession
     return $str;
   }
 }
-

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/session/src/lmbSession.class.php');
 lmb_require('limb/core/src/lmbObject.class.php');
@@ -89,6 +89,30 @@ class lmbSessionTest extends UnitTestCase
 
     $this->session->destroy($key);
   }
+
+  function testMagicGet()
+  {
+    $key = md5(mt_rand());
+
+    $this->assertNull($this->session->$key);
+
+    $_SESSION[$key] = 'test';
+
+    $this->assertEqual($this->session->$key,'test');
+
+    $this->session->destroy($key);
+  }
+
+  function testMagicSet()
+  {
+    $key = md5(mt_rand());
+
+    $this->assertNull($this->session->$key);
+
+    $this->session->$key = 'test';
+
+    $this->assertEqual($this->session->$key,'test');
+
+    $this->session->destroy($key);
+  }
 }
-
-
