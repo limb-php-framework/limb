@@ -20,13 +20,13 @@ class lmbInputFilterTest extends UnitTestCase
   function testAddFilter()
   {
     $input = array('foo' => 'Foo', 'bar' => 'Bar', 'zoo' => 'Zoo');
-    $input_filter =& new lmbInputFilter();
+    $input_filter = new lmbInputFilter();
 
-    $r1 =& new MockInputFilterRule();
+    $r1 = new MockInputFilterRule();
     $r1->expectOnce('apply', array($input));
     $r1->setReturnValue('apply', $sub_res = array('foo' => 'Foo', 'bar' => 'Bar'), array($input));
 
-    $r2 =& new MockInputFilterRule();
+    $r2 = new MockInputFilterRule();
     $r2->expectOnce('apply', array($sub_res));
     $r2->setReturnValue('apply', $expected = array('foo' => 'Foo'), array($sub_res));
 
