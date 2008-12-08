@@ -9,7 +9,7 @@
 
 /**
  * @package wact
- * @version $Id: common.inc.php 7295 2008-12-08 19:39:02Z idler $
+ * @version $Id: common.inc.php 7297 2008-12-08 20:04:31Z idler $
  */
 require_once(dirname(__FILE__) . '/error.inc.php');
 
@@ -19,5 +19,4 @@ if(!defined('WACT_DEFAULT_CONFIG_DIR'))
 if(!defined('WACT_CACHE_DIR'))
   define('WACT_CACHE_DIR', dirname(__FILE__) . '/cache/');
 
-$_ver = (float)substr(phpversion(),0,3);
-  if($_ver<5.3) set_magic_quotes_runtime(0);
+  if(version_compare(PHP_VERSION,"5.3","<")) set_magic_quotes_runtime(0);
