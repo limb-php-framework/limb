@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbDomainRule.class.php');
 /**
  * Checks that field value is a valid Email address.
  * @package validation
- * @version $Id: lmbEmailRule.class.php 7185 2008-09-26 11:49:50Z conf $
+ * @version $Id: lmbEmailRule.class.php 7290 2008-12-08 14:35:20Z idler $
  */
 class lmbEmailRule extends lmbDomainRule
 {
@@ -19,14 +19,14 @@ class lmbEmailRule extends lmbDomainRule
   {
     if (is_integer(strpos($value, '@')))
     {
-      list($user, $domain) = split('@', $value, 2);
+      list($user, $domain) = explode('@', $value);
       $this->_checkUser($user);
       $this->_checkDomain($domain);
     }
     else
       $this->error('{Field} must contain a @ character.');
   }
-  
+
   function error($message, $values = array(), $i18n_params = array())
   {
     if(isset($this->custom_error))
@@ -48,4 +48,3 @@ class lmbEmailRule extends lmbDomainRule
     parent :: check($value);
   }
 }
-
