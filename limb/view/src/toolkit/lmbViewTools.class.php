@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
@@ -71,7 +71,7 @@ class lmbViewTools extends lmbAbstractTools
 
   protected function _findViewClassByTemplate($template_name)
   {
-    $pos = strrpos($template_name, '.');  
+    $pos = strrpos($template_name, '.');
     if($pos === false)
       throw new lmbException("Could not determine template type for file '$template_name'");
 
@@ -79,7 +79,7 @@ class lmbViewTools extends lmbAbstractTools
 
     if(!isset($this->view_types[$ext]))
       throw new lmbException("Template extension '$ext' is not supported");
-    
+
     return $this->view_types[$ext];
   }
 
@@ -103,21 +103,21 @@ class lmbViewTools extends lmbAbstractTools
 
   function getMacroConfig()
   {
-    if(is_object($this->macro_config))
+    if($this->macro_config)
       return $this->macro_config;
 
-    lmb_require('limb/macro/src/lmbMacroConfig.class.php');
-    
-    $this->macro_config = new lmbMacroConfig(LIMB_VAR_DIR . '/compiled/', 
-                              $this->toolkit->getConf('macro')->get('forcecompile'),
-                              $this->toolkit->getConf('macro')->get('forcescan'),
-                              explode(';', LIMB_TEMPLATES_INCLUDE_PATH),
-                              explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH),
-                              explode(';', LIMB_MACRO_FILTERS_INCLUDE_PATH));
+    $this->macro_config = array(
+      'cache_dir' => LIMB_VAR_DIR . '/compiled/',
+      'is_force_compile' => $this->toolkit->getConf('macro')->get('forcecompile'),
+      'is_force_scan' => $this->toolkit->getConf('macro')->get('forcescan'),
+      'tpl_scan_dirs' => explode(';', LIMB_TEMPLATES_INCLUDE_PATH),
+      'tags_scan_dirs' => explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH),
+      'filters_scan_dirs' => explode(';', LIMB_MACRO_FILTERS_INCLUDE_PATH)
+    );
 
     return $this->macro_config;
   }
-  
+
   function getMacroLocator()
   {
     if(is_object($this->macro_locator))
@@ -127,7 +127,7 @@ class lmbViewTools extends lmbAbstractTools
 
     $config = lmbToolkit :: instance()->getMacroConfig();
     $this->macro_locator = new lmbMacroTemplateLocator($config);
-    
+
     return $this->macro_locator;
   }
 
