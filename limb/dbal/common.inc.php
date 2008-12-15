@@ -9,10 +9,10 @@
 
 /**
  * @package dbal
- * @version $Id: common.inc.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: common.inc.php 7351 2008-12-15 09:05:09Z korchasa $
  */
 require_once('limb/core/common.inc.php');
-require_once(dirname(__FILE__) . '/toolkit.inc.php');
+lmb_require('limb/dbal/toolkit.inc.php');
 lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
 lmb_require('limb/dbal/src/lmbDBAL.class.php');
 
