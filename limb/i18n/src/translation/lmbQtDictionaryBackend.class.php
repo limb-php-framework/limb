@@ -193,7 +193,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
     $cache = $this->_getCacheFile($file);
     if(!is_dir($dir = dirname($cache)))
-      lmbFs::mkdir($dir, 0775);
+      lmbFs::mkdir($dir);
     file_put_contents($this->_getCacheFile($file), serialize($dictionary->getTranslations()), LOCK_EX);
   }
 
