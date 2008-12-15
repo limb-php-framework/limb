@@ -17,7 +17,7 @@ lmb_require('limb/config/src/lmbConf.class.php');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 6351 2007-10-01 13:33:02Z pachanga $
+ * @version $Id: lmbConfTools.class.php 7360 2008-12-15 19:26:33Z korchasa $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -27,9 +27,14 @@ class lmbConfTools extends lmbAbstractTools
   {
     $this->confs[$this->_normalizeConfName($name)] = $conf;
   }
+  
+  function hasConf($name)
+  {
+    return isset($this->confs[$this->_normalizeConfName($name)]);
+  }
 
   function getConf($name)
-  {
+  {    
     $name = $this->_normalizeConfName($name);
 
     if(isset($this->confs[$name]))
