@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 6930 2008-04-14 11:22:49Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 7352 2008-12-15 10:03:50Z korchasa $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
@@ -28,6 +28,7 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
   }
   /**
    * Used for chaining
+   * @return lmbSQLCriteria
    */
   static function create($raw_sql = '1 = 1', $values = array())
   {
@@ -53,11 +54,23 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     $str .= $sql;
   }
 
+  /**
+   * @param string $column
+   * @param string $value_from
+   * @param string $value_to
+   * @return lmbSQLFieldBetweenCriteria
+   */
   static function between($column, $value_from, $value_to)
   {
     return new lmbSQLFieldBetweenCriteria($column, $value_from, $value_to);
   }
 
+  /**
+   * @param string $column
+   * @param string $value
+   * @param string $handler
+   * @return lmbSQLFieldCriteria
+   */
   static function in($column, $values, $handler = null)
   {
     if($handler)
@@ -65,21 +78,39 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     return new lmbSQLFieldCriteria($column, $values, lmbSQLFieldCriteria :: IN);
   }
 
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
   static function equal($column, $value)
   {
     return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: EQUAL);
   }
-
+  
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
   static function like($column, $value)
   {
     return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: LIKE);
   }
-
+  
+  /**
+   * @param string $column
+   * @return lmbSQLFieldCriteria
+   */
   static function isNull($column)
   {
     return new lmbSQLFieldCriteria($column, null, lmbSQLFieldCriteria :: IS_NULL);
   }
 
+  /**
+   * @param mixed $args
+   * @return lmbSQLCriteria
+   */
   static function objectify($args)
   {
     if(is_null($args))
