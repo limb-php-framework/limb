@@ -101,19 +101,19 @@ class lmbCollection implements lmbCollectionInterface
   }
 
   function next()
-  { 
+  {
     $this->_setupIteratedDataset();
-       
+
     $values = next($this->iteratedDataset);
     $this->current = $this->_getCurrent($values);
     $this->key = key($this->iteratedDataset);
     $this->valid = $this->_isValid($values);
   }
-  
-  function sortByKeys()
+
+  function sortByKeys($sort_type = SORT_NUMERIC)
   {
     if(is_array($this->dataset))
-      ksort($this->dataset, SORT_NUMERIC);
+      ksort($this->dataset, $sort_type);
   }
 
   protected function _setupIteratedDataset()
@@ -222,7 +222,7 @@ class lmbCollection implements lmbCollectionInterface
 
   function offsetGet($offset)
   {
-    return $this->at((int)$offset);
+    return $this->at($offset);
   }
 
   function offsetSet($offset, $value)
