@@ -8,6 +8,7 @@
  */
 
 lmb_require('limb/macro/src/tags/form/textarea.tag.php');
+lmb_require('limb/wysiwyg/src/lmbWysiwygConfigurationHelper.class.php');
 
 /**
  * Macro wysiwyg tag
@@ -17,9 +18,11 @@ lmb_require('limb/macro/src/tags/form/textarea.tag.php');
  */
 class lmbMacroWysiwygTag extends lmbMacroTextAreaTag
 {
-  protected $ini_file_name = 'macro_wysiwyg.ini';
-  protected $profile;
-
+  /**
+   * @var lmbWysiwygConfigurationHelper
+   */
+  protected $_helper;
+  
   function preParse($compiler)
   {
     parent :: preParse($compiler);
@@ -27,31 +30,22 @@ class lmbMacroWysiwygTag extends lmbMacroTextAreaTag
     // always has closing tag
     $this->has_closing_tag = true;
     
-    $this->_determineWidgetType();
-  }
+    $this->_helper = new lmbWysiwygConfigurationHelper();
+    if($profile_name = $this->get('profile'))
+      $this->_helper->setProfileName($profile_name);
+    
+    $this->_determineWidget();
+  }  
 
-  protected function _determineWidgetType()
-  {
-    $ini = lmbToolkit :: instance()->getConf($this->ini_file_name);
-    if ($this->has('profile'))
-    {
-   	  $this->profile = $this->get('profile');
-    }
-    else
-      $this->profile = $ini->getOption('profile');
-
-    if($this->profile)
-    {
-       if($ini->getOption('widget_include_file', $this->profile))
-          $this->widget_include_file = $ini->getOption('widget_include_file', $this->profile);
-       if($ini->getOption('widget_class_name', $this->profile))
-          $this->widget_class_name = $ini->getOption('widget_class_name', $this->profile);
-        
-       $this->html_tag = 'wysiwyg';
-       $this->has_closing_tag = false;
-       $this->set('ini_name',$this->ini_file_name);
-       $this->set('profile', $this->profile);
-     }
+  protected function _determineWidget()
+  {  
+    $component_info = $this->_helper->getMacroWidgetInfo();    
+    $this->widget_include_file = $component_info['file'];
+    $this->widget_class_name = $component_info['class'];
+      
+    $this->html_tag = 'wysiwyg';
+    $this->has_closing_tag = false;
+    $this->set('profile_name', $this->_helper->getProfileName());    
   }
   
   // rewriting parent behaviour since we don't need to render <wisywyg> tag 

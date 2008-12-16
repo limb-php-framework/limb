@@ -53,7 +53,7 @@ class lmbMacroTinyMCEWidget extends lmbMacroBaseWysiwygWidget
 
     $items[] = 'editor_selector : "' . $this->_css_class . '"';
 
-    if ($config = $this->getIniOption('editor') and count($config))
+    if ($config = $this->_helper->getOption('editor') and count($config))
     {
       foreach ($config as $key => $val)
         $items[] = $key . ': "'. $val . '"';
@@ -64,8 +64,10 @@ class lmbMacroTinyMCEWidget extends lmbMacroBaseWysiwygWidget
 
   protected function _setEditorParameters()
   {
-    if($this->getIniOption('base_path'))
-      $this->_base_path  = $this->getIniOption('base_path');
+    if($this->_helper->getOption('base_path'))
+      $this->_base_path  = $this->_helper->getOption('base_path');
+    else 
+      $this->_base_path  = '/shared/wysiwyg/tiny_mce/';
 
     if (!$this->_css_class = $this->getAttribute('class'))
     {

@@ -12,12 +12,14 @@ lmb_require('limb/wact/src/components/form/form.inc.php');
  * class lmbWysiwygComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbWysiwygComponent.class.php 6727 2008-01-22 09:03:48Z serega $
+ * @version $Id: lmbWysiwygComponent.class.php 7362 2008-12-16 14:03:09Z korchasa $
  */
 class lmbWysiwygComponent extends WactTextAreaComponent
 {
-  var $ini = null;
-  var $group = null;
+  /**
+   * @var lmbWysiwygConfigurationHelper
+   */
+  protected $_helper;
 
   function renderContents()
   {
@@ -28,29 +30,24 @@ class lmbWysiwygComponent extends WactTextAreaComponent
     echo '</textarea>';
   }
 
-  function getIniOption($option)
+  function initWysiwyg($profile_name)
   {
-    if($value = $this->ini->getOption($option, $this->group))
-      return $value;
-    return '';
-  }
-
-  function initWysiwyg($ini_file_name, $group = null)
-  {
-    $this->ini = lmbToolkit :: instance()->getConf($ini_file_name);
+    $this->_helper = new lmbWysiwygConfigurationHelper();
+    $this->_helper->setProfileName($profile_name);
+       
     $this->group = $group;
 
     if(!$this->getAttribute('rows'))
-      $this->setAttribute('rows', $this->getIniOption('rows'));
+      $this->setAttribute('rows', $this->_helper->getOption('rows'));
 
     if(!$this->getAttribute('cols'))
-      $this->setAttribute('cols', $this->getIniOption('cols'));
+      $this->setAttribute('cols', $this->_helper->getOption('cols'));
 
     if(!$this->getAttribute('width'))
-      $this->setAttribute('width', $this->getIniOption('width'));
+      $this->setAttribute('width', $this->_helper->getOption('width'));
 
     if(!$this->getAttribute('height'))
-      $this->setAttribute('height', $this->getIniOption('height'));
+      $this->setAttribute('height', $this->_helper->getOption('height'));
   }
 }
 

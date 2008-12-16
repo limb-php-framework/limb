@@ -15,8 +15,11 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
  */
 class lmbMacroBaseWysiwygWidget extends lmbMacroFormElementWidget
 {
-  protected $skip_render = array('value','profile','ini_name');
-  protected $ini;
+  protected $skip_render = array('value','config_name', 'profile_name');  
+  /**
+   * @var lmbWysiwygConfigurationHelper
+   */
+  protected $_helper;
 
   function renderWysiwyg()
   {
@@ -25,30 +28,24 @@ class lmbMacroBaseWysiwygWidget extends lmbMacroFormElementWidget
     echo '>';
     echo htmlspecialchars($this->getValue(), ENT_QUOTES);
     echo '</textarea>';
-  }
-
-  function getIniOption($option)
-  {
-    if(!$this->ini)
-      $this->ini = lmbToolkit :: instance()->getConf($this->getAttribute('ini_name'));
-    if($this->ini && ($value = $this->ini->getOption($option, $this->getAttribute('profile'))))
-      return $value;
-    return '';
-  }
+  }    
 
   function _initWysiwyg()
   {
+    $this->_helper = new lmbWysiwygConfigurationHelper();
+    $this->_helper->setProfileName($this->getAttribute('profile_name')); 
+    
     if(!$this->getAttribute('rows'))
-      $this->setAttribute('rows', $this->getIniOption('rows'));
+      $this->setAttribute('rows', $this->_helper->getOption('rows'));
 
     if(!$this->getAttribute('cols'))
-      $this->setAttribute('cols', $this->getIniOption('cols'));
+      $this->setAttribute('cols', $this->_helper->getOption('cols'));
 
     if(!$this->getAttribute('width'))
-      $this->setAttribute('width', $this->getIniOption('width'));
+      $this->setAttribute('width', $this->_helper->getOption('width'));
 
     if(!$this->getAttribute('height'))
-      $this->setAttribute('height', $this->getIniOption('height'));
+      $this->setAttribute('height', $this->_helper->getOption('height'));
   }
 
 }

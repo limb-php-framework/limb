@@ -14,7 +14,7 @@ lmb_require('limb/wysiwyg/src/wact/lmbWysiwygComponent.class.php');
  * class lmbFCKEditorComponent.
  *
  * @package wysiwyg
- * @version $Id: lmbFCKEditorComponent.class.php 6728 2008-01-22 19:33:39Z alex433 $
+ * @version $Id: lmbFCKEditorComponent.class.php 7362 2008-12-16 14:03:09Z korchasa $
  */
 class lmbFCKEditorComponent extends lmbWysiwygComponent
 {
@@ -38,16 +38,16 @@ class lmbFCKEditorComponent extends lmbWysiwygComponent
 
   function _setEditorParameters($editor)
   {
-    if($this->getIniOption('base_path'))
-      $editor->BasePath	= $this->getIniOption('base_path');
+    if($this->_helper->getOption('base_path'))
+      $editor->BasePath	= $this->_helper->getOption('base_path');
     else
-      $editor->BasePath = '/FCKEditor/';
+      $editor->BasePath = '/shared/wysiwyg/fckeditor/';
 
-    if($this->getIniOption('Config'))
-      $editor->Config	= $this->getIniOption('Config');
+    if($this->_helper->getOption('Config'))
+      $editor->Config	= $this->_helper->getOption('Config');    
 
-    if($this->getIniOption('ToolbarSet'))
-      $editor->ToolbarSet	= $this->getIniOption('ToolbarSet');
+    if($this->_helper->getOption('ToolbarSet'))
+      $editor->ToolbarSet	= $this->_helper->getOption('ToolbarSet');
 
     $editor->Width = $this->getAttribute('width');
     $editor->Height = $this->getAttribute('height');

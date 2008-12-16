@@ -39,16 +39,16 @@ class lmbMacroFCKEditorWidget extends lmbMacroBaseWysiwygWidget
 
   protected function _setEditorParameters($editor)
   {
-    if($this->getIniOption('base_path'))
-      $editor->BasePath	= $this->getIniOption('base_path');
+    if($this->_helper->getOption('base_path'))
+      $editor->BasePath	= $this->_helper->getOption('base_path');
     else
-      $editor->BasePath = '/FCKEditor/';
-
-    if($this->getIniOption('Config'))
-      $editor->Config	= $this->getIniOption('Config');
-
-    if($this->getIniOption('ToolbarSet'))
-      $editor->ToolbarSet	= $this->getIniOption('ToolbarSet');
+      $editor->BasePath = '/shared/wysiwyg/fckeditor/';
+    
+    if($this->_helper->getOption('ToolbarSet'))
+      $editor->ToolbarSet	= $this->_helper->getOption('ToolbarSet');
+    
+    if($this->_helper->getOption('Config'))
+      $editor->Config	= $this->_helper->getOption('Config');    
     
     $editor->Width = $this->getAttribute('width');
     $editor->Height = $this->getAttribute('height');
