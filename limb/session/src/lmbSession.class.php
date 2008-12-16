@@ -13,10 +13,10 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
  * Wrapper class for global $_SESSION variable
  *
  * @see lmbWebAppTools :: getSession()
- * @version $Id: lmbSession.class.php 7293 2008-12-08 15:41:39Z idler $
+ * @version $Id: lmbSession.class.php 7369 2008-12-16 21:59:07Z idler $
  * @package session
  */
-class lmbSession
+class lmbSession implements ArrayAccess,Iterator,Countable
 {
   /**
    * @var array variables names that were changed. Used for testing purposes mostly.
@@ -98,8 +98,9 @@ class lmbSession
    * @param mixed $value value
    * @return void
    */
-  function __set($key,$value){
-	$this->set($key,$value);
+  function __set($key,$value)
+  {
+		$this->set($key,$value);
   }
 
   /**
@@ -185,4 +186,61 @@ class lmbSession
     }
     return $str;
   }
+  /**
+   * Removes variable from session 
+   * Alias for destroy() method
+   * @see destroy()
+   * @param string $offset
+   * @return void
+   */
+	function offsetUnset($offset){
+		$this->destroy($offset);
+	}
+	
+	function offsetExists($offset)
+	{
+		return $this->exists($offset);
+	}
+	
+	function offsetGet($offset)
+	{
+		return $this->get($offset);
+	}
+	
+	function offsetSet($offset,$value)
+	{
+		return $this->set($offset,$value);
+	}
+	
+	function current()
+	{
+		return current($_SESSION);
+	}
+	
+	function next()
+	{
+		return next($_SESSION);
+	}
+	
+	function key()
+	{
+		return key($_SESSION);
+	}
+	
+	function valid()
+	{
+		return !is_null($this->key());
+	}
+	
+	function rewind()
+	{
+		return reset($_SESSION);
+	}
+	
+	function count()
+	{
+		return count($_SESSION);
+	}
+	
+	
 }
