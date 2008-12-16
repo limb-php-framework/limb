@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS `test_one_table_object`;
 CREATE TABLE `test_one_table_object` (
   `id` int(11) NOT NULL auto_increment,
@@ -7,7 +6,7 @@ CREATE TABLE `test_one_table_object` (
   `news_date` date default NULL,
   `ordr` int(11) NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8; /* transactions needed */
 
 DROP TABLE IF EXISTS `test_auto_times_object`;
 CREATE TABLE `test_auto_times_object` (
@@ -16,7 +15,7 @@ CREATE TABLE `test_auto_times_object` (
   `ctime` int(11) NULL,
   `utime` int(11) NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `test_one_table_typed_object`;
 CREATE TABLE `test_one_table_typed_object` (
@@ -24,14 +23,14 @@ CREATE TABLE `test_one_table_typed_object` (
   `title` varchar(50) default NULL,
   `kind` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `course_for_typed_test`;
 CREATE TABLE `course_for_typed_test` (
  `id` int(11) NOT NULL auto_increment,
  `title` varchar(50) default NULL,
  PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `lecture_for_typed_test`;
 CREATE TABLE `lecture_for_typed_test` (
@@ -40,14 +39,14 @@ CREATE TABLE `lecture_for_typed_test` (
   `course_id` int(11) default NULL,
   `kind` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `social_security_for_test`;
 CREATE TABLE `social_security_for_test` (
 `id` int(11) NOT NULL auto_increment,
 `code` varchar(50) default NULL,
 PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `person_for_test`;
 CREATE TABLE `person_for_test` (
@@ -55,14 +54,14 @@ CREATE TABLE `person_for_test` (
 `name` varchar(50) default NULL,
 `ss_id` int(11) default NULL,
 PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `program_for_test`;
 CREATE TABLE `program_for_test` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `course_for_test`;
 CREATE TABLE `course_for_test` (
@@ -70,7 +69,7 @@ CREATE TABLE `course_for_test` (
  `program_id` int(11) default NULL,
  `title` varchar(50) default NULL,
  PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `lecture_for_test`;
 CREATE TABLE `lecture_for_test` (
@@ -79,7 +78,7 @@ CREATE TABLE `lecture_for_test` (
   `course_id` int(11) default NULL,
   `alt_course_id` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `lesson_for_test`;
 CREATE TABLE `lesson_for_test` (
@@ -87,14 +86,14 @@ CREATE TABLE `lesson_for_test` (
   `date_start` int(11) default NULL,
   `date_end` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `group_for_test`;
 CREATE TABLE `group_for_test` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `user_for_test`;
 CREATE TABLE `user_for_test` (
@@ -102,7 +101,7 @@ CREATE TABLE `user_for_test` (
   `first_name` varchar(50) default NULL,
   `linked_object_id` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `user_for_test2group_for_test`;
 CREATE TABLE `user_for_test2group_for_test` (
@@ -110,7 +109,7 @@ CREATE TABLE `user_for_test2group_for_test` (
  `user_id` int(11) default NULL,
  `group_id` int(11) default NULL,
  PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `extended_user_for_test2group_for_test`;
 CREATE TABLE `extended_user_for_test2group_for_test` (
@@ -119,4 +118,4 @@ CREATE TABLE `extended_user_for_test2group_for_test` (
  `group_id` int(11) default NULL,
  `other_id` int(11) default NULL,
  PRIMARY KEY  (`id`)
-) ENGINE=Memory DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;

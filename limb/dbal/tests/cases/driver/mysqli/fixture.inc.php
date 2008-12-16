@@ -17,7 +17,7 @@ function DriverMysqliSetup($conn)
             id int(11) NOT null auto_increment,
             first varchar(50) NOT null default '',
             last varchar(50) NOT null default '',
-            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDb";
+            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDB";
   DriverMysqliExec($conn, $sql);
 
   DriverMysqliExec($conn, 'TRUNCATE `founding_fathers`');
@@ -62,7 +62,7 @@ function DriverMysqliSetup($conn)
             type_date date,
             type_time time,
             type_blob blob,
-            PRIMARY KEY (id)) AUTO_INCREMENT=4";
+            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDB";
   DriverMysqliExec($conn, $sql);
 
   DriverMysqliExec($conn, 'TRUNCATE `standard_types`');

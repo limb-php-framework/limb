@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS `test_materialized_path_tree`;
 CREATE TABLE `test_materialized_path_tree` (
   `id` int(11) NOT NULL auto_increment,
@@ -9,7 +8,7 @@ CREATE TABLE `test_materialized_path_tree` (
   PRIMARY KEY  (`id`),
   KEY `level` (`p_level`),
   KEY `parent_id` (`p_parent_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `test_nested_sets_tree`;
 CREATE TABLE test_nested_sets_tree (
@@ -21,4 +20,4 @@ CREATE TABLE test_nested_sets_tree (
   `p_identifier` varchar(128) NOT NULL,
   PRIMARY KEY(id),
   KEY(`p_left`, `p_right`, `p_level`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

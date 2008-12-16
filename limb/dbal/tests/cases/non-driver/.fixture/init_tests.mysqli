@@ -1,16 +1,16 @@
 DROP TABLE IF EXISTS `test_one_table_object`;
 CREATE TABLE `test_one_table_object` (
   `id` bigint(20) NOT NULL auto_increment,
-  `annotation` text,
-  `content` text,
+  `annotation` varchar(255),
+  `content` varchar(255),
   `news_date` date default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `test_db_table`;
 CREATE TABLE `test_db_table` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `description` text,
+  `description` varchar(255),
   `title` varchar(255) NOT NULL default '',
   `ordr` int(11) NULL,
   PRIMARY KEY  (`id`)
