@@ -152,11 +152,6 @@ class lmbProfileTools extends lmbAbstractTools
     return sprintf("%s: %.7f sec. (%.2f%%)", $caption, $data['time_diff'], $data['percent_diff']);
   }
   
-  function dump()
-  {
-    var_dump($this->profile_points);
-  }
-
   function getProfileStat($echo_result = true)
   {
     $ret = "<pre>";
