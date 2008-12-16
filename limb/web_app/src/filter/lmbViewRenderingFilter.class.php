@@ -12,7 +12,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbViewRenderingFilter.
  *
  * @package web_app
- * @version $Id: lmbViewRenderingFilter.class.php 7354 2008-12-15 10:50:53Z conf $
+ * @version $Id: lmbViewRenderingFilter.class.php 7365 2008-12-16 15:54:32Z korchasa $
  */
 class lmbViewRenderingFilter implements lmbInterceptingFilter
 {
@@ -21,7 +21,13 @@ class lmbViewRenderingFilter implements lmbInterceptingFilter
     $toolkit = lmbToolkit :: instance();
     $response = $toolkit->getResponse();
 
-    if($response->isEmpty() && is_object($view = $toolkit->getView()))
+    if(!$response->isEmpty())
+    {
+      $filter_chain->next();
+      return;
+    }
+
+    if(is_object($view = $toolkit->getView()))
     {
       $view->set('request', $toolkit->getRequest());
       $view->set('session', $toolkit->getSession());

@@ -13,7 +13,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbRequestDispatchingFilter.
  *
  * @package web_app
- * @version $Id: lmbRequestDispatchingFilter.class.php 7098 2008-07-08 21:10:04Z pachanga $
+ * @version $Id: lmbRequestDispatchingFilter.class.php 7365 2008-12-16 15:54:32Z korchasa $
  */
 class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 {
@@ -57,14 +57,17 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
   {
     if(!isset($dispatched_params['controller']))
       $dispatched_params['controller'] = $this->default_controller_name;
-
+      
     try
     {
       $controller = $this->toolkit->createController($dispatched_params['controller']);
     }
     catch(lmbException $e)
     {
-      $controller = $this->toolkit->createController($this->default_controller_name);
+      if(!$this->toolkit->isWebAppDebugEnabled())
+        $controller = $this->toolkit->createController($this->default_controller_name);
+      else
+        throw $e;
     }
 
     return $controller;

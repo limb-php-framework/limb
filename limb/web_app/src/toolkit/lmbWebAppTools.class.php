@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 7361 2008-12-15 19:42:31Z korchasa $
+ * @version $Id: lmbWebAppTools.class.php 7365 2008-12-16 15:54:32Z korchasa $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -136,7 +136,7 @@ class lmbWebAppTools extends lmbAbstractTools
       $toolkit->getResponse()->redirect($params_or_url . $append);
   }
   
-  function isDebugEnabled()
+  function isWebAppDebugEnabled()
   {
     $mode = false;
     if(defined('LIMB_APP_MODE') && LIMB_APP_MODE == 'devel')

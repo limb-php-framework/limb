@@ -53,20 +53,20 @@ class lmbWebAppToolsTest extends UnitTestCase
                        LIMB_HTTP_GATEWAY_PATH . 'news/archive');
   }
   
-  function testIsDebugEnabled()
+  function testIsWebAppDebugEnabled()
   {
     $toolkit = lmbToolkit :: merge(new lmbWebAppTools());
     
-    $this->assertFalse($toolkit->isDebugEnabled());    
+    $this->assertFalse($toolkit->isWebAppDebugEnabled());    
     
     $toolkit->setConf('common', new lmbObject(array('debug_enabled' => true)));
-    $this->assertTrue($toolkit->isDebugEnabled());    
+    $this->assertTrue($toolkit->isWebAppDebugEnabled());    
     
     $toolkit->setConf('common', new lmbObject(array('debug_enabled' => false)));
-    $this->assertFalse($toolkit->isDebugEnabled());
+    $this->assertFalse($toolkit->isWebAppDebugEnabled());
     
     define('LIMB_APP_MODE', 'devel');
-    $this->assertTrue($toolkit->isDebugEnabled());    
+    $this->assertTrue($toolkit->isWebAppDebugEnabled());    
   }
   
 }

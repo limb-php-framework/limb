@@ -23,19 +23,13 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
 
   protected $toolkit;
   protected $error_page;
-  protected $mode;
 
   function __construct($error500_page = '')
   {
     if(!$error500_page)
       $error500_page = dirname(__FILE__) . '/../../template/server_error.html';
 
-    $this->error_page = $error500_page;
-
-    if(!defined('LIMB_APP_MODE'))
-      $this->mode = self :: MODE_DEVEL;
-    else
-      $this->mode = LIMB_APP_MODE;
+    $this->error_page = $error500_page;    
   }
 
   function run($filter_chain)
@@ -53,10 +47,9 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
     $this->toolkit->getLog()->error($error['message']);
     $this->toolkit->getResponse()->reset();
 
-    if($this->mode == self :: MODE_DEVEL)
+    if($this->toolkit->isWebAppDebugEnabled())
       $this->_echoErrorBacktrace($error);
-
-    if($this->mode == self :: MODE_PRODUCTION)
+    else
       $this->_echoErrorPage();
 
     exit(1);
@@ -70,10 +63,9 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
     $this->toolkit->getLog()->exception($e);
     $this->toolkit->getResponse()->reset();
 
-    if($this->mode == self :: MODE_DEVEL)
+    if($this->toolkit->isWebAppDebugEnabled())
       $this->_echoExceptionBacktrace($e);
-
-    if($this->mode == self :: MODE_PRODUCTION)
+    else
       $this->_echoErrorPage();
 
     exit(1);
