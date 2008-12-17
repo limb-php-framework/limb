@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbSetInterface.interface.php');
  * @package core
  * @version $Id$
  */
-class lmbSet implements lmbSetInterface, Iterator//should Iterator be a part of lmbSetInterface?
+class lmbSet implements lmbSetInterface
 {
   function __construct($properties = array())
   {

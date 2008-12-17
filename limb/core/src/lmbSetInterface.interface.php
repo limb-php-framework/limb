@@ -13,7 +13,7 @@
  * @package core
  * @version $Id$
  */
-interface lmbSetInterface extends ArrayAccess
+interface lmbSetInterface extends ArrayAccess, Iterator
 {
   function get($name, $default = LIMB_UNDEFINED);
   function set($name, $value);

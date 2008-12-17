@@ -411,5 +411,32 @@ class lmbObjectTest extends UnitTestCase
     $this->assertIdentical(0, $obj->setter_called_count);
     $this->assertIdentical(0, $obj->getter_called_count);
   }  
+  
+  function testImplementsIterator()
+  {
+    $set = new lmbObject($array = array(
+      'test1' => 'foo',
+      'test2' => 'bar',
+    ));
+    $result = array();
+    foreach($set as $key => $value)
+      $result[$key] = $value;
+
+    $this->assertEqual($array, $result);
+  }
+
+  function testImplementsIteratorWithFalseElementsInArray()
+  {
+    $set = new lmbObject($array = array(
+      'test1' => 'foo',
+      'test2' => false,
+      'test3' => 'bar'
+    ));    
+    $result = array();
+    foreach($set as $key => $value)
+      $result[$key] = $value;
+
+    $this->assertEqual($array, $result);
+  }  
 }
 

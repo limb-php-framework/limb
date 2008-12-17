@@ -16,6 +16,8 @@ lmb_require('limb/dbal/src/drivers/lmbDbRecord.interface.php');
  */
 abstract class lmbDbBaseRecord implements lmbDbRecord
 {
+  protected $properties = array();
+  
   //ArrayAccess interface
   function offsetExists($offset)
   {
@@ -35,6 +37,33 @@ abstract class lmbDbBaseRecord implements lmbDbRecord
   function offsetUnset($offset)
   {
     $this->remove($offset);
+  }
+  //end
+  
+  //Iterator interface
+  function current()
+  {
+    return current($this->properties);
+  }
+  
+  function next()
+  {
+    return next($this->properties);
+  }
+  
+  function key()
+  {
+    return key($this->properties);
+  }
+  
+  function valid()
+  {
+    return (bool) current($this->properties);
+  }
+  
+  function rewind()
+  {
+    return reset($this->properties);
   }
   //end
 }

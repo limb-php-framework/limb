@@ -28,6 +28,33 @@ abstract class DriverRecordTestBase extends UnitTestCase
     $this->assertEqual($record->get('foo'), null);
     $this->assertEqual($record->get('foo', 'bar'), 'bar');
   }
+  
+  function testImplementsIterator()
+  {
+    $set = new lmbObject($array = array(
+      'test1' => 'foo',
+      'test2' => 'bar',
+    ));
+    $result = array();
+    foreach($set as $key => $value)
+      $result[$key] = $value;
+
+    $this->assertEqual($array, $result);
+  }
+
+  function testImplementsIteratorWithFalseElementsInArray()
+  {
+    $set = new lmbObject($array = array(
+      'test1' => 'foo',
+      'test2' => false,
+      'test3' => 'bar'
+    ));    
+    $result = array();
+    foreach($set as $key => $value)
+      $result[$key] = $value;
+
+    $this->assertEqual($array, $result);
+  }
 }
 
 

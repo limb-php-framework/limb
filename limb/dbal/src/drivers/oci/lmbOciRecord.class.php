@@ -12,12 +12,10 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbOciRecord.
  *
  * @package dbal
- * @version $Id: lmbOciRecord.class.php 6844 2008-03-18 17:10:33Z pachanga $
+ * @version $Id: lmbOciRecord.class.php 7371 2008-12-17 00:04:15Z korchasa $
  */
 class lmbOciRecord extends lmbDbBaseRecord
 {
-  protected $properties = array();
-
   function __construct($data = array())
   {
     $this->import($data);

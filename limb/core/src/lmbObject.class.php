@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSetInterface.interface.php');
+//lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/core/src/exception/lmbNoSuchMethodException.class.php');
 lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
 /**
@@ -66,7 +67,7 @@ lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
  * @version $Id: lmbObject.class.php 5567 2007-04-06 14:37:24Z serega $
  * @package core
  */
-class lmbObject implements lmbSetInterface
+class lmbObject implements lmbSetInterface 
 {
   protected $_dynamic_properties = array();
   
@@ -246,7 +247,7 @@ class lmbObject implements lmbSetInterface
   }
   /**#@-*/
 
-  public function __call($method, $args = array())
+  function __call($method, $args = array())
   {
     if($property = $this->_mapGetToProperty($method))
     {
@@ -312,7 +313,7 @@ class lmbObject implements lmbSetInterface
    * __set  an alias of set()
    * @see set, offsetSet
    */
-  public function __set($property,$value)
+  function __set($property,$value)
   {
     if(in_array($property, $this->_dynamic_properties))
       $this->$property = $value;
@@ -325,7 +326,7 @@ class lmbObject implements lmbSetInterface
    * @see get,  offsetGet
    * @return mixed
    */
-  public function __get($property)
+  function __get($property)
   {
     return $this->get($property);
   }
@@ -334,7 +335,7 @@ class lmbObject implements lmbSetInterface
    * __isset  an alias of has()
    * @return boolean whether or not this object contains $name
    */
-  public function __isset($name)
+  function __isset($name)
   {
     return $this->has($name);
   }
@@ -343,9 +344,34 @@ class lmbObject implements lmbSetInterface
    * __unser  an alias of remove()
    * @param string $name
    */
-  public function __unset($name)
+  function __unset($name)
   {
     return $this->remove($name);
+  }
+  
+  function current()
+  {
+    return $this->_getRaw(current($this->_dynamic_properties));
+  }
+  
+  function next()
+  {
+    return $this->_getRaw(next($this->_dynamic_properties));
+  }
+  
+  function key()
+  {
+    return current($this->_dynamic_properties);
+  }
+  
+  function valid()
+  {
+    return (bool) current($this->_dynamic_properties);
+  }
+  
+  function rewind()
+  {
+    reset($this->_dynamic_properties);
   }
 }
 

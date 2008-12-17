@@ -12,12 +12,10 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbPgsqlRecord.
  *
  * @package dbal
- * @version $Id: lmbPgsqlRecord.class.php 6995 2008-05-10 12:33:35Z svk $
+ * @version $Id: lmbPgsqlRecord.class.php 7371 2008-12-17 00:04:15Z korchasa $
  */
 class lmbPgsqlRecord extends lmbDbBaseRecord
 {
-  protected $properties = array();
-
   function __construct($data = array())
   {
     $this->properties = $data;

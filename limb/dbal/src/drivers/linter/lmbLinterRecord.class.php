@@ -16,8 +16,6 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  */
 class lmbLinterRecord extends lmbDbBaseRecord
 {
-  protected $properties = array();
-
   function __construct($data = array())
   {
     $this->properties = $data;
