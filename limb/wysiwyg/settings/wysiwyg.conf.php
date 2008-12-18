@@ -10,10 +10,10 @@ $conf = array(
     'height' => '400px',
     'cols' => '100',
     'rows' => '15',
-    'configuration_file' => '/shared/wysiwyg/fckeditor/fckconfig.js',
+    'Config' => array('CustomConfigurationsPath' => '/shared/wysiwyg/fckeditor/fckconfig.js'),
     'ToolbarSet' => 'Default'
   ),
-  
+
   'default_tinymce' => array(
     'type' => 'tinymce',
     'width' => '600px',
