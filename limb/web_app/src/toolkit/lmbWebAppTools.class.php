@@ -14,7 +14,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 7384 2008-12-17 19:49:25Z korchasa $
+ * @version $Id: lmbWebAppTools.class.php 7406 2008-12-18 08:42:50Z korchasa $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -142,13 +142,14 @@ class lmbWebAppTools extends lmbAbstractTools
     if(defined('LIMB_APP_MODE') && LIMB_APP_MODE == 'devel')
       $mode = true;
 
-    if(!$this->toolkit->getConf('common'))
-      return $mode;
+    try
+    {
+      $conf = $this->toolkit->getConf('common');
 
-    $conf = $this->toolkit->getConf('common');
-
-    if($conf['debug_enabled'])
-      $mode = $conf['debug_enabled'];
+      if($conf['debug_enabled'])
+        $mode = $conf['debug_enabled'];
+    }
+    catch (lmbFileNotFoundException $e) {}
 
     return $mode;
   }
