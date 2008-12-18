@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 
@@ -42,18 +42,12 @@ abstract class lmbCacheBackendTest extends UnitTestCase
   
   function testAddLock()
   {
-    $set = $this->cache->set(1, $v = 'value');
-    $add = $this->cache->add(1, $v_add = 'value_add');
+    $this->assertTrue($this->cache->set(1, $v = 'value'));
+    $this->assertFalse($this->cache->add(1, 'value_add'));
     
-    $this->assertTrue($set);
-    $this->assertFalse($add);
+    $this->assertEqual($this->cache->get(1), $v);
     
-    $add2 = $this->cache->add(2, $v2 = 'value2');
-    $this->assertTrue($add2);
-    $this->assertEqual($v2, 'value2');
-    
-    $var = $this->cache->get(1);
-    $this->assertEqual($v, $var);
+    $this->assertTrue($this->cache->add(2, 'value2'));
     
     $this->cache->set(2, 'new value');
     $this->assertEqual($this->cache->get(2), 'new value');
