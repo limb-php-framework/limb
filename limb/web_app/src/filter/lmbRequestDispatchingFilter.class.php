@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -13,7 +13,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbRequestDispatchingFilter.
  *
  * @package web_app
- * @version $Id: lmbRequestDispatchingFilter.class.php 7365 2008-12-16 15:54:32Z korchasa $
+ * @version $Id: lmbRequestDispatchingFilter.class.php 7416 2008-12-18 15:15:01Z wiliam $
  */
 class lmbRequestDispatchingFilter implements lmbInterceptingFilter
 {
@@ -38,7 +38,7 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
     $dispatched_params = $this->dispatcher->dispatch($this->toolkit->getRequest());
 
     $this->_putOtherParamsToRequest($dispatched_params);
-    
+
     $controller = $this->_createController($dispatched_params);
 
     if(isset($dispatched_params['action']) && $controller->actionExists($dispatched_params['action']))
@@ -57,17 +57,14 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
   {
     if(!isset($dispatched_params['controller']))
       $dispatched_params['controller'] = $this->default_controller_name;
-      
+
     try
     {
       $controller = $this->toolkit->createController($dispatched_params['controller']);
     }
     catch(lmbException $e)
     {
-      if(!$this->toolkit->isWebAppDebugEnabled())
-        $controller = $this->toolkit->createController($this->default_controller_name);
-      else
-        throw $e;
+      $controller = $this->toolkit->createController($this->default_controller_name);
     }
 
     return $controller;
