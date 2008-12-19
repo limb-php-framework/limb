@@ -34,6 +34,18 @@ class lmbConfTest extends UnitTestCase
 
     $this->assertEqual($result, array('foo' => 1, 'bar' => 2));
   }
+  
+  function testGetNotExistedFile()
+  {    
+    try {
+      $conf = new lmbConf(dirname(__FILE__) . '/not_existed.php');
+      $this->fail();
+    }
+    catch (lmbFileNotFoundException $e)
+    {
+      $this->pass();
+    }
+  }
 
   function testGetNotExistedOption()
   {
@@ -47,5 +59,14 @@ class lmbConfTest extends UnitTestCase
     {
       $this->pass();
     }
+  }
+  
+  function testMultipleFiles()
+  {
+    $conf = new lmbConf(array(
+      dirname(__FILE__) . '/conf.php',
+      dirname(__FILE__) . '/other.conf.php'
+    ));
+    $this->assertEqual($conf->get('foo'), 1);
   }
 }

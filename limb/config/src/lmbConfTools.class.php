@@ -17,11 +17,12 @@ lmb_require('limb/config/src/lmbConf.class.php');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 7431 2008-12-19 14:05:44Z korchasa $
+ * @version $Id: lmbConfTools.class.php 7432 2008-12-19 21:41:53Z korchasa $
  */
 class lmbConfTools extends lmbAbstractTools
 {
   protected $confs = array();
+  protected $conf_include_path;
 
   function setConf($name, $conf)
   {
@@ -38,8 +39,26 @@ class lmbConfTools extends lmbAbstractTools
     {
       return false;
     }
+  }  
+  
+  function setConfIncludePath($path)
+  {
+    $this->conf_include_path = $path;
   }
-
+  
+  function getConfIncludePath()
+  {
+    if(!$this->conf_include_path)
+      $this->conf_include_path = LIMB_CONF_INCLUDE_PATH;
+      
+    return $this->conf_include_path;
+  }
+  
+  protected function _locateFiles($name)
+  {
+    return $this->toolkit->findFileByAlias($name, $this->toolkit->getConfIncludePath(), 'config', true);
+  }
+  
   function getConf($name)
   {
     $name = $this->_normalizeConfName($name);
@@ -59,18 +78,17 @@ class lmbConfTools extends lmbAbstractTools
     }
     elseif($ext == '.conf.php')
     {
-      $this->confs[$name] = new lmbConf($this->_locateFile($name));
+      $files = $this->_locateFiles($name);      
+      if(!count($files))
+        throw new lmbFileNotFoundException($name);
+        
+      $this->confs[$name] = new lmbConf($files);
     }
     else
       throw new lmbException("'$ext' type configuration is not supported!");
 
     return $this->confs[$name];
-  }
-
-  protected function _locateFile($name)
-  {
-    return $this->toolkit->findFileByAlias($name, LIMB_CONF_INCLUDE_PATH, 'config');
-  }
+  }  
 
   protected function _normalizeConfName($name)
   {

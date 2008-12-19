@@ -21,7 +21,7 @@ class lmbConfToolsTest extends UnitTestCase
     lmbToolkit :: restore();
   }
 
-  function testSetHasGetConf()
+  function testSetGetConf()
   {
     $toolkit = lmbToolkit :: merge(new lmbConfTools());
     $conf_name = 'foo';
@@ -32,13 +32,32 @@ class lmbConfToolsTest extends UnitTestCase
 
     $conf = $toolkit->getConf($conf_name);
     $this->assertEqual($conf[$key], $value);
-  }
+  }  
 
   function testHasConf()
   {
     $toolkit = lmbToolkit :: merge(new lmbConfTools());
 
     $this->assertFalse($toolkit->hasConf('not_existed'));
-    $this->assertTrue($toolkit->hasConf('testing_config'));
+    $this->assertTrue($toolkit->hasConf('from_default_dir'));
+  }
+  
+  function _clearLocatorsCache()
+  {
+    lmbFs::rm(LIMB_VAR_DIR);
+  }
+  
+  function testGetConf_Inheritance()
+  {
+    $toolkit = lmbToolkit :: merge(new lmbConfTools());
+    $toolkit->setConfIncludePath($paths = array(
+      'limb/config/tests/cases/higher_settings',
+      'limb/config/tests/cases/lower_settings'
+    ));
+
+    $this->_clearLocatorsCache();    
+
+    $this->assertEqual($toolkit->getConf('test')->get('foo'), 42);
+    $this->assertEqual($toolkit->getConf('test')->get('bar'), true);
   }
 }
