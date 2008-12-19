@@ -2,14 +2,14 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2008 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/core/src/lmbDelegatesChain.class.php');
 
-class DelegatesChainTestingStubObject 
+class DelegatesChainTestingStubObject
 {
   
   public $invoked = 0;
@@ -28,7 +28,7 @@ class DelegatesChainTestingStubObject
     $this->invoked ++;
     $this->last_arg = $arg;
     $this->last_arg2 = $arg2;
-    return $this->return; 
+    return $this->return;
   }
   
 }
@@ -36,12 +36,12 @@ class DelegatesChainTestingStubObject
 class lmbDelegatesChainTest extends UnitTestCase {
   
   function testInvoke()
-  {    
+  {
     $obj1 = new DelegatesChainTestingStubObject(null);
     $obj2 = new DelegatesChainTestingStubObject('result');
     $obj3 = new DelegatesChainTestingStubObject();
     
-    $chain = new lmbDelegatesChain();    
+    $chain = new lmbDelegatesChain();
     $chain->add(new lmbDelegate($obj1, 'invokable'));
     $chain->add(new lmbDelegate($obj2, 'invokable'));
     $chain->add(new lmbDelegate($obj3, 'invokable'));
@@ -60,7 +60,7 @@ class lmbDelegatesChainTest extends UnitTestCase {
     $obj1 = new DelegatesChainTestingStubObject();
     $obj2 = new DelegatesChainTestingStubObject();
     
-    $chain = new lmbDelegatesChain();    
+    $chain = new lmbDelegatesChain();
     $chain->add(new lmbDelegate($obj1, 'invokable'));
     $chain->add(new lmbDelegate($obj2, 'invokable'));
     
@@ -76,7 +76,7 @@ class lmbDelegatesChainTest extends UnitTestCase {
     $obj1 = new DelegatesChainTestingStubObject();
     $obj2 = new DelegatesChainTestingStubObject();
     
-    $chain = new lmbDelegatesChain();    
+    $chain = new lmbDelegatesChain();
     $chain->add(new lmbDelegate($obj1, 'invokable'));
     $chain->add(new lmbDelegate($obj2, 'invokable'));
     
@@ -92,7 +92,7 @@ class lmbDelegatesChainTest extends UnitTestCase {
     $obj1 = new DelegatesChainTestingStubObject(null);
     $obj2 = new DelegatesChainTestingStubObject(null);
     
-    $chain = new lmbDelegatesChain();    
+    $chain = new lmbDelegatesChain();
     $chain->add(new lmbDelegate($obj1, 'invokable'));
     $chain->add(new lmbDelegate($obj2, 'invokable'));
     
@@ -107,7 +107,7 @@ class lmbDelegatesChainTest extends UnitTestCase {
   {
     $obj = new DelegatesChainTestingStubObject();
     
-    $chain = new lmbDelegatesChain();    
+    $chain = new lmbDelegatesChain();
     $chain->add(new lmbDelegate($obj, 'invokable'));
     
     $chain->invoke('arg1', 'arg2');
@@ -116,4 +116,3 @@ class lmbDelegatesChainTest extends UnitTestCase {
   }
   
 }
-?>

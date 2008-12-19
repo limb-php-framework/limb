@@ -106,4 +106,3 @@ class lmbWebAgentTest extends UnitTestCase {
     $this->assertEqual($agent->getValues()->getTest(), '1');
   }
 }
-?>

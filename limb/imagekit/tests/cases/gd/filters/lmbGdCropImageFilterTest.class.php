@@ -12,7 +12,7 @@ lmb_require('limb/imagekit/src/gd/filters/lmbGdCropImageFilter.class.php');
 
 /**
  * @package imagekit
- * @version $Id: lmbGdCropImageFilterTest.class.php 6963 2008-04-28 04:04:31Z svk $
+ * @version $Id: lmbGdCropImageFilterTest.class.php 7417 2008-12-19 07:25:26Z conf $
  */
 class lmbGdCropImageFilterTest extends UnitTestCase
 {
@@ -55,7 +55,7 @@ class lmbGdCropImageFilterTest extends UnitTestCase
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 50);
-    $this->assertEqual($height, 70);    
+    $this->assertEqual($height, 70);
     $cont->load($this->_getOutputImage());
     $this->assertFalse($cont->isPallete());
   }
@@ -69,7 +69,7 @@ class lmbGdCropImageFilterTest extends UnitTestCase
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 5);
-    $this->assertEqual($height, 10);    
+    $this->assertEqual($height, 10);
     $cont->load($this->_getOutputImage());
     $this->assertTrue($cont->isPallete());
   }
@@ -83,7 +83,7 @@ class lmbGdCropImageFilterTest extends UnitTestCase
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 14);
-    $this->assertEqual($height, 15);    
+    $this->assertEqual($height, 15);
     $cont->load($this->_getOutputImage());
   }
 
@@ -96,7 +96,7 @@ class lmbGdCropImageFilterTest extends UnitTestCase
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 40);
-    $this->assertEqual($height, 50);    
+    $this->assertEqual($height, 50);
     $cont->load($this->_getOutputImage());
   }
 
@@ -109,7 +109,7 @@ class lmbGdCropImageFilterTest extends UnitTestCase
     $cont->save($this->_getOutputImage());
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
     $this->assertEqual($width, 90);
-    $this->assertEqual($height, 117);    
+    $this->assertEqual($height, 117);
     $cont->load($this->_getOutputImage());
   }
 
@@ -128,4 +128,3 @@ class lmbGdCropImageFilterTest extends UnitTestCase
     @unlink($this->_getOutputImage());
   }
 }
-?>

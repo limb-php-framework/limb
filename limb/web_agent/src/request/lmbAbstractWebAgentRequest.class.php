@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__).'/../lmbWebAgentHeaders.class.php');
  * Abstract class of webagent request
  *
  * @package web_agent
- * @version $Id: lmbAbstractWebAgentRequest.class.php 6779 2008-02-08 12:35:40Z cmz $
+ * @version $Id: lmbAbstractWebAgentRequest.class.php 7417 2008-12-19 07:25:26Z conf $
  */
 abstract class lmbAbstractWebAgentRequest
 {
@@ -78,4 +78,4 @@ abstract class lmbAbstractWebAgentRequest
   abstract function doRequest($url, $method = 'GET');
 
 }
-?>
+

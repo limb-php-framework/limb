@@ -64,4 +64,3 @@ class lmbGdRotateImageFilterTest extends UnitTestCase {
     @unlink($this->_getOutputImage());
   }
 }
-?>

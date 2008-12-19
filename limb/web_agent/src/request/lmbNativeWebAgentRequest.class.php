@@ -17,7 +17,7 @@ lmb_require(dirname(__FILE__).'/../lmbWebServerCookiesCollection.class.php');
  * Web request through file_get_contents
  *
  * @package web_agent
- * @version $Id: lmbNativeWebAgentRequest.class.php 6779 2008-02-08 12:35:40Z cmz $
+ * @version $Id: lmbNativeWebAgentRequest.class.php 7417 2008-12-19 07:25:26Z conf $
  */
 class lmbNativeWebAgentRequest extends lmbAbstractWebAgentRequest {
   protected $request_data = null;
@@ -204,4 +204,3 @@ class lmbNativeWebAgentRequest extends lmbAbstractWebAgentRequest {
     return $this->response_data;
   }
 }
-?>

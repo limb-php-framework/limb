@@ -95,4 +95,3 @@ abstract class lmbWactTemplateSourceController extends lmbController
   }
 }
 
-?>

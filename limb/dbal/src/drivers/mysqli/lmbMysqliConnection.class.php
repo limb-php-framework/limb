@@ -163,7 +163,6 @@ class lmbMysqliConnection extends lmbDbBaseConnection
     return new lmbMysqliTypeInfo();
   }
 
-
   function getDatabaseInfo()
   {
     return new lmbMysqliDbInfo($this, $this->config['database'], true);

@@ -179,4 +179,3 @@ class lmbWebAgent {
       $this->content = mb_convert_encoding($this->content, 'utf-8', $this->charset);
   }
 }
-?>

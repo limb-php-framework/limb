@@ -95,4 +95,3 @@ class lmbGdResizeImageFilterTest extends UnitTestCase
     @unlink($this->_getOutputImage());
   }
 }
-?>

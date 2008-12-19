@@ -61,4 +61,3 @@ class lmbLiveInternetAgentTest extends UnitTestCase {
     $this->assertEqual($this->agent->getCookies()->get(0)->value, 'zxc');
   }
 }
-?>

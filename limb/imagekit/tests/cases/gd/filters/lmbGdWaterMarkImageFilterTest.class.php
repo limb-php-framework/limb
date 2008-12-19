@@ -99,4 +99,3 @@ class lmbGdWaterMarkImageFilterTest extends UnitTestCase
     @unlink($this->_getOutputImage());
   }
 }
-?>

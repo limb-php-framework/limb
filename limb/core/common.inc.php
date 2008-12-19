@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7250 2008-11-24 23:55:05Z korchasa $
+ * @version $Id: common.inc.php 7417 2008-12-19 07:25:26Z conf $
  */
 $GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -42,16 +42,16 @@ function lmb_glob($path)
   if(lmb_is_path_absolute($path))
     return glob($path);
 
-  $result = array();  
-  foreach(lmb_get_include_path_items() as $dir)  
-  {  
-    if($res = glob("$dir/$path"))  
-    {  
-      foreach($res as $item)  
-         $result[] = $item;  
-    }  
-  }  
-  return $result;    
+  $result = array();
+  foreach(lmb_get_include_path_items() as $dir)
+  {
+    if($res = glob("$dir/$path"))
+    {
+      foreach($res as $item)
+         $result[] = $item;
+    }
+  }
+  return $result;
 }
 
 function lmb_get_include_path_items()
@@ -235,8 +235,8 @@ function lmb_plural($word)
     '/(x|ch|ss|sh)$/' => '\1es', # search, switch, fix, box, process, address
     '/series$/' => '\1series',
     '/([^aeiouy]|qu)ies$/' => '\1y',
-    '/([^aeiouy]|qu)y$/' => '\1ies', # query, ability, agency    
-    '/sis$/' => 'ses', # basis, diagnosis    
+    '/([^aeiouy]|qu)y$/' => '\1ies', # query, ability, agency
+    '/sis$/' => 'ses', # basis, diagnosis
     '/(.*)status$/' => '\1statuses',
     '/s$/' => 's', # no change (compatibility)
     '/$/' => 's'
@@ -248,7 +248,7 @@ function lmb_plural($word)
     $result = preg_replace ($pattern, $repl, $word);
     if ($result!= $word) break;
   }
-  return $result; 
+  return $result;
 }
 
 lmb_require('limb/core/src/exception/lmbException.class.php');

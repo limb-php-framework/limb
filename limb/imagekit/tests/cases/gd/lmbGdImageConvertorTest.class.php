@@ -102,4 +102,3 @@ class lmbGdImageConvertorTest extends UnitTestCase {
     @unlink($this->_getOutputImage());
   }
 }
-?>

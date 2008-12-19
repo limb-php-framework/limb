@@ -74,4 +74,3 @@ class lmbWebAgentCookiesTest extends UnitTestCase {
     $this->assertTrue($cookies->hasCookies());
   }
 }
-?>

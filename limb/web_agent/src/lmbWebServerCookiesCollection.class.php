@@ -59,4 +59,3 @@ class lmbWebServerCookiesCollection implements IteratorAggregate {
   }
 
 }
-?>

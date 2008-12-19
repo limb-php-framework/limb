@@ -36,4 +36,3 @@ class lmbLiveInternetValues extends lmbWebAgentValues {
   }
 
 }
-?>

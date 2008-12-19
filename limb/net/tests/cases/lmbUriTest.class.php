@@ -76,7 +76,6 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->getPath(), 'c:\dir/another_dir');
   }
 
-
   function testCreate_FileProtocolWithHost()
   {
     $str = 'file://user:pass@localhost/dir/file';

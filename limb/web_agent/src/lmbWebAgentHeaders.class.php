@@ -150,4 +150,3 @@ class lmbWebAgentHeaders {
     return implode('-', $new_name);
   }
 }
-?>

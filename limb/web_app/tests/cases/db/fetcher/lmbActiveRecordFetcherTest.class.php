@@ -196,5 +196,4 @@ class lmbActiveRecordFetcherTest extends lmbWebAppTestCase
     $this->assertFalse($rs->valid());
   }
 }
-?>
 

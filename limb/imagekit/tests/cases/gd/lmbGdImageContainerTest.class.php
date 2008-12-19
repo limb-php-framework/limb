@@ -106,4 +106,3 @@ class lmbGdImageContainerTest extends UnitTestCase {
   	@unlink($this->_getOutputImage());
   }
 }
-?>

@@ -38,4 +38,3 @@
     $code->writePHP('$this->'.$method.'();');
   }
 }
-?>

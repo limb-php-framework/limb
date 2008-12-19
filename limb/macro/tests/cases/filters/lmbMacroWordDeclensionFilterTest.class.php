@@ -28,8 +28,7 @@ class lmbMacroWordDeclensionFilterTest extends lmbBaseMacroTest
     $this->assertEqual($this->_getUserResultForNumber(12), "пользователей");
     $this->assertEqual($this->_getUserResultForNumber(22), "пользователя");
     $this->assertEqual($this->_getUserResultForNumber(235), "пользователей");
-    $this->assertEqual($this->_getUserResultForNumber(10001), "пользователь");    
+    $this->assertEqual($this->_getUserResultForNumber(10001), "пользователь");
   }
 }
 
-?>

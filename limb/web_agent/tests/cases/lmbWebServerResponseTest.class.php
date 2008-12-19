@@ -37,4 +37,3 @@ class lmbWebServerResponseTest extends UnitTestCase {
   }
 
 }
-?>

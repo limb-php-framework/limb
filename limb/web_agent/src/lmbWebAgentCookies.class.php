@@ -62,4 +62,3 @@ class lmbWebAgentCookies implements IteratorAggregate {
   	$this->cookies = array();
   }
 }
-?>

@@ -57,4 +57,3 @@ class lmbLiveInternetAgent extends lmbWebAgent {
   	return 'http://www.liveinternet.ru/stat/'.$this->project.'/';
   }
 }
-?>
