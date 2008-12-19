@@ -2,19 +2,12 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 lmb_require('limb/session/src/lmbSession.class.php');
-
-
-/**
- * Tells lmbSessionStartupFilter filter to use either native (file based) session storage driver (default) or database session storage driver
- * @see lmbSessionStartupFilter
- */
-@define('LIMB_SESSION_USE_DB_DRIVER', false);
 
 /**
  * lmbSessionStartupFilter installs session storage driver and starts session.
@@ -25,7 +18,7 @@ lmb_require('limb/session/src/lmbSession.class.php');
  * @see lmbSessionNativeStorage
  * @see lmbSessionDbStorage
  *
- * @version $Id: lmbSessionStartupFilter.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: lmbSessionStartupFilter.class.php 7425 2008-12-19 11:39:35Z korchasa $
  * @package web_app
  */
 class lmbSessionStartupFilter implements lmbInterceptingFilter
@@ -34,10 +27,10 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
    * @see lmbInterceptingFilter :: run()
    * @uses LIMB_SESSION_USE_DB_DRIVER
    */
-  function run($filter_chain)
+  function run($filter_chain, $session_in_db = false, $session_in_db_lifetime = null)
   {
-    if(constant('LIMB_SESSION_USE_DB_DRIVER'))
-      $storage =  $this->_createDBSessionStorage();
+    if($session_in_db)
+      $storage =  $this->_createDBSessionStorage($session_in_db_lifetime);
     else
       $storage =  $this->_createNativeSessionStorage();
 
@@ -59,16 +52,11 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
    * @see lmbInterceptingFilter :: run()
    * @uses LIMB_SESSION_DB_MAX_LIFE_TIME
    */
-  protected function _createDBSessionStorage()
+  protected function _createDBSessionStorage($lifetime)
   {
-    if(defined('LIMB_SESSION_DB_MAX_LIFE_TIME') &&  constant('LIMB_SESSION_DB_MAX_LIFE_TIME'))
-      $max_life_time = constant('LIMB_SESSION_DB_MAX_LIFE_TIME');
-    else
-      $max_life_time = null;
-
     lmb_require('limb/session/src/lmbSessionDbStorage.class.php');
     $db_connection = lmbToolkit :: instance()->getDefaultDbConnection();
-    return new lmbSessionDbStorage($db_connection, $max_life_time);
+    return new lmbSessionDbStorage($db_connection, $lifetime);
   }
 }
 
