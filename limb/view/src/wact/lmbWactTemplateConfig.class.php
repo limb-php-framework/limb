@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/wact/src/WactTemplateConfig.interface.php');
 
@@ -38,15 +38,7 @@ class lmbWactTemplateConfig implements WactTemplateConfig
 
   function getScanDirectories()
   {
-    if(!defined('LIMB_WACT_TAGS_INCLUDE_PATH'))
-       throw new lmbException('LIMB_WACT_TAGS_INCLUDE_PATH constant is not defined!');
-
-    $result = array();
-
-    foreach(explode(';', LIMB_WACT_TAGS_INCLUDE_PATH) as $path)
-      $result[] = $path;
-
-    return $result;
+    return lmbToolkit :: instance()->getConf('wact')->get('tags_dirs');
   }
 
   function getSaxFilters()

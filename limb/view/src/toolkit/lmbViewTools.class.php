@@ -8,10 +8,6 @@
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
-@define('LIMB_TEMPLATES_INCLUDE_PATH', 'template;limb/*/template');
-@define('LIMB_WACT_TAGS_INCLUDE_PATH', 'src/wact;limb/*/src/wact;limb/wact/src/tags;src/template/tags;limb/*/src/template/tags;limb/wact/src/tags');
-@define('LIMB_MACRO_TAGS_INCLUDE_PATH', 'src/macro;limb/*/src/macro;limb/macro/src/tags');
-@define('LIMB_MACRO_FILTERS_INCLUDE_PATH', 'src/macro;limb/*/src/macro;limb/macro/src/filters');
 @define('LIMB_SUPPORTED_VIEW_TYPES', '.phtml=lmbMacroView;.html=lmbWactView');
 
 /**
@@ -90,8 +86,10 @@ class lmbViewTools extends lmbAbstractTools
 
     lmb_require('limb/view/src/wact/lmbWactTemplateLocator.class.php');
 
-    $locator = $this->toolkit->getFileLocator(LIMB_TEMPLATES_INCLUDE_PATH, 'template');
-    $this->wact_locator = new lmbWactTemplateLocator($locator, LIMB_VAR_DIR . '/compiled/');
+    $config = $this->toolkit->getConf('wact');
+
+    $locator = $this->toolkit->getFileLocator($config->get('tpl_scan_dirs'), 'template');
+    $this->wact_locator = new lmbWactTemplateLocator($locator, $config->get('cache_dir'));
 
     return $this->wact_locator;
   }
@@ -103,17 +101,8 @@ class lmbViewTools extends lmbAbstractTools
 
   function getMacroConfig()
   {
-    if($this->macro_config)
-      return $this->macro_config;
-
-    $this->macro_config = array(
-      'cache_dir' => LIMB_VAR_DIR . '/compiled/',
-      'is_force_compile' => $this->toolkit->getConf('macro')->get('forcecompile'),
-      'is_force_scan' => $this->toolkit->getConf('macro')->get('forcescan'),
-      'tpl_scan_dirs' => explode(';', LIMB_TEMPLATES_INCLUDE_PATH),
-      'tags_scan_dirs' => explode(';', LIMB_MACRO_TAGS_INCLUDE_PATH),
-      'filters_scan_dirs' => explode(';', LIMB_MACRO_FILTERS_INCLUDE_PATH)
-    );
+    if(!$this->macro_config)
+      $this->macro_config = $this->toolkit->getConf('macro');
 
     return $this->macro_config;
   }
