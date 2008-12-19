@@ -133,6 +133,14 @@ class lmbRequireClassTest extends UnitTestCase
 
     $foo = new $name();
   }
+  
+  function testLazyLoadClassConstant()
+  {
+    $name = $this->_rndName();
+    $path = $this->_writeModule($name . '.class.php', "<?php class $name { const Foo = 'value'; }");
+    lmb_require($path);
+    $this->assertEqual(constant("$name::Foo"), "value");
+  }
 
   function _writeClassFile($name, $ext = '.class.php')
   {
