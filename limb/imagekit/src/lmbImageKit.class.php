@@ -9,16 +9,12 @@
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 7080 2008-06-25 16:37:40Z korchasa $
+ * @version $Id: lmbImageKit.class.php 7426 2008-12-19 11:53:16Z korchasa $
  */
 class lmbImageKit
 {
-
   static function create($library = 'gd', $dir = '', $params = array())
   {
-    if(defined('LIMB_IMAGE_LIBRARY'))
-      $library = LIMB_IMAGE_LIBRARY;
-
     $image_class_name = 'lmb' . ucfirst($library) . 'ImageConvertor';
 
     $class_path = 'limb/imagekit/src/' .  $library . '/' . $image_class_name . '.class.php';
