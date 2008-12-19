@@ -8,13 +8,11 @@
  */
 lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 
-define('LIMB_INSERT_QUERY_NON_VALUE', uniqid());
-
 /**
  * class lmbInsertQuery.
  *
  * @package dbal
- * @version $Id: lmbInsertQuery.class.php 7224 2008-11-17 15:57:24Z korchasa $
+ * @version $Id: lmbInsertQuery.class.php 7424 2008-12-19 09:57:30Z korchasa $
  */
 class lmbInsertQuery extends lmbTemplateQuery
 {
@@ -30,7 +28,7 @@ class lmbInsertQuery extends lmbTemplateQuery
     $this->_registerHint('values');
   }
 
-  function addField($field, $value = LIMB_INSERT_QUERY_NON_VALUE)
+  function addField($field, $value = LIMB_UNDEFINED)
   {
     $this->_fields[$field] = $value;
     $this->_registerHint('fields');
@@ -52,7 +50,7 @@ class lmbInsertQuery extends lmbTemplateQuery
     $values = array();
     foreach($this->_fields as $field => $value)
     {
-      if($value !== LIMB_INSERT_QUERY_NON_VALUE)
+      if($value !== LIMB_UNDEFINED)
         $this->_set_values[$field] = $value;
 
       $values[] = ":{$field}:";

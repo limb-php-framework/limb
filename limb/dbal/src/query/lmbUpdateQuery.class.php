@@ -8,13 +8,11 @@
  */
 lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
 
-define('LIMB_UPDATE_QUERY_NON_VALUE', uniqid());
-
 /**
  * class lmbUpdateQuery.
  *
  * @package dbal
- * @version $Id: lmbUpdateQuery.class.php 7165 2008-08-29 11:15:26Z serega $
+ * @version $Id: lmbUpdateQuery.class.php 7424 2008-12-19 09:57:30Z korchasa $
  */
 class lmbUpdateQuery extends lmbCriteriaQuery
 {
@@ -35,14 +33,14 @@ class lmbUpdateQuery extends lmbCriteriaQuery
     return $this->_table;
   }
 
-  function addField($field, $value = LIMB_UPDATE_QUERY_NON_VALUE)
+  function addField($field, $value = LIMB_UNDEFINED)
   {
     $this->_fields[$field] = $value;
     $this->_registerHint('fields');
     return $this;
   }
 
-  function field($field, $value = LIMB_UPDATE_QUERY_NON_VALUE)
+  function field($field, $value = LIMB_UNDEFINED)
   {
     return $this->addField($field, $value);
   }
@@ -86,7 +84,7 @@ class lmbUpdateQuery extends lmbCriteriaQuery
     $values = array();
     foreach($this->_fields as $field => $value)
     {
-      if($value !== LIMB_UPDATE_QUERY_NON_VALUE)
+      if($value !== LIMB_UNDEFINED)
         $this->_set_values[$field] = $value;
 
       $values[] = $this->_conn->quoteIdentifier($field) . " = :{$field}:";

@@ -8,8 +8,6 @@
  */
 lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 
-define('LIMB_INSERT_OR_UPDATE_QUERY_NON_VALUE', uniqid());
-
 /**
  * class lmbInsertQuery.
  *
@@ -31,7 +29,7 @@ class lmbInsertOnDuplicateUpdateQuery extends lmbTemplateQuery
     $this->_registerHint('new_values');
   }
 
-  function addField($field, $value = LIMB_INSERT_OR_UPDATE_QUERY_NON_VALUE)
+  function addField($field, $value = LIMB_UNDEFINED)
   {
     $this->_fields[$field] = $value;
     $this->_registerHint('fields');
@@ -53,7 +51,7 @@ class lmbInsertOnDuplicateUpdateQuery extends lmbTemplateQuery
     $values = array();
     foreach($this->_fields as $field => $value)
     {
-      if($value !== LIMB_INSERT_OR_UPDATE_QUERY_NON_VALUE)
+      if($value !== LIMB_UNDEFINED)
         $this->_set_values[$field] = $value;
 
       $values[] = ":{$field}:";
