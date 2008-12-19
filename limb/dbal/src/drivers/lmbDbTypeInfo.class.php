@@ -6,135 +6,136 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-define('LIMB_DB_TYPE_SMALLINT',   10);
-define('LIMB_DB_TYPE_INTEGER',    11);
-
-define('LIMB_DB_TYPE_BOOLEAN',    20);
-
-define('LIMB_DB_TYPE_CHAR',       30);
-define('LIMB_DB_TYPE_VARCHAR',    31);
-
-define('LIMB_DB_TYPE_FLOAT',      40);
-define('LIMB_DB_TYPE_DOUBLE',     41);
-define('LIMB_DB_TYPE_DECIMAL',    42);
-
-define('LIMB_DB_TYPE_TIMESTAMP',  50);
-define('LIMB_DB_TYPE_DATE',       51);
-define('LIMB_DB_TYPE_TIME',       52);
-
-define('LIMB_DB_TYPE_BLOB',       60);
-define('LIMB_DB_TYPE_CLOB',       70);
-
-define('LIMB_DB_TYPE_BIT',        80);
 
 /**
  * class lmbDbTypeInfo.
  *
  * @package dbal
- * @version $Id: lmbDbTypeInfo.class.php 6968 2008-04-28 09:39:28Z korchasa $
+ * @version $Id: lmbDbTypeInfo.class.php 7422 2008-12-19 09:10:14Z korchasa $
  */
 class lmbDbTypeInfo
 {
+  const TYPE_SMALLINT =    10;
+  const TYPE_INTEGER =     11;
+
+  const TYPE_BOOLEAN =     20;
+
+  const TYPE_CHAR =        30;
+  const TYPE_VARCHAR =     31;
+
+  const TYPE_FLOAT =       40;
+  const TYPE_DOUBLE =      41;
+  const TYPE_DECIMAL =     42;
+
+  const TYPE_TIMESTAMP =   50;
+  const TYPE_DATE =        51;
+  const TYPE_TIME =        52;
+
+  const TYPE_BLOB =        60;
+  const TYPE_CLOB =        70;
+
+  const TYPE_BIT =         80;
+
   function getColumnTypeList()
   {
     return array(
-      LIMB_DB_TYPE_BIT,
-      LIMB_DB_TYPE_SMALLINT,
-      LIMB_DB_TYPE_INTEGER,
-      LIMB_DB_TYPE_BOOLEAN,
-      LIMB_DB_TYPE_CHAR,
-      LIMB_DB_TYPE_VARCHAR,
-      LIMB_DB_TYPE_FLOAT,
-      LIMB_DB_TYPE_DOUBLE,
-      LIMB_DB_TYPE_DECIMAL,
-      LIMB_DB_TYPE_TIMESTAMP,
-      LIMB_DB_TYPE_DATE,
-      LIMB_DB_TYPE_TIME,
-      LIMB_DB_TYPE_BLOB,
-      LIMB_DB_TYPE_CLOB
+      self::TYPE_BIT,
+      self::TYPE_SMALLINT,
+      self::TYPE_INTEGER,
+      self::TYPE_BOOLEAN,
+      self::TYPE_CHAR,
+      self::TYPE_VARCHAR,
+      self::TYPE_FLOAT,
+      self::TYPE_DOUBLE,
+      self::TYPE_DECIMAL,
+      self::TYPE_TIMESTAMP,
+      self::TYPE_DATE,
+      self::TYPE_TIME,
+      self::TYPE_BLOB,
+      self::TYPE_CLOB
     );
   }
 
   function getNativeToColumnTypeMapping()
   {
     return array(
-      'bit' => LIMB_DB_TYPE_BIT,
-      'tinyint' => LIMB_DB_TYPE_SMALLINT,
-      'smallint' => LIMB_DB_TYPE_SMALLINT,
-      'mediumint' => LIMB_DB_TYPE_INTEGER,
-      'number' => LIMB_DB_TYPE_INTEGER,
-      'int' => LIMB_DB_TYPE_INTEGER,
-      'int2' => LIMB_DB_TYPE_INTEGER,
-      'int4' => LIMB_DB_TYPE_INTEGER,
-      'int8' => LIMB_DB_TYPE_INTEGER,
-      'integer' => LIMB_DB_TYPE_INTEGER,
-      'bigint' => LIMB_DB_TYPE_DECIMAL,
-      'real' => LIMB_DB_TYPE_FLOAT,
-      'float' => LIMB_DB_TYPE_FLOAT,
-      'float4' => LIMB_DB_TYPE_FLOAT,
-      'float8' => LIMB_DB_TYPE_FLOAT,
-      'cash' => LIMB_DB_TYPE_FLOAT,
-      'money' => LIMB_DB_TYPE_FLOAT,
-      'decimal' => LIMB_DB_TYPE_DECIMAL,
-      'numeric' => LIMB_DB_TYPE_DECIMAL,
-      'double' => LIMB_DB_TYPE_DOUBLE,
-      'char' => LIMB_DB_TYPE_CHAR,
-      'varchar' => LIMB_DB_TYPE_VARCHAR,
-      'varchar2' => LIMB_DB_TYPE_VARCHAR,
-      'nvarchar2' => LIMB_DB_TYPE_VARCHAR,
-      'date' => LIMB_DB_TYPE_DATE,
-      'time' => LIMB_DB_TYPE_TIME,
-      'year' => LIMB_DB_TYPE_INTEGER,
-      'datetime' => LIMB_DB_TYPE_TIMESTAMP,
-      'timestamp' => LIMB_DB_TYPE_TIMESTAMP,
-      'blob' => LIMB_DB_TYPE_BLOB,
-      'tinytext' => LIMB_DB_TYPE_CLOB,
-      'mediumtext' => LIMB_DB_TYPE_CLOB,
-      'text' => LIMB_DB_TYPE_CLOB,
-      'longtext' => LIMB_DB_TYPE_CLOB,
-      'enum' => LIMB_DB_TYPE_CHAR,
-      'set' => LIMB_DB_TYPE_CHAR,
-      'bool' => LIMB_DB_TYPE_BOOLEAN
+      'bit' => self::TYPE_BIT,
+      'tinyint' => self::TYPE_SMALLINT,
+      'smallint' => self::TYPE_SMALLINT,
+      'mediumint' => self::TYPE_INTEGER,
+      'number' => self::TYPE_INTEGER,
+      'int' => self::TYPE_INTEGER,
+      'int2' => self::TYPE_INTEGER,
+      'int4' => self::TYPE_INTEGER,
+      'int8' => self::TYPE_INTEGER,
+      'integer' => self::TYPE_INTEGER,
+      'bigint' => self::TYPE_DECIMAL,
+      'real' => self::TYPE_FLOAT,
+      'float' => self::TYPE_FLOAT,
+      'float4' => self::TYPE_FLOAT,
+      'float8' => self::TYPE_FLOAT,
+      'cash' => self::TYPE_FLOAT,
+      'money' => self::TYPE_FLOAT,
+      'decimal' => self::TYPE_DECIMAL,
+      'numeric' => self::TYPE_DECIMAL,
+      'double' => self::TYPE_DOUBLE,
+      'char' => self::TYPE_CHAR,
+      'varchar' => self::TYPE_VARCHAR,
+      'varchar2' => self::TYPE_VARCHAR,
+      'nvarchar2' => self::TYPE_VARCHAR,
+      'date' => self::TYPE_DATE,
+      'time' => self::TYPE_TIME,
+      'year' => self::TYPE_INTEGER,
+      'datetime' => self::TYPE_TIMESTAMP,
+      'timestamp' => self::TYPE_TIMESTAMP,
+      'blob' => self::TYPE_BLOB,
+      'tinytext' => self::TYPE_CLOB,
+      'mediumtext' => self::TYPE_CLOB,
+      'text' => self::TYPE_CLOB,
+      'longtext' => self::TYPE_CLOB,
+      'enum' => self::TYPE_CHAR,
+      'set' => self::TYPE_CHAR,
+      'bool' => self::TYPE_BOOLEAN
      );
   }
 
   function getColumnTypeAccessors()
   {
     return array(
-      LIMB_DB_TYPE_BIT => 'setBit',
-      LIMB_DB_TYPE_SMALLINT => 'setInteger',
-      LIMB_DB_TYPE_INTEGER => 'setInteger',
-      LIMB_DB_TYPE_BOOLEAN => 'setBoolean',
-      LIMB_DB_TYPE_CHAR => 'setChar',
-      LIMB_DB_TYPE_VARCHAR => 'setChar',
-      LIMB_DB_TYPE_FLOAT => 'setFloat',
-      LIMB_DB_TYPE_DOUBLE => 'setDouble',
-      LIMB_DB_TYPE_DECIMAL => 'setDecimal',
-      LIMB_DB_TYPE_TIMESTAMP => 'setTimeStamp',
-      LIMB_DB_TYPE_DATE => 'setDate',
-      LIMB_DB_TYPE_TIME => 'setTime',
-      LIMB_DB_TYPE_BLOB => 'setBlob',
-      LIMB_DB_TYPE_CLOB => 'setClob',
+      self::TYPE_BIT => 'setBit',
+      self::TYPE_SMALLINT => 'setInteger',
+      self::TYPE_INTEGER => 'setInteger',
+      self::TYPE_BOOLEAN => 'setBoolean',
+      self::TYPE_CHAR => 'setChar',
+      self::TYPE_VARCHAR => 'setChar',
+      self::TYPE_FLOAT => 'setFloat',
+      self::TYPE_DOUBLE => 'setDouble',
+      self::TYPE_DECIMAL => 'setDecimal',
+      self::TYPE_TIMESTAMP => 'setTimeStamp',
+      self::TYPE_DATE => 'setDate',
+      self::TYPE_TIME => 'setTime',
+      self::TYPE_BLOB => 'setBlob',
+      self::TYPE_CLOB => 'setClob',
     );
   }
 
   function getColumnTypeGetters()
   {
     return array(
-      LIMB_DB_TYPE_BIT => 'getBit',
-      LIMB_DB_TYPE_SMALLINT => 'getInteger',
-      LIMB_DB_TYPE_INTEGER => 'getInteger',
-      LIMB_DB_TYPE_BOOLEAN => 'getBoolean',
-      LIMB_DB_TYPE_CHAR => 'getString',
-      LIMB_DB_TYPE_VARCHAR => 'getString',
-      LIMB_DB_TYPE_FLOAT => 'getFloat',
-      LIMB_DB_TYPE_DOUBLE => 'getFloat',
-      LIMB_DB_TYPE_DECIMAL => 'getFloat',
-      LIMB_DB_TYPE_TIMESTAMP => 'getIntegerTimeStamp',
-      LIMB_DB_TYPE_DATE => 'getStringDate',
-      LIMB_DB_TYPE_TIME => 'getStringTime',
-      LIMB_DB_TYPE_BLOB => 'getBlob',
-      LIMB_DB_TYPE_CLOB => 'getClob',
+      self::TYPE_BIT => 'getBit',
+      self::TYPE_SMALLINT => 'getInteger',
+      self::TYPE_INTEGER => 'getInteger',
+      self::TYPE_BOOLEAN => 'getBoolean',
+      self::TYPE_CHAR => 'getString',
+      self::TYPE_VARCHAR => 'getString',
+      self::TYPE_FLOAT => 'getFloat',
+      self::TYPE_DOUBLE => 'getFloat',
+      self::TYPE_DECIMAL => 'getFloat',
+      self::TYPE_TIMESTAMP => 'getIntegerTimeStamp',
+      self::TYPE_DATE => 'getStringDate',
+      self::TYPE_TIME => 'getStringTime',
+      self::TYPE_BLOB => 'getBlob',
+      self::TYPE_CLOB => 'getClob',
     );
   }
 }

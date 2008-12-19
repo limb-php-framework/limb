@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbManipulationStatement.interface.php');
@@ -33,7 +33,7 @@ class lmbLinterManipulationStatement extends lmbLinterStatement implements lmbDb
       return linter_get_cursor_opt($this->queryId, CO_ROW_COUNT);
   }
 
-  
+
   function execute()
   {
     $this->checkQuery();
@@ -56,25 +56,25 @@ class lmbLinterManipulationStatement extends lmbLinterStatement implements lmbDb
         foreach ($rs as $k => $record)
         {
           $sql = 'UPDATE "' . $this->tableName . '" SET';
-          
+
           foreach ($this->blobs as $name=>$value)
             $sql .= '"' . $name . '" = :' . $name . ':, ';
-            
+
           $sql = substr($sql, 0, strlen($sql)-2);
           $sql .= ' WHERE ';
-          
+
           foreach ($pk as $key)
             $sql .= '"' . $key . '" = :' . $key . ': AND ';
-            
+
           $sql = substr($sql, 0, strlen($sql)-4);
           $s = $this->connection->newStatement($sql);
-          
+
           foreach ($this->blobs as $name => $value)
             $s->set($name, $value);
-            
+
           foreach ($pk as $key)
             $s->set($key, $record->get($key));
-            
+
           $s->execute();
         }
       }
@@ -82,7 +82,7 @@ class lmbLinterManipulationStatement extends lmbLinterStatement implements lmbDb
     $this->queryId = parent :: execute();
     return $this->queryId;
   }
-  
+
   protected function checkQuery()
   {
     if (!$this->queryChecked)
@@ -91,31 +91,31 @@ class lmbLinterManipulationStatement extends lmbLinterStatement implements lmbDb
       {
         $this->isUpdateQuery = true;
         $this->tableName = str_replace('"', '', $m[1]);
-        
+
         if (isset($m[2]))
           $this->whereCondition = $m[2];
-          
+
         $this->getTable();
       }
       $this->queryChecked = true;
     }
   }
-  
+
   function set($name, $value)
   {
     $this->checkQuery();
-    if ($this->isUpdateQuery && $this->tbl->hasColumn($name) && $this->tbl->getColumn($name)->getType() == LIMB_DB_TYPE_BLOB)
+    if ($this->isUpdateQuery && $this->tbl->hasColumn($name) && $this->tbl->getColumn($name)->getType() == lmbDbTypeInfo::TYPE_BLOB)
       $this->setBlob($name, $value);
     else
       parent::set($name, $value);
   }
-  
+
   protected function getTable()
   {
     if (is_null($this->tbl))
       $this->tbl = new lmbLinterTableInfo($this->connection->getDatabaseInfo(), $this->tableName);
   }
-  
+
   function setBlob($name, $value)
   {
     $this->checkQuery();
@@ -123,7 +123,7 @@ class lmbLinterManipulationStatement extends lmbLinterStatement implements lmbDb
     $this->blobs[$name] = $value;
     parent::setBlob($name, $value);
   }
-  
+
   function setClob($name, $value)
   {
     $this->checkQuery();

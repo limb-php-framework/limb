@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 
@@ -19,27 +19,27 @@ class lmbLinterTypeInfo extends lmbDbTypeInfo
   function getNativeToColumnTypeMapping()
   {
     return array(
-      'SMALLINT' => LIMB_DB_TYPE_SMALLINT,
-      'INTEGER' => LIMB_DB_TYPE_INTEGER,
-      'INT' => LIMB_DB_TYPE_INTEGER,
-      'BIGINT' => LIMB_DB_TYPE_DECIMAL,
-      'BYTE' => LIMB_DB_TYPE_CHAR,
-      'NCHAR VARYING' => LIMB_DB_TYPE_VARCHAR,
-      'NCHAR_VARYING' => LIMB_DB_TYPE_VARCHAR,
-      'NCHAR' => LIMB_DB_TYPE_VARCHAR,
-      'REAL' => LIMB_DB_TYPE_FLOAT,
-      'FLOAT' => LIMB_DB_TYPE_FLOAT,
-      'cash' => LIMB_DB_TYPE_FLOAT,
-      'money' => LIMB_DB_TYPE_FLOAT,
-      'DECIMAL' => LIMB_DB_TYPE_DECIMAL,
-      'NUMERIC' => LIMB_DB_TYPE_DECIMAL,
-      'DOUBLE' => LIMB_DB_TYPE_DOUBLE,
-      'CHAR' => LIMB_DB_TYPE_CHAR,
-      'CHARACTER' => LIMB_DB_TYPE_CHAR,
-      'VARCHAR' => LIMB_DB_TYPE_VARCHAR,
-      'DATE' => LIMB_DB_TYPE_DATE,
-      'BLOB' => LIMB_DB_TYPE_BLOB,
-      'BOOLEAN' => LIMB_DB_TYPE_BOOLEAN
+      'SMALLINT' => self::TYPE_SMALLINT,
+      'INTEGER' => self::TYPE_INTEGER,
+      'INT' => self::TYPE_INTEGER,
+      'BIGINT' => self::TYPE_DECIMAL,
+      'BYTE' => self::TYPE_CHAR,
+      'NCHAR VARYING' => self::TYPE_VARCHAR,
+      'NCHAR_VARYING' => self::TYPE_VARCHAR,
+      'NCHAR' => self::TYPE_VARCHAR,
+      'REAL' => self::TYPE_FLOAT,
+      'FLOAT' => self::TYPE_FLOAT,
+      'cash' => self::TYPE_FLOAT,
+      'money' => self::TYPE_FLOAT,
+      'DECIMAL' => self::TYPE_DECIMAL,
+      'NUMERIC' => self::TYPE_DECIMAL,
+      'DOUBLE' => self::TYPE_DOUBLE,
+      'CHAR' => self::TYPE_CHAR,
+      'CHARACTER' => self::TYPE_CHAR,
+      'VARCHAR' => self::TYPE_VARCHAR,
+      'DATE' => self::TYPE_DATE,
+      'BLOB' => self::TYPE_BLOB,
+      'BOOLEAN' => self::TYPE_BOOLEAN
    );
   }
 }

@@ -41,7 +41,7 @@ class lmbTableGatewayTest extends UnitTestCase
   {
     $this->assertEqual($this->db_table_test->getTableName(), 'test_db_table');
     $this->assertEqual($this->db_table_test->getPrimaryKeyName(), 'id');
-    $this->assertEqual($this->db_table_test->getColumnType('id'), LIMB_DB_TYPE_INTEGER);
+    $this->assertEqual($this->db_table_test->getColumnType('id'), lmbDbTypeInfo::TYPE_INTEGER);
     $this->assertIdentical($this->db_table_test->getColumnType('no_column'), false);
     $this->assertTrue($this->db_table_test->hasColumn('id'));
     $this->assertTrue($this->db_table_test->hasColumn('description'));
