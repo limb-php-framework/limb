@@ -246,7 +246,7 @@ class lmbHttpCacheTest extends UnitTestCase
 
     $this->cache->setLastModifiedTime($time = time());
     $this->cache->setCacheTime(100);
-    $this->cache->setCacheType(LIMB_HTTP_CACHE_TYPE_PUBLIC);
+    $this->cache->setCacheType(lmbHttpCache::TYPE_PUBLIC);
 
     $this->response->expectCallCount('addHeader', 5);
     $this->response->expectArgumentsAt(0, 'addHeader', array('Cache-Control: public, max-age=100'));

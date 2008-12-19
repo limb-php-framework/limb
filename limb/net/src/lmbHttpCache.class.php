@@ -8,14 +8,11 @@
  */
 //inspired by http://alexandre.alapetite.net/doc-alex/php-http-304/
 
-define('LIMB_HTTP_CACHE_TYPE_PRIVATE', 0);
-define('LIMB_HTTP_CACHE_TYPE_PUBLIC', 1);
-
 /**
  * class lmbHttpCache.
  *
  * @package net
- * @version $Id: lmbHttpCache.class.php 7111 2008-07-10 09:34:17Z korchasa $
+ * @version $Id: lmbHttpCache.class.php 7418 2008-12-19 07:59:02Z korchasa $
  */
 class lmbHttpCache
 {
@@ -23,6 +20,9 @@ class lmbHttpCache
   protected $last_modified_time;
   protected $cache_time;
   protected $cache_type;
+
+  const TYPE_PRIVATE = 0;
+  const TYPE_PUBLIC = 1;
 
   function __construct()
   {
@@ -34,7 +34,7 @@ class lmbHttpCache
     $this->last_modified_time = time();
     $this->etag = null;
     $this->cache_time = 0;
-    $this->cache_type = LIMB_HTTP_CACHE_TYPE_PRIVATE;
+    $this->cache_type = self::TYPE_PRIVATE;
   }
 
   function checkAndWrite($response)
@@ -121,9 +121,9 @@ class lmbHttpCache
   {
     if ($this->cache_time == 0)
       $cache = 'protected, must-revalidate, ';
-    elseif ($this->cache_type == LIMB_HTTP_CACHE_TYPE_PRIVATE)
+    elseif ($this->cache_type == self::TYPE_PRIVATE)
       $cache = 'protected, ';
-    elseif ($this->cache_type == LIMB_HTTP_CACHE_TYPE_PUBLIC)
+    elseif ($this->cache_type == self::TYPE_PUBLIC)
       $cache = 'public, ';
     else
       $cache = '';
