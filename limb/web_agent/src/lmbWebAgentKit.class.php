@@ -17,9 +17,6 @@ class lmbWebAgentKit {
 
   function createRequest($req = 'socket')
   {
-    if(defined('LIMB_WEB_AGENT_REQUEST'))
-      $req = LIMB_WEB_AGENT_REQUEST;
-
     $class = 'lmb'.ucfirst($req).'WebAgentRequest';
 
     $class_path = dirname(__FILE__).'/request/'.$class.'.class.php';
