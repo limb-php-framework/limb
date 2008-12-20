@@ -1,5 +1,5 @@
 <?php
 
 $conf = array(
-  'foo' => 42
+  'foo' => array('bar' => 42)
 );

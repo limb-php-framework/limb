@@ -57,7 +57,7 @@ class lmbConfToolsTest extends UnitTestCase
 
     $this->_clearLocatorsCache();    
 
-    $this->assertEqual($toolkit->getConf('test')->get('foo'), 42);
-    $this->assertEqual($toolkit->getConf('test')->get('bar'), true);
+    $this->assertEqual($toolkit->getConf('test')->get('foo'), array('bar' => 42));
+    $this->assertEqual($toolkit->getConf('test')->get('baz'), true);
   }
 }

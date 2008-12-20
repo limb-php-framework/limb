@@ -1,6 +1,6 @@
 <?php
 
 $conf = array(
-  'foo' => 11,
-  'bar' => true
+  'foo' => array('bar' => 11),
+  'baz' => true
 );
