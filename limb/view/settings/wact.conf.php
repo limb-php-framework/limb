@@ -8,3 +8,8 @@ $conf = array(
   'tags_dirs' => array('src/wact','limb/*/src/wact','limb/wact/src/tags','src/template/tags','limb/*/src/template/tags','limb/wact/src/tags')
 );
 
+if(defined('LIMB_TEMPLATE_INCLUDE_PATH'))
+  $conf['tpl_scan_dirs'] = constant('LIMB_TEMPLATE_INCLUDE_PATH');
+  
+if(defined('LIMB_WACT_TAG_INCLUDE_PATH'))
+  $conf['tags_dirs'] = constant('LIMB_WACT_TAG_INCLUDE_PATH');

@@ -103,19 +103,10 @@ class lmbViewTools extends lmbAbstractTools
   {
     if(!$this->macro_config)
     {
-      $default_macro_config = array(
-        'cache_dir' => LIMB_VAR_DIR . '/compiled/',
-        'forcescan' => true,
-        'forcecompile' => true,
-        'tpl_scan_dirs' => array('template', 'limb/*/template'),
-        'tags_dirs' => array('src/macro', 'limb/*/src/macro','limb/macro/src/tags'),
-        'filters_dirs' => array('src/macro','limb/*/src/macro','limb/macro/src/filters'),
-      );
-
       if(is_object($config = $this->toolkit->getConf('macro')))
         $config = $config->export();
 
-      $this->macro_config = array_merge($default_macro_config, $config);
+      $this->macro_config = $config;
     }
 
     return $this->macro_config;
