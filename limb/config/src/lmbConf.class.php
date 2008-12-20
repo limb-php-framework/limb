@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbObject.class.php');
+lmb_require('limb/core/src/lmbArrayHelper.class.php');
 lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
@@ -14,7 +15,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 7434 2008-12-20 07:04:35Z korchasa $
+ * @version $Id: lmbConf.class.php 7436 2008-12-20 09:38:09Z korchasa $
  */
 class lmbConf extends lmbObject
 {
@@ -49,7 +50,7 @@ class lmbConf extends lmbObject
       
     if(!is_array($conf))
       throw new lmbException("Config must be a array", array('file' => $file, 'content' => $conf));
-    return array_merge($original_conf, $conf);
+    return lmbArrayHelper::arrayMerge($original_conf, $conf);
   }
 
   protected function _getOverrideFile($file_path)

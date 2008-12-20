@@ -1,5 +1,9 @@
 <?php
 
 $conf = array(
-  'foo' => array('bar' => 42)
+  'some_pool' => array(
+    array('value' => 100),
+  ),
+  'higher_numeric_value',
+  'foo' => array('bar' => 42),
 );

@@ -41,23 +41,4 @@ class lmbConfToolsTest extends UnitTestCase
     $this->assertFalse($toolkit->hasConf('not_existed'));
     $this->assertTrue($toolkit->hasConf('from_default_dir'));
   }
-  
-  function _clearLocatorsCache()
-  {
-    lmbFs::rm(LIMB_VAR_DIR);
-  }
-  
-  function testGetConf_Inheritance()
-  {
-    $toolkit = lmbToolkit :: merge(new lmbConfTools());
-    $toolkit->setConfIncludePath($paths = array(
-      'limb/config/tests/cases/higher_settings',
-      'limb/config/tests/cases/lower_settings'
-    ));
-
-    $this->_clearLocatorsCache();    
-
-    $this->assertEqual($toolkit->getConf('test')->get('foo'), array('bar' => 42));
-    $this->assertEqual($toolkit->getConf('test')->get('baz'), true);
-  }
 }

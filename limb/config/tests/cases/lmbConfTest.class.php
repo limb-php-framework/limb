@@ -64,9 +64,17 @@ class lmbConfTest extends UnitTestCase
   function testMultipleFiles()
   {
     $conf = new lmbConf(array(
-      dirname(__FILE__) . '/conf.php',
-      dirname(__FILE__) . '/other.conf.php'
+      dirname(__FILE__) . '/higher_settings/test.conf.php',
+      dirname(__FILE__) . '/lower_settings/test.conf.php'
     ));
-    $this->assertEqual($conf->get('foo'), 1);
+    
+    $this->assertEqual($conf->get('foo'), array('bar' => 42));
+    $this->assertEqual($conf->get('baz'), true);
+    
+    $pool_settings = $conf->get('some_pool');
+    
+    $this->assertEqual(count($pool_settings), 2);
+    $this->assertEqual($pool_settings[0]['value'], 100);
+    $this->assertEqual($pool_settings[1]['value'], 2);
   }
 }
