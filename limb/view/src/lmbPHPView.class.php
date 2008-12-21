@@ -6,33 +6,20 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-
+lmb_require('limb/view/src/lmbView.class.php');
 /**
  * class lmbPHPView.
  *
  * @package view
  * @version $Id$
  */
-class lmbPHPView
-{
-  protected $file;
-  protected $vars = array();
-
-  function __construct($file)
+class lmbPHPView extends lmbView
+{  
+  function render()
   {
-    $this->file = $file;
-  }
-
-  function set($name, $value)
-  {
-    $this->vars[$name] = $value;
-  }
-
-  function out()
-  {
-    extract($this->vars);
+    extract($this->getVariables());
     ob_start();
-    include($this->file);
+    include($this->getTemplate());
     $res = ob_get_contents();
     ob_end_clean();
     return $res;
