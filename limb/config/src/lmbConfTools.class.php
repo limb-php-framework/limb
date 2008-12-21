@@ -17,7 +17,7 @@ lmb_require('limb/config/src/lmbConf.class.php');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 7432 2008-12-19 21:41:53Z korchasa $
+ * @version $Id: lmbConfTools.class.php 7441 2008-12-21 17:37:22Z korchasa $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -54,9 +54,9 @@ class lmbConfTools extends lmbAbstractTools
     return $this->conf_include_path;
   }
   
-  protected function _locateFiles($name)
+  protected function _locateFiles($name, $find_all = true)
   {
-    return $this->toolkit->findFileByAlias($name, $this->toolkit->getConfIncludePath(), 'config', true);
+    return $this->toolkit->findFileByAlias($name, $this->toolkit->getConfIncludePath(), 'config', $find_all);
   }
   
   function getConf($name)
@@ -70,7 +70,7 @@ class lmbConfTools extends lmbAbstractTools
 
     if($ext == '.ini')
     {
-      $file = $this->_locateFile($name);
+      $file = $this->_locateFile($name, $find_all = false);
       if(defined('LIMB_VAR_DIR'))
         $this->confs[$name] = new lmbCachedIni($file, LIMB_VAR_DIR . '/ini/');
       else
