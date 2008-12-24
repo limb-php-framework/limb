@@ -9,11 +9,11 @@ $conf = array(
   'filters_scan_dirs' => array('src/macro','limb/*/src/macro','limb/macro/src/filters'),
 );
 
-if(defined('LIMB_TEMPLATE_INCLUDE_PATH'))
-  $conf['tpl_scan_dirs'] = constant('LIMB_TEMPLATE_INCLUDE_PATH');
-  
+if(defined('LIMB_TEMPLATES_INCLUDE_PATH'))
+  $conf['tpl_scan_dirs'] = constant('LIMB_TEMPLATES_INCLUDE_PATH');
+
 if(defined('LIMB_MACRO_TAG_INCLUDE_PATH'))
   $conf['tags_dirs'] = constant('LIMB_MACRO_TAG_INCLUDE_PATH');
-  
+
 if(defined('LIMB_MACRO_FILTER_INCLUDE_PATH'))
   $conf['filters_dirs'] = constant('LIMB_MACRO_FILTER_INCLUDE_PATH');
