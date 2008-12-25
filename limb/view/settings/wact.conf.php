@@ -11,5 +11,5 @@ $conf = array(
 if(defined('LIMB_TEMPLATES_INCLUDE_PATH'))
   $conf['tpl_scan_dirs'] = constant('LIMB_TEMPLATES_INCLUDE_PATH');
 
-if(defined('LIMB_WACT_TAG_INCLUDE_PATH'))
-  $conf['tags_dirs'] = constant('LIMB_WACT_TAG_INCLUDE_PATH');
+if(defined('LIMB_WACT_TAGS_INCLUDE_PATH'))
+  $conf['tags_dirs'] = constant('LIMB_WACT_TAGS_INCLUDE_PATH');

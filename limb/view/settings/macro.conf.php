@@ -12,8 +12,8 @@ $conf = array(
 if(defined('LIMB_TEMPLATES_INCLUDE_PATH'))
   $conf['tpl_scan_dirs'] = constant('LIMB_TEMPLATES_INCLUDE_PATH');
 
-if(defined('LIMB_MACRO_TAG_INCLUDE_PATH'))
-  $conf['tags_dirs'] = constant('LIMB_MACRO_TAG_INCLUDE_PATH');
+if(defined('LIMB_MACRO_TAGS_INCLUDE_PATH'))
+  $conf['tags_dirs'] = constant('LIMB_MACRO_TAGS_INCLUDE_PATH');
 
-if(defined('LIMB_MACRO_FILTER_INCLUDE_PATH'))
-  $conf['filters_dirs'] = constant('LIMB_MACRO_FILTER_INCLUDE_PATH');
+if(defined('LIMB_MACRO_FILTERS_INCLUDE_PATH'))
+  $conf['filters_dirs'] = constant('LIMB_MACRO_FILTERS_INCLUDE_PATH');
