@@ -40,7 +40,7 @@ class lmbMacroTemplateLocator implements lmbMacroTemplateLocatorInterface
 
   function locateCompiledTemplate($file_name)
   {
-    return $this->cache_dir . '/' . md5($file_name) . '.php';
+    return $this->cache_dir . '/' . lmbMacroTemplate::encodeCacheFileName($file_name);
   }
 }
 

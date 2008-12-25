@@ -44,8 +44,8 @@ class lmbMacroTemplateLocatorSimpleTest extends lmbBaseMacroTest
   function testLocateCompiledTemplate()
   {
     $template_locator = new lmbMacroTemplateLocatorSimple($config = $this->_createMacroConfig());    
-    $compiled_file_name = md5($this->template_name);
-    file_put_contents($config['cache_dir'].'/'.$compiled_file_name . '.php', 'bar');
+    $compiled_file_name = lmbMacroTemplate::encodeCacheFileName($this->template_name);
+    file_put_contents($config['cache_dir'].'/'.$compiled_file_name, 'bar');
     
     $template = $template_locator->locateCompiledTemplate($this->template_name);
     
