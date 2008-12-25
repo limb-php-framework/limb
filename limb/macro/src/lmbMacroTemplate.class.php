@@ -118,7 +118,7 @@ class lmbMacroTemplate
 
   static function encodeCacheFileName($file_name)
   {
-    return basename(dirname($file_name)) . '-' . substr(basename($file_name), 0, 10) . '.' . crc32($file_name) . '.php';
+    return basename(dirname($file_name)) . '-' . basename($file_name) . '.' . crc32($file_name) . '.php';
   }
 }
 
