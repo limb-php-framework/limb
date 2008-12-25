@@ -10,6 +10,7 @@ lmb_require('limb/config/src/lmbConf.class.php');
 
 class lmbConfTest extends UnitTestCase
 {
+
   function testGet()
   {
     $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
@@ -27,17 +28,19 @@ class lmbConfTest extends UnitTestCase
   function testImplementsIterator()
   {
     $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
-
     $result = array();
-    foreach($conf as $key => $value)
+    foreach ($conf as $key => $value)
       $result[$key] = $value;
-
-    $this->assertEqual($result, array('foo' => 1, 'bar' => 2));
+    $this->assertEqual($result, array(
+      'foo' => 1,
+      'bar' => 2
+    ));
   }
-  
+
   function testGetNotExistedFile()
-  {    
-    try {
+  {
+    try
+    {
       $conf = new lmbConf(dirname(__FILE__) . '/not_existed.php');
       $this->fail();
     }
@@ -50,8 +53,8 @@ class lmbConfTest extends UnitTestCase
   function testGetNotExistedOption()
   {
     $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
-
-    try {
+    try
+    {
       $conf->get('some_not_existed_option');
       $this->fail();
     }
@@ -60,21 +63,44 @@ class lmbConfTest extends UnitTestCase
       $this->pass();
     }
   }
-  
+
   function testMultipleFiles()
   {
     $conf = new lmbConf(array(
       dirname(__FILE__) . '/higher_settings/test.conf.php',
       dirname(__FILE__) . '/lower_settings/test.conf.php'
     ));
-    
-    $this->assertEqual($conf->get('foo'), array('bar' => 42));
+    $this->assertEqual($conf->get('foo'), array(
+      'bar' => 42
+    ));
     $this->assertEqual($conf->get('baz'), true);
-    
     $pool_settings = $conf->get('some_pool');
-    
     $this->assertEqual(count($pool_settings), 2);
     $this->assertEqual($pool_settings[0]['value'], 100);
     $this->assertEqual($pool_settings[1]['value'], 2);
+  }
+
+  function testLowerConfAppendsToEnd()
+  {
+    $conf = new lmbConf(array(
+      dirname(__FILE__) . '/higher_settings/test.conf.php',
+      dirname(__FILE__) . '/lower_settings/test.conf.php'
+    ));
+    $merged = array(
+      'some_pool' => array(
+        array(
+          'value' => 100
+        ),
+        array(
+          'value' => 2
+        )
+      ),
+      'higher_numeric_value',
+      'foo' => array(
+        'bar' => 42
+      ),
+      'baz' => true
+    );
+    $this->assertIdentical($merged, $conf->export());
   }
 }
