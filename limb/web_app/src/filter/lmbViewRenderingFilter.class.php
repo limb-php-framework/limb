@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 
@@ -12,7 +12,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbViewRenderingFilter.
  *
  * @package web_app
- * @version $Id: lmbViewRenderingFilter.class.php 7365 2008-12-16 15:54:32Z korchasa $
+ * @version $Id: lmbViewRenderingFilter.class.php 7454 2008-12-26 10:45:17Z conf $
  */
 class lmbViewRenderingFilter implements lmbInterceptingFilter
 {
@@ -21,13 +21,7 @@ class lmbViewRenderingFilter implements lmbInterceptingFilter
     $toolkit = lmbToolkit :: instance();
     $response = $toolkit->getResponse();
 
-    if(!$response->isEmpty())
-    {
-      $filter_chain->next();
-      return;
-    }
-
-    if(is_object($view = $toolkit->getView()))
+    if($response->isEmpty() && is_object($view = $toolkit->getView()))
     {
       $view->set('request', $toolkit->getRequest());
       $view->set('session', $toolkit->getSession());

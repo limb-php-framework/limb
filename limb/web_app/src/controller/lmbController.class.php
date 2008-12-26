@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7087 2008-07-03 09:40:14Z conf $
+ * @version $Id: lmbController.class.php 7454 2008-12-26 10:45:17Z conf $
  */
 class lmbController
 {
@@ -156,14 +156,13 @@ class lmbController
       return false;
     }
     
-    if(method_exists($this, $this->_mapCurrentActionToMethod()))
+    if(method_exists($this, $method = $this->_mapCurrentActionToMethod()))
     {
       if($template_path = $this->findTemplateForAction($this->current_action))
       {
         $this->setTemplate($template_path);
       }
 
-      $method = $this->_mapCurrentActionToMethod($this->_mapCurrentActionToMethod());
       $res = $this->$method();
 
       $this->_passLocalAttributesToView();
@@ -325,7 +324,7 @@ class lmbController
   {
     if($this->map_changed && $this->isCacheEnabled())
     {
-      lmbFs :: safeWrite(LIMB_VAR_DIR . '/locators/controller_action2tpl.cache', 
+      lmbFs :: safeWrite(LIMB_VAR_DIR . '/locators/controller_action2tpl.cache',
                          serialize($this->action_template_map));
     }
   }
