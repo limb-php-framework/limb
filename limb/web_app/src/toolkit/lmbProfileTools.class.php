@@ -6,17 +6,19 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-
 /**
  * @package web_app
  * @version $Id$
  */
-
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
 class lmbProfileTools extends lmbAbstractTools
 {
-  protected $profile_points = array('__start__' => 0, '__end__' => 0);
+
+  protected $profile_points = array(
+    '__start__' => 0,
+    '__end__' => 0
+  );
 
   protected $profile_diffs = array();
 
@@ -24,7 +26,7 @@ class lmbProfileTools extends lmbAbstractTools
   {
     $this->setProfileStartPoint();
   }
-  
+
   function setProfileStartPoint($time = null)
   {
     $this->setProfilePoint('__start__', $time);
@@ -35,26 +37,30 @@ class lmbProfileTools extends lmbAbstractTools
     $this->setProfilePoint('__end__', $time);
   }
 
-  function hasProfileStartPoint() {
+  function hasProfileStartPoint()
+  {
     return !empty($this->profile_points['__start__']);
   }
-  
-  function hasProfileEndPoint() {
+
+  function hasProfileEndPoint()
+  {
     return !empty($this->profile_points['__end__']);
   }
-  
-  function getProfilePoint($point) {
-    if (!isset($this->profile_points[$point]))
+
+  function getProfilePoint($point)
+  {
+    if(!isset($this->profile_points[$point]))
     {
       throw new Exception("Point $point doesn't exist!");
     }
     return $this->profile_points[$point];
   }
-  
-  function getProfileDiffViews() {
+
+  function getProfileDiffViews()
+  {
     return $this->profile_diffs;
   }
-  
+
   function setProfilePoint($point, $time = null)
   {
     $this->profile_points[$point] = $time ? $time : microtime(true);
@@ -62,33 +68,29 @@ class lmbProfileTools extends lmbAbstractTools
 
   function clearProfilePoint($point)
   {
-    if ($point == '__start__' || $point == '__end__')
+    if($point == '__start__' || $point == '__end__')
     {
       throw new Exception("You can't unset start or end points!");
     }
-    
     unset($this->profile_points[$point]);
   }
 
   protected function getProfilePreviousPoint($point)
   {
-    if ($point == '__start__')
+    if($point == '__start__')
     {
       return $this->getProfilePoint($point);
     }
-    
     $profile_points = $this->profile_points;
     asort($profile_points);
     $keys = array_keys($profile_points);
-    
-    if (($key = array_search($point, $keys)) !== false)
+    if(($key = array_search($point, $keys)) !== false)
     {
       return $this->getProfilePoint($keys[$key - 1]);
     }
-    
     return $this->getProfilePoint($point);
   }
-  
+
   function getProfileTimeDiff($first_point, $second_point = null)
   {
     // if no second point provided, assume it as previous
@@ -96,7 +98,6 @@ class lmbProfileTools extends lmbAbstractTools
     {
       return abs($this->getProfilePoint($first_point) - $this->getProfilePreviousPoint($first_point));
     }
-    
     return abs($this->getProfilePoint($first_point) - $this->getProfilePoint($second_point));
   }
 
@@ -127,11 +128,14 @@ class lmbProfileTools extends lmbAbstractTools
   {
     if(!$this->hasProfileEndPoint())
     {
-      $this->setProfileEndPoint(max($this->profile_points));
+      if(count($this->profile_points) > 2)
+        $this->setProfileEndPoint(max($this->profile_points));
+      else
+        $this->setProfileEndPoint();
     }
     return $this->getProfileTimeDiff('__start__', '__end__');
   }
-    
+
   function getProfileStatItem($first_point, $second_point = null)
   {
     $diff = $this->getProfileTimeDiff($first_point, $second_point);
@@ -141,7 +145,7 @@ class lmbProfileTools extends lmbAbstractTools
       'percent_diff' => $percent
     );
   }
-  
+
   function showProfileStatItem($first_point, $second_point = null, $caption = null)
   {
     $data = $this->getProfileStatItem($first_point, $second_point);
@@ -151,7 +155,7 @@ class lmbProfileTools extends lmbAbstractTools
     }
     return sprintf("%s: %.7f sec. (%.2f%%)", $caption, $data['time_diff'], $data['percent_diff']);
   }
-  
+
   function getProfileStat($echo_result = true)
   {
     $ret = "<pre>";
@@ -174,11 +178,10 @@ class lmbProfileTools extends lmbAbstractTools
     $ret .= "\nTotal: {$this->getProfileTotal()} sec.";
     $ret .= "</pre>";
     
-    if ($echo_result)
+    if($echo_result)
     {
       echo $ret;
     }
-    
     return $ret;
   }
 }

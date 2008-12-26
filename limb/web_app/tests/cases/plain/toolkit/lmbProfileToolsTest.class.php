@@ -113,7 +113,7 @@ class lmbProfileToolsTest extends UnitTestCase
   {
     $this->assertFalse($this->toolkit->hasProfileEndPoint());
     $this->toolkit->getProfileTotal();
-    $this->assertTrue($this->toolkit->hasProfileEndPoint());
+    $this->assertTrue($this->toolkit->getProfilePoint('__start__') < $this->toolkit->getProfilePoint('__end__'));
   }
 
   function testGetProfilePercentDiff()
