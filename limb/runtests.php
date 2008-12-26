@@ -10,6 +10,7 @@ require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeGlobNode.class.ph
 $fork = false;
 $quiet = false;
 $tests = array();
+$skipped = array();
 
 function out($msg)
 {
@@ -23,16 +24,42 @@ function process_argv(&$argv)
 {
   global $quiet;
   global $fork;
+  global $skipped;
 
   $new_argv = array();
+  $selected_option = '';
   foreach($argv as $arg)
   {
-    if($arg == '-q')
-      $quiet = true;
-    else if($arg == '--fork')
-      $fork = true;
-    else
-      $new_argv[] = $arg;
+    // control arguments
+    switch($arg) {
+      case '-q':
+        $quiet = true;
+        break;
+      case '--fork':
+        $fork = true;
+        break;
+      case '--include-path':
+      case '--skip':
+        $selected_option = $arg;
+        break;
+      case '--':
+        $selected_option = '';
+        break;
+      default:
+        // value arguments
+        switch($selected_option) {
+          case '--skip':
+            $skipped[] = $arg;
+            break;
+          case '--include-path':
+            set_include_path(dirname(__FILE__) . '/' . $arg . PATH_SEPARATOR . get_include_path());
+            $selected_option = '';
+            break;
+          default:
+            $new_argv[] = $arg;
+            break;
+        }
+    }
   }
   $argv = $new_argv;
 }
@@ -69,12 +96,14 @@ if(sizeof($argv) > 1)
   $tests = array_splice($argv, 1);
 
 if(!$tests)
-  $tests = glob("*/tests/cases");
+  $tests = glob("*", GLOB_ONLYDIR);
+
+$tests = array_diff($tests, $skipped);
 
 if($fork)
 {
   $php_bin = get_php_bin();
-  out("=========== Forking procees for each test(PHP cmdline '$php_bin') ===========\n");
+  out("=========== Forking processes for each test(PHP cmdline '$php_bin') ===========\n");
 }
 
 $res = true;
