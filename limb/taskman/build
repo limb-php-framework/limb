@@ -23,6 +23,7 @@ function task_svnup()
 
 /**
  * @desc Run tests
+ * @deps svnup
  */
 function task_runtests()
 {
@@ -31,7 +32,7 @@ function task_runtests()
 
 /**
  * @desc Build project
- * @deps svnup,runtests
+ * @deps runtests
  */
 function task_build()
 {
