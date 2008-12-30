@@ -114,7 +114,7 @@ function taskman_run($argv = null, $help_func = 'task_help')
       $task->run();
   }
 
-  array_shift($argv);//shifting first element
+  $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);//shifting first element
   $task = array_shift($argv);
 
   //TODO: think better about multiple tasks execution and their args
@@ -314,6 +314,7 @@ function task_help()
       $maxlen = strlen($task->getName());
   }
 
+  echo "\nUsage: php {$GLOBALS[TASKMAN_SCRIPT]} <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
   echo "Available tasks:\n";
   foreach(taskman_gettasks() as $task)
   {
@@ -326,6 +327,7 @@ function task_help()
     }
     $props_string = rtrim($props_string);
 
+    echo "---------------------------------\n";
     echo " " . $task->getName() .  $props_string . "\n";
   }
 }
