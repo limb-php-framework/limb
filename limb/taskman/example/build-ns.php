@@ -3,7 +3,7 @@
 
 namespace taskman;
 
-require_once(dirname(__FILE__) . '/../taskman-php53.inc.php');
+require_once(dirname(__FILE__) . '/../taskman.inc.php');
 
 run();
 

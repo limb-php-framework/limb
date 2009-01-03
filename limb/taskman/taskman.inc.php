@@ -327,7 +327,11 @@ function task_help()
       $maxlen = strlen($task->getName());
   }
 
-  echo "\nUsage: php {$GLOBALS['TASKMAN_SCRIPT']} <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
+  echo "\nUsage:\n php {$GLOBALS['TASKMAN_SCRIPT']} [OPTIONS] <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
+  echo "Available options:\n";
+  echo " -v    be verbose\n";
+  echo " -b    batch mode, don't output any non system messages\n";
+  echo "\n";
   echo "Available tasks:\n";
   foreach(taskman_gettasks() as $task)
   {
@@ -359,4 +363,7 @@ function task_json()
 }
 
 //}}}
+
+if(version_compare(PHP_VERSION, '5.2.99', '>') && file_exists(dirname(__FILE__) . '/taskman-ns.inc.php'))
+  require_once(dirname(__FILE__) . '/taskman-ns.inc.php');
 
