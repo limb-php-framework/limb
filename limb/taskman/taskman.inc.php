@@ -10,6 +10,7 @@ class TaskmanException extends Exception{}
 class TaskmanTask
 {
   private $func;
+  private $name;
   private $props = array();
   private $is_running = false;
   private $has_run = false;
@@ -20,13 +21,14 @@ class TaskmanTask
       throw new TaskmanException("Task '{$func}' is non-callable");
 
     $this->_parseProps($func);
+    $this->_parseName($func);
 
     $this->func = $func;
   }
 
   function getName()
   {
-    return substr($this->func, strlen('task_'), strlen($this->func));
+    return $this->name;
   }
 
   function run($args = array())
@@ -71,6 +73,19 @@ class TaskmanTask
       foreach($matches[1] as $idx => $match)
         $this->props[$match] = trim($matches[2][$idx]);
     }
+  }
+
+  private function _parseName($func)
+  {
+    $this->name = self :: extractName($func);
+  }
+
+  static function extractName($func)
+  {
+    if(strpos($func, "task_") === 0)
+      return substr($func, strlen('task_'), strlen($func));
+    else if(strpos($func, 'taskman\task_') === 0)
+      return substr($func, strlen('taskman\task_'), strlen($func));
   }
 
   function getPropOr($name, $def)
@@ -173,12 +188,10 @@ function taskman_collecttasks()
   $TASKMAN_TASKS = array();
 
   $funcs = get_defined_functions();
-  sort($funcs['user']);
-  foreach($funcs['user'] as $func)
-  {
-    if(strpos($func, "task_") === 0)
-      $TASKMAN_TASKS[$func] = new TaskmanTask($func);
-  }
+  $user = $funcs['user'];
+  sort($user);
+  foreach($user as $func)
+    $TASKMAN_TASKS[TaskmanTask::extractName($func)] = new TaskmanTask($func);
 }
 
 function taskman_gettasks()
@@ -191,11 +204,10 @@ function taskman_gettask($task)
 {
   global $TASKMAN_TASKS;
 
-  $func = "task_" . $task;
-  if(!isset($TASKMAN_TASKS[$func]))
+  if(!isset($TASKMAN_TASKS[$task]))
     throw new TaskmanException("Task '{$task}' does not exist");
 
-  return $TASKMAN_TASKS[$func];
+  return $TASKMAN_TASKS[$task];
 }
 
 function taskman_runtask($task, $args = array())

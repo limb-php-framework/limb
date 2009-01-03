@@ -5,6 +5,8 @@ namespace taskman;
 
 require_once(dirname(__FILE__) . '/../taskman-php53.inc.php');
 
+run();
+
 /**
  * @always
  */
@@ -39,4 +41,3 @@ function task_build()
   sysmsg("Building project '" . prop('PROJECT_DIR') . "'...\n");
 }
 
-run();
