@@ -211,7 +211,7 @@ function taskman_shell_ensure($cmd)
     throw new TaskmanException("Script execution error(return code $ret)");
 }
 
-function taskman_echo($msg)
+function taskman_msg($msg)
 {
   global $TASKMAN_VERBOSE;
 
