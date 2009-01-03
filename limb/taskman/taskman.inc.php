@@ -3,6 +3,7 @@
 $GLOBALS['TASKMAN_TASKS'] = array();
 $GLOBALS['TASKMAN_VERBOSE'] = false;
 $GLOBALS['TASKMAN_BATCH'] = false;
+$GLOBALS['TASKMAN_SCRIPT'] = 'taskman-script.php';
 
 class TaskmanException extends Exception{}
 
@@ -100,23 +101,23 @@ function taskman_run($argv = null, $help_func = 'task_help')
 
   taskman_process_argv($argv);
 
-  if(sizeof($argv) < 2)
+  $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);//shifting first element
+
+  taskman_collecttasks();
+
+  if(sizeof($argv) < 1)
   {
     $help_func();
     exit();
   }
 
-  taskman_collecttasks();
-
-  foreach(taskman_gettasks() as $task)
+  foreach(taskman_gettasks() as $task_obj)
   {
-    if($task->hasProp('always'))
-      $task->run();
+    if($task_obj->hasProp('always'))
+      $task_obj->run();
   }
 
-  $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);//shifting first element
   $task = array_shift($argv);
-
   //TODO: think better about multiple tasks execution and their args
   $tasks = explode(",", $task);
   foreach($tasks as $task)
@@ -314,7 +315,7 @@ function task_help()
       $maxlen = strlen($task->getName());
   }
 
-  echo "\nUsage: php {$GLOBALS[TASKMAN_SCRIPT]} <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
+  echo "\nUsage: php {$GLOBALS['TASKMAN_SCRIPT']} <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
   echo "Available tasks:\n";
   foreach(taskman_gettasks() as $task)
   {

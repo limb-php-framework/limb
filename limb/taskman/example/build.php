@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once(dirname(__FILE__) . '/taskman.inc.php');
+require_once(dirname(__FILE__) . '/../taskman.inc.php');
 
 taskman_run();
 
