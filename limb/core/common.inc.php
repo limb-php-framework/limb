@@ -9,10 +9,54 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7417 2008-12-19 07:25:26Z conf $
+ * @version $Id: common.inc.php 7466 2009-01-04 09:14:36Z pachanga $
  */
-$GLOBALS['LIMB_LAZY_CLASS_PATHS'] = array();
+$_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
+
+function lmb_isenv($name)
+{
+  if(defined($name) && constant($name))
+    return true;
+  else
+  {
+    if(array_key_exists($name, $_ENV) && $_ENV[$name])
+      return true;
+    else
+      return false;
+  }
+}
+
+function lmb_envget($name, $def = null)
+{
+  if(!defined($name))
+  {
+    if(!array_key_exists($name, $_ENV))
+      return $def;
+    return $_ENV[$name];
+  }
+  return constant($name);
+}
+
+function lmb_envset($name, $value)
+{
+  if(!defined($name))
+    define($name, $value);
+
+  $_ENV[$name] = $value;
+}
+
+function lmb_envsetor($name, $value)
+{
+  if(!isset($_ENV['LIMB_ENV_DOESNT_EMULATE_CONSTANTS'])) 
+  {
+    if(!defined($name))
+      define($name, $value);
+  }
+
+  if(!array_key_exists($name, $_ENV))
+    $_ENV[$name] = $value;
+}
 
 function lmb_resolve_include_path($path)
 {
@@ -101,7 +145,7 @@ function lmb_require($file_path, $class = '')
 
   if($class)
   {
-    $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$class] = $file_path;
+    $_ENV['LIMB_LAZY_CLASS_PATHS'][$class] = $file_path;
     return;
   }
 
@@ -119,7 +163,7 @@ function lmb_require_class($file_path, $class = '')
     $class = $items[0];
   }
 
-  $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$class] = $file_path;
+  $_ENV['LIMB_LAZY_CLASS_PATHS'][$class] = $file_path;
 }
 
 function lmb_require_glob($file_path)
@@ -143,9 +187,9 @@ function lmb_require_optional($file_path)
 
 function lmb_autoload($name)
 {
-  if(isset($GLOBALS['LIMB_LAZY_CLASS_PATHS'][$name]))
+  if(isset($_ENV['LIMB_LAZY_CLASS_PATHS'][$name]))
   {
-    $file_path = $GLOBALS['LIMB_LAZY_CLASS_PATHS'][$name];
+    $file_path = $_ENV['LIMB_LAZY_CLASS_PATHS'][$name];
     //is it safe to use include here instead of include_once?
     if(!include($file_path))
       throw new lmbException("Could not include source file '$file_path'");
