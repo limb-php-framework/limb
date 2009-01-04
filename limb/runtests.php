@@ -71,7 +71,7 @@ function get_php_bin()
   $info = ob_get_contents();
   ob_end_clean();
 
-  if(isset($_ENV["_"]))
+  if(isset($_ENV["_"]) && basename($_ENV["_"]) != basename(__FILE__))
     $php_bin = $_ENV["_"];
   else
     $php_bin = "php";//any better way to guess it otherwise?
