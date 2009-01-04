@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7466 2009-01-04 09:14:36Z pachanga $
+ * @version $Id: common.inc.php 7468 2009-01-04 09:25:41Z pachanga $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -48,11 +48,8 @@ function lmb_envset($name, $value)
 
 function lmb_envsetor($name, $value)
 {
-  if(!isset($_ENV['LIMB_ENV_DOESNT_EMULATE_CONSTANTS'])) 
-  {
-    if(!defined($name))
-      define($name, $value);
-  }
+  if(!defined($name))
+    define($name, $value);
 
   if(!array_key_exists($name, $_ENV))
     $_ENV[$name] = $value;
