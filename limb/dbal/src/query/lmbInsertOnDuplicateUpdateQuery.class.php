@@ -9,10 +9,10 @@
 lmb_require('limb/dbal/src/query/lmbTemplateQuery.class.php');
 
 /**
- * class lmbInsertQuery.
+ * class lmbInsertOnDuplicateUpdateQuery.
  *
  * @package dbal
- * @version $Id: lmbInsertQuery.class.php 7165 2008-08-29 11:15:26Z serega $
+ * @version $Id: lmbInsertOnDuplicateUpdateQuery.class.php 7165 2008-08-29 11:15:26Z serega $
  */
 class lmbInsertOnDuplicateUpdateQuery extends lmbTemplateQuery
 {
@@ -20,10 +20,11 @@ class lmbInsertOnDuplicateUpdateQuery extends lmbTemplateQuery
   protected $_fields = array();
   protected $_set_values = array();
 
-  function __construct($table, $conn)
+  function __construct($table, $conn = null)
   {
     $this->_table = $table;
     parent :: __construct("INSERT INTO %table% (%fields%) VALUES (%values%) ON DUPLICATE KEY UPDATE %new_values%", $conn);
+    
     $this->_registerHint('table');
     $this->_registerHint('values');
     $this->_registerHint('new_values');
