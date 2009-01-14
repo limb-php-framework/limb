@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 7472 2009-01-14 13:36:14Z idler $
+ * @version $Id: lmbUri.class.php 7473 2009-01-14 13:40:56Z idler $
  */
 class lmbUri extends lmbSet
 {
@@ -459,8 +459,7 @@ class lmbUri extends lmbSet
     $path = $this->path;
     $path = explode('/', preg_replace('~[\/]+~', '/', $path));
 
-    $size = sizeof($path);
-    for ($i=0; $i < $size; $i++)
+    for ($i=0; $i < sizeof($path); $i++)
     {
       if ($path[$i] == '.')
       {
