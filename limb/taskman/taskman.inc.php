@@ -1,9 +1,10 @@
 <?php
 
 $GLOBALS['TASKMAN_TASKS'] = array();
-$GLOBALS['TASKMAN_VERBOSE'] = false;
+$GLOBALS['TASKMAN_VERBOSE'] = true;
 $GLOBALS['TASKMAN_BATCH'] = false;
 $GLOBALS['TASKMAN_SCRIPT'] = 'taskman-script.php';
+$GLOBALS['TASKMAN_CURRENT_TASK'] = null;
 
 class TaskmanException extends Exception{}
 
@@ -14,6 +15,7 @@ class TaskmanTask
   private $props = array();
   private $is_running = false;
   private $has_run = false;
+  private $args = array();
 
   function __construct($func)
   {
@@ -28,20 +30,38 @@ class TaskmanTask
 
   function getName()
   {
-    return $this->name;
+	return $this->name;    
+  }
+
+  function getArgs()
+  {
+    return $this->args;
+  }
+
+  function getAliases()
+  {
+    $alias_str = $this->getPropOr("alias", "");
+    if(!$alias_str)
+      return array();
+    return explode(",", $alias_str);
   }
 
   function run($args = array())
   {
+    global $TASKMAN_CURRENT_TASK;
+
     if($this->has_run || $this->is_running)
       return;
 
     $this->is_running = true;
+    $this->args = $args;
 
-    $this->_runDeps();
+    $this->_runDeps($args);
 
     taskman_sysmsg("************************ Running task '" . $this->getName() . "' ************************\n");
-    call_user_func_array($this->func, $args);
+
+    $TASKMAN_CURRENT_TASK = $this;
+    call_user_func_array($this->func, array($this->args));
 
     $this->has_run = true;
     $this->is_running = false;
@@ -59,10 +79,10 @@ class TaskmanTask
     return $tasks;
   }
 
-  private function _runDeps()
+  private function _runDeps($args = array())
   {
     foreach($this->_getDeps() as $task)
-      $task->run();
+      $task->run($args);
   }
 
   private function _parseProps($func)
@@ -115,7 +135,6 @@ function taskman_run($argv = null, $help_func = 'task_help')
     $argv = $GLOBALS['argv'];
 
   taskman_process_argv($argv);
-
   $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);//shifting first element
 
   taskman_collecttasks();
@@ -131,8 +150,9 @@ function taskman_run($argv = null, $help_func = 'task_help')
     if($task_obj->hasProp('always'))
       $task_obj->run();
   }
-
+  
   $task = array_shift($argv);
+
   //TODO: think better about multiple tasks execution and their args
   $tasks = explode(",", $task);
   foreach($tasks as $task)
@@ -154,6 +174,10 @@ function taskman_process_argv(&$argv)
     {
       $process_defs = true;
     }
+    else if($v == '-q')
+    {
+      $TASKMAN_VERBOSE = false;
+    }
     else if($v == '-v')
     {
       $TASKMAN_VERBOSE = true;
@@ -161,6 +185,7 @@ function taskman_process_argv(&$argv)
     else if($v == '-b')
     {
       $TASKMAN_BATCH = true;
+      $TASKMAN_VERBOSE = false;
     }
     else if($process_defs)
     {
@@ -191,7 +216,24 @@ function taskman_collecttasks()
   $user = $funcs['user'];
   sort($user);
   foreach($user as $func)
-    $TASKMAN_TASKS[TaskmanTask::extractName($func)] = new TaskmanTask($func);
+  {
+    $name = TaskmanTask::extractName($func);
+    if(!$name)
+      continue;
+
+    if(isset($TASKMAN_TASKS[$name]))
+      throw new TaskmanException("Double definition of task with name '$name'");
+
+    $task_obj = new TaskmanTask($func);
+    $TASKMAN_TASKS[$name] = $task_obj; 
+
+    foreach($task_obj->getAliases() as $alias)
+    {
+      if(isset($TASKMAN_TASKS[$alias]))
+        throw new TaskmanException("Double alias '$alias' definition of task with name '$name'");
+      $TASKMAN_TASKS[$alias] = $task_obj; 
+    }
+  }
 }
 
 function taskman_gettasks()
@@ -214,6 +256,12 @@ function taskman_runtask($task, $args = array())
 {
   $task_obj = taskman_gettask($task);
   $task_obj->run($args);
+}
+
+function taskman_current_task()
+{
+  global $TASKMAN_CURRENT_TASK;
+  return $TASKMAN_CURRENT_TASK;
 }
 
 function taskman_shell_ensure($cmd)
@@ -247,10 +295,10 @@ function taskman_shell($cmd, &$ret=null)
   {
     echo " shell: $cmd\n";
     echo " ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-    system($cmd, $ret);
+    system("$cmd 2>&1", $ret);
   }
   else
-    exec($cmd, $out, $ret);
+    exec("$cmd 2>&1", $out, $ret);
 }
 
 function taskman_prop($name)
@@ -329,8 +377,9 @@ function task_help()
 
   echo "\nUsage:\n php {$GLOBALS['TASKMAN_SCRIPT']} [OPTIONS] <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
   echo "Available options:\n";
-  echo " -v    be verbose\n";
-  echo " -b    batch mode, don't output any non system messages\n";
+  echo " -v    be verbose(default)\n";
+  echo " -q    be quite\n";
+  echo " -b    batch mode: be super quite, don't even output any system messages\n";
   echo "\n";
   echo "Available tasks:\n";
   foreach(taskman_gettasks() as $task)
@@ -347,10 +396,11 @@ function task_help()
     echo "---------------------------------\n";
     echo " " . $task->getName() .  $props_string . "\n";
   }
+  echo "\n";
 }
 
 /**
- * @doc Encodes tasks as json array
+ * @desc Encodes tasks as json array
  */
 function task_json()
 {
