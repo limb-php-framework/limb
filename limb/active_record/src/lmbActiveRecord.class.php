@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7271 2008-12-03 19:59:30Z idler $
+ * @version $Id: lmbActiveRecord.class.php 7485 2009-01-26 12:22:21Z idler $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -197,7 +197,7 @@ class lmbActiveRecord extends lmbObject
    */
   function __construct($magic_params = null, $conn = null)
   {
-    parent :: __construct();
+    
 
     $this->_defineRelations();
 
