@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
@@ -11,7 +11,7 @@
  * interface lmbDbStatement.
  *
  * @package dbal
- * @version $Id: lmbDbStatement.interface.php 6697 2008-01-18 08:39:40Z serega $
+ * @version $Id: lmbDbStatement.interface.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 interface lmbDbStatement
 {

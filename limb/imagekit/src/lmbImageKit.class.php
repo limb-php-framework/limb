@@ -3,13 +3,13 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 7426 2008-12-19 11:53:16Z korchasa $
+ * @version $Id: lmbImageKit.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbImageKit
 {

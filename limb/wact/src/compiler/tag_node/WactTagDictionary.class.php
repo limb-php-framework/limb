@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -18,7 +18,7 @@ define('LOCATION_CLIENT', 'client');
  * class WactTagDictionary.
  *
  * @package wact
- * @version $Id: WactTagDictionary.class.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: WactTagDictionary.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactTagDictionary extends WactCompilerArtifactDictionary
 {

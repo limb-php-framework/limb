@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -18,7 +18,7 @@ lmb_require('limb/session/src/lmbSession.class.php');
  * @see lmbSessionNativeStorage
  * @see lmbSessionDbStorage
  *
- * @version $Id: lmbSessionStartupFilter.class.php 7425 2008-12-19 11:39:35Z korchasa $
+ * @version $Id: lmbSessionStartupFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
  * @package web_app
  */
 class lmbSessionStartupFilter implements lmbInterceptingFilter

@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
@@ -11,7 +11,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbTypeInfo.class.php');
 /**
  * class lmbOciTypeInfo.
  * @package dbal
- * @version $Id: lmbOciTypeInfo.class.php 7422 2008-12-19 09:10:14Z korchasa $
+ * @version $Id: lmbOciTypeInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbOciTypeInfo extends lmbDbTypeInfo
 {

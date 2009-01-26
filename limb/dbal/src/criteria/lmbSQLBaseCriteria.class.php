@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 //inspired by Propel Criteria(http://propel.phpdb.org)
@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * abstract class lmbSQLBaseCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLBaseCriteria.class.php 6390 2007-10-07 06:24:26Z pachanga $
+ * @version $Id: lmbSQLBaseCriteria.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 abstract class lmbSQLBaseCriteria
 {

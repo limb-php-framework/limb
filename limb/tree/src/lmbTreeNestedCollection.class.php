@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
@@ -12,7 +12,7 @@ lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
  * class lmbTreeNestedCollection.
  *
  * @package tree
- * @version $Id: lmbTreeNestedCollection.class.php 6978 2008-04-30 14:45:48Z serega $
+ * @version $Id: lmbTreeNestedCollection.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbTreeNestedCollection extends lmbCollectionDecorator
 {

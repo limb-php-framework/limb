@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 require_once('limb/wact/src/tags/fetch/fetch.tag.php');
@@ -12,7 +12,7 @@ require_once('limb/wact/src/tags/fetch/fetch.tag.php');
  * @tag active_record:FETCH,ar:FETCH
  * @req_const_attributes class_path
  * @package web_app
- * @version $Id: active_record_fetch.tag.php 6718 2008-01-22 08:32:50Z serega $
+ * @version $Id: active_record_fetch.tag.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbActiveRecordFetchTag extends WactFetchTag
 {

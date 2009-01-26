@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -12,7 +12,7 @@
  * @parent_tag_class WactPagerListTag
  * @restring_self_nesting true
  * @package wact
- * @version $Id: section.tag.php 6386 2007-10-05 14:22:21Z serega $
+ * @version $Id: section.tag.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactPagerSectionTag extends WactCompilerTag
 {

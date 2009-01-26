@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 //inspired by http://alexandre.alapetite.net/doc-alex/php-http-304/
@@ -12,7 +12,7 @@
  * class lmbHttpCache.
  *
  * @package net
- * @version $Id: lmbHttpCache.class.php 7418 2008-12-19 07:59:02Z korchasa $
+ * @version $Id: lmbHttpCache.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbHttpCache
 {

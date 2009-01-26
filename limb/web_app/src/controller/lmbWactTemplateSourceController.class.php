@@ -4,7 +4,7 @@
  *
  * @link http://limb-project.com
  *
- * @copyright  Copyright &copy; 2004-2007 BIT
+ * @copyright  Copyright &copy; 2004-2009 BIT
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  * @version    $Id$
  * @package    web_app

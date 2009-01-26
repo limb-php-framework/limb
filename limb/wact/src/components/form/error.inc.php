@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -11,7 +11,7 @@
  * Translates between form name attributes and tag displayname
  * attributes (human reabable).
  * @package wact
- * @version $Id: error.inc.php 6802 2008-02-18 21:05:10Z 3dmax $
+ * @version $Id: error.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactFormFieldNameDictionary
 {
@@ -31,7 +31,7 @@ class WactFormFieldNameDictionary
   * @return string displayname attribute of the field
   * @access protected
   * @package wact
- * @version $Id: error.inc.php 6802 2008-02-18 21:05:10Z 3dmax $
+ * @version $Id: error.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 
   function getFieldName($field_name)

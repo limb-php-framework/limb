@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbHandle.class.php');
  * class lmbWebApplication.
  *
  * @package web_app
- * @version $Id: lmbWebApplication.class.php 7002 2008-05-12 05:16:37Z pachanga $
+ * @version $Id: lmbWebApplication.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbWebApplication extends lmbFilterChain
 {

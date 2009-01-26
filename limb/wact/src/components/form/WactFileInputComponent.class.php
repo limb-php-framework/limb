@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
@@ -14,7 +14,7 @@
  * Maybe then they will come write some nice methods for this
  * tag).
  * @package wact
- * @version $Id: WactFileInputComponent.class.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: WactFileInputComponent.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactFileInputComponent extends WactInputComponent
 {

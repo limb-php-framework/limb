@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
@@ -19,7 +19,7 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
  * class lmbPgsqlConnection.
  *
  * @package dbal
- * @version $Id: lmbPgsqlConnection.class.php 7015 2008-05-13 12:02:24Z serega $
+ * @version $Id: lmbPgsqlConnection.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbPgsqlConnection extends lmbDbBaseConnection
 {

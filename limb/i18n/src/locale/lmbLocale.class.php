@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/config/src/lmbIni.class.php');
@@ -26,7 +26,7 @@ lmb_require('limb/i18n/src/locale/lmbLocaleSpec.class.php');
  * currency/funds are specified by the ISO 4217
  * http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90.xalter
  * @package i18n
- * @version $Id: lmbLocale.class.php 7088 2008-07-03 10:03:56Z korchasa $
+ * @version $Id: lmbLocale.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbLocale
 {

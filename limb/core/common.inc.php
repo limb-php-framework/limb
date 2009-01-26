@@ -3,13 +3,13 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * @package core
- * @version $Id: common.inc.php 7468 2009-01-04 09:25:41Z pachanga $
+ * @version $Id: common.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());

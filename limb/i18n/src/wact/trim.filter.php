@@ -3,14 +3,14 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 /**
  * @filter i18n_trim
  * @max_attributes 1
  * @package i18n
- * @version $Id: trim.filter.php 6721 2008-01-22 08:39:51Z serega $
+ * @version $Id: trim.filter.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbI18NTrimFilter extends WactCompilerFilter
 {

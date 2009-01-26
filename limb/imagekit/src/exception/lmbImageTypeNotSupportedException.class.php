@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -11,7 +11,7 @@
  * Exception 'Image type is not supported'
  * 
  * @package imagekit
- * @version $Id: lmbImageTypeNotSupportedException.class.php 6963 2008-04-28 04:04:31Z svk $
+ * @version $Id: lmbImageTypeNotSupportedException.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbImageTypeNotSupportedException extends lmbException 
 {

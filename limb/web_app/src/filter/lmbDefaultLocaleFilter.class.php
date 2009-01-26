@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
@@ -14,7 +14,7 @@ lmb_require('limb/i18n/common.inc.php');
  * class lmbDefaultLocaleFilter.
  *
  * @package web_app
- * @version $Id: lmbDefaultLocaleFilter.class.php 6352 2007-10-01 18:03:00Z pachanga $
+ * @version $Id: lmbDefaultLocaleFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbDefaultLocaleFilter implements lmbInterceptingFilter
 {

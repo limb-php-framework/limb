@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlStatement.class.php');
  * class lmbMysqlQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlQueryStatement.class.php 7056 2008-06-05 14:07:20Z serega $
+ * @version $Id: lmbMysqlQueryStatement.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbMysqlQueryStatement extends lmbMysqlStatement implements lmbDbQueryStatement
 {

@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -11,7 +11,7 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
  * class lmbCacheTools.
  *
  * @package cache
- * @version $Id: lmbCacheTools.class.php 6588 2007-12-05 22:10:21Z alex433 $
+ * @version $Id: lmbCacheTools.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbCacheTools extends lmbAbstractTools
 {

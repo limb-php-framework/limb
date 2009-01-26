@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
@@ -18,7 +18,7 @@
  * Widgets are runtime components which have no compile time template tag.
  * They can be created and added by the PHP script controlling the template.
  * @package wact
- * @version $Id: widgets.inc.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: widgets.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactTextWidget extends WactRuntimeComponent
 {
@@ -60,7 +60,7 @@ class WactTextWidget extends WactRuntimeComponent
 /**
  * Allows a tag to be created, which cannot contain children e.g. img
  * @package wact
- * @version $Id: widgets.inc.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: widgets.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactTagWidget extends WactRuntimeTagComponent
 {
@@ -116,7 +116,7 @@ class WactTagWidget extends WactRuntimeTagComponent
 /**
  * Allows a tag to be created, which can contain children
  * @package wact
- * @version $Id: widgets.inc.php 6243 2007-08-29 11:53:10Z pachanga $
+ * @version $Id: widgets.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class WactTagContainerWidget extends WactRuntimeTagComponent
 {

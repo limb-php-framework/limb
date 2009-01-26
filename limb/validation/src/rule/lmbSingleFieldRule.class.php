@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/rule/lmbBaseValidationRule.class.php');
 /**
  * A base class for rules responsbile for validating a single field should inherit this class.
  * @package validation
- * @version $Id: lmbSingleFieldRule.class.php 6334 2007-09-25 11:39:40Z serega $
+ * @version $Id: lmbSingleFieldRule.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 abstract class lmbSingleFieldRule extends lmbBaseValidationRule
 {

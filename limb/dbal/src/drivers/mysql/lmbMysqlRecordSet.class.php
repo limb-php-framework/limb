@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecordSet.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecord.class.php');
  * class lmbMysqlRecordSet.
  *
  * @package dbal
- * @version $Id: lmbMysqlRecordSet.class.php 6891 2008-04-01 21:44:38Z pachanga $
+ * @version $Id: lmbMysqlRecordSet.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbMysqlRecordSet extends lmbDbBaseRecordSet
 {

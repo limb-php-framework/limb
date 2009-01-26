@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 @define('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
@@ -18,7 +18,7 @@
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7191 2008-10-22 13:49:00Z conf $
+ * @version $Id: lmbMailer.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbMailer
 {

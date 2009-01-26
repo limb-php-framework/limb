@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
@@ -12,7 +12,7 @@ lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
  * class lmbViewRenderingFilter.
  *
  * @package web_app
- * @version $Id: lmbViewRenderingFilter.class.php 7471 2009-01-12 11:12:41Z conf $
+ * @version $Id: lmbViewRenderingFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbViewRenderingFilter implements lmbInterceptingFilter
 {

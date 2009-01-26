@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -11,7 +11,7 @@
 /**
  * Interface for filter classes to be used with lmbFilterChain
  *
- * @version $Id: lmbInterceptingFilter.interface.php 6598 2007-12-07 08:01:45Z pachanga $
+ * @version $Id: lmbInterceptingFilter.interface.php 7486 2009-01-26 19:13:20Z pachanga $
  * @package filter_chain
  */
 interface lmbInterceptingFilter

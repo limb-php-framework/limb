@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFileLocator.class.php');
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageConvertor.class.php 7176 2008-09-17 12:00:40Z hidrarg $
+ * @version $Id: lmbAbstractImageConvertor.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 abstract class lmbAbstractImageConvertor
 {

@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -17,7 +17,7 @@ lmb_require(dirname(__FILE__).'/../lmbWebServerCookiesCollection.class.php');
  * Web request through file_get_contents
  *
  * @package web_agent
- * @version $Id: lmbNativeWebAgentRequest.class.php 7417 2008-12-19 07:25:26Z conf $
+ * @version $Id: lmbNativeWebAgentRequest.class.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 class lmbNativeWebAgentRequest extends lmbAbstractWebAgentRequest {
   protected $request_data = null;
