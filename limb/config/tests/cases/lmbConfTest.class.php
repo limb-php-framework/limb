@@ -7,41 +7,69 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/config/src/lmbConf.class.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbConfTest extends UnitTestCase
 {
-
+  
+      
+  protected function _getConfigPath($config_name)
+  {
+    return LIMB_VAR_DIR.'/configs/'.$config_name;
+  }
+  
+  function _createConfig($name = 'conf.php', $content = false)
+  {
+    if(!$content)
+    {
+      $content = <<<EOD
+<?php
+\$conf = array('foo' => 1,
+              'bar' => 2);   
+EOD;
+    }
+    lmbFs::safeWrite($this->_getConfigPath($name), $content); 
+    return new lmbConf($this->_getConfigPath($name));
+  }
+  
   function testGet()
   {
-    $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
-    $this->assertEqual($conf->get('foo'), 1);
-    $this->assertEqual($conf->get('bar'), 2);
+   $conf = $this->_createConfig();
+   $this->assertEqual($conf->get('foo'), 1);
+   $this->assertEqual($conf->get('bar'), 2);
   }
 
   function testOverride()
-  {
-    $conf = new lmbConf(dirname(__FILE__) . '/other.conf.php');
-    $this->assertEqual($conf->get('foo'), 3);
-    $this->assertEqual($conf->get('bar'), 2);
+  {       
+    $content = <<<EOD
+<?php
+\$conf['foo'] = 1;
+EOD;
+    $this->_createConfig('conf.override.php', $content);
+    $config = $this->_createConfig('conf.php');
+  
+    $this->assertEqual($config->get('foo'), 1);
+    $this->assertEqual($config->get('bar'), 2);
   }
 
   function testImplementsIterator()
-  {
-    $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
-    $result = array();
-    foreach ($conf as $key => $value)
-      $result[$key] = $value;
-    $this->assertEqual($result, array(
-      'foo' => 1,
-      'bar' => 2
-    ));
+  {    
+   $conf = $this->_createConfig();
+   $result = array();
+   foreach ($conf as $key => $value)
+     $result[$key] = $value;
+     
+   $this->assertEqual($result, array(
+     'foo' => 1,
+     'bar' => 2
+   ));
   }
 
   function testGetNotExistedFile()
   {
     try
     {
-      $conf = new lmbConf(dirname(__FILE__) . '/not_existed.php');
+      $conf = new lmbConf('not_existed.php');
       $this->fail();
     }
     catch (lmbFileNotFoundException $e)
@@ -52,7 +80,7 @@ class lmbConfTest extends UnitTestCase
 
   function testGetNotExistedOption()
   {
-    $conf = new lmbConf(dirname(__FILE__) . '/conf.php');
+    $conf = $this->_createConfig();
     try
     {
       $conf->get('some_not_existed_option');
@@ -62,45 +90,5 @@ class lmbConfTest extends UnitTestCase
     {
       $this->pass();
     }
-  }
-
-  function testMultipleFiles()
-  {
-    $conf = new lmbConf(array(
-      dirname(__FILE__) . '/higher_settings/test.conf.php',
-      dirname(__FILE__) . '/lower_settings/test.conf.php'
-    ));
-    $this->assertEqual($conf->get('foo'), array(
-      'bar' => 42
-    ));
-    $this->assertEqual($conf->get('baz'), true);
-    $pool_settings = $conf->get('some_pool');
-    $this->assertEqual(count($pool_settings), 2);
-    $this->assertEqual($pool_settings[0]['value'], 100);
-    $this->assertEqual($pool_settings[1]['value'], 2);
-  }
-
-  function testLowerConfAppendsToEnd()
-  {
-    $conf = new lmbConf(array(
-      dirname(__FILE__) . '/higher_settings/test.conf.php',
-      dirname(__FILE__) . '/lower_settings/test.conf.php'
-    ));
-    $merged = array(
-      'some_pool' => array(
-        array(
-          'value' => 100
-        ),
-        array(
-          'value' => 2
-        )
-      ),
-      'higher_numeric_value',
-      'foo' => array(
-        'bar' => 42
-      ),
-      'baz' => true
-    );
-    $this->assertIdentical($merged, $conf->export());
-  }
+  }  
 }

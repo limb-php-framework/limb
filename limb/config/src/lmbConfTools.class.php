@@ -17,7 +17,7 @@ lmb_require('limb/config/src/lmbConf.class.php');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbConfTools.class.php 7497 2009-01-28 08:13:09Z korchasa $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -50,11 +50,10 @@ class lmbConfTools extends lmbAbstractTools
   {
     if(!$this->conf_include_path)
       $this->conf_include_path = LIMB_CONF_INCLUDE_PATH;
-      
     return $this->conf_include_path;
   }
   
-  protected function _locateFiles($name, $find_all = true)
+  protected function _locateFiles($name, $find_all = false)
   {
     return $this->toolkit->findFileByAlias($name, $this->toolkit->getConfIncludePath(), 'config', $find_all);
   }
@@ -70,7 +69,7 @@ class lmbConfTools extends lmbAbstractTools
 
     if($ext == '.ini')
     {
-      $file = $this->_locateFiles($name, $find_all = false);
+      $file = $this->_locateFiles($name);
       if(defined('LIMB_VAR_DIR'))
         $this->confs[$name] = new lmbCachedIni($file, LIMB_VAR_DIR . '/ini/');
       else
@@ -78,11 +77,11 @@ class lmbConfTools extends lmbAbstractTools
     }
     elseif($ext == '.conf.php')
     {
-      $files = $this->_locateFiles($name);      
-      if(!count($files))
+      $file = $this->_locateFiles($name);
+      if(!count($file))
         throw new lmbFileNotFoundException($name);
         
-      $this->confs[$name] = new lmbConf($files);
+      $this->confs[$name] = new lmbConf(lmbFs::normalizePath($file));
     }
     else
       throw new lmbException("'$ext' type configuration is not supported!");

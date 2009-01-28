@@ -15,34 +15,27 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbConf.class.php 7497 2009-01-28 08:13:09Z korchasa $
  */
 class lmbConf extends lmbObject
 {
-  protected $_files;
+  protected $_file;
 
-  function __construct($files)
+  function __construct($file)
   {
-    if(!is_array($files))
-      $files = array($files);
-          
-    $this->_files = $files;    
-    $files = array_reverse($files);
-    
-    $conf = array();
-    foreach ($files as $file)
-    {
-      $conf = $this->_attachConfFile($conf, $file);
+    $this->_file = $file;
+
+    $conf = $this->_attachConfFile($file);
         
-      if($override_file = $this->_getOverrideFile($file))
-        $conf = $this->_attachConfFile($conf, $override_file);
-    }
+    if($override_file = $this->_getOverrideFile($file))
+       $conf = $this->_attachConfFile($override_file, $conf);
     
     parent :: __construct($conf);
   }
   
-  protected function _attachConfFile($original_conf, $file)
+  protected function _attachConfFile($file, $existed_conf = array())
   {    
+    $conf = $existed_conf;
     if(!file_exists($file))
       throw new lmbFileNotFoundException("Config file '$file' not found");
       
@@ -50,7 +43,7 @@ class lmbConf extends lmbObject
       
     if(!is_array($conf))
       throw new lmbException("Config must be a array", array('file' => $file, 'content' => $conf));
-    return lmbArrayHelper::arrayMerge($original_conf, $conf);
+    return $conf;
   }
 
   protected function _getOverrideFile($file_path)
@@ -71,7 +64,7 @@ class lmbConf extends lmbObject
     }
     catch (lmbNoSuchPropertyException $e)
     {
-      throw new lmbNoSuchPropertyException('Option ' . $name . ' not found', array('configs' => $this->_files));
+      throw new lmbNoSuchPropertyException('Option ' . $name . ' not found', array('config' => $this->_file));
     }
   }
 }
