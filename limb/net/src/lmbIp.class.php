@@ -11,7 +11,7 @@
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 7505 2009-01-28 12:07:31Z slevin $
+ * @version $Id: lmbIp.class.php 7507 2009-01-28 13:29:37Z slevin $
  */
 class lmbIp
 {
@@ -85,10 +85,13 @@ class lmbIp
 
   static function getRealIp()
   {
-    if(getenv(HTTP_X_FORWARDED_FOR))
-     return getenv(HTTP_X_FORWARDED_FOR);
+   if(!empty($_SERVER['HTTP_CLIENT_IP']))
+     return $_SERVER['HTTP_CLIENT_IP'];
 
-    return self :: getRemoteIp();
+   elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+     return $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+   return self :: getRemoteIp();
   }
 
   static function getRemoteIp()
