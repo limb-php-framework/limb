@@ -11,12 +11,13 @@
  * class lmbMimeType.
  *
  * @package net
- * @version $Id: lmbMimeType.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbMimeType.class.php 7539 2009-01-30 07:09:56Z vasiatka $
  */
 class lmbMimeType
 {
   static protected $mime_types = array(
     'video/avi'=>'avi',
+    'application/x-flash-video'=>'flv',
     'audio/x-aiff'=>'aif',
     'audio/x-aiff' => 'aifc',
     'audio/x-aiff' => 'aiff',
