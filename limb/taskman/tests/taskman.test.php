@@ -67,6 +67,46 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("barwowzoofoo", $out);
   }
+  
+  function testProp()
+  {
+    list($code, $out) = $this->_run("    
+    function task_foo() { echo taskman_prop('BAR'); }
+    ",
+    '-b foo -D BAR=42');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("42", $out);
+  }
+  
+  function testPropSet()
+  {
+    list($code, $out) = $this->_run("    
+    function task_bar() { taskman_propset('BAZ', '42'); }
+    /**
+     * @deps bar
+     */
+    function task_foo() { echo taskman_prop('BAZ'); }
+    ",
+    '-b foo');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("42", $out);
+  }
+  
+  function testPropSetOr()
+  {
+    list($code, $out) = $this->_run("        
+    function task_foo() {
+      echo taskman_propor('BAR', 'error');
+      echo taskman_propor('BAZ', 'success');
+    }
+    ",
+    '-b foo -D BAR=42');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("42success", $out);
+  }  
 
   function testParallTasksFromCli()
   {
