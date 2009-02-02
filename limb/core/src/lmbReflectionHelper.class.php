@@ -37,7 +37,7 @@ class lmbReflectionHelper
     return array_unique($methods);
   }
 
-  protected function _isInterfaceMethod($name, $method)
+  static protected function _isInterfaceMethod($name, $method)
   {
     return in_array($method, self :: getInterfaceMethods($name));
   }
@@ -117,7 +117,7 @@ class lmbReflectionHelper
     return $signatures;
   }
 
-  protected function _suppressSpurious($name)
+  static protected function _suppressSpurious($name)
   {
     return str_replace(array('[', ']', ' '), '', $name);
   }
