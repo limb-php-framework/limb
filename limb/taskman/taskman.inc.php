@@ -30,7 +30,7 @@ class TaskmanTask
 
   function getName()
   {
-	return $this->name;    
+    return $this->name;    
   }
 
   function getArgs()
@@ -160,18 +160,16 @@ function taskman_run($argv = null, $help_func = 'task_help')
     exit();
   }
 
+  $task_str = array_shift($argv);
+
   foreach(taskman_gettasks() as $task_obj)
   {
     if($task_obj->hasProp('always'))
-      $task_obj->run();
+      $task_obj->run($argv);
   }
-  
-  $task = array_shift($argv);
 
-  //TODO: think better about multiple tasks execution and their args
-  $tasks = explode(",", $task);
-  foreach($tasks as $task)
-    taskman_runtask($task, $argv);
+  $tasks = taskman_parse_taskstr($task_str);
+  taskman_runtasks($tasks, $argv);
 
   taskman_sysmsg("************************ All done ************************\n");
 }
@@ -275,10 +273,126 @@ function taskman_gettask($task)
   return $TASKMAN_TASKS[$task];
 }
 
+function taskman_parse_taskstr($str)
+{
+  $task_spec = array();
+  $tmp_parall = array();
+  $items = preg_split('~(,|\|)~', $str, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+  //TODO: it's kinda messy but working nonetheless :)
+  for($i=0;$i<sizeof($items);++$i)
+  {
+    if(isset($items[$i+1]))
+    {
+      if($items[$i+1] == ',')
+      {
+        if($tmp_parall)
+        {
+          $tmp_parall[] = $items[$i];
+          $task_spec[] = $tmp_parall;
+          $tmp_parall = array();
+        }
+        else
+          $task_spec[] = $items[$i];
+      }
+      else if($items[$i+1] == '|')
+      {
+        $tmp_parall[] = $items[$i];
+      }
+    }
+    else
+    {
+      if($tmp_parall)
+      {
+        $tmp_parall[] = $items[$i];
+        $task_spec[] = $tmp_parall;
+      }
+      else
+        $task_spec[] = $items[$i];
+    }
+  }
+  return $task_spec;
+}
+
 function taskman_runtask($task, $args = array())
 {
   $task_obj = taskman_gettask($task);
   $task_obj->run($args);
+}
+
+function taskman_runtasks($tasks, $args = array())
+{
+  foreach($tasks as $task_spec)
+  {
+    if(is_scalar($task_spec))
+      taskman_runtask($task_spec, $args);
+    else
+      taskman_runtasks_parall($task_spec, $args);
+  }
+}
+
+function taskman_runtasks_parall($tasks, $args = array())
+{
+  global $TASKMAN_SCRIPT;
+
+  $cmds = array();
+  foreach($tasks as $task)
+    $cmds[] = 'php ' .$TASKMAN_SCRIPT . ' ' . $task . ' ' . implode(' ', $args);
+
+  taskman_sysmsg("************************ Running parallel tasks: " . implode(',', $tasks) . " ************************\n");
+
+  $procs = array();
+
+  $cnt = 0;
+  foreach($cmds as $cmd)
+  {
+    $descriptorspec = array(
+        0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+        1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+        2 => array("file", "/tmp/taskman.parall.err" . ($cnt++), "a") // stderr is a file to write to
+      );
+
+    $cwd = getcwd();
+    $env = array();
+    $proc = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
+    $procs[] = array($proc, $pipes);
+  }
+
+  $timeout = 0;
+  while(sizeof($procs) > 0)
+  {
+    $start = microtime(true);
+
+    //every 5 seconds...
+    if($timeout > 5)
+    {
+      taskman_sysmsg("Still running tasks: " . sizeof($procs) . "\n");
+      $timeout = 0;
+    }
+
+    $deads = array();
+    foreach($procs as $id => $item)
+    {
+      if(is_resource($item[0])) 
+      {
+        $status = proc_get_status($item[0]);
+
+        if($status['running'] == false)
+        {
+          $deads[] = $id;
+          taskman_sysmsg("Task '{$status['command']}'($id) completed with status: " . $status['exitcode'] . "\n");
+          if($status['exitcode'] != 0)
+            throw new TaskmanException("Task '{$status['command']}' execution error");
+        }
+      }
+    }
+
+    foreach($deads as $id)
+      unset($procs[$id]);
+
+    usleep(1000);
+    $timeout += (microtime(true)-$start);
+  }
 }
 
 function taskman_current_task()
