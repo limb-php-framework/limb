@@ -17,7 +17,7 @@ function write_to_file($text)
  */
 function task_setup($args)
 {
-  write_to_file('setup');
+  write_to_file($args[0]);
   taskman_propsetor('PROJECT_DIR', dirname(__FILE__));
 }
 
@@ -26,7 +26,7 @@ function task_setup($args)
  */
 function task_svnup()
 {
-  write_to_file('svnup');
+  write_to_file('u');
   taskman_sysmsg("Updating working copy...\n");
 }
 
@@ -36,7 +36,7 @@ function task_svnup()
  */
 function task_runtests()
 {
-  write_to_file('runtests');
+  write_to_file('r');
   taskman_sysmsg("Running tests for project '" . taskman_prop('PROJECT_DIR') . "'...\n");
 }
 
@@ -45,7 +45,7 @@ function task_runtests()
  */
 function task_create_shares()
 {
-  write_to_file('create_shares');
+  write_to_file('s');
   taskman_sysmsg("Running tests for project '" . taskman_prop('PROJECT_DIR') . "'...\n");
 }
 
@@ -56,7 +56,8 @@ function task_create_shares()
  */
 function task_build()
 {
-  write_to_file('build');
+  sleep(1);
+  write_to_file('b');
   taskman_sysmsg("Building project '" . taskman_prop('PROJECT_DIR') . "'...\n");
 }
 
@@ -65,6 +66,6 @@ function task_build()
  */
 function task_remove_old()
 {
-  write_to_file('remove_old');
+  write_to_file('o');
   taskman_sysmsg("Remove uselles files from '" . taskman_prop('PROJECT_DIR') . "'...\n");
 }

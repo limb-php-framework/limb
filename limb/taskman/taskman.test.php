@@ -10,9 +10,9 @@ class TaskmanTest extends UnitTestCase
     $logfile = LIMB_VAR_DIR.'/taskman.log';
     file_put_contents($logfile, '');
     
-    $str = 'php '.dirname(__FILE__).'/example/build.php "build|remove_old" -b -D LOG='.$logfile;
+    $str = 'php '.dirname(__FILE__).'/example/build.php "build|remove_old" s -b -D LOG='.$logfile;
     exec($str, $output);
     
-    var_dump(file_get_contents($logfile));
+    $this->assertEqual('ssosursb', file_get_contents($logfile));
   }
 }
