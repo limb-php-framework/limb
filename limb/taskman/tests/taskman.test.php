@@ -4,6 +4,12 @@
 
 class TaskmanTest extends UnitTestCase 
 {  
+  function tearDown()
+  {
+    foreach(glob(LIMB_VAR_DIR . '/taskman-script.*.php') as $file)
+      unlink($file);
+  }
+
   function testRunOneTask()
   {
     list($code, $out) = $this->_run("
@@ -64,32 +70,46 @@ class TaskmanTest extends UnitTestCase
 
   function testParallTasksFromCli()
   {
+    @unlink(LIMB_VAR_DIR . '/shared');
     list($code, $out) = $this->_run("
-    function task_foo() { usleep(100);echo 'foo'; }
-    function task_bar() { usleep(200);echo 'bar'; }
-    function task_wow() { usleep(300);echo 'wow'; }
+    function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
+    function task_foo() { write_shared('foo');}
+    function task_bar() { write_shared('bar'); }
+    function task_wow() { write_shared('wow'); }
     ",
     "-b 'bar|foo|wow'");
 
     $this->assertEqual(0, $code);
-    //$this->assertEqual("", $out);
+    $this->assertEqual("", $out);
+    $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
+    $this->assertTrue(strpos($shared, 'foo') !== false);
+    $this->assertTrue(strpos($shared, 'bar') !== false);
+    $this->assertTrue(strpos($shared, 'wow') !== false);
+    $this->assertEqual(9, strlen($shared));
   }
 
   function testParallTasks()
   {
+    @unlink(LIMB_VAR_DIR . '/shared');
     list($code, $out) = $this->_run("
-    function task_foo() { usleep(100);echo 'foo'; }
-    function task_bar() { usleep(200);echo 'bar'; }
+    function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
+    function task_foo() { write_shared('foo'); }
+    function task_bar() { write_shared('bar'); }
     /**
      * @deps bar|foo|wow
      */
     function task_zoo() { echo 'zoo'; }
-    function task_wow() { usleep(300);echo 'wow'; }
+    function task_wow() { write_shared('wow'); }
     ",
     '-b zoo');
 
     $this->assertEqual(0, $code);
-    //$this->assertEqual("", $out);
+    $this->assertEqual("zoo", $out);
+    $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
+    $this->assertTrue(strpos($shared, 'foo') !== false);
+    $this->assertTrue(strpos($shared, 'bar') !== false);
+    $this->assertTrue(strpos($shared, 'wow') !== false);
+    $this->assertEqual(9, strlen($shared));
   }
 
   protected function _run($contents, $cmd)

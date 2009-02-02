@@ -466,6 +466,7 @@ function taskman_propsetor($name, $value)
 
 function taskman_getprops()
 {
+  $props = array();
   foreach($_ENV as $key => $value)
   {
     if(($idx = strpos($key, 'TASKMAN_')) === 0)
