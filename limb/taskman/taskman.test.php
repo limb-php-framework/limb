@@ -9,9 +9,10 @@ class TaskmanTest extends UnitTestCase
     $output = '';
     $logfile = LIMB_VAR_DIR.'/taskman.log';
     file_put_contents($logfile, '');
-    exec('php '.dirname(__FILE__).'/example/build.php "build|remove_old" -b -D LOG='.$logfile, $output);
     
-    //var_dump(implode(PHP_EOL,$output));
+    $str = 'php '.dirname(__FILE__).'/example/build.php "build|remove_old" -b -D LOG='.$logfile;
+    exec($str, $output);
+    
     var_dump(file_get_contents($logfile));
   }
 }

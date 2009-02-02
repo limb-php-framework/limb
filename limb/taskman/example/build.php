@@ -7,7 +7,7 @@ taskman_run();
 
 function write_to_file($text)
 {
-  $fp = fopen(taskman_prop('LOG'), 'a+');
+  $fp = fopen(taskman_prop('LOG'), 'a');
   fwrite($fp, $text);
   fclose($fp);
 }
@@ -59,7 +59,6 @@ function task_build()
   write_to_file('build');
   taskman_sysmsg("Building project '" . taskman_prop('PROJECT_DIR') . "'...\n");
 }
-
 
 /**
  * @desc Remove some old stuff

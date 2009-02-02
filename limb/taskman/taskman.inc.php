@@ -337,8 +337,14 @@ function taskman_runtasks_parall($tasks, $args = array())
 
   $cmds = array();
   foreach($tasks as $task)
-    $cmds[] = 'php ' .$TASKMAN_SCRIPT . ' ' . $task . ' ' . implode(' ', $args);
-
+  {
+    $cmd = 'php ' .$TASKMAN_SCRIPT . ' ' . $task . ' ' . implode(' ', $args) . '';
+    foreach (taskman_getprops() as $key => $value)
+      $cmd .= ' -D '.$key .'='.$value;
+      
+    $cmds[] = $cmd;
+  }
+  
   taskman_sysmsg("************************ Running parallel tasks: " . implode(',', $tasks) . " ************************\n");
 
   $procs = array();
