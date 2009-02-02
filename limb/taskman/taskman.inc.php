@@ -129,6 +129,21 @@ class TaskmanTask
   }
 }
 
+if(!function_exists('_'))
+{
+  function _($str)
+  {
+    return preg_replace_callback(
+            '~%([^%]+)%~',
+            create_function(
+              '$matches',
+              'return taskman_prop($matches[1]);'
+            ),
+            $str
+          );
+  }
+}
+
 function taskman_run($argv = null, $help_func = 'task_help')
 {
   if(is_null($argv))
@@ -168,9 +183,17 @@ function taskman_process_argv(&$argv)
 
   $filtered = array();
   $process_defs = false;
-  foreach($argv as $v)
+  for($i=0;$i<sizeof($argv);++$i)
   {
-    if($v == '-D')
+    $v = $argv[$i];
+
+    if($v == '--')
+    {
+      for($j=$i+1;$j<sizeof($argv);++$j)
+        $filtered[] = $argv[$j];
+      break;
+    }
+    else if($v == '-D')
     {
       $process_defs = true;
     }
@@ -366,13 +389,23 @@ function taskman_rmdir_recurse($path)
 /**
  * @desc Shows this help
  */
-function task_help()
+function task_help($args = array())
 {
+  $filter = '';
+  if(isset($args[0]))
+    $filter = $args[0];
+
   $maxlen = -1;
+  $tasks = array();
   foreach(taskman_gettasks() as $task)
   {
+    if($filter && strpos($task->getName(), $filter) === false)
+      continue;
+
     if(strlen($task->getName()) > $maxlen)
       $maxlen = strlen($task->getName());
+
+    $tasks[] = $task;
   }
 
   echo "\nUsage:\n php {$GLOBALS['TASKMAN_SCRIPT']} [OPTIONS] <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
@@ -382,7 +415,7 @@ function task_help()
   echo " -b    batch mode: be super quite, don't even output any system messages\n";
   echo "\n";
   echo "Available tasks:\n";
-  foreach(taskman_gettasks() as $task)
+  foreach($tasks as $task)
   {
     $props_string = '';
     $pad = $maxlen - strlen($task->getName());
