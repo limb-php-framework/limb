@@ -69,20 +69,15 @@ class TaskmanTask
 
   private function _getDeps()
   {
-    $deps = explode(',', $this->getPropOr('deps', ""));
-    $tasks = array();
-    foreach($deps as $dep)
-    {
-      if($dep)
-        $tasks[] = taskman_gettask($dep);
-    }
-    return $tasks;
+    $deps = $this->getPropOr('deps', "");
+    if($deps)
+      return taskman_parse_taskstr($deps);
+    return array();
   }
 
   private function _runDeps($args = array())
   {
-    foreach($this->_getDeps() as $task)
-      $task->run($args);
+    taskman_runtasks($this->_getDeps(), $args);
   }
 
   private function _parseProps($func)

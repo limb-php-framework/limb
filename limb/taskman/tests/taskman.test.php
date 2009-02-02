@@ -62,16 +62,29 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("barwowzoofoo", $out);
   }
 
+  function testParallTasksFromCli()
+  {
+    list($code, $out) = $this->_run("
+    function task_foo() { usleep(100);echo 'foo'; }
+    function task_bar() { usleep(200);echo 'bar'; }
+    function task_wow() { usleep(300);echo 'wow'; }
+    ",
+    "-b 'bar|foo|wow'");
+
+    $this->assertEqual(0, $code);
+    //$this->assertEqual("", $out);
+  }
+
   function testParallTasks()
   {
     list($code, $out) = $this->_run("
-    function task_foo() { sleep(1);echo 'foo'; }
-    function task_bar() { sleep(2);echo 'bar'; }
+    function task_foo() { usleep(100);echo 'foo'; }
+    function task_bar() { usleep(200);echo 'bar'; }
     /**
      * @deps bar|foo|wow
      */
     function task_zoo() { echo 'zoo'; }
-    function task_wow() { sleep(3);echo 'wow'; }
+    function task_wow() { usleep(300);echo 'wow'; }
     ",
     '-b zoo');
 
