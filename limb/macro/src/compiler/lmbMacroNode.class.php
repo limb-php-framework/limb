@@ -224,7 +224,7 @@ class lmbMacroNode
     return $root;
   }
 
-  function preParse(){}
+  function preParse($compiler){}
 
   function generate($code_writer)
   {
