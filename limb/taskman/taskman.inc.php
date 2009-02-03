@@ -267,7 +267,7 @@ function taskman_collecttasks()
 
     foreach($task_obj->getAliases() as $alias)
     {
-      if(isset($TASKMAN_TASK_ALIASES[$alias]))
+      if(isset($TASKMAN_TASKS[$alias]) || isset($TASKMAN_TASK_ALIASES[$alias]))
         throw new TaskmanException("Double alias '$alias' definition of task with name '$name'");
       $TASKMAN_TASK_ALIASES[$alias] = $task_obj; 
     }

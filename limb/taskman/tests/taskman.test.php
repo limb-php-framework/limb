@@ -67,6 +67,48 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("barwowzoofoo", $out);
   }
+
+  function testTaskAliases()
+  {
+    list($code, $out) = $this->_run("
+    /**
+     * @alias f,fo
+     */
+    function task_foo() { echo 'foo'; }
+    /**
+     * @alias b,ba
+     * @deps f
+     */
+    function task_bar() { echo 'bar'; }
+    /**
+     * @alias z
+     * @deps ba
+     */
+    function task_zoo() { echo 'zoo'; }
+    ",
+    '-b z');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("foobarzoo", $out);
+  }
+  
+  function testConflictingTaskAliases()
+  {
+    list($code, $out) = $this->_run("
+    /**
+     * @alias same
+     */
+    function task_foo() { echo 'foo'; }
+    /**
+     * @alias same
+     */
+    function task_bar() { echo 'bar'; }
+    ",
+    '-b same');
+
+    $this->assertNotEqual(0, $code);
+    $this->assertTrue(strpos($out, "TaskmanException") !== false);
+  }
   
   function testPassPropFromCLI()
   {
