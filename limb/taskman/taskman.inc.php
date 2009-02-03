@@ -1,6 +1,7 @@
 <?php
 
 $GLOBALS['TASKMAN_TASKS'] = array();
+$GLOBALS['TASKMAN_TASK_ALIASES'] = array();
 $GLOBALS['TASKMAN_VERBOSE'] = true;
 $GLOBALS['TASKMAN_BATCH'] = false;
 $GLOBALS['TASKMAN_SCRIPT'] = 'taskman-script.php';
@@ -245,7 +246,9 @@ function taskman_process_argv(&$argv)
 function taskman_collecttasks()
 {
   global $TASKMAN_TASKS;
+  global $TASKMAN_TASK_ALIASES;
   $TASKMAN_TASKS = array();
+  $TASKMAN_TASK_ALIASES = array();
 
   $funcs = get_defined_functions();
   $user = $funcs['user'];
@@ -264,9 +267,9 @@ function taskman_collecttasks()
 
     foreach($task_obj->getAliases() as $alias)
     {
-      if(isset($TASKMAN_TASKS[$alias]))
+      if(isset($TASKMAN_TASK_ALIASES[$alias]))
         throw new TaskmanException("Double alias '$alias' definition of task with name '$name'");
-      $TASKMAN_TASKS[$alias] = $task_obj; 
+      $TASKMAN_TASK_ALIASES[$alias] = $task_obj; 
     }
   }
 }
@@ -280,11 +283,15 @@ function taskman_gettasks()
 function taskman_gettask($task)
 {
   global $TASKMAN_TASKS;
+  global $TASKMAN_TASK_ALIASES;
 
-  if(!isset($TASKMAN_TASKS[$task]))
-    throw new TaskmanException("Task '{$task}' does not exist");
+  if(isset($TASKMAN_TASKS[$task]))
+    return $TASKMAN_TASKS[$task];
 
-  return $TASKMAN_TASKS[$task];
+  if(isset($TASKMAN_TASK_ALIASES[$task]))
+    return $TASKMAN_TASK_ALIASES[$task];
+
+  throw new TaskmanException("Task with name/alias '{$task}' does not exist");
 }
 
 function taskman_parse_taskstr($str)
