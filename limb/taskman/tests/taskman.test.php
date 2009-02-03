@@ -68,7 +68,7 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("barwowzoofoo", $out);
   }
   
-  function testProp()
+  function testPassPropFromCLI()
   {
     list($code, $out) = $this->_run("    
     function task_foo() { echo taskman_prop('BAR'); }
@@ -77,6 +77,39 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("42", $out);
+  }
+  
+  function testPropStringHelper()
+  {
+    list($code, $out) = $this->_run("    
+    function task_foo() { echo _('%BAR% and %FOO%'); }
+    ",
+    '-b foo -D BAR=42 -D FOO=100');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("42 and 100", $out);
+  }
+  
+  function testMissingPropThrowsException()
+  {
+    list($code, $out) = $this->_run("    
+    function task_foo() { try{ taskman_prop('BAR'); } catch(Exception \$e) { echo 'exception'; } }
+    ",
+    '-b foo');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("exception", $out);
+  }
+  
+  function testPassSeveralPropsFromCLI()
+  {
+    list($code, $out) = $this->_run("    
+    function task_foo() { echo taskman_prop('BAR');echo taskman_prop('FOO'); }
+    ",
+    '-b foo -D BAR=42 -D FOO=12');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("4212", $out);
   }
   
   function testPropSet()
@@ -94,7 +127,7 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("42", $out);
   }
   
-  function testPropSetOr()
+  function testPropOr()
   {
     list($code, $out) = $this->_run("        
     function task_foo() {
@@ -108,7 +141,129 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("42success", $out);
   }  
 
-  function testParallTasksFromCli()
+  function testPropSetOr()
+  {
+    list($code, $out) = $this->_run("        
+    function task_foo() {
+      taskman_propsetor('BAR', 'bar');
+      echo taskman_prop('BAR');
+      taskman_propsetor('BAZ', 'baz');
+      echo taskman_prop('BAZ');
+    }
+    ",
+    '-b foo -D BAR=42');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("42baz", $out);
+  }  
+
+  function testAlwaysTask()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @always
+     */
+    function task_bar() { echo 'bar'; }
+    function task_foo() { echo 'foo'; }
+    ",
+    '-b foo');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("barfoo", $out);
+  }  
+
+  function testDefaultTask()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @default
+     */
+    function task_bar() { echo 'bar'; }
+    ",
+    '-b');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("bar", $out);
+  }  
+
+  function testAlwaysAndDefaultTasks()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @always
+     */
+    function task_foo() { echo 'foo'; }
+    /**
+     * @default
+     */
+    function task_bar() { echo 'bar'; }
+    ",
+    '-b');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("foobar", $out);
+  }  
+
+  function testPassArgsToTaskFromCLI()
+  {
+    list($code, $out) = $this->_run("
+    function task_foo(\$args) { echo implode('', \$args); }
+    ",
+    '-b foo arg1 arg2 arg3');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("arg1arg2arg3", $out);
+  }
+
+  function testArgsPassedToDependentTasks()
+  {
+    list($code, $out) = $this->_run("
+    function task_zoo(\$args) { echo implode('', \$args); }
+    /**
+     * @deps zoo
+     */
+    function task_bar(\$args) { echo implode('', \$args); }
+    /**
+     * @deps bar
+     */
+    function task_foo(\$args) { echo implode('', \$args); }
+    ",
+    '-b foo arg1 arg2');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("arg1arg2arg1arg2arg1arg2", $out);
+  }
+
+  function TODO_testArgsPassedToDefaultTask()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @default
+     */
+    function task_bar(\$args) { echo implode('', \$args); }
+    ",
+    '-b -- wow hey');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("wowhey", $out);
+  }  
+
+  function testArgsPassedToAlwaysTask()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @always
+     */
+    function task_bar(\$args) { echo 'bar:' . implode('', \$args); }
+    function task_hey(\$args) { echo 'hey:' . implode('', \$args); }
+    ",
+    '-b hey wow you');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("bar:wowyouhey:wowyou", $out);
+  }  
+
+  function testParallTasksFromCLI()
   {
     @unlink(LIMB_VAR_DIR . '/shared');
     list($code, $out) = $this->_run("
@@ -150,6 +305,29 @@ class TaskmanTest extends UnitTestCase
     $this->assertTrue(strpos($shared, 'bar') !== false);
     $this->assertTrue(strpos($shared, 'wow') !== false);
     $this->assertEqual(9, strlen($shared));
+  }
+
+  function testArgsPassedToParallTasks()
+  {
+    @unlink(LIMB_VAR_DIR . '/shared');
+    list($code, $out) = $this->_run("
+    function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
+    function task_foo(\$args) { write_shared('foo:' . implode('', \$args)); }
+    function task_bar(\$args) {  write_shared('bar:' . implode('', \$args)); }
+    /**
+     * @deps bar|foo
+     */
+    function task_zoo(\$args) { write_shared('zoo:' . implode('', \$args)); }
+    ",
+    '-b zoo a1 a2');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("", $out);
+    $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
+    $this->assertTrue(strpos($shared, 'foo:a1a2') !== false);
+    $this->assertTrue(strpos($shared, 'bar:a1a2') !== false);
+    $this->assertTrue(strpos($shared, 'zoo:a1a2') !== false);
+    $this->assertEqual(24, strlen($shared));
   }
 
   protected function _run($contents, $cmd)

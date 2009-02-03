@@ -145,26 +145,45 @@ function taskman_run($argv = null, $help_func = 'task_help')
     $argv = $GLOBALS['argv'];
 
   taskman_process_argv($argv);
-  $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);//shifting first element
+  $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);
 
   taskman_collecttasks();
 
-  if(sizeof($argv) < 1)
-  {
-    $help_func();
-    exit();
-  }
-
-  $task_str = array_shift($argv);
-
+  $always_task = null;
+  $default_task = null;
   foreach(taskman_gettasks() as $task_obj)
   {
     if($task_obj->hasProp('always'))
-      $task_obj->run($argv);
+      $always_task = $task_obj;
+    if($task_obj->hasProp('default'))
+      $default_task = $task_obj;
   }
 
-  $tasks = taskman_parse_taskstr($task_str);
-  taskman_runtasks($tasks, $argv);
+  if(sizeof($argv) > 0)
+  {
+    $task_str = array_shift($argv);
+    $tasks = taskman_parse_taskstr($task_str);
+
+    if($always_task)
+      $always_task->run($argv);
+
+    taskman_runtasks($tasks, $argv);
+  }
+  else
+  {
+    if($default_task)
+    {
+      if($always_task)
+        $always_task->run($argv);
+
+      $default_task->run($argv);
+    }
+    else
+    {
+      $help_func();
+      exit();
+    }
+  }
 
   taskman_sysmsg("************************ All done ************************\n");
 }
