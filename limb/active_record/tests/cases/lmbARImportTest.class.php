@@ -10,7 +10,7 @@ require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 require_once(dirname(__FILE__) . '/lmbAROneToOneRelationsTest.class.php');
 require_once(dirname(__FILE__) . '/lmbARManyToManyRelationsTest.class.php');
-require_once(dirname(__FILE__) . '/lmbARValueObjectTest.class.php');
+require_once(dirname(__FILE__) . '/lmbARAggregatedObjectTest.class.php');
 require_once(dirname(__FILE__) . '/lmbARAttributesLazyLoadingTest.class.php');
 
 class LessonForTestWithCustomImport extends lmbActiveRecord
@@ -27,10 +27,10 @@ class LessonForTestWithCustomImport extends lmbActiveRecord
 
 class lmbARImportTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test', 'test_one_table_object', 
-                                       'user_for_test', 'group_for_test', 'user_for_test2group_for_test', 
-                                       'person_for_test', 'social_security_for_test'); 
-  
+  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test', 'test_one_table_object',
+                                       'user_for_test', 'group_for_test', 'user_for_test2group_for_test',
+                                       'person_for_test', 'social_security_for_test', 'lesson_for_test', 'member_for_test');
+
   function testImportingObjectCallsItsExportMethod()
   {
     $object = new TestOneTableObject();
@@ -468,15 +468,15 @@ class lmbARImportTest extends lmbARBaseTestCase
     $this->assertNull($person2->getSocialSecurity());
   }
 
-  function testImportWithValueObject()
+  function testImportWithAggrigatedObject()
   {
-    $lesson = new LessonForTest();
+    $member = new MemberForTest();
 
-    $lesson->import(array('date_start' => $v1 = time() - 100,
-                          'date_end' => $v2 = time() + 100));
+    $member->import(array('first_name' => $first = 'first_name',
+                          'last_name' => $last = 'last_name'));
 
-    $this->assertEqual($lesson->getDateStart()->getValue(), $v1);
-    $this->assertEqual($lesson->getDateEnd()->getValue(), $v2);
+    $this->assertEqual($member->getName()->getFirst(), $first);
+    $this->assertEqual($member->getName()->getLast(), $last);
   }
 
   function testOnAfterImport()

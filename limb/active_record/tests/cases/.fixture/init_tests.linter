@@ -119,3 +119,17 @@ CREATE OR REPLACE TABLE "extended_user_for_test2group_for_test" (
  "other_id" int default NULL,
  PRIMARY KEY  ("id")
 )  ;
+
+CREATE OR REPLACE TABLE "member_for_test" (
+  "id" INT NOT NULL AUTOINC,
+  "first_name" varchar(50)  default NULL,
+  "last_name" varchar(50)  default NULL,
+  PRIMARY KEY  ("id")
+)  ;
+
+CREATE OR REPLACE TABLE "photo_for_test" (
+  "id" INT NOT NULL AUTOINC,
+  "image_extension" varchar(6)  default NULL,
+  "extra" varchar(50)  default NULL,
+  PRIMARY KEY  ("id")
+)  ;

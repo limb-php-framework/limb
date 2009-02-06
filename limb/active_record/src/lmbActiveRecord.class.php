@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7593 2009-02-06 15:38:28Z slevin $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -197,7 +197,7 @@ class lmbActiveRecord extends lmbObject
    */
   function __construct($magic_params = null, $conn = null)
   {
-    
+
 
     $this->_defineRelations();
 
@@ -507,7 +507,7 @@ class lmbActiveRecord extends lmbObject
       if($this->_getRaw($info['field']) != $object_id)
       {
         $this->_setRaw($info['field'], $object->getId());
-        $this->_markDirtyProperty($info['field']);    
+        $this->_markDirtyProperty($info['field']);
       }
     }
     elseif(is_null($object) && $this->isDirtyProperty($property) &&
@@ -628,12 +628,12 @@ class lmbActiveRecord extends lmbObject
     if(!$this->isNew() && $this->_izLazyAttribute($property) && !parent :: has($property))
       $this->_loadLazyAttribute($property);
 
-    if($this->_hasValueObjectRelation($property))
+    if($this->_hasAggregatedObjectRelation($property))
     {
-      if($valueObject = $this->_getValueObject($property))
-        return $valueObject;
+      if($aggregated_object = $this->_getAggregatedObject($property))
+        return $aggregated_object;
 
-      return (LIMB_UNDEFINED !== $default) ? $default : $valueObject;
+      return (LIMB_UNDEFINED !== $default) ? $default : $aggregated_object;
     }
 
     try
@@ -729,17 +729,18 @@ class lmbActiveRecord extends lmbObject
       $collection->set($value);
     }
     else
-    {
-      $old_value = $this->_getRaw($property);
-      
-      parent :: set($property, $value);
-      
-      // if property is a table field and was not really changed, don't mark it dirty
-      if(!($this->_db_meta_info->hasColumn($property) && ($old_value === $value)))
-      {
-        $this->_markDirtyProperty($property);
-      }
-    }
+      $this->_setARField($property, $value);
+  }
+
+  function _setARField($property, $value)
+  {
+    $old_value = $this->_getRaw($property);
+
+    parent :: set($property, $value);
+
+    // if property is a table field and was not really changed, don't mark it dirty
+    if(!($this->_db_meta_info->hasColumn($property) && ($old_value === $value)))
+      $this->_markDirtyProperty($property);
   }
 
   protected function _markDirtyProperty($property)
@@ -811,13 +812,13 @@ class lmbActiveRecord extends lmbObject
   {
     return isset($this->_dirty_props[$property]);
   }
-  
+
   function resetPropertyDirtiness($property)
   {
     if(isset($this->_dirty_props[$property]))
       unset($this->_dirty_props[$property]);
   }
-  
+
   /**
    *  Maps property name to "addTo" form, e.g. "property_name" => "addToPropertyName"
    *  @param string
@@ -876,7 +877,7 @@ class lmbActiveRecord extends lmbObject
     return isset($this->_has_many_to_many[$property]);
   }
 
-  protected function _hasValueObjectRelation($property)
+  protected function _hasAggregatedObjectRelation($property)
   {
     return isset($this->_composed_of[$property]);
   }
@@ -934,15 +935,25 @@ class lmbActiveRecord extends lmbObject
            $this->_many_belongs_to[$property]['can_be_null'];
   }
 
-  protected function _loadValueObject($property, $value)
+  protected function _loadAggregatedObject($property)
   {
-    return $this->_createValueObject($this->_composed_of[$property]['class'],
-                                     $value);
-  }
+    $class = $this->_composed_of[$property]['class'];
+    $object = new $class();
 
-  protected function _createValueObject($class, $value)
-  {
-    $object = new $class($value);
+    if(isset($this->_composed_of[$property]['mapping']))
+      $mapping = $this->_composed_of[$property]['mapping'];
+    else
+      $mapping = array($property => $property);
+
+    foreach($mapping as $aggregate_field => $ar_field)
+      $object->set($aggregate_field, $this->_getRaw($ar_field));
+
+    if(isset($this->_composed_of[$property]['setup_method']))
+    {
+      $setup_method =$this->_composed_of[$property]['setup_method'];
+      $object = $this->$setup_method($object);
+    }
+
     return $object;
   }
 
@@ -951,33 +962,21 @@ class lmbActiveRecord extends lmbObject
     return substr($method, 3);
   }
 
-  protected function _getValueObject($property)
+  protected function _getAggregatedObject($property)
   {
-    if(!parent :: has($property))
-      return;
-
-    $value = $this->_getRaw($property);
-
-    if((!$value) && !$this->_isRequiedValueObject($property))
-      return $value;
-
-    if(!is_object($value))
+    if(parent :: has($property))
     {
-      $object = $this->_loadValueObject($property, $value);
-      $this->_setRaw($property, $object);
-      return $object;
+      $value = $this->_getRaw($property);
+
+      if(is_object($value))
+        return $value;
     }
-    return $value;
-  }
 
-  protected function _isRequiedValueObject($property)
-  {
-    if(isset($this->_composed_of[$property]['can_be_null']) && $this->_composed_of[$property]['can_be_null'])
-      return false;
-    else
-      return true;
-  }
+    $object = $this->_loadAggregatedObject($property);
+    $this->_setRaw($property, $object);
 
+    return $object;
+  }
 
   protected function _doSave($need_validation)
   {
@@ -998,6 +997,8 @@ class lmbActiveRecord extends lmbObject
       //otherwise it won't be saved
       if(!$this->isNew())
         $this->_savePreRelations();
+
+      $this->_checkDirtinessOfAggregatedObjectsFields();
 
       if(!$this->isNew() && $this->isDirty())
       {
@@ -1088,10 +1089,36 @@ class lmbActiveRecord extends lmbObject
     return $this->_db_table->insert($values);
   }
 
+  protected function _checkDirtinessOfAggregatedObjectsFields()
+  {
+    foreach($this->_composed_of as $property => $info)
+    {
+      if(!parent :: has($property))
+        continue;
+
+      $object = $this->_getRaw($property);
+      if(!is_object($object))
+        continue;
+
+      if(!isset($info['mapping']))
+        $mapping = array($property => $property);
+      else
+        $mapping = $info['mapping'];
+
+      foreach($mapping as $aggregate_field => $ar_field)
+      {
+        if($ar_field == $this->getPrimaryKeyName())
+          continue;
+
+        $this->_setARField($ar_field, $object->get($aggregate_field));
+      }
+    }
+  }
+
   protected function _propertiesToDbFields($only_dirty_properties = false)
   {
     $fields = $this->export();
-    
+
     if($only_dirty_properties)
     {
       foreach($fields as $field => $value)
@@ -1106,13 +1133,24 @@ class lmbActiveRecord extends lmbObject
 
     foreach($this->_composed_of as $property => $info)
     {
-      $object = $this->_getValueObject($property);
+      $object = $this->_getAggregatedObject($property);
       if(is_object($object))
       {
-        $method = $info['getter'];
-        $fields[$info['field']] = $object->$method();
+        if(!isset($info['mapping']))
+          $mapping = array($property => $property);
+        else
+          $mapping = $info['mapping'];
+
+        foreach($mapping as $aggrigate_field => $ar_field)
+        {
+          if($ar_field == $this->getPrimaryKeyName())
+            continue;
+
+          $fields[$ar_field] = $object->get($aggrigate_field);
+        }
       }
     }
+
     return $fields;
   }
 
@@ -2011,7 +2049,7 @@ class lmbActiveRecord extends lmbObject
     foreach($source as $property => $value)
     {
       if(isset($this->_composed_of[$property]))
-        $this->_importValueObject($property, $value);
+        $this->_importAggregatedObject($property, $value);
       elseif(isset($this->_has_many[$property]))
         $this->_importCollection($property, $value, $this->_has_many[$property]['class']);
       elseif(isset($this->_has_many_to_many[$property]))
@@ -2079,15 +2117,13 @@ class lmbActiveRecord extends lmbObject
       $this->set($property, null);
   }
 
-  protected function _importValueObject($property, $obj)
+  protected function _importAggregatedObject($property, $obj)
   {
-    if(!is_object($obj))
-    {
-      $class = $this->_composed_of[$property]['class'];
-      $this->set($property, $this->_createValueObject($class, $obj));
-    }
-    else
-      $this->set($property, $obj);
+    if(is_object($obj))
+      return $this->set($property, $obj);
+
+    $class = $this->_composed_of[$property]['class'];
+    $this->set($property, $this->_createAggregatedObject($class, $obj));
   }
   /**
    *  Exports object data with lazy properties resolved

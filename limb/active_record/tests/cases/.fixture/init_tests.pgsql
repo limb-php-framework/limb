@@ -136,3 +136,22 @@ CREATE TABLE extended_user_for_test2group_for_test (
  "other_id" int8 default NULL,
  PRIMARY KEY  (id)
 )  ;
+
+
+DROP TABLE member_for_test CASCADE;
+
+CREATE TABLE member_for_test (
+  "id" SERIAL,
+  "first_name" varchar(50)  default NULL,
+  "last_name" varchar(50)  default NULL,
+  PRIMARY KEY  (id)
+)  ;
+
+DROP TABLE photo_for_test CASCADE;
+
+CREATE TABLE photo_for_test (
+  "id" SERIAL,
+  "image_extension" varchar(6)  default NULL,
+  "extra" varchar(50)  default NULL,
+  PRIMARY KEY  (id)
+)  ;

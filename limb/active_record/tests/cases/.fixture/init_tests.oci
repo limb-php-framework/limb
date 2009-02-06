@@ -254,3 +254,38 @@ CREATE TABLE extended_user_for_test2group_for_test (
 CREATE OR REPLACE TRIGGER extended_user_for_test2group_for_test_trigger
 BEFORE INSERT ON extended_user_for_test2group_for_test REFERENCING NEW AS NEW FOR EACH ROW
 BEGIN IF :NEW.ID IS NULL THEN SELECT extended_user_for_test2group_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+CREATE OR REPLACE TRIGGER member_for_test_trigger
+BEFORE INSERT ON member_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT member_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE member_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE member_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE member_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE member_for_test (
+  id number NOT NULL,
+  first_name varchar(50) default NULL,
+  last_name varchar(50) default NULL,
+  PRIMARY KEY  (id)
+);
+/
+CREATE OR REPLACE TRIGGER photo_for_test_trigger
+BEFORE INSERT ON photo_for_test REFERENCING NEW AS NEW FOR EACH ROW
+BEGIN IF :NEW.ID IS NULL THEN SELECT photo_for_test_seq.NEXTVAL INTO :NEW.ID FROM DUAL; END IF; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE photo_for_test_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE SEQUENCE photo_for_test_seq;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE photo_for_test'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+CREATE TABLE photo_for_test (
+  id number NOT NULL,
+  image_extension varchar(6) default NULL,
+  extra varchar(50) default NULL,
+  PRIMARY KEY  (id)
+);
+

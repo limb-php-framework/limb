@@ -119,3 +119,19 @@ CREATE TABLE `extended_user_for_test2group_for_test` (
  `other_id` int(11) default NULL,
  PRIMARY KEY  (`id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `member_for_test`;
+CREATE TABLE `member_for_test` (
+  `id` int(11) NOT NULL auto_increment,
+  `first_name` varchar(50) default NULL,
+  `last_name` varchar(50) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `photo_for_test`;
+CREATE TABLE `photo_for_test` (
+  `id` int(11) NOT NULL auto_increment,
+  `image_extension` varchar(6) default NULL,
+  `extra` varchar(50) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
