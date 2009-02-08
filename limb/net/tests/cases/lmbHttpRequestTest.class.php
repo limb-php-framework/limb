@@ -87,6 +87,28 @@ class lmbHttpRequestTest extends UnitTestCase
     
     $this->assertEqual($request->getPost($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));    
   }
+  
+  function testGetFiltered()
+  {
+    $request = new lmbHttpRequest('http://test.com', array('c' => 'c1'));
+    $this->assertEqual($request->getFiltered('c', FILTER_SANITIZE_NUMBER_INT), 1);
+    $this->assertEqual($request->getFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
+  }
+  
+  function testGetGetFiltered()
+  {
+    $request = new lmbHttpRequest('http://test.com', array('c' => 'c1'));
+    $this->assertEqual($request->getGetFiltered('c', FILTER_SANITIZE_NUMBER_INT), 1);
+    $this->assertEqual($request->getGetFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
+  }
+  
+  function testGetPostFiltered()
+  {
+    $post = array('c' => 'c1');
+    $request = new lmbHttpRequest('http://test.com', array(), $post);
+    $this->assertEqual($request->getPostFiltered('c', FILTER_SANITIZE_NUMBER_INT), 1);
+    $this->assertEqual($request->getPostFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
+  }
 
   function testGetCookie()
   {
