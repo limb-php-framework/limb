@@ -48,7 +48,8 @@ class lmbWysiwygConfigurationHelper
   function getOption($name)
   {
     $profile_options = $this->getWysiwygConfigOption($this->getProfileName());
-    return $profile_options[$name];
+    if(isset($profile_options[$name]))
+      return $profile_options[$name];
   }
   
   function getMacroWidgetInfo()
