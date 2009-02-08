@@ -9,12 +9,12 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: common.inc.php 7595 2009-02-08 13:20:46Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
 
-function lmb_isenv($name)
+function lmb_env_has($name)
 {
   if(defined($name) && constant($name))
     return true;
@@ -27,32 +27,56 @@ function lmb_isenv($name)
   }
 }
 
-function lmb_envget($name, $def = null)
-{
-  if(!defined($name))
-  {
-    if(!array_key_exists($name, $_ENV))
-      return $def;
+function lmb_env_get($name, $def = null)
+{  
+  if(array_key_exists($name, $_ENV))
     return $_ENV[$name];
-  }
-  return constant($name);
+  
+  if(defined($name))      
+    return constant($name);
 }
 
-function lmb_envset($name, $value)
+function lmb_env_add($name, $value)
+{
+  if(!array_key_exists($name, $_ENV))
+    $_ENV[$name] = $value;
+  
+  if(!defined($name))
+    define($name, $value);
+    
+  if(lmb_env_trace_has($name))
+    lmb_env_trace_show();
+}
+
+function lmb_env_set($name, $value)
 {
   if(!defined($name))
     define($name, $value);
 
   $_ENV[$name] = $value;
+  
+  if(lmb_env_trace_has($name))
+    lmb_env_trace_show();
 }
 
-function lmb_envsetor($name, $value)
+function lmb_env_trace($name)
 {
-  if(!defined($name))
-    define($name, $value);
+  lmb_env_add('profile' . $name . LIMB_UNDEFINED, true);
+}
 
-  if(!array_key_exists($name, $_ENV))
-    $_ENV[$name] = $value;
+function lmb_env_trace_has($name)
+{
+  return lmb_env_has('profile' . $name . LIMB_UNDEFINED);
+}
+
+function lmb_env_trace_show()
+{
+  $trace = debug_backtrace();
+  $trace = $trace[1];
+        
+  $file_str = 'Called '.$trace['file'].'::'.$trace['line'];
+  $call_str = 'lmbEnv::'.$trace['function'].'('.$trace['args'][0].','.$trace['args'][1].')';
+  echo $file_str.' '.$call_str.PHP_EOL;    
 }
 
 function lmb_resolve_include_path($path)
