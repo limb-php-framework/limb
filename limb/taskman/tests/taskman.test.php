@@ -4,6 +4,11 @@
 
 class TaskmanTest extends UnitTestCase 
 {  
+  function setUp()
+  {
+    @mkdir(LIMB_VAR_DIR);
+  }
+
   function tearDown()
   {
     foreach(glob(LIMB_VAR_DIR . '/taskman-script.*.php') as $file)
@@ -107,7 +112,9 @@ class TaskmanTest extends UnitTestCase
     '-b same');
 
     $this->assertNotEqual(0, $code);
-    $this->assertTrue(strpos($out, "TaskmanException") !== false);
+    //under Windows std err is not available from PHP for some reason
+    if(!$this->isWin())
+      $this->assertTrue(strpos($out, "TaskmanException") !== false);
   }
   
   function testPassPropFromCLI()
@@ -124,7 +131,7 @@ class TaskmanTest extends UnitTestCase
   function testPropStringHelper()
   {
     list($code, $out) = $this->_run("    
-    function task_foo() { echo _('%BAR% and %FOO%'); }
+    function task_foo() { echo __('%BAR% and %FOO%'); }
     ",
     '-b foo -D BAR=42 -D FOO=100');
 
@@ -198,6 +205,22 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("42baz", $out);
   }  
+
+  function testUseConfig()
+  {
+    $settings = LIMB_VAR_DIR . '/settings.php';
+    file_put_contents($settings, '<?php taskman_propset("BAR", "bar");');
+    list($code, $out) = $this->_run("        
+    function task_foo() {
+      echo taskman_prop('BAR');
+    }
+    ",
+    '-b -c ' . $settings . ' foo');
+    @unlink($settings);
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("bar", $out);
+  }
 
   function testAlwaysTask()
   {
@@ -307,6 +330,9 @@ class TaskmanTest extends UnitTestCase
 
   function testParallTasksFromCLI()
   {
+    if($this->isWin())
+      return;
+
     @unlink(LIMB_VAR_DIR . '/shared');
     list($code, $out) = $this->_run("
     function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
@@ -327,6 +353,9 @@ class TaskmanTest extends UnitTestCase
 
   function testParallTasks()
   {
+    if($this->isWin())
+      return;
+
     @unlink(LIMB_VAR_DIR . '/shared');
     list($code, $out) = $this->_run("
     function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
@@ -351,6 +380,9 @@ class TaskmanTest extends UnitTestCase
 
   function testArgsPassedToParallTasks()
   {
+    if($this->isWin())
+      return;
+
     @unlink(LIMB_VAR_DIR . '/shared');
     list($code, $out) = $this->_run("
     function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
@@ -378,5 +410,10 @@ class TaskmanTest extends UnitTestCase
     file_put_contents($file, "<?php\nrequire_once('" . dirname(__FILE__) . "/../taskman.inc.php');\ntaskman_run();\n$contents");
     exec("php $file $cmd", $out, $res);
     return array($res, implode($out));
+  }
+
+  protected function isWin()
+  {
+    return DIRECTORY_SEPARATOR == '\\';
   }
 }

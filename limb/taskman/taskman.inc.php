@@ -125,20 +125,24 @@ class TaskmanTask
   }
 }
 
-if(!function_exists('_'))
+function taskman_str($str)
 {
-  function _($str)
-  {
-    return preg_replace_callback(
-            '~%([^%]+)%~',
-            create_function(
-              '$matches',
-              'return taskman_prop($matches[1]);'
-            ),
-            $str
-          );
-  }
+  return preg_replace_callback(
+          '~%([^%]+)%~',
+          create_function(
+            '$matches',
+            'return taskman_prop($matches[1]);'
+          ),
+          $str
+        );
 }
+
+if(!function_exists('__'))
+{
+  function __($str) { return taskman_str($str); }
+}
+else
+  taskman_sysmsg("Function __ is already defined somewhere else, use taskman_str() instead");
 
 function taskman_run($argv = null, $help_func = 'task_help')
 {
@@ -222,6 +226,13 @@ function taskman_process_argv(&$argv)
     {
       $TASKMAN_BATCH = true;
       $TASKMAN_VERBOSE = false;
+    }
+    else if($v == '-c')
+    {
+      if(!isset($argv[$i+1]))
+        throw new TaskmanException("Configuration file(-c option) is missing");
+      require_once($argv[$i+1]);
+      ++$i;
     }
     else if($process_defs)
     {
@@ -552,6 +563,7 @@ function task_help($args = array())
 
   echo "\nUsage:\n php {$GLOBALS['TASKMAN_SCRIPT']} [OPTIONS] <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
   echo "Available options:\n";
+  echo " -c    specify PHP script to be included(handy for setting props,config options,etc)\n";
   echo " -v    be verbose(default)\n";
   echo " -q    be quite\n";
   echo " -b    batch mode: be super quite, don't even output any system messages\n";
