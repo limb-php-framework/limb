@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7595 2009-02-08 13:20:46Z korchasa $
+ * @version $Id: common.inc.php 7616 2009-02-09 19:41:41Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -36,7 +36,7 @@ function lmb_env_get($name, $def = null)
     return constant($name);
 }
 
-function lmb_env_add($name, $value)
+function lmb_env_setor($name, $value)
 {
   if(!array_key_exists($name, $_ENV))
     $_ENV[$name] = $value;
@@ -61,7 +61,7 @@ function lmb_env_set($name, $value)
 
 function lmb_env_trace($name)
 {
-  lmb_env_add('profile' . $name . LIMB_UNDEFINED, true);
+  lmb_env_setor('profile' . $name . LIMB_UNDEFINED, true);
 }
 
 function lmb_env_trace_has($name)
