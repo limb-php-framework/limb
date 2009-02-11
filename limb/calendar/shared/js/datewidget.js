@@ -1,7 +1,7 @@
 var DATE_WIDGETS = new Object();
-function DateWidget_Init(name, show_default, min_year, max_year)
+function DateWidget_Init(name, show_default, min_year, max_year, format)
 {
-  DATE_WIDGETS[name] = new DateWidget(name, show_default, min_year, max_year);
+  DATE_WIDGETS[name] = new DateWidget(name, show_default, min_year, max_year, format);
   DATE_WIDGETS[name].init();
 }
 
@@ -19,7 +19,7 @@ function DateWidget_Action(name, action)
   }
 }
 
-function DateWidget(name, show_default, min_year, max_year)
+function DateWidget(name, show_default, min_year, max_year, format)
 {
   if (!document.getElementById(name))
   {
@@ -32,10 +32,16 @@ function DateWidget(name, show_default, min_year, max_year)
   this.day_select = document.getElementById(name+"_day");
   this.month_select = document.getElementById(name+"_month");
   this.year_select = document.getElementById(name+"_year");
+
+  this.format = format;
   this.value = document.getElementById(name).value;
-  this.year = this.value ? this.value.substr(0,4) : 0;
-  this.month = this.value ? parseInt(this.value.substr(5,2), 10) : 0;
-  this.day = this.value ? this.value.substr(8, 2) : 0;
+
+  var date = Date.parseDate(this.value, format);
+
+  this.year = parseInt(date.getFullYear());
+  this.month = this.zerofill((parseInt(date.getMonth() + 1)), 2);
+  this.day = this.zerofill((parseInt(date.getDate())), 2);
+
   this.min_year = min_year;
   this.max_year = max_year;
 }
@@ -58,16 +64,16 @@ DateWidget.prototype.change = function()
 
 DateWidget.prototype.setValue = function()
 {
-  this.control.value = parseInt(this.year) + "-" + this.zerofill((parseInt(this.month)), 2) + "-" + this.zerofill(parseInt(this.day), 2);
+  var date = new Date(this.year, this.month - 1, this.day);
+  this.control.value = date.print(this.format);
+
   if (this.month_select.value === '-1' && this.day_select.value === '-1' && this.year_select.value === '-1')
-  {
     this.control.value = "";
-  }
+
   this.value = this.control.value;
+
   if (!this.show_default && !this.value)
-  {
     this.setDefaultValue();
-  }
 }
 
 DateWidget.prototype.setDefaultValue = function()
@@ -83,6 +89,7 @@ DateWidget.prototype.handle_change = function(field)
   {
     case "day":
       this.day = this.day_select.value;
+      this.change();
     break;
     case "month":
       this.month = this.month_select.value;
