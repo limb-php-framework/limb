@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7594 2009-02-08 12:37:16Z korchasa $
+ * @version $Id: lmbHttpRequest.class.php 7628 2009-02-11 16:39:56Z korchasa $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -26,6 +26,7 @@ class lmbHttpRequest extends lmbSet
   protected $cookies = array();
   protected $files = array();
   protected $pretend_post = false;
+  protected $reserved_params = array('request', 'get', 'post', 'cookie' ,'files');
 
   function __construct($uri_string = null, $get = null, $post = null, $cookies = null, $files = null)
   {
@@ -54,6 +55,10 @@ class lmbHttpRequest extends lmbSet
     }
 
     $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post, $this->files);
+
+    $matched_reserved_params = array_intersect(array_keys($this->request), $this->reserved_params);
+    if(count($matched_reserved_params))
+      throw new lmbException('Some reserved params was used', array('founded reserved words' => $matched_reserved_params));
 
     //TODO: think about potential risk of overwriting system attributes!
     foreach($this->request as $k => $v)
@@ -113,7 +118,7 @@ class lmbHttpRequest extends lmbSet
   function getPost($key = null, $default = LIMB_UNDEFINED)
   {
     return $this->_get('post', $key, $default);
-  }  
+  }
 
   function hasPost()
   {
@@ -138,17 +143,17 @@ class lmbHttpRequest extends lmbSet
   {
     return htmlspecialchars(parent :: get($var));
   }
-  
+
   function getFiltered($key, $filter, $default = LIMB_UNDEFINED)
   {
     return filter_var($this->get($key, $default), $filter);
   }
-  
+
   function getGetFiltered($key, $filter, $default = LIMB_UNDEFINED)
   {
     return filter_var($this->getGet($key, $default), $filter);
   }
-  
+
   function getPostFiltered($key, $filter, $default = LIMB_UNDEFINED)
   {
     return filter_var($this->getPost($key, $default), $filter);
@@ -160,13 +165,13 @@ class lmbHttpRequest extends lmbSet
       return $this->$var;
 
     $arr = $this->$var;
-    if(is_array($key)) 
+    if(is_array($key))
     {
       $ret = array();
       foreach($key as $item)
         $ret[$item] = (isset($arr[$item]) ? $arr[$item] : null);
       return $ret;
-    } 
+    }
     elseif(isset($arr[$key]))
       return $arr[$key];
     elseif($default !== LIMB_UNDEFINED)

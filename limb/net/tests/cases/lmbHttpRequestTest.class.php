@@ -49,10 +49,10 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getRequest(), array('c' => 1, 'd' => 2));
     $this->assertEqual($request->getRequest('c'), 1);
     $this->assertNull($request->getRequest('b'), 1);
-    
+
     $this->assertEqual($request->getRequest('b', 1), 1); // test for default values
-    $this->assertIdentical($request->getRequest('b', 0), 0); 
-    
+    $this->assertIdentical($request->getRequest('b', 0), 0);
+
     $this->assertEqual($request->getRequest(array('b', 'c', 'd')), array('b' => null, 'c' => 1, 'd' => 2));
   }
 
@@ -63,13 +63,13 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getGet(), $get);
     $this->assertEqual($request->getGet('c'), 1);
     $this->assertNull($request->getGet('b'), 1);
-        
+
     $this->assertEqual($request->getGet('sambo', 'cool'), 'cool'); // test for default values
     $this->assertIdentical($request->getGet('sambo', 0), 0);
-    
+
     $field_names = array('ju', 'kung', 'sambo');
-    
-    $this->assertEqual($request->getGet($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));        
+
+    $this->assertEqual($request->getGet($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));
   }
 
   function testGetPost()
@@ -79,29 +79,29 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getPost(), $post);
     $this->assertEqual($request->getPost('c'), 1);
     $this->assertNull($request->getPost('b'), 1);
-        
+
     $this->assertEqual($request->getPost('sambo', 'cool'), 'cool'); // test for default values
     $this->assertIdentical($request->getPost('sambo', 0), 0);
-    
+
     $field_names = array('ju', 'kung', 'sambo');
-    
-    $this->assertEqual($request->getPost($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));    
+
+    $this->assertEqual($request->getPost($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));
   }
-  
+
   function testGetFiltered()
   {
     $request = new lmbHttpRequest('http://test.com', array('c' => 'c1'));
     $this->assertEqual($request->getFiltered('c', FILTER_SANITIZE_NUMBER_INT), 1);
     $this->assertEqual($request->getFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
   }
-  
+
   function testGetGetFiltered()
   {
     $request = new lmbHttpRequest('http://test.com', array('c' => 'c1'));
     $this->assertEqual($request->getGetFiltered('c', FILTER_SANITIZE_NUMBER_INT), 1);
     $this->assertEqual($request->getGetFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
   }
-  
+
   function testGetPostFiltered()
   {
     $post = array('c' => 'c1');
@@ -117,13 +117,13 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getCookie(), $cookie);
     $this->assertEqual($request->getCookie('c'), 1);
     $this->assertNull($request->getCookie('b'), 1);
-    
+
     $this->assertEqual($request->getCookie('sambo', 'cool'), 'cool'); // test for default values
     $this->assertIdentical($request->getCookie('sambo', 0), 0);
-    
+
     $field_names = array('ju', 'kung', 'sambo');
-    
-    $this->assertEqual($request->getCookie($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));    
+
+    $this->assertEqual($request->getCookie($field_names), array('ju' => 'jitsu', 'kung' => 'fu', 'sambo' => null));
   }
 
   function testGetFiles()
@@ -276,6 +276,16 @@ class lmbHttpRequestTest extends UnitTestCase
 
     $this->assertNull($request->get('m'));
     $this->assertNull($request->get('n'));
+  }
+
+  function testForThrowExceptionOnReservedParams()
+  {
+    try {
+      new lmbHttpRequest('http://test.com?request=1');
+      $this->fail();
+    } catch (Exception $e) {
+      $this->pass();
+    }
   }
 }
 
