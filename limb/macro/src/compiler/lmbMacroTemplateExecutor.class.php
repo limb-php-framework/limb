@@ -66,8 +66,9 @@ class lmbMacroTemplateExecutor
   {
     $template = new lmbMacroTemplate($file, $this->__config);
     $template->setVars(get_object_vars($this));//global template vars
-    foreach($slots_handlers as $name => $handler)
-      $template->set('__slot_handler_' . $name, $handler);
+    foreach($slots_handlers as $name => $handlers)
+      $template->set('__slot_handlers_' . $name, $handlers);
+    
     $template->setChildExecutor($this);//from now we consider the wrapper to be a master variable context
     echo $template->render($vars);//local template vars
   }
@@ -76,8 +77,10 @@ class lmbMacroTemplateExecutor
   {
     $template = new lmbMacroTemplate($file, $this->__config);
     $template->setVars(get_object_vars($this));//global template vars
-    foreach($slots_handlers as $name => $handler)
-      $template->set('__slot_handler_' . $name, $handler);
+    
+    foreach($slots_handlers as $name => $handlers)
+      $template->set('__slot_handlers_' . $name, $handlers);
+    
     $template->setChildExecutor($this);//from now we consider the wrapper to be a master variable context
     echo $template->render();
   }

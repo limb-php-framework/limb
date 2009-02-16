@@ -155,6 +155,27 @@ class lmbMacroInsertTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, '<body><p>Hello, Bob</p></body>');
   }
+  
+  function testIntoTagIncludedByTemplateWithDynamicWrap()
+  {
+    $bar = '|begin|slot1:{{slot id="slot1"/}}|slot2:{{slot id="slot2"/}}|end|';
+    $foo = '{{wrap file="$this->layout1"}}'.
+            '{{into slot="slot1"}}Hi{{/into}}'.
+            '{{into slot="slot2"}}Hello{{/into}}'.
+            '{{insert file="zoo.html"/}}'.
+            '{{/wrap}}';
+    $zoo = '{{into slot="slot2"}}Bye{{/into}}';
+
+    $bar_tpl = $this->_createTemplate($bar, 'bar.html');
+    $foo_tpl = $this->_createTemplate($foo, 'foo.html');
+    $zoo_tpl = $this->_createTemplate($zoo, 'zoo.html');
+
+    $macro = $this->_createMacro($foo_tpl);
+    $macro->set('layout1', 'bar.html');
+
+    $out = $macro->render();
+    $this->assertEqual($out, '|begin|slot1:Hi|slot2:HelloBye|end|');
+  }
 
   function testStaticallyWrappedChildAccessesParentData()
   {

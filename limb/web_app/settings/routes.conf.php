@@ -16,6 +16,5 @@ $conf = array(
 
 'Controller' =>
   array('path' => '/:controller'),
-
 );
 

@@ -86,7 +86,7 @@ class lmbMacroInsertTag extends lmbMacroTag
   function _generateDynamicaly($code)
   {
     $handlers_str = 'array(';
-    $methods = array();
+    $slots = array();
     
     if($this->getBool('inline'))
       $this->raise('Inline is not supported for dynamic case');      
@@ -97,7 +97,7 @@ class lmbMacroInsertTag extends lmbMacroTag
       foreach($intos as $into)
       {
         $args = $code->generateVar(); 
-        $methods[$into->get('slot')] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+        $slots[$into->get('slot')][] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
         $code->writePHP("if($args) extract($args);"); 
         $into->generateNow($code);
         $code->endMethod();
@@ -106,14 +106,20 @@ class lmbMacroInsertTag extends lmbMacroTag
     elseif($this->has('into'))
     {
       $args = $code->generateVar(); 
-      $methods[$this->get('into')] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+      $slots[$this->get('into')][] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
       $code->writePHP("if($args) extract($args);"); 
       parent :: _generateContent($code);
       $code->endMethod();
     }
 
-    foreach($methods as $slot => $method)
-      $handlers_str .= '"' . $slot . '"' . ' => array($this, "' . $method . '"),';
+    foreach($slots as $slot => $methods)
+    {
+      $handlers_str .= '"' . $slot . '"' . ' => array( ';
+      foreach($methods as $method)
+        $handlers_str .= 'array($this, "' . $method . '"),';
+      
+      $handlers_str .= '),';
+    }
 
     $handlers_str .= ')';
 

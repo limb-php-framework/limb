@@ -21,10 +21,11 @@ class lmbMacroSlotTag extends lmbMacroTag
   {
     $slot = $this->getNodeId();
     //calling slot handler in case of dynamic wrapping
-    $code->writePHP('if(isset($this->__slot_handler_' . $slot . ')) {');
+    $code->writePHP('if(isset($this->__slot_handlers_' . $slot . ')) {');
     $arg_str = $this->attributesIntoArrayString($skip = array('id', 'inline'));
-    $code->writePHP('call_user_func_array($this->__slot_handler_' . $slot . ', array(' . $arg_str . '));');
-    $code->writePHP('}');
+    $code->writePHP('foreach($this->__slot_handlers_' . $slot . ' as $__slot_handler_' . $slot . ') {');
+    $code->writePHP('call_user_func_array($__slot_handler_' . $slot . ', array(' . $arg_str . '));');
+    $code->writePHP('}}');
 
     if(!$this->getBool('inline'))
     {
