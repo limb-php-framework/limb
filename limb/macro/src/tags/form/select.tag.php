@@ -40,7 +40,7 @@ class lmbMacroSelectTag extends lmbMacroFormElementTag
                      array('name' => $this->get('name')));
       }
     }
-    else
+    elseif(!isset($this->widget_include_file))
     {
       $this->widget_include_file = 'limb/macro/src/tags/form/lmbMacroSingleSelectWidget.class.php';
       $this->widget_class_name = 'lmbMacroSingleSelectWidget';
