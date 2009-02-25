@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 
@@ -13,15 +13,15 @@ lmb_require('limb/core/src/lmbCollection.class.php');
  * @package validation
  * @version $Id$
  */
-class lmbErrorMessage extends lmbObject  
-{  
-  function __construct($message, $fields = array(), $values = array())  
-  {  
+class lmbErrorMessage extends lmbObject
+{
+  function __construct($message, $fields = array(), $values = array())
+  {
      parent::__construct(array('message' => $message, 'fields' => $fields, 'values' => $values));
   }
 
-  function getReadable()  
-  {   
+  function getReadable()
+  {
     $text = $this->getMessage();
     foreach($this->getFields() as $key => $fieldName)
     {
@@ -33,20 +33,26 @@ class lmbErrorMessage extends lmbObject
       $text = str_replace('{' . $key . '}', $replacement, $text);
 
     return $text;
-  }  
+  }
 
-  function renameFields($new_field_names) 
+  function renameFields($new_field_names)
   {
-    
-    if(!is_array($new_field_names)) 
+
+    if(!is_array($new_field_names))
     {
       return;
     }
-      
-    $new_fields = str_replace(array_keys($new_field_names), $new_field_names, $this->getFields());
-    $this->setFields($new_fields);   
+
+    $new_fields = array();
+
+    foreach($this->getFields() as $key => $field)
+    {
+      $new_fields[$key] = (isset($new_field_names[$field]) ? $new_field_names[$field] : $field);
+    }
+
+    $this->setFields($new_fields);
   }
-  
+
   function __toString()
   {
       return $this->getReadable();
