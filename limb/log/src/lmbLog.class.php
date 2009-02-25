@@ -25,6 +25,13 @@ class lmbLog
   protected $logs = array();
   protected $log_writers = array();
   protected $allowed_levels = array();
+  protected $backtrace_depth = array(
+    'notice' => 1,
+    'warning' => 1,
+    'info' => 3,
+    'error' => 5,
+    'exception' => 5
+  );
 
   function __construct()
   {
@@ -81,13 +88,17 @@ class lmbLog
     return sizeof($this->logs);
   }
 
+  function setBacktraceDepth($log_level, $depth) {
+    $this->backtrace_depth[$log_level] = $depth;
+  }
+
   function notice($message, $params = array(), $backtrace = null)
   {
     if(!$this->isLogEnabled())
       return;
 
     if(!$backtrace)
-      $backtrace = new lmbBacktrace(1);
+      $backtrace = new lmbBacktrace($this->backtrace_depth['notice']);
 
     $this->_write(lmbLog :: NOTICE, $message, $params, $backtrace);
   }
@@ -98,7 +109,7 @@ class lmbLog
       return;
 
     if(!$backtrace)
-      $backtrace = new lmbBacktrace(1);
+      $backtrace = new lmbBacktrace($this->backtrace_depth['warning']);
 
     $this->_write(lmbLog :: WARNING, $message, $params, $backtrace);
   }
@@ -109,7 +120,7 @@ class lmbLog
       return;
 
     if(!$backtrace)
-      $backtrace = new lmbBacktrace(5);
+      $backtrace = new lmbBacktrace($this->backtrace_depth['error']);
 
     $this->_write(lmbLog :: ERROR, $message, $params, $backtrace);
   }
@@ -120,9 +131,9 @@ class lmbLog
       return;
 
     if($e instanceof lmbException)
-      $this->error($e->getMessage(), $e->getParams(), new lmbBacktrace($e->getTrace(), 5));
+      $this->error($e->getMessage(), $e->getParams(), new lmbBacktrace($e->getTrace(), $this->backtrace_depth['exception']));
     else
-      $this->error($e->getMessage(), array(), new lmbBacktrace($e->getTrace(), 5));
+      $this->error($e->getMessage(), array(), new lmbBacktrace($e->getTrace(), $this->backtrace_depth['exception']));
   }
 
   function info($message, $params = array(), $backtrace = null)
@@ -131,7 +142,7 @@ class lmbLog
       return;
 
     if(!$backtrace)
-      $backtrace = new lmbBacktrace(3);
+      $backtrace = new lmbBacktrace($this->backtrace_depth['info']);
 
     $this->_write(lmbLog :: INFO, $message, $params, $backtrace);
   }
