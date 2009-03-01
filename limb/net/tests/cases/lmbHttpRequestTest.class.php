@@ -280,10 +280,13 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testForThrowExceptionOnReservedParams()
   {
-    try {
-      new lmbHttpRequest('http://test.com?request=1');
+    try 
+    {
+      new lmbHttpRequest('http://test.com?__request=1');
       $this->fail();
-    } catch (Exception $e) {
+    } 
+    catch(Exception $e) 
+    {
       $this->pass();
     }
   }

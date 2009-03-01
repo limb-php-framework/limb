@@ -15,18 +15,18 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7628 2009-02-11 16:39:56Z korchasa $
+ * @version $Id: lmbHttpRequest.class.php 7654 2009-03-01 19:18:13Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
-  protected $uri;
-  protected $request = array();
-  protected $get = array();
-  protected $post = array();
-  protected $cookies = array();
-  protected $files = array();
-  protected $pretend_post = false;
-  protected $reserved_params = array('request', 'get', 'post', 'cookie' ,'files');
+  protected $__uri;
+  protected $__request = array();
+  protected $__get = array();
+  protected $__post = array();
+  protected $__cookies = array();
+  protected $__files = array();
+  protected $__pretend_post = false;
+  protected $__reserved_attrs = array('__uri', '__request', '__get', '__post', '__cookies', '__files', '__pretend_post', '__reserved_attrs');
 
   function __construct($uri_string = null, $get = null, $post = null, $cookies = null, $files = null)
   {
@@ -36,33 +36,32 @@ class lmbHttpRequest extends lmbSet
 
   protected function _initRequestProperties($uri_string, $get, $post, $cookies, $files)
   {
-    $this->uri = !is_null($uri_string) ? new lmbUri($uri_string) : new lmbUri($this->getRawUriString());
+    $this->__uri = !is_null($uri_string) ? new lmbUri($uri_string) : new lmbUri($this->getRawUriString());
 
-    $this->get = !is_null($get) ? $get : $_GET;
-    $items = $this->uri->getQueryItems();
+    $this->__get = !is_null($get) ? $get : $_GET;
+    $items = $this->__uri->getQueryItems();
     foreach($items as $k => $v)
-      $this->get[$k] = $v;
+      $this->__get[$k] = $v;
 
-    $this->post = !is_null($post) ? $post : $_POST;
-    $this->cookies = !is_null($cookies) ? $cookies : $_COOKIE;
-    $this->files = !is_null($files) ? $this->_parseUploadedFiles($files) : $this->_parseUploadedFiles($_FILES);
+    $this->__post = !is_null($post) ? $post : $_POST;
+    $this->__cookies = !is_null($cookies) ? $cookies : $_COOKIE;
+    $this->__files = !is_null($files) ? $this->_parseUploadedFiles($files) : $this->_parseUploadedFiles($_FILES);
 
     if(ini_get('magic_quotes_gpc'))
     {
-      $this->get = $this->_stripHttpSlashes($this->get);
-      $this->post = $this->_stripHttpSlashes($this->post);
-      $this->cookies = $this->_stripHttpSlashes($this->cookies);
+      $this->__get = $this->_stripHttpSlashes($this->__get);
+      $this->__post = $this->_stripHttpSlashes($this->__post);
+      $this->__cookies = $this->_stripHttpSlashes($this->__cookies);
     }
 
-    $this->request = lmbArrayHelper :: arrayMerge($this->get, $this->post, $this->files);
+    $this->__request = lmbArrayHelper :: arrayMerge($this->__get, $this->__post, $this->__files);
 
-    $matched_reserved_params = array_intersect(array_keys($this->request), $this->reserved_params);
-    if(count($matched_reserved_params))
-      throw new lmbException('Some reserved params was used', array('founded reserved words' => $matched_reserved_params));
-
-    //TODO: think about potential risk of overwriting system attributes!
-    foreach($this->request as $k => $v)
+    foreach($this->__request as $k => $v)
+    {
+      if(in_array($k, $this->__reserved_attrs))
+        throw new lmbException("Attribute with name '$k' is reserved for internal usage");
       $this->set($k, $v);
+    }
   }
 
   protected function _parseUploadedFiles($files)
@@ -95,7 +94,7 @@ class lmbHttpRequest extends lmbSet
   {
     $this->_ensureMultipartFormData();
 
-    return $this->_get('files', $key);
+    return $this->_get('__files', $key);
   }
 
   function getFile($name)
@@ -107,36 +106,36 @@ class lmbHttpRequest extends lmbSet
 
   function getRequest($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('request', $key, $default);
+    return $this->_get('__request', $key, $default);
   }
 
   function getGet($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('get', $key, $default);
+    return $this->_get('__get', $key, $default);
   }
 
   function getPost($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('post', $key, $default);
+    return $this->_get('__post', $key, $default);
   }
 
   function hasPost()
   {
-    if($this->pretend_post)
+    if($this->__pretend_post)
       return true;
 
-    return sizeof($this->post) > 0 ||
+    return sizeof($this->__post) > 0 ||
       (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST');
   }
 
   function pretendPost($flag = true)
   {
-    $this->pretend_post = $flag;
+    $this->__pretend_post = $flag;
   }
 
   function getCookie($key = null, $default = LIMB_UNDEFINED)
   {
-    return $this->_get('cookies', $key, $default);
+    return $this->_get('__cookies', $key, $default);
   }
 
   function getSafe($var)
@@ -180,12 +179,12 @@ class lmbHttpRequest extends lmbSet
 
   function getUri()
   {
-    return $this->uri;
+    return $this->__uri;
   }
 
   function getUriPath()
   {
-    return $this->uri->getPath();
+    return $this->__uri->getPath();
   }
 
   function getRawUriString()
@@ -235,7 +234,7 @@ class lmbHttpRequest extends lmbSet
     $flat = array();
     $query = '';
 
-    lmbArrayHelper :: toFlatArray($this->request, $flat);
+    lmbArrayHelper :: toFlatArray($this->__request, $flat);
 
     foreach($flat as $key => $value)
     {
@@ -244,7 +243,8 @@ class lmbHttpRequest extends lmbSet
       $query .= $key . '=' . urlencode($value) . '&';
     }
 
-    $uri = clone($this->uri);
+    //TODO: this is quite ugly but it works...
+    $uri = clone($this->__uri);
     $uri->removeQueryItems();
     return rtrim($uri->toString() . '?' . rtrim($query, '&'), '?');
   }
@@ -256,7 +256,7 @@ class lmbHttpRequest extends lmbSet
 
   protected function _ensureMultipartFormData()
   {
-    if(!$this->hasPost() || $this->files)
+    if(!$this->hasPost() || $this->__files)
       return;
 
     if(strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') === false)
