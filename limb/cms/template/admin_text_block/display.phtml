@@ -1,0 +1,52 @@
+{{wrap with="admin_page_layout.phtml" into="content_zone"}}
+
+  {{include file="_admin/selectors.phtml"/}}
+  {{include file="_admin_object/actions.phtml"/}}
+
+  <div id="header">
+    <h1>Текстовые блоки</h1>
+    <div class="header_actions">
+      {{apply template="object_action" action="create" icon="layout_add" is_link="true" title="Добавить текстовый блок"/}}
+    </div>
+  </div>
+
+  <div id="body">
+
+    {{list using='$#items'}}
+      <div class="list">
+        <div class='list_actions'>
+          {{apply template="selectors_button" action="delete" title="Удалить" /}}
+        </div>
+        <table>
+          <tr>
+            <th>{{apply template="selectors_toggler"/}}</th>
+            <th>Идентификатор</th>
+            <th>Название</th>
+            <th width='100%'>Текст</th>
+            <th>Действия</th>
+          </tr>
+          {{list:item}}
+            <tr class='{$parity}'>
+              <td>{{apply template="selector" value="{$item.id}"/}}</td>
+              <td>{$item.identifier}</td>
+              <td>{$item.title}</td>
+              <td>{$item.content|raw}</td>
+              <td class='actions'>
+                {{apply template="object_action_edit" item="{$item}" icon="layout_edit"/}}
+                {{apply template="object_action_delete" item="{$item}" icon="layout_delete"/}}
+              </td>
+            </tr>
+          {{/list:item}}
+          {{list:empty}}
+            <div class="empty_list">Текстовые блоки отсутствуют</div>
+          {{/list:empty}}
+        </table>
+        <div class='list_actions'>
+          {{apply template="selectors_button" action="delete" title="Удалить" /}}
+        </div>
+      </div>
+    {{/list}}
+
+  </div>
+
+{{/wrap}}

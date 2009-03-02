@@ -1,0 +1,11 @@
+{{template name="object_action"}}
+  <a href='{{route_url params="action:{$action},id:{$item.id}"/}}' title="{$title}" class="thickbox"><img src='/shared/cms/images/icons/{$icon}.png' title="{$title}"/></a>
+{{/template}}
+
+{{template name="object_action_edit"}}
+  <a href='{{route_url params="action:edit,id:{$item.id}"/}}' title="{$title|default:'Редактирование'}" class="thickbox"><img src='/shared/cms/images/icons/{$icon|default:"pencil"}.png' title="Редактирование"/></a>
+{{/template}}
+
+{{template name="object_action_delete"}}
+  <a href='#' onclick="if(confirm('Delete item?')) {jQuery.post('{{route_url params='action:delete'/}}', {ids:{$item.id}}, function(){document.location.reload()})}" title="Удалить"><img src='/shared/cms/images/icons/page_delete.png'/></a>
+{{/template}}

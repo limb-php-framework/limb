@@ -1,0 +1,3 @@
+<a href="<?php $uri = lmbToolkit::instance()->getRequest()->getUri(); $uri->addQueryItem('sort',$field); $uri->addQueryItem('direction','asc'); echo $uri->toString();  ?>" title="Сортировать по возрастанию"><img src="/shared/cms/images/icons/arrow_down.png" alt="Сортировать по возрастанию"/></a>
+<a href="<?php $uri = lmbToolkit::instance()->getRequest()->getUri(); $uri->addQueryItem('sort',$field); $uri->addQueryItem('direction','desc'); echo $uri->toString();  ?>" title="Сортировать по убыванию"><img src="/shared/cms/images/icons/arrow_up.png" alt="Сортировать по убыванию"/></a>
+            

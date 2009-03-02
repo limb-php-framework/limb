@@ -1,0 +1,15 @@
+{{wrap with="front_page_layout.phtml"}}
+
+  {{into slot="description"}}{$#item.description}{{/into}}
+  {{into slot="keywords"}}{$#item.keywords}{{/into}}
+  {{into slot="title"}}{$#item.title}{{/into}}
+
+  {{into slot="content_zone"}}
+    <h1>{$#item.title}</h1>
+    <div class="breadcrumbs">
+      {{include file='_widgets/cms_document_breadcrumbs.phtml' item="{$#item}" link_field='uri' /}}
+    </div>
+    {$#item.content|raw}
+  {{/into}}
+
+{{/wrap}}

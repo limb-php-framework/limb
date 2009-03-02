@@ -1,0 +1,8 @@
+{{wrap with="admin_modal_page_layout.phtml" into="content_zone"}}
+  {{form id='object_form' name='user_form' method='post' enctype="multipart/form-data" runat='server'}}
+    <h1>Создание текстового блока</h1>
+    {{include file='_admin/form_errors.phtml'/}}
+    {{include file='admin_text_block/include/form_fields.phtml'/}}
+    {{include file='_admin/form_buttons.phtml'/}}
+  {{/form}}
+{{/wrap}}

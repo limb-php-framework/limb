@@ -1,0 +1,53 @@
+{{wrap with="admin_page_layout.phtml"}}
+
+  {{into slot="content_zone"}}
+
+    {{include file="_admin_object/actions.phtml"/}}
+  
+    <div id="header">
+
+      <h1>Список пользователей</h1>
+
+      <div class="header_actions">
+        {{apply template="object_action" action="create" icon="user_add" is_link="true" title="Добавить пользователя"/}}
+      </div>
+
+    </div>
+
+    <div id="body">
+
+      {{include file='_admin/pager.phtml' items='$#items'/}}
+      {{form name='list_form' method='post' class='list'}}
+        <table>
+          <tr>
+            <th>#ID</th>
+            <th>Имя</th>
+            <th>Логин</th>
+            <th>E-mail</th>
+            <th>Группа</th>
+            <th>Действия</th>
+          </tr>
+          {{list using='{$#items}' parity='{$parity}'}}
+            {{list:item}}
+            <tr class='{$parity}'>
+              <td>#{$item.id}</td>
+              <td>{$item.name}</td>
+              <td>{$item.login}</td>
+              <td><a href='mailto:{$item.email}'>{$item.email}</a></td>
+              <td>{$item.role_type|ucfirst}</td>
+              <td class='actions'>
+                  <a href='{{route_url params="action:change_password,id:{$item.id}"/}}'  title="Сменить пароль" class="thickbox"><img src='/shared/cms/images/icons/key.png' alt='Сменить пароль'/></a>
+                  <a href='{{route_url params="action:edit,id:{$item.id}"/}}' title="Редактировать" class="thickbox"><img src='/shared/cms/images/icons/user_edit.png' alt='Редактировать' /></a>
+                  <a href='{{route_url params="action:delete?id={$item.id}"/}}' onclick="if(confirm('Вы действительно желаете удалить пользователя &laquo;{$item.name}&raquo;?'))return true; else return false;" title="Удалить"><img src='/shared/cms/images/icons/user_delete.png'/></a>
+              </td>
+            </tr>
+            {{/list:item}}
+          {{/list}}
+        </table>
+      {{/form}}
+
+    </div>
+
+  {{/into}}
+
+{{/wrap}}

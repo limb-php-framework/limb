@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- Powered by LIMB | http://www.limb-project.com/ -->
+<!-- Designed by BIT | http://www.bit-creative.com/ -->
+<html>
+<head>
+  <title>Панель управления :: Авторизация</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+  <link rel=stylesheet type="text/css" href="/shared/cms/styles/cp.css" />
+  <link rel=stylesheet type="text/css" href="/shared/cms/styles/cp.css" />
+  <!--[if IE]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie.css" /><![endif]-->
+  <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie6.css" /><![endif]-->
+</head>
+<body id='login_form'>
+
+  <div id="login_form_wrapper">
+
+    <form method="POST" id='user_form' runat='server'>
+
+        <div id="logo_limb">
+          <a href="http://limb-project.com"><img src="/shared/cms/images/logo.limb.png" alt='LIMB'/></a>
+        </div>
+
+        <div id="form_body">
+
+          <h1>Панель управления</h1>
+
+          <dl class='field'>
+            <dt><label for='login'>Логин:</label></dt>
+            <dd><input type="text" name="login" id="login" value="" title="Login" class='input'/></dd>
+          </dl>
+
+          <dl class='field'>
+            <dt><label for='password'>Пароль:</label></dt>
+            <dd>
+              <input type="password" name="password" id="password" title="Password"/>
+              <input type="submit" name='submitted' value='Вход' class='button'>
+            </dd>
+          </dl>
+
+          <input type='hidden' name='redirect' value='{$#request.redirect}' runat='client'/>
+
+          <a href="/user/forgot_password" class="forgot_password_link">Забыли пароль?</a>
+
+          {{include file='_admin/notify_zone.phtml'/}}
+
+        </div>
+
+    </form>
+
+    <div class='shadow_bottom'><div class='left'></div><div class='center'></div><div class='right'></div></div>
+    <div class='shadow_left'><div class='top'></div><div class='center'></div></div>
+    <div class='shadow_right'><div class='top'></div><div class='center'></div></div>
+
+  </div>
+
+</body>
+</html>

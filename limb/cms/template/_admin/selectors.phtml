@@ -1,0 +1,63 @@
+{{template name="selectors_toggler"}}
+  <input type='checkbox' onclick='toggle_selected(this);' name='mark_all'/>
+{{/template}}
+
+{{template name="selector"}}
+  <input type='checkbox' name="ids[]" value='{$value}' class='selector'/>
+{{/template}}
+
+{{template name="selectors_button"}}
+<? 
+$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName(); 
+$params = isset($params)? $params : '';  
+
+$url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
+$url .= '?' . $params;
+?>
+  
+   <input type="button" class='button' value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}");return false;'/>
+{{/template}}
+
+{{template name="selectors_change_category"}}
+<? 
+$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName(); 
+$params = isset($params)? $params : '';
+
+$url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
+$url .= '?' . $params;
+?>
+
+  <input type="button" class='button' value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}");return false;'/>
+{{/template}}
+
+{{template name="save_priority_button"}}
+<? 
+$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName(); 
+$params = isset($params)? $params : '';  
+
+$url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
+$url .= '?' . $params;
+
+$title = isset($title) ? $title : 'Изменить приоритет';
+?> 
+      <input type="button" class='button' value='{$title}' onclick='openWindowForSavePriority("Изменить приоритет", "{$url}", this);return false;'/>
+{{/template}}
+
+{{into slot="js"}}
+  function openWindowForSelectors(title, url)
+  {
+    var params = '&';
+    var checkboxes = jQuery('INPUT.selector[type="checkbox"][checked]').each(function(){
+      params += this.name + '=' + this.value + '&';
+    });
+
+    tb_show(title, url + params + 'TB_iframe=true&width=640&height=480');
+  }
+
+  function openWindowForSavePriority(title, url, obj)
+  {
+    var params = '&';
+    jQuery(obj).parent().parent().parent().find('.priority_items').each(function(){params += this.name + '=' + this.value + '&';});
+    tb_show(title, url + params + 'TB_iframe=true&width=640&height=480');
+  }
+{{/into}}

@@ -1,0 +1,7 @@
+<?php if(!isset($save_button_name)) $save_button_name = 'Сохранить'; ?>
+<div class='list_actions'>
+  {{slot id="extra_buttons"/}}
+  {{input id='create' type="submit" value='{$save_button_name}' class='button'/}}
+  {{input id='cancel' type="button" value='Отмена' class='button' onclick='self.parent.tb_remove();'  runat='client'/}}
+</div>
+

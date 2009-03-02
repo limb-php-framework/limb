@@ -1,0 +1,22 @@
+{{template name="flashbox"}}
+  {{list using="$messages"}}
+    {{list:item}}
+      <li>{$item}</li>
+    {{/list:item}}
+  {{/list}}
+{{/template}}
+
+<?
+  $flashbox = $this->toolkit->getFlashBox();
+  if($flashbox->hasErrors() || $flashbox->hasMessages()){ ?>
+    <div id="flashbox" class="flashbox">
+      <ul>
+        {{apply template="flashbox" messages="$flashbox->getErrors()" box_class="error" /}}
+        {{apply template="flashbox" messages="$flashbox->getMessages()" box_class="message" /}}
+      </ul>
+      <a href="javascipt:void(0)" href="javascript:void(0)" class='close' onclick="this.parentNode.style.display = 'none'; return false;">Закрыть</a>
+    </div>
+    <?
+    $flashbox->reset();
+   }
+?>

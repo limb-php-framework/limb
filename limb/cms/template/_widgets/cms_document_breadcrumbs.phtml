@@ -1,0 +1,28 @@
+<?php
+  $chain = array();
+
+  while($node = $item->getParent())
+  {
+    if(!$node->getParent())
+      break;
+
+    $chain[] = $item = $node;
+  }
+
+  if(isset($root_path))
+    $chain[] = array('root_path' => $root_path);
+
+  $chain = array_reverse($chain);
+?>
+{{list using='$chain' counter="$counter"}}
+  <div class="breadcrumbs">
+    {{list:item}}
+      <? if(isset($root_path) && ($counter == 1)){ ?>
+        <a href='{$item["root_path"]}'><b>Главная страница</b></a>&nbsp;&raquo;
+      <? }else{ ?>
+        <a href='{$base_path}{$item[$link_field]}'><b>{$item.title}</b></a>&nbsp;&raquo;
+      <? } ?>
+    {{/list:item}}
+    {$#item.title}
+  </div><br/>
+{{/list}}

@@ -1,0 +1,12 @@
+{{form:errors to='$fields_errors'/}}
+
+{{list using='$fields_errors' as="$error"}}
+  <div class="message_error">
+    <b class='title'>Следующие поля содержали ошибки</b>
+    <ol>
+      {{list:item}}
+        <li><font color="red">{$error.message}</font></li>
+      {{/list:item}}
+    </ol>
+  </div>
+{{/list}}

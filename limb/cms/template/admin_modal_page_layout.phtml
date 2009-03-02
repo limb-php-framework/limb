@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- Powered by LIMB | http://www.limb-project.com/ -->
+<!-- Designed by BIT | http://www.bit-creative.com/ -->
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp.css" />
+  <!--[if IE]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie.css" /><![endif]-->
+  <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie6.css" /><![endif]-->
+  {{slot id='header_zone' /}}
+</head>
+<body>
+  <div id="popup_wrapper">
+    {{include file='_admin/notify_zone.phtml'/}}
+    {{slot id='icon'/}}
+    {{slot id='title'/}}
+    {{slot id='content_zone'/}}
+  </div>
+</body>
+<script src="/shared/js/js/jquery.js"></script>
+<script src="/shared/js/js/limb.js"></script>
+<script src="/shared/js/js/limb/url.js"></script>
+<script src="/shared/js/js/limb/flash.js"></script>
+<script src="/shared/js/js/limb/window.js"></script>
+<script src="/shared/js/js/limb/forms.js"></script>
+<script src="/shared/js/js/limb/form_elements.js"></script>
+<script src="/shared/cms/js/tabs.js"></script>
+<script src="/shared/cms/js/auto_tabs.js"></script>
+<script src="/shared/cms/js/thickbox.js"></script>
+<script src="/shared/cms/js/cp.js"></script>
+{{slot id='js_include'/}}
+<script type="text/javascript">
+  {{slot id='js'/}}
+  jQuery(window).ready(function()
+  {
+    {{slot id='js_ready'/}}
+  });
+</script>
+</html>
