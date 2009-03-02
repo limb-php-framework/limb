@@ -12,7 +12,6 @@
  * @version $Id$
  */
 require_once('limb/core/common.inc.php');
-lmb_require('limb/view/wact.inc.php');
 lmb_require('limb/view/toolkit.inc.php');
 
 
