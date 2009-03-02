@@ -16,11 +16,23 @@ class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
 {
   protected $storage_init_file = 'limb/dbal/common.inc.php';
   
+  function _getDumpFile()
+  {
+  	$type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
+    
+    $dump_file = dirname(__FILE__) . '/../../../init/cache.' . $type;
+    return file_exists($dump_file) ? $dump_file : null;
+  }
+
+  function skip()
+  {
+    $this->skipIf(!$this->_getDumpFile(), 'Dump file for type "'.lmbToolkit :: instance()->getDefaultDbConnection()->getType().'" not found');
+  }  
+  
   function setUp()
   {
-    $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
-    $this->dump = new lmbDbDump(dirname(__FILE__) . '/../../../init/cache.' . $type);
-    $this->dump->load();
+    $this->dump = new lmbDbDump($this->_getDumpFile());
+    $this->dump->load();    	
     
     parent::setUp();
   }
