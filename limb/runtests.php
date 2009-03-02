@@ -2,6 +2,13 @@
 <?php
 set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path());
 
+//function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+//{
+//  if($errno != E_STRICT)
+//    throw new Exception("Error happened: $errstr($errno) in $errfile@$errline($errcontext)");
+//}
+//set_error_handler('error_handler');
+
 require_once(dirname(__FILE__) . '/tests_runner/common.inc.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestRunner.class.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeFilePathNode.class.php');
