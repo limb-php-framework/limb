@@ -1,8 +1,0 @@
-0.2.0-alpha - 31 December 2007 (r6668)
-==================================================
--- package was heavily refactored, old junky stuff was removed
--- adding initial APC, Memcached and file based cache backends.
-
-0.1.0-alpha - 16 February 2007 (r4985)
-==================================================
--- Initial release of this package.
