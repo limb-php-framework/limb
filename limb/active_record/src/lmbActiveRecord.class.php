@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7593 2009-02-06 15:38:28Z slevin $
+ * @version $Id: lmbActiveRecord.class.php 7656 2009-03-02 07:42:18Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1157,13 +1157,23 @@ class lmbActiveRecord extends lmbObject
   protected function _setAutoTimes()
   {
     if($this->isNew() && $this->_hasCreateTime())
-      $this->_setRaw(self :: $_ctime_field, time());
+      $this->_setRaw(self :: $_ctime_field, $this->_makeCreateTime());
 
     if($this->_hasUpdateTime())
     {
-      $this->_setRaw(self :: $_utime_field, time());
+      $this->_setRaw(self :: $_utime_field, $this->_makeUpdateTime());
       $this->_markDirtyProperty(self :: $_utime_field);
     }
+  }
+
+  protected function _makeCreateTime()
+  {
+    return time();
+  }
+
+  protected function _makeUpdateTime()
+  {
+    return time();
   }
 
   protected function _hasUpdateTime()

@@ -109,14 +109,14 @@ CREATE TABLE "extended_user_for_test2group_for_test" (
 );
 
 DROP TABLE "member_for_test";
-CREATE TABLE `member_for_test` (
+CREATE TABLE "member_for_test" (
   "id" INTEGER PRIMARY KEY,
   "first_name" varchar(255) default NULL,
   "last_name" varchar(255) default NULL
 );
 
 DROP TABLE "photo_for_test";
-CREATE TABLE `photo_for_test` (
+CREATE TABLE "photo_for_test" (
   "id" INTEGER PRIMARY KEY,
   "image_extension" varchar(6) default NULL,
   "extra" varchar(50) default NULL
