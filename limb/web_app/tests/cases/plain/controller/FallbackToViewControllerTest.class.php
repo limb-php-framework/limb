@@ -40,7 +40,7 @@ class FallbackToViewControllerTest extends UnitTestCase
     $controller->performAction();
     $this->assertTrue($this->toolkit->getView()->getTemplate(), 'about.html');
   }
-  
+
   function testForwardTo404IfTemplateIsNotFound()
   {
     $view = new lmbDummyView('some_other_template.html');

@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbController.class.php 7674 2009-03-03 17:33:00Z wiliam $
  */
 class lmbController
 {
@@ -29,37 +29,37 @@ class lmbController
    * @var array array of mixins
    */
   protected $mixins = array();
-  
+
   /**
    * @var object lmbMixable instance
    */
   protected $mixed;
-  
+
   /**
    * @var string name of the controller
    */
   protected $name;
-  
+
   /**
    * @var string default action that will be performed by performAction() if no current_action was speficified
    */
   protected $default_action = 'display';
-  
+
   /**
    * @var string
    */
   protected $current_action;
-  
+
   /**
    * @var array a action to template cached map
    */
   protected $action_template_map = array();
-  
+
   /**
    * @var boolean
    */
   protected $map_changed = false;
-  
+
   /**
    * @var object lmbToolkit instance
    */
@@ -74,17 +74,17 @@ class lmbController
   protected $form_id;
   protected $in_popup = true;
   protected $is_forwarded = false;
-  
+
   function __construct()
   {
     $this->mixed = new lmbMixable();
     $this->mixed->setOwner($this);
     foreach($this->mixins as $mixin)
       $this->mixed->mixin($mixin);
-    
+
     if(!$this->name)
      $this->name = $this->_guessName();
-    
+
     $this->toolkit = lmbToolkit :: instance();
 
     $this->request = $this->toolkit->getRequest();
@@ -96,7 +96,7 @@ class lmbController
 
     $this->_loadCache();
   }
-  
+
   function getDefaultAction()
   {
     return $this->default_action;
@@ -155,7 +155,7 @@ class lmbController
     {
       return false;
     }
-    
+
     if(method_exists($this, $method = $this->_mapCurrentActionToMethod()))
     {
       if($template_path = $this->findTemplateForAction($this->current_action))
@@ -239,7 +239,7 @@ class lmbController
   {
     $this->toolkit->flashError($message);
   }
-  
+
   function flashErrorAndRedirect($message, $redirect = array())
   {
     $this->flashError($message);
@@ -250,7 +250,7 @@ class lmbController
   {
     $this->toolkit->flashMessage($message);
   }
-  
+
   function flashAndRedirect($message, $redirect = array())
   {
     $this->flashMessage($message);
@@ -284,7 +284,7 @@ class lmbController
   {
     return lmb_camel_case('do_' . $action);
   }
-  
+
   function forward($controller_name, $action)
   {
     $this->is_forwarded = true;
@@ -302,7 +302,7 @@ class lmbController
   {
     return $this->forward('server_error', 'display');
   }
-  
+
 
   function __destruct()
   {
@@ -328,7 +328,7 @@ class lmbController
                          serialize($this->action_template_map));
     }
   }
-  
+
   /**
    * Using this hacky method mixins can access controller variables
    * @param string variable name
@@ -346,7 +346,7 @@ class lmbController
       return $this->action_template_map[$this->name][$action];
 
     $template_format = $this->getName() . '/' . $action;
-    
+
     if($template_path = $this->findTemplateByAlias($template_format));
     {
       $this->map_changed = true;
@@ -356,7 +356,7 @@ class lmbController
 
     $this->action_template_map[$this->name][$action] = false;
   }
-  
+
   function findTemplateByAlias($template_format)
   {
     foreach($this->toolkit->getSupportedViewExtensions() as $ext)

@@ -7,10 +7,10 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/controller/lmbController.class.php');
-lmb_require('limb/view/src/wact/lmbWactTemplateLocator.class.php');
+lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 lmb_require('limb/validation/src/rule/lmbValidationRule.interface.php');
 
-Mock :: generate('lmbWactTemplateLocator', 'MockWactTemplateLocator');
+Mock :: generate('lmbMacroTemplateLocator', 'MockMacroTemplateLocator');
 Mock :: generate('lmbValidationRule', 'MockValidationRule');
 
 class TestingController extends lmbController
@@ -69,7 +69,7 @@ class TestingForwardController extends lmbController
   function __construct()
   {
     parent::__construct();
-    
+
     $this->forward('testing', 'write');
   }
 }
@@ -127,7 +127,7 @@ class lmbControllerTest extends UnitTestCase
     $controller->performAction();
     $this->assertTrue($this->toolkit->getView()->getTemplate(), 'testing/detail.html');
   }
-  
+
   function testGuessingTemplateWorksOkForActionWithPercentageSymbol()
   {
     $this->toolkit->setSupportedViewTypes(array('.html' => 'lmbDummyView'));
@@ -137,7 +137,7 @@ class lmbControllerTest extends UnitTestCase
 
     $controller->performAction();
     $this->assertTrue($this->toolkit->getView()->getTemplate(), 'testing/detail%28.html');
-  }  
+  }
 
   function testControllerAttributesAutomaticallyPassedToView()
   {
