@@ -286,11 +286,11 @@ EOD;
     if($this->storage_init_file)
       $storage_init_file = "lmb_require('{$this->storage_init_file}');";
       
-    if(defined('LIMB_DB_DSN'))
-      $limb_db_dsn = "@define('LIMB_DB_DSN', '" . LIMB_DB_DSN . "');";
+    if(lmb_env_has('LIMB_DB_DSN'))
+      $limb_db_dsn = "lmb_env_setor('LIMB_DB_DSN', '" . LIMB_DB_DSN . "');";
       
-    if(defined('LIMB_VAR_DIR'))
-      $limb_var_dir = "@define('LIMB_VAR_DIR', '" . LIMB_VAR_DIR . "');";
+    if(lmb_env_has('LIMB_VAR_DIR'))
+      $limb_var_dir = "lmb_env_setor('LIMB_VAR_DIR', '" . LIMB_VAR_DIR . "');";
 
     $request_code = sprintf($request_code, $storage_init_file, $limb_db_dsn, $limb_var_dir);
     
