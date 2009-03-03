@@ -1,7 +1,5 @@
 <?php
 
-lmb_require('limb/core/src/lmbEnv.class.php');
-
 class lmbEnvFunctionsTest extends UnitTestCase
 {
   function testGet_Negative()
