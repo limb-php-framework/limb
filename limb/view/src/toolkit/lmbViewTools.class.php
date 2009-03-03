@@ -8,7 +8,7 @@
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
-@define('LIMB_SUPPORTED_VIEW_TYPES', '.phtml=lmbMacroView');
+lmb_env_setor('LIMB_SUPPORTED_VIEW_TYPES', '.phtml=lmbMacroView');
 
 /**
  * class lmbViewTools.
@@ -26,7 +26,7 @@ class lmbViewTools extends lmbAbstractTools
   {
     parent :: __construct();
 
-    $items = explode(';', LIMB_SUPPORTED_VIEW_TYPES);
+    $items = explode(';', lmb_env_get('LIMB_SUPPORTED_VIEW_TYPES'));
     foreach($items as $item)
     {
       list($ext, $class) = explode('=', $item);

@@ -9,6 +9,7 @@ CREATE TABLE `lmb_cms_document` (
   `parent_id` int(11) NOT NULL default '0',
   `level` int(11) NOT NULL default '0',
   `identifier` varchar(128) NOT NULL default '',
+  `priority` integer NOT NULL default 0,  
   `path` varchar(255) NOT NULL default '',
   `uri` varchar(255) NOT NULL default '',
   `ctime` int(11) NOT NULL default '0',

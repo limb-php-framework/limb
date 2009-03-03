@@ -13,7 +13,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbCachedIni.
  *
  * @package config
- * @version $Id: lmbCachedIni.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbCachedIni.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbCachedIni extends lmbIni
 {
@@ -38,8 +38,7 @@ class lmbCachedIni extends lmbIni
 
   function isCacheEnabled()
   {
-    return (!defined('LIMB_INI_CACHE_ENABLED') || (defined('LIMB_INI_CACHE_ENABLED') &&
-             constant('LIMB_INI_CACHE_ENABLED')));
+    return (bool) lmb_env_get('LIMB_INI_CACHE_ENABLED', true);
   }
 
   function getCacheFile()

@@ -17,7 +17,7 @@ class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
   protected $storage_init_file = 'limb/dbal/common.inc.php';
   
   function _getDumpFile()
-  {
+  {  	
   	$type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
     
     $dump_file = dirname(__FILE__) . '/../../../init/cache.' . $type;
@@ -25,8 +25,11 @@ class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
   }
 
   function skip()
-  {
-    $this->skipIf(!$this->_getDumpFile(), 'Dump file for type "'.lmbToolkit :: instance()->getDefaultDbConnection()->getType().'" not found');
+  {  	
+  	$is_connection_exists = lmbToolkit :: instance()->isDefaultDbDSNAvailable();
+  	$this->skipIf(!$is_connection_exists, 'DB connection not found. Test skiped');
+  	if($is_connection_exists)
+      $this->skipIf(!$this->_getDumpFile(), 'Dump file for type "'.lmbToolkit :: instance()->getDefaultDbConnection()->getType().'" not found. Test skiped');
   }  
   
   function setUp()

@@ -11,7 +11,7 @@ lmb_require('limb/validation/src/lmbErrorList.class.php');
 lmb_require('limb/core/src/lmbHandle.class.php');
 lmb_require('limb/validation/src/lmbValidator.class.php');
 
-@define('LIMB_RULES_INCLUDE_PATH', 'src/rule;limb/*/src/rule;limb/web_app/src/validation/rule');
+lmb_env_setor('LIMB_RULES_INCLUDE_PATH', 'src/rule;limb/*/src/rule;limb/web_app/src/validation/rule');
 
 /**
  * Builds new or fills with the rules existing lmbValidator object, simplifying constructing rules

@@ -65,7 +65,7 @@ class lmbWebAppToolsTest extends UnitTestCase
     $toolkit->setConf('common', new lmbObject(array('debug_enabled' => false)));
     $this->assertFalse($toolkit->isWebAppDebugEnabled());
     
-    define('LIMB_APP_MODE', 'devel');
+    lmb_env_set('LIMB_APP_MODE', 'devel');
     $this->assertTrue($toolkit->isWebAppDebugEnabled());    
   }
   

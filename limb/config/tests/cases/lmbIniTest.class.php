@@ -9,23 +9,23 @@
 lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
-define('INI_TEST_UNIQUE_CONSTANT', '*constant*');
+lmb_env_setor('INI_TEST_UNIQUE_CONSTANT', '*constant*');
 
 class lmbIniTest extends UnitTestCase
 {
   function setUp()
   {
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tmp_ini');
+    lmbFs :: mkdir(lmb_env_get('LIMB_VAR_DIR') . '/tmp_ini');
   }
 
   function tearDown()
   {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tmp_ini');
+    lmbFs :: rm(lmb_env_get('LIMB_VAR_DIR') . '/tmp_ini');
   }
 
   function _createIni($contents)
   {
-    file_put_contents($file = LIMB_VAR_DIR . '/tmp_ini/' . mt_rand() . '.ini', $contents);
+    file_put_contents($file = lmb_env_get('LIMB_VAR_DIR') . '/tmp_ini/' . mt_rand() . '.ini', $contents);
     return new lmbIni($file);
   }
 

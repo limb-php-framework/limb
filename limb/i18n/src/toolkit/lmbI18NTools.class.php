@@ -10,13 +10,13 @@ lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/i18n/src/locale/lmbLocale.class.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
 
-@define('LIMB_LOCALE_INCLUDE_PATH', 'i18n/locale;limb/i18n/i18n/locale');
+lmb_env_setor('LIMB_LOCALE_INCLUDE_PATH', 'i18n/locale;limb/i18n/i18n/locale');
 
 /**
  * class lmbI18NTools.
  *
  * @package i18n
- * @version $Id: lmbI18NTools.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbI18NTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbI18NTools extends lmbAbstractTools
 {
@@ -30,9 +30,9 @@ class lmbI18NTools extends lmbAbstractTools
     if(!is_object($this->dict_backend))
     {
       $this->dict_backend = new lmbQtDictionaryBackend();
-      if(defined('LIMB_VAR_DIR'))
+      if(lmb_env_get('LIMB_VAR_DIR'))
       {
-        $this->dict_backend->setCacheDir(LIMB_VAR_DIR);
+        $this->dict_backend->setCacheDir(lmb_env_get('LIMB_VAR_DIR'));
         $this->dict_backend->useCache();
       }
     }
@@ -79,10 +79,10 @@ class lmbI18NTools extends lmbAbstractTools
 
   function createLocaleObject($locale)
   {
-    $file = $this->toolkit->findFileByAlias($locale . '.ini', LIMB_LOCALE_INCLUDE_PATH, 'i18n_locale');
+    $file = $this->toolkit->findFileByAlias($locale . '.ini', lmb_env_get('LIMB_LOCALE_INCLUDE_PATH'), 'i18n_locale');
 
-    if(defined('LIMB_VAR_DIR'))
-      return new lmbLocale($locale, new lmbCachedIni($file, LIMB_VAR_DIR . '/locale/'));
+    if(lmb_env_has('LIMB_VAR_DIR'))
+      return new lmbLocale($locale, new lmbCachedIni($file, lmb_env_get('LIMB_VAR_DIR') . '/locale/'));
     else
       return new lmbLocale($locale, new lmbIni($file));
   }

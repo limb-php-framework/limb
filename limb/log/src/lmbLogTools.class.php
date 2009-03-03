@@ -32,8 +32,8 @@ class lmbLogTools extends lmbAbstractTools
 
     $this->log = new lmbLog();
 
-    if(defined('LIMB_VAR_DIR'))
-      $this->log->registerWriter(new lmbLogFileWriter(LIMB_VAR_DIR . '/log/'));
+    if(lmb_env_has('LIMB_VAR_DIR'))
+      $this->log->registerWriter(new lmbLogFileWriter(lmb_env_get('LIMB_VAR_DIR') . '/log/'));
 
     return $this->log;
   }

@@ -13,7 +13,7 @@ lmb_require('limb/web_app/src/tests/lmbWebApplicationSandbox.class.php');
 
 class ObjectForTesting extends lmbActiveRecord
 { 
-  protected $_db_table_name = 'object_for_testing';
+  protected $_db_table_name = 'cms_object_for_testing';
 }
 
 class TestObjectController extends lmbObjectController

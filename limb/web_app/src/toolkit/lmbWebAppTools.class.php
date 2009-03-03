@@ -8,13 +8,13 @@
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 
-@define('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/*/src/controller');
+lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/*/src/controller');
 
 /**
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbWebAppTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -73,7 +73,7 @@ class lmbWebAppTools extends lmbAbstractTools
     if(!isset($params['controller']) && !$skip_controller)
       $params['controller'] = $this->toolkit->getDispatchedController()->getName();
 
-    return LIMB_HTTP_GATEWAY_PATH . ltrim($routes->toUrl($params, $route_name), '/');
+    return lmb_env_get('LIMB_HTTP_GATEWAY_PATH') . ltrim($routes->toUrl($params, $route_name), '/');
   }
 
   function getRoutes()
@@ -139,7 +139,7 @@ class lmbWebAppTools extends lmbAbstractTools
   function isWebAppDebugEnabled()
   {
     $mode = false;
-    if(defined('LIMB_APP_MODE') && LIMB_APP_MODE == 'devel')
+    if('devel' === lmb_env_get('LIMB_APP_MODE'))
       $mode = true;
 
     try

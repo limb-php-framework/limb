@@ -43,11 +43,8 @@ class lmbCmsDocumentRequestDispatcherTest extends lmbCmsTestCase
 
   function testDispatch_FoundInDb()
   {
-    $document = new lmbCmsDocument();
+  	$document = $this->_createDocument('news', lmbCmsDocument::findRoot());    
     $document->setIsPublished(true);
-    $document->setIdentifier('news');
-    $document->setContent('content');
-    $document->setParent(lmbCmsDocument::findRoot());
     $document->save();
 
     $result = $this->_createDispatcher();

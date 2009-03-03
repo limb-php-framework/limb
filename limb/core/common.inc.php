@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7616 2009-02-09 19:41:41Z korchasa $
+ * @version $Id: common.inc.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -34,6 +34,8 @@ function lmb_env_get($name, $def = null)
   
   if(defined($name))      
     return constant($name);
+    
+  return $def;
 }
 
 function lmb_env_setor($name, $value)

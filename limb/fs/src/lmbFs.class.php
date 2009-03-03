@@ -57,8 +57,8 @@ class lmbFs
 
   static function getTmpDir()
   {
-    if(defined('LIMB_VAR_DIR'))
-      return LIMB_VAR_DIR;
+    if(lmb_env_has('LIMB_VAR_DIR'))
+      return lmb_env_get('LIMB_VAR_DIR');
 
     if($path = session_save_path())
     {

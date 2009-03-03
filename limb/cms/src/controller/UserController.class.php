@@ -4,8 +4,6 @@ lmb_require('limb/mail/src/lmbMailer.class.php');
 lmb_require('limb/cms/src/model/lmbCmsUser.class.php');
 lmb_require('limb/view/src/lmbMacroView.class.php');
 
-@define('ADMIN_EMAIL', "no_reply@bit-cms.com");
-
 class UserController extends lmbController
 {
   function doForgotPassword()
@@ -33,7 +31,7 @@ class UserController extends lmbController
     $email_body = $template->render();
 
     $mailer = new lmbMailer();
-    $mailer->sendPlainMail($user->getEmail(), ADMIN_EMAIL, "Password recovery", $email_body);
+    $mailer->sendPlainMail($user->getEmail(), lmb_env_get('ADMIN_EMAIL', "no_reply@bit-cms.com"), "Password recovery", $email_body);
 
     $this->flashAndRedirect("Новый пароль выслан на ваш email", '/user/login');
   }

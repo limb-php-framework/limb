@@ -47,7 +47,7 @@ EOD
 );
 
     $builder = new lmbJsPreprocessor();
-    $this->assertEqual($builder->processFile(LIMB_VAR_DIR . $file),
+    $this->assertEqual($builder->processFile(lmb_env_get('LIMB_VAR_DIR') . $file),
 <<<EOD
 bar
 foo

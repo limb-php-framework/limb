@@ -1,12 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../../../common.inc.php');
 
-$type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
-$ignore = !file_exists(dirname(__FILE__) . '/.fixture/init_tests.' . $type);
-$test_dir = basename(dirname(__FILE__));
+require_once('limb/dbal/tests/cases/init.inc.php');
 
-if($ignore)
-  echo "\nWEB_APP package '$test_dir' tests are skipped!(no compatible database fixture found for '$type' connection)\n\n";
-
-return $ignore;
-
+return lmb_tests_is_db_dump_exists(dirname(__FILE__) . '/.fixture/init_tests.', 'WEB_APP');

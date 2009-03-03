@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-define('LIMB_CONTROLLER_CACHE_ENABLED', true);
+lmb_env_setor('LIMB_CONTROLLER_CACHE_ENABLED', true);
 
 lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/core/src/lmbMixable.class.php');
@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7674 2009-03-03 17:33:00Z wiliam $
+ * @version $Id: lmbController.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbController
 {
@@ -311,7 +311,7 @@ class lmbController
 
   function isCacheEnabled()
   {
-    return (defined('LIMB_CONTROLLER_CACHE_ENABLED') && constant('LIMB_CONTROLLER_CACHE_ENABLED'));
+    return (bool) lmb_env_get('LIMB_CONTROLLER_CACHE_ENABLED');
   }
 
   function _loadCache()

@@ -57,9 +57,9 @@ class lmbFsTools extends lmbAbstractTools
     else
       $file_locations = new lmbIncludePathFileLocations(explode(';', $paths));
 
-    if(defined('LIMB_VAR_DIR'))
+    if(lmb_env_has('LIMB_VAR_DIR'))
       $locator = new lmbCachingFileLocator(new lmbFileLocator($file_locations),
-                                           LIMB_VAR_DIR . '/locators/',
+                                           lmb_env_get('LIMB_VAR_DIR') . '/locators/',
                                            $locator_name);
     else
       $locator = new lmbFileLocator($file_locations);

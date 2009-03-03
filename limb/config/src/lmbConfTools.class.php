@@ -11,13 +11,13 @@ lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/config/src/lmbCachedIni.class.php');
 lmb_require('limb/config/src/lmbConf.class.php');
 
-@define('LIMB_CONF_INCLUDE_PATH', 'settings;limb/*/settings');
+lmb_env_setor('LIMB_CONF_INCLUDE_PATH', 'settings;limb/*/settings');
 
 /**
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 7497 2009-01-28 08:13:09Z korchasa $
+ * @version $Id: lmbConfTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -49,7 +49,7 @@ class lmbConfTools extends lmbAbstractTools
   function getConfIncludePath()
   {
     if(!$this->conf_include_path)
-      $this->conf_include_path = LIMB_CONF_INCLUDE_PATH;
+      $this->conf_include_path = lmb_env_get('LIMB_CONF_INCLUDE_PATH');
     return $this->conf_include_path;
   }
   
@@ -70,8 +70,8 @@ class lmbConfTools extends lmbAbstractTools
     if($ext == '.ini')
     {
       $file = $this->_locateFiles($name);
-      if(defined('LIMB_VAR_DIR'))
-        $this->confs[$name] = new lmbCachedIni($file, LIMB_VAR_DIR . '/ini/');
+      if(lmb_env_has('LIMB_VAR_DIR'))
+        $this->confs[$name] = new lmbCachedIni($file, lmb_env_get('LIMB_VAR_DIR') . '/ini/');
       else
         $this->confs[$name] = new lmbIni($file);
     }

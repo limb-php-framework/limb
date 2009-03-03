@@ -8,7 +8,7 @@
  */
 
 lmb_require('limb/wysiwyg/src/macro/lmbMacroBaseWysiwygWidget.class.php');
-@define('LIMB_FCKEDITOR_DIR', 'limb/wysiwyg/lib/FCKeditor/');
+lmb_env_setor('LIMB_FCKEDITOR_DIR', 'limb/wysiwyg/lib/FCKeditor/');
 /**
  * @package wysiwyg
  * @version $Id$

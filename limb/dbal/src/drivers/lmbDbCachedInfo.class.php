@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbDbCachedInfo.
  *
  * @package dbal
- * @version $Id: lmbDbCachedInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbDbCachedInfo.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbDbCachedInfo extends lmbProxy
 {
@@ -97,8 +97,7 @@ class lmbDbCachedInfo extends lmbProxy
 
   protected function _isFileCachingEnabled()
   {
-    return ($this->cache_file &&
-            (defined('LIMB_CACHE_DB_META_IN_FILE') && constant('LIMB_CACHE_DB_META_IN_FILE')));
+    return ($this->cache_file && lmb_env_get('LIMB_CACHE_DB_META_IN_FILE'));
   }
 }
 

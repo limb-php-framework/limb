@@ -9,7 +9,7 @@
 
 /**
  * @package web_app
- * @version $Id: setup.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: setup.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 set_include_path(dirname(__FILE__) . PATH_SEPARATOR .
                  dirname(__FILE__) . '/lib/' . PATH_SEPARATOR);
@@ -17,7 +17,7 @@ set_include_path(dirname(__FILE__) . PATH_SEPARATOR .
 if(file_exists(dirname(__FILE__) . '/setup.override.php'))
   require_once(dirname(__FILE__) . '/setup.override.php');
 
-@define('LIMB_VAR_DIR', dirname(__FILE__) . '/var/');
+lmb_env_setor('LIMB_VAR_DIR', dirname(__FILE__) . '/var/');
 
 require_once('limb/core/common.inc.php');
 require_once('limb/web_app/common.inc.php');

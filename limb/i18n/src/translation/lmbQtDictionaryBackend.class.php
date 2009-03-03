@@ -10,7 +10,7 @@ lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
-@define('LIMB_TRANSLATIONS_INCLUDE_PATH', 'i18n/translations;limb/*/i18n/translations');
+lmb_env_setor('LIMB_TRANSLATIONS_INCLUDE_PATH', 'i18n/translations;limb/*/i18n/translations');
 
 /**
  * class lmbQtDictionaryBackend.
@@ -25,7 +25,7 @@ class lmbQtDictionaryBackend //extends lmbDictionaryBackend ???
 
   function __construct()
   {
-    $this->search_path = LIMB_TRANSLATIONS_INCLUDE_PATH;
+    $this->search_path = lmb_env_get('LIMB_TRANSLATIONS_INCLUDE_PATH');
   }
 
   function setCacheDir($dir)

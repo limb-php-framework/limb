@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbDbTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -207,8 +207,8 @@ class lmbDbTools extends lmbAbstractTools
     if(isset($this->db_info[$id]))
       return $this->db_info[$id];
 
-    if($this->cache_db_info && defined('LIMB_VAR_DIR'))
-      $db_info = new lmbDbCachedInfo($conn, LIMB_VAR_DIR);
+    if($this->cache_db_info && lmb_env_has('LIMB_VAR_DIR'))
+      $db_info = new lmbDbCachedInfo($conn, lmb_env_get('LIMB_VAR_DIR'));
     else
       $db_info = $conn->getDatabaseInfo();
 

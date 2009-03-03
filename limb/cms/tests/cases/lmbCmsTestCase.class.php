@@ -55,6 +55,7 @@ class lmbCmsTestCase extends UnitTestCase
 
     $document = new lmbCmsDocument();
     $document->setIdentifier($identifier);
+    $document->setTitle('title_'.microtime(true));
     $document->setContent('content_'.microtime(true));
 
     if(!$parent_document)

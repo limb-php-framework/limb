@@ -9,7 +9,7 @@
 lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/js/src/lmbJsDirectiveHandlers.class.php');
 
-@define('LIMB_JS_INCLUDE_PATH', 'www/js;limb/*/shared/js');
+lmb_env_setor('LIMB_JS_INCLUDE_PATH', 'www/js;limb/*/shared/js');
 
 /**
  * class lmbJsPreprocessor.
@@ -114,7 +114,7 @@ class lmbJsPreprocessor
 
   protected function _locateFiles($name)
   {
-    $locator = $this->toolkit->getFileLocator(LIMB_JS_INCLUDE_PATH, 'js');
+    $locator = $this->toolkit->getFileLocator(lmb_env_get('LIMB_JS_INCLUDE_PATH'), 'js');
     return $locator->locateAll($name);
   }
 
