@@ -7,20 +7,20 @@
 {{/template}}
 
 {{template name="selectors_button"}}
-<? 
-$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName(); 
-$params = isset($params)? $params : '';  
+<?
+$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName();
+$params = isset($params)? $params : '';
 
 $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
 $url .= '?' . $params;
 ?>
-  
-   <input type="button" class='button' value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}");return false;'/>
+
+   <input type="button" class='button' value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}", this);return false;'/>
 {{/template}}
 
 {{template name="selectors_change_category"}}
-<? 
-$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName(); 
+<?
+$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName();
 $params = isset($params)? $params : '';
 
 $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
@@ -31,26 +31,23 @@ $url .= '?' . $params;
 {{/template}}
 
 {{template name="save_priority_button"}}
-<? 
-$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName(); 
-$params = isset($params)? $params : '';  
+<?
+$controller = isset($controller) ? $controller : lmbToolkit::instance()->getDispatchedController()->getName();
+$params = isset($params)? $params : '';
 
 $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
 $url .= '?' . $params;
 
 $title = isset($title) ? $title : 'Изменить приоритет';
-?> 
+?>
       <input type="button" class='button' value='{$title}' onclick='openWindowForSavePriority("Изменить приоритет", "{$url}", this);return false;'/>
 {{/template}}
 
 {{into slot="js"}}
-  function openWindowForSelectors(title, url)
+  function openWindowForSelectors(title, url, obj)
   {
     var params = '&';
-    var checkboxes = jQuery('INPUT.selector[type="checkbox"][checked]').each(function(){
-      params += this.name + '=' + this.value + '&';
-    });
-
+    jQuery(obj).parent().parent().parent().find('input.selector[type="checkbox"][checked]').each(function(){ params += this.name + '=' + this.value + '&';});
     tb_show(title, url + params + 'TB_iframe=true&width=640&height=480');
   }
 
