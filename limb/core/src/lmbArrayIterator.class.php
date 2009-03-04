@@ -9,9 +9,9 @@
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 
 /**
- * class lmbArrayIterator.
+ * class WactArrayIterator.
  *
- * @package core
+ * @package wact
  * @version $Id: WactArrayIterator.class.php 6386 2007-10-05 14:22:21Z serega $
  */
 class lmbArrayIterator extends ArrayIterator implements lmbCollectionInterface

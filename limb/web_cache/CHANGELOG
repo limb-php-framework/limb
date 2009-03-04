@@ -1,0 +1,15 @@
+0.2.1-alpha - 31 December 2007 (r6681)
+==================================================
+-- eol changes
+
+0.2.0-alpha - 6 July 2007 (r6094)
+==================================================
+-- adding phpdoc header to modules
+-- full page cache rules are loaded from ini file in order of their names (#WCA-1)
+-- lmbFullPageCacheFilter now accepts optionally cache rules ini name, cache dir as well as user
+-- removing LIMB_VAR_DIR dependency, passing cache_dir explicitly(LMBF-6)
+-- using new unified lmbConfTools :: getConf() interface
+
+0.1.0-alpha - 16 February 2007 (r5013)
+==================================================
+-- Initial release of this package.

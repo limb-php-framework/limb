@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/i18n/src/translation/lmbPHPDictionaryExtractor.class.php');
+lmb_require('limb/i18n/src/translation/lmbWACTDictionaryExtractor.class.php');
 lmb_require('limb/i18n/src/translation/lmbFsDictionaryExtractor.class.php');
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 lmb_require('limb/i18n/src/translation/lmbQtDictionaryBackend.class.php');
@@ -18,7 +19,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbDictionaryUpdater.
  *
  * @package i18n
- * @version $Id: lmbDictionaryUpdater.class.php 7678 2009-03-04 00:12:36Z korchasa $
+ * @version $Id: lmbDictionaryUpdater.class.php 7686 2009-03-04 19:57:12Z korchasa $
  */
 class lmbDictionaryUpdater
 {
@@ -40,6 +41,7 @@ class lmbDictionaryUpdater
   function updateTranslations($source_dir, $dry_run = false)
   {
     $loader = new lmbFsDictionaryExtractor();
+    $loader->registerFileParser('.html', new lmbWACTDictionaryExtractor());
     $loader->registerFileParser('.php', new lmbPHPDictionaryExtractor());
     $loader->registerFileParser('.phtml', new lmbPHPDictionaryExtractor());
 

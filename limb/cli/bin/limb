@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+set_include_path(dirname(__FILE__) . '/../../../' . PATH_SEPARATOR . get_include_path());
+//project setup
+if(file_exists('./setup.php'))
+  require_once('./setup.php');
+
+require_once('limb/cli/common.inc.php');
+lmb_require('limb/cli/src/lmbCliResponse.class.php');
+lmb_require('limb/cli/src/lmbCliInput.class.php');
+lmb_require('limb/cli/src/lmbCliOption.class.php');
+lmb_require('limb/cli/src/lmbCliException.class.php');
+lmb_require('limb/cli/src/lmbCliRunner.class.php');
+
+$output = new lmbCliResponse();
+$output->setVerbose(true);
+
+$input = new lmbCliInput('h|help;c|config=');
+$input->strictMode(false);
+$input->read();
+
+$config = false;
+if(!$config = $input->getOptionValue('config'))
+  $config = getenv('LIMB_CLI_CONFIG');
+
+if($config)
+  require_once($config);
+
+$cli = new lmbCliRunner($input, $output);
+$result = $cli->execute();
+
+exit($result);
