@@ -16,8 +16,8 @@ class lmbTableGatewayMetadataTest extends UnitTestCase
 
   function setUp()
   {
-    $toolkit = lmbToolkit :: save();
-    $toolkit->cacheDbInfo(false);
+    $toolkit = lmbToolkit :: save();    
+    lmbToolkit::instance()->getConf('db')->set('cache_db_info', false);
     $this->conn = $toolkit->getDefaultDbConnection();
   }
 

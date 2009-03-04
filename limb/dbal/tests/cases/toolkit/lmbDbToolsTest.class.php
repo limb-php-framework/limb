@@ -120,5 +120,42 @@ class lmbDbToolsTest extends UnitTestCase
     $connection_by_dsn = $this->tools->getDbConnectionByDsn($this->config['another_dsn']);
     $this->assertReference($connection_by_name, $connection_by_dsn);
   }
+
+  function testGetDbInfo_cache_global_negative()
+  {
+  	lmb_env_set('LIMB_CACHE_DB_META_IN_FILE', false);
+    $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=1');
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbMysqlDbInfo');   
+  }
   
+  function testGetDbInfo_cache_global_positive()
+  {
+    lmb_env_set('LIMB_CACHE_DB_META_IN_FILE', true);
+    $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=2');
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbDbCachedInfo');    
+  }
+  
+  function testGetDbInfo_cache_in_conf_negative()
+  {    
+    lmb_env_remove('LIMB_CACHE_DB_META_IN_FILE');
+    
+    $config = new lmbSet($this->config);    
+    $config['cache_db_info'] = false;    
+    lmbToolkit::instance()->setConf('db', $config);
+        
+    $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=4');
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbMysqlDbInfo');
+  }
+  
+  function testGetDbInfo_cache_in_conf_positive()
+  {    
+    lmb_env_remove('LIMB_CACHE_DB_META_IN_FILE');
+    
+    $config = new lmbSet($this->config);    
+    $config['cache_db_info'] = true;    
+    lmbToolkit::instance()->setConf('db', $config);
+    
+    $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=3');
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbDbCachedInfo');    
+  }
 }

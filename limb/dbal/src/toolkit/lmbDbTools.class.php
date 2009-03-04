@@ -16,16 +16,16 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
+ * @version $Id: lmbDbTools.class.php 7685 2009-03-04 16:02:28Z korchasa $
  */
 class lmbDbTools extends lmbAbstractTools
 {
   protected $dsnes_available = array('dsn' => null);
   protected $dsnes_active = array();
   protected $dsnes_names = array('dsn' => null);
-  protected $cache_db_info = true;
   protected $db_info = array();
   protected $db_tables = array();
+  protected $is_db_info_cache_enabled;
   protected $db_env = 'devel';
 
   function setDbEnvironment($env)
@@ -194,10 +194,21 @@ class lmbDbTools extends lmbAbstractTools
     }
     return new $class($dsn, $dsn->toString());
   }
-
-  function cacheDbInfo($flag = true)
+  
+  protected function _isDbInfoCacheEnabled()
   {
-    $this->cache_db_info = $flag;
+  	if(is_null($this->is_db_info_cache_enabled))
+  	{
+  		$this->is_db_info_cache_enabled = false;  		
+  		
+  	  if(lmb_env_has('LIMB_CACHE_DB_META_IN_FILE'))
+  	    $this->is_db_info_cache_enabled = lmb_env_get('LIMB_CACHE_DB_META_IN_FILE');
+  	    
+  	  if($this->toolkit->getConf('db')->has('cache_db_info'))
+        $this->is_db_info_cache_enabled = $this->toolkit->getConf('db')->get('cache_db_info');
+  	}
+  	
+  	return $this->is_db_info_cache_enabled;
   }
 
   function getDbInfo($conn)
@@ -205,9 +216,9 @@ class lmbDbTools extends lmbAbstractTools
     $id = $conn->getHash();
 
     if(isset($this->db_info[$id]))
-      return $this->db_info[$id];
+      return $this->db_info[$id];    
 
-    if($this->cache_db_info && lmb_env_has('LIMB_VAR_DIR'))
+    if($this->_isDbInfoCacheEnabled())
       $db_info = new lmbDbCachedInfo($conn, lmb_env_get('LIMB_VAR_DIR'));
     else
       $db_info = $conn->getDatabaseInfo();

@@ -14,7 +14,7 @@ lmb_require('limb/fs/src/lmbFs.class.php');
  * class lmbDbCachedInfo.
  *
  * @package dbal
- * @version $Id: lmbDbCachedInfo.class.php 7676 2009-03-03 22:37:28Z korchasa $
+ * @version $Id: lmbDbCachedInfo.class.php 7685 2009-03-04 16:02:28Z korchasa $
  */
 class lmbDbCachedInfo extends lmbProxy
 {
@@ -91,14 +91,8 @@ class lmbDbCachedInfo extends lmbProxy
 
   protected function _writeToFileCache($db_info)
   {
-    if($this->_isFileCachingEnabled())
-      lmbFs :: safeWrite($this->cache_file, serialize(new lmbSerializable($db_info)));
-  }
-
-  protected function _isFileCachingEnabled()
-  {
-    return ($this->cache_file && lmb_env_get('LIMB_CACHE_DB_META_IN_FILE'));
-  }
+    lmbFs :: safeWrite($this->cache_file, serialize(new lmbSerializable($db_info)));
+  }  
 }
 
 
