@@ -13,17 +13,16 @@ class lmbMailerTest extends UnitTestCase {
 
   function testConstructorConfiguration()
   {
-    $config = array('smtp_port' => 'baz');
+    $config = array('smtp_port' => '252525');
 
     $mailer = new lmbMailer($config);
-    $this->assertEqual($mailer->smtp_host, LIMB_SMTP_HOST);
-    $this->assertEqual($mailer->smtp_port, 'baz');
-    $this->assertNotEqual('baz', LIMB_SMTP_PORT);
+    $this->assertEqual($mailer->smtp_host, 'localhost');
+    $this->assertEqual($mailer->smtp_port, '252525');
   }
 
   function testSetConfig()
   {
-    $mailer = new lmbMailer();
+    $mailer = new lmbMailer(array());
 
     $mailer->smtp_host = 'foo';
 
@@ -36,7 +35,7 @@ class lmbMailerTest extends UnitTestCase {
 
   function testProcessMailRecepients()
   {
-    $mailer = new lmbMailer();
+    $mailer = new lmbMailer(array());
     
     $recs = $mailer->processMailRecipients("bob@localhost");
     $this->assertEqual(sizeof($recs), 1);

@@ -3,38 +3,23 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-@define('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
-@define('LIMB_USE_PHPMAIL', false);
-@define('LIMB_SMTP_PORT', '25');
-@define('LIMB_SMTP_HOST', 'localhost');
-@define('LIMB_SMTP_AUTH', false);
-@define('LIMB_SMTP_USER', '');
-@define('LIMB_SMTP_PASSWORD', '');
+
+lmb_require('limb/mail/src/lmbBaseMailerInterface.interface.php');
 
 /**
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbMailer.class.php 7680 2009-03-04 02:57:21Z korchasa $
  */
-class lmbMailer
+class lmbMailer implements lmbBaseMailerInterface
 {
   protected $attachments = array();
   protected $images = array();
   protected $replyTo = array();
-
-  protected $_config_properties_map = array(
-    'phpmailer_version_name' => 'PHPMAILER_VERSION_NAME',
-    'use_phpmail' => 'LIMB_USE_PHPMAIL',
-    'smtp_host' => 'LIMB_SMTP_HOST',
-    'smtp_port' => 'LIMB_SMTP_PORT',
-    'smtp_auth' => 'LIMB_SMTP_AUTH',
-    'smtp_user' => 'LIMB_SMTP_USER',
-    'smtp_password' => 'LIMB_SMTP_PASSWORD'
-  );
 
   public $phpmailer_dir;
   public $use_phpmail;
@@ -44,31 +29,32 @@ class lmbMailer
   public $smtp_user;
   public $smtp_password;
 
-  function __construct($config = false)
-  {
-    $this->_setConfigFromDefinedContants();
-
-    if($config)
+  function __construct($config)
+  {            
+      $this->use_phpmail = lmb_env_get('LIMB_USE_PHPMAIL', false);
+      $this->smtp_host = lmb_env_get('LIMB_SMTP_HOST', 'localhost');
+      $this->smtp_port = lmb_env_get('LIMB_SMTP_PORT', '25');
+      $this->smtp_auth = lmb_env_get('LIMB_SMTP_AUTH', false);
+      $this->smtp_user = lmb_env_get('LIMB_SMTP_USER', '');
+      $this->smtp_password = lmb_env_get('LIMB_SMTP_PASSWORD', '');
+      
       $this->setConfig($config);
-
+      
+      if($this->use_phpmail)
+      {
+        $php_mailer_version = lmb_env_get('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
+        include_once('limb/mail/lib/' .  $phpmailer_version_name . '/class.phpmailer.php');
+      } 
   }
 
-  protected function _setConfigFromDefinedContants()
-  {
-    foreach($this->_config_properties_map as $property_name => $define_name)
-      $this->$property_name = constant($define_name);
-  }
-
-  public function setConfig($config = array())
+  public function setConfig($config)
   {
     foreach($config as $property_name => $property_value)
       $this->$property_name = $property_value;
   }
 
   protected function _createMailer()
-  {
-    include_once('limb/mail/lib/' .  $this->phpmailer_version_name . '/class.phpmailer.php');
-
+  {    
     $mailer = new PHPMailer();
     $mailer->set('LE', "\r\n");
 
