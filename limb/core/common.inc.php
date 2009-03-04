@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7681 2009-03-04 05:58:40Z pachanga $
+ * @version $Id: common.inc.php 7683 2009-03-04 15:12:03Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -17,7 +17,12 @@ define('LIMB_UNDEFINED', 'undefined' . microtime());
 function lmb_env_has($name)
 {
   if(array_key_exists($name, $_ENV))
-    return true;
+  {
+    if($_ENV[$name] === LIMB_UNDEFINED)
+      return false;
+    else
+      return true;
+  }
 
   if(defined($name))
     return true;
@@ -28,7 +33,12 @@ function lmb_env_has($name)
 function lmb_env_get($name, $def = null)
 {  
   if(array_key_exists($name, $_ENV))
-    return $_ENV[$name];
+  {
+  	if($_ENV[$name] === LIMB_UNDEFINED)
+      return $def;
+    else
+      return $_ENV[$name];
+  }    
   
   if(defined($name))      
     return constant($name);
@@ -57,6 +67,11 @@ function lmb_env_set($name, $value)
   
   if(lmb_env_trace_has($name))
     lmb_env_trace_show();
+}
+
+function lmb_env_remove($name)
+{
+	$_ENV[$name] = LIMB_UNDEFINED; 
 }
 
 function lmb_env_trace($name)

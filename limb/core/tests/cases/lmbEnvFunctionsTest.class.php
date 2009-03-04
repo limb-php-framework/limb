@@ -75,6 +75,17 @@ class lmbEnvFunctionsTest extends UnitTestCase
     $this->assertEqual(lmb_env_get($name), 'bar');        
   }
 
+  function testRemove()
+  {
+    lmb_env_set('foo_remove', 'bar');
+    $this->assertTrue(lmb_env_has('foo_remove'));
+    $this->assertEqual(lmb_env_get('foo_remove'), 'bar');
+    
+    lmb_env_remove('foo_remove');    
+    $this->assertFalse(lmb_env_has('foo_remove'));
+    $this->assertEqual(lmb_env_get('foo_remove', $random = mt_rand()), $random);
+  }
+  
   function testTrace()
   { 
     lmb_env_trace($this->_('foo'));
