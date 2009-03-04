@@ -7,8 +7,7 @@ function lmb_tests_init_db_dsn()
   if(lmbToolkit::instance()->isDefaultDbDSNAvailable())
     return;
     
-  $default_value = 'sqlite://localhost/' . lmb_env_get('LIMB_VAR_DIR') . '/sqlite_tests.db';
-  $default_value = 'mysqli://root:test@localhost/limb_tests?charset=utf8';  
+  $default_value = 'sqlite://localhost/' . lmb_env_get('LIMB_VAR_DIR') . '/sqlite_tests.db';  
   $dsn = lmb_env_get('LIMB_TEST_DB_DSN', $default_value);
   
   echo "Using default test database '$dsn'\n";
