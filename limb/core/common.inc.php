@@ -9,22 +9,20 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 7676 2009-03-03 22:37:28Z korchasa $
+ * @version $Id: common.inc.php 7681 2009-03-04 05:58:40Z pachanga $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
 
 function lmb_env_has($name)
 {
-  if(defined($name) && constant($name))
+  if(array_key_exists($name, $_ENV))
     return true;
-  else
-  {
-    if(array_key_exists($name, $_ENV) && $_ENV[$name])
-      return true;
-    else
-      return false;
-  }
+
+  if(defined($name))
+    return true;
+
+  return false;
 }
 
 function lmb_env_get($name, $def = null)
@@ -52,10 +50,10 @@ function lmb_env_setor($name, $value)
 
 function lmb_env_set($name, $value)
 {
+  $_ENV[$name] = $value;
+
   if(!defined($name))
     define($name, $value);
-
-  $_ENV[$name] = $value;
   
   if(lmb_env_trace_has($name))
     lmb_env_trace_show();
@@ -76,8 +74,8 @@ function lmb_env_trace_show()
   $trace = debug_backtrace();
   $trace = $trace[1];
         
-  $file_str = 'Called '.$trace['file'].'::'.$trace['line'];
-  $call_str = 'lmbEnv::'.$trace['function'].'('.$trace['args'][0].','.$trace['args'][1].')';
+  $file_str = 'Called '.$trace['file'].'@'.$trace['line'];
+  $call_str = $trace['function'].'('.$trace['args'][0].','.$trace['args'][1].')';
   echo $file_str.' '.$call_str.PHP_EOL;    
 }
 

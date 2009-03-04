@@ -14,7 +14,7 @@ lmb_require('limb/core/src/lmbHandle.class.php');
  * class lmbWebApplication.
  *
  * @package web_app
- * @version $Id: lmbWebApplication.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbWebApplication.class.php 7681 2009-03-04 05:58:40Z pachanga $
  */
 class lmbWebApplication extends lmbFilterChain
 {
@@ -34,7 +34,7 @@ class lmbWebApplication extends lmbFilterChain
     $this->request_dispatcher = $disp;
   }
 
-  protected function  _getRequestDispatcher()
+  protected function _getRequestDispatcher()
   {
     if(!is_object($this->request_dispatcher))
       return new lmbHandle('limb/web_app/src/request/lmbRoutesRequestDispatcher');
@@ -56,13 +56,13 @@ class lmbWebApplication extends lmbFilterChain
     $this->pre_view_filters[] = $filter;
   }
 
-  protected function _addFilters($filters)
+  function process()
   {
-    foreach($filters as $filter)
-      $this->registerFilter($filter);
+    $this->_registerFilters();
+    parent :: process();
   }
 
-  function process()
+  protected function _registerFilters()
   {
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbErrorHandlingFilter'));
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbSessionStartupFilter'));
@@ -81,9 +81,14 @@ class lmbWebApplication extends lmbFilterChain
     $this->_addFilters($this->pre_view_filters);
 
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbViewRenderingFilter'));
-
-    parent :: process();
   }
+
+  protected function _addFilters($filters)
+  {
+    foreach($filters as $filter)
+      $this->registerFilter($filter);
+  }
+
 }
 
 

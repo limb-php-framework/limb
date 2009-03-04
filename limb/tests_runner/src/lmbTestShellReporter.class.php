@@ -11,7 +11,7 @@
  * class lmbTestShellReporter.
  *
  * @package tests_runner
- * @version $Id: lmbTestShellReporter.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbTestShellReporter.class.php 7681 2009-03-04 05:58:40Z pachanga $
  */
 class lmbTestShellReporter extends TextReporter
 {
@@ -92,13 +92,13 @@ class lmbTestShellReporter extends TextReporter
   function paintFail($message) 
   {
     parent :: paintFail($message);
-    $this->failed_tests[] = $this->_extractFileNameAndLine($message);
+    $this->failed_tests[] = '[FLR] ' . $this->_extractErrorFileAndLine($message);
   }
 
   function paintError($message) 
   {
     parent :: paintError($message);
-    $this->failed_tests[] = $this->_extractFileNameAndLine($message);
+    $this->failed_tests[] = '[ERR] ' . $this->_extractErrorFileAndLine($message);
   }
 
   function paintException($exception) 
@@ -115,9 +115,28 @@ class lmbTestShellReporter extends TextReporter
     print "\n";
     print "Exception full message:\n";
     print $exception->__toString();
+
+    $this->failed_tests[] = '[EXP] ' . $this->_extractExceptionFileAndLine($exception);
   }  
 
-  protected function _extractFileNameAndLine($message)
+  protected function _extractExceptionFileAndLine($e)
+  {
+    $context = SimpleTest :: getContext();
+    if(!is_object($context))
+      return '???:???';
+
+    $ref = new ReflectionClass($context->getTest());
+    $test_file = $ref->getFileName();
+
+    foreach($e->getTrace() as $item)
+    {
+      if($item['file'] == $test_file)
+        return $item['file'] . ':' . $item['line'];
+    }
+    return '???:???';
+  }
+
+  protected function _extractErrorFileAndLine($message)
   {
     $regex = "~.*\[([^\]]+)\s+line\s+(\d+)\].*~";
     preg_match($regex, $message, $m);

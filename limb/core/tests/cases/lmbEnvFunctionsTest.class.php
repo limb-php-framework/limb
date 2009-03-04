@@ -2,42 +2,85 @@
 
 class lmbEnvFunctionsTest extends UnitTestCase
 {
-  function testGet_Negative()
+  private $_prev_env = array();
+  private $_keys = array();
+
+  function setUp()
   {
-    $this->assertNull(lmb_env_get('foo0'));
+    $this->_prev_env = $_ENV;
+    $_ENV = array();
+    $this->_keys = array();
   }
 
-  function testAdd()
+  function tearDown()
   {
-    lmb_env_setor('foo1', 'bar');
-    $this->assertEqual(lmb_env_get('foo1'), 'bar');
-    
-    lmb_env_setor('foo1', 'baz');
-    $this->assertEqual(lmb_env_get('foo1'), 'bar');
+    $_ENV = $this->_prev_env;
   }
-  
+
+  function testGetNullByDefault()
+  {
+    $this->assertNull(lmb_env_get($this->_('foo')));
+  }
+
+  function testGetDefault()
+  {
+    $this->assertEqual(lmb_env_get($this->_('foo'), 1), 1);
+  }
+
+  function testSet()
+  {
+    lmb_env_set($this->_('foo'), 'bar');
+    $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
+  }
+
+  function testSetOr()
+  {
+    lmb_env_setor($this->_('foo'), 'bar');
+    $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
+    
+    lmb_env_setor($this->_('foo'), 'baz');
+    $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
+  }
+
   function testHas()
   {
-    $this->assertFalse(lmb_env_has('foo2'));
-    lmb_env_setor('foo2', 'bar');
-    $this->assertTrue(lmb_env_has('foo2'));    
+    $this->assertFalse(lmb_env_has($this->_('foo')));
+    lmb_env_set($this->_('foo'), 'bar');
+    $this->assertTrue(lmb_env_has($this->_('foo')));    
   }
 
-  function testReplace()
+  function testHasWorksForNulls()
   {
-    lmb_env_setor('foo3', 'bar');
-    lmb_env_setor('foo3', 'baz');
-    $this->assertEqual(lmb_env_get('foo3'), 'bar');
-    lmb_env_set('foo3', 'baz');
-    $this->assertEqual(lmb_env_get('foo3'), 'baz');
+    $this->assertFalse(lmb_env_has($this->_('foo')));
+    lmb_env_set($this->_('foo'), null);
+    $this->assertTrue(lmb_env_has($this->_('foo')));    
   }
-  
+
+  function testSetDefinesConstant()
+  {
+    $this->assertFalse(defined($this->_('foo')));
+    lmb_env_set($this->_('foo'), 'bar');
+    $this->assertEqual(constant($this->_('foo')), 'bar');
+  }
+
+  function testHasAndGetFallbackToConstant()
+  {
+    $name = $this->_('LIMB_TEST_FOO');
+    
+    $this->assertFalse(lmb_env_has($name));
+    $this->assertNull(lmb_env_get($name, null));
+    
+    define($name, 'bar');
+    $this->assertTrue(lmb_env_has($name));
+    $this->assertEqual(lmb_env_get($name), 'bar');        
+  }
+
   function testTrace()
   { 
-    lmb_env_trace('foo4');
+    lmb_env_trace($this->_('foo'));
     
     ob_start();
-    lmb_env_setor($key = 'foo4', $value = 'bar');
+    lmb_env_setor($key = $this->_('foo'), $value = 'bar');
     $call_line = strval(__LINE__ - 1);    
     $trace_info = ob_get_clean();
     
@@ -59,18 +102,11 @@ class lmbEnvFunctionsTest extends UnitTestCase
     $this->assertTrue(strstr($trace_info, $value));
   }
   
-  function testBackCompability()
+  //used for convenient tracking of the random keys
+  private function _($name)
   {
-    $name = 'LIMB_FOO';
-    
-    $this->assertFalse(lmb_env_has($name));
-    
-    define($name, 'bar');
-    $this->assertTrue(lmb_env_has($name));
-    $this->assertEqual(lmb_env_get($name), 'bar');        
-    $this->assertFalse(lmb_env_setor($name, 'yargh'));
-    
-    lmb_env_set($name, 'baz');
-    $this->assertEqual(lmb_env_get($name), 'baz');
+    if(!isset($this->_keys[$name]))
+      $this->_keys[$name] = $name . mt_rand() . time();
+    return $this->_keys[$name];
   }
 }
