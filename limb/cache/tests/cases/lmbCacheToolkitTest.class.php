@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 
@@ -38,7 +38,6 @@ class lmbCacheToolkitTest extends UnitTestCase
     lmbToolkit :: restore();
   }
 
-  
   function testCreateConnectionByNameCacheEnabledAndDsnNotFound()
   {
     lmbToolkit :: save();
@@ -53,9 +52,7 @@ class lmbCacheToolkitTest extends UnitTestCase
   function testCreateConnectionByNameCacheEnabled()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
+    $config = $this->_getConfig();
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCacheConnectionByName('dsn');
     $this->assertEqual($connection->getType(),'file');
@@ -63,14 +60,11 @@ class lmbCacheToolkitTest extends UnitTestCase
     $this->assertEqual($connection->get('var'),'test');
     lmbToolkit :: restore();
   }
+
   function testCreateCache()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('mint_cache_enabled',false);
-    $config->set('cache_log_enabled',false);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
+    $config = $this->_getConfig();
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCache('dsn');
     $this->assertTrue($connection instanceof lmbCacheFileConnection);
@@ -79,14 +73,12 @@ class lmbCacheToolkitTest extends UnitTestCase
     $this->assertEqual($connection->get('var'),'test');
     lmbToolkit :: restore();
   }
+
   function testCreateMintCache()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
+    $config = $this->_getConfig();
     $config->set('mint_cache_enabled',true);
-    $config->set('cache_log_enabled',false);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCache('dsn');
     $this->assertTrue($connection instanceof lmbMintCache);
@@ -98,11 +90,9 @@ class lmbCacheToolkitTest extends UnitTestCase
   function testCreateLoggedCache()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
+    $config = $this->_getConfig();
     $config->set('mint_cache_enabled',true);
     $config->set('cache_log_enabled',true);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCache('dsn');
     $this->assertTrue($connection instanceof lmbLoggedCache);
@@ -111,15 +101,12 @@ class lmbCacheToolkitTest extends UnitTestCase
     $this->assertEqual($connection->get('var'),'test');
     lmbToolkit :: restore();
   }
-  
+
   function testCreateLoggedCacheWithOutMintCache()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('mint_cache_enabled',false);
+    $config = $this->_getConfig();
     $config->set('cache_log_enabled',true);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCache('dsn');
     $this->assertTrue($connection instanceof lmbLoggedCache);
@@ -132,11 +119,7 @@ class lmbCacheToolkitTest extends UnitTestCase
   function testGetCacheByName()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('mint_cache_enabled',false);
-    $config->set('cache_log_enabled',false);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
+    $config = $this->_getConfig();
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->getCacheByName('dsn');
     $this->assertEqual($connection->getType(),'file');
@@ -148,10 +131,7 @@ class lmbCacheToolkitTest extends UnitTestCase
   function testGetCacheDefaultFake()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('mint_cache_enabled',false);
-    $config->set('cache_log_enabled',false);
+    $config = $this->_getConfig($without_dsn = true);
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->getCache();
     $this->assertEqual($connection->getType(),'fake');
@@ -161,10 +141,7 @@ class lmbCacheToolkitTest extends UnitTestCase
   function testGetCacheDefault()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('mint_cache_enabled',false);
-    $config->set('cache_log_enabled',false);
+    $config = $this->_getConfig($without_dsn = true);
     $config->set('default_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->getCache();
@@ -178,11 +155,7 @@ class lmbCacheToolkitTest extends UnitTestCase
   function testGetCache()
   {
     lmbToolkit :: save();
-    $config = new lmbObject();
-    $config->set('cache_enabled',true);
-    $config->set('mint_cache_enabled',false);
-    $config->set('cache_log_enabled',false);
-    $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
+    $config = $this->_getConfig();
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->getCache('dsn');
     $this->assertEqual($connection->getType(),'file');
@@ -190,6 +163,14 @@ class lmbCacheToolkitTest extends UnitTestCase
     $connection = lmbToolkit::instance()->getCache('dsn');
     $this->assertEqual($connection->get('var'),'test');
     lmbToolkit :: restore();
+  }
+
+  protected function _getConfig($without_dsn = false) {
+    $config = new lmbObject();
+    $config->set('cache_enabled', true);
+    if (!$without_dsn)
+      $config->set('dsn_cache_dsn',"file:///" . LIMB_VAR_DIR . "/cache/");
+    return $config;
   }
 
 }
