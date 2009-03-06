@@ -62,7 +62,7 @@ class lmbMacroTagDictionary
   {
     $dirs = array();
     foreach(lmb_glob("$dir/*") as $item) {
-      if($item{0} != '.' && is_dir($item))
+      if($item != '.' && $item != '..' && is_dir($item))
         $dirs[] = $item;
     }
 
