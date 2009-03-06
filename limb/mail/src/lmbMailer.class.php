@@ -13,7 +13,7 @@ lmb_require('limb/mail/src/lmbBaseMailerInterface.interface.php');
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7680 2009-03-04 02:57:21Z korchasa $
+ * @version $Id: lmbMailer.class.php 7697 2009-03-06 18:41:42Z cmz $
  */
 class lmbMailer implements lmbBaseMailerInterface
 {
@@ -29,7 +29,7 @@ class lmbMailer implements lmbBaseMailerInterface
   public $smtp_user;
   public $smtp_password;
 
-  function __construct($config)
+  function __construct($config = array())
   {            
       $this->use_phpmail = lmb_env_get('LIMB_USE_PHPMAIL', false);
       $this->smtp_host = lmb_env_get('LIMB_SMTP_HOST', 'localhost');
@@ -43,7 +43,7 @@ class lmbMailer implements lmbBaseMailerInterface
       if($this->use_phpmail)
       {
         $php_mailer_version = lmb_env_get('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
-        include_once('limb/mail/lib/' .  $phpmailer_version_name . '/class.phpmailer.php');
+        include_once('limb/mail/lib/' .  $php_mailer_version . '/class.phpmailer.php');
       } 
   }
 
