@@ -19,13 +19,13 @@ class lmbMailerTest extends UnitTestCase {
     $this->assertEqual($mailer->smtp_host, 'localhost');
     $this->assertEqual($mailer->smtp_port, '252525');
   }
-	
-	function testSetDefaultConfig()
-	{
+
+  function testSetDefaultConfig()
+  {
     $mailer = new lmbMailer();
     $this->assertEqual($mailer->smtp_host, 'localhost');
-	}
-	
+  }
+
   function testSetConfig()
   {
     $mailer = new lmbMailer(array());
@@ -89,7 +89,7 @@ class lmbMailerTest extends UnitTestCase {
     $this->assertEqual($recs[1]['address'], "todd@localhost");
     $this->assertEqual($recs[1]['name'], "");
   }
-	
+
   function testBugWithUndefinedPhpMailVersionVariable()
   {
     $mailer = new lmbMailer(array('use_phpmail' => true));
