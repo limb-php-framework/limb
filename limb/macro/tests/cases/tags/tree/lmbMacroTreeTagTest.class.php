@@ -33,7 +33,7 @@ class lmbMacroTreeTagTest extends lmbBaseMacroTest
 
   function testCounter()
   {
-    $content = '{{tree using="$#tree" as="$item" kids_prop="kids" counter="$counter" prefix="1"}}' .
+    $content = '{{tree using="$#tree" kids_prop="kids" counter="$counter"}}' .
                   '<ul>' .
                   '{{tree:node}}' .
                   '<li>{$counter}){$item.title}'.
@@ -56,10 +56,10 @@ class lmbMacroTreeTagTest extends lmbBaseMacroTest
 
   function testPassExtraParamsIntoTreeMethod()
   {
-    $content = '{{tree using="$#tree" as="$item" kids_prop="kids" counter="$counter" prefix="1"}}' .
+    $content = '{{tree using="$#tree" as="$node" kids_prop="kids" counter="$counter" prefix="1"}}' .
                   '<ul>' .
                   '{{tree:node}}' .
-                  '<li>{$prefix}.{$counter}){$item.title}'.
+                  '<li>{$prefix}.{$counter}){$node.title}'.
                   '{{tree:nextlevel prefix="$new_prefix"}}<?php $new_prefix = $prefix . "." . $counter; ?>{{/tree:nextlevel}}</li>' .
                   '{{/tree:node}}' .
                   '</ul>' .
@@ -79,11 +79,10 @@ class lmbMacroTreeTagTest extends lmbBaseMacroTest
 
   function testCheckBC()
   {
-    $content = '{{tree using="$#tree" as="$item" kids_prop="kids" counter="$counter" prefix="1"}}' .
+    $content = '{{tree using="$#tree" kids_prop="kids"}}' .
                   '<ul>' .
                   '{{tree:branch}}' .
-                  '<li>{$prefix}.{$counter})'.
-                  '{{tree:item prefix="$new_prefix"}}{$item.title}<?php $new_prefix = $prefix . "." . $counter; ?>{{/tree:item}}</li>' .
+                    '<li>{{tree:item}}{$item.title}{{/tree:item}}</li>' .
                   '{{/tree:branch}}' .
                   '</ul>' .
                 '{{/tree}}';
@@ -97,19 +96,18 @@ class lmbMacroTreeTagTest extends lmbBaseMacroTest
                               array('title' => 'hey')));
 
     $out = $macro->render();
-    $this->assertEqual($out, '<ul><li>1.1)foo</li><li>1.2)bar<ul><li>1.2.1)bar1</li><li>1.2.2)bar2</li></ul></li><li>1.3)hey</li></ul>');
+    $this->assertEqual($out, '<ul><li>foo</li><li>bar<ul><li>bar1</li><li>bar2</li></ul></li><li>hey</li></ul>');
   }
 
   function testTreeWithoutData()
   {
-    $content = '{{tree using="$#tree" as="$item" kids_prop="kids" counter="$counter" prefix="1"}}' .
+    $content = '{{tree using="$#tree" kids_prop="kids"}}' .
                   '<ul>' .
-                  '{{tree:branch}}' .
-                  '<li>{$prefix}.{$counter})'.
-                  '{{tree:item prefix="$new_prefix"}}{$item.title}<?php $new_prefix = $prefix . "." . $counter; ?>{{/tree:item}}</li>' .
-                  '{{/tree:branch}}' .
-		  '{{tree:empty}}kids not found{{/tree:empty}}' .
+                  '{{tree:node}}' .
+                    '<li>{$item.title}{{tree:nextlevel/}}</li>' .
+                  '{{/tree:node}}' .
                   '</ul>' .
+                  '{{tree:empty}}kids not found{{/tree:empty}}' .
                 '{{/tree}}';
 
     $tpl = $this->_createTemplate($content, 'tree.html');
