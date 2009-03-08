@@ -11,7 +11,7 @@ class lmbMacroTreeTagTest extends lmbBaseMacroTest
 {
   function testRenderTree()
   {
-    $content = '{{tree using="$#tree" as="$item" kids_prop="kids"}}' .
+    $content = '{{tree using="$#tree" kids_prop="kids"}}' .
                   '<ul>' .
                   '{{tree:node}}' .
                     '<li>{$item.title}{{tree:nextlevel/}}</li>' .
