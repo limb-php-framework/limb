@@ -28,15 +28,15 @@
           <a href='{{route_url params="action:display,id:{$item.id}"/}}' title="Просмотр дочерних документов" style="font-weight:bold;">{$item.title}</a> ({$item.kids->count()})
           <br/>[<a href="{$item.uri}" title="Посмотреть на сайте" target="_blank">{$item.uri}</a>]
         </td>
-        <td><?php echo $item->getIsPublished() ? '<img src="/shared/cms/images/icons/lightbulb.png" title="Опубликована"/>' : '<img src="/shared/cms/images/icons/lightbulb_off.png" title="Скрыта"/>'; ?></td>
+        <td><? echo $item->getIsPublished() ? '<img src="/shared/cms/images/icons/lightbulb.png" title="Опубликована"/>' : '<img src="/shared/cms/images/icons/lightbulb_off.png" title="Скрыта"/>'; ?></td>
         <td>{$item.ctime|i18n_date:"", "stamp", "short_date_time"}</td>
         <td>{$item.utime|i18n_date:"", "stamp", "short_date_time"}</td>
         <td class='actions'>
           {{apply template="object_action" item="{$item}" action="create_child" title="Добавление дочернего документа" icon="page_add"/}}
           <? if($item->getIsPublished()): ?>
-            {{apply template="object_action_unpublish" item="{$item}" icon="page_red"/}}
+            {{apply template="object_action_unpublish" item="{$item}" icon="lightbulb_off"/}}
           <?  else:  ?>
-            {{apply template="object_action_publish" item="{$item}" icon="page_green"/}}
+            {{apply template="object_action_publish" item="{$item}" icon="lightbulb"/}}
           <? endif; ?>
           {{apply template="object_action_edit" item="{$item}" icon="page_edit"/}}
           {{apply template="object_action_delete" item="{$item}"/}}
