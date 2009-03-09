@@ -328,6 +328,106 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("bar:wowyouhey:wowyou", $out);
   }  
 
+  function testBeforeDeps()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @before bar
+     */
+    function task_foo() { echo 'foo'; }
+    function task_bar() { echo 'bar'; }
+    ",
+    '-b bar');
+    $this->assertEqual(0, $code);
+    $this->assertEqual("foobar", $out);
+  }
+
+  function testSeveralBeforeDeps()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @before bar
+     */
+    function task_foo() { echo 'foo'; }
+    function task_bar() { echo 'bar'; }
+    /**
+     * @before bar
+     */
+    function task_zoo() { echo 'zoo'; }
+    ",
+    '-b bar');
+    $this->assertEqual(0, $code);
+    $this->assertEqual("foozoobar", $out);
+  }
+
+  function testInterdependentBeforeDeps()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @before bar
+     */
+    function task_foo() { echo 'foo'; }
+    function task_bar() { echo 'bar'; }
+    /**
+     * @before foo
+     */
+    function task_zoo() { echo 'zoo'; }
+    ",
+    '-b bar');
+    $this->assertEqual(0, $code);
+    $this->assertEqual("zoofoobar", $out);
+  }
+
+  function testAfterDeps()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @after bar
+     */
+    function task_foo() { echo 'foo'; }
+    function task_bar() { echo 'bar'; }
+    ",
+    '-b bar');
+    $this->assertEqual(0, $code);
+    $this->assertEqual("barfoo", $out);
+  }
+
+  function testSeveralAfterDeps()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @after bar
+     */
+    function task_foo() { echo 'foo'; }
+    function task_bar() { echo 'bar'; }
+    /**
+     * @after bar
+     */
+    function task_zoo() { echo 'zoo'; }
+    ",
+    '-b bar');
+    $this->assertEqual(0, $code);
+    $this->assertEqual("barfoozoo", $out);
+  }
+
+  function testInterdependentAfterDeps()
+  {
+    list($code, $out) = $this->_run("        
+    /**
+     * @after bar
+     */
+    function task_foo() { echo 'foo'; }
+    function task_bar() { echo 'bar'; }
+    /**
+     * @after foo
+     */
+    function task_zoo() { echo 'zoo'; }
+    ",
+    '-b bar');
+    $this->assertEqual(0, $code);
+    $this->assertEqual("barfoozoo", $out);
+  }
+
   function testParallTasksFromCLI()
   {
     if($this->isWin())

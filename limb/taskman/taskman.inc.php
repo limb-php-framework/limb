@@ -57,15 +57,49 @@ class TaskmanTask
     $this->is_running = true;
     $this->args = $args;
 
-    $this->_runDeps($args);
+    taskman_runtasks($this->_getBeforeDeps(), $args);
+
+    taskman_runtasks($this->_getDeps(), $args);
 
     taskman_sysmsg("************************ Running task '" . $this->getName() . "' ************************\n");
 
     $TASKMAN_CURRENT_TASK = $this;
     call_user_func_array($this->func, array($this->args));
 
+    taskman_runtasks($this->_getAfterDeps(), $args);
+
     $this->has_run = true;
     $this->is_running = false;
+  }
+
+  private function _getBeforeDeps()
+  {
+    $arr = array();
+    foreach(taskman_gettasks() as $task_obj)
+    {
+      if($this->getName() == $task_obj->getName())
+        continue;
+
+      $before = $task_obj->getPropOr("before", "");
+      if($before == $this->getName())
+        $arr[] = $task_obj;
+    }
+    return $arr;
+  }
+
+  private function _getAfterDeps()
+  {
+    $arr = array();
+    foreach(taskman_gettasks() as $task_obj)
+    {
+      if($this->getName() == $task_obj->getName())
+        continue;
+
+      $before = $task_obj->getPropOr("after", "");
+      if($before == $this->getName())
+        $arr[] = $task_obj;
+    }
+    return $arr;
   }
 
   private function _getDeps()
@@ -74,11 +108,6 @@ class TaskmanTask
     if($deps)
       return taskman_parse_taskstr($deps);
     return array();
-  }
-
-  private function _runDeps($args = array())
-  {
-    taskman_runtasks($this->_getDeps(), $args);
   }
 
   private function _parseProps($func)
@@ -358,8 +387,12 @@ function taskman_runtasks($tasks, $args = array())
   {
     if(is_scalar($task_spec))
       taskman_runtask($task_spec, $args);
-    else
+    else if(is_array($task_spec))
       taskman_runtasks_parall($task_spec, $args);
+    else if(is_object($task_spec))
+      $task_spec->run($args);
+    else
+      throw new TaskmanException("Invalid task specification '$task_spec', should be either string or array or object"); 
   }
 }
 
