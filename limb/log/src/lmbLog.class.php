@@ -171,7 +171,7 @@ class lmbLog
 
   function isLogEnabled()
   {
-    return (bool) lmb_env_get('LIMB_LOG_ENABLE');
+    return (bool) lmb_env_get('LIMB_LOG_ENABLE', true);
   }
 }
 
