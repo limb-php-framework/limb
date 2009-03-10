@@ -24,7 +24,10 @@ class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
     $user = $this->toolkit->getCmsUser();
 
     $current_path = '/' . ltrim($this->toolkit->getRequest()->getUriPath(), '/');
-    if(strpos($current_path, '/admin') === 0)
+
+    $controller_name = $this->toolkit->getDispatchedController()->getName();
+    
+    if((strpos($current_path, '/admin') === 0) || (strpos($controller_name, 'admin') === 0))
     {
       if(!$user->isLoggedIn())
       {
