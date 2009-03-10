@@ -25,9 +25,9 @@ class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
 
     $current_path = '/' . ltrim($this->toolkit->getRequest()->getUriPath(), '/');
 
-    $controller_name = $this->toolkit->getDispatchedController()->getName();
-    
-    if((strpos($current_path, '/admin') === 0) || (strpos($controller_name, 'admin') === 0))
+    $controller_name = $this->current_controller->getName();
+
+    if(strpos($controller_name, 'admin') === 0)
     {
       if(!$user->isLoggedIn())
       {
@@ -35,7 +35,6 @@ class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
         $this->toolkit->redirect(array('controller' => 'user', 'action' => 'login'), null, '?redirect=' . $current_path);
         return;
       }
-
       elseif(!$this->_allowAccess($user))
       {
         $this->toolkit->flashMessage("Недостаточно прав доступа к разделу");
