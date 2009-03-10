@@ -4,6 +4,8 @@ require_once('limb/core/tests/cases/init.inc.php');
 
 function lmb_tests_init_db_dsn()
 {
+  lmb_env_set('LIMB_CACHE_DB_META_IN_FILE', false);
+
   if(lmbToolkit::instance()->isDefaultDbDSNAvailable())
     return;
     

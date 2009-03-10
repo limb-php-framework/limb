@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7685 2009-03-04 16:02:28Z korchasa $
+ * @version $Id: lmbDbTools.class.php 7710 2009-03-10 17:23:13Z pachanga $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -203,8 +203,7 @@ class lmbDbTools extends lmbAbstractTools
   		
   	  if(lmb_env_has('LIMB_CACHE_DB_META_IN_FILE'))
   	    $this->is_db_info_cache_enabled = lmb_env_get('LIMB_CACHE_DB_META_IN_FILE');
-  	    
-  	  if($this->toolkit->getConf('db')->has('cache_db_info'))
+  	  else if($this->toolkit->getConf('db')->has('cache_db_info'))
         $this->is_db_info_cache_enabled = $this->toolkit->getConf('db')->get('cache_db_info');
   	}
   	
