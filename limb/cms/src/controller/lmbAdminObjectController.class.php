@@ -107,6 +107,23 @@ abstract class lmbAdminObjectController extends lmbObjectController
 
     $this->_endDialog();
   }
+  
+  function doRevertPublish()
+  {
+    if($this->request->has('ids'))
+      $ids = $this->request->get('ids');
+    elseif($this->request->has('id'))
+      $ids = array($this->request->get('id'));
+    else
+      return;
+
+    $info_object = new $this->_object_class_name();
+
+    foreach($ids as $id)
+      lmbDBAL :: execute('UPDATE ' . $info_object->getTableName() . ' SET is_published = IF(is_published > 0, 0, 1) WHERE id = ' . lmbToolkit :: instance()->getDefaultDbConnection()->escape($id));
+
+    $this->_endDialog();
+  }
 
   function doPublish()
   {
