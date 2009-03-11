@@ -12,6 +12,11 @@ $editor = array(array('title' => 'Контент', 'icon' => 'shared/cms/images/
     'url' => '/admin_text_block',
     'icon' => '/shared/cms/images/icons/layout.png',
   ),
+  array(
+    'title' => 'Мета поля',
+    'url' => '/admin_meta_fields',
+    'icon' => '/shared/cms/images/icons/layout.png',
+  ),
 )));
 
 $only_admin = array(array('title' => 'Администрирование', 'icon' => 'shared/cms/images/icons/menu_service.png','children' => array(

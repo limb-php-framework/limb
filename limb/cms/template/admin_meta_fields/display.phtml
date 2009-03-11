@@ -1,0 +1,50 @@
+{{wrap with="admin_page_layout.phtml"}}
+
+  {{include file="_admin/selectors.phtml"/}}
+  {{include file="_admin_object/actions.phtml"/}}
+
+  {{into slot="content_zone"}}
+    <div id="header">
+      <h1>Мета поля</h1>
+
+      <div class="header_actions">
+        <a href='{{route_url params="controller:admin_meta_fields,action:create"/}}' title="Добавить товар" class='thickbox'><img src='/shared/cms/images/icons/page_add.png' alt='Добавить'/> Добавить</a>
+      </div>
+    </div>
+
+    <div id="body">
+      {{list using='{$#items}' parity='{$parity}'}}
+      {{include file="_admin_object/actions.phtml"/}}
+      <div class="list">
+        <table>
+          <tr>
+            <th>#ID</th>
+            <th width='50%'>Url</th>
+            <th>Title</th>
+            <th>Keywrods</th>
+            <th width='50%'>Description</th>
+            <th>Действия</th>
+            </tr>
+            {{list:item}}
+            <tr class='{$parity}'>
+              <td>{$item.id}</td>
+              <td>{$item.url}</td>
+              <td>{$item.title}</td>
+              <td>{$item.keywords}</td>
+              <td>{$item.description}</td>
+              <td class='actions'>
+                {{apply template="object_action_edit" controller="admin_meta_fields" item="{$item}"/}}
+                {{apply template="object_action_delete" controller="admin_meta_fields" item="{$item}"/}}
+              </td>
+            </tr>
+            {{/list:item}}
+            {{list:empty}}
+              <div class="empty_list">Записи отсутствуют</div>
+            {{/list:empty}}
+          </table>
+        </div>
+      {{/list}}
+    </div>
+  {{/into}}
+{{/wrap}}
+
