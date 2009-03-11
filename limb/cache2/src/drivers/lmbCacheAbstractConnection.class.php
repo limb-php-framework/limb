@@ -53,11 +53,11 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     {
       $new_keys = array();
       foreach($keys as $pos => $key)
-        $new_keys[$pos] = $this->prefix.$key;
+        $new_keys[$pos] = $this->prefix . $key;
     }
     else
     {
-      $new_keys  = $this->prefix.'_'.$keys;
+      $new_keys  = $this->prefix . $keys;
     }
 
     return $new_keys;

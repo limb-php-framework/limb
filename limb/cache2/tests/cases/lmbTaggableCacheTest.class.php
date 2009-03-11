@@ -12,7 +12,7 @@ class lmbTaggableCacheTest extends UnitTestCase
   
   function setUp()
   {
-    $this->cache = new lmbTaggableCache(lmbCacheFactory::createConnection('memory:'));
+    $this->cache = new lmbTaggableCache(lmbCacheFactory::createConnection('file:///'.lmb_env_get('LIMB_VAR_DIR').'/cache'));
   }
   
   function tearDown()
@@ -28,16 +28,16 @@ class lmbTaggableCacheTest extends UnitTestCase
   function testAdd()
   {
     $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', null, 'tag'));
-    $this->assertFalse($this->cache->add($key, 'another_value', null, 'tag'));
+    //$this->assertFalse($this->cache->add($key, 'another_value', null, 'tag'));
     
     $this->assertEqual($this->cache->get($key), $value);
   }
   
   function testDeleteByTags_SingleTag()
   {
-    $this->cache->set($key = $this->_createId(), $value = 'value', null, 'tag');
+    $this->cache->set($key = $this->_createId(), $value = 'value', null, 'tag_delete');
     
-    $this->cache->deleteByTag('tag');
+    $this->cache->deleteByTag('tag_delete');
     
     $this->assertNull($this->cache->get($key));
   }
@@ -57,6 +57,12 @@ class lmbTaggableCacheTest extends UnitTestCase
     
     $this->cache->deleteByTag('different_tag');
     
+    $this->assertIdentical($this->cache->get($key), $value);
+  }
+
+  function testTagCoincidesWithKey()
+  {
+    $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', null, $key));
     $this->assertIdentical($this->cache->get($key), $value);
   }
 }

@@ -7,14 +7,30 @@ class lmbTaggableCache implements lmbCache
    * @var lmbCacheConnection
    */
   protected $connection;
+  public $tags_prefix = 'tag42_';
   
   function __construct(lmbCacheConnection $connection)
   {
     $this->connection = $connection;
   }
+
+  protected function _resolveTagsKeys($tags_keys)
+  {
+    if(is_array($tags_keys))
+    {
+      $new_keys = array();
+      foreach($tags_keys as $pos => $key)
+        $new_keys[] = $this->tags_prefix . $key;
+    }
+    else
+      $new_keys = $this->tags_prefix . $tags_keys;
+
+    return $new_keys;
+  }
   
   protected function _createContainer($value, $tags)
   {
+    $tags = $this->_resolveTagsKeys($tags);
     $tags_values = $this->connection->get($tags);
     
     foreach($tags_values as $tag_key => $tag_value)
@@ -39,7 +55,7 @@ class lmbTaggableCache implements lmbCache
   }
   
   protected function _getFromContainer($container)
-  {
+  {        
     if($this->_isTagsValid($container['tags']))
       return $container['value'];
     else
@@ -80,7 +96,8 @@ class lmbTaggableCache implements lmbCache
   
   function deleteByTag($tag)
   {
-     $this->connection->increment($tag);
+    $tag = $this->_resolveTagsKeys($tag);
+    $this->connection->increment($tag);
   }
   
   function flush()
