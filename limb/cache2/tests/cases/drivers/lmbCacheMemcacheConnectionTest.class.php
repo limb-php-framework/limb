@@ -21,4 +21,19 @@ class lmbCacheMemcacheConnectionTest extends lmbCacheConnectionTest
     $this->skipIf(!extension_loaded('memcache'), 'Memcache extension not found. Test skipped.');
     $this->skipIf(!class_exists('Memcache'), 'Memcache class not found. Test skipped.');
   }
+
+  function testAddAfterDelete() {
+    $id = $this->_getUniqueId();
+    $this->assertTrue($this->cache->add($id, $v = 'value'));
+
+    $this->assertEqual($this->cache->get($id), $v);
+
+    $this->assertTrue($this->cache->delete($id));
+
+    $this->assertNull($this->cache->get($id));
+
+    $this->assertTrue($this->cache->add($id, $v = 'another value'));
+
+    $this->assertEqual($this->cache->get($id), $v);
+  }
 }

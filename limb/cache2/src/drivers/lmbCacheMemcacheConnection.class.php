@@ -26,12 +26,12 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
   function __construct(lmbUri $dsn)
   {
     parent::__construct($dsn);
-    
+
     if(!$this->dsn->getHost())
       $this->dsn->setHost($this->default_host);
 
     if(!$this->dsn->getPort())
-      $this->dsn->setPort($this->default_port);    
+      $this->dsn->setPort($this->default_port);
 
     $this->_server_id = $dsn->toString(array('host', 'port'));
   }
@@ -70,18 +70,18 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
 
     if(false === $value)
       return NULL;
-      
-    if(is_array($key))      
+
+    if(is_array($key))
       foreach ($key as $one_key)
         if(!isset($value[$one_key]))
           $value[$one_key] = NULL;
-          
+
     return $value;
   }
 
-  function delete($key)
+  function delete($key, $ttl = 0)
   {
-    return $this->_getMemcache()->delete($this->_resolveKey($key), 0);
+    return $this->_getMemcache()->delete($this->_resolveKey($key), $ttl);
   }
 
   function increment($key, $value = 1)
