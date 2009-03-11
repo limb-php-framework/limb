@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- Powered by LIMB | http://www.limb-project.com/ -->
 <!-- Designed by BIT | http://www.bit-creative.com/ -->
+<? $this->static_files_version = lmb_env_get('CMS_STATIC_FILES_VERSION'); ?>
 <html>
 <head>
   <title>Панель управления</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp.css?qweqwe" />
-  <!--[if IE]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie.css" /><![endif]-->
-  <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie6.css" /><![endif]-->
-  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/thickbox.css" />
+  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp.css?{$#static_files_version}" />
+  <!--[if IE]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie.css?{$#static_files_version}" /><![endif]-->
+  <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie6.css?{$#static_files_version}" /><![endif]-->
+  <link rel="stylesheet" type="text/css" href="/shared/cms/styles/thickbox.css?{$#static_files_version}" />
   {{slot id='header_zone' /}}
 </head>
 <body>
-
   <div id="wrapper">
 
     {{include file='_admin/notify_zone.phtml'/}}
@@ -59,17 +59,17 @@
 
   </div>
 
-  <script src="/shared/js/js/jquery.js"></script>
-  <script src="/shared/js/js/limb.js"></script>
-  <script src="/shared/js/js/limb/url.js"></script>
-  <script src="/shared/js/js/limb/flash.js"></script>
-  <script src="/shared/js/js/limb/window.js"></script>
-  <script src="/shared/js/js/limb/forms.js"></script>
-  <script src="/shared/js/js/limb/form_elements.js"></script>
-  <script src="/shared/cms/js/tabs.js"></script>
-  <script src="/shared/cms/js/auto_tabs.js"></script>
-  <script src="/shared/cms/js/thickbox.js"></script>
-  <script src="/shared/cms/js/cp.js"></script>
+  <script src="<? echo lmb_env_get('JQUERY_FILE_URL'); ?>?{$#static_files_version}"></script>
+  <script src="/shared/js/js/limb.js?{$#static_files_version}"></script>
+  <script src="/shared/js/js/limb/url.js?{$#static_files_version}"></script>
+  <script src="/shared/js/js/limb/flash.js?{$#static_files_version}"></script>
+  <script src="/shared/js/js/limb/window.js?{$#static_files_version}"></script>
+  <script src="/shared/js/js/limb/forms.js?{$#static_files_version}"></script>
+  <script src="/shared/js/js/limb/form_elements.js?{$#static_files_version}"></script>
+  <script src="/shared/cms/js/tabs.js?{$#static_files_version}"></script>
+  <script src="/shared/cms/js/auto_tabs.js?{$#static_files_version}"></script>
+  <script src="/shared/cms/js/thickbox.js?{$#static_files_version}"></script>
+  <script src="/shared/cms/js/cp.js?{$#static_files_version}"></script>
   {{slot id='js_include'/}}
   <script type="text/javascript">
     {{slot id='js'/}}
@@ -81,7 +81,7 @@
         var sep = '?';
         if(this.href.indexOf(sep) > 0)
           sep = '&';
-        
+
         this.href = this.href + sep + 'TB_iframe=true&width=640&height=480';
 
       });

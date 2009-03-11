@@ -9,8 +9,10 @@
 
 /**
  * @package cms
- * @version $Id: common.inc.php 7284 2008-12-08 07:34:38Z korchasa $
+ * @version $Id: common.inc.php 7729 2009-03-11 13:53:45Z momental $
  */
 require_once('limb/core/common.inc.php');
 lmb_require('limb/web_app/common.inc.php');
 lmb_require('limb/cms/toolkit.inc.php');
+lmb_env_setor('JQUERY_FILE_URL','/shared/js/js/jquery/v1.2.3.js');
+lmb_env_setor('CMS_STATIC_FILES_VERSION', '1');

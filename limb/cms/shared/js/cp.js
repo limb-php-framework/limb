@@ -24,7 +24,7 @@ Limb.Class('CMS.Filter',
     if (!this.mainFilter[0])
       return;
 
-    this.list = jQuery('.list').css('margin-bottom','0');
+    this.list = this.mainFilter.nextAll('.list').eq(0).css('margin-bottom','0');
 
     var togllerFilterHTML = '<a class="toggler closingToggler" href="javascript:void(0)"><span>' + this.hideFilterStr + '</span></a>';
     var bottomFilterHTML = '<div class="filter closedFilter"><a class="toggler openingToggler" href="javascript:void(0)"><span>' + this.showFilterStr + '</span></a></div>';
@@ -64,7 +64,13 @@ Limb.Class('CMS.Filter',
 
     this.toggleFilter(toggler);
 
+    this.setFilterCookie();
+
     var form = mainToggler.next('form')[0] ||  cloneToggler.next('form')[0];
+
+    if (!form)
+      return;
+
     form = jQuery(form);
 
     if (!toggler.next('form')[0])
@@ -74,7 +80,6 @@ Limb.Class('CMS.Filter',
       form.appendTo(filter);
     }
 
-    this.setFilterCookie();
   },
 
   toggleFilter: function(toggler)
@@ -349,10 +354,11 @@ jQuery(window).ready(function(){
   cookieCMS = new CMS.cookie('LimbCMS');
   new CMS.lightLimbVersion();
 
-
-  /*If light version is enabled than next js not be execute*/
   if(cookieCMS.get('lightLimbVersion'))
+  {
+    jQuery.fx.off = true;
     return false;
+  }
 
   var currheight;
   if(!jQuery.browser.msie)
