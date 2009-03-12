@@ -14,7 +14,7 @@ lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/*/src/contro
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
+ * @version $Id: lmbWebAppTools.class.php 7736 2009-03-12 08:41:15Z wiliam $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -120,7 +120,9 @@ class lmbWebAppTools extends lmbAbstractTools
     $class_name = lmb_camel_case($controller_name) . 'Controller';
     if(!class_exists($class_name))
     {
-      $file = $this->toolkit->findFileByAlias("$class_name.class.php", LIMB_CONTROLLERS_INCLUDE_PATH, 'controller');
+      $file = $this->toolkit->findFileByAlias("$class_name.class.php", 
+                                              lmb_env_get('LIMB_CONTROLLERS_INCLUDE_PATH'),
+                                              'controller');
       lmb_require($file);
     }
     return new $class_name;
