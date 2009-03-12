@@ -140,7 +140,7 @@
 
 
   /*PAGER*/
-    .pager {float:right;height:19px;margin:-3.6em 0 2em;}
+    .pager {float:right;height:19px;margin:-3.6em 0 2em;padding:0 6px;}
       .pager b {background: #7d7d7d;padding:1px 4px 1px 5px;margin:0 3px;vertical-align:middle;}
       .pager a {vertical-align:middle;margin:0 3px;}
         .pager a img {vertical-align:middle;}
