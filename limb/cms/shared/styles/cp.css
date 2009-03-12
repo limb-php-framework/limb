@@ -132,7 +132,7 @@
         .list .list_actions {margin-left:-1px;}
         .list .list_actions:last-child {margin-top:-1px;}
         .list .list_actions .button_wrapper {margin:0 10px 0 0;}
-      .priority {width: 30px; text-align: right;}
+       .list .priority {display:block;width: 30px; text-align: right;margin:0 auto;}
 
   /*MESSAGE ERROR*/
     .message_error {margin:0 9px 1em;}

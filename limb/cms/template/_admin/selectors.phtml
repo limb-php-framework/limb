@@ -15,7 +15,7 @@ $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller,
 $url .= '?' . $params;
 ?>
 
-   <input type="button" class='button' value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}", this);return false;'/>
+   <input type="button" value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}", this);return false;'/>
 {{/template}}
 
 {{template name="selectors_change_category"}}
@@ -27,7 +27,7 @@ $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller,
 $url .= '?' . $params;
 ?>
 
-  <input type="button" class='button' value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}");return false;'/>
+  <input type="button" value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}");return false;'/>
 {{/template}}
 
 {{template name="save_priority_button"}}
