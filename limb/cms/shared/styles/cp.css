@@ -77,7 +77,7 @@
     .enabled#light_version {background: url(../images/icons/lightbulb.png) no-repeat left top;}
 
   /*FLASH BOX*/
-    .flashbox {position:fixed;top:10px;left:50%;z-index:4000;width:500px;margin:0 0 0 -355px;padding:5px 10px;background: #dff6dd;border:1px solid #c4e4b1;}
+    .flashbox {position:fixed;top:10px;left:50%;z-index:4000;width:500px;margin:0 0 0 -255px;padding:5px 10px;background: #dff6dd;border:1px solid #c4e4b1;}
       #login_form .flashbox {position:relative;top:0;left:0;width:auto;clear:both;margin:10px 0 25px;padding:1em 10px;}
       .flashbox ul {margin:0;padding:0;list-style-type:none;}
         .flashbox li {margin:0 0 0 3px;padding:5px 5em 5px 10px;border-bottom:1px solid #c4e4b1;position:relative;}
