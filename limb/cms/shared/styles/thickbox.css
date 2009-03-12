@@ -7,12 +7,12 @@
 /* ---------->>> thickbox specific link and font settings <<<------------------------------------------------------*/
 /* ----------------------------------------------------------------------------------------------------------------*/
 #TB_window {
-  font: 12px Tahoma;
+  font: 12px Tahoma, Helvetica, sans-serif;
   color: #333333;
 }
 
 #TB_secondLine {
-  font: 10px Tahoma;
+  font: 10px Tahoma, Helvetica, sans-serif;
   color:#666666;
 }
 
