@@ -368,7 +368,7 @@ jQuery(window).ready(function(){
   }
 
   /*Nice Button*/
-  jQuery('.button').wrap('<span class="button_wrapper"></span>');
+  jQuery('input[type=button], input[type=submit]').wrap('<span class="button_wrapper"></span>');
 
   /*SideBar Toggle*/
   new CMS.SidebarToggler();
