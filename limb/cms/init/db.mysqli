@@ -11,7 +11,6 @@ CREATE TABLE `lmb_cms_document` (
   `identifier` varchar(128) NOT NULL default '',
   `priority` integer NOT NULL default 0,
   `path` varchar(255) NOT NULL default '',
-  `uri` varchar(255) NOT NULL default '',
   `ctime` int(11) NOT NULL default '0',
   `utime` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
@@ -20,7 +19,7 @@ CREATE TABLE `lmb_cms_document` (
   KEY `id` (`id`,`parent_id`),
   KEY `identifier` (`identifier`,`level`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `lmb_cms_document` (`title`, `uri`, `is_published`, `content`) VALUES ('/', '/', 1, '
+INSERT INTO `lmb_cms_document` (`title`, `is_published`, `content`) VALUES ('/', 1, '
 <h1>Добро пожаловать в Limb!</h1>
     <div style="text-align:right">
       <blockquote>И всё-таки она вертится!</blockquote>
