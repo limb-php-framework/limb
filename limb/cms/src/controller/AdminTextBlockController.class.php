@@ -21,11 +21,13 @@ class AdminTextBlockController extends lmbAdminObjectController
     {
       if(isset($blocks[$identifier]))
         $item = $blocks[$identifier];
+        $item['exists'] = true;
       else
       {
         $item = new lmbCmsTextBlock();
         $item->import($default_properties);
         $item->setIdentifier($identifier);
+        $item['exists'] = false;
       }
 
       $result[$identifier] = $item;
