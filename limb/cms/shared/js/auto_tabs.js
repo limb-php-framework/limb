@@ -24,7 +24,7 @@ if(jQuery)
       });
 
       if(tabs.length)
-        new CMS.TabsContainer(tabs);
+        window.cmsTabContainer = new CMS.TabsContainer(tabs);
     });
   }
 }
