@@ -88,8 +88,10 @@
         #login_form .flashbox .close {top:1em;right:10px;}
 
   /*FILTER*/
-    .filter {position:relative;top:25px;clear:right;margin:0 0 25px;padding:10px 8px;border:1px solid #DDDDDD;border-width:1px 1px 0;}
+    .filter {position:relative;top:1.4em;clear:right;margin:0 0 1.4em;padding:10px 8px;border:1px solid #DDDDDD;border-width:1px 1px 0;}
+      .list_wrapper .filter {top:25px;margin-bottom:25px;}
       .cloned_filter {top:0;margin:0 0 4.8em;border-width:0 1px 1px;}
+        .list_wrapper .cloned_filter {top:0;margin-bottom:4.8em}
       .list_wrapper .cloned_filter {margin:0 0 28px;}
       .filter .toggler {position:absolute;right:8px;top:-25px;z-index:20;height:24px;padding:0 0 0 8px;line-height:24px;background: url(../images/bgr/toggler.png) no-repeat 0 0;}
         .closedFilter .toggler {top:-23px}
@@ -113,6 +115,8 @@
         .bookmarks .active a {background:url(../images/bgr/tab_current.png) no-repeat right top;}
     .bookmarks_content {min-height:330px;height:330px;border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;clear:both;padding:10px 8px 1px;}
       html > body .bookmarks_content {height:auto;}
+    .popup_content {min-height:330px;height:330px;border:1px solid #ddd;border-top:3px solid #7d7d7d;border-bottom:0px;clear:both;padding:10px 8px 1px;}
+      html > body .popup_content {height:auto;}
 
 
   /*LIST*/
