@@ -2,7 +2,6 @@
   .bookmarks {zoom:1;}
     .bookmarks li a {display:inline;zoom:1;}
   .clearFix {zoom:1;}
-  .list_wrapper {zoom:1;}
   .list {zoom:1;}
     .list th, .list td {scrollbar-face-color: expression(runtimeStyle.scrollbarFaceColor = '#fff', (this == parentNode.firstChild) ? className += ' first-child' : '', (this == parentNode.lastChild) ? className += ' last-child' : '')}
     .list td.last-child a {zoom:1;}
