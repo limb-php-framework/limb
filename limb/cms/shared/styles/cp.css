@@ -88,15 +88,15 @@
 
   /*FILTER*/
     .filter {position:relative;clear:both;padding:10px 8px;border:1px solid #DDDDDD;border-width:1px 1px 0;}
-      .filter:last-child {margin:0 0 64px;border-width:0 1px 1px;}
+      .cloned_filter {margin:0 0 64px;border-width:0 1px 1px;}
       .filter .toggler {position:absolute;right:8px;top:-25px;z-index:20;height:24px;padding:0 0 0 8px;line-height:24px;background: url(../images/bgr/toggler.png) no-repeat 0 0;}
-        .filter:last-child .toggler {top:auto;bottom:-25px;background-position:0 -24px;}
+        .cloned_filter .toggler {top:auto;bottom:-25px;background-position:0 -24px;}
         .filter .toggler span {display:block;height:24px;padding:0 18px 0 0;background: url(../images/bgr/toggler.png) no-repeat right -48px;}
           .filter .closingToggler span {background-position:right -48px;}
           .filter .openingToggler span {background-position:right top;}
-        .filter:last-child .toggler span {background-position:right -72px ;}
-          .filter:last-child .closingToggler span {background-position:right -72px;}
-          .filter:last-child .openingToggler span {background-position:right -24px;}
+        .cloned_filter .toggler span {background-position:right -72px ;}
+          .cloned_filter .closingToggler span {background-position:right -72px;}
+          .cloned_filter .openingToggler span {background-position:right -24px;}
       .closedFilter {padding:0;border:0 none;}
         .closedFilter form {display:none;}
 
@@ -140,7 +140,7 @@
 
 
   /*PAGER*/
-    .pager {float:right;height:19px;margin:-3.6em 0 2em;padding:0 6px;}
+    .pager {float:right;height:19px;margin:-3.6em 0 2.4em;padding:0 6px;}
       .pager b {background: #7d7d7d;padding:1px 4px 1px 5px;margin:0 3px;vertical-align:middle;}
       .pager a {vertical-align:middle;margin:0 3px;}
         .pager a img {vertical-align:middle;}
