@@ -8,6 +8,10 @@
 
 if(Limb == undefined) var Limb = {};
 
+Limb.get = function(id) {
+  return document.getElementById(id);
+}
+ 
 Limb.trim = function(str)
 {
   var r = /^\s+|\s+$/;
