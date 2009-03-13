@@ -14,6 +14,7 @@
         <div class="list">
           <table>
             <tr>
+              <th>Статус</th>
               <th>Идентификатор</th>
               <th>Заголовок</th>
               <th>Содержимое</th>
@@ -21,6 +22,17 @@
             </tr>
             {{list:item}}
             <tr class='{$parity}'>
+              <td>
+                <?
+                if ($item['exists'])
+                {?>
+                  <img src='/shared/cms/images/icons/flag_green.png' title="Значение в базе"/>
+              <?}
+                else
+                {?>
+                  <img src='/shared/cms/images/icons/flag_red.png' title="Значения нет в базе"/>
+              <?}?>
+              </td>
               <td>{$item.identifier}</td>
               <td>{$item.title}</td>
               <td>{$item.content}</td>
