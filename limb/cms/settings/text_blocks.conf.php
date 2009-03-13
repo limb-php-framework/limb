@@ -12,7 +12,7 @@ $entry_text_main_page = <<<EOD
 <p>Добро пожаловать на сайт</p>
 EOD;
 
-$new_salon = <<<EOD
+$news_salon = <<<EOD
 <p>Тайский массаж традиционный<br/>
 Тайский массаж расслабляющий<br/>
 Тайский массаж для коррекции фигуры<br/>
@@ -34,8 +34,8 @@ $conf = array(
   'entry_text_main_page' => array('title' => 'Приветственный текст на главной странице',
                                   'content' => $entry_text_main_page),
 
-  'new_salon' => array('title' => 'Новинки салона',
-                       'content' => $new_salon),
+  'news_salon' => array('title' => 'Новинки салона',
+                       'content' => $news_salon),
 
   'sertificate' => array('title' => 'Сертификат',
                           'content' => $sertificate),
