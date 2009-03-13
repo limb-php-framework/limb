@@ -41,7 +41,6 @@ class lmbCmsDocument extends lmbActiveRecordTreeNode
 
   protected function _onBeforeSave()
   {
-    $this->uri = $this->createUriFromTree();
     $this->save();
   }
 
