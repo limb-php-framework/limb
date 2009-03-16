@@ -71,8 +71,34 @@ class lmbCmsDocument extends lmbActiveRecordTreeNode
    */
   static function findByUri($uri)
   {
-    $criteria = lmbSQLCriteria::equal('uri', $uri);
-    return lmbActiveRecord :: findFirst('lmbCmsDocument', $criteria);
+    $identifiers = split('/', $uri);
+    $criteria = new lmbSQLCriteria('level = 0');
+    $level = 0;
+    foreach($identifiers as $identifier)
+    {
+      $criteria->addOr("(identifier = '{$identifier}' AND level = {$level})");
+      $level++;
+    }
+    $documents = lmbActiveRecord :: find('lmbCmsDocument', $criteria);
+    
+    $parent_id = 0;
+    foreach($identifiers as $identifier)
+    {
+      if(!$document = self :: _getNodeByParentIdAndIdentifier($documents, $parent_id, $identifier))
+        return false;
+      $parent_id = $document->getId();
+    }
+    return $document;
+  }
+  
+  static function _getNodeByParentIdAndIdentifier($documents, $parent_id, $identifier)
+  {
+    foreach($documents as $document)
+    {
+      if(($document->getParentId() == $parent_id) and ($document->getIdentifier() == $identifier))
+        return $document;
+    }
+    return false;
   }
 }
 
