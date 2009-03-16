@@ -54,7 +54,7 @@ $title = isset($title) ? $title : 'Изменить приоритет';
   function openWindowForSavePriority(title, url, obj)
   {
     var params = '&';
-    jQuery(obj).parent().parent().parent().find('.priority_items').each(function(){params += this.name + '=' + this.value + '&';});
+    jQuery(obj).parent().parent().parent().find('.priority').each(function(){params += this.name + '=' + this.value + '&';});
     tb_show(title, url + params + 'TB_iframe=true&width=640&height=480');
   }
 {{/into}}
