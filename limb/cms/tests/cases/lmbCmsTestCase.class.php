@@ -13,7 +13,7 @@ class lmbCmsTestCase extends UnitTestCase
 {
   protected $db;
   protected $conn;
-  protected $tables_to_cleanup = array();
+  protected $tables_to_cleanup = array('meta_fields');
   protected $identifier = 0;
 
   function setUp()
