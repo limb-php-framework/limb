@@ -1,11 +1,14 @@
 <?php
 
 set_include_path(dirname(__FILE__) . '/../../../../');
-define('LIMB_VAR_DIR', dirname(__FILE__) . '/../../../var/');
 
 $mark = microtime(true);
 
 require_once('limb/core/common.inc.php');
+
+lmb_env_set('LIMB_VAR_DIR', dirname(__FILE__) . '/../../../var/');
+lmb_env_set('LIMB_CACHE_DB_META_IN_FILE', true);
+
 require_once('limb/active_record/common.inc.php');
 
 echo "active record common includes: " . (microtime(true) - $mark) . "\n";
@@ -116,3 +119,4 @@ for($i=0;$i<1000;$i++)
 echo "Foo fetching, getter: " . (microtime(true) - $mark) . "\n";
 
 @unlink($db);
+
