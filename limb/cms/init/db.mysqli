@@ -158,8 +158,8 @@ CREATE TABLE  `lmb_cms_text_block` (
   KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `meta_fields`;
-CREATE TABLE `meta_fields` (
+DROP TABLE IF EXISTS `lmb_cms_seo`;
+CREATE TABLE `lmb_cms_seo` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `url` varchar(255) collate utf8_unicode_ci NOT NULL,
   `title` varchar(255) collate utf8_unicode_ci NOT NULL,
@@ -167,7 +167,7 @@ CREATE TABLE `meta_fields` (
   `keywords` text collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-INSERT INTO `meta_fields` (`id`, `url`, `title`, `description`, `keywords`) VALUES(
+INSERT INTO `lmb_cms_seo` (`id`, `url`, `title`, `description`, `keywords`) VALUES(
   1,
   '/',
   'Главная страница Сайта',
