@@ -13,14 +13,6 @@ class lmbCmsDocumentTest extends lmbCmsTestCase
 {
   protected $tables_to_cleanup = array('lmb_cms_document');    
 
-  function testCreateUriFromTree()
-  {
-    $parent = $this->_createDocument('parent');
-    $child = $this->_createDocument('child', $parent);
-    $this->assertEqual($parent->createUriFromTree(), '/parent');
-    $this->assertEqual($child->createUriFromTree(), '/parent/child');
-  }
-
   function testGetUri()
   {
     $parent = $this->_createDocument('parent');
