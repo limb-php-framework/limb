@@ -1,8 +1,8 @@
 <?php
 
-lmb_require('limb/cms/src/model/Seo.class.php');
+lmb_require('limb/cms/src/model/lmbCmsSeo.class.php');
 
-class SeoTest extends lmbCmsTestCase
+class lmbCmsSeoTest extends lmbCmsTestCase
 {
   function setUp()
   {
@@ -12,7 +12,7 @@ class SeoTest extends lmbCmsTestCase
 
     foreach($items as $item)
     {
-      $seo_item = new Seo();
+      $seo_item = new lmbCmsSeo();
       $seo_item->setUrl($item['url']);
       $seo_item->setTitle($item['title']);
       $seo_item->setDescription($item['description']);
@@ -26,7 +26,7 @@ class SeoTest extends lmbCmsTestCase
     $items = $this->_getItemsArray();
     foreach($items as $item)
     {
-      $meta = Seo :: getMetaForUrl(new lmbUri($item['url']));
+      $meta = lmbCmsSeo :: getMetaForUrl(new lmbUri($item['url']));
 
       $this->assertEqual($meta->get('title'), $item['title']); 
       $this->assertEqual($meta->get('keywords'), $item['keywords']);
@@ -39,7 +39,7 @@ class SeoTest extends lmbCmsTestCase
     $items = $this->_getItemsArray();
     foreach($items as $item)
     {
-      $meta = Seo :: getMetaForUrl(new lmbUri($item['url'] . '/'));
+      $meta = lmbCmsSeo :: getMetaForUrl(new lmbUri($item['url'] . '/'));
 
       $this->assertEqual($meta->get('title'), $item['title']);
       $this->assertEqual($meta->get('keywords'), $item['keywords']);
@@ -52,7 +52,7 @@ class SeoTest extends lmbCmsTestCase
     $items = $this->_getItemsArray();
     foreach($items as $item)
     {
-      $meta = Seo :: getMetaForUrl(new lmbUri($item['url'] . '/test/test'));
+      $meta = lmbCmsSeo :: getMetaForUrl(new lmbUri($item['url'] . '/test/test'));
 
       $this->assertEqual($meta->get('title'), $item['title']); 
       $this->assertEqual($meta->get('keywords'), $item['keywords']);
