@@ -24,7 +24,7 @@ Limb.Class('CMS.Filter',
     if (!this.mainFilter[0])
       return;
 
-    this.list = this.mainFilter.nextAll('.list').eq(0).css('margin-bottom','0');
+    this.list = this.mainFilter.next('.list').css('margin-bottom','0');
 
     var togllerFilterHTML = '<a class="toggler closingToggler" href="javascript:void(0)"><span>' + this.hideFilterStr + '</span></a>';
     var bottomFilterHTML = '<div class="filter cloned_filter closedFilter"><a class="toggler openingToggler" href="javascript:void(0)"><span>' + this.showFilterStr + '</span></a></div>';
