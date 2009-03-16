@@ -27,6 +27,7 @@ class Seo extends lmbActiveRecord
   {
     if(empty(self :: $_meta))
       self :: _getMetaDataForUrl();
+
     return self :: $_meta->get('title');
   }
 
@@ -34,7 +35,6 @@ class Seo extends lmbActiveRecord
   {
     if(empty(self :: $_meta))
       self :: _getMetaDataForUrl();
-
 
     return self :: $_meta->get('description');
   }
@@ -68,6 +68,9 @@ class Seo extends lmbActiveRecord
     $sql .= ' ORDER BY url DESC LIMIT 1';
     $meta = lmbDBAL :: fetchOneRow($sql);
 
-    self :: $_meta = $meta;
+    if(!empty($meta))
+      self :: $_meta = $meta;
+    else
+      self :: $_meta = new lmbObject(array('title' => '', 'description' => '', 'keywords' => ''));
   }
 }
