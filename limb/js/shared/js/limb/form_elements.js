@@ -8,15 +8,15 @@
 
 Limb.Class('Limb.DynamicList',
 {
-  __construct: function(button_id, answer_sample_id, container_id, init_arr, init_func)
+  __construct: function(button_id, sample_id, container_id, init_arr, init_func, start_index)
   {
     this.create_button = document.getElementById(button_id);
-    this.answer_sample = document.getElementById(answer_sample_id);
+    this.sample = document.getElementById(sample_id);
     this.container = document.getElementById(container_id);
     this.create_button.controller = this;
     this.init_arr = init_arr;
     this.init_func = init_func;
-    this.index = 0;
+    this.index = start_index || 0;
     this.init();
   },
 
@@ -31,29 +31,30 @@ Limb.Class('Limb.DynamicList',
       Limb.DynamicList.setModifiedFlag();
       return false;
     }
-    this.answer_sample.style.display = 'none';
+    this.sample.style.display = 'none';
   },
 
   addItem: function(top_obj)
   {
-    var div = document.createElement('div');
+    var tagName = this.sample.tagName.toLowerCase();
+    var tag = document.createElement(tagName);
     if(top_obj)
     {
       var next = top_obj.nextSibling;
       if(next)
-        div = this.container.insertBefore(div, next);
+        tag = this.container.insertBefore(tag, next);
       else
-        this.container.appendChild(div);
+        this.container.appendChild(tag);
     }
     else
     {
-      this.container.appendChild(div);
+      this.container.appendChild(tag);
     }
-    div.innerHTML = this.answer_sample.innerHTML;
+    tag.innerHTML = this.sample.innerHTML;
 
-    this.init_func(div, this.index, this.init_arr);
+    this.init_func(tag, this.index, this.init_arr);
 
-    this.initBehavior(div);
+    this.initBehavior(tag);
     this.index++;
   },
 
