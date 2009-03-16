@@ -20,8 +20,10 @@ class AdminTextBlockController extends lmbAdminObjectController
     foreach($this->toolkit->getConf('text_blocks') as $identifier => $default_properties)
     {
       if(isset($blocks[$identifier]))
+      {
         $item = $blocks[$identifier];
         $item['exists'] = true;
+      }
       else
       {
         $item = new lmbCmsTextBlock();
