@@ -16,7 +16,7 @@
     #header_block h1 {margin:0 0 20px;font-weight:bold;font-size:2em;}
     #login_form h1 {margin:0 0 20px;line-height:1em;}
     #popup_wrapper h1 {margin:15px 9px 1em;}
-  h2{margin:0 0 15px;padding: 0;font:bold 1.7em arial, sans-serif; color:#010101;}
+  h2{margin:0 0 0.4em;padding: 0;font:bold 1.7em arial, sans-serif; color:#010101;}
   h3{margin: 0;padding:0;font:1.4em arial, sans-serif;color:#010101;}
   h4{margin:0;padding: 0;font:bold 1.2em arial, sans-serif;color:#010101;}
   dl, dt, dd, form {margin:0;padding: 0;}
@@ -236,7 +236,7 @@
     .multiline dt, .left_side .field dt, .right_side .field dt {left:0;float:none;width:auto;margin:0 0 3px;text-align:left;}
     .multiline dd, .left_side .field dd, .right_side .field dd {float:none;}
   label {margin:0 15px 0 0;}
-  select{width:280px;border:solid 1px #B5B8C8;height:1.8em;background:#fff url(../images/bgr/text-bg.png) repeat-x top left;border: 1px solid #B5B8C8;}
+  select{width:280px;border:solid 1px #B5B8C8;height:1.8em;background: url(../images/bgr/text-bg.png) repeat-x top left;border: 1px solid #B5B8C8;}
     select option {background:#fff;}
   .date3select{width:91px;}
   textarea {width:278px;height:100px;background:#fff url(../images/bgr/text-bg.png) repeat-x top left;border:1px solid #B5B8C8;}
