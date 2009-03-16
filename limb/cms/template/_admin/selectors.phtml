@@ -3,7 +3,7 @@
 {{/template}}
 
 {{template name="selector"}}
-  <input type='checkbox' name="ids[]" value='{$value}' />
+  <input type='checkbox' name="ids[]" value='{$value}'/>
 {{/template}}
 
 {{template name="selectors_button"}}
@@ -27,7 +27,7 @@ $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller,
 $url .= '?' . $params;
 ?>
 
-  <input type="button" value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}");return false;'/>
+  <input type="button" value='{$title}' onclick='openWindowForSelectors("{$title}", "{$url}", this);return false;'/>
 {{/template}}
 
 {{template name="save_priority_button"}}
@@ -46,8 +46,8 @@ $title = isset($title) ? $title : 'Изменить приоритет';
 {{into slot="js"}}
   function openWindowForSelectors(title, url, obj)
   {
-    var params = '&';
-    jQuery(obj).parent().parent().parent().find('input.selector[type="checkbox"][checked]').each(function(){ params += this.name + '=' + this.value + '&';});
+    var params = '&'; 
+    jQuery(obj).parent().parent().parent().find('input[type="checkbox"][checked]').each(function(){ params += this.name + '=' + this.value + '&';});
     tb_show(title, url + params + 'TB_iframe=true&width=640&height=480');
   }
 
