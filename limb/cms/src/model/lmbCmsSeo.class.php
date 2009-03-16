@@ -1,8 +1,8 @@
 <?php
 
-class Seo extends lmbActiveRecord
+class lmbCmsSeo extends lmbActiveRecord
 {
-  protected $_db_table_name = 'meta_fields';
+  protected $_db_table_name = 'lmb_cms_seo';
   protected static $_meta;
   
   protected function _createValidator()
@@ -60,7 +60,7 @@ class Seo extends lmbActiveRecord
 
     $count_path = $uri->countPath();
     $meta = null;
-    $sql = 'SELECT keywords, description, title FROM meta_fields WHERE url = \'/\' OR ';
+    $sql = 'SELECT keywords, description, title FROM lmb_cms_seo WHERE url = \'/\' OR ';
 
     for($i = 1; $i < $count_path; $i++)
       $sql .= ' url = \'' . self :: getDefaultConnection()->escape($uri->getPathToLevel($i)) . '\'' . ($i < $count_path - 1? ' OR ':''); 

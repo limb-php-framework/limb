@@ -8,7 +8,7 @@
       <h1>Мета поля</h1>
 
       <div class="header_actions">
-        <a href='{{route_url params="controller:admin_meta_fields,action:create"/}}' title="Добавить товар" class='thickbox'><img src='/shared/cms/images/icons/page_add.png' alt='Добавить'/> Добавить</a>
+        <a href='{{route_url params="controller:admin_seo,action:create"/}}' title="Добавить товар" class='thickbox'><img src='/shared/cms/images/icons/page_add.png' alt='Добавить'/> Добавить</a>
       </div>
     </div>
 
@@ -33,8 +33,8 @@
               <td>{$item.keywords}</td>
               <td>{$item.description}</td>
               <td class='actions'>
-                {{apply template="object_action_edit" controller="admin_meta_fields" item="{$item}"/}}
-                {{apply template="object_action_delete" controller="admin_meta_fields" item="{$item}"/}}
+                {{apply template="object_action_edit" controller="admin_seo" item="{$item}"/}}
+                {{apply template="object_action_delete" controller="admin_seo" item="{$item}"/}}
               </td>
             </tr>
             {{/list:item}}
