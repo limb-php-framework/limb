@@ -121,6 +121,5 @@ for($i=0;$i<1000;$i++)
 
 echo "Foo fetching, getter: " . (microtime(true) - $mark) . "\n";
 
-
 @unlink($db);
 

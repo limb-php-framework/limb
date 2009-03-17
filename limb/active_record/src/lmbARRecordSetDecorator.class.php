@@ -9,12 +9,13 @@
 lmb_require('limb/core/src/lmbCollectionDecorator.class.php');
 lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');
+lmb_require('limb/active_record/src/lmbARProxy.class.php');
 
 /**
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7784 2009-03-17 19:52:54Z pachanga $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -37,6 +38,7 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
       return null;
 
     return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
+    //return self :: createProxyFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
   }
 
   static function createObjectFromRecord($record, $default_class_name, $conn, $lazy_attributes = null)
@@ -58,6 +60,11 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     $object->loadFromRecord($record);
 
     return $object;
+  }
+
+  static function createProxyFromRecord($record, $default_class_name, $conn, $lazy_attributes = null)
+  {
+    return new lmbARProxy($record, $default_class_name, $conn, $lazy_attributes);
   }
 
   function at($pos)

@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * abstract class lmbDbInfo.
  *
  * @package dbal
- * @version $Id: lmbDbInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbDbInfo.class.php 7784 2009-03-17 19:52:54Z pachanga $
  */
 abstract class lmbDbInfo
 {
@@ -59,8 +59,5 @@ abstract class lmbDbInfo
   }
 
   abstract function loadTables();
-  
-  
 }
-
 
