@@ -59,7 +59,10 @@ for($i=0;$i<1000;$i++)
 
 echo "lmbDBAL :: fetch()(out of loop), getter: " . (microtime(true) - $mark) . "\n";
 
-class Foo extends lmbActiveRecord{}
+class Foo extends lmbActiveRecord
+{
+  protected $_db_table_name = 'foo';
+}
 
 lmbActiveRecord :: setDefaultDSN('sqlite://localhost/' . $db); 
 
@@ -117,6 +120,7 @@ for($i=0;$i<1000;$i++)
 }
 
 echo "Foo fetching, getter: " . (microtime(true) - $mark) . "\n";
+
 
 @unlink($db);
 

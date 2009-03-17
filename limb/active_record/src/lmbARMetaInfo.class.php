@@ -11,7 +11,7 @@
  * class lmbARMetaInfo.
  *
  * @package active_record
- * @version $Id: lmbARMetaInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbARMetaInfo.class.php 7783 2009-03-17 18:57:39Z pachanga $
  */
 class lmbARMetaInfo
 {
@@ -23,9 +23,7 @@ class lmbARMetaInfo
 
   function __construct($active_record, $conn = null)
   {
-    if(!$table_name = $active_record->getTableName())
-      $table_name = lmb_under_scores(get_class($active_record));
-
+    $table_name = $active_record->getTableName();
     $this->db_table = lmbToolkit :: instance()->createTableGateway($table_name, $conn);
     $this->db_column_names = $this->db_table->getColumnNames();
   }

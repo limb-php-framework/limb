@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7779 2009-03-16 18:37:26Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7783 2009-03-17 18:57:39Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -52,6 +52,9 @@ class lmbActiveRecord extends lmbObject
    *             if no connection passed explicitly into constructor
    */
   protected static $_default_db_conn;
+
+  protected static $_metas = array();
+
   /**
    * @var object current object's database connection
    *  @see lmbDbConnection
@@ -210,18 +213,33 @@ class lmbActiveRecord extends lmbObject
 
     $this->_db_conn_dsn = $this->_db_conn->getDsnString();
 
-    $this->_db_meta_info = lmbToolkit :: instance()->getActiveRecordMetaInfo($this, $this->_db_conn);
+    $class_name = get_class($this);
+
+    if(!$this->_db_table_name)
+      $this->_db_table_name = lmb_under_scores($class_name);
+
+    if(isset(self :: $_metas[$class_name]))
+      $meta = self :: $_metas[$class_name];
+    else
+    {
+      $meta = new lmbARMetaInfo($this, $this->_db_conn);
+      self :: $_metas[$class_name] = $meta;
+    }
+    $this->_db_meta_info = $meta;
+
     $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
     $this->_db_table->setPrimaryKeyName($this->_primary_key_name);
-    $this->_db_table_name = $this->_db_table->getTableName();
     $this->_error_list = new lmbErrorList();
 
-    if(is_int($magic_params))
-      $this->loadById($magic_params);
-    elseif(is_array($magic_params) || is_object($magic_params))
-      $this->import($magic_params);
+    if($magic_params)
+    {
+      if(is_int($magic_params))
+        $this->loadById($magic_params);
+      elseif(is_array($magic_params) || is_object($magic_params))
+        $this->import($magic_params);
+    }
   }
   /**
    *  Sets database resource identifier used for database access

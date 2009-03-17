@@ -38,9 +38,7 @@ class lmbARQuery extends lmbSelectRawQuery
       $this->_addFieldsForObject($this->base_object, '', '', $magic_params);
     }
     else
-    {
       parent :: __construct($sql, $conn);
-    }
   }
   
   function eagerJoin($relation_name, $params = array())
@@ -109,13 +107,14 @@ class lmbARQuery extends lmbSelectRawQuery
     $rs = parent :: fetch();
 
     if($decorate)
-      $rs = new lmbARRecordSetDecorator($rs, $this->base_class_name, $this->_conn, $this->base_object->getLazyAttributes());
+      $rs = new lmbARRecordSetDecorator($rs, $this->base_object, $this->_conn, $this->base_object->getLazyAttributes());
     
     $rs = $this->_decorateWithJoinDecorator($rs);
     
     $rs =  $this->_decorateWithAttachDecorator($rs);
     
-    $rs->sort($this->sort_params);
+    if($this->sort_params)
+      $rs->sort($this->sort_params);
     
     return $rs;
   }
@@ -188,13 +187,15 @@ class lmbARQuery extends lmbSelectRawQuery
       return $rs;
   }
   
-  static function create($class_name, $params = array(), $conn = null, $sql = '')
+  static function create($class_name_or_obj, $params = array(), $conn = null, $sql = '')
   {
     if(!$conn)
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
     
-    $object = new $class_name;
-    $query = new lmbARQuery($class_name, $conn, $sql, $params);
+    if(!is_object($class_name_or_obj))
+      $class_name_or_obj = new $class_name_or_obj;
+
+    $query = new lmbARQuery($class_name_or_obj, $conn, $sql, $params);
 
     if(isset($params['criteria']) && $params['criteria'])
       $criteria = lmbSQLCriteria :: objectify($params['criteria']); 
@@ -210,11 +211,11 @@ class lmbARQuery extends lmbSelectRawQuery
     }
 
     if(!$has_class_criteria)
-      $object->addClassCriteria($criteria);
+      $class_name_or_obj->addClassCriteria($criteria);
     
     $query->where($criteria);
     
-    $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $object->getDefaultSortParams();
+    $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $class_name_or_obj->getDefaultSortParams();
     $query->order($sort_params);
 
     if(isset($params['group']) && $params['group'])
