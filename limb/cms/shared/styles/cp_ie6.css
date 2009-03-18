@@ -4,11 +4,11 @@
     .filter-last .toggler {bottom:-26px;}
   .flashbox {zoom:1;position:absolute;top:expression(eval(document.documentElement.scrollTop)+ 'px');margin-top:10px;}
     .list th.first-child input, .list td.first-child  input {display:block;margin:0 auto;}
-    .list td.last-child  img
+    .list td.last-child  img, .list th  img
       {
         width: expression(width);
         filter: expression( (runtimeStyle.filter == '') ? runtimeStyle.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='image')" : '',
-              src = 'shared/cms/images/1x1.gif');
+              src = '/shared/cms/images/1x1.gif');
       }
 
 /*CONTENT*/
@@ -20,7 +20,7 @@
     left:-20px;
     width: expression(width);
     filter: expression( (runtimeStyle.filter == '') ? runtimeStyle.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='image')" : '',
-              src = 'shared/cms/images/1x1.gif');
+              src = '/shared/cms/images/1x1.gif');
   }
 
   #login_form #logo_limb {height:expression(parseFloat(this.parentNode.offsetHeight));}
@@ -32,13 +32,14 @@
       runtimeStyle.backgroundImage = 'none');
   }
 
+  #main_menu ul{zoom:1;}
   #main_menu dt {padding-top:3px;height:21px;line-height:18px;}
   #main_menu ul li {padding-top:2px;height:19px;}
   #main_menu img
   {
     width: expression(width);
     filter: expression( (runtimeStyle.filter == '') ? runtimeStyle.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='image')" : '',
-              src = 'shared/cms/images/1x1.gif');
+              src = '/shared/cms/images/1x1.gif');
   }
 
   #wrapper
