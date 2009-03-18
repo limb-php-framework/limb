@@ -29,12 +29,12 @@ abstract class lmbObjectController extends lmbController
   /**
    * @return lmbActiveRecord
    */
-  protected function _getObjectByRequestedId()
+  protected function _getObjectByRequestedId($throw_exception = false)
   {
     if(!$id = $this->request->getInteger('id'))
       return false;
 
-    if(!$item = lmbActiveRecord::findById($this->_object_class_name, $id, false))
+    if(!$item = lmbActiveRecord::findById($this->_object_class_name, $id, $throw_exception))
       return false;
 
     return $item;
