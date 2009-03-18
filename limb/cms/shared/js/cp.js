@@ -321,16 +321,6 @@ function setFocusOnPopupWindow()
   var firstElement  = jQuery(popup_window.contentWindow.document).find('a, :input')[0];
   if(firstElement)
     firstElement.focus();
-
-  popup_window.contentWindow.document.onkeyup = function(e)
-  {
-    if (e == null)
-      var keycode = event.keyCode;
-    else
-      var keycode = e.which;
-    if(keycode == 27)
-      popup_window.contentWindow.parent.tb_remove();
-  };
 }
 
 

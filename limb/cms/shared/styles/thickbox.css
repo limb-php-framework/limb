@@ -86,10 +86,9 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 }
 
 #TB_closeAjaxWindow{
-  padding:7px 10px 5px 0;
-  margin-bottom:1px;
-  text-align:right;
-  float:right;
+  position:absolute;
+  right:10px;
+  top:7px;
 }
 
 #TB_ajaxWindowTitle{
@@ -99,8 +98,35 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 }
 
 #TB_title{
+  position:relative;
   background-color:#e8e8e8;
   height:27px;
+  padding:0 50px 0 0;
+}
+
+#TB_title .maximize_window {
+  position:absolute;
+  right:31px;
+  top:7px;
+  width:16px;
+  height:16px;
+  background: url(/shared/cms/images/icons/application.png) no-repeat left center;
+}
+
+#TB_title .minimize_window {
+  position:absolute;
+  right:31px;
+  top:7px;
+  width:16px;
+  height:16px;
+  background: url(/shared/cms/images/icons/application_double.png) no-repeat left center;
+}
+
+#TB_closeWindowButton {
+  display:block;
+  width:16px;
+  height:16px;
+  background: url(/shared/cms/images/icons/cancel.png) no-repeat left center;
 }
 
 #TB_ajaxContent{
