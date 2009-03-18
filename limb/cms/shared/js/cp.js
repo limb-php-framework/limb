@@ -312,8 +312,9 @@ function initDocumentStructure(){
   sidebar.height(height);
 };
 
-function setFocusOnPopupWindow()
+function setFocusOnPopupWindow(e)
 {
+  console.log('debug: ' + e.target.id);
   var popup_window = document.getElementById('TB_iframeContent');
   if(!popup_window)
     return;
