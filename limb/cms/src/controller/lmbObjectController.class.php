@@ -34,7 +34,7 @@ abstract class lmbObjectController extends lmbController
     if(!$id = $this->request->getInteger('id'))
       return false;
 
-    if(!$item = lmbActiveRecord::findById($this->_object_class_name, $id))
+    if(!$item = lmbActiveRecord::findById($this->_object_class_name, $id, false))
       return false;
 
     return $item;
