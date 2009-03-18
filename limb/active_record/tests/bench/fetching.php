@@ -79,6 +79,17 @@ echo "lmbActiveRecord fetching, getter: " . (microtime(true) - $mark) . "\n";
 
 $mark = microtime(true);
 
+for($i=0;$i<1000;$i++)
+{
+  $rs = lmbActiveRecord :: find('Foo', array('proxy' => true));
+  foreach($rs as $obj)
+    $foo = $obj->get('bar');
+}
+
+echo "lmbActiveRecord fetching(proxied), getter: " . (microtime(true) - $mark) . "\n";
+
+$mark = microtime(true);
+
 $rs = lmbActiveRecord :: find('Foo');
 for($i=0;$i<1000;$i++)
 {

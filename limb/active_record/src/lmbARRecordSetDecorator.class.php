@@ -15,19 +15,21 @@ lmb_require('limb/active_record/src/lmbARProxy.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7784 2009-03-17 19:52:54Z pachanga $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7785 2009-03-18 05:49:34Z pachanga $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
   protected $class_path;
   protected $conn;
   protected $lazy_attributes;
+  protected $use_proxy = false;
 
-  function __construct($record_set, $class_path, $conn = null, $lazy_attributes = null)
+  function __construct($record_set, $class_path, $conn = null, $lazy_attributes = null, $use_proxy = false)
   {
     $this->class_path = $class_path;
     $this->conn = $conn;
     $this->lazy_attributes = $lazy_attributes;
+    $this->use_proxy = $use_proxy;
 
     parent :: __construct($record_set);
   }
@@ -37,12 +39,30 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     if(!$record = parent :: current())
       return null;
 
-    return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
-    //return self :: createProxyFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
+    return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes, $this->use_proxy);
   }
 
-  static function createObjectFromRecord($record, $default_class_name, $conn, $lazy_attributes = null)
+  function at($pos)
   {
+    if(!$record = parent :: at($pos))
+      return null;
+
+    return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes, $this->use_proxy);
+  }
+
+  function getIds()
+  {
+    $result = array();
+    foreach($this->getArray() as $record)
+      $result[] = $record->getId();
+    return $result;
+  }
+
+  static function createObjectFromRecord($record, $default_class_name, $conn, $lazy_attributes = null, $use_proxy = false)
+  {
+    if($use_proxy)
+      return new lmbARProxy($record, $default_class_name, $conn, $lazy_attributes);
+
     if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
     {
       $class_name = lmbActiveRecord :: getInheritanceClass($record);
@@ -60,27 +80,6 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     $object->loadFromRecord($record);
 
     return $object;
-  }
-
-  static function createProxyFromRecord($record, $default_class_name, $conn, $lazy_attributes = null)
-  {
-    return new lmbARProxy($record, $default_class_name, $conn, $lazy_attributes);
-  }
-
-  function at($pos)
-  {
-    if(!$record = parent :: at($pos))
-      return null;
-
-    return self :: createObjectFromRecord($record, $this->class_path, $this->conn, $this->lazy_attributes);
-  }
-
-  function getIds()
-  {
-    $result = array();
-    foreach($this->getArray() as $record)
-      $result[] = $record->getId();
-    return $result;
   }
 }
 

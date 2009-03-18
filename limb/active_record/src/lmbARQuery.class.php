@@ -17,9 +17,13 @@ class lmbARQuery extends lmbSelectRawQuery
   protected $join_relations = array();
   protected $attach_relations = array();
   protected $sort_params = array();
+  protected $use_proxy = false;
   
   function __construct($base_class_name_or_obj, $conn, $sql = '', $magic_params = array())
   {
+    if(isset($magic_params['proxy']) && $magic_params['proxy'])
+      $this->use_proxy = true;
+
     if(is_object($base_class_name_or_obj))
     {
       $this->base_class_name = get_class($base_class_name_or_obj);
@@ -96,7 +100,8 @@ class lmbARQuery extends lmbSelectRawQuery
   function getRecordSet()
   {
     $rs = parent :: getRecordSet();
-    $rs->sort($this->sort_params);
+    if($this->sort_params)
+      $rs->sort($this->sort_params);
     return $rs;
   }
   
@@ -107,7 +112,15 @@ class lmbARQuery extends lmbSelectRawQuery
     $rs = parent :: fetch();
 
     if($decorate)
-      $rs = new lmbARRecordSetDecorator($rs, $this->base_object, $this->_conn, $this->base_object->getLazyAttributes());
+    {
+      $rs = new lmbARRecordSetDecorator(
+                    $rs, 
+                    $this->base_object, 
+                    $this->_conn, 
+                    $this->base_object->getLazyAttributes(),
+                    $this->use_proxy
+                );
+    }
     
     $rs = $this->_decorateWithJoinDecorator($rs);
     
