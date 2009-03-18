@@ -312,9 +312,8 @@ function initDocumentStructure(){
   sidebar.height(height);
 };
 
-function setFocusOnPopupWindow(e)
+function setFocusOnPopupWindow()
 {
-  console.log('debug: ' + e.target.id);
   var popup_window = document.getElementById('TB_iframeContent');
   if(!popup_window)
     return;
@@ -337,10 +336,11 @@ function toggle_selected(toggle_obj)
 jQuery(window).ready(function(){
 
   /*Keep focus into popup window*/
-  window.onfocus = setFocusOnPopupWindow;
+  /*window.onfocus = setFocusOnPopupWindow;
   document.onfocus = setFocusOnPopupWindow;
   window.onkeydown = setFocusOnPopupWindow;
   document.onkeydown = setFocusOnPopupWindow
+  */
 
   cookieCMS = new CMS.cookie('LimbCMS');
   new CMS.lightLimbVersion();
