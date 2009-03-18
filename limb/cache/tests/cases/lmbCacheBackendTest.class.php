@@ -94,7 +94,8 @@ abstract class lmbCacheBackendTest extends UnitTestCase
 
   function testGetWithTtlFalse()
   {
-    $this->cache->set(1, 'value', array('ttl' => -100));
+    $this->cache->set(1, 'value', array('ttl' => 1));
+    sleep(2);
     $this->assertFalse($this->cache->get(1));
   }
 
