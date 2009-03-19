@@ -4,6 +4,12 @@
   {{include file="_admin_object/actions.phtml"/}}
 
   {{into slot="content_zone"}}
+    <?php  $this->items->sort(array('url' => 'asc')) ?>
+    <style>
+    dl.cms_meta dt {font-weight: bold;}
+    dl.cms_meta dd {font-size: 0.8em;}
+
+    </style>
     <div id="header">
       <h1>Мета поля</h1>
 
@@ -19,19 +25,20 @@
         <table>
           <tr>
             <th>#ID</th>
-            <th width='50%'>Url</th>
-            <th>Title</th>
-            <th>Keywrods</th>
-            <th width='50%'>Description</th>
+            <th width='90%'>URL Metadata</th>
             <th>Действия</th>
             </tr>
             {{list:item}}
             <tr class='{$parity}'>
               <td>{$item.id}</td>
-              <td>{$item.url}</td>
-              <td>{$item.title}</td>
-              <td>{$item.keywords}</td>
-              <td>{$item.description}</td>
+              <td>
+              <a href="{$item.url}" style="font-weight: bold;">{$item.url}</a>
+              <dl class="cms_meta">
+                <dt>Title</dt><dd>{$item.title}</dd>
+                <dt>Keywords</dt><dd>{$item.keywords}</dd>
+                <dt>Description</dt><dd>{$item.description}</dd>
+              </dl>
+              </td>
               <td class='actions'>
                 {{apply template="object_action_edit" controller="admin_seo" item="{$item}"/}}
                 {{apply template="object_action_delete" controller="admin_seo" item="{$item}"/}}

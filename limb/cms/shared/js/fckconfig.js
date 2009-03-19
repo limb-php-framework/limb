@@ -6,9 +6,9 @@ FCKConfig.ToolbarSets["cms_document"] = [
     'OrderedList','UnorderedList','Outdent','Indent', '-',
     'JustifyLeft','JustifyCenter','JustifyRight','JustifyFull', '-',
     'Image','Flash','Table', '-',
-    'Source','Preview'],
+    'Source','Preview', 'FitWindow','-','About'],
   '/',
-  ['FontFormat','FontName']
+  ['FontFormat','FontName'],
 ];
 
 FCKConfig.FontFormats	= 'p;div;pre;address;h1;h2;h3;h4;h5;h6';
