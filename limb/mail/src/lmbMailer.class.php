@@ -13,7 +13,7 @@ lmb_require('limb/mail/src/lmbBaseMailerInterface.interface.php');
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 7697 2009-03-06 18:41:42Z cmz $
+ * @version $Id: lmbMailer.class.php 7796 2009-03-20 03:32:05Z korchasa $
  */
 class lmbMailer implements lmbBaseMailerInterface
 {
@@ -40,11 +40,8 @@ class lmbMailer implements lmbBaseMailerInterface
       
       $this->setConfig($config);
       
-      if($this->use_phpmail)
-      {
-        $php_mailer_version = lmb_env_get('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
-        include_once('limb/mail/lib/' .  $php_mailer_version . '/class.phpmailer.php');
-      } 
+      $php_mailer_version = lmb_env_get('PHPMAILER_VERSION_NAME', 'phpmailer-2.2.1');
+      include_once('limb/mail/lib/' .  $php_mailer_version . '/class.phpmailer.php');
   }
 
   public function setConfig($config)
