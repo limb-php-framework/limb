@@ -31,7 +31,7 @@ class TaskmanTask
 
   function getName()
   {
-    return $this->name;    
+    return $this->name;
   }
 
   function getArgs()
@@ -269,7 +269,7 @@ function taskman_process_argv(&$argv)
       foreach($defs as $def)
       {
         taskman_sysmsg("Setting prop '$def'\n");
-        @list($def_name, $def_value) = explode("=", $def);
+        @list($def_name, $def_value) = explode("=", $def, 2);
         if(!isset($def_value))
           taskman_propset($def_name, "yes");
         else
@@ -303,13 +303,13 @@ function taskman_collecttasks()
       throw new TaskmanException("Double definition of task with name '$name'");
 
     $task_obj = new TaskmanTask($func);
-    $TASKMAN_TASKS[$name] = $task_obj; 
+    $TASKMAN_TASKS[$name] = $task_obj;
 
     foreach($task_obj->getAliases() as $alias)
     {
       if(isset($TASKMAN_TASKS[$alias]) || isset($TASKMAN_TASK_ALIASES[$alias]))
         throw new TaskmanException("Double alias '$alias' definition of task with name '$name'");
-      $TASKMAN_TASK_ALIASES[$alias] = $task_obj; 
+      $TASKMAN_TASK_ALIASES[$alias] = $task_obj;
     }
   }
 }
@@ -392,7 +392,7 @@ function taskman_runtasks($tasks, $args = array())
     else if(is_object($task_spec))
       $task_spec->run($args);
     else
-      throw new TaskmanException("Invalid task specification '$task_spec', should be either string or array or object"); 
+      throw new TaskmanException("Invalid task specification '$task_spec', should be either string or array or object");
   }
 }
 
@@ -406,10 +406,10 @@ function taskman_runtasks_parall($tasks, $args = array())
     $cmd = 'php ' .$TASKMAN_SCRIPT . ' ' . $task . ' ' . implode(' ', $args) . '';
     foreach (taskman_getprops() as $key => $value)
       $cmd .= ' -D '.$key .'='.$value;
-      
+
     $cmds[] = $cmd;
   }
-  
+
   taskman_sysmsg("************************ Running parallel tasks: " . implode(',', $tasks) . " ************************\n");
 
   $procs = array();
@@ -444,7 +444,7 @@ function taskman_runtasks_parall($tasks, $args = array())
     $deads = array();
     foreach($procs as $id => $item)
     {
-      if(is_resource($item[0])) 
+      if(is_resource($item[0]))
       {
         $status = proc_get_status($item[0]);
 

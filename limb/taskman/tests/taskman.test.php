@@ -2,8 +2,8 @@
 
 @define('LIMB_VAR_DIR', dirname(__FILE__) . '/../../var');
 
-class TaskmanTest extends UnitTestCase 
-{  
+class TaskmanTest extends UnitTestCase
+{
   function setUp()
   {
     @mkdir(LIMB_VAR_DIR);
@@ -96,7 +96,7 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("foobarzoo", $out);
   }
-  
+
   function testConflictingTaskAliases()
   {
     list($code, $out) = $this->_run("
@@ -116,10 +116,10 @@ class TaskmanTest extends UnitTestCase
     if(!$this->isWin())
       $this->assertTrue(strpos($out, "TaskmanException") !== false);
   }
-  
+
   function testPassPropFromCLI()
   {
-    list($code, $out) = $this->_run("    
+    list($code, $out) = $this->_run("
     function task_foo() { echo taskman_prop('BAR'); }
     ",
     '-b foo -D BAR=42');
@@ -127,10 +127,10 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("42", $out);
   }
-  
+
   function testPropStringHelper()
   {
-    list($code, $out) = $this->_run("    
+    list($code, $out) = $this->_run("
     function task_foo() { echo __('%BAR% and %FOO%'); }
     ",
     '-b foo -D BAR=42 -D FOO=100');
@@ -138,10 +138,10 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("42 and 100", $out);
   }
-  
+
   function testMissingPropThrowsException()
   {
-    list($code, $out) = $this->_run("    
+    list($code, $out) = $this->_run("
     function task_foo() { try{ taskman_prop('BAR'); } catch(Exception \$e) { echo 'exception'; } }
     ",
     '-b foo');
@@ -149,10 +149,10 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("exception", $out);
   }
-  
+
   function testPassSeveralPropsFromCLI()
   {
-    list($code, $out) = $this->_run("    
+    list($code, $out) = $this->_run("
     function task_foo() { echo taskman_prop('BAR');echo taskman_prop('FOO'); }
     ",
     '-b foo -D BAR=42 -D FOO=12');
@@ -160,10 +160,10 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("4212", $out);
   }
-  
+
   function testPropSet()
   {
-    list($code, $out) = $this->_run("    
+    list($code, $out) = $this->_run("
     function task_bar() { taskman_propset('BAZ', '42'); }
     /**
      * @deps bar
@@ -175,10 +175,10 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual(0, $code);
     $this->assertEqual("42", $out);
   }
-  
+
   function testPropOr()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     function task_foo() {
       echo taskman_propor('BAR', 'error');
       echo taskman_propor('BAZ', 'success');
@@ -188,11 +188,11 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("42success", $out);
-  }  
+  }
 
   function testPropSetOr()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     function task_foo() {
       taskman_propsetor('BAR', 'bar');
       echo taskman_prop('BAR');
@@ -204,13 +204,13 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("42baz", $out);
-  }  
+  }
 
   function testUseConfig()
   {
     $settings = LIMB_VAR_DIR . '/settings.php';
     file_put_contents($settings, '<?php taskman_propset("BAR", "bar");');
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     function task_foo() {
       echo taskman_prop('BAR');
     }
@@ -224,7 +224,7 @@ class TaskmanTest extends UnitTestCase
 
   function testAlwaysTask()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @always
      */
@@ -235,11 +235,11 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("barfoo", $out);
-  }  
+  }
 
   function testDefaultTask()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @default
      */
@@ -249,11 +249,11 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("bar", $out);
-  }  
+  }
 
   function testAlwaysAndDefaultTasks()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @always
      */
@@ -267,7 +267,7 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("foobar", $out);
-  }  
+  }
 
   function testPassArgsToTaskFromCLI()
   {
@@ -301,7 +301,7 @@ class TaskmanTest extends UnitTestCase
 
   function TODO_testArgsPassedToDefaultTask()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @default
      */
@@ -311,11 +311,11 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("wowhey", $out);
-  }  
+  }
 
   function testArgsPassedToAlwaysTask()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @always
      */
@@ -326,11 +326,11 @@ class TaskmanTest extends UnitTestCase
 
     $this->assertEqual(0, $code);
     $this->assertEqual("bar:wowyouhey:wowyou", $out);
-  }  
+  }
 
   function testBeforeDeps()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @before bar
      */
@@ -344,7 +344,7 @@ class TaskmanTest extends UnitTestCase
 
   function testSeveralBeforeDeps()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @before bar
      */
@@ -362,7 +362,7 @@ class TaskmanTest extends UnitTestCase
 
   function testInterdependentBeforeDeps()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @before bar
      */
@@ -380,7 +380,7 @@ class TaskmanTest extends UnitTestCase
 
   function testAfterDeps()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @after bar
      */
@@ -394,7 +394,7 @@ class TaskmanTest extends UnitTestCase
 
   function testSeveralAfterDeps()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @after bar
      */
@@ -412,7 +412,7 @@ class TaskmanTest extends UnitTestCase
 
   function testInterdependentAfterDeps()
   {
-    list($code, $out) = $this->_run("        
+    list($code, $out) = $this->_run("
     /**
      * @after bar
      */
@@ -519,12 +519,12 @@ class TaskmanTest extends UnitTestCase
 
   function testPassPropWithEqualSymbol()
   {
-    list($code, $out) = $this->_run("    
+    list($code, $out) = $this->_run("
     function task_foo() { echo taskman_prop('BAR'); }
     ",
-    '-D BAR=dsn?charset=utf');
+    '-b foo -D BAR=dsn?charset=u=t=f');
 
     $this->assertEqual(0, $code);
-    $this->assertEqual("dsn?charset=utf", $out);
+    $this->assertEqual("dsn?charset=u=t=f", $out);
   }
 }
