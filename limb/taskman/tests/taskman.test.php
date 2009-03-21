@@ -516,4 +516,15 @@ class TaskmanTest extends UnitTestCase
   {
     return DIRECTORY_SEPARATOR == '\\';
   }
+
+  function testPassPropWithEqualSymbol()
+  {
+    list($code, $out) = $this->_run("    
+    function task_foo() { echo taskman_prop('BAR'); }
+    ",
+    '-D BAR=dsn?charset=utf');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("dsn?charset=utf", $out);
+  }
 }
