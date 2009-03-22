@@ -14,7 +14,11 @@ for($i=0;$i<1000;$i++)
 
 $name = 'Bob';
 
-$tpl = new lmbMacroTemplate('macro.phtml', new lmbMacroConfig('/tmp/macro', false, false, array(dirname(__FILE__) . '/tpl')));
+$tpl = new lmbMacroTemplate('macro.phtml', 
+                           array('cache_dir' => '/tmp/macro', 
+                                 'forcecompile' => false, 
+                                 'forcescan' => false, 
+                                 'tpl_scan_dirs' => array(dirname(__FILE__) . '/tpl')));
 $tpl->set('name', $name);
 
 $mark = microtime(true);

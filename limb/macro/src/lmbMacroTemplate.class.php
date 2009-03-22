@@ -10,6 +10,7 @@
 lmb_require('limb/macro/src/lmbMacroTemplateLocatorInterface.interface.php');
 lmb_require('limb/macro/src/lmbMacroTemplateLocatorSimple.class.php');
 lmb_require('limb/macro/src/lmbMacroException.class.php');
+lmb_require('limb/macro/src/lmbMacroConfig.class.php');
 
 /**
  * class lmbMacroTemplate.
@@ -24,24 +25,16 @@ class lmbMacroTemplate
   protected $executor;
   protected $vars = array();
   protected $child_executor;
-  public $config;
+  protected $config;
 
   function __construct($file, $config = array(), lmbMacroTemplateLocatorInterface $locator = null)
   {
     $this->file = $file;
-    $this->config = $config;        
-    $this->_applyConfig($config);
+    if(is_object($config) && $config instanceof lmbMacroConfig) 
+      $this->config = $config;
+    else
+      $this->config = new lmbMacroConfig($config);        
     $this->locator = $locator ? $locator : new lmbMacroTemplateLocatorSimple($this->config);
-  }
-  
-  protected function _applyConfig($config)
-  {
-    $this->config['cache_dir'] = (isset($config['cache_dir'])) ? $config['cache_dir'] : LIMB_VAR_DIR . '/compiled';
-    $this->config['is_force_compile'] = (isset($config['is_force_compile'])) ? $config['is_force_compile'] : true;
-    $this->config['is_force_scan'] = (isset($config['is_force_scan'])) ? $config['is_force_scan'] : false;
-    $this->config['tpl_scan_dirs'] = (isset($config['tpl_scan_dirs'])) ? $config['tpl_scan_dirs'] : array('templates');
-    $this->config['tags_scan_dirs'] = (isset($config['tags_scan_dirs'])) ? $config['tags_scan_dirs'] : array('limb/macro/src/tags');
-    $this->config['filters_scan_dirs'] = (isset($config['filters_scan_dirs'])) ? $config['filters_scan_dirs'] : array('limb/macro/src/filters');    
   }
 
   function setVars($vars)
@@ -89,7 +82,7 @@ class lmbMacroTemplate
 
     $macro_executor_class = null;
 
-    if($this->config['is_force_compile'] || !file_exists($compiled_file))
+    if($this->config->forcecompile || !file_exists($compiled_file))
     {
       $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
 

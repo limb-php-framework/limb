@@ -28,22 +28,16 @@ class lmbMacroTagDictionary
     return self :: $instance;
   }
 
-  function load($config)
+  function load(lmbMacroConfig $config)
   {
-    if(!isset($config['cache_dir']) || !$config['cache_dir']
-      || !isset($config['is_force_scan'])
-      || !isset($config['tags_scan_dirs']) || !$config['tags_scan_dirs'])
-      throw new lmbMacroException('Wrong Config object data', $config);
-
-    $this->cache_dir = $config['cache_dir'];
-    if(!$config['is_force_scan'] && $this->_loadCache())
+    $this->cache_dir = $config->cache_dir;
+    if(!$config->forcescan && $this->_loadCache())
       return;
 
     $real_scan_dirs = array();
 
     //compatibility with PHP 5.1.6
-    $tag_scan_dirs = $config['tags_scan_dirs'];
-
+    $tag_scan_dirs = $config->tags_scan_dirs;
     foreach($tag_scan_dirs as $dir)
     {
       foreach($this->_getThisAndImmediateDirectories($dir) as $item)

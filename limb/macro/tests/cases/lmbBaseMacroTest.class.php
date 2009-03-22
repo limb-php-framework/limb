@@ -55,12 +55,12 @@ class lmbBaseMacroTest extends UnitTestCase
   {
     $config = array(
       'cache_dir' => $this->cache_dir,
-      'is_force_compile' => true,
-      'is_force_scan' => true,     
+      'forcecompile' => true,
+      'forcescan' => true,     
       'tpl_scan_dirs' =>  array($this->tpl_dir),
       'tags_scan_dirs' => array('src/tags', 'limb/*/src/macro', 'limb/macro/src/tags'),
       'filters_scan_dirs' => array('src/filters', 'limb/*/src/macro', 'limb/macro/src/filters')
     );
-    return $config;
+    return new lmbMacroConfig($config);
   }
 }

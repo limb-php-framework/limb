@@ -28,19 +28,14 @@ class lmbMacroFilterDictionary
     return self :: $instance;
   }
 
-  function load($config)
+  function load(lmbMacroConfig $config)
   {
-    if(!array_key_exists('cache_dir', $config)
-      || !array_key_exists('is_force_scan', $config)
-      || !array_key_exists('filters_scan_dirs', $config))
-      throw new lmbMacroException('Wrong Config object data', $config);
-    $this->cache_dir = $config['cache_dir'];
-    if(!$config['is_force_scan'] && $this->_loadCache())
+    $this->cache_dir = $config->cache_dir;
+    if(!$config->forcescan && $this->_loadCache())
       return;
 
     //compatibility with PHP 5.1.6
-    $filters_scan_dirs = $config['filters_scan_dirs'];
-
+    $filters_scan_dirs = $config->filters_scan_dirs;
     foreach($filters_scan_dirs as $dir)
     {
       foreach(lmb_glob($dir . '/*.filter.php') as $file)

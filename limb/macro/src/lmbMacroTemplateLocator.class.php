@@ -23,10 +23,10 @@ class lmbMacroTemplateLocator implements lmbMacroTemplateLocatorInterface
   protected $scan_dirs;
   protected $toolkit;
 
-  function __construct($config)
+  function __construct(lmbMacroConfig $config)
   {
-    $this->cache_dir = $config['cache_dir'];
-    $this->scan_dirs = $config['tpl_scan_dirs'];    
+    $this->cache_dir = $config->cache_dir;
+    $this->scan_dirs = $config->tpl_scan_dirs;    
     $this->toolkit = lmbToolkit :: instance();
   }
 

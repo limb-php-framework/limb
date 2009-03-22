@@ -78,9 +78,9 @@ class Foo{$rnd}Tag extends lmbMacroTag{}
 class Bar{$rnd}Tag extends lmbMacroTag{}
 EOD;
     $config = $this->_createMacroConfig();
-    $config['tags_scan_dirs'] = array($this->cache_dir);
+    $config->tags_scan_dirs = array($this->cache_dir);
     
-    file_put_contents($file = $config['tags_scan_dirs'][0]. $rnd . '.tag.php', $contents);
+    file_put_contents($file = $config->tags_scan_dirs[0]. $rnd . '.tag.php', $contents);
 
     $tag_info1 = new lmbMacroTagInfo("foo_$rnd", "Foo{$rnd}Tag");
     $tag_info1->setFile($file);
@@ -129,7 +129,7 @@ EOD;
     $tag_info2->setFile($file2);    
     
     $config = $this->_createMacroConfig();
-    $config['tags_scan_dirs'] = array(LIMB_VAR_DIR . '/tpl/tags/');
+    $config->tags_scan_dirs = array(LIMB_VAR_DIR . '/tpl/tags/');
     $dictionary = new lmbMacroTagDictionary();
     $dictionary->load($config);
 

@@ -13,7 +13,7 @@ class lmbMacroTemplateLocatorSimpleTest extends lmbBaseMacroTest
   function testlocateSourceTemplate()
   {
     $config = $this->_createMacroConfig();
-    $config['tpl_scan_dirs'] = $config['tpl_scan_dirs'][0];
+    $config->tpl_scan_dirs = array($config->tpl_scan_dirs[0]);
          
     $template_locator = new lmbMacroTemplateLocatorSimple($config);
     try
@@ -45,7 +45,7 @@ class lmbMacroTemplateLocatorSimpleTest extends lmbBaseMacroTest
   {
     $template_locator = new lmbMacroTemplateLocatorSimple($config = $this->_createMacroConfig());    
     $compiled_file_name = lmbMacroTemplate::encodeCacheFileName($this->template_name);
-    file_put_contents($config['cache_dir'].'/'.$compiled_file_name, 'bar');
+    file_put_contents($config->cache_dir.'/'.$compiled_file_name, 'bar');
     
     $template = $template_locator->locateCompiledTemplate($this->template_name);
     

@@ -17,7 +17,7 @@ class lmbMacroTemplateLocatorSimple implements lmbMacroTemplateLocatorInterface
 {
   protected $config;
 
-  function __construct($config)
+  function __construct(lmbMacroConfig $config)
   {
     $this->config = $config;
   }
@@ -27,10 +27,7 @@ class lmbMacroTemplateLocatorSimple implements lmbMacroTemplateLocatorInterface
     if(lmb_is_path_absolute($file_name))
       return $file_name;
     
-    if(is_array($this->config['tpl_scan_dirs']))
-      $dirs = $this->config['tpl_scan_dirs'];
-    else
-      $dirs =  array($this->config['tpl_scan_dirs']);
+    $dirs = $this->config->tpl_scan_dirs;
       
     foreach($dirs as $dir)
     {
@@ -46,7 +43,7 @@ class lmbMacroTemplateLocatorSimple implements lmbMacroTemplateLocatorInterface
 
   function locateCompiledTemplate($file_name)
   {
-    return $this->config['cache_dir']. '/' . lmbMacroTemplate::encodeCacheFileName($file_name);
+    return $this->config->cache_dir . '/' . lmbMacroTemplate::encodeCacheFileName($file_name);
   }
 }
 
