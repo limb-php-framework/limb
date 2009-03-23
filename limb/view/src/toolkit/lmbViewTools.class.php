@@ -82,6 +82,7 @@ class lmbViewTools extends lmbAbstractTools
   {
     if(!$this->macro_config)
     {
+      lmb_require('limb/macro/src/lmbMacroConfig.class.php');
       if(is_object($config = $this->toolkit->getConf('macro')))
         $config = $config->export();
 
