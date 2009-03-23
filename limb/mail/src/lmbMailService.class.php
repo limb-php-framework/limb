@@ -3,6 +3,7 @@ lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/mail/src/lmbMailer.class.php');
 lmb_require('limb/mail/src/lmbMemoryMailer.class.php');
 lmb_require('limb/mail/src/lmbResponseMailer.class.php');
+lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 
 class lmbMailService
 {  
