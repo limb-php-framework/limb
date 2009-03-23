@@ -99,7 +99,7 @@ class lmbViewTools extends lmbAbstractTools
     lmb_require('limb/macro/src/lmbMacroTemplateLocator.class.php');
 
     $config = lmbToolkit :: instance()->getMacroConfig();
-    $this->macro_locator = new lmbMacroTemplateLocator($config);
+    $this->macro_locator = new lmbMacroTemplateLocator(new lmbMacroConfig($config));
 
     return $this->macro_locator;
   }
