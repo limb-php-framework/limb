@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/js/src/lmbJsPreprocessor.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -39,7 +39,6 @@ class lmbJsPreprocessorTest extends UnitTestCase
 foo
 EOD
 );
-
     $this->_createFile('bar.js',
 <<<EOD
 bar
@@ -47,7 +46,7 @@ EOD
 );
 
     $builder = new lmbJsPreprocessor();
-    $this->assertEqual($builder->processFile(lmb_env_get('LIMB_VAR_DIR') . $file),
+    $this->assertEqual($builder->processFile($this->_getFile($file)),
 <<<EOD
 bar
 foo
@@ -80,7 +79,7 @@ EOD
 
 
     $builder = new lmbJsPreprocessor();
-    $this->assertEqual($builder->processFiles(array(LIMB_VAR_DIR . $file1, LIMB_VAR_DIR . $file2)),
+    $this->assertEqual($builder->processFiles(array($this->_getFile($file1), $this->_getFile($file1))),
 <<<EOD
 bar
 wow
@@ -107,7 +106,7 @@ EOD
 );
 
     $builder = new lmbJsPreprocessor();
-    $this->assertEqual($builder->processFile(LIMB_VAR_DIR . $file),
+    $this->assertEqual($builder->processFile($this->_getFile($file)),
 <<<EOD
 bar
 foo
@@ -145,7 +144,7 @@ EOD
 );
 
     $builder = new lmbJsPreprocessor();
-    $this->assertEqual($builder->processFile(LIMB_VAR_DIR . $file),
+    $this->assertEqual($builder->processFile($this->_getFile($file)),
 <<<EOD
 baz
 bar
@@ -183,7 +182,7 @@ EOD
 );
 
     $builder = new lmbJsPreprocessor();
-    $this->assertEqual($builder->processFile(LIMB_VAR_DIR . $file),
+    $this->assertEqual($builder->processFile($this->_getFile($file)),
 <<<EOD
 bar
 baz
@@ -209,17 +208,21 @@ $expected = <<<EOD
 var wow = "hey";
 foo
 EOD;
-    $this->assertEqual($builder->processFile(LIMB_VAR_DIR . $file), $expected);
+    $this->assertEqual($builder->processFile($this->_getFile($file)), $expected);
+  }
+
+  protected function _getFile($file) {
+    return lmb_env_get('LIMB_VAR_DIR') . '/' . $file;
   }
 
   protected function _createFile($file, $content)
   {
-    lmbFs :: mkdir(LIMB_VAR_DIR);
+    $file = $this->_getFile($file);
 
-    $fh = fopen(LIMB_VAR_DIR . $file, 'w');
+    $fh = fopen($file, 'w');
     fwrite($fh, $content);
     fclose($fh);
-    $this->created_files[] = LIMB_VAR_DIR . $file;
+    $this->created_files[] = $file;
   }
 
   protected function _cleanup()
