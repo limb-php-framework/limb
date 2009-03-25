@@ -1,8 +1,12 @@
 <?php
-
 set_include_path(dirname(__FILE__) . '/../../../../');
 
+$test = null;
+if(isset($argv[1]))
+  $test = $argv[1];
+
 $mark = microtime(true);
+$counter = 0;
 
 require_once('limb/core/common.inc.php');
 
@@ -24,40 +28,43 @@ if($native_db = sqlite_open($db))
 else
   throw new Exception("Could not open sqlite db '$db'");
 
-$mark = microtime(true);
-
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
-  $query = sqlite_query($native_db, 'SELECT bar FROM foo');
-  while($entry = sqlite_fetch_array($query, SQLITE_ASSOC))
-   $bar = $entry['bar'];
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $query = sqlite_query($native_db, 'SELECT bar FROM foo');
+    while($entry = sqlite_fetch_array($query, SQLITE_ASSOC))
+    $bar = $entry['bar'];
+  }
+  echo "$counter) native sqlite fetching: " . (microtime(true) - $mark) . "\n";
 }
-
-echo "native sqlite fetching: " . (microtime(true) - $mark) . "\n";
 
 $conn = lmbDBAL :: newConnection('sqlite://localhost/' . $db);
 
-$mark = microtime(true);
-
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $rs = lmbDBAL :: fetch('SELECT bar FROM foo', $conn);
+    foreach($rs as $record)
+    $bar = $record->get('bar');
+  }
+  echo "$counter) lmbDBAL :: fetch(), getter: " . (microtime(true) - $mark) . "\n";
+}
+
+if(++$counter == $test || $test == null)
+{
+  $mark = microtime(true);
   $rs = lmbDBAL :: fetch('SELECT bar FROM foo', $conn);
-  foreach($rs as $record)
-   $bar = $record->get('bar');
+  for($i=0;$i<1000;$i++)
+  {
+    foreach($rs as $record)
+    $bar = $record->get('bar');
+  }
+  echo "$counter) lmbDBAL :: fetch()(out of loop), getter: " . (microtime(true) - $mark) . "\n";
 }
-
-echo "lmbDBAL :: fetch(), getter: " . (microtime(true) - $mark) . "\n";
-
-$mark = microtime(true);
-
-$rs = lmbDBAL :: fetch('SELECT bar FROM foo', $conn);
-for($i=0;$i<1000;$i++)
-{
-  foreach($rs as $record)
-   $bar = $record->get('bar');
-}
-
-echo "lmbDBAL :: fetch()(out of loop), getter: " . (microtime(true) - $mark) . "\n";
 
 class Foo extends lmbActiveRecord
 {
@@ -66,72 +73,90 @@ class Foo extends lmbActiveRecord
 
 lmbActiveRecord :: setDefaultDSN('sqlite://localhost/' . $db); 
 
-$mark = microtime(true);
-
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $rs = lmbActiveRecord :: find('Foo');
+    foreach($rs as $obj)
+      $foo = $obj->get('bar');
+  }
+  echo "$counter) lmbActiveRecord fetching, getter: " . (microtime(true) - $mark) . "\n";
+}
+
+
+if(++$counter == $test || $test == null)
+{
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $rs = lmbActiveRecord :: find('Foo', array('proxy' => true));
+    foreach($rs as $obj)
+      $foo = $obj->get('bar');
+  }
+  echo "$counter) lmbActiveRecord fetching(proxied), getter: " . (microtime(true) - $mark) . "\n";
+}
+
+if(++$counter == $test || $test == null)
+{
+  $mark = microtime(true);
   $rs = lmbActiveRecord :: find('Foo');
-  foreach($rs as $obj)
-    $foo = $obj->get('bar');
+  for($i=0;$i<1000;$i++)
+  {
+    foreach($rs as $obj)
+      $foo = $obj->get('bar');
+  }
+  echo "$counter) lmbActiveRecord fetching(out of loop), getter: " . (microtime(true) - $mark) . "\n";
 }
 
-echo "lmbActiveRecord fetching, getter: " . (microtime(true) - $mark) . "\n";
-
-
-$mark = microtime(true);
-
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
-  $rs = lmbActiveRecord :: find('Foo', array('proxy' => true));
-  foreach($rs as $obj)
-    $foo = $obj->get('bar');
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $rs = lmbActiveRecord :: find('Foo');
+    foreach($rs as $obj)
+      $foo = $obj->bar;
+  }
+  echo "$counter) lmbActiveRecord fetching, attr access: " . (microtime(true) - $mark) . "\n";
 }
 
-echo "lmbActiveRecord fetching(proxied), getter: " . (microtime(true) - $mark) . "\n";
-
-$mark = microtime(true);
-
-$rs = lmbActiveRecord :: find('Foo');
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
-  foreach($rs as $obj)
-    $foo = $obj->get('bar');
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $rs = lmbActiveRecord :: find('Foo', array('proxy' => true));
+    foreach($rs as $obj)
+      $foo = $obj->bar;
+  }
+  echo "$counter) lmbActiveRecord fetching(proxied), attr access: " . (microtime(true) - $mark) . "\n";
 }
 
-echo "lmbActiveRecord fetching(out of loop), getter: " . (microtime(true) - $mark) . "\n";
-
-$mark = microtime(true);
-
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
+  $mark = microtime(true);
   $rs = lmbActiveRecord :: find('Foo');
-  foreach($rs as $obj)
-    $foo = $obj->bar;
+  for($i=0;$i<1000;$i++)
+  {
+    foreach($rs as $obj)
+      $foo = $obj->bar;
+  }
+  echo "$counter) lmbActiveRecord fetching(out of loop), attr access: " . (microtime(true) - $mark) . "\n";
 }
 
-echo "lmbActiveRecord fetching, attr access: " . (microtime(true) - $mark) . "\n";
-
-$mark = microtime(true);
-
-$rs = lmbActiveRecord :: find('Foo');
-for($i=0;$i<1000;$i++)
+if(++$counter == $test || $test == null)
 {
-  foreach($rs as $obj)
-    $foo = $obj->bar;
+  $mark = microtime(true);
+  for($i=0;$i<1000;$i++)
+  {
+    $rs = Foo :: find();
+    foreach($rs as $obj)
+      $foo = $obj->get('bar');
+  }
+  echo "$counter) Foo fetching, getter: " . (microtime(true) - $mark) . "\n";
 }
-
-echo "lmbActiveRecord fetching(out of loop), attr access: " . (microtime(true) - $mark) . "\n";
-
-$mark = microtime(true);
-
-for($i=0;$i<1000;$i++)
-{
-  $rs = Foo :: find();
-  foreach($rs as $obj)
-    $foo = $obj->get('bar');
-}
-
-echo "Foo fetching, getter: " . (microtime(true) - $mark) . "\n";
 
 @unlink($db);
 

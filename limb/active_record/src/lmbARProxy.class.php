@@ -30,7 +30,6 @@ class lmbARProxyGeneratorEventsHandler
     \$this->__default_class_name = \$args[1];
     \$this->__conn = \$args[2];
     \$this->__lazy_attributes = \$args[3];
-    \$this->__exported = false;
     ";
   }
 
@@ -40,28 +39,10 @@ class lmbARProxyGeneratorEventsHandler
     {
       return "\$this->__record->get(\$args[0]);";
     }
-    //else if($method == "__get")
-    //{
-    //  return "
-    //\$name = \$args[0];
-    //\$just_exported = false;
-    //if(!\$this->__exported)
-    //{
-    //  foreach(\$this->__record as \$key => \$val)
-    //    \$this->\$key = \$val;
-    //  \$just_exported = true;
-    //  \$this->__exported = false;
-    //}
-
-    //if(\$just_exported && isset(\$this->\$name))
-    //  return \$this->\$name;
-
-    //if(!\$this->__original)
-    //  \$this->_loadOriginal();
-
-    //return \$this->__original->\$name;";
-
-    //}
+    else if($method == "getId")
+    {
+      return "\$this->__record->get('id');";
+    }
     else
     {
       return 
