@@ -48,55 +48,55 @@ class lmbDecorator
 {
   static private $history = array();
 
-  static function generate($class, $decorator_class = null, $events_handler = null)
+  static function generate($decoratee_class, $decorator_class = null, $events_handler = null)
   {
     if($decorator_class == null)
-      $decorator_class = $class . 'Decorator';
+      $decorator_class = $decoratee_class . 'Decorator';
 
     if(isset(self :: $history[$decorator_class]))
       return false;
 
     if(class_exists($decorator_class))
-      throw new lmbException("Could not generate decorator '$decorator_class' for '$class' since there is already conflicting class with the same name");
+      throw new lmbException("Could not generate decorator '$decorator_class' for '$decoratee_class' since there is already conflicting class with the same name");
 
     if($events_handler == null)
       $events_handler = new lmbDecoratorGeneratorDefaultEventsHandler();
 
-    $res = eval(self :: _createClassCode($class, $decorator_class, $events_handler));
+    $res = eval(self :: _createClassCode($decoratee_class, $decorator_class, $events_handler));
     self :: $history[$decorator_class] = 1;
     return true;
   }
 
-  static private function _createClassCode($class, $decorator_class, $events_handler)
+  static private function _createClassCode($decoratee_class, $decorator_class, $events_handler)
   {
-    $reflection = new ReflectionClass($class);
+    $reflection = new ReflectionClass($decoratee_class);
     if($reflection->isInterface())
       $relation = "implements";
     else
       $relation = "extends";
 
-    $code = "class $decorator_class $relation $class {\n";
+    $code = "class $decorator_class $relation $decoratee_class {\n";
     $code .= $events_handler->onDeclareProperties() . "\n";
     $code .= "    function __construct() {\n";
     $code .= "        \$args = func_get_args();\n";
     $code .= $events_handler->onConstructor() . "\n";
     $code .= "    }\n";
-    $code .= self :: _createHandlerCode($class, $decorator_class, $events_handler) . "\n";
+    $code .= self :: _createHandlerCode($decoratee_class, $decorator_class, $events_handler) . "\n";
     $code .= "}\n";
     //var_dump($code);
     return $code;
   }
 
-  static private function _createHandlerCode($class, $decorator_class, $events_handler)
+  static private function _createHandlerCode($decoratee_class, $decorator_class, $events_handler)
   {
     $code = '';
-    $methods = lmbReflectionHelper :: getOverridableMethods($class);
+    $methods = lmbReflectionHelper :: getOverridableMethods($decoratee_class);
     foreach($methods as $method)
     {
       if(self :: _isSkipMethod($method))
         continue;
 
-      $code .= "    " . lmbReflectionHelper :: getSignature($class, $method) . " {\n";
+      $code .= "    " . lmbReflectionHelper :: getSignature($decoratee_class, $method) . " {\n";
       $code .= "        \$args = func_get_args();\n";
       $code .= $events_handler->onMethod($method) . "\n";
       $code .= "    }\n\n";

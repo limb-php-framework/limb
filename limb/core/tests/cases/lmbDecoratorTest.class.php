@@ -34,18 +34,28 @@ class DecorateeTestStub implements DecorateeTestInterface
 
 class lmbDecoratorTest extends UnitTestCase
 {
+  function testDecoratorIsInstanceOfDecoratee()
+  {
+    $rnd = mt_rand();
+    $class = 'DecoratorTestStub' .$rnd;
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
+    $obj = new $class(new DecorateeTestStub());
+    $this->assertTrue($obj instanceof DecorateeTestStub);
+  }
+
   function testDoubleDeclarationIsOk()
   {
     $rnd = mt_rand();
-    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', 'DecoratorTestStub' . $rnd));
+    $class = 'DecoratorTestStub' .$rnd;
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
     //false here means that decorator with such name already exists, it's NOT an error 
     //a bit misleading but it's simple and works :)
-    $this->assertFalse(lmbDecorator :: generate('DecorateeTestStub', 'DecoratorTestStub'. $rnd));
+    $this->assertFalse(lmbDecorator :: generate('DecorateeTestStub', $class));
   }
 
   function testThrowsExceptionOnExistingClasses()
   {
-    //lmbDecoratorTest class already exists
+    //exception must be thrown since lmbDecoratorTest class already exists
     try
     {
       lmbDecorator :: generate('DecorateeTestStub', 'lmbDecoratorTest');
@@ -57,7 +67,7 @@ class lmbDecoratorTest extends UnitTestCase
   function testImplementsInterface()
   {
     $rnd = mt_rand();
-    $class = 'DecorateeTestStub' . $rnd;
+    $class = 'DecoratorTestStub' .$rnd;
     $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
 
     $refl = new ReflectionClass($class);
@@ -67,7 +77,7 @@ class lmbDecoratorTest extends UnitTestCase
   function testHasMethods()
   {
     $rnd = mt_rand();
-    $class = 'DecorateeTestStub' . $rnd;
+    $class = 'DecoratorTestStub' .$rnd;
     $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
 
     $decorator = new $class(new DecorateeTestStub());
@@ -79,7 +89,7 @@ class lmbDecoratorTest extends UnitTestCase
   function testMethodArgumentsTypehinting()
   {
     $rnd = mt_rand();
-    $class = 'DecorateeTestStub' . $rnd;
+    $class = 'DecoratorTestStub' .$rnd;
     $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
 
     $refl = new ReflectionClass($class);
@@ -91,7 +101,7 @@ class lmbDecoratorTest extends UnitTestCase
   function testCallsPassedToDecorated()
   {
     $rnd = mt_rand();
-    $class = 'DecorateeTestStub' . $rnd;
+    $class = 'DecoratorTestStub' .$rnd;
     $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
 
     $decorator = new $class(new DecorateeTestStub());
