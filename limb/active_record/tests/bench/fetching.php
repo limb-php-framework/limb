@@ -77,6 +77,7 @@ for($i=0;$i<1000;$i++)
 
 echo "lmbActiveRecord fetching, getter: " . (microtime(true) - $mark) . "\n";
 
+
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)

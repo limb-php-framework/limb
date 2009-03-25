@@ -15,7 +15,7 @@ lmb_require('limb/active_record/src/lmbARProxy.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7785 2009-03-18 05:49:34Z pachanga $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7816 2009-03-25 09:04:33Z pachanga $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -61,7 +61,14 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
   static function createObjectFromRecord($record, $default_class_name, $conn, $lazy_attributes = null, $use_proxy = false)
   {
     if($use_proxy)
-      return new lmbARProxy($record, $default_class_name, $conn, $lazy_attributes);
+    {
+      //return new lmbARProxy($record, $default_class_name, $conn, $lazy_attributes);
+      
+      $proxied_class = is_object($default_class_name) ? get_class($default_class_name) : $default_class_name;
+      $proxy_class = $proxied_class . '_ARProxy';
+      lmbARProxy :: generate($proxy_class, $proxied_class);
+      return new $proxy_class($record, $default_class_name, $conn, $lazy_attributes);
+    }
 
     if($path = $record->get(lmbActiveRecord :: getInheritanceField()))
     {

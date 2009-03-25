@@ -7,6 +7,94 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
+lmb_require('limb/core/src/lmbDecoratorGenerator.class.php');
+
+class lmbARProxyGeneratorEventsHandler
+{
+  function onDeclareProperties()
+  {
+    return "
+    private \$__record;
+    private \$__default_class_name;
+    private \$__conn;
+    private \$__lazy_attributes;
+    private \$__exported;
+    ";
+  }
+
+  function onConstructor()
+  {
+    return "
+    \$this->__record = \$args[0];
+    \$this->__default_class_name = \$args[1];
+    \$this->__conn = \$args[2];
+    \$this->__lazy_attributes = \$args[3];
+    \$this->__exported = false;
+    ";
+  }
+
+  function onMethod($method)
+  {
+    if($method == "get")
+    {
+      return "\$this->__record->get(\$args[0]);";
+    }
+    else if($method == "__get")
+    {
+      return "
+    \$name = \$args[0];
+    \$just_exported = false;
+    if(!\$this->__exported)
+    {
+      foreach(\$this->__record as \$key => \$val)
+        \$this->\$key = \$val;
+      \$just_exported = true;
+      \$this->__exported = false;
+    }
+
+    if(\$just_exported && isset(\$this->\$name))
+      return \$this->\$name;
+
+    if(!\$this->__original)
+      \$this->_loadOriginal();
+
+    return \$this->__original->\$name;";
+
+    }
+    else
+    {
+      return 
+      "if(!\$this->__original)
+        \$this->__loadOriginal();
+      return call_user_func_array(array(\$this->__original, '$method'), \$args);";
+    }
+  }
+
+  function onExtra()
+  {
+    return "
+  private function __loadOriginal()
+  {
+    if(\$path = \$this->__record->get(lmbActiveRecord :: getInheritanceField()))
+    {
+      \$class_name = lmbActiveRecord :: getInheritanceClass(\$this->__record);
+
+      if(!class_exists(\$class_name))
+        throw new lmbException(\"Class '\$class_name' not found\");
+    }
+    else
+      \$class_name = \$this->__default_class_name;
+
+    \$this->__original = new \$class_name(null, \$this->__conn);
+    if(is_array(\$this->__lazy_attributes))
+      \$this->__original->setLazyAttributes(\$this->__lazy_attributes);
+
+    \$this->__original->loadFromRecord(\$this->__record);
+  }
+  ";
+  }
+}
+
 /**
  * class lmbARProxy.
  *
@@ -15,70 +103,8 @@
  */
 class lmbARProxy
 {
-  private $__record;
-  private $__default_class_name;
-  private $__conn;
-  private $__lazy_attributes;
-  private $__original;
-  private $__exported = false;
-
-  function __construct($record, $default_class_name, $conn, $lazy_attributes)
+  static function generate($proxy_class, $proxied_class)
   {
-    $this->__record = $record;
-    $this->__default_class_name = $default_class_name;
-    $this->__conn = $conn;
-    $this->__lazy_attributes = $lazy_attributes;
-  }
-
-  function get($name)
-  {
-    return $this->__record->get($name);
-  }
-
-  function __get($name)
-  {
-    $just_exported = false;
-    if(!$this->__exported)
-    {
-      foreach($this->__record as $key => $val)
-        $this->$key = $val;
-      $just_exported = true;
-      $this->__exported = false;
-    }
-
-    if($just_exported && isset($this->$name))
-      return $this->$name;
-
-    if(!$this->__original)
-      $this->_loadOriginal();
-
-    return $this->__original->$name;
-  }
-
-  function __call($method, $args = array())
-  {
-    if(!$this->__original)
-      $this->_loadOriginal();
-
-    return call_user_func_array(array($this->__original, $method), $args);
-  }
-
-  private function _loadOriginal()
-  {
-    if($path = $this->__record->get(lmbActiveRecord :: getInheritanceField()))
-    {
-      $class_name = lmbActiveRecord :: getInheritanceClass($this->__record);
-
-      if(!class_exists($class_name))
-        throw new lmbException("Class '$class_name' not found");
-    }
-    else
-      $class_name = $this->__default_class_name;
-
-    $this->__original = new $class_name(null, $this->__conn);
-    if(is_array($this->__lazy_attributes))
-      $this->__original->setLazyAttributes($this->__lazy_attributes);
-
-    $this->__original->loadFromRecord($this->__record);
+    return lmbDecoratorGenerator::generate($proxied_class, $proxy_class, new lmbARProxyGeneratorEventsHandler());
   }
 }
