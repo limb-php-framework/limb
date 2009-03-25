@@ -22,7 +22,7 @@ function lmb_tests_is_db_dump_exists($prefix, $package)
   $skip = !file_exists($prefix.$type);
 
   if($skip)
-    echo PHP_EOL.$package." package tests are skipped!(no compatible database fixture found for '$type' connection)".PHP_EOL.PHP_EOL;
+    echo "\n$package package tests are skipped!(no compatible database fixture found for '$type' connection)\n\n";
 
   return $skip;
 }
