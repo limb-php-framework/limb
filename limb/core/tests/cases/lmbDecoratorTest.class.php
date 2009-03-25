@@ -8,14 +8,14 @@
  */
 lmb_require('limb/core/src/lmbDecorator.class.php');
 
-interface DecoratorTestInterface
+interface DecorateeTestInterface
 {
   function set($value);
   function get();
-  function typehint(DecoratorTestStub $value);
+  function typehint(DecorateeTestStub $value);
 }
 
-class DecoratorTestStub implements DecoratorTestInterface
+class DecorateeTestStub implements DecorateeTestInterface
 {
   var $value;
 
@@ -29,44 +29,72 @@ class DecoratorTestStub implements DecoratorTestInterface
     return $this->value;
   }
 
-  function typehint(DecoratorTestStub $value){}
+  function typehint(DecorateeTestStub $value){}
 }
-
-lmbDecorator :: generate('DecoratorTestStub', 'DecoratorTestStubDecorator');
 
 class lmbDecoratorTest extends UnitTestCase
 {
-  function testDoubleDeclaration()
+  function testDoubleDeclarationIsOk()
   {
-    lmbDecorator :: generate('DecoratorTestStub', 'DecoratorTestStubDecorator');
-    lmbDecorator :: generate('DecoratorTestStub', 'DecoratorTestStubDecorator');
+    $rnd = mt_rand();
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', 'DecoratorTestStub' . $rnd));
+    //false here means that decorator with such name already exists, it's NOT an error 
+    //a bit misleading but it's simple and works :)
+    $this->assertFalse(lmbDecorator :: generate('DecorateeTestStub', 'DecoratorTestStub'. $rnd));
+  }
+
+  function testThrowsExceptionOnExistingClasses()
+  {
+    //lmbDecoratorTest class already exists
+    try
+    {
+      lmbDecorator :: generate('DecorateeTestStub', 'lmbDecoratorTest');
+      $this->assertTrue(false);
+    }
+    catch(lmbException $e){}
   }
 
   function testImplementsInterface()
   {
-    $refl = new ReflectionClass('DecoratorTestStubDecorator');
-    $this->assertTrue($refl->implementsInterface('DecoratorTestInterface'));
+    $rnd = mt_rand();
+    $class = 'DecorateeTestStub' . $rnd;
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
+
+    $refl = new ReflectionClass($class);
+    $this->assertTrue($refl->implementsInterface('DecorateeTestInterface'));
   }
 
   function testHasMethods()
   {
-    $decorator = new DecoratorTestStubDecorator(new DecoratorTestStub());
+    $rnd = mt_rand();
+    $class = 'DecorateeTestStub' . $rnd;
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
 
-    foreach(get_class_methods('DecoratorTestStub') as $method)
+    $decorator = new $class(new DecorateeTestStub());
+
+    foreach(get_class_methods('DecorateeTestStub') as $method)
       $this->assertTrue(method_exists($decorator, $method));
   }
 
   function testMethodArgumentsTypehinting()
   {
-    $refl = new ReflectionClass('DecoratorTestStubDecorator');
+    $rnd = mt_rand();
+    $class = 'DecorateeTestStub' . $rnd;
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
+
+    $refl = new ReflectionClass($class);
     $params = $refl->getMethod('typehint')->getParameters();
     $this->assertEqual(sizeof($params), 1);
-    $this->assertEqual($params[0]->getClass()->getName(), 'DecoratorTestStub');
+    $this->assertEqual($params[0]->getClass()->getName(), 'DecorateeTestStub');
   }
 
   function testCallsPassedToDecorated()
   {
-    $decorator = new DecoratorTestStubDecorator(new DecoratorTestStub());
+    $rnd = mt_rand();
+    $class = 'DecorateeTestStub' . $rnd;
+    $this->assertTrue(lmbDecorator :: generate('DecorateeTestStub', $class));
+
+    $decorator = new $class(new DecorateeTestStub());
     $decorator->set('foo');
     $this->assertEqual($decorator->get(), 'foo');
   }

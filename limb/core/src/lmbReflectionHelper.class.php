@@ -20,6 +20,21 @@ class lmbReflectionHelper
     return array_unique(get_class_methods($name));
   }
 
+  static function getOverridableMethods($name)
+  {
+    $reflection = new ReflectionClass($name);
+    $methods = $reflection->getMethods();
+    $names = array();
+    foreach($methods as $method)
+    {
+      if($method->isStatic() || $method->isFinal() || $method->isPrivate() || $method->isProtected())
+        continue;
+
+      $names[] = $method->getName();
+    }
+    return $names;
+  }
+
   static function getInterfaces($name)
   {
     $reflection = new ReflectionClass($name);
@@ -35,11 +50,6 @@ class lmbReflectionHelper
     foreach(self :: getInterfaces($name) as $interface)
       $methods = array_merge($methods, get_class_methods($interface));
     return array_unique($methods);
-  }
-
-  static protected function _isInterfaceMethod($name, $method)
-  {
-    return in_array($method, self :: getInterfaceMethods($name));
   }
 
   static function getParent($name)
@@ -77,11 +87,21 @@ class lmbReflectionHelper
 
   static function getSignature($name, $method)
   {
+    //special cases which require exact number of args
     if($method == '__get')
-      return 'function __get($key)';
+      return 'function __get($__key)';
 
     if($method == '__set')
-      return 'function __set($key, $value)';
+      return 'function __set($__key, $__value)';
+
+    if($method == '__isset')
+      return 'function __isset($__name)';
+
+    if($method == '__unset')
+      return 'function __unset($__name)';
+
+    if($method == '__call')
+      return 'function __call($__method, $__args = array())';
 
     if(self :: _isInterfaceMethod($name, $method))
       return self :: _getFullSignature($name, $method);
@@ -120,5 +140,10 @@ class lmbReflectionHelper
   static protected function _suppressSpurious($name)
   {
     return str_replace(array('[', ']', ' '), '', $name);
+  }
+
+  static protected function _isInterfaceMethod($name, $method)
+  {
+    return in_array($method, self :: getInterfaceMethods($name));
   }
 }

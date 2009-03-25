@@ -20,8 +20,10 @@ class lmbDecorator
 
   static function generate($class, $decorator_class = null)
   {
-    $generator = new lmbDecoratorGenerator();
-    return $generator->generate($class, $decorator_class);
+    if(is_null($decorator_class))
+      $decorator_class = $class . 'Decorator';
+
+    return lmbDecoratorGenerator::generate($class, $decorator_class);
   }
 
   function __construct($original)
