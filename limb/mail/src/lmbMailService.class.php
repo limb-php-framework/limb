@@ -28,7 +28,7 @@ class lmbMailService
   {        
     $this->template_id = $template_id; 
     $this->dto = new lmbSet;
-    $this->separator = PHP_EOL.PHP_EOL;    
+    $this->separator = "\n\n";
   }    
   
   function set($name, $value)
