@@ -6,8 +6,38 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
-lmb_require('limb/core/src/lmbDecoratorGenerator.class.php');
+lmb_require('limb/core/src/lmbReflectionHelper.class.php');
 
+/**
+ * class lmbDecoratorGeneratorDefaultEventsHandler
+ *
+ * @package core
+ * @version $Id$
+ */
+class lmbDecoratorGeneratorDefaultEventsHandler
+{
+  function onDeclareProperties()
+  {
+    return "private \$original;";
+  }
+
+  function onConstructor()
+  {
+    return "\$this->original = \$args[0];\n";
+  }
+
+  function onMethod($method)
+  {
+    return "return call_user_func_array(array(\$this->original, '$method'), \$args);\n";
+  }
+
+  function onExtra()
+  {
+    return "";
+  }
+}
+
+//idea is based on MockGenerator class from SimpleTest test suite
 /**
  * class lmbDecorator.
  *
@@ -16,24 +46,68 @@ lmb_require('limb/core/src/lmbDecoratorGenerator.class.php');
  */
 class lmbDecorator
 {
-  protected $original;
+  static private $history = array();
 
-  static function generate($class, $decorator_class = null)
+  static function generate($class, $decorator_class = null, $events_handler = null)
   {
-    if(is_null($decorator_class))
+    if($decorator_class == null)
       $decorator_class = $class . 'Decorator';
 
-    return lmbDecoratorGenerator::generate($class, $decorator_class);
+    if(isset(self :: $history[$decorator_class]))
+      return false;
+
+    if(class_exists($decorator_class))
+      throw new lmbException("Could not generate decorator '$decorator_class' for '$class' since there is already conflicting class with the same name");
+
+    if($events_handler == null)
+      $events_handler = new lmbDecoratorGeneratorDefaultEventsHandler();
+
+    $res = eval(self :: _createClassCode($class, $decorator_class, $events_handler));
+    self :: $history[$decorator_class] = 1;
+    return true;
   }
 
-  function __construct($original)
+  static private function _createClassCode($class, $decorator_class, $events_handler)
   {
-    $this->original = $original;
+    $reflection = new ReflectionClass($class);
+    if($reflection->isInterface())
+      $relation = "implements";
+    else
+      $relation = "extends";
+
+    $code = "class $decorator_class $relation $class {\n";
+    $code .= $events_handler->onDeclareProperties() . "\n";
+    $code .= "    function __construct() {\n";
+    $code .= "        \$args = func_get_args();\n";
+    $code .= $events_handler->onConstructor() . "\n";
+    $code .= "    }\n";
+    $code .= self :: _createHandlerCode($class, $decorator_class, $events_handler) . "\n";
+    $code .= "}\n";
+    //var_dump($code);
+    return $code;
   }
 
-  function __call($method, $args = array())
+  static private function _createHandlerCode($class, $decorator_class, $events_handler)
   {
-    return call_user_func_array(array($this->original, $method), $args);
+    $code = '';
+    $methods = lmbReflectionHelper :: getOverridableMethods($class);
+    foreach($methods as $method)
+    {
+      if(self :: _isSkipMethod($method))
+        continue;
+
+      $code .= "    " . lmbReflectionHelper :: getSignature($class, $method) . " {\n";
+      $code .= "        \$args = func_get_args();\n";
+      $code .= $events_handler->onMethod($method) . "\n";
+      $code .= "    }\n\n";
+    }
+    $code .= $events_handler->onExtra();
+    return $code;
+  }
+
+  static private function _isSkipMethod($method)
+  {
+    return in_array(strtolower($method), array('__construct', '__destruct', '__clone'));
   }
 }
 

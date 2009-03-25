@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/core/src/lmbDecoratorGenerator.class.php');
+lmb_require('limb/core/src/lmbDecorator.class.php');
 
 class lmbARProxyGeneratorEventsHandler
 {
@@ -105,6 +105,6 @@ class lmbARProxy
 {
   static function generate($proxy_class, $proxied_class)
   {
-    return lmbDecoratorGenerator::generate($proxied_class, $proxy_class, new lmbARProxyGeneratorEventsHandler());
+    return lmbDecorator::generate($proxied_class, $proxy_class, new lmbARProxyGeneratorEventsHandler());
   }
 }
