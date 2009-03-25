@@ -113,6 +113,18 @@ if(++$counter == $test || $test == null)
 if(++$counter == $test || $test == null)
 {
   $mark = microtime(true);
+  $rs = lmbActiveRecord :: find('Foo', array('proxy' => true));
+  for($i=0;$i<1000;$i++)
+  {
+    foreach($rs as $obj)
+      $foo = $obj->get('bar');
+  }
+  echo "$counter) lmbActiveRecord fetching(proxied, out of loop), getter: " . (microtime(true) - $mark) . "\n";
+}
+
+if(++$counter == $test || $test == null)
+{
+  $mark = microtime(true);
   for($i=0;$i<1000;$i++)
   {
     $rs = lmbActiveRecord :: find('Foo');
