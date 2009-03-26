@@ -37,18 +37,36 @@ class lmbARProxyGeneratorEventsHandler
   {
     if($method == "get")
     {
-      return "\$this->__record->get(\$args[0]);";
+      return "
+      if(!\$this->__original)
+        return \$this->__record->get(\$args[0]);
+      return \$this->__original->get(\$args[0]);
+      ";
+    }
+    else if($method == "__get")
+    {
+      return "
+      if(!\$this->__original)
+        return \$this->__record->get(\$args[0]);
+      \$key = \$args[0];
+      return \$this->__original->\$key;
+      ";
     }
     else if($method == "getId")
     {
-      return "\$this->__record->get('id');";
+      return "
+      if(!\$this->__original)
+        \$this->__record->get('id');
+      return \$this->__original->getId();
+      ";
     }
     else
     {
-      return 
-      "if(!\$this->__original)
+      return "
+      if(!\$this->__original)
         \$this->__loadOriginal();
-      return call_user_func_array(array(\$this->__original, '$method'), \$args);";
+      return call_user_func_array(array(\$this->__original, '$method'), \$args);
+      ";
     }
   }
 
