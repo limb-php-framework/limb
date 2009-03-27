@@ -35,7 +35,7 @@ if(++$counter == $test || $test == null)
   {
     $query = sqlite_query($native_db, 'SELECT bar FROM foo');
     while($entry = sqlite_fetch_array($query, SQLITE_ASSOC))
-    $bar = $entry['bar'];
+      $bar = $entry['bar'];
   }
   echo "$counter) native sqlite fetching: " . (microtime(true) - $mark) . "\n";
 }
@@ -49,7 +49,7 @@ if(++$counter == $test || $test == null)
   {
     $rs = lmbDBAL :: fetch('SELECT bar FROM foo', $conn);
     foreach($rs as $record)
-    $bar = $record->get('bar');
+      $bar = $record->get('bar');
   }
   echo "$counter) lmbDBAL :: fetch(), getter: " . (microtime(true) - $mark) . "\n";
 }
@@ -61,7 +61,7 @@ if(++$counter == $test || $test == null)
   for($i=0;$i<1000;$i++)
   {
     foreach($rs as $record)
-    $bar = $record->get('bar');
+      $bar = $record->get('bar');
   }
   echo "$counter) lmbDBAL :: fetch()(out of loop), getter: " . (microtime(true) - $mark) . "\n";
 }

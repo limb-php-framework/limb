@@ -56,7 +56,7 @@ class lmbARProxyGeneratorEventsHandler
     {
       return "
       if(!\$this->__original)
-        \$this->__record->get('id');
+        return \$this->__record->get('id');
       return \$this->__original->getId();
       ";
     }
