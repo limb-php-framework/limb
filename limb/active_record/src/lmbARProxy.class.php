@@ -39,7 +39,12 @@ class lmbARProxyGeneratorEventsHandler
     {
       return "
       if(!\$this->__original)
-        return \$this->__record->get(\$args[0]);
+      {
+        if(\$this->__record->has(\$args[0]))
+          return \$this->__record->get(\$args[0]);
+        else
+          \$this->__loadOriginal();
+      }
       return \$this->__original->get(\$args[0]);
       ";
     }
@@ -47,7 +52,12 @@ class lmbARProxyGeneratorEventsHandler
     {
       return "
       if(!\$this->__original)
-        return \$this->__record->get(\$args[0]);
+      {
+        if(\$this->__record->has(\$args[0]))
+          return \$this->__record->get(\$args[0]);
+        else
+          \$this->__loadOriginal();
+      }
       \$key = \$args[0];
       return \$this->__original->\$key;
       ";
