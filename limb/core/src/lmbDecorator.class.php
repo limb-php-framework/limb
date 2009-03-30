@@ -76,8 +76,17 @@ class lmbDecorator
       $relation = "extends";
 
     $code = "class $decorator_class $relation $decoratee_class {\n";
+
     $code .= $events_handler->onDeclareProperties() . "\n";
     $code .= "    function __construct() {\n";
+
+    //dealing with proxied class' public properties
+    foreach($reflection->getProperties() as $property)
+    {
+      if($property->isPublic())
+        $code .= 'unset($this->' . $property->getName() . ");\n";
+    }
+
     $code .= "        \$args = func_get_args();\n";
     $code .= $events_handler->onConstructor() . "\n";
     $code .= "    }\n";
