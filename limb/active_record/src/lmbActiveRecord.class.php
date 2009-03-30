@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7783 2009-03-17 18:57:39Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7831 2009-03-30 21:15:09Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -955,7 +955,7 @@ class lmbActiveRecord extends lmbObject
   {
     $class = $this->_composed_of[$property]['class'];
     
-    // for bc
+    // for BC
     if(isset($this->_composed_of[$property]['getter']))
     {
       if(!$value = $this->_getRaw($property))
