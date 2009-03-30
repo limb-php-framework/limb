@@ -15,7 +15,7 @@ class lmbARProxyGeneratorEventsHandler
   {
     return "
     private \$__record;
-    private \$__default_class_name;
+    private \$__class_name;
     private \$__conn;
     private \$__lazy_attributes;
     private \$__exported;
@@ -27,7 +27,7 @@ class lmbARProxyGeneratorEventsHandler
   {
     return "
     \$this->__record = \$args[0];
-    \$this->__default_class_name = \$args[1];
+    \$this->__class_name = \$args[1];
     \$this->__conn = \$args[2];
     \$this->__lazy_attributes = \$args[3];
     ";
@@ -85,17 +85,7 @@ class lmbARProxyGeneratorEventsHandler
     return "
   private function __loadOriginal()
   {
-    if(\$path = \$this->__record->get(lmbActiveRecord :: getInheritanceField()))
-    {
-      \$class_name = lmbActiveRecord :: getInheritanceClass(\$this->__record);
-
-      if(!class_exists(\$class_name))
-        throw new lmbException(\"Class '\$class_name' not found\");
-    }
-    else
-      \$class_name = \$this->__default_class_name;
-
-    \$this->__original = new \$class_name(null, \$this->__conn);
+    \$this->__original = new \$this->__class_name(null, \$this->__conn);
     if(is_array(\$this->__lazy_attributes))
       \$this->__original->setLazyAttributes(\$this->__lazy_attributes);
 
