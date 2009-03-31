@@ -8,14 +8,14 @@
  */
 
 lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
-
+lmb_require('limb/wysiwyg/src/lmbWysiwygConfigurationHelper.class.php');
 /**
  * @package macro
  * @version $Id$
  */
 class lmbMacroBaseWysiwygWidget extends lmbMacroFormElementWidget
 {
-  protected $skip_render = array('value','config_name', 'profile_name');  
+  protected $skip_render = array('value','config_name', 'profile_name');
   /**
    * @var lmbWysiwygConfigurationHelper
    */
@@ -28,13 +28,13 @@ class lmbMacroBaseWysiwygWidget extends lmbMacroFormElementWidget
     echo '>';
     echo htmlspecialchars($this->getValue(), ENT_QUOTES);
     echo '</textarea>';
-  }    
+  }
 
   function _initWysiwyg()
   {
     $this->_helper = new lmbWysiwygConfigurationHelper();
-    $this->_helper->setProfileName($this->getAttribute('profile_name')); 
-    
+    $this->_helper->setProfileName($this->getAttribute('profile_name'));
+
     if(!$this->getAttribute('rows'))
       $this->setAttribute('rows', $this->_helper->getOption('rows'));
 
