@@ -15,7 +15,7 @@ lmb_require('limb/active_record/src/lmbARProxy.class.php');
  * class lmbARRecordSetDecorator.
  *
  * @package active_record
- * @version $Id: lmbARRecordSetDecorator.class.php 7829 2009-03-30 20:10:53Z pachanga $
+ * @version $Id: lmbARRecordSetDecorator.class.php 7832 2009-03-31 03:36:02Z pachanga $
  */
 class lmbARRecordSetDecorator extends lmbCollectionDecorator
 {
@@ -70,7 +70,7 @@ class lmbARRecordSetDecorator extends lmbCollectionDecorator
     else
       $class_name = is_object($default_class_name) ? get_class($default_class_name) : $default_class_name;
 
-    if($use_proxy)
+    if($use_proxy || lmb_env_get('LIMB_ACTIVE_RECORD_FORCE_PROXY', false))
     {
       $proxy_class = $class_name . '_ARProxy';
       lmbARProxy :: generate($proxy_class, $class_name);
