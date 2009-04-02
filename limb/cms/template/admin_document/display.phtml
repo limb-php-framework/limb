@@ -29,10 +29,11 @@
 
           <br/><br/>
 
-          {{apply template="object_action" item="{$#item}" action="create_child" is_link="true" title="Добавить дочерний документ" icon="page_add"/}}
+          {{apply template="object_action" item="{$#item}" action="create" is_link="true" title="Добавить дочерний документ" icon="page_add"/}}
 
         <?  else:  ?>
-          {{apply template="object_action" action="create" title="Создать документ" icon="page_add" is_link="true"/}}
+          <?php $item = lmbCmsDocument :: findRoot(); ?>
+          {{apply template="object_action" item="{$item}" action="create" title="Создать документ" icon="page_add" is_link="true"/}}
         <? endif ?>
 
       </div>

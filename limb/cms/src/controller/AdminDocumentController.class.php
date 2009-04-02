@@ -48,12 +48,15 @@ class AdminDocumentController extends lmbAdminObjectController
     $this->_endDialog();
   }
   
-  function doCreateChild()
+  function doCreate()
   {
     if(!$this->parent = $this->_getObjectByRequestedId())
       $this->forwardTo404();
 
     $this->item = new $this->_object_class_name();
+
+    $this->_onCreate();
+
     $this->useForm($this->_form_name);
     $this->setFormDatasource($this->item);
 
@@ -63,6 +66,8 @@ class AdminDocumentController extends lmbAdminObjectController
       $this->item->setParent($this->parent);
       $this->_validateAndSave($create = true);
     }
+    else
+      $this->_initCreateForm();
   }
 
   protected function _onBeforeImport()
