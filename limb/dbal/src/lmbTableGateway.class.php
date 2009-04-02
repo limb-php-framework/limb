@@ -19,7 +19,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbTableGateway.class.php 7834 2009-04-02 08:43:39Z korchasa $
  */
 class lmbTableGateway
 {
@@ -149,7 +149,10 @@ class lmbTableGateway
   {
     $filtered_row = $this->_filterRow($row);
     if(!count($filtered_row))
-      throw new lmbException('All fields filtered!! Insert statement must contain atleast one field!');
+      throw new lmbException(
+        'All fields filtered! Insert statement must contain atleast one field!',
+        array('table' => $this->_db_table_name, 'raw' => $row)
+      );
 
     $query = new lmbInsertQuery($this->_db_table_name, $this->_conn);
     $values = array();
