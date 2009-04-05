@@ -15,7 +15,6 @@
           <table>
             <tr>
               <th>Статус</th>
-              <th>Идентификатор</th>
               <th>Заголовок</th>
               <th>Содержимое</th>
               <th>Действия</th>
@@ -33,9 +32,8 @@
                   <img src='/shared/cms/images/icons/flag_red.png' title="Значения нет в базе"/>
               <?}?>
               </td>
-              <td>{$item.identifier}</td>
               <td>{$item.title}</td>
-              <td>{$item.content}</td>
+              <td><?php echo nl2br(preg_replace('#(&lt;.+&gt;)#Uu', '<code style="color:red; font-size: 120%">$1</code>', htmlspecialchars($item['content']))); ?></td>
               <td class='actions'>
                 <a href='{{route_url params="action:edit,id:{$item.identifier}"/}}' title="'Редактирование" class="thickbox"><img src='/shared/cms/images/icons/table_edit.png' title="Редактирование"/></a>
               </td>
