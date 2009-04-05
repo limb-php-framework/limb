@@ -13,7 +13,7 @@
       lmb_require('limb/tree/src/lmbTreeNestedCollection.class.php');
       lmb_require('limb/tree/src/lmbTreeHelper.class.php');
 
-      $docs = lmbActiveRecord::find('lmbCmsDocument', lmbSQLCriteria::equal('is_published', 1));
+      $docs = lmbActiveRecord::find('lmbCmsDocument', lmbSQLCriteria::equal('is_published', 1)->addAnd(new lmbSQLCriteria('level > 0')));
       $sorted_docs = lmbTreeHelper :: sort($docs, array('id' => 'ASC'));
 
       $processed_docs = new lmbTreeNestedCollection($sorted_docs);
