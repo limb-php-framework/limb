@@ -1,7 +1,7 @@
 <?php
 lmb_require('limb/cms/src/model/lmbCmsUserRoles.class.php');
 
-$editor = array(array('title' => 'Контент', 'icon' => 'shared/cms/images/icons/menu_content.png',  'children' => array(
+$editor = array(array('title' => 'Контент', 'icon' => '/shared/cms/images/icons/menu_content.png',  'children' => array(
   array(
     'title' => 'Текстовые страницы',
     'url' => '/admin_document',
@@ -19,7 +19,7 @@ $editor = array(array('title' => 'Контент', 'icon' => 'shared/cms/images/
   ),
 )));
 
-$only_admin = array(array('title' => 'Администрирование', 'icon' => 'shared/cms/images/icons/menu_service.png','children' => array(
+$only_admin = array(array('title' => 'Администрирование', 'icon' => '/shared/cms/images/icons/menu_service.png','children' => array(
   array(
     'title' => 'Пользователи',
     'url' => '/admin_user',
