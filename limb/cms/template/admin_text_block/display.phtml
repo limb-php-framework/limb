@@ -16,7 +16,7 @@
             <tr>
               <th>Статус</th>
               <th>Заголовок</th>
-              <th>Содержимое</th>
+              <th width="60%">Содержимое</th>
               <th>Действия</th>
             </tr>
             {{list:item}}
@@ -25,17 +25,20 @@
                 <?
                 if ($item['exists'])
                 {?>
-                  <img src='/shared/cms/images/icons/flag_green.png' title="Значение в базе"/>
+                  <img src='/shared/cms/images/icons/flag_green.png' alt="есть" title="Используется установленное пользователем значение"/>
               <?}
                 else
                 {?>
-                  <img src='/shared/cms/images/icons/flag_red.png' title="Значения нет в базе"/>
+                  <img src='/shared/cms/images/icons/flag_red.png' alt="нет" title="Используется значение по-умлочанию"/>
               <?}?>
               </td>
               <td>{$item.title}</td>
-              <td><?php echo nl2br(preg_replace('#(&lt;.+&gt;)#Uu', '<code style="color:red; font-size: 120%">$1</code>', htmlspecialchars($item['content']))); ?></td>
+              <td><b>ID</b>: {$item.identifier}<br/>
+              <b>Текст</b>: {$item.content|striptags|i18n_clip:'150'} ...
+              </td>
               <td class='actions'>
-                <a href='{{route_url params="action:edit,id:{$item.identifier}"/}}' title="'Редактирование" class="thickbox"><img src='/shared/cms/images/icons/table_edit.png' title="Редактирование"/></a>
+                <a href='{{route_url params="action:preview,id:{$item.identifier}"/}}' title="Предварительный просмотр" class="thickbox"><img src='/shared/cms/images/icons/zoom.png' alt="Предпросмотр"/></a>
+                <a href='{{route_url params="action:edit,id:{$item.identifier}"/}}' title="Редактирование" class="thickbox"><img src='/shared/cms/images/icons/table_edit.png' alt="Редактирование"/></a>
               </td>
               </tr>
             {{/list:item}}

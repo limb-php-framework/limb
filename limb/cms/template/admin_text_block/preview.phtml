@@ -1,0 +1,15 @@
+{{wrap with="admin_modal_page_layout.phtml" into="content_zone"}}
+
+<h1>Предварительный просмотр текстового блока &laquo;{$#item.title}&raquo;</h1>
+
+    <div class="popup_content">
+      <a href='{{route_url params="action:edit,id:{$#item.identifier}"/}}' title="Редактирование"><img src='/shared/cms/images/icons/table_edit.png' alt="Редактирование"/> Редактировать</a>
+
+      <br/><b>Заголовок:</b> {$#item.title}<br/>
+      <b>Идентификатор:</b> {$#item.identifier}<br/>
+      <b>Содержимое:</b><br/>{$#item.content|raw}<br/>
+
+    </div>
+
+
+{{/wrap}}

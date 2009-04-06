@@ -52,6 +52,12 @@ class AdminTextBlockController extends lmbAdminObjectController
     $this->_import();
     $this->_validateAndSave(false);
   }
+
+  function doPreview()
+  {
+    if(!$this->item = lmbCmsTextBlock::findOneByIdentifier($this->request->get('id')))
+      $this->forwardTo404();
+  }
 }
 
 
