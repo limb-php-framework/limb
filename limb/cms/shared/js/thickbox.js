@@ -257,9 +257,23 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
       };
     }
 
+    window.focus = setFocusOnPopupWindow;
+    document.getElementById('TB_iframeContent').contentWindow.onblur = setFocusOnPopupWindow;
+
   } catch(e) {
     //nothing here
   }
+}
+
+function setFocusOnPopupWindow ()
+{
+  var tb_iframe = document.getElementById('TB_iframeContent');
+  if (!tb_iframe)
+    return;
+  var firstElement  = jQuery(tb_iframe.contentWindow.document).find(':input')[0];
+  if(firstElement)
+    firstElement.focus();
+    jQuery(tb_iframe.contentWindow.document).find(':input')[1].focus();
 }
 
 //helper functions below
@@ -306,10 +320,8 @@ function tb_remove() {
 }
 
 function tb_position() {
-$("#TB_window").css({marginLeft: '-' + parseInt((TB_WIDTH / 2),10) + 'px', width: TB_WIDTH + 'px'});
-  if ( !(jQuery.browser.msie && jQuery.browser.version < 7)) { // take away IE6
-    $("#TB_window").css({marginTop: '-' + parseInt((TB_HEIGHT / 2),10) + 'px'});
-  }
+  $("#TB_window").css({marginLeft: '-' + parseInt((TB_WIDTH / 2),10) + 'px', width: TB_WIDTH + 'px'});
+  $("#TB_window").css({marginTop: '-' + parseInt((TB_HEIGHT / 2),10) + 'px'});
 }
 
 function tb_parseQuery ( query ) {
