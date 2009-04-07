@@ -5,7 +5,7 @@
   .list {zoom:1;}
     .list th, .list td {scrollbar-face-color: expression(runtimeStyle.scrollbarFaceColor = '#fff', (this == parentNode.firstChild) ? className += ' first-child' : '', (this == parentNode.lastChild) ? className += ' last-child' : '')}
     .list td.last-child a {zoom:1;}
-    .list .list_actions {margin-left:0;}
+    .list .list_actions {zoom:1;margin-left:0;}
     .list .list_actions {scrollbar-face-color: expression(runtimeStyle.scrollbarFaceColor = '#fff', (this == parentNode.lastChild) ? className += ' actions-last-child' : '')}
       .list .actions-last-child {margin:-1px 0 0;}
   .filter {zoom:1;scrollbar-face-color: expression(runtimeStyle.scrollbarFaceColor = '#fff', (this == parentNode.lastChild) ? className += ' filter-last' : '')}
