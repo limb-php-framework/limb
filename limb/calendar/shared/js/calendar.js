@@ -1642,7 +1642,7 @@ Date.parseDate = function(str, fmt) {
     }
   }
 
-  if(typeof timestamp != undefined)
+  if(timestamp != undefined)
     return new Date(timestamp);
 
   if (isNaN(y)) y = today.getFullYear();
