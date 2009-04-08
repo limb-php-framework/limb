@@ -37,8 +37,11 @@ abstract class lmbAdminObjectController extends lmbObjectController
   function doDisplay()
   {
     $this->items = lmbActiveRecord::find($this->_object_class_name);
-    $sort = $this->toolkit->getRequest()->getGet('sort',false);
-    $direction = $this->toolkit->getRequest()->getGet('direction','asc');
+
+    $sort = $this->toolkit->getRequest()->getGetFiltered('sort',FILTER_SANITIZE_SPECIAL_CHARS, false);
+    $direction = $this->toolkit->getRequest()->getGet('direction');
+    if(!in_array($direction, array('asc','desc')))
+      $direction = 'asc';
 
     if($sort===false) return;
     $this->items->sort(array($sort=>$direction));
