@@ -43,11 +43,12 @@ abstract class lmbAdminObjectController extends lmbObjectController
   protected function _applySortParams()
   {
     $sort = $this->toolkit->getRequest()->getGetFiltered('sort',FILTER_SANITIZE_SPECIAL_CHARS, false);
+
     $direction = $this->toolkit->getRequest()->getGet('direction');
     if(!in_array($direction, array('asc','desc')))
       $direction = 'asc';
 
-    if($sort===false) return;
+    if($sort==false) return; 
     $this->items->sort(array($sort=>$direction));
   }
 
