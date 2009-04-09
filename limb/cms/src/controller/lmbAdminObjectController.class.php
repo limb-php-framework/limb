@@ -37,7 +37,11 @@ abstract class lmbAdminObjectController extends lmbObjectController
   function doDisplay()
   {
     $this->items = lmbActiveRecord::find($this->_object_class_name);
+    $this->_applySortParams();
+  }
 
+  protected function _applySortParams()
+  {
     $sort = $this->toolkit->getRequest()->getGetFiltered('sort',FILTER_SANITIZE_SPECIAL_CHARS, false);
     $direction = $this->toolkit->getRequest()->getGet('direction');
     if(!in_array($direction, array('asc','desc')))
@@ -45,7 +49,6 @@ abstract class lmbAdminObjectController extends lmbObjectController
 
     if($sort===false) return;
     $this->items->sort(array($sort=>$direction));
-
   }
 
   function doCreate()
@@ -110,7 +113,7 @@ abstract class lmbAdminObjectController extends lmbObjectController
 
     $this->_endDialog();
   }
-  
+
   function doRevertPublish()
   {
     if($this->request->has('ids'))

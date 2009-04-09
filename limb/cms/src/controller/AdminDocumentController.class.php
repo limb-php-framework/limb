@@ -13,13 +13,13 @@ lmb_require('limb/cms/src/controller/lmbAdminObjectController.class.php');
 lmb_require('limb/cms/src/model/lmbCmsDocument.class.php');
 
 class AdminDocumentController extends lmbAdminObjectController
-{ 
+{
   protected $_object_class_name = 'lmbCmsDocument';
 
   function doDisplay()
-  { 
+  {
     if(!$id = $this->request->getInteger('id')  ){
-      $this->is_root = true; 
+      $this->is_root = true;
       $criteria = new lmbSQLCriteria('parent_id > 0');
       $criteria->addAnd(new lmbSQLCriteria('level = 1'));
       $this->item = lmbCmsDocument :: findRoot();
@@ -30,24 +30,19 @@ class AdminDocumentController extends lmbAdminObjectController
         return $this->forwardTo404();
       $criteria = new lmbSQLCriteria('parent_id = ' . $this->item->getId());
     }
-  
-    $this->items = lmbActiveRecord::find($this->_object_class_name, array('criteria' => $criteria, 'sort'=>array('priority'=>'ASC')));
-    $sort = $this->toolkit->getRequest()->getGet('sort',false);
-    $direction = $this->toolkit->getRequest()->getGet('direction','asc');
 
-    if($sort===false)
-      return;
-    $this->items->sort(array($sort=>$direction));
+    $this->items = lmbActiveRecord :: find($this->_object_class_name, array('criteria' => $criteria, 'sort'=>array('priority'=>'ASC')));
+    $this->_applySortParams();
   }
 
   function doPriority()
   {
     if($this->request->has('parent_id'))
       $this->_changeItemsPriority('lmbCmsDocument', 'parent_id', $this->request->get('parent_id'));
-    
+
     $this->_endDialog();
   }
-  
+
   function doCreate()
   {
     if(!$this->parent = $this->_getObjectByRequestedId())
