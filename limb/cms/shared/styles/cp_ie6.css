@@ -51,11 +51,11 @@
 /*FORM*/
   input {scrollbar-face-color: expression(runtimeStyle.scrollbarFaceColor = '#fff', className += ' input_'+type)}
   .input_text, .input_password {width:278px;height:1.5em;background:#fff url(../images/bgr/text-bg.png) repeat-x top left;border: 1px solid #B5B8C8;}
-  .input_button, .input_submit {height:1.8em;padding:0 7px;border:1px solid #aaaaaa;background:#fff url(../images/bgr/button.png) repeat-x left bottom;}
+  .input_button, .input_submit {height:1.8em;padding:0;border:1px solid #aaaaaa;background:#fff url(../images/bgr/button.png) repeat-x left bottom;}
     .form_buttons .input_button, .form_buttons .input_submit{margin-left:10px;}
     #wrapper .list_actions .input_button,  #wrapper .list_actions .input_submit{margin-right:10px;}
     #popup_wrapper .list_actions .input_button, #popup_wrapper .list_actions .input_submit{margin-left:10px;}
-  .button_wrapper {display:inline;zoom:1;}
+  .button_wrapper {display:inline;zoom:1;padding:0 0 0 2px;}
     .button_wrapper .input_button, .button_wrapper .input_submit {display:block;height:19px;margin:0;padding:0 7px 0 0;line-height:18px;background: url(../images/bgr/button_nice.png) no-repeat right top;border:0 none;}
       .form_buttons .button_wrapper .input_button, .form_buttons .button_wrapper .input_submit{margin-left:0;}
       #wrapper .list_actions .button_wrapper .input_button,  #wrapper .list_actions .button_wrapper .input_submit{margin-right:0;}
