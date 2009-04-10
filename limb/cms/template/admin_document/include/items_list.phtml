@@ -32,7 +32,7 @@
         <td>{$item.ctime|i18n_date:"", "stamp", "short_date_time"}</td>
         <td>{$item.utime|i18n_date:"", "stamp", "short_date_time"}</td>
         <td class='actions'>
-          {{apply template="object_action" item="{$item}" action="create_child" title="Добавление дочернего документа" icon="page_add"/}}
+          {{apply template="object_action" item="{$item}" action="create" title="Добавление дочернего документа" icon="page_add"/}}
           <? if($item->getIsPublished()): ?>
             {{apply template="object_action_unpublish" item="{$item}" icon="lightbulb_off"/}}
           <?  else:  ?>
