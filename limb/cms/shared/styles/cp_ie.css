@@ -31,4 +31,7 @@
     #sidebar .sidebar_toggler .arrow {margin-top:-0.6em;}
       .hiddenSidebar#wrapper .sidebar_toggler .arrow {margin-left:-0.5em;}
 
+  .button_wrapper  {padding:0 0 0 2px;}
+    .button_wrapper input[type="button"], .button_wrapper input[type="submit"]  {padding:0;font-size:12px;}
+
 
