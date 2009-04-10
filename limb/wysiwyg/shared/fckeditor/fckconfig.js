@@ -116,7 +116,7 @@ FCKConfig.ToolbarSets["Default"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Basic"] = [
-	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
+	['Bold','Italic','-', 'OrderedList','UnorderedList','-','Link','Unlink','-','About']
 ] ;
 
 FCKConfig.EnterMode = 'p' ;			// p | div | br
@@ -126,7 +126,7 @@ FCKConfig.Keystrokes = [
 	[ CTRL + 65 /*A*/, true ],
 	[ CTRL + 67 /*C*/, true ],
 	[ CTRL + 70 /*F*/, true ],
-	[ CTRL + 83 /*S*/, true ],
+	[ CTRL + 83 /*S*/, 'AjaxSave' ],
 	[ CTRL + 84 /*T*/, true ],
 	[ CTRL + 88 /*X*/, true ],
 	[ CTRL + 86 /*V*/, 'Paste' ],
@@ -144,7 +144,9 @@ FCKConfig.Keystrokes = [
 	[ CTRL + SHIFT + 83 /*S*/, 'Save' ],
 	[ CTRL + ALT + 13 /*ENTER*/, 'FitWindow' ],
 	[ SHIFT + 32 /*SPACE*/, 'Nbsp' ]
-] ;
+// 	[ SHIFT + 32 /*SPACE*/, 'AjaxSave' ]
+  //        [ CTRL + ALT + 86 /*SPACE*/, al ]
+];
 
 FCKConfig.ContextMenu = ['Generic','Link','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField','HiddenField','ImageButton','Button','BulletedList','NumberedList','Table','Form','DivContainer'] ;
 FCKConfig.BrowserContextMenuOnCtrl = false ;
@@ -323,3 +325,4 @@ FCKConfig.BackgroundBlockerOpacity = 0.50 ;
 FCKConfig.MsWebBrowserControlCompat = false ;
 
 FCKConfig.PreventSubmitHandler = false ;
+
