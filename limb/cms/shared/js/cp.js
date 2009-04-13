@@ -275,6 +275,8 @@ Limb.Class('CMS.cookie',
   get: function(cookieName)
   {
     var cookie = Limb.cookie(this.CMScookieName);
+    if(!cookie)
+      return;
     cookieName = ";" + cookieName + ";";
     if(cookie.match(cookieName))
       return true;
