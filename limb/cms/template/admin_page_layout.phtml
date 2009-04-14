@@ -70,20 +70,31 @@
   <script src="/shared/cms/js/thickbox.js?{$#static_files_version}"></script>
   <script src="/shared/cms/js/cp.js?{$#static_files_version}"></script>
   {{slot id='js_include'/}}
+
   <script type="text/javascript">
     {{slot id='js'/}}
+
     jQuery(window).ready(function()
     {
       {{slot id='js_ready'/}}
-      jQuery("a.thickbox").each(function()
+
+      thickboxInit();
+
+      function thickboxInit()
       {
-        var sep = '?';
-        if(this.href.indexOf(sep) > 0)
-          sep = '&';
+        jQuery("a.thickbox").each(function()
+        {
+          if(this.href.indexOf('TB_iframe') > 0)
+            return;
 
-        this.href = this.href + sep + 'TB_iframe=true&width=640&height=480';
+          var sep = (this.href.indexOf(sep) > 0) ? '&' : '?';
+          this.href = this.href + sep + 'TB_iframe=true&width=640&height=480';
+        });
 
-      });
+        tb_init('a.thickbox');                                    //pass where to apply thickbox
+        imgLoader = new Image();                                  // preload image
+        imgLoader.src = "/shared/cms/images/icons/loading.gif";
+      }
     });
   </script>
 

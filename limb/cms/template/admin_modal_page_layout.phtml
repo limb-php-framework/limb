@@ -30,8 +30,10 @@
 <script src="/shared/cms/js/thickbox.js?{$#static_files_version}"></script>
 <script src="/shared/cms/js/cp.js?{$#static_files_version}"></script>
 {{slot id='js_include'/}}
+
 <script type="text/javascript">
   {{slot id='js'/}}
+
   jQuery(window).ready(function()
   {
     {{slot id='js_ready'/}}

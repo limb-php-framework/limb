@@ -5,17 +5,6 @@
  * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
 */
 
-var tb_pathToImage = "/shared/cms/images/icons/loading.gif";
-
-/*!!!!!!!!!!!!!!!!! edit below this line at your own risk !!!!!!!!!!!!!!!!!!!!!!!*/
-
-//on page load call tb_init
-$(document).ready(function(){
-  tb_init('a.thickbox, area.thickbox, input.thickbox');//pass where to apply thickbox
-  imgLoader = new Image();// preload image
-  imgLoader.src = tb_pathToImage;
-});
-
 //add thickbox to href & area elements that have a class of .thickbox
 function tb_init(domChunk){
   $(domChunk).click(function(){
