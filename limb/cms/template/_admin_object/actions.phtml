@@ -35,7 +35,7 @@
     $title = isset($title) ? $title : 'Показать';
     $icon = isset($icon) ? $icon : "lightbulb";
   ?>
-  <a href='{{route_url params="controller:{$controller},action:publish,id:{$item.id}"/}}' title="{$title|default:'Показать'}" class="thickbox"><img src='/shared/cms/images/icons/{$icon|default:"lightbulb"}.png'/> <? if($is_link) echo $title; ?></a>
+  <a href='{{route_url params="controller:{$controller},action:publish,id:{$item.id}"/}}' title="{$title|default:'Показать'}" class="publish thickbox"><img src='/shared/cms/images/icons/{$icon|default:"lightbulb"}.png'/> <? if($is_link) echo $title; ?></a>
 {{/template}}
 
 {{template name="object_action_unpublish"}}
@@ -46,5 +46,5 @@
     $icon = isset($icon) ? $icon : "lightbulb_off";
   ?>
 
-  <a href='{{route_url params="controller:{$controller},action:unpublish,id:{$item.id}"/}}' title="{$title|default:'Скрыть'}" class="thickbox"><img src='/shared/cms/images/icons/{$icon|default:"lightbulb_off"}.png'/> <? if($is_link) echo $title; ?></a>
+  <a href='{{route_url params="controller:{$controller},action:unpublish,id:{$item.id}"/}}' title="{$title|default:'Скрыть'}" class="unpublish thickbox"><img src='/shared/cms/images/icons/{$icon|default:"lightbulb_off"}.png'/> <? if($is_link) echo $title; ?></a>
 {{/template}}
