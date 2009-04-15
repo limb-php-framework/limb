@@ -86,8 +86,8 @@
         {
           if(this.href.indexOf('TB_iframe') > 0)
             return;
-
-          var sep = (this.href.indexOf(sep) > 0) ? '&' : '?';
+     
+          var sep = (this.href.indexOf('?') > 0) ? '&' : '?'; 
           this.href = this.href + sep + 'TB_iframe=true&width=640&height=480';
         });
 
