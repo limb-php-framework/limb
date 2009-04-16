@@ -1,5 +1,5 @@
 <?php
-  if($item->isRoot())
+  if($item->isRoot() && (!isset($display_root) || $display_root == false))
     return;
 
   $chain = array();
