@@ -11,7 +11,7 @@
  * class lmbMimeType.
  *
  * @package net
- * @version $Id: lmbMimeType.class.php 7539 2009-01-30 07:09:56Z vasiatka $
+ * @version $Id: lmbMimeType.class.php 7886 2009-04-17 07:39:04Z serega $
  */
 class lmbMimeType
 {
@@ -35,6 +35,7 @@ class lmbMimeType
     'message/rfc822' =>'msg',
     'application/pdf' =>'pdf',
     'image/png' =>'png',
+    'image/x-png' => 'png',
     'application/vnd.ms-powerpoint' =>'ppt',
     'image/psd' =>'psd',
     'text/rtf' =>'rtf',
