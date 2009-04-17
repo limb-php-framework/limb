@@ -43,6 +43,7 @@
       #main_menu dt.current {color:#fff;}
       #main_menu ul li {font-size:0.92em;}
         #main_menu ul li.current a {color:#fff;}
+    #context_help dt {font-size:1.16em;color:#000;}
   #popup_wrapper {font-size:1.2em;}
   #sidebar .sidebar_toggler {font-size:0.92em;font-weight:bold;line-height:1.2em;}
     #sidebar .sidebar_toggler .arrow {font-size:1.6em;}
@@ -172,6 +173,7 @@
   /*MAIN MENU*/
     #main_menu {margin:5px 0 0 15px;width:186px}
       .hiddenSidebar#wrapper #main_menu {display:none;}
+      .hiddenSidebar#wrapper #context_help {display:none;}
       #main_menu img {position:absolute;left:7px;top:3px;vertical-align:middle;}
       #main_menu dt {position:relative;height:24px;margin:0 0 2px;padding:0 7px 0 27px;line-height:23px;background:#FCDEB3 url(../images/menu/bg.png) no-repeat 0 -24px;cursor:pointer;}
         #main_menu dt.current {background-color:#7D7D7D;background-position:0 0;}
@@ -202,7 +204,9 @@
         #sidebar .sidebar_toggler .arrow {position:absolute;right:10px;top:50%;margin:-0.5em 0 0;}
           .hiddenSidebar#wrapper .sidebar_toggler .text {display:none;}
           .hiddenSidebar#wrapper .sidebar_toggler .arrow {left:50%;margin:-0.5em 0 0 -0.3em;}
-
+    #context_help {margin:5px 0 0 15px;width:186px}
+      #context_help dt {position:relative;height:24px;margin:0 0 2px;padding:0 7px 0 27px;line-height:23px;background:#FCDEB3 url(../images/menu/bg.png) no-repeat 0 -24px;cursor:pointer;}
+      #context_help dt img {position:absolute;left:7px;top:3px;vertical-align:middle;}
 
 
   /*LOGIN FORM*/

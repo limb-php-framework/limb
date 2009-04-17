@@ -11,6 +11,9 @@
   <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie6.css?{$#static_files_version}" /><![endif]-->
   <link rel="stylesheet" type="text/css" href="/shared/cms/styles/thickbox.css?{$#static_files_version}" />
   {{slot id='header_zone' /}}
+  <style type="text/css">
+    {{slot id='css_zone' /}}
+  </style>
 </head>
 <body>
   <div id="wrapper">
@@ -54,6 +57,7 @@
         {{/list:item}}
       {{/list:list}}
       </dl>
+      {{slot id='context_help'/}}
     </div>
 
   </div>
@@ -86,8 +90,8 @@
         {
           if(this.href.indexOf('TB_iframe') > 0)
             return;
-     
-          var sep = (this.href.indexOf('?') > 0) ? '&' : '?'; 
+
+          var sep = (this.href.indexOf('?') > 0) ? '&' : '?';
           this.href = this.href + sep + 'TB_iframe=true&width=640&height=480';
         });
 
