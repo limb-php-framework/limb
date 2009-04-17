@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/query/lmbCriteriaQuery.class.php');
  * class lmbUpdateQuery.
  *
  * @package dbal
- * @version $Id: lmbUpdateQuery.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbUpdateQuery.class.php 7890 2009-04-17 14:55:29Z vasiatka $
  */
 class lmbUpdateQuery extends lmbCriteriaQuery
 {
@@ -21,7 +21,7 @@ class lmbUpdateQuery extends lmbCriteriaQuery
   protected $_raw_fields = array();
   protected $_set_values = array();
 
-  function __construct($table, $conn)
+  function __construct($table, $conn=null)
   {
     $this->_table = $table;
     parent :: __construct("UPDATE %table% SET %fields% %where%", $conn);
