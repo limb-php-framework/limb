@@ -54,7 +54,7 @@ class lmbSerializable
     return array('serialized', 'class_paths');
   }
 
-  function _includeFiles()
+  protected function _includeFiles()
   {
     if(function_exists('lmb_require'))
     {
@@ -68,7 +68,7 @@ class lmbSerializable
     }
   }
 
-  function _fillClassPathInfo($serialized)
+  protected function _fillClassPathInfo($serialized)
   {
     $classes = self :: extractSerializedClasses($serialized);
     $this->class_paths = array();
@@ -78,8 +78,23 @@ class lmbSerializable
       $reflect = new ReflectionClass($class);
       if($reflect->isInternal())
         throw new lmbException("Class '$class' can't be serialized since it's an iternal PHP class, consider omitting object of this class by providing custom __sleep, __wakeup handlers");
-      $this->class_paths[] = $reflect->getFileName();
+      $this->class_paths[] = self :: getClassPath($reflect);
     }
+  }
+
+  static function getClassPath($refl)
+  {
+    $path = $refl->getFileName();
+    //if include path is a part of the class path remove it
+    //since it makes serializable stuff more tolerant to changes in filesystem
+    foreach(lmb_get_include_path_items() as $inc_path)
+    {
+      if(!$inc_path)
+        continue;
+      if(strpos($path, $inc_path) === 0)
+        return substr($path, strlen($inc_path)+1); 
+    }
+    return $path;
   }
 
   static function extractSerializedClasses($str)

@@ -30,27 +30,11 @@ class lmbSerializableTest extends UnitTestCase
   {
     $stub = new SerializableTestStub();
     $container = new lmbSerializable($stub);
-
     $file = $this->_writeToFile(serialize($container));
-    $this->_phpSerializedObjectCall($file, '->identify()', $stub);
-    $this->_phpSerializedObjectCall($file, '->getChild()->identify()', $stub->getChild()->identify());
+
+    $this->assertEqual($this->_phpSerializedObjectCall($file, '->identify()'), $stub->identify());
+    $this->assertEqual($this->_phpSerializedObjectCall($file, '->getChild()->identify()'), $stub->getChild()->identify());
     unlink($file);
-  }
-
-  function testSerializeUnserializeWithoutSubjectLazyLoading()
-  {
-    $stub = new SerializableTestStub();
-    $container1 = new lmbSerializable($stub);
-
-    $file1 = $this->_writeToFile(serialize($container1));
-    $container2 = unserialize(file_get_contents($file1));
-
-    $file2 = $this->_writeToFile(serialize($container2));
-    $this->_phpSerializedObjectCall($file2, '->identify()', $stub);
-    $this->_phpSerializedObjectCall($file2, '->getChild()->identify()', $stub->getChild()->identify());
-
-    unlink($file1);
-    unlink($file2);
   }
 
   function testExtractSerializedClasses()
@@ -58,6 +42,34 @@ class lmbSerializableTest extends UnitTestCase
     $stub = new SerializableTestChildStub();
     $serialized = serialize($stub);
     $this->assertEqual(lmbSerializable :: extractSerializedClasses($serialized), array('SerializableTestChildStub'));
+  }
+
+  function testRemoveIncludePathFromClassPath()
+  {
+    //generating class and placing it in a temp dir
+    $var_dir = lmb_env_get('LIMB_VAR_DIR');
+    $class = 'Foo' . mt_rand();
+    file_put_contents("$var_dir/foo.php", "<?php class $class { function say() {return 'hello';} }");
+
+    //adding temp dir to include path
+    $prev_inc_path = get_include_path();
+    set_include_path($var_dir . PATH_SEPARATOR . get_include_path());
+
+    //including class and serializing it
+    include('foo.php');
+    $foo = new $class();
+    $container = new lmbSerializable($foo);
+    $file = $this->_writeToFile(serialize($container));
+
+    //now moving generated class's file into subdir 
+    $new_dir = mt_rand();
+    mkdir("$var_dir/$new_dir");
+    rename("$var_dir/foo.php", "$var_dir/$new_dir/foo.php");
+
+    //emulating new include path settings
+    $this->assertEqual($this->_phpSerializedObjectCall($file, '->say()', "$var_dir/$new_dir"), $foo->say());
+
+    set_include_path($prev_inc_path);
   }
 
   function testSerializingUnserializeInternalClassThrowsException()
@@ -88,15 +100,17 @@ class lmbSerializableTest extends UnitTestCase
     return $tmp_serialized_file;
   }
 
-  function _phpSerializedObjectCall($file, $call)
+  function _phpSerializedObjectCall($file, $call, $include_path = '')
   {
     $class_path = $this->_getClassPath('lmbSerializable');
 
     $cmd = "php -r \"require_once('$class_path');" .
+           ($include_path != '' ? "set_include_path('$include_path');" : '') . 
            "echo unserialize(file_get_contents('$file'))->getSubject()$call;\"";
 
-    exec($cmd, $ret, $out);
-    return $out;
+    exec($cmd, $out, $ret);
+    //var_dump($out);
+    return implode("", $out);
   }
 
   function _getClassPath($class)
