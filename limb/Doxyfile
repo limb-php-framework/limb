@@ -4,7 +4,7 @@
 # Project related configuration options 
 #--------------------------------------------------------------------------- 
 DOXYFILE_ENCODING = UTF-8 
-PROJECT_NAME = LIMB
+PROJECT_NAME = Limb PHP Framework
 PROJECT_NUMBER = 2009.1 
 OUTPUT_DIRECTORY = api/ 
 CREATE_SUBDIRS = NO
