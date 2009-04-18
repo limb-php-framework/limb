@@ -130,16 +130,16 @@ class lmbSqliteConnection extends lmbDbBaseConnection
       case 'SHOW':
       case 'DESCRIBE':
       case 'EXPLAIN':
-      return new lmbSqliteQueryStatement($this, $sql);
+        return new lmbSqliteQueryStatement($this, $sql);
       case 'INSERT':
-      return new lmbSqliteInsertStatement($this, $sql);
+        return new lmbSqliteInsertStatement($this, $sql);
       case 'DROP':
-      return new lmbSqliteDropStatement($this, $sql);
+        return new lmbSqliteDropStatement($this, $sql);
       case 'UPDATE':
       case 'DELETE':
-      return new lmbSqliteManipulationStatement($this, $sql);
+        return new lmbSqliteManipulationStatement($this, $sql);
       default:
-      return new lmbSqliteStatement($this, $sql);
+        return new lmbSqliteStatement($this, $sql);
     }
   }
 
