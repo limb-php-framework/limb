@@ -4,10 +4,10 @@
 # Project related configuration options 
 #--------------------------------------------------------------------------- 
 DOXYFILE_ENCODING = UTF-8 
-PROJECT_NAME = limb
-PROJECT_NUMBER = 
+PROJECT_NAME = LIMB
+PROJECT_NUMBER = 2009.1 
 OUTPUT_DIRECTORY = api/ 
-CREATE_SUBDIRS = NO 
+CREATE_SUBDIRS = NO
 OUTPUT_LANGUAGE = English
 BRIEF_MEMBER_DESC = YES 
 REPEAT_BRIEF = YES 
@@ -22,10 +22,10 @@ represents \
 a \ 
 an \ 
 the 
-ALWAYS_DETAILED_SEC = YES 
+ALWAYS_DETAILED_SEC = NO
 INLINE_INHERITED_MEMB = YES 
-FULL_PATH_NAMES = YES 
-STRIP_FROM_PATH = /home/max/ 
+FULL_PATH_NAMES = YES
+STRIP_FROM_PATH = 
 STRIP_FROM_INC_PATH = 
 SHORT_NAMES = NO 
 JAVADOC_AUTOBRIEF = NO 
@@ -85,14 +85,13 @@ WARN_LOGFILE =
 #--------------------------------------------------------------------------- 
 # configuration options related to the input files 
 #--------------------------------------------------------------------------- 
-INPUT = ./ 
+INPUT = .
 INPUT_ENCODING = UTF-8 
-FILE_PATTERNS = *.php \ 
-*.PHP 
+FILE_PATTERNS = *.php
 RECURSIVE = YES 
 EXCLUDE = 
 EXCLUDE_SYMLINKS = NO 
-EXCLUDE_PATTERNS = */tests/*  */lib/* */var/*
+EXCLUDE_PATTERNS = */limb/*/tests/* */limb/*/lib/* */limb/*/var/*
 EXCLUDE_SYMBOLS = 
 EXAMPLE_PATH = 
 EXAMPLE_PATTERNS = * 
