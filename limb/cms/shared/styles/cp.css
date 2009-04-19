@@ -73,6 +73,7 @@
   .empty_list {clear:both;margin:0;padding:13px 10px;background-color:#e5e5e5;border:1px solid #bbbbbb;}
     #body .empty_list {margin-bottom:4.8em;}
   .hint {margin:0;padding:0;}
+  .hidden {display:none;}
   .left_side {float:left;width:47.9%;margin-right:4%;}
   .magnifier {background: #fff;display:block;position:relative;width:13px;height:13px;padding:3px;margin:0 0 -16px 0;-moz-opacity: 0.7;-khtml-opacity: 0.7;opacity: 0.7;}
   .right_side {float:right;width:47.9%}
