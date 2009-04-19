@@ -1,15 +1,30 @@
-{{wrap with="admin_modal_page_layout.phtml" into="content_zone"}}
+{{wrap with="admin_modal_page_layout.phtml"}}
 
-<h1>Предварительный просмотр текстового блока &laquo;{$#item.title}&raquo;</h1>
+  {{into slot="content_zone"}}
 
-    <div class="popup_content">
-      <a href='{{route_url params="action:edit,id:{$#item.identifier}"/}}' title="Редактирование"><img src='/shared/cms/images/icons/table_edit.png' alt="Редактирование"/> Редактировать</a>
+    <h1>Предварительный просмотр текстового блока &laquo;{$#item.title}&raquo;</h1>
 
-      <br/><b>Заголовок:</b> {$#item.title}<br/>
-      <b>Идентификатор:</b> {$#item.identifier}<br/>
-      <b>Содержимое:</b><br/>{$#item.content|raw}<br/>
-
+    <div class="actions">
+      <a href='{{route_url params="action:edit,id:{$#item.identifier}"/}}' title="Редактирование"><img src='/shared/cms/images/icons/layout_edit.png'/> Редактировать</a>
     </div>
 
+    <dl class="properties">
+      <dt>Заголовок:</dt><dd>{$#item.title}</dd>
+      <dt>Идентификатор:</dt><dd>{$#item.identifier}</dd>
+      <dt>Содержимое:</dt><dd>&nbsp;</dd>
+    </dl>
+
+    {$#item.content|raw}
+
+  {{/into}}
+
+  {{into slot="css_zone"}}
+    .properties dt {float:left;font-weight:bold;width:120px;}
+    .properties dd {}
+
+    .actions{float:right;}
+    .actions a{font-weight:bold;}
+        .actions a img{margin:0 0 0 -20px;vertical-align:middle;}
+  {{/into}}
 
 {{/wrap}}
