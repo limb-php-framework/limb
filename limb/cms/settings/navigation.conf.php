@@ -13,9 +13,9 @@ $editor = array(array('title' => 'Контент', 'icon' => '/shared/cms/images
     'icon' => '/shared/cms/images/icons/layout.png',
   ),
   array(
-    'title' => 'Мета поля',
+    'title' => 'Мета-данные (SEO)',
     'url' => '/admin_seo',
-    'icon' => '/shared/cms/images/icons/layout.png',
+    'icon' => '/shared/cms/images/icons/page_white_stack.png',
   ),
 )));
 
