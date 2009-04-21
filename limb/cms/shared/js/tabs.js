@@ -69,6 +69,7 @@ Limb.Class('CMS.Tab',
   activate: function()
   {
    this.link.className = 'active';
+      jQuery('a',this.container).blur();
       jQuery(this.content).css('display','block');
 
   },
