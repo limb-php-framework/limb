@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7664 2009-03-02 20:51:05Z pachanga $
+ * @version $Id: lmbHttpRequest.class.php 7902 2009-04-25 06:22:04Z pachanga $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -174,6 +174,15 @@ class lmbHttpRequest extends lmbSet
       return $arr[$key];
     elseif($default !== LIMB_UNDEFINED)
       return $default;
+  }
+
+  function get($key, $default = LIMB_UNDEFINED)
+  {
+    $_key = "__$key";
+    if(in_array($_key, $this->__reserved_attrs))
+      return $this->$_key;
+
+    return parent::get($key, $default);
   }
 
   function getUri()

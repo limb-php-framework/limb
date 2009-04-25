@@ -290,6 +290,13 @@ class lmbHttpRequestTest extends UnitTestCase
       $this->pass();
     }
   }
+
+  function testArrayAccess()
+  {
+    $request = new lmbHttpRequest('http://test.com/wow?z=1');
+    $this->assertEqual($request['uri']['path'], '/wow');
+    $this->assertEqual($request['get']['z'], '1');
+  }
 }
 
 
