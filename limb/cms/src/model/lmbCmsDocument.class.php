@@ -76,7 +76,9 @@ class lmbCmsDocument extends lmbActiveRecordTreeNode
     $level = 0;
     foreach($identifiers as $identifier)
     {
-      $criteria->addOr("(identifier = '{$identifier}' AND level = {$level})");
+    	$identifier_criteria = lmbSQLCriteria::equal('identifier', $identifier);
+      $identifier_criteria->addAnd(lmbSQLCriteria::equal('level', $level));
+      $criteria->addOr($identifier_criteria);
       $level++;
     }
     $documents = lmbActiveRecord :: find('lmbCmsDocument', $criteria);
