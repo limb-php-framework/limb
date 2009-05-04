@@ -7,10 +7,14 @@ class lmbCmsSeo extends lmbActiveRecord
   
   protected function _createValidator()
   {
+    lmb_require('limb/cms/src/validation/rule/lmbCmsUniqueFieldRule.class.php');
+    
     $validator = new lmbValidator();
 
     $validator->addRequiredRule('title', '"Title" обязательное поле');
+    
     $validator->addRequiredRule('url', '"Url" обязательное поле');
+    $validator->addRule(new lmbCmsUniqueFieldRule('url', 'lmbCmsSeo', $this, '"Url" должен быть уникальным'));
 
     return $validator;
   }
