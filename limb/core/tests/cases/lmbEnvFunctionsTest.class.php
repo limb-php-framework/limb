@@ -27,6 +27,12 @@ class lmbEnvFunctionsTest extends UnitTestCase
     $this->assertEqual(lmb_env_get($this->_('foo'), 1), 1);
   }
 
+  function testGetWithDefinedConstant()
+  {
+      define($this->_('foo'), 'bar');
+      $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
+  }
+
   function testSet()
   {
     lmb_env_set($this->_('foo'), 'bar');
@@ -37,23 +43,31 @@ class lmbEnvFunctionsTest extends UnitTestCase
   {
     lmb_env_setor($this->_('foo'), 'bar');
     $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
-    
+
     lmb_env_setor($this->_('foo'), 'baz');
     $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
+  }
+
+  function testSetOrWithDefinedConstant()
+  {
+      define($this->_('foo'), 'bar');
+      
+      lmb_env_setor($this->_('foo'), 'baz');
+      $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
   }
 
   function testHas()
   {
     $this->assertFalse(lmb_env_has($this->_('foo')));
     lmb_env_set($this->_('foo'), 'bar');
-    $this->assertTrue(lmb_env_has($this->_('foo')));    
+    $this->assertTrue(lmb_env_has($this->_('foo')));
   }
 
   function testHasWorksForNulls()
   {
     $this->assertFalse(lmb_env_has($this->_('foo')));
     lmb_env_set($this->_('foo'), null);
-    $this->assertTrue(lmb_env_has($this->_('foo')));    
+    $this->assertTrue(lmb_env_has($this->_('foo')));
   }
 
   function testSetDefinesConstant()
@@ -66,13 +80,13 @@ class lmbEnvFunctionsTest extends UnitTestCase
   function testHasAndGetFallbackToConstant()
   {
     $name = $this->_('LIMB_TEST_FOO');
-    
+
     $this->assertFalse(lmb_env_has($name));
     $this->assertNull(lmb_env_get($name, null));
-    
+
     define($name, 'bar');
     $this->assertTrue(lmb_env_has($name));
-    $this->assertEqual(lmb_env_get($name), 'bar');        
+    $this->assertEqual(lmb_env_get($name), 'bar');
   }
 
   function testRemove()
@@ -80,39 +94,39 @@ class lmbEnvFunctionsTest extends UnitTestCase
     lmb_env_set('foo_remove', 'bar');
     $this->assertTrue(lmb_env_has('foo_remove'));
     $this->assertEqual(lmb_env_get('foo_remove'), 'bar');
-    
-    lmb_env_remove('foo_remove');    
+
+    lmb_env_remove('foo_remove');
     $this->assertFalse(lmb_env_has('foo_remove'));
     $this->assertEqual(lmb_env_get('foo_remove', $random = mt_rand()), $random);
   }
-  
+
   function testTrace()
-  { 
+  {
     lmb_env_trace($this->_('foo'));
-    
+
     ob_start();
     lmb_env_setor($key = $this->_('foo'), $value = 'bar');
-    $call_line = strval(__LINE__ - 1);    
+    $call_line = strval(__LINE__ - 1);
     $trace_info = ob_get_clean();
-    
+
     $this->assertTrue(strstr($trace_info, __FILE__));
-    $this->assertTrue(strstr($trace_info, $call_line)); 
-    $this->assertTrue(strstr($trace_info, $method_name = 'setor')); 
+    $this->assertTrue(strstr($trace_info, $call_line));
+    $this->assertTrue(strstr($trace_info, $method_name = 'setor'));
     $this->assertTrue(strstr($trace_info, $key));
-    $this->assertTrue(strstr($trace_info, $value));     
-        
+    $this->assertTrue(strstr($trace_info, $value));
+
     ob_start();
     lmb_env_set($key, $value = 'baz');
     $call_line = strval(__LINE__ - 1);
     $trace_info = ob_get_clean();
-    
+
     $this->assertTrue(strstr($trace_info, __FILE__));
     $this->assertTrue(strstr($trace_info, $call_line));
-    $this->assertTrue(strstr($trace_info, $method_name = 'set')); 
+    $this->assertTrue(strstr($trace_info, $method_name = 'set'));
     $this->assertTrue(strstr($trace_info, $key));
     $this->assertTrue(strstr($trace_info, $value));
   }
-  
+
   //used for convenient tracking of the random keys
   private function _($name)
   {
