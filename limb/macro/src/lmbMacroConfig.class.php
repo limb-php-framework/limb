@@ -28,7 +28,7 @@ class lmbMacroConfig
   public $filters_scan_dirs = array();
 
   function __construct($options = array())
-  {    
+  {
     foreach($options as $key => $val)
       $this->$key = $val;
 
@@ -38,17 +38,17 @@ class lmbMacroConfig
     if(!$this->tpl_scan_dirs)
       $this->tpl_scan_dirs = array('templates');
     if(!is_array($this->tpl_scan_dirs))
-      $this->tpl_scan_dirs = array($this->tpl_scan_dirs);
+      $this->tpl_scan_dirs = explode(';', $this->tpl_scan_dirs);
 
     if(!$this->tags_scan_dirs)
       $this->tags_scan_dirs = array('limb/macro/src/tags');
     if(!is_array($this->tags_scan_dirs))
-      $this->tags_scan_dirs = array($this->tags_scan_dirs);
+      $this->tags_scan_dirs = explode(';', $this->tags_scan_dirs);
 
     if(!$this->filters_scan_dirs)
       $this->filters_scan_dirs = array('limb/macro/src/filters');
     if(!is_array($this->filters_scan_dirs))
-      $this->filters_scan_dirs = array($this->filters_scan_dirs);
+      $this->filters_scan_dirs = explode(';', $this->filters_scan_dirs);
 
     //for possible BC breaks
     if(isset($this->is_force_compile))
