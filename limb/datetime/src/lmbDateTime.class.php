@@ -444,7 +444,7 @@ class lmbDateTime extends lmbObject
   {
     $this_weekday = $this->getPhpDayOfWeek();
     $interval = (6 + self :: $week_starts_at - $this_weekday) % 7;
-    return self :: createByDays($this->getDateDays() + $interval);
+    return self :: createByDays($this->getDateDays() + $interval)->getEndOfDay();
   }
 
   function getBeginOfMonth()

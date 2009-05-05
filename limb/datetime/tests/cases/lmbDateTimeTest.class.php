@@ -311,19 +311,19 @@ class lmbDateTimeTest extends UnitTestCase
   function testGetEndOfWeek()
   {
     $date = new lmbDateTime('2005-01-20');
-    $this->assertEqual($date->getEndOfWeek(), new lmbDateTime('2005-01-23'));
+    $this->assertEqual($date->getEndOfWeek(), new lmbDateTime('2005-01-23 23:59:59'));
   }
 
   function testGetEndOfWeekForMonday()
   {
     $date = new lmbDateTime('2005-01-17');
-    $this->assertEqual($date->getEndOfWeek(), new lmbDateTime('2005-01-23'));
+    $this->assertEqual($date->getEndOfWeek(), new lmbDateTime('2005-01-23 23:59:59'));
   }
 
   function testGetEndOfWeekForSunday()
   {
     $date = new lmbDateTime('2005-01-16');
-    $this->assertEqual($date->getEndOfWeek(), new lmbDateTime('2005-01-16'));
+    $this->assertEqual($date->getEndOfWeek(), new lmbDateTime('2005-01-16 23:59:59'));
   }
 
   function testGetBeginOfMonth()
