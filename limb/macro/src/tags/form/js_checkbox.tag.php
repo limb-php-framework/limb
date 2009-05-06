@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/macro/src/tags/form/lmbMacroFormElementTag.class.php');
+
 /**
  * Checkbox that always sends something as a value. 
  * Actually generates hidden input as well as checkbox. The checkbox used only to change hidden input value 
