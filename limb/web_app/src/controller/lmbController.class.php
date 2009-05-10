@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7676 2009-03-03 22:37:28Z korchasa $
+ * @version $Id: lmbController.class.php 7920 2009-05-10 19:36:10Z Forumsky $
  */
 class lmbController
 {
@@ -184,10 +184,13 @@ class lmbController
                            'and no appropriate template found');
   }
 
-  function useForm($form_id)
+  function useForm($form_id, $datasource = null)
   {
     $this->form_id = $form_id;
     $this->view->setFormErrors($form_id, $this->error_list);
+    
+    if ($datasource)
+      $this->setFormDatasource($datasource);
   }
 
   function setTemplate($template_path)
