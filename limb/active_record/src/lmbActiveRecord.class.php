@@ -26,7 +26,7 @@ lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7831 2009-03-30 21:15:09Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 7921 2009-05-13 12:39:38Z idler $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -470,7 +470,7 @@ class lmbActiveRecord extends lmbObject
    *  $validator->addRequiredRule('title');
    *  return $validator;
    *  </code>
-   *  @return object
+   *  @return lmbValidator
    */
   protected function _createValidator()
   {
@@ -479,7 +479,7 @@ class lmbActiveRecord extends lmbObject
   /**
    *  Returns validator for create operations only.
    *  @see _createValidator()
-   *  @return object
+   *  @return lmbValidator
    */
   protected function _createInsertValidator()
   {
@@ -488,7 +488,7 @@ class lmbActiveRecord extends lmbObject
   /**
    *  Returns validator for update operations only.
    *  @see _createValidator()
-   *  @return object
+   *  @return lmbValidator
    */
   protected function _createUpdateValidator()
   {
@@ -626,6 +626,11 @@ class lmbActiveRecord extends lmbObject
     $this->setLazyAttributes(array_diff($this->_db_table_fields, $non_lazy_attributes));
   }
 
+  /**
+   * Check, that property with given name exists;
+   * @param string $property property name
+   * @return bool
+   */
   function has($property)
   {
     return parent :: has($property)
@@ -698,6 +703,12 @@ class lmbActiveRecord extends lmbObject
     throw $e;
   }
 
+  /**
+   * Create collection of related objects
+   * @param array $relation
+   * @param string|object $criteria
+   * @return lmbCollectionInterface
+   */
   function createRelationCollection($relation, $criteria = null)
   {
     $info = $this->getRelationInfo($relation);
@@ -829,6 +840,10 @@ class lmbActiveRecord extends lmbObject
     return isset($this->_dirty_props[$property]);
   }
 
+  /**
+   *  reset object's property dirtiness status
+   *  @param string
+   */
   function resetPropertyDirtiness($property)
   {
     if(isset($this->_dirty_props[$property]))
@@ -1373,6 +1388,10 @@ class lmbActiveRecord extends lmbObject
     $this->_error_list->addError($message, $fields, $values);
   }
 
+  /**
+   * Check record is valid
+   * @return bool
+   */
   function isValid()
   {
     return $this->_error_list->isValid();
@@ -1434,7 +1453,7 @@ class lmbActiveRecord extends lmbObject
    *  @param string class name of the object
    *  @param mixed misc magic params
    *  @param object database connection object
-   *  @return object|null
+   *  @return lmbActiveRecord|null
    */
   static function findFirst($class_name = null, $magic_params = null, $conn = null)
   {
@@ -1470,7 +1489,7 @@ class lmbActiveRecord extends lmbObject
    *  @see findFirst()
    *  @param string class name of the object
    *  @param mixed misc magic params
-   *  @return object|null
+   *  @return lmbActiveRecord|null
    */
   static function findOne($class_name = null, $magic_params = null, $conn = null)
   {
@@ -1498,7 +1517,7 @@ class lmbActiveRecord extends lmbObject
    *  @param string class name of the object
    *  @param integer object id
    *  @param object database connection object
-   *  @return object|null
+   *  @return lmbActiveRecord|null
    */
   static function findById($class_name, $id = null, $throw_exception = true, $conn = null)
   {
@@ -1634,7 +1653,7 @@ class lmbActiveRecord extends lmbObject
    *  @param string class name of the object
    *  @param string SQL
    *  @param object database connection object
-   *  @return object
+   *  @return lmbActiveRecord
    */
   static function findFirstBySql($class_name, $sql = null, $conn = null)
   {
@@ -1654,7 +1673,7 @@ class lmbActiveRecord extends lmbObject
   /**
    *  Alias for findFirstBySql
    *  @see findFirstBySql()
-   *  @return object
+   *  @return lmbActiveRecord
    */
   static function findOneBySql($class_name, $sql = null, $conn = null)
   {
