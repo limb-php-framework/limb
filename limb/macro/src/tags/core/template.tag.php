@@ -41,6 +41,16 @@ class lmbMacroTemplateTag extends lmbMacroPassiveTag
       parent :: generateNow($code);
   }
 
+  function generateFromDynamicAppply($code)
+  {
+    $this->generateNow($code, $wrap_with_method = true);
+
+    $code->writeToInit('if(!isset($this->__template_tags)) $this->__template_tags = array();');
+    $code->writeToInit("\n");
+    $code->writeToInit('$this->__template_tags["'. $this->get('name') . '"] = "' . $this->getMethod() . '";');
+    $code->writeToInit("\n");
+  }
+
   function setCurrentApplyTag(lmbMacroApplyTag $apply_tag)
   {
     $this->current_apply_tag = $apply_tag;

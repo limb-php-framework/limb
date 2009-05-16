@@ -68,5 +68,31 @@ class lmbMacroTemplateTagTest extends lmbBaseMacroTest
     $out = $macro->render();
     $this->assertEqual($out, 'HEYHello!Wow!AAA');
   }
+
+  function testApplyTemplateDynamic()
+  {
+    $content = '{{template name="tpl1"}}' .  
+               '{$bar}' .                   
+               '{{/template}}' .              
+               '{{template name="tpl2"}}' .  
+               '{$foo}{$hey}' .                   
+               '{{/template}}' .
+               '<?php $t=2;?>'.
+               '{{apply template="tpl{$t}" hey="$#hey" foo="$#foo"/}}' .
+               '<?php $t=1;?>'.
+               '{{apply template="tpl{$t}" bar="$#bar"/}}' 
+               ;
+
+    $tpl = $this->_createTemplate($content, 'tree.html');
+
+    $macro = $this->_createMacro($tpl);
+    $macro->set('hey', 'HEY');
+    $macro->set('bar', 'BAR');
+    $macro->set('foo', 'FOO');
+
+    $out = $macro->render();
+    $this->assertEqual($out, 'FOOHEYBAR');
+  }
+
 }
 
