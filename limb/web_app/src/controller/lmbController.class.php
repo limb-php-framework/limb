@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7920 2009-05-10 19:36:10Z Forumsky $
+ * @version $Id: lmbController.class.php 7924 2009-05-18 10:26:20Z idler $
  */
 class lmbController
 {
@@ -64,13 +64,38 @@ class lmbController
    * @var object lmbToolkit instance
    */
   protected $toolkit;
-
+  /**
+   *
+   * @var lmbHttpRequest
+   */
   protected $request;
+
+  /**
+   *
+   * @var lmbHttpResponse
+   */
   protected $response;
+  /**
+   *
+   * @var lmbSession
+   */
   protected $session;
+  /**
+   *
+   * @var lmbView
+   */
   protected $view;
+  /**
+   *
+   * @var array
+   */
   protected $error_list;
+  /**
+   *
+   * @var lmbValidator
+   */
   protected $validator;
+
   protected $form_id;
   protected $in_popup = true;
   protected $is_forwarded = false;
