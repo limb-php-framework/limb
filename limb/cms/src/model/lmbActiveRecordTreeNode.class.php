@@ -118,4 +118,20 @@ abstract class lmbActiveRecordTreeNode extends lmbActiveRecord
     if($this->isNew()) return false;
     return !((bool)$this->_getRaw('parent_id'));
   }
+
+  
+  /**
+   *
+   * @param lmbActiveRecordTreeNode $node
+   * @return bool
+   */
+  function isChildOf( lmbActiveRecordTreeNode $node)
+  {
+    $rs = $this->getTree()->getParents($this);
+    foreach($rs as $record)
+    {
+      if((int)$record['id']===(int)$node['id']) return true;
+    }
+    return false;
+  }
 }

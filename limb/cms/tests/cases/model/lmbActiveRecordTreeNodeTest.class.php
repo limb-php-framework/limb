@@ -90,4 +90,21 @@ class lmbActiveRecordTreeNodeTest extends lmbCmsTestCase
 
     $this->assertTrue($root->isRoot());
   }
+
+  function testIsNodeIsChildOf()
+  {
+    $root = lmbCmsDocument::findRoot();
+    $parent = $this->_createDocument('parent', $root);
+    $child = $this->_createDocument('child', $parent);
+      
+    $parent2 = $this->_createDocument('parent2', $root);
+    $child2 = $this->_createDocument('child2', $parent2);
+
+    $this->assertTrue($child->isChildOf($root));
+    $this->assertTrue($child->isChildOf($parent));
+    $this->assertTrue($child2->isChildOf($parent2));
+    $this->assertFalse($child->isChildOf($parent2));
+    $this->assertFalse($child2->isChildOf($parent));
+  }
+
 }
