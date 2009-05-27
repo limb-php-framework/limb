@@ -234,7 +234,7 @@
 
 
 
-/*form*/
+/*FORM*/
   dl.field {clear:both;padding:0;margin:0 0 20px;padding:0 0 0 175px;}
     .field:after {content: '.';display: block;clear:both;visibility: hidden;height:0;font-size:0;}
     .field dt {position:relative;left:-175px;float:left;width:160px;text-align:right;margin:0 -160px 0 0;}
@@ -257,7 +257,7 @@
     #wrapper .list_actions input[type="button"], #wrapper .list_actions input[type="submit"] {margin-right:10px;}
     #popup_wrapper .list_actions input[type="button"], #popup_wrapper .list_actions input[type="submit"] {margin-left:10px;}
   .button_wrapper {display:-moz-inline-stack;display:inline-block;height:19px;padding:0 0 0 7px;vertical-align:middle;background: url(../images/bgr/button_nice.png) no-repeat left top;text-align:center;}
-    .button_wrapper input[type="button"], .button_wrapper input[type="submit"] {display:block;height:19px;padding:0 7px 0 0;line-height:18px;background: url(../images/bgr/button_nice.png) no-repeat right top;border:0 none;}
+    .button_wrapper input[type="button"], .button_wrapper input[type="submit"] {display:block;height:19px;padding:0 7px 2px 0;line-height:18px;background: url(../images/bgr/button_nice.png) no-repeat right top;border:0 none;}
     .form_buttons .button_wrapper input[type="button"], .form_buttons .button_wrapper input[type="submit"] {margin-left:0;} /*deprecated*/
     #wrapper .list_actions .button_wrapper input[type="button"], #wrapper .list_actions .button_wrapper input[type="submit"] {margin-right:0;}
     #popup_wrapper .list_actions .button_wrapper input[type="button"], #popup_wrapper .list_actions .button_wrapper input[type="submit"] {margin-left:0;}
@@ -266,3 +266,6 @@
     #login_form .field dt {left:0;float:none;display:block;width:auto;text-align:left;margin:0;}
     #login_form .field dd {float:none;}
     #login_form input[type="text"], #login_form input[type="password"] {width:12em;background-color:#f3f4f5;border:1px solid #717171;font-weight:bold;}
+    
+  #filter_form label{margin:0;}
+  #filter_form input[type='text'], #filter_form select {width:auto;margin:0 10px 0 0;}
