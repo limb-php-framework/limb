@@ -107,4 +107,39 @@ class lmbActiveRecordTreeNodeTest extends lmbCmsTestCase
     $this->assertFalse($child2->isChildOf($parent));
   }
 
+  function testGetParents()
+  {
+    $root = lmbCmsDocument::findRoot();
+    $parent1 = $this->_createDocument('parent1', $root);
+    $parent2 = $this->_createDocument('parent2', $root);
+    $parent3 = $this->_createDocument('parent3', $root);
+    $child_1_1 = $this->_createDocument('child_1_1', $parent1);
+    $child_1_2 = $this->_createDocument('child_1_2', $parent1);
+    $child_2_1 = $this->_createDocument('child_2_1', $parent2);
+    $child_2_2 = $this->_createDocument('child_2_2', $parent2);
+    $child_2_3 = $this->_createDocument('child_2_3', $parent2);
+    $child_3_1 = $this->_createDocument('child_3_1', $parent3);
+    $child_3_2 = $this->_createDocument('child_3_2', $parent3);
+
+    $child_2_2_1 = $this->_createDocument('child_2_2_1', $child_2_2);
+    $child_2_2_2 = $this->_createDocument('child_2_2_2', $child_2_2);
+    $child_2_2_3 = $this->_createDocument('child_2_2_3', $child_2_2);
+    $child_2_2_4 = $this->_createDocument('child_2_2_4', $child_2_2);
+
+
+    $child_2_2_3_1 = $this->_createDocument('child_2_2_3_1', $child_2_2_3);
+    $child_2_2_3_2 = $this->_createDocument('child_2_2_3_2', $child_2_2_3);
+    $child_2_2_3_3 = $this->_createDocument('child_2_2_3_3', $child_2_2_3);
+
+    $assert = array(
+      $root['id'],
+      $parent2['id'],
+      $child_2_2['id']
+    );
+    foreach($child_2_2_3->getParents() as $node){
+      $this->assertTrue(in_array($node['id'], $assert));
+      $this->assertEqual('lmbCmsDocument', get_class($node));
+    }
+
+  }
 }
