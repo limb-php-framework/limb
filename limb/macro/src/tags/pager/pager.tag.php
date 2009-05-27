@@ -21,6 +21,36 @@ class lmbMacroPagerTag extends lmbMacroRuntimeWidgetTag
   {
     $pager = $this->getRuntimeVar();
     
+    if ($total_items = $this->getEscaped('total_items'))
+      $code->writePhp("{$pager}->setTotalItems({$total_items});\n");
+    
+    if ($items = $this->getEscaped('items'))
+      $code->writePhp("{$pager}->setItemsPerPage({$items});\n");
+
+    if($this->findChildByClass('lmbMacroPagerElipsesTag'))
+    {
+      $code->writePhp("{$pager}->useElipses();\n");
+
+      if ($this->has('pages_in_middle'))
+      {
+        $pages_in_middle = $this->getEscaped('pages_in_middle');
+        $code->writePhp("{$pager}->setPagesInMiddle({$pages_in_middle});\n");
+      }
+
+      if ($this->has('pages_in_sides'))
+      {
+        $pages_in_sides = $this->getEscaped('pages_in_sides');
+        $code->writePhp("{$pager}->setPagesInSides((int){$pages_in_sides});\n");
+      }
+    }
+    else
+    {
+      $code->writePhp("{$pager}->useSections();\n");
+      
+      if ($pages_per_section = $this->getEscaped('pages_per_section'))
+        $code->writePhp("{$pager}->setPagesPerSection({$pages_per_section});\n");
+    }
+    
     $code->writePhp("{$pager}->prepare();\n");
     
     $this->_generatePagerVariables($code, $pager);
@@ -34,35 +64,9 @@ class lmbMacroPagerTag extends lmbMacroRuntimeWidgetTag
     
     $pager = $this->getRuntimeVar();
 
-    if ($total_items = $this->getEscaped('total_items'))
-      $code->writeToInit("{$pager}->setTotalItems({$total_items});\n");
-    
+
     if ($items = $this->getEscaped('items'))
       $code->writeToInit("{$pager}->setItemsPerPage({$items});\n");
-
-    if($this->findChildByClass('lmbMacroPagerElipsesTag'))
-    {
-      $code->writeToInit("{$pager}->useElipses();\n");
-
-      if ($this->has('pages_in_middle'))
-      {
-        $pages_in_middle = $this->getEscaped('pages_in_middle');
-        $code->writeToInit("{$pager}->setPagesInMiddle({$pages_in_middle});\n");
-      }
-
-      if ($this->has('pages_in_sides'))
-      {
-        $pages_in_sides = $this->getEscaped('pages_in_sides');
-        $code->writeToInit("{$pager}->setPagesInSides((int){$pages_in_sides});\n");
-      }
-    }
-    else
-    {
-      $code->writeToInit("{$pager}->useSections();\n");
-      
-      if ($pages_per_section = $this->getEscaped('pages_per_section'))
-        $code->writeToInit("{$pager}->setPagesPerSection({$pages_per_section});\n");
-    }
   }
   
   protected function _generatePagerVariables($code, $pager)
