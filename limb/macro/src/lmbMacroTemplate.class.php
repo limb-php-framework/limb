@@ -84,7 +84,7 @@ class lmbMacroTemplate
 
     if($this->config->forcecompile || !file_exists($compiled_file))
     {
-      $macro_executor_class = 'MacroTemplateExecutor' . uniqid();//think about evaling this instance
+      $macro_executor_class = 'MacroTemplateExecutor' . md5(uniqid(rand(), true));//think about evaling this instance
 
       $compiler = $this->_createCompiler();
       $compiler->compile($source_file, $compiled_file, $macro_executor_class, 'render');

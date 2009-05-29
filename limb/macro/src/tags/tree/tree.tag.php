@@ -35,7 +35,7 @@ class lmbMacroTreeTag extends lmbMacroTag
     $counter = $code->generateVar();
     $extra_params = $code->generateVar();
 
-    $this->method = $code->beginMethod('_render_tree'. uniqid(), array($items, $level, $extra_params . '= array()'));
+    $this->method = $code->beginMethod('_render_tree'. self::generateUniqueId(), array($items, $level, $extra_params . '= array()'));
 
     $code->writePHP("if($extra_params) extract($extra_params);");
 

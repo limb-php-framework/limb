@@ -31,7 +31,7 @@ class lmbMacroTemplateTag extends lmbMacroPassiveTag
     if($wrap_with_method)
     {
       $args = $code->generateVar();
-      $this->method = '_template' . uniqid();
+      $this->method = '_template' . self::generateUniqueId();
       $code->beginMethod($this->getMethod(), array($args . '= array()'));
       $code->writePHP("if($args) extract($args);");
       parent :: generateNow($code);

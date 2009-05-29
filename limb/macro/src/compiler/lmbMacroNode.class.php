@@ -78,6 +78,11 @@ class lmbMacroNode
     return 'id00' . self :: $counter++;
   }
 
+  static function generateUniqueId()
+  {
+    return md5(uniqid(rand(), true));
+  }
+
   function raise($error, $vars = array())
   {
     $vars['file'] = $this->location->getFile();

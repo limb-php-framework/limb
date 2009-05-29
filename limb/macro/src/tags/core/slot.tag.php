@@ -30,7 +30,7 @@ class lmbMacroSlotTag extends lmbMacroTag
     if(!$this->getBool('inline'))
     {
       $args = $code->generateVar(); 
-      $method = $code->beginMethod('__slotHandler' . uniqid(), array($args . '= array()'));
+      $method = $code->beginMethod('__slotHandler' . self::generateUniqueId(), array($args . '= array()'));
       
       $code->writePHP("if($args) extract($args);");
       

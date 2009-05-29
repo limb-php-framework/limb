@@ -97,7 +97,7 @@ class lmbMacroInsertTag extends lmbMacroTag
       foreach($intos as $into)
       {
         $args = $code->generateVar(); 
-        $slots[$into->get('slot')][] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+        $slots[$into->get('slot')][] = $code->beginMethod('__slotHandler'. self::generateUniqueId(), array($args . '= array()'));
         $code->writePHP("if($args) extract($args);"); 
         $into->generateNow($code);
         $code->endMethod();
@@ -106,7 +106,7 @@ class lmbMacroInsertTag extends lmbMacroTag
     elseif($this->has('into'))
     {
       $args = $code->generateVar(); 
-      $slots[$this->get('into')][] = $code->beginMethod('__slotHandler'. uniqid(), array($args . '= array()'));
+      $slots[$this->get('into')][] = $code->beginMethod('__slotHandler'. self::generateUniqueId(), array($args . '= array()'));
       $code->writePHP("if($args) extract($args);"); 
       parent :: _generateContent($code);
       $code->endMethod();
