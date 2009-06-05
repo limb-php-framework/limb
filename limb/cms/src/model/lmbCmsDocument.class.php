@@ -71,7 +71,7 @@ class lmbCmsDocument extends lmbActiveRecordTreeNode
    */
   static function findByUri($uri)
   {
-    $identifiers = split('/', $uri);
+    $identifiers = split('/', rtrim($uri,'/'));
     $criteria = new lmbSQLCriteria('level = 0');
     $level = 0;
     foreach($identifiers as $identifier)
