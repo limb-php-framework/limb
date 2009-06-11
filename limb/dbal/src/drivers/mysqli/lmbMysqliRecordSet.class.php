@@ -143,6 +143,9 @@ class lmbMysqliRecordSet extends lmbDbBaseRecordSet
     if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->query) || preg_match('/\s+GROUP\s+BY\s+/is', $this->query)) && 
        preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->query))
     {
+      if($this->queryId && $this->valid())
+        return mysqli_num_rows($this->queryId);
+
       $rewritesql = preg_replace('/^\s*SELECT\s.*\s+FROM\s/Uis','SELECT COUNT(*) FROM ', $this->query);
       $rewritesql = preg_replace('/(\sORDER\s+BY\s.*)/is','', $rewritesql);
 
