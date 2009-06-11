@@ -97,6 +97,9 @@ abstract class DriverRecordSetTestBase extends UnitTestCase
 
     $this->assertEqual($rs->count(), 3);
     $this->assertEqual($rs->countPaginated(), 2);
+    //double test driver internal state
+    $this->assertEqual($rs->count(), 3);
+    $this->assertEqual($rs->countPaginated(), 2);
   }
 
   function testSort()
