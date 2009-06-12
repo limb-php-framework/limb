@@ -92,7 +92,7 @@ class lmbSerializable
       if(!$inc_path)
         continue;
       if(strpos($path, $inc_path) === 0)
-        return substr($path, strlen($inc_path)+1); 
+        return substr($path, strlen(rtrim($inc_path, '/\\'))+1); 
     }
     return $path;
   }
