@@ -72,6 +72,34 @@ class lmbSerializableTest extends UnitTestCase
     set_include_path($prev_inc_path);
   }
 
+  function testRemoveIncludePathWithTrailingSlashFromClassPath()
+  {
+    //generating class and placing it in a temp dir
+    $var_dir = lmb_env_get('LIMB_VAR_DIR');
+    $class = 'Foo' . mt_rand();
+    file_put_contents("$var_dir/foo.php", "<?php class $class { function say() {return 'hello';} }");
+
+    //adding temp dir to include path
+    $prev_inc_path = get_include_path();
+    set_include_path("$var_dir//" . PATH_SEPARATOR . get_include_path());
+
+    //including class and serializing it
+    include('foo.php');
+    $foo = new $class();
+    $container = new lmbSerializable($foo);
+    $file = $this->_writeToFile(serialize($container));
+
+    //now moving generated class's file into subdir 
+    $new_dir = mt_rand();
+    mkdir("$var_dir/$new_dir");
+    rename("$var_dir/foo.php", "$var_dir/$new_dir/foo.php");
+
+    //emulating new include path settings
+    $this->assertEqual($this->_phpSerializedObjectCall($file, '->say()', "$var_dir/$new_dir"), $foo->say());
+
+    set_include_path($prev_inc_path);
+  }
+
   function testSerializingUnserializeInternalClassThrowsException()
   {
     if(!class_exists('StdObject'))
