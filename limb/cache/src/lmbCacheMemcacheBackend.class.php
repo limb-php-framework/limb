@@ -27,44 +27,29 @@ class lmbCacheMemcacheBackend implements lmbCacheBackend
 
   function add($key, $value, $params = array()) 
   {
-    if (array_key_exists("raw", $params))
-    {
+    if(array_key_exists("raw", $params))
       return $this->_memcache->add($key, $value, null, $this->_getTtl($params));
-    }
     else
-    {
-      $container = new lmbSerializable($value);
-      return $this->_memcache->add($key, serialize($container), null, $this->_getTtl($params));
-    }
+      return $this->_memcache->add($key, new lmbSerializable($value), null, $this->_getTtl($params));
   }
   
   function set($key, $value, $params = array()) 
   {
-    if (array_key_exists("raw", $params))
-    {
+    if(array_key_exists("raw", $params))
       return $this->_memcache->set($key, $value, null, $this->_getTtl($params));
-    }
     else
-    {
-      $container = new lmbSerializable($value);
-      return $this->_memcache->set($key, serialize($container), null, $this->_getTtl($params));
-    }
+      return $this->_memcache->set($key, new lmbSerializable($value), null, $this->_getTtl($params));
   }
 
   function get($key, $params = array())
   {
-    if (!$value = $this->_memcache->get($key))
+    if(false === ($value = $this->_memcache->get($key)))
       return false;
         
-    if (array_key_exists("raw", $params))
-    {
+    if(array_key_exists("raw", $params))
       return $value;
-    }
     else
-    {
-      $container = unserialize($value);
-      return $container->getSubject();
-    }
+      return $value->getSubject();
   }
 
   function delete($key, $params = array())
@@ -88,7 +73,7 @@ class lmbCacheMemcacheBackend implements lmbCacheBackend
   
   protected function _getTtl($params)
   {
-    if (!isset($params['ttl']))
+    if(!isset($params['ttl']))
       $params['ttl'] = 0;
 
     return $params['ttl'];
