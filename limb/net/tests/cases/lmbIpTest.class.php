@@ -78,10 +78,10 @@ class lmbIpTest extends UnitTestCase
 
   function testEncodeIpRange()
   {
-    $ip_list = lmbIp::encodeIpRange('192.168.0.1', '192.168.10.10');
+    $ip_list = lmbIp::encodeIpRange('192.168.0.1', '192.168.10.10', lmbIp::UNSIGNED);
 
-    $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.0.1'), $ip_list));
-    $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.10.10'), $ip_list));
+    $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.0.1', lmbIp::UNSIGNED), $ip_list));
+    $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.10.10', lmbIp::UNSIGNED), $ip_list));
   }
 
 }

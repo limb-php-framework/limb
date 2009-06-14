@@ -11,7 +11,7 @@
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 7944 2009-06-14 18:05:24Z pachanga $
+ * @version $Id: lmbIp.class.php 7945 2009-06-14 18:38:42Z pachanga $
  */
 class lmbIp
 {
@@ -40,51 +40,25 @@ class lmbIp
     return long2ip($numeric_ip);
   }
 
-  static function encodeIpRange($ip_begin, $ip_end)
+  static function encodeIpRange($ip_begin, $ip_end, $mode = lmbIp::SIGNED)
   {
     // Returns ip adressess array with in range $ip_begin - $ip_end
     if(!self::isValid($ip_begin) || !self::isValid($ip_end))
       throw new lmbException("Invalid IP range from '$ip_begin' to '$ip_end'");
 
-    $start = hexdec(dechex(lmbIp :: encode($ip_begin)));
-    $end = hexdec(dechex(lmbIp :: encode($ip_end)));
+    $start = self::encode($ip_begin, self::UNSIGNED);
+    $end = self::encode($ip_end, self::UNSIGNED);
     $ip_list = array();
     for($i=$start; $i<=$end; $i++)
     {
-      if(($i & 0x000000FF) == 0x000000FF)
-      {
-        // Checking for 0.0.0.255
-        continue;
-      }
-      elseif(($i & 0x0000FF00) == 0x0000FF00)
-      {
-        // Checking for 0.0.255.0
-        $i += 0xFF;
-        continue;
-      }
-      elseif(($i & 0x00FF0000) == 0x00FF0000)
-      {
-        // Checking for 0.255.0.0
-        $i += 0xFFFF;
-        continue;
-      }
-      elseif(($i & 0xFFFFFF) == 0 && $end - $i >= 0xFFFFFF)
-      {
-        $ip_list[] = $i|0xFFFFFF;
-        $i = hexdec(dechex($i|0xFFFFFF));
-      }
-      elseif(($i & 0xFFFF) == 0 && $end - $i >= 0xFFFF)
-      {
-        $ip_list[] = $i|0xFFFF;
-        $i = hexdec(dechex($i|0xFFFF));
-      }
-      elseif(($i & 0xFF) == 0 && $end - $i >= 0xFF)
-      {
-        $ip_list[] = $i|0xFF;
-        $i = hexdec(dechex($i|0xFF));
-      }
+      if($mode == self::UNSIGNED)
+        $ip_list[] = $i;
+      else if($mode == self::SIGNED)
+        $ip_list[] = ip2long(long2ip($i));
+      else if($mode == self::USTRING)
+        $ip_list[] = sprintf('%u', ip2long(long2ip($i)));
       else
-        $ip_list[] = $i|0;
+        throw new lmbException("Unknow ip encode mode '$mode'");
     }
     return $ip_list;
   }
