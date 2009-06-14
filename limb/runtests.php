@@ -63,6 +63,7 @@ function process_argv(&$argv)
           list($dn,$dv) = explode('=', $arg);
           echo "Defining $dn=$dv\n";
           define("$dn", $dv);
+          $next_is_def = false;
           break;
         }
         // value arguments
