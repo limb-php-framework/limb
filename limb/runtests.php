@@ -35,10 +35,15 @@ function process_argv(&$argv)
 
   $new_argv = array();
   $selected_option = '';
+  $next_is_def = false;
   foreach($argv as $arg)
   {
     // control arguments
-    switch($arg) {
+    switch($arg) 
+    {
+      case '-D':
+        $next_is_def = true;
+        break;
       case '-q':
         $quiet = true;
         break;
@@ -53,8 +58,16 @@ function process_argv(&$argv)
         $selected_option = '';
         break;
       default:
+        if($next_is_def)
+        {
+          list($dn,$dv) = explode('=', $arg);
+          echo "Defining $dn=$dv\n";
+          define("$dn", $dv);
+          break;
+        }
         // value arguments
-        switch($selected_option) {
+        switch($selected_option) 
+        {
           case '--skip':
             $skipped[] = $arg;
             break;
