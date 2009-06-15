@@ -11,7 +11,7 @@ function run($argv = null, $help_func = 'task_help')
 
 function process_argv(&$argv)
 {
-  return \taskman_process_argv(&$argv);
+  return \taskman_process_argv($argv);
 }
 
 function collecttasks()
