@@ -36,7 +36,14 @@ class lmbUrlRuleTest extends lmbValidationRuleTestCase
     $dataspace = new lmbSet();
     $dataspace->set('testfield', 'www.sourceforge.net/');
 
-    $this->error_list->expectNever('addError');
+    $this->error_list->expectOnce(
+      'addError',
+      array(
+        '{Field} is not an url.',
+        array('Field'=>'testfield'),
+        array()
+      )
+    );
 
     $rule->validate($dataspace, $this->error_list);
   }
