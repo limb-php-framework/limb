@@ -11,7 +11,7 @@
  * class lmbIp.
  *
  * @package net
- * @version $Id: lmbIp.class.php 7945 2009-06-14 18:38:42Z pachanga $
+ * @version $Id: lmbIp.class.php 7950 2009-06-16 17:36:02Z pachanga $
  */
 class lmbIp
 {
@@ -68,23 +68,37 @@ class lmbIp
     return ip2long($ip) !== false;
   }
 
-  static function getRealIp()
-  {
-   if(!empty($_SERVER['HTTP_CLIENT_IP']))
-     return $_SERVER['HTTP_CLIENT_IP'];
-
-   elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-     return $_SERVER['HTTP_X_FORWARDED_FOR'];
-
-   return self :: getRemoteIp();
-  }
-
   static function getRemoteIp()
   {
     if(!empty($_SERVER['REMOTE_ADDR']))
      return $_SERVER['REMOTE_ADDR'];
 
     return NULL;
+  }
+
+  static function getRealIp()
+  {
+    $check_headers = array(
+              'HTTP_CLIENT_IP', 
+              'HTTP_X_FORWARDED_FOR', 
+              'HTTP_X_FORWARDED', 
+              'HTTP_X_CLUSTER_CLIENT_IP', 
+              'HTTP_FORWARDED_FOR', 
+              'HTTP_FORWARDED');
+
+    foreach($check_headers as $header)
+    {
+      if(!empty($_SERVER[$header]))
+      {
+        $real_ip = $_SERVER[$header];
+        $real_ip_arr = explode(',', $real_ip);
+
+        $ip_count = count($real_ip_arr);
+        return trim($real_ip_arr[$ip_count - 1]);
+      }
+    }
+
+    return self :: getRemoteIp();
   }
 }
 
