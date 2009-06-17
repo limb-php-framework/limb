@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestRunner.class.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeFilePathNode.class.php');
 require_once(dirname(__FILE__) . '/tests_runner/src/lmbTestTreeGlobNode.class.php');
 
-$fork = false;
+$fork = true;
 $quiet = false;
 $tests = array();
 $skipped = array();
@@ -39,7 +39,7 @@ function process_argv(&$argv)
   foreach($argv as $arg)
   {
     // control arguments
-    switch($arg) 
+    switch($arg)
     {
       case '-D':
         $next_is_def = true;
@@ -47,8 +47,8 @@ function process_argv(&$argv)
       case '-q':
         $quiet = true;
         break;
-      case '--fork':
-        $fork = true;
+      case '--no-fork':
+        $fork = false;
         break;
       case '--include-path':
       case '--skip':
@@ -67,7 +67,7 @@ function process_argv(&$argv)
           break;
         }
         // value arguments
-        switch($selected_option) 
+        switch($selected_option)
         {
           case '--skip':
             $skipped[] = $arg;
@@ -134,7 +134,7 @@ foreach($tests as $test)
   {
     if($fork)
     {
-      system($php_bin . " " . __FILE__ . " -q $test", $ret);
+      system($php_bin . " " . __FILE__ . " -q --no-fork $test", $ret);
       if($ret != 0)
         $res = false;
     }
