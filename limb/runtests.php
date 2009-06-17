@@ -125,7 +125,7 @@ $tests = array_diff($tests, $skipped);
 if($fork)
 {
   $php_bin = get_php_bin();
-  out("=========== Forking processes for each test(PHP cmdline '$php_bin') ===========\n");
+  out("=========== Forking processes for each test path(PHP cmdline '$php_bin') ===========\n");
 }
 
 $res = true;
