@@ -27,7 +27,7 @@ function out($msg)
     echo $msg;
 }
 
-function process_argv(&$argv)
+function process_argv(&$argv, &$defines = array())
 {
   global $quiet;
   global $fork;
@@ -61,6 +61,7 @@ function process_argv(&$argv)
         if($next_is_def)
         {
           list($dn,$dv) = explode('=', $arg);
+          $defines[] = "-D $dn=$dv";
           echo "Defining $dn=$dv\n";
           define("$dn", $dv);
           $next_is_def = false;
@@ -111,7 +112,7 @@ function get_php_bin()
   return $php_bin . " " . $php_ini;
 }
 
-process_argv($argv);
+process_argv($argv, $defines);
 
 if(sizeof($argv) > 1)
   $tests = array_splice($argv, 1);
@@ -134,7 +135,7 @@ foreach($tests as $test)
   {
     if($fork)
     {
-      system($php_bin . " " . __FILE__ . " -q --no-fork $test", $ret);
+      system($php_bin . " " . __FILE__ . " -q --no-fork " . implode(" ", $defines) . " $test", $ret);
       if($ret != 0)
         $res = false;
     }
