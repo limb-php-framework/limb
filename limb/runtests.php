@@ -112,6 +112,8 @@ function get_php_bin()
   return $php_bin . " " . $php_ini;
 }
 
+$defines = array();
+
 process_argv($argv, $defines);
 
 if(sizeof($argv) > 1)
