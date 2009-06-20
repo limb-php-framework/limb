@@ -61,7 +61,7 @@ function process_argv(&$argv, &$defines = array())
         if($next_is_def)
         {
           list($dn,$dv) = explode('=', $arg);
-          $defines[] = "-D $dn=$dv";
+          $defines[] = "-D \"$dn=$dv\"";
           echo "Defining $dn=$dv\n";
           define("$dn", $dv);
           $next_is_def = false;
