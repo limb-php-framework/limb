@@ -21,7 +21,7 @@ lmb_require(dirname(__FILE__) . '/lmbMysqlRecordSet.class.php');
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbMysqlConnection.class.php 7957 2009-06-20 17:15:17Z pachanga $
  */
 class lmbMysqlConnection extends lmbDbBaseConnection
 {
@@ -35,33 +35,34 @@ class lmbMysqlConnection extends lmbDbBaseConnection
   function getConnectionId()
   {
     if(!isset($this->connectionId))
-    {
       $this->connect();
-    }
     return $this->connectionId;
   }
 
   function connect()
   {
-    $this->connectionId = mysql_connect($this->config['host'],
-                                        $this->config['user'],
-                                        $this->config['password'],
-                                        true);
+    if(isset($this->config['pconnect']) && $this->config['pconnect']) 
+    {
+      $this->connectionId = mysql_pconnect($this->config['host'],
+                                          $this->config['user'],
+                                          $this->config['password']);
+    }
+    else
+    {
+      $this->connectionId = mysql_connect($this->config['host'],
+                                          $this->config['user'],
+                                          $this->config['password'],
+                                          true);
+    }
 
     if($this->connectionId === false)
-    {
       $this->_raiseError();
-    }
 
     if(mysql_select_db($this->config['database'], $this->connectionId) === false)
-    {
       $this->_raiseError();
-    }
 
     if(isset($this->config['charset']) && $charset = $this->config['charset'])
-    {
       mysql_query("SET NAMES '$charset'",  $this->connectionId);
-    }
   }
 
   function __wakeup()
@@ -104,9 +105,7 @@ class lmbMysqlConnection extends lmbDbBaseConnection
   {
     $result = mysql_query($sql, $this->getConnectionId());
     if($result === false)
-    {
       $this->_raiseError($sql);
-    }
     return $result;
   }
   
@@ -133,27 +132,24 @@ class lmbMysqlConnection extends lmbDbBaseConnection
   function newStatement($sql)
   {
     if(preg_match('/^\s*\(*\s*(\w+).*$/m', $sql, $match))
-    {
       $statement = $match[1];
-    }
     else
-    {
       $statement = $sql;
-    }
+
     switch(strtoupper($statement))
     {
       case 'SELECT':
       case 'SHOW':
       case 'DESCRIBE':
       case 'EXPLAIN':
-      return new lmbMysqlQueryStatement($this, $sql);
+        return new lmbMysqlQueryStatement($this, $sql);
       case 'INSERT':
-      return new lmbMysqlInsertStatement($this, $sql);
+        return new lmbMysqlInsertStatement($this, $sql);
       case 'UPDATE':
       case 'DELETE':
-      return new lmbMysqlManipulationStatement($this, $sql);
+        return new lmbMysqlManipulationStatement($this, $sql);
       default:
-      return new lmbMysqlStatement($this, $sql);
+        return new lmbMysqlStatement($this, $sql);
     }
   }
 
@@ -161,7 +157,6 @@ class lmbMysqlConnection extends lmbDbBaseConnection
   {
     return new lmbMysqlTypeInfo();
   }
-
 
   function getDatabaseInfo()
   {
@@ -187,8 +182,8 @@ class lmbMysqlConnection extends lmbDbBaseConnection
 
   function getSequenceValue($table, $colname)
   {
-    return mysql_insert_id($this->connectionId);//???
-
+    //TODO: is it a good idea to use mysql_insert_id ?
+    return mysql_insert_id($this->connectionId);
   }
 }
 
