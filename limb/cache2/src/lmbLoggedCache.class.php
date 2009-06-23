@@ -39,7 +39,7 @@ class lmbLoggedCache implements lmbNonTransparentCache
 
   protected function _addMessage($key, $operation, $time, $result = true)
   {
-  	$trace = new lmbBacktrace($trace_length = 8, $offset = 4);
+      $trace = new lmbBacktrace($trace_length = 8, $offset = 4);
 
     $this->messages[] = array(
       'key' => $key,
@@ -74,7 +74,8 @@ class lmbLoggedCache implements lmbNonTransparentCache
   function add($key, $value, $ttl = false)
   {
     $time = microtime(true);
-    $result = $this->cache_connection->add($key, $value, $ttl);
+    $args = func_get_args();
+    $result = call_user_func_array(array($this->cache_connection, __FUNCTION__), $args);
     $this->_addMessage($key, $this->OPERATION_ADD, microtime(true) - $time, $result);
     return $result;
   }
@@ -82,7 +83,8 @@ class lmbLoggedCache implements lmbNonTransparentCache
   function set($key, $value, $ttl = false)
   {
     $time = microtime(true);
-    $value = $this->cache_connection->set($key, $value, $ttl);
+    $args = func_get_args();
+    $value = call_user_func_array(array($this->cache_connection, __FUNCTION__), $args);
     $this->_addMessage($key, $this->OPERATION_SET, microtime(true) - $time, $value);
     return $value;
   }
@@ -132,28 +134,28 @@ class lmbLoggedCache implements lmbNonTransparentCache
     foreach($records as $record)
     {
       switch ($record['operation']) {
-      	case $this->OPERATION_ADD:
+          case $this->OPERATION_ADD:
           $stat['add_count']++;
           if($record['result'])
             $stat['expected_items_count']++;
           else
             $stat['repeated_add']++;
-      		break;
-     	  case $this->OPERATION_GET:
-     	    if($record['result'])
-     	      $stat['hits']++;
-     	    else
-     	      $stat['misses']++;
+              break;
+           case $this->OPERATION_GET:
+             if($record['result'])
+               $stat['hits']++;
+             else
+               $stat['misses']++;
           $stat['get_count']++;
-      		break;
-      	case $this->OPERATION_SET:
+              break;
+          case $this->OPERATION_SET:
           $stat['set_count']++;
-      		break;
-      	case $this->OPERATION_DELETE:
+              break;
+          case $this->OPERATION_DELETE:
           $stat['delete_count']++;
           if($record['result'])
             $stat['expected_items_count']--;
-      		break;
+              break;
       }
     }
 
