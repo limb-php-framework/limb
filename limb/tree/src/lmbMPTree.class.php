@@ -384,42 +384,17 @@ class lmbMPTree implements lmbTree
 
   function _dbConcat($values)
   {
-    switch($this->_conn->getType())
-    {
-      case 'mysqli':
-      case 'mysql':
-        $str = implode(',', $values);
-        return " CONCAT({$str}) ";
-
-      case 'pgsql':
-        return '(' . implode(' || ', $values) . ')';
-
-      default:
-        throw new lmbException("This database type '" . $this->_conn->getType() . "' is not supported(concat operation)");
-    }
+    return $this->_conn->getExtension()->concat($values);
   }
 
   function _dbSubstr($string, $offset, $limit=null)
   {
-    switch($this->_conn->getType())
-    {
-      case 'mysqli':
-      case 'mysql':
-      case 'pgsql':
-        if($limit === null)
-          return " SUBSTRING({$string} FROM {$offset}) ";
-        else
-          return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
-
-      default:
-        throw new lmbException("This database type '" . $this->_conn->getType() . "' is not supported(substr operation)");
-    }
+    return $this->_conn->getExtension()->substr($string, $offset, $limit);
   }
 
   function _dbIn($column_name, $values)
   {
-    $in_ids = implode("','", $values);
-    return $column_name . " IN ('" . $in_ids . "')";
+    return $this->_conn->getExtension()->in($column_name, $values);
   }
 
   protected function _createRootNode()

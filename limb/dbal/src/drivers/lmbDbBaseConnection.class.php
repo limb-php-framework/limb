@@ -20,6 +20,7 @@ abstract class lmbDbBaseConnection implements lmbDbConnection
 {
   protected $config;
   protected $dsn_string;
+  protected $extension;
 
   function __construct($config, $dsn_string = null)
   {
@@ -38,6 +39,19 @@ abstract class lmbDbBaseConnection implements lmbDbConnection
   function getHash()
   {
     return crc32(serialize($this->config));
+  }
+
+  function getExtension()
+  {
+    if(is_object($this->extension))
+      return $this->extension;
+
+    $ext = substr($this->dsn_string, 0, strpos($this->dsn_string, ':'));
+    $class = 'lmb' . ucfirst($ext) . 'Extension';
+    if(!class_exists($class))
+      require_once("limb/dbal/src/drivers/$ext/$class.class.php");
+    $this->extension = new $class($this);
+    return $this->extension;
   }
 
   function getDsnString()
