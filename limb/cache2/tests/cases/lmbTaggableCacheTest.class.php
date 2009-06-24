@@ -22,20 +22,19 @@ class lmbTaggableCacheTest extends UnitTestCase
 
   protected function _createId()
   {
-    return 'id_'.microtime();
+    return 'id_'.mt_rand();
   }
 
   function testAdd()
   {
-    $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', null, 'tag'));
-    $this->assertFalse($this->cache->add($key, 'another_value', null, 'tag'));
-
+    $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', false, 'tag'));
+    $this->assertFalse($this->cache->add($key, 'another_value', false, 'tag'));
     $this->assertEqual($this->cache->get($key), $value);
   }
 
   function testDeleteByTags_SingleTag()
   {
-    $this->cache->set($key = $this->_createId(), $value = 'value', null, 'tag_delete');
+    $this->cache->set($key = $this->_createId(), $value = 'value', false, 'tag_delete');
 
     $this->cache->deleteByTag('tag_delete');
 
@@ -44,7 +43,7 @@ class lmbTaggableCacheTest extends UnitTestCase
 
   function testDeleteByTags_MultipleTag()
   {
-    $this->cache->set($key = $this->_createId(), $value = 'value', null, array('tag1','tag2'));
+    $this->cache->set($key = $this->_createId(), $value = 'value', false, array('tag1','tag2'));
 
     $this->cache->deleteByTag('tag1');
 
@@ -53,7 +52,7 @@ class lmbTaggableCacheTest extends UnitTestCase
 
   function testDeleteByTags_DifferentTag()
   {
-    $this->cache->set($key = $this->_createId(), $value = 'value', null, 'tag');
+    $this->cache->set($key = $this->_createId(), $value = 'value', false, 'tag');
 
     $this->cache->deleteByTag('different_tag');
 
@@ -62,7 +61,7 @@ class lmbTaggableCacheTest extends UnitTestCase
 
   function testTagCoincidesWithKey()
   {
-    $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', null, $key));
+    $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', false, $key));
     $this->assertIdentical($this->cache->get($key), $value);
   }
 }

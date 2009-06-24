@@ -4,8 +4,8 @@ lmb_require('limb/cache2/src/lmbCache.interface.php');
 class lmbTaggableCache implements lmbCache
 {
   /**
-   * @var lmbCacheConnection
-   */
+  * @var lmbCacheConnection
+  */
   protected $connection;
   public $tags_prefix = 'tag42_';
 
@@ -33,12 +33,12 @@ class lmbTaggableCache implements lmbCache
     $tags = $this->_resolveTagsKeys($tags);
     $tags_values = (array) $this->connection->get($tags);
 
-    foreach($tags_values as $tag_key => $tag_value)
-      if(is_null($tag_value))
-      {
+    foreach($tags as $tag_key )
+      if(!isset($tags_values[$tag_key]) || is_null($tags_values[$tag_key]))
+    {
         $tags_values[$tag_key] = 0;
         $this->connection->add($tag_key, 0);
-      }
+    }
 
     return array('tags' => $tags_values, 'value' => $value);
   }
@@ -48,7 +48,7 @@ class lmbTaggableCache implements lmbCache
     $tags_versions = (array) $this->connection->get(array_keys($tags));
 
     foreach($tags_versions as $tag_key => $tag_version)
-      if(is_null($tag_version) || $tags[$tag_key] !== $tag_version)
+      if(is_null($tag_version) || $tags[$tag_key] != $tag_version)
         return false;
 
     return true;
@@ -62,20 +62,22 @@ class lmbTaggableCache implements lmbCache
       return NULL;
   }
 
-  function add($key, $value, $ttl = false, $tags_keys = false)
+  protected function _prepareValue($value, $tags_keys)
   {
     if(!is_array($tags_keys))
       $tags_keys = array($tags_keys);
 
-    return $this->connection->add($key, $this->_createContainer($value, $tags_keys), $ttl);
+    return $this->_createContainer($value, $tags_keys);
   }
 
-  function set($key, $value, $ttl = false, $tags_keys = false)
+  function add($key, $value, $ttl = false, $tags_keys = 'default')
   {
-    if(!is_array($tags_keys))
-      $tags_keys = array($tags_keys);
+    return $this->connection->add($key, $this->_prepareValue ($value, $tags_keys), $ttl);
+  }
 
-    return $this->connection->set($key, $this->_createContainer($value, $tags_keys), $ttl);
+  function set($key, $value, $ttl = false, $tags_keys = 'default')
+  {
+    return $this->connection->set($key, $this->_prepareValue ($value, $tags_keys), $ttl);
   }
 
   function get($key)
@@ -97,7 +99,7 @@ class lmbTaggableCache implements lmbCache
   function deleteByTag($tag)
   {
     $tag = $this->_resolveTagsKeys($tag);
-    $this->connection->increment($tag);
+    $this->connection->safeIncrement($tag);
   }
 
   function flush()
