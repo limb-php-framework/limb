@@ -21,3 +21,4 @@ CREATE TABLE test_nested_sets_tree (
   PRIMARY KEY(id),
   KEY(`p_left`, `p_right`, `p_level`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

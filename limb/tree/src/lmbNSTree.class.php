@@ -349,8 +349,7 @@ class lmbNSTree implements lmbTree
 
   function _dbIn($column_name, $values)
   {
-    $in_ids = implode("','", $values);
-    return $column_name . " IN ('" . $in_ids . "')";
+    return $this->_conn->getExtension()->in($column_name, $values);
   }
 
   function createNode($node, $user_values)

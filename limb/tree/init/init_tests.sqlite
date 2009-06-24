@@ -1,0 +1,24 @@
+DROP TABLE "test_materialized_path_tree";
+CREATE TABLE "test_materialized_path_tree" (
+  "id" INTEGER PRIMARY KEY,
+  "p_parent_id" INTEGER NOT NULL default '0',
+  "p_level" INTEGER NOT NULL default '0',
+  "p_identifier" VARCHAR(128) NOT NULL default '',
+  "p_path" VARCHAR(255) NOT NULL default ''
+);
+DROP INDEX "test_materialized_path_tree_level";
+CREATE INDEX "test_materialized_path_tree_level" ON "test_materialized_path_tree"("p_level");
+DROP INDEX "test_materialized_path_tree_pid";
+CREATE INDEX "test_materialized_path_tree_pid" ON "test_materialized_path_tree"("p_parent_id");
+
+DROP TABLE "test_nested_sets_tree";
+CREATE TABLE "test_nested_sets_tree" (
+  "id" INTEGER PRIMARY KEY,
+  "p_parent_id" INTEGER NOT NULL default '0',
+  "p_left" INTEGER NOT NULL,
+  "p_right" INTEGER NOT NULL,
+  "p_level" INTEGER NOT NULL,
+  "p_identifier" VARCHAR(128) NOT NULL
+);
+DROP INDEX "test_nested_sets_tree_idx";
+CREATE INDEX "test_nested_sets_tree_idx" ON "test_nested_sets_tree"("p_left", "p_right", "p_level");
