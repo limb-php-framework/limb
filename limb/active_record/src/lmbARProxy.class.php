@@ -70,6 +70,16 @@ class lmbARProxyGeneratorEventsHandler
       return \$this->__original->getId();
       ";
     }
+    else if($method == "__sleep")
+    {
+      return ";
+    if(!\$this->__original)
+      \$this->__loadOriginal();
+    foreach(get_object_vars(\$this->__original) as \$k => \$v)
+      \$this->\$k = \$v;
+    return \$this->__original->__sleep();
+    ";
+    }
     else
     {
       return "
