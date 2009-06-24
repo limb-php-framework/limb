@@ -30,7 +30,7 @@ class lmbSqliteExtension extends lmbDbBaseExtension
   function substr($string, $offset, $limit=null)
   {
     if($limit === null)
-      return " SUBSTR($string,$offset) ";
+      return " SUBSTR($string,$offset,LENGTH($string)-$offset) ";
     else
       return " SUBSTR($string,$offset,$limit) ";
   }
