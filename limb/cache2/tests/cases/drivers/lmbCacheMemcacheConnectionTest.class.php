@@ -36,4 +36,21 @@ class lmbCacheMemcacheConnectionTest extends lmbCacheConnectionTest
 
     $this->assertEqual($this->cache->get($id), $v);
   }
+
+  function testInvalidKeyOnMultipleGet()
+  {
+    $id1 = 'white space';
+    $id2 = 'nowhitespace';
+    $id3 = 'with_under_score';
+
+    $this->cache->set($id1, 'value1');
+    $this->cache->set($id2, 'value2');
+    $this->cache->set($id3, 'value3');
+
+    $result = $this->cache->get(array($id1, $id2, $id3));
+
+    $this->assertEqual('value1', $result[$id1]);
+    $this->assertEqual('value2', $result[$id2]);
+    $this->assertEqual('value3', $result[$id3]);
+  }
 }
