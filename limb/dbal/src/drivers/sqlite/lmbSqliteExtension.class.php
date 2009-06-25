@@ -27,10 +27,11 @@ class lmbSqliteExtension extends lmbDbBaseExtension
     return '(' . implode(' || ', $values) . ')';
   }
 
+  //NOTE:offset leftmost position is 1
   function substr($string, $offset, $limit=null)
   {
     if($limit === null)
-      return " SUBSTR($string,$offset,LENGTH($string)-$offset) ";
+      return " SUBSTR($string,$offset,LENGTH($string)-$offset+1) ";
     else
       return " SUBSTR($string,$offset,$limit) ";
   }

@@ -27,6 +27,7 @@ class lmbPgsqlExtension extends lmbDbBaseExtension
     return '(' . implode(' || ', $values) . ')';
   }
 
+  //NOTE:offset leftmost position is 1
   function substr($string, $offset, $limit=null)
   {
     if($limit === null)

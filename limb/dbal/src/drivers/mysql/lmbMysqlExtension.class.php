@@ -28,6 +28,7 @@ class lmbMysqlExtension extends lmbDbBaseExtension
     return " CONCAT({$str}) ";
   }
 
+  //NOTE:offset leftmost position is 1
   function substr($string, $offset, $limit=null)
   {
     if($limit === null)
