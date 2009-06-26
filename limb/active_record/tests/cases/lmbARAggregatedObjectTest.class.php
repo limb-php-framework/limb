@@ -202,7 +202,7 @@ class lmbARAggregatedObjectTest extends lmbARBaseTestCase
     $this->assertEqual($member->getName()->getLast(), $last);
   }
 
-  function testAggregatedObjectAreImportedProperty()
+  function testAggregatedObjectAreImportedProperly()
   {
     $name = new NameForAggregateTest();
     $name->setFirst($first = 'first_name');

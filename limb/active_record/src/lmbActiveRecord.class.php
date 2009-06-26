@@ -22,11 +22,12 @@ lmb_require('limb/active_record/src/lmbAROneToManyCollection.class.php');
 lmb_require('limb/active_record/src/lmbARManyToManyCollection.class.php');
 lmb_require('limb/active_record/src/lmbARQuery.class.php');
 lmb_require('limb/active_record/src/lmbARRecordSetDecorator.class.php');
+lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7921 2009-05-13 12:39:38Z idler $
+ * @version $Id: lmbActiveRecord.class.php 7968 2009-06-26 07:24:54Z conf $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -966,20 +967,22 @@ class lmbActiveRecord extends lmbObject
            $this->_many_belongs_to[$property]['can_be_null'];
   }
 
-  protected function _loadAggregatedObject($property)
+  protected function _loadAggregatedObject($property, $value = LIMB_UNDEFINED)
   {
-    $class = $this->_composed_of[$property]['class'];
-    
     // for BC
     if(isset($this->_composed_of[$property]['getter']))
     {
-      if(!$value = $this->_getRaw($property))
-        return $value;
-      
+      if ($value === LIMB_UNDEFINED)
+      {
+        if(!$value = $this->_getRaw($property))
+          return $value;
+      }
+
+      $class = $this->_composed_of[$property]['class'];
       $object = new $class($value);
       return $object;
     }
-      
+
     $class = $this->_composed_of[$property]['class'];
     $object = new $class();
 
@@ -1142,7 +1145,7 @@ class lmbActiveRecord extends lmbObject
       $object = $this->_getRaw($property);
       if(!is_object($object))
         continue;
-      
+
       // for bc
       if(isset($info['getter']))
       {
@@ -1195,7 +1198,7 @@ class lmbActiveRecord extends lmbObject
           $fields[$property] = $object->$method();
           continue;
         }
-        
+
         if(!isset($info['mapping']))
           $mapping = array($property => $property);
         else
@@ -2196,8 +2199,7 @@ class lmbActiveRecord extends lmbObject
     if(is_object($obj))
       return $this->set($property, $obj);
 
-    $class = $this->_composed_of[$property]['class'];
-    $this->set($property, $this->_createAggregatedObject($class, $obj));
+    $this->set($property, $this->_loadAggregatedObject($property, $obj));
   }
   /**
    *  Exports object data with lazy properties resolved

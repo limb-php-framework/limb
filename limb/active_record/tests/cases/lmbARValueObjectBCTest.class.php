@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
- 
+
 // This test ensures that old value object functionality is still supported.
 
 class TestingValueObject
@@ -24,7 +24,7 @@ class TestingValueObject
   }
 }
 
-class TestingNullValueObject extends TestingValueObject 
+class TestingNullValueObject extends TestingValueObject
 {
   function getValue()
   {
@@ -35,7 +35,7 @@ class TestingNullValueObject extends TestingValueObject
 class LessonForBCTest extends lmbActiveRecord
 {
   protected $_db_table_name = 'lesson_for_test';
-  
+
   protected $_composed_of = array('date_start' => array('field' => 'date_start',
                                                         'class' => 'TestingValueObject',
                                                         'getter' => 'getValue'),
@@ -48,10 +48,10 @@ class LessonForBCTest extends lmbActiveRecord
                                                                'can_be_null' => true));
 }
 
-class LessonWithNullObjectForBCTest extends LessonForBCTest 
+class LessonWithNullObjectForBCTest extends LessonForBCTest
 {
   protected $_db_table_name = 'lesson_for_test';
-  
+
   function getNotRequiredDate()
   {
     $null_object = new TestingValueObject('null');
@@ -75,10 +75,10 @@ class LazyLessonForBCTest extends lmbActiveRecord
 class lmbARValueObjectBCTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('lesson_for_test');
-  
+
   function testNewObjectReturnsNullValueObjects()
   {
-    $lesson = new LessonForBCTest();    
+    $lesson = new LessonForBCTest();
     $this->assertNull($lesson->getDateStart());
     $this->assertNull($lesson->getDateEnd());
   }
@@ -123,7 +123,7 @@ class lmbARValueObjectBCTest extends lmbARBaseTestCase
     $this->assertEqual($lesson2->getDateEnd()->getValue(), $v2);
   }
 
-  function testValueObjectsAreImportedProperly()
+  function testValueObjectsAreImportedAndExportedProperly()
   {
     $lesson = new LessonForBCTest();
     $lesson->setDateStart(new TestingValueObject($v1 = time()));
@@ -134,20 +134,55 @@ class lmbARValueObjectBCTest extends lmbARBaseTestCase
     $this->assertEqual($lesson2->getDateStart()->getValue(), $v1);
     $this->assertEqual($lesson2->getDateEnd()->getValue(), $v2);
   }
-  
+
+  function testImportValueObjectsAreImportedProperly()
+  {
+    $lesson = new LessonForBCTest();
+
+    $imported = array(
+      'date_start' => new TestingValueObject($v1 = time()),
+      'date_end' => new TestingValueObject($v2 = (time() + 100))
+    );
+
+    $lesson->import($imported);
+
+    $lesson2 = new LessonForBCTest($lesson->export());
+
+    $this->assertEqual($lesson2->getDateStart()->getValue(), $v1);
+    $this->assertEqual($lesson2->getDateEnd()->getValue(), $v2);
+  }
+
+  function testValueObjectsAreImportedNotFromObjects() {
+
+    $lesson = new LessonForBCTest();
+
+    $imported = array(
+      'date_start' => time(),
+      'date_end' => time() + 300
+    );
+
+    $lesson->import($imported);
+
+    $lesson2 = new LessonForBCTest($lesson->export());
+
+    $this->assertEqual($lesson2->getDateStart()->getValue(), $imported['date_start']);
+    $this->assertEqual($lesson2->getDateEnd()->getValue(), $imported['date_end']);
+
+  }
+
   function testAllowNullValuesForValuesObjects()
   {
-    $lesson = new LessonForBCTest();    
+    $lesson = new LessonForBCTest();
     $lesson->not_required_date = null;
     $this->assertNull($lesson->getNotRequiredDate());
   }
-  
+
   function testGetDefaultObject()
   {
-    $lesson = new LessonWithNullObjectForBCTest();    
+    $lesson = new LessonWithNullObjectForBCTest();
     $this->assertIdentical($lesson->getNotRequiredDate()->getValue(), 'null');
     $lesson->not_required_date = new TestingValueObject('not_null');
-    $this->assertIdentical($lesson->getNotRequiredDate()->getValue(), 'not_null');    
+    $this->assertIdentical($lesson->getNotRequiredDate()->getValue(), 'not_null');
   }
 
   function testEmptyValueForValuesObjects()
@@ -162,7 +197,7 @@ class lmbARValueObjectBCTest extends lmbARBaseTestCase
 
   function testProperWrapForScalrValueWhithNotRequiredFlagForValueObject()
   {
-    $lesson = new LessonForBCTest();    
+    $lesson = new LessonForBCTest();
     $lesson->not_required_date = 'test';
     $this->assertIsA($lesson->getNotRequiredDate(), 'TestingValueObject');
   }
