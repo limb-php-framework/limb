@@ -1,13 +1,30 @@
 <?php
 
 $GLOBALS['TASKMAN_TASKS'] = array();
+$GLOBALS['TASKMAN_STACK'] = array();
 $GLOBALS['TASKMAN_TASK_ALIASES'] = array();
 $GLOBALS['TASKMAN_VERBOSE'] = true;
 $GLOBALS['TASKMAN_BATCH'] = false;
 $GLOBALS['TASKMAN_SCRIPT'] = 'taskman-script.php';
 $GLOBALS['TASKMAN_CURRENT_TASK'] = null;
+$GLOBALS['TASKMAN_CONFIG'] = array();
 
-class TaskmanException extends Exception{}
+class TaskmanException extends Exception
+{
+  public function __toString()
+  {
+    global $TASKMAN_STACK;
+
+    $stack_str = ''; 
+    foreach($TASKMAN_STACK as $task)
+    {
+      $stack_str .= '->' . $task->getName();
+    }
+    return get_class($this) . 
+            " '{$this->message}' in {$this->file}({$this->line})\n" . 
+            "{$this->getTraceAsString()}\ntasks: $stask_str";
+  }
+}
 
 class TaskmanTask
 {
@@ -31,7 +48,12 @@ class TaskmanTask
 
   function getName()
   {
-    return $this->name;
+    return $this->name;    
+  }
+
+  function getFunc()
+  {
+    return $this->func;
   }
 
   function getArgs()
@@ -50,6 +72,7 @@ class TaskmanTask
   function run($args = array())
   {
     global $TASKMAN_CURRENT_TASK;
+    global $TASKMAN_STACK;
 
     if($this->has_run || $this->is_running)
       return;
@@ -57,37 +80,63 @@ class TaskmanTask
     $this->is_running = true;
     $this->args = $args;
 
-    taskman_runtasks($this->_getBeforeDeps(), $args);
+    try
+    {
+      taskman_runtasks($this->_getBeforeDeps(), $this->args);
 
-    taskman_runtasks($this->_getDeps(), $args);
+      taskman_runtasks($this->_getDeps(), $this->args);
 
-    taskman_sysmsg("************************ Running task '" . $this->getName() . "' ************************\n");
+      taskman_sysmsg("************************ Running task '" . $this->getName() . "' ************************\n");
 
-    $TASKMAN_CURRENT_TASK = $this;
-    call_user_func_array($this->func, array($this->args));
+      $bench = microtime(true);
 
-    taskman_runtasks($this->_getAfterDeps(), $args);
+      $TASKMAN_CURRENT_TASK = $this;
+      $TASKMAN_STACK[] = $this;
 
-    $this->has_run = true;
-    $this->is_running = false;
+      if($replacer = $this->_getReplacingTask())
+        taskman_runtask($replacer, $this->args);
+      else
+        call_user_func_array($this->func, array($this->args));
+
+      array_pop($TASKMAN_STACK);
+
+      taskman_runtasks($this->_getAfterDeps(), $this->args);
+
+      taskman_sysmsg("************************* '" . $this->getName() . "' done (" . 
+                     round(microtime(true)-$bench,2) . " sec.)*************************\n");
+
+      $this->has_run = true;
+      $this->is_running = false;
+    }
+    catch(Exception $e)
+    {
+      if($error_handler = taskman_config('error_handler'))
+        $error_handler($e);
+      else
+        throw $e;
+    }
   }
 
   private function _getBeforeDeps()
   {
-    $arr = array();
-    foreach(taskman_gettasks() as $task_obj)
-    {
-      if($this->getName() == $task_obj->getName())
-        continue;
-
-      $before = $task_obj->getPropOr("before", "");
-      if($before == $this->getName())
-        $arr[] = $task_obj;
-    }
-    return $arr;
+    return $this->_collectRelatedTasks("before");
   }
 
   private function _getAfterDeps()
+  {
+    return $this->_collectRelatedTasks("after");
+  }
+
+  private function _getReplacingTask()
+  {
+    $replaces = $this->_collectRelatedTasks("replace");
+    if(sizeof($replaces) == 0)
+      return null;
+    else
+      return end($replaces);
+  }
+
+  private function _collectRelatedTasks($prop_name)
   {
     $arr = array();
     foreach(taskman_gettasks() as $task_obj)
@@ -95,8 +144,8 @@ class TaskmanTask
       if($this->getName() == $task_obj->getName())
         continue;
 
-      $before = $task_obj->getPropOr("after", "");
-      if($before == $this->getName())
+      $value = $task_obj->getPropOr($prop_name, "");
+      if($value == $this->getName() || in_array($value, $this->getAliases()))
         $arr[] = $task_obj;
     }
     return $arr;
@@ -108,6 +157,11 @@ class TaskmanTask
     if($deps)
       return taskman_parse_taskstr($deps);
     return array();
+  }
+
+  private function _runDeps($args = array())
+  {
+    taskman_runtasks($this->_getDeps(), $args);
   }
 
   private function _parseProps($func)
@@ -154,13 +208,23 @@ class TaskmanTask
   }
 }
 
+function taskman_reset()
+{
+  $GLOBALS['TASKMAN_TASKS'] = array();
+  $GLOBALS['TASKMAN_TASK_ALIASES'] = array();
+  $GLOBALS['TASKMAN_CURRENT_TASK'] = null;
+  $GLOBALS['TASKMAN_CONFIG'] = array();
+
+  taskman_collecttasks();
+}
+
 function taskman_str($str)
 {
   return preg_replace_callback(
           '~%([^%]+)%~',
           create_function(
-            '$matches',
-            'return taskman_prop($matches[1]);'
+            '$m',
+            'return taskman_prop($m[1]);'
           ),
           $str
         );
@@ -177,6 +241,8 @@ function taskman_run($argv = null, $help_func = 'task_help')
 {
   if(is_null($argv))
     $argv = $GLOBALS['argv'];
+
+  $bench = microtime(true);
 
   taskman_process_argv($argv);
   $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);
@@ -219,7 +285,7 @@ function taskman_run($argv = null, $help_func = 'task_help')
     }
   }
 
-  taskman_sysmsg("************************ All done ************************\n");
+  taskman_sysmsg("************************ All done (".round(microtime(true)-$bench,2)." sec.)************************\n");
 }
 
 function taskman_process_argv(&$argv)
@@ -265,16 +331,21 @@ function taskman_process_argv(&$argv)
     }
     else if($process_defs)
     {
-      $defs = explode(',', $v);
-      foreach($defs as $def)
+      $eq_pos = strpos($v, '=');
+      if($eq_pos !== false)
       {
-        taskman_sysmsg("Setting prop '$def'\n");
-        @list($def_name, $def_value) = explode("=", $def, 2);
-        if(!isset($def_value))
-          taskman_propset($def_name, "yes");
-        else
-          taskman_propset($def_name, $def_value);
+        $def_name = substr($v, 0, $eq_pos);
+        $def_value = substr($v, $eq_pos+1);
       }
+      else
+      {
+        $def_name = $v;
+        $def_value = 1;
+      }
+
+      taskman_sysmsg("Setting prop $def_name=$def_value\n");
+      taskman_propset($def_name, $def_value);
+      
       $process_defs = false;
     }
     else
@@ -303,13 +374,13 @@ function taskman_collecttasks()
       throw new TaskmanException("Double definition of task with name '$name'");
 
     $task_obj = new TaskmanTask($func);
-    $TASKMAN_TASKS[$name] = $task_obj;
+    $TASKMAN_TASKS[$name] = $task_obj; 
 
     foreach($task_obj->getAliases() as $alias)
     {
       if(isset($TASKMAN_TASKS[$alias]) || isset($TASKMAN_TASK_ALIASES[$alias]))
         throw new TaskmanException("Double alias '$alias' definition of task with name '$name'");
-      $TASKMAN_TASK_ALIASES[$alias] = $task_obj;
+      $TASKMAN_TASK_ALIASES[$alias] = $task_obj; 
     }
   }
 }
@@ -324,6 +395,12 @@ function taskman_gettask($task)
 {
   global $TASKMAN_TASKS;
   global $TASKMAN_TASK_ALIASES;
+
+  if(!is_scalar($task))
+  {
+    var_dump($task);
+    throw new TaskmanException("Bad task name");
+  }
 
   if(isset($TASKMAN_TASKS[$task]))
     return $TASKMAN_TASKS[$task];
@@ -377,22 +454,34 @@ function taskman_parse_taskstr($str)
 
 function taskman_runtask($task, $args = array())
 {
-  $task_obj = taskman_gettask($task);
+  if($task instanceof TaskmanTask)
+    $task_obj = $task;
+  else
+    $task_obj = taskman_gettask($task);
   $task_obj->run($args);
 }
 
-function taskman_runtasks($tasks, $args = array())
+function taskman_runtasks($tasks, $args = array(), $isolate = false)
 {
-  foreach($tasks as $task_spec)
+  global $TASKMAN_SCRIPT;
+
+  if(!$isolate)
   {
-    if(is_scalar($task_spec))
-      taskman_runtask($task_spec, $args);
-    else if(is_array($task_spec))
-      taskman_runtasks_parall($task_spec, $args);
-    else if(is_object($task_spec))
-      $task_spec->run($args);
-    else
-      throw new TaskmanException("Invalid task specification '$task_spec', should be either string or array or object");
+    foreach($tasks as $task_spec)
+    {
+      if(is_array($task_spec))
+        taskman_runtasks_parall($task_spec, $args);
+      else
+        taskman_runtask($task_spec, $args);
+    }
+  }
+  else
+  {
+    $cmd = 'php ' .$TASKMAN_SCRIPT . ' ' . implode(',', $tasks) . ' ' . implode(' ', $args) . '';
+    foreach(taskman_getprops() as $key => $value)
+      $cmd .= ' -D '.$key .'='. escapeshellarg($value);
+
+    taskman_shell_ensure($cmd);
   }
 }
 
@@ -404,12 +493,12 @@ function taskman_runtasks_parall($tasks, $args = array())
   foreach($tasks as $task)
   {
     $cmd = 'php ' .$TASKMAN_SCRIPT . ' ' . $task . ' ' . implode(' ', $args) . '';
-    foreach (taskman_getprops() as $key => $value)
+    foreach(taskman_getprops() as $key => $value)
       $cmd .= ' -D '.$key .'='.$value;
-
+      
     $cmds[] = $cmd;
   }
-
+  
   taskman_sysmsg("************************ Running parallel tasks: " . implode(',', $tasks) . " ************************\n");
 
   $procs = array();
@@ -444,7 +533,7 @@ function taskman_runtasks_parall($tasks, $args = array())
     $deads = array();
     foreach($procs as $id => $item)
     {
-      if(is_resource($item[0]))
+      if(is_resource($item[0])) 
       {
         $status = proc_get_status($item[0]);
 
@@ -472,11 +561,43 @@ function taskman_current_task()
   return $TASKMAN_CURRENT_TASK;
 }
 
-function taskman_shell_ensure($cmd)
+function taskman_shell_ensure($cmd, &$out=null)
 {
-  taskman_shell($cmd, $ret);
+  taskman_shell($cmd, $ret, $out);
   if($ret != 0)
-    throw new TaskmanException("Script execution error(return code $ret)");
+    throw new TaskmanException("Shell execution error(exit code $ret)" .  (is_array($out) ? ":\n" . implode("\n", $out) : ''));
+}
+
+function taskman_shell($cmd, &$ret=null, &$out=null)
+{
+  taskman_msg(" shell: $cmd\n");
+  taskman_msg(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+
+  _taskman_execute_proc_cmd($cmd, $ret, $out);
+}
+
+function _taskman_execute_proc_cmd($cmd, &$ret, &$out)
+{
+  //TODO: do we really need to redirect error stream?
+  $proc = popen("$cmd 2>&1", 'r');
+
+  $log = '';
+  //TODO: how can this be?
+  if(is_string($proc))
+  {
+    $log = $proc;
+    _taskman_log($log);
+  }
+  else
+  {
+    while($logline = fgets($proc))
+    {
+      $log .= $logline;
+      _taskman_log($logline);
+    }
+  }
+  $out = explode("\n", $log);
+  $ret = pclose($proc);
 }
 
 function taskman_msg($msg)
@@ -484,7 +605,7 @@ function taskman_msg($msg)
   global $TASKMAN_VERBOSE;
 
   if($TASKMAN_VERBOSE)
-    echo($msg);
+    _taskman_log($msg);
 }
 
 function taskman_sysmsg($msg)
@@ -492,21 +613,18 @@ function taskman_sysmsg($msg)
   global $TASKMAN_BATCH;
 
   if($TASKMAN_BATCH == false)
-    echo($msg);
+    _taskman_log($msg);
 }
 
-function taskman_shell($cmd, &$ret=null)
+function _taskman_log($msg)
 {
-  global $TASKMAN_VERBOSE;
+  $logger = taskman_config('logger', '_taskman_default_logger');
+  call_user_func_array($logger, array($msg));
+}
 
-  if($TASKMAN_VERBOSE)
-  {
-    echo " shell: $cmd\n";
-    echo " ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-    system("$cmd 2>&1", $ret);
-  }
-  else
-    exec("$cmd 2>&1", $out, $ret);
+function _taskman_default_logger($msg)
+{
+  echo $msg;
 }
 
 function taskman_prop($name)
@@ -534,6 +652,11 @@ function taskman_propsetor($name, $value)
     $_ENV['TASKMAN_' . $name] = $value;
 }
 
+function taskman_propunset($name)
+{
+  unset($_ENV['TASKMAN_' . $name]);
+}
+
 function taskman_getprops()
 {
   $props = array();
@@ -548,6 +671,18 @@ function taskman_getprops()
 function taskman_isprop($name)
 {
   return isset($_ENV['TASKMAN_' . $name]);
+}
+
+function taskman_configset($name, $value)
+{
+  $GLOBALS['TASKMAN_CONFIG'][$name] = $value;
+}
+
+function taskman_config($name, $def=null)
+{
+  if(isset($GLOBALS['TASKMAN_CONFIG'][$name]))
+    return $GLOBALS['TASKMAN_CONFIG'][$name];
+  return $def;
 }
 
 function taskman_rmdir_recurse($path)
