@@ -428,81 +428,81 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("barfoozoo", $out);
   }
 
-  function testParallTasksFromCLI()
-  {
-    if($this->isWin())
-      return;
+  //function testParallTasksFromCLI()
+  //{
+  //  if($this->isWin())
+  //    return;
 
-    @unlink(LIMB_VAR_DIR . '/shared');
-    list($code, $out) = $this->_run("
-    function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
-    function task_foo() { write_shared('foo');}
-    function task_bar() { write_shared('bar'); }
-    function task_wow() { write_shared('wow'); }
-    ",
-    "-b 'bar|foo|wow'");
+  //  @unlink(LIMB_VAR_DIR . '/shared');
+  //  list($code, $out) = $this->_run("
+  //  function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
+  //  function task_foo() { write_shared('foo');}
+  //  function task_bar() { write_shared('bar'); }
+  //  function task_wow() { write_shared('wow'); }
+  //  ",
+  //  "-b 'bar|foo|wow'");
 
-    $this->assertEqual(0, $code);
-    $this->assertEqual("", $out);
-    $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
-    $this->assertTrue(strpos($shared, 'foo') !== false);
-    $this->assertTrue(strpos($shared, 'bar') !== false);
-    $this->assertTrue(strpos($shared, 'wow') !== false);
-    $this->assertEqual(9, strlen($shared));
-  }
+  //  $this->assertEqual(0, $code);
+  //  $this->assertEqual("", $out);
+  //  $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
+  //  $this->assertTrue(strpos($shared, 'foo') !== false);
+  //  $this->assertTrue(strpos($shared, 'bar') !== false);
+  //  $this->assertTrue(strpos($shared, 'wow') !== false);
+  //  $this->assertEqual(9, strlen($shared));
+  //}
 
-  function testParallTasks()
-  {
-    if($this->isWin())
-      return;
+  //function testParallTasks()
+  //{
+  //  if($this->isWin())
+  //    return;
 
-    @unlink(LIMB_VAR_DIR . '/shared');
-    list($code, $out) = $this->_run("
-    function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
-    function task_foo() { write_shared('foo'); }
-    function task_bar() { write_shared('bar'); }
-    /**
-     * @deps bar|foo|wow
-     */
-    function task_zoo() { echo 'zoo'; }
-    function task_wow() { write_shared('wow'); }
-    ",
-    '-b zoo');
+  //  @unlink(LIMB_VAR_DIR . '/shared');
+  //  list($code, $out) = $this->_run("
+  //  function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
+  //  function task_foo() { write_shared('foo'); }
+  //  function task_bar() { write_shared('bar'); }
+  //  /**
+  //   * @deps bar|foo|wow
+  //   */
+  //  function task_zoo() { echo 'zoo'; }
+  //  function task_wow() { write_shared('wow'); }
+  //  ",
+  //  '-b zoo');
 
-    $this->assertEqual(0, $code);
-    $this->assertEqual("zoo", $out);
-    $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
-    $this->assertTrue(strpos($shared, 'foo') !== false);
-    $this->assertTrue(strpos($shared, 'bar') !== false);
-    $this->assertTrue(strpos($shared, 'wow') !== false);
-    $this->assertEqual(9, strlen($shared));
-  }
+  //  $this->assertEqual(0, $code);
+  //  $this->assertEqual("zoo", $out);
+  //  $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
+  //  $this->assertTrue(strpos($shared, 'foo') !== false);
+  //  $this->assertTrue(strpos($shared, 'bar') !== false);
+  //  $this->assertTrue(strpos($shared, 'wow') !== false);
+  //  $this->assertEqual(9, strlen($shared));
+  //}
 
-  function testArgsPassedToParallTasks()
-  {
-    if($this->isWin())
-      return;
+  //function testArgsPassedToParallTasks()
+  //{
+  //  if($this->isWin())
+  //    return;
 
-    @unlink(LIMB_VAR_DIR . '/shared');
-    list($code, $out) = $this->_run("
-    function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
-    function task_foo(\$args) { write_shared('foo:' . implode('', \$args)); }
-    function task_bar(\$args) {  write_shared('bar:' . implode('', \$args)); }
-    /**
-     * @deps bar|foo
-     */
-    function task_zoo(\$args) { write_shared('zoo:' . implode('', \$args)); }
-    ",
-    '-b zoo a1 a2');
+  //  @unlink(LIMB_VAR_DIR . '/shared');
+  //  list($code, $out) = $this->_run("
+  //  function write_shared(\$c) { \$fp = fopen('" . LIMB_VAR_DIR . "/shared', 'a');if(flock(\$fp, LOCK_EX)){ fwrite(\$fp, \$c); flock(\$fp, LOCK_UN); } fclose(\$fp);}
+  //  function task_foo(\$args) { write_shared('foo:' . implode('', \$args)); }
+  //  function task_bar(\$args) {  write_shared('bar:' . implode('', \$args)); }
+  //  /**
+  //   * @deps bar|foo
+  //   */
+  //  function task_zoo(\$args) { write_shared('zoo:' . implode('', \$args)); }
+  //  ",
+  //  '-b zoo a1 a2');
 
-    $this->assertEqual(0, $code);
-    $this->assertEqual("", $out);
-    $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
-    $this->assertTrue(strpos($shared, 'foo:a1a2') !== false);
-    $this->assertTrue(strpos($shared, 'bar:a1a2') !== false);
-    $this->assertTrue(strpos($shared, 'zoo:a1a2') !== false);
-    $this->assertEqual(24, strlen($shared));
-  }
+  //  $this->assertEqual(0, $code);
+  //  $this->assertEqual("", $out);
+  //  $shared = file_get_contents(LIMB_VAR_DIR . '/shared');
+  //  $this->assertTrue(strpos($shared, 'foo:a1a2') !== false);
+  //  $this->assertTrue(strpos($shared, 'bar:a1a2') !== false);
+  //  $this->assertTrue(strpos($shared, 'zoo:a1a2') !== false);
+  //  $this->assertEqual(24, strlen($shared));
+  //}
 
   protected function _run($contents, $cmd)
   {
