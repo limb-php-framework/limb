@@ -239,6 +239,25 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
     $error_list = new lmbErrorList();
     $this->assertFalse($user->trySave($error_list));
   }
+
+  function testManyToManyRelationWithCriteria()
+  {
+    $user = $this->creator->initUser();
+
+    $g1 = $this->creator->createGroup('foo');
+    $g2 = $this->creator->createGroup('bar');
+    $g3 = $this->creator->createGroup('condition');
+    $this->assertEqual('condition', $g3->getTitle());
+
+    $user->setGroups(array($g1, $g2,$g3));
+    $user->save();
+    $user = new UserForTest($user->id);
+    $arr = $user->getCgroups()->getArray();
+    $this->assertIsA($arr[0], 'GroupForTest');
+    $this->assertEqual(sizeof($arr), 1);
+    $this->assertEqual($arr[0]->getTitle(), $g3->getTitle());
+  }
+
 }
 
 

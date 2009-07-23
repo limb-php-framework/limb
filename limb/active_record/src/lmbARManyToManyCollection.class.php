@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/query/lmbSelectRawQuery.class.php');
  * class lmbARManyToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbARManyToManyCollection.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbARManyToManyCollection.class.php 7972 2009-07-23 20:30:23Z idler $
  */
 class lmbARManyToManyCollection extends lmbARRelationCollection
 {
@@ -24,7 +24,10 @@ class lmbARManyToManyCollection extends lmbARRelationCollection
     $join_table = $this->conn->quoteIdentifier($this->relation_info['table']);
     $field = $this->conn->quoteIdentifier($this->relation_info['field']);
     $query->addCriteria("{$join_table}.{$field} = {$this->owner->getId()}");
-
+    if(isset($this->relation_info['criteria']))
+    {
+      $query->addCriteria($this->relation_info['criteria']);
+    }
     return $query; 
   }
   
