@@ -12,7 +12,7 @@ lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdResizeImageFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbGdResizeImageFilter.class.php 7973 2009-07-25 13:24:53Z cmz $
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {
@@ -21,7 +21,8 @@ class lmbGdResizeImageFilter extends lmbAbstractImageFilter
     $src_w = $container->getWidth();
     $src_h = $container->getHeight();
     list($dst_w, $dst_h) = $this->calcNewSize($src_w, $src_h);
-    $im = imagecreatetruecolor($dst_w, $dst_h);
+    $container->toTrueColor();
+    $im = $container->createBlankImage($dst_w, $dst_h, true);
     imagecopyresampled($im, $container->getResource(), 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h);
     $container->replaceResource($im);
   }

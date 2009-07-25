@@ -100,6 +100,59 @@ class lmbGdImageContainerTest extends UnitTestCase {
     
     $this->assertTrue($size_quality_0 < $size_quality_100);
   }
+  
+  function testCreatePalleteBlankImage()
+  {
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getPalleteImage());
+    
+    $img = $cont->createBlankImage(100, 200);
+    $cont->replaceResource($img);
+    
+    $this->assertEqual($cont->getWidth(), 100);
+    $this->assertEqual($cont->getHeight(), 200);
+    $this->assertTrue($cont->isPallete());
+  }
+
+  function testCreateTruecolorBlankImage()
+  {
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getInputImage());
+    
+    $img = $cont->createBlankImage(100, 200);
+    $cont->replaceResource($img);
+    
+    $this->assertEqual($cont->getWidth(), 100);
+    $this->assertEqual($cont->getHeight(), 200);
+    $this->assertFalse($cont->isPallete());
+  }
+
+  function testCreateForcedTruecolorBlankImage()
+  {
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getPalleteImage());
+    
+    $img = $cont->createBlankImage(100, 200, true);
+    $cont->replaceResource($img);
+    
+    $this->assertEqual($cont->getWidth(), 100);
+    $this->assertEqual($cont->getHeight(), 200);
+    $this->assertFalse($cont->isPallete());
+  }
+  
+  function testToTrueColor()
+  {
+    $cont = new lmbGdImageContainer();
+    $cont->load($this->_getPalleteImage());
+    
+    $width = $cont->getWidth();
+    $height = $cont->getHeight();
+    $cont->toTrueColor();
+
+    $this->assertEqual($cont->getWidth(), $width);
+    $this->assertEqual($cont->getHeight(), $height);
+    $this->assertFalse($cont->isPallete());
+  }
 
   function tearDown()
   {

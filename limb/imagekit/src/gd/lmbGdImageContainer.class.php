@@ -17,7 +17,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * GD image container
  *
  * @package imagekit
- * @version $Id: lmbGdImageContainer.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbGdImageContainer.class.php 7973 2009-07-25 13:24:53Z cmz $
  */
 class lmbGdImageContainer extends lmbAbstractImageContainer
 {
@@ -37,7 +37,6 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
 
   protected $img;
   protected $img_type;
-  protected $pallete;
   protected $out_type;
 
   function setOutputType($type)
@@ -67,6 +66,12 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
     if(!($this->img = $createfunc($file_name)))
       throw new lmbImageCreateFailedException($file_name);
 
+    if($type == 'png')
+    {
+      imagealphablending($this->img, false);
+      imagesavealpha($this->img, true);      
+    }
+
     $this->img_type = $type;
   }
 
@@ -89,6 +94,43 @@ class lmbGdImageContainer extends lmbAbstractImageContainer
       throw new lmbImageSaveFailedException($file_name);
 
     $this->destroyImage();
+  }
+  
+  function createBlankImage($width, $height, $force_truecolor = false)
+  {
+    if(!$force_truecolor && $this->isPallete())
+      return imagecreate($width, $height);
+      
+    $im = imagecreatetruecolor($width, $height);
+    if($this->img_type != 'png' && $this->img_type != 'gif')
+      return $im;
+      
+    $trnprt_indx = imagecolortransparent($this->img);
+    if($trnprt_indx >= 0) 
+    {
+      $trnprt_color = imagecolorsforindex($this->img, $trnprt_indx);
+      $trnprt_indx = imagecolorallocate($im, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
+      imagefill($im, 0, 0, $trnprt_indx);
+      imagecolortransparent($im, $trnprt_indx);
+    }
+    elseif($this->img_type == 'png')
+    {
+      imagealphablending($im, false);
+      $color = imagecolorallocatealpha($im, 255, 0, 255, 127);
+      imagefill($im, 0, 0, $color);
+      imagesavealpha($im, true);
+    }
+    return $im;
+  }
+  
+  function toTrueColor()
+  {
+    if(!$this->isPallete())
+      return;
+      
+    $im = $this->createBlankImage($this->getWidth(), $this->getHeight(), true);
+    imagecopy($im, $this->img, 0, 0, 0, 0, $this->getWidth(), $this->getHeight());
+    $this->replaceResource($im);
   }
 
   function getResource()

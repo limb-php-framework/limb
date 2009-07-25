@@ -12,14 +12,14 @@ lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
 /**
  * Crop image filter
  * @package imagekit
- * @version $Id: lmbGdCropImageFilter.class.php 7071 2008-06-25 14:33:29Z korchasa $
+ * @version $Id: lmbGdCropImageFilter.class.php 7973 2009-07-25 13:24:53Z cmz $
  */
 class lmbGdCropImageFilter extends lmbAbstractImageFilter
 {
   function apply(lmbAbstractImageContainer $container)
   {
     list($x, $y, $width, $height) = $this->calculateCropArea($container->getWidth(), $container->getHeight());
-    $im = $container->isPallete() ? imagecreate($width, $height) : imagecreatetruecolor($width, $height);
+    $im = $container->createBlankImage($width, $height);
     imagecopy($im, $container->getResource(), 0, 0, $x, $y, $width, $height);
     $container->replaceResource($im);
   }
