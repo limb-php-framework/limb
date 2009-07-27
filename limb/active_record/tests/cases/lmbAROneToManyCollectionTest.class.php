@@ -613,6 +613,18 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
     $this->assertEqual($collection->at(0)->getTitle(), 'new_title');
   }
 
+  function testGetRelatedObjectWithAdditionCriteria()
+  {
+    $l1 = $this->_createLecture('foo1');
+    $l2 = $this->_createLecture('foo2');
+    $l3 = $this->_createLecture('bar1');
+    $l4 = $this->_createLecture('bar2');
+
+    $course = $this->_createCourseAndSave(array($l1, $l2,$l3,$l4));
+
+    $this->assertEqual(count($course->getFooLectures()), 2);
+  }
+
   protected function _initCourse($lectures = array())
   {
     $course = new CourseForTest();

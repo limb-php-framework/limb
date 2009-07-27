@@ -64,7 +64,10 @@ class CourseForTest extends lmbActiveRecord
   protected $_has_many = array('lectures' => array('field' => 'course_id',
                                                    'class' => 'LectureForTest'),
                                'alt_lectures' => array('field' => 'alt_course_id',
-                                                       'class' => 'LectureForTest'));
+                                                       'class' => 'LectureForTest'),
+                               'foo_lectures' => array('field' => 'course_id',
+                                                       'class' => 'LectureForTest',
+                                                        'criteria'=>'lecture_for_test.title like "foo%"'));
 
   protected $_many_belongs_to = array('program' => array('field' => 'program_id',
                                                          'class' => 'ProgramForTest',

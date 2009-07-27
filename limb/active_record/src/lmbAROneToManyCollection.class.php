@@ -12,7 +12,7 @@ lmb_require('limb/active_record/src/lmbARRelationCollection.class.php');
  * class lmbAROneToManyCollection.
  *
  * @package active_record
- * @version $Id: lmbAROneToManyCollection.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbAROneToManyCollection.class.php 7974 2009-07-27 18:49:59Z idler $
  */
 class lmbAROneToManyCollection extends lmbARRelationCollection
 {
@@ -20,6 +20,12 @@ class lmbAROneToManyCollection extends lmbARRelationCollection
   {
     $query = self :: createFullARQueryForRelation($this->relation_info, $this->conn, $params);
     $query->addCriteria(new lmbSQLFieldCriteria($this->relation_info['field'], $this->owner->getId()));
+
+    if(isset($this->relation_info['criteria']))
+    {
+      $query->addCriteria($this->relation_info['criteria']);
+    }
+    
     return $query;
   }
   
