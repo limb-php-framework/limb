@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7968 2009-06-26 07:24:54Z conf $
+ * @version $Id: lmbActiveRecord.class.php 7975 2009-07-30 04:31:54Z pachanga $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1185,34 +1185,6 @@ class lmbActiveRecord extends lmbObject
 
     if($this->isNew() && $this->_isInheritable())
       $fields[self :: $_inheritance_field] = $this->_getInheritancePath();
-
-    foreach($this->_composed_of as $property => $info)
-    {
-      $object = $this->_getAggregatedObject($property);
-      if(is_object($object))
-      {
-        // for bc
-        if(isset($info['getter']))
-        {
-          $method = $info['getter'];
-          $fields[$property] = $object->$method();
-          continue;
-        }
-
-        if(!isset($info['mapping']))
-          $mapping = array($property => $property);
-        else
-          $mapping = $info['mapping'];
-
-        foreach($mapping as $aggrigate_field => $ar_field)
-        {
-          if($ar_field == $this->getPrimaryKeyName())
-            continue;
-
-          $fields[$ar_field] = $object->get($aggrigate_field);
-        }
-      }
-    }
 
     return $fields;
   }
