@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
+
 /**
  * class lmbMacroParser.
  *
@@ -26,6 +28,10 @@ class lmbMacroParser implements lmbMacroTokenizerListener
 
   protected $tokenizer;
 
+  /**
+   * @param lmbMacroTreeBuilder $tree_builder
+   * @param lmbMacroTagDictionary $tag_dictionary
+   */
   function __construct($tree_builder, $tag_dictionary)
   {
     $this->tokenizer = new lmbMacroTokenizer($this);
@@ -50,6 +56,8 @@ class lmbMacroParser implements lmbMacroTokenizerListener
   * Used to parse the source template.
   * Initially invoked by the CompileTemplate function,
   * the first component argument being a root node.
+  * @param string $source_file_path 
+  * @param lmbMacroNode $root_node
   */
   function parse($source_file_path, $root_node)
   {
@@ -58,6 +66,16 @@ class lmbMacroParser implements lmbMacroTokenizerListener
     $this->tree_builder->setCursor($root_node);
 
     $this->changeToTagParsingState();    
+    
+    if(!file_exists($source_file_path))
+    {
+      throw new lmbFileNotFoundException(
+        $source_file_path,
+        'Template file not found', array(
+          'parent_file' => $root_node->getTemplateFile(),          
+          'parent_file_line' => $root_node->getTemplateLine())
+      );      
+    }    
 
     $content = file_get_contents($source_file_path);
 
