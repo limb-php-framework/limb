@@ -14,7 +14,7 @@
  * @req_attributes text
  * @forbid_end_tag
  */
-class i18nMacroTag extends lmbMacroTag
+class lmbI18nMacroTag extends lmbMacroTag
 {
 
   function preParse($compiller)
