@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7924 2009-05-18 10:26:20Z idler $
+ * @version $Id: lmbController.class.php 7984 2009-08-24 15:48:35Z 3dmax $
  */
 class lmbController
 {
@@ -213,7 +213,7 @@ class lmbController
   {
     $this->form_id = $form_id;
     $this->view->setFormErrors($form_id, $this->error_list);
-    
+
     if ($datasource)
       $this->setFormDatasource($datasource);
   }
@@ -375,14 +375,11 @@ class lmbController
 
     $template_format = $this->getName() . '/' . $action;
 
-    if($template_path = $this->findTemplateByAlias($template_format));
-    {
-      $this->map_changed = true;
-      $this->action_template_map[$this->name][$action] = $template_path;
-      return $template_path;
-    }
+    $template_path = $this->findTemplateByAlias($template_format);
+    $this->action_template_map[$this->name][$action] = $template_path;
+    $this->map_changed = true;
 
-    $this->action_template_map[$this->name][$action] = false;
+    return $template_path;
   }
 
   function findTemplateByAlias($template_format)
@@ -394,6 +391,7 @@ class lmbController
         return $template_path;
       }
     }
+    return false;
   }
 }
 
