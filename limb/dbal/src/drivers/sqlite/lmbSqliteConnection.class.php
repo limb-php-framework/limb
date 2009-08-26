@@ -72,6 +72,7 @@ class lmbSqliteConnection extends lmbDbBaseConnection
 
     $info = array('driver' => 'sqlite');
     $info['errorno'] = $errno;
+    $info['db'] = $this->config['database'];
 
     if(!is_null($sql))
       $info['sql'] = $sql;
