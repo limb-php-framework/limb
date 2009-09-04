@@ -123,6 +123,36 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
     $this->assertIsA($rs->at(0), 'BarFooOneTableTestObject');
   }
 
+  function testFindWithKind()
+  {
+    $object1 = new FooOneTableTestObject();
+    $object1->setTitle('Some title');
+    $object1->save();
+
+    $object1 = new FooOneTableTestObject();
+    $object1->setTitle('Some other title');
+    $object1->save();
+
+    $object2 = new BarFooOneTableTestObject();
+    $object2->setTitle('Some other title');
+    $object2->save();
+
+    $object2 = new BarFooOneTableTestObject();
+    $object2->setTitle('Some other title2');
+    $object2->save();
+
+    $criteria1 = lmbSQlCriteria::equal('title','Some other title2');
+    $criteria2 = lmbSQlCriteria::equal('title','Some other title');
+
+    $criteria = new lmbSQlCriteria();
+    $criteria->addOr($criteria1);
+    $criteria->addOr($criteria2);
+
+
+    $rs = lmbActiveRecord :: find('BarFooOneTableTestObject',array('criteria'=>$criteria));
+    $this->assertEqual($rs->count(), 2);
+  }
+
   function testTypedRelationFind()
   {
     $course = new CourseForTestForTypedLecture();
