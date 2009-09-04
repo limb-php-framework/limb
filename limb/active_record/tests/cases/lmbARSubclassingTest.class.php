@@ -137,15 +137,15 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
     $object2->setTitle('Some other title');
     $object2->save();
 
-    $object2 = new BarFooOneTableTestObject();
-    $object2->setTitle('Some other title2');
-    $object2->save();
+    //$object2 = new BarFooOneTableTestObject();
+    //$object2->setTitle('Some other title2');
+    //$object2->save();
 
-    $criteria1 = lmbSQlCriteria::equal('title','Some other title2');
+    //$criteria1 = lmbSQlCriteria::equal('title','Some other title2');
     $criteria2 = lmbSQlCriteria::equal('title','Some other title');
 
     $criteria = new lmbSQlCriteria();
-    $criteria->addOr($criteria1);
+    //$criteria->addOr($criteria1);
     $criteria->addOr($criteria2);
 
 
