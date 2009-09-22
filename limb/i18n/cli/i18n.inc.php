@@ -14,7 +14,7 @@ function _i18n_taskman_err($message)
 /**
  *
  * @desc scanning folder for {{i18n and {{__ tags and write messages into .ts file
- * @param folder ts_file
+ * @param path_to_ts_file folder1 [ folder2 folder3 ... ]
  */
 function  task_scan($args = array())
 {
