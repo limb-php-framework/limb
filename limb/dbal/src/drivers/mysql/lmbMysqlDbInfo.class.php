@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlTableInfo.class.php');
  * class lmbMysqlDbInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlDbInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbMysqlDbInfo.class.php 7997 2009-10-04 17:09:01Z pachanga $
  */
 class lmbMysqlDbInfo extends lmbDbInfo
 {
@@ -39,9 +39,8 @@ class lmbMysqlDbInfo extends lmbDbInfo
     {
       $queryId = $this->connection->execute("SHOW TABLES FROM `" . $this->name . "`");
       while(is_array($row = mysql_fetch_row($queryId)))
-      {
         $this->tables[$row[0]] = null;
-      }
+
       mysql_free_result($queryId);
       $this->isTablesLoaded = true;
     }
@@ -50,13 +49,11 @@ class lmbMysqlDbInfo extends lmbDbInfo
   function getTable($name)
   {
     if(!$this->hasTable($name))
-    {
       throw new lmbDbException("Table does not exist '$name'");
-    }
+
     if(is_null($this->tables[$name]))
-    {
       $this->tables[$name] = new lmbMysqlTableInfo($this, $name, true);
-    }
+
     return $this->tables[$name];
   }
 }

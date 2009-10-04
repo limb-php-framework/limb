@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/exception/lmbDbException.class.php');
  * abstract class lmbDbInfo.
  *
  * @package dbal
- * @version $Id: lmbDbInfo.class.php 7784 2009-03-17 19:52:54Z pachanga $
+ * @version $Id: lmbDbInfo.class.php 7997 2009-10-04 17:09:01Z pachanga $
  */
 abstract class lmbDbInfo
 {
@@ -32,9 +32,8 @@ abstract class lmbDbInfo
   function getTable($name)
   {
     if(!$this->hasTable($name))
-    {
       throw new lmbDbException("Table '$name' does not exist");
-    }
+
     return $this->tables[$name];
   }
 
