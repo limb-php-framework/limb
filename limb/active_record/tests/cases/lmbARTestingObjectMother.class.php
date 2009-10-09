@@ -143,7 +143,7 @@ class UserForTest extends lmbActiveRecord
                                                          'foreign_field' => 'group_id',
                                                          'table' => 'user_for_test2group_for_test',
                                                          'class' => 'GroupForTest',
-                                                         'criteria' =>'`group_for_test`.`title`="condition"'
+                                                         'criteria' =>'group_for_test.title="condition"'
                                                                 ));
 
   protected $_has_one = array('linked_object' => array('field' => 'linked_object_id',
