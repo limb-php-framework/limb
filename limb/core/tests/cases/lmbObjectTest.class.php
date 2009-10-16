@@ -75,6 +75,14 @@ class ObjectTestVersion3 extends lmbObject
   }
 }
 
+class ObjectTestVersion4 extends lmbObject 
+{
+  function rawGet($name)
+  {
+    return $this->_getRaw($name);  
+  }
+}
+
 class lmbObjectTest extends UnitTestCase
 {
   function testHasAttribute()
@@ -437,6 +445,57 @@ class lmbObjectTest extends UnitTestCase
       $result[$key] = $value;
 
     $this->assertEqual($array, $result);
-  }  
+  }
+
+  /** @ */
+  function testEmptyNameProperty()
+  {
+    $get = new ObjectTestVersion4();
+    foreach(array('', null, false) as $name)
+    {
+      $get->set($name, 'value');
+      $this->assertTrue($get->rawGet($name) === null);
+
+      $get->$name = 'value';
+      $this->assertTrue($get->rawGet($name) === null);
+
+      $get[$name] = 'value';
+      $this->assertTrue($get->rawGet($name) === null);
+      
+      $this->assertFalse($get->has($name));
+
+      try 
+      {
+        $get->get($name);
+        $this->assertTrue(false);
+      } 
+      catch (lmbNoSuchPropertyException $e)
+      {
+        $this->assertTrue(true);
+      }
+
+      try 
+      {
+        $n = $get->$name;
+        $this->assertTrue(false);
+      } 
+      catch (lmbNoSuchPropertyException $e)
+      {
+        $this->assertTrue(true);
+      }
+      
+      try 
+      {
+        $n = $get[$name];
+        $this->assertTrue(false);
+      } 
+      catch (lmbNoSuchPropertyException $e)
+      {
+        $this->assertTrue(true);
+      }
+
+    }
+  }
+  /** /@ */
 }
 

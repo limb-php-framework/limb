@@ -219,7 +219,7 @@ class lmbObject implements lmbSetInterface
 
   protected function _isGuarded($property)
   {
-    return $property{0} == '_';
+    return isset($property{0}) ? $property{0} == '_' : false;
   }
 
   /**#@+
@@ -285,7 +285,7 @@ class lmbObject implements lmbSetInterface
 
     $capsed = lmb_camel_case($property);
     $method = 'get' . $capsed;
-    if(method_exists($this, $method))
+    if($method !== 'get' && method_exists($this, $method))
     {
       $map[$property] = $method;
       return $method;
@@ -305,7 +305,7 @@ class lmbObject implements lmbSetInterface
       $property = substr($property, 1);
       
     $method = 'set' . lmb_camel_case($property);
-    if(method_exists($this, $method))
+    if($method !== 'set' && method_exists($this, $method))
       return $method;
   }  
 
