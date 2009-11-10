@@ -71,6 +71,20 @@ class lmbSetTest extends UnitTestCase
     $ds->set('test', array('foo'));
     $this->assertIdentical($ds->getArray('test'), array('foo'));
   }
+  
+  function testGetFloat()
+  {
+    $ds = new lmbSet();
+    $ds->set('test', '3.14');
+    $this->assertIdentical($ds->getFloat('test'), 3.14);
+  }
+  
+  function testGetCorrectedFloat()
+  {
+    $ds = new lmbSet();
+    $ds->set('test', '3,14');
+    $this->assertIdentical($ds->getFloat('test'), 3.14);
+  }
 
   function testGetPropertyList()
   {
