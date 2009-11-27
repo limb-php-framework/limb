@@ -89,6 +89,7 @@ CREATE TABLE lecture_for_test (
   "title" varchar(255) default NULL,
   "course_id" int8 default NULL,
   "alt_course_id" int8 default NULL,
+  "program_id" int8 default NULL,
   PRIMARY KEY  (id)
 )  ;
 

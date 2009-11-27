@@ -163,6 +163,7 @@ CREATE TABLE lecture_for_test (
   title varchar(255) default NULL,
   course_id number default NULL,
   alt_course_id number default NULL,
+  program_id number default NULL,
   PRIMARY KEY  (id)
 );
 /

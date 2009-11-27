@@ -70,7 +70,8 @@ CREATE TABLE "lecture_for_test" (
   "id" INTEGER PRIMARY KEY,
   "title" varchar(255) default NULL,
   "course_id" bigint(20) default NULL,
-  "alt_course_id" bigint(20) default NULL
+  "alt_course_id" bigint(20) default NULL,
+  "program_id" bigint(20) default NULL
 );
 
 DROP TABLE "lesson_for_test";

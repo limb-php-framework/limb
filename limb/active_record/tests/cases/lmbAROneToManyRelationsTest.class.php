@@ -559,6 +559,34 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $course->setTitle('Course'. mt_rand());
     return $course;
   }
+  
+  function testCorrectUsageCrossRelations()
+  {
+    $program = new ProgramForTest();
+    $program->setTitle('Program');
+    $program->save();
+    
+    $course = new CourseForTest();
+    $course->setProgram($program);
+    $course->save();
+    
+    $lecture = new LectureForTest();
+    $lecture->setCourse($course);
+    $lecture->setCachedProgram($program);
+    $lecture->save();
+    
+    try
+    {
+      $finded_lectures = $program->getCachedLectures()->find(array(
+        'join' => array('course'),  
+      ))->getArray();
+    } 
+    catch (lmbException $e) 
+    {
+      $this->assertTrue(false);  
+    }
+    
+  }
 }
 
-
+ 

@@ -77,6 +77,7 @@ CREATE OR REPLACE TABLE "lecture_for_test" (
   "title" varchar(255) default NULL,
   "course_id" int default NULL,
   "alt_course_id" int default NULL,
+  "program_id" int default NULL,
   PRIMARY KEY  ("id")
 )  ;
 

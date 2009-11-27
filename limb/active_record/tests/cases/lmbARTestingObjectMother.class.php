@@ -55,7 +55,10 @@ class ProgramForTest extends lmbActiveRecord
   protected $_db_table_name = 'program_for_test';
 
   protected $_has_many = array('courses' => array('field' => 'program_id',
-                                                  'class' => 'CourseForTest'));
+                                                  'class' => 'CourseForTest'),
+    
+                               'cached_lectures' => array('field' => 'program_id',
+                                                          'class' => 'LectureForTest'));
 }
 
 class CourseForTest extends lmbActiveRecord
@@ -89,7 +92,9 @@ class LectureForTest extends lmbActiveRecord
                                                         'class' => 'CourseForTest'),
                                       'alt_course' => array('field' => 'alt_course_id',
                                                             'class' => 'CourseForTest',
-                                                            'can_be_null' => true));
+                                                            'can_be_null' => true),
+                                      'cached_program' => array('field' => 'program_id',
+                                                                'class' => 'ProgramForTest'));
   protected $_test_validator;
 
   function setValidator($validator)
