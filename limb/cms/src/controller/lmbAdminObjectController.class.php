@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/cms/src/controller/lmbObjectController.class.php');
-lmb_require('limb/cms/src/model/lmbCmsImageFileConvertor.class.php');
 lmb_require('limb/datetime/src/lmbDateTime.class.php');
 
 /**
@@ -168,6 +167,8 @@ abstract class lmbAdminObjectController extends lmbObjectController
   {
     $this->_onBeforeImport();
     $this->item->import($this->request);
+	foreach ($this->request->getFiles() as $field => $file)
+	    $this->item->set($field, $file->getName());
     $this->_onAfterImport();
   }
 
