@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/lmbTableGateway.class.php');
  * class lmbDbTools.
  *
  * @package dbal
- * @version $Id: lmbDbTools.class.php 7721 2009-03-11 05:41:05Z pachanga $
+ * @version $Id: lmbDbTools.class.php 8006 2009-12-15 18:44:44Z idler $
  */
 class lmbDbTools extends lmbAbstractTools
 {
@@ -118,7 +118,7 @@ class lmbDbTools extends lmbAbstractTools
       $dsn = $this->_loadDbDsnFromConfig($name);
     }
       
-    if(isset($this->dsnes_available[$dsn]) && is_object($this->dsnes_available[$dsn]))
+    if(is_scalar($dsn) && isset($this->dsnes_available[$dsn]) && is_object($this->dsnes_available[$dsn]))
       return $this->dsnes_available[$dsn];    
 
     return $this->dsnes_available[$this->_getDbDsnHash($dsn)];
