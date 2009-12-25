@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/request/lmbRoutes.class.php');
 lmb_require('limb/toolkit/src/lmbMockToolsWrapper.class.php');
@@ -52,23 +52,23 @@ class lmbWebAppToolsTest extends UnitTestCase
     $this->assertEqual($toolkit->getRoutesUrl($to_url_params, null, $skip_controller = true),
                        LIMB_HTTP_GATEWAY_PATH . 'news/archive');
   }
-  
+
   function testIsWebAppDebugEnabled()
   {
     $toolkit = lmbToolkit :: merge(new lmbWebAppTools());
-    
-    $this->assertFalse($toolkit->isWebAppDebugEnabled());    
-    
+
+    $this->assertFalse($toolkit->isWebAppDebugEnabled());
+
+    lmb_env_set('LIMB_APP_MODE', 'devel');
+    $this->assertTrue($toolkit->isWebAppDebugEnabled());
+
     $toolkit->setConf('common', new lmbObject(array('debug_enabled' => true)));
-    $this->assertTrue($toolkit->isWebAppDebugEnabled());    
-    
+    $this->assertTrue($toolkit->isWebAppDebugEnabled());
+
     $toolkit->setConf('common', new lmbObject(array('debug_enabled' => false)));
     $this->assertFalse($toolkit->isWebAppDebugEnabled());
-    
-    lmb_env_set('LIMB_APP_MODE', 'devel');
-    $this->assertTrue($toolkit->isWebAppDebugEnabled());    
   }
-  
+
 }
 
 
