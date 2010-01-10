@@ -299,6 +299,44 @@ class TaskmanTest extends UnitTestCase
     $this->assertEqual("arg1arg2arg1arg2arg1arg2", $out);
   }
 
+  function testPassArgsToTaskFromDepsDescription()
+  {
+    list($code, $out) = $this->_run("
+    function task_zoo(\$args) { echo implode('', \$args); }
+    /**
+     * @deps zoo 2
+     */
+    function task_bar(\$args) { echo implode('', \$args); }
+    /**
+     * @deps bar 1
+     */
+    function task_foo(\$args) { echo implode('', \$args); }
+    ",
+    '-b foo');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("21", $out);
+  }
+
+  function testCallingTaskMultipleTimesWithDifferentArgs()
+  {
+    list($code, $out) = $this->_run("
+    function task_zoo(\$args) { echo implode('', \$args); }
+    /**
+     * @deps zoo 2,zoo 3,zoo 4
+     */
+    function task_bar(\$args) { echo implode('', \$args); }
+    /**
+     * @deps bar 1
+     */
+    function task_foo(\$args) { echo implode('', \$args); }
+    ",
+    '-b foo');
+
+    $this->assertEqual(0, $code);
+    $this->assertEqual("2341", $out);
+  }
+
   function TODO_testArgsPassedToDefaultTask()
   {
     list($code, $out) = $this->_run("
