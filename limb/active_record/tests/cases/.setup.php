@@ -1,18 +1,12 @@
 <?php
 require_once(dirname(__FILE__) . '/../../common.inc.php');
-require_once('limb/dbal/src/lmbDbDump.class.php');
-require_once('limb/core/src/lmbSet.class.php');
-require_once('limb/core/src/lmbCollection.class.php');
-require_once('limb/active_record/src/lmbActiveRecord.class.php');
-require_once('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
-require_once('limb/dbal/src/lmbTableGateway.class.php');
-require_once('limb/dbal/src/lmbSimpleDb.class.php');
 
-$type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
-$this->dump = new lmbDbDump(dirname(__FILE__) . '/.fixture/init_tests.' . $type);
-$this->dump->load();
+lmb_require('limb/dbal/tests/cases/init.inc.php');
+lmb_tests_init_db_dsn();
+lmb_tests_setup_db(dirname(__FILE__) . '/.fixture/init_tests.');
 
-require_once(dirname(__FILE__) . '/lmbARBaseTestCase.class.php');
-
-
+lmb_require('limb/core/src/lmbSet.class.php');
+lmb_require('limb/core/src/lmbCollection.class.php');
+lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
+lmb_require('limb/active_record/tests/cases/lmbARBaseTestCase.class.php');
+lmb_require('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
