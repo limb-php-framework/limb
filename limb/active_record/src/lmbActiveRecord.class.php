@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 7975 2009-07-30 04:31:54Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 8016 2010-01-13 16:11:54Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -57,8 +57,8 @@ class lmbActiveRecord extends lmbObject
   protected static $_metas = array();
 
   /**
-   * @var object current object's database connection
-   *  @see lmbDbConnection
+   * @var lmbDbConnection object current object's database connection
+   * @see lmbDbConnection
    */
   protected $_db_conn;
 
@@ -1400,6 +1400,9 @@ class lmbActiveRecord extends lmbObject
 
   static protected function _getCallingClass()
   {
+    if (function_exists('get_called_class')) {
+      return get_called_class();
+    }
     //once PHP-5.3 LSB patch is available we'll use get_called_class
     //currently it's a quite a slow implementation and it doesn't
     //recognize multiline function calls
