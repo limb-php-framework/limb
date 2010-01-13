@@ -51,7 +51,7 @@ class lmbEnvFunctionsTest extends UnitTestCase
   function testSetOrWithDefinedConstant()
   {
       define($this->_('foo'), 'bar');
-      
+
       lmb_env_setor($this->_('foo'), 'baz');
       $this->assertEqual(lmb_env_get($this->_('foo')), 'bar');
   }
@@ -133,5 +133,25 @@ class lmbEnvFunctionsTest extends UnitTestCase
     if(!isset($this->_keys[$name]))
       $this->_keys[$name] = $name . mt_rand() . time();
     return $this->_keys[$name];
+  }
+
+  function testLmbVarDir_Get() {
+    $old_value = lmb_env_get('LIMB_VAR_DIR');
+    $new_value = $old_value.'/';
+
+    lmb_env_set('LIMB_VAR_DIR', $new_value);
+    $this->assertIdentical($new_value, lmb_var_dir());
+
+    lmb_env_set('LIMB_VAR_DIR', $old_value);
+  }
+
+  function testLmbVarDir_Set() {
+    $old_value = lmb_env_get('LIMB_VAR_DIR');
+    $new_value = $old_value.'/';
+
+    lmb_var_dir($new_value);
+    $this->assertIdentical($new_value, lmb_var_dir());
+
+    lmb_env_set('LIMB_VAR_DIR', $old_value);
   }
 }

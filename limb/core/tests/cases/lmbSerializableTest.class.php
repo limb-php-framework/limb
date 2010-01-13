@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSerializable.class.php');
 lmb_require(dirname(__FILE__) . '/serializable_stubs.inc.php');
@@ -61,7 +61,7 @@ class lmbSerializableTest extends UnitTestCase
     $container = new lmbSerializable($foo);
     $file = $this->_writeToFile(serialize($container));
 
-    //now moving generated class's file into subdir 
+    //now moving generated class's file into subdir
     $new_dir = mt_rand();
     mkdir("$var_dir/$new_dir");
     rename("$var_dir/foo.php", "$var_dir/$new_dir/foo.php");
@@ -89,7 +89,7 @@ class lmbSerializableTest extends UnitTestCase
     $container = new lmbSerializable($foo);
     $file = $this->_writeToFile(serialize($container));
 
-    //now moving generated class's file into subdir 
+    //now moving generated class's file into subdir
     $new_dir = mt_rand();
     mkdir("$var_dir/$new_dir");
     rename("$var_dir/foo.php", "$var_dir/$new_dir/foo.php");
@@ -102,13 +102,19 @@ class lmbSerializableTest extends UnitTestCase
 
   function testSerializingUnserializeInternalClassThrowsException()
   {
-    if(!class_exists('StdObject'))
+    if(class_exists('StdObject'))
     {
+      $std_class = 'StdObject';
+    }
+    elseif(class_exists('stdClass'))
+    {
+      $std_class = 'stdClass';
+    } else {
       echo "Notice: Could not check internal class serializing \n";
       return;
     }
 
-    $obj = new StdObject;
+    $obj = new $std_class;
     $obj->foo = "foo";
     $container = new lmbSerializable($obj);
 
@@ -133,7 +139,7 @@ class lmbSerializableTest extends UnitTestCase
     $class_path = $this->_getClassPath('lmbSerializable');
 
     $cmd = "php -r \"require_once('$class_path');" .
-           ($include_path != '' ? "set_include_path('$include_path');" : '') . 
+           ($include_path != '' ? "set_include_path('$include_path');" : '') .
            "echo unserialize(file_get_contents('$file'))->getSubject()$call;\"";
 
     exec($cmd, $out, $ret);

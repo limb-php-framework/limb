@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8003 2009-11-11 08:52:12Z knevcher $
+ * @version $Id: common.inc.php 8018 2010-01-13 19:40:08Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -196,8 +196,14 @@ function lmb_require($file_path, $class = '')
     return;
   }
 
-  if(!include_once($file_path))
-    throw new lmbException("Could not include source file '$file_path'");
+  if(!@include_once($file_path))
+  {
+    if(class_exists('lmbException'))
+      $exception_class = 'lmbException';
+    else
+      $exception_class = 'Exception';
+    throw new $exception_class("Could not include source file '$file_path'");
+  }
 }
 
 function lmb_require_class($file_path, $class = '')
@@ -238,8 +244,11 @@ function lmb_autoload($name)
   {
     $file_path = $_ENV['LIMB_LAZY_CLASS_PATHS'][$name];
     //is it safe to use include here instead of include_once?
-    if(!include($file_path))
-      throw new lmbException("Could not include source file '$file_path'");
+    if(!@include_once($file_path))
+    {
+      $trace = new lmbBacktrace(10, 1);
+      throw new lmbException("Could not include source file '$file_path'", array('trace' => $trace->toString()));
+    }
   }
 }
 
@@ -342,8 +351,47 @@ function lmb_plural($word)
   return $result;
 }
 
+function lmb_var_dir($value = null)
+{
+  if($value)
+    lmb_env_set('LIMB_VAR_DIR', $value);
+  else
+    return lmb_env_get('LIMB_VAR_DIR');
+}
+
+function lmb_package_include($name, $packages_dir = null)
+{
+  if(is_null($packages_dir))
+    $packages_dir = lmb_env_get('LIMB_PACKAGES_DIR');
+
+  lmb_require($packages_dir . $name . '/common.inc.php');
+}
+
+function lmb_package_register($name, $packages_dir = '')
+{
+  if(!isset($_ENV['LIMB_PACKAGES_INITED']))
+    $_ENV['LIMB_PACKAGES_INITED'] = array();
+
+
+  $_ENV['LIMB_PACKAGES_INITED'][$packages_dir . $name] = true;
+}
+
+function lmb_package_registered($name, $packages_dir = '')
+{
+  return isset($_ENV['LIMB_PACKAGES_INITED'][$packages_dir . $name]);
+}
+
+function lmb_packages_list()
+{
+  if(!isset($_ENV['LIMB_PACKAGES_INITED']))
+    return array();
+  else
+    return array_keys($_ENV['LIMB_PACKAGES_INITED']);
+}
+
+lmb_env_setor('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
+
 lmb_require('limb/core/src/exception/lmbException.class.php');
+lmb_require('limb/core/src/lmbBacktrace.class.php');
 
 spl_autoload_register('lmb_autoload');
-
-
