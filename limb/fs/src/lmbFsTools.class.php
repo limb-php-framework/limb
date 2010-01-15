@@ -24,7 +24,7 @@ class lmbFsTools extends lmbAbstractTools
   function findFileByAlias($alias, $paths, $locator_name = null, $find_all = false)
   {
     $locator = $this->toolkit->getFileLocator($paths, $locator_name);
-    
+
     if($find_all)
       return $locator->locateAll($alias);
     else
@@ -57,7 +57,7 @@ class lmbFsTools extends lmbAbstractTools
     else
       $file_locations = new lmbIncludePathFileLocations(explode(';', $paths));
 
-    if(lmb_env_has('LIMB_VAR_DIR'))
+    if(lmb_env_has('LIMB_VAR_DIR') && ('devel' != lmb_env_get('LIMB_APP_MODE')))
       $locator = new lmbCachingFileLocator(new lmbFileLocator($file_locations),
                                            lmb_env_get('LIMB_VAR_DIR') . '/locators/',
                                            $locator_name);

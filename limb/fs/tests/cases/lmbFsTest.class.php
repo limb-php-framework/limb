@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/fs/src/lmbFs.class.php');
 
@@ -187,6 +187,17 @@ class lmbFsTest extends UnitTestCase
     lmbFs :: mkdir(LIMB_VAR_DIR . '/./tmp\../tmp/wow////hey/');
 
     $this->assertTrue(is_dir(LIMB_VAR_DIR . '/tmp/wow/hey/'));
+  }
+
+  function testMkdirWithoutDirValue()
+  {
+    try {
+      lmbFs :: mkdir('');
+      $this->fail();
+    }
+    catch(lmbFsException $e)
+    {
+    }
   }
 
   function testDirpath()
