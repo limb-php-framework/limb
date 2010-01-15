@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8018 2010-01-13 19:40:08Z korchasa $
+ * @version $Id: common.inc.php 8020 2010-01-15 17:35:59Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -364,14 +364,21 @@ function lmb_package_include($name, $packages_dir = null)
   if(is_null($packages_dir))
     $packages_dir = lmb_env_get('LIMB_PACKAGES_DIR');
 
-  lmb_require($packages_dir . $name . '/common.inc.php');
+  $main_file_path = $packages_dir . $name . '/common.inc.php';
+  try {
+    lmb_require($packages_dir . $name . '/common.inc.php');
+  }
+  catch(lmbException $e)
+  {
+    lmb_require('limb/core/src/exception/lmbNoSuchPackageException.class.php');
+    throw new lmbNoSuchPackageException("Package '{$name}' not found", array( 'name' => $name, 'dir' => $packages_dir));
+  }
 }
 
 function lmb_package_register($name, $packages_dir = '')
 {
   if(!isset($_ENV['LIMB_PACKAGES_INITED']))
     $_ENV['LIMB_PACKAGES_INITED'] = array();
-
 
   $_ENV['LIMB_PACKAGES_INITED'][$packages_dir . $name] = true;
 }
