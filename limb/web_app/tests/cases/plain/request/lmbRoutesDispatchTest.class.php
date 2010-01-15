@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/request/lmbRoutes.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
@@ -202,9 +202,9 @@ class lmbRoutesDispatchTest extends UnitTestCase
     $this->assertEqual($result['action'], 'last_articles');
     $this->assertFalse(isset($result['year']));
   }
-    
+
   function testUrlWithUrlEncodedParams()
-  {      
+  {
     $config = array(
       array(
         'path' => '/:controller/:action/:email',
@@ -215,12 +215,12 @@ class lmbRoutesDispatchTest extends UnitTestCase
     );
     $routes = new lmbRoutes($config);
     $result = $routes->dispatch('/blog/display/bob-sinclar%40yahoo.com');
-    
+
     $this->assertEqual($result['controller'], 'blog');
     $this->assertEqual($result['action'], 'display');
-    $this->assertEqual($result['email'], 'bob-sinclar@yahoo.com');        
+    $this->assertEqual($result['email'], 'bob-sinclar@yahoo.com');
   }
-  
+
   function testApplyDispatchFilter()
   {
     $config = array(array('path' => '/:controller/:action',
@@ -232,6 +232,33 @@ class lmbRoutesDispatchTest extends UnitTestCase
 
     $this->assertEqual($result['controller'], 'Blog');
     $this->assertEqual($result['action'], 'display');
+  }
+
+  function testExtraDataAfterSecondDelimiter()
+  {
+     $config = array(array('path' => '/:controller:test/:action',
+                           'defaults' => array('action' => 'display')),
+                     array('path' => '/test2:controller/:action',
+                           'defaults' => array('action' => 'display')),
+                     array('path' => '/test3:controller:test5/:action/:id:.htm',
+                           'defaults' => array('action' => 'display')));
+
+    $routes = new lmbRoutes($config);
+    $result = $routes->dispatch('/blogtest/index');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'index');
+
+    $result = $routes->dispatch('/test2blog');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'display');
+
+    $result = $routes->dispatch('/test3blogtest5/display/test.htm');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'display');
+    $this->assertEqual($result['id'], 'test');
   }
 
   function _processDispatchResult(&$dispatched)

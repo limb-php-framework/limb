@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class lmbRoutes.
  *
  * @package web_app
- * @version $Id: lmbRoutes.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbRoutes.class.php 8019 2010-01-15 16:43:46Z korchasa $
  */
 class lmbRoutes
 {
@@ -107,6 +107,9 @@ class lmbRoutes
     if(!preg_match($regexp, $url, $matched_params))
       return null;
 
+    if (array_filter($matched_params)!=$matched_params)
+      return null;
+
     array_shift($matched_params);
 
     $result = array();
@@ -132,7 +135,7 @@ class lmbRoutes
     {
       if($name = $this->_getNamedUrlParam($element))
       {
-        $final_regexp_parts[] = self :: NAMED_PARAM_REGEXP;
+        $final_regexp_parts[] = '(?:\/'. preg_replace('/:'. $name .':?/', '([^\/]+)', $element). ')?';
         $named_params[] = $name;
       }
       elseif ($name = $this->_getExtraNamedParam($element))
@@ -149,7 +152,7 @@ class lmbRoutes
 
   protected function _getNamedUrlParam($element)
   {
-    if(preg_match('/^:(.+)$/', $element, $matches))
+    if(preg_match('/^[^:]*:([^:]+):?.*$/', $element, $matches))
       return $matches[1];
     else
       return null;
@@ -188,16 +191,16 @@ class lmbRoutes
   {
     $path = $route['path'];
 
-    if(!$this->_routeParamsMeetRequirements($route, $params)) 
+    if(!$this->_routeParamsMeetRequirements($route, $params))
     {
       return "";
     }
-    
+
     foreach($params as $param_name => $param_value)
     {
       if(strpos($path, ':'.$param_name) === false)
         continue;
-      
+
       if (isset($route['defaults'][$param_name]) && ($route['defaults'][$param_name] === $param_value)) {
         unset($params[$param_name]); // default params will be substituted lower
         continue;
@@ -212,7 +215,7 @@ class lmbRoutes
 
     if(isset($route['defaults']))
     {
-      // we define here required default params for building right url, 
+      // we define here required default params for building right url,
       // other params at the end of the path can be omitted.
       $required_params = array();
       if (preg_match_all('|(:\w+/?)+(?=/\w+)|', $path, $matched_params))
@@ -227,10 +230,10 @@ class lmbRoutes
       {
         if(!in_array(':' . $param_name, $required_params))
           $param_value = '';
-          
+
         $path = str_replace(':' . $param_name, $param_value, $path);
       }
-      
+
       $path = preg_replace('~/+~', '/', $path);
     }
 
