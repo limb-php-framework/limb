@@ -92,24 +92,32 @@ class lmbPackagesFunctionsTest extends UnitTestCase
     $this->assertEqual('/bar/foo', lmb_package_get_path('foo'));
   }
 
-  function testRequirePackageSource()
+  function testRequirePackageClass()
   {
     $package_name = 'require_package_source';
     $package_source_dir = lmb_env_get('LIMB_PACKAGES_DIR').'/'.$package_name.'/src/';
-    $package_source_filename = 'SourceFileForTests.php';
+    $package_class = 'SourceFileForTests';
 
     $this->createPackageMainFile($package_name, lmb_env_get('LIMB_PACKAGES_DIR'));
     if(!file_exists($package_source_dir))
       mkdir($package_source_dir);
-    $source_file_content = '<?php lmbPackagesFunctionsTest::$counter++; ';
-    file_put_contents($package_source_dir.'/'.$package_source_filename, $source_file_content);
+    $source_file_content =<<<EOD
+<?php
+class $package_class {
+  static function increase() {
+    lmbPackagesFunctionsTest::\$counter++;
+  }
+}
+EOD;
+    file_put_contents($package_source_dir.'/'.$package_class.'.class.php', $source_file_content);
 
     $this->assertIdentical(0, lmbPackagesFunctionsTest::$counter);
 
     lmb_package_require($package_name);
     $this->assertIdentical(1, lmbPackagesFunctionsTest::$counter);
 
-    lmb_require_package_source($package_name,$package_source_filename);
+    lmb_require_package_class($package_name, 'SourceFileForTests');
+    $package_class::increase();
     $this->assertIdentical(2, lmbPackagesFunctionsTest::$counter);
   }
 }

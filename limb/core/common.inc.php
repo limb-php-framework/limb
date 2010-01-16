@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8028 2010-01-16 04:27:42Z korchasa $
+ * @version $Id: common.inc.php 8029 2010-01-16 10:09:52Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -418,9 +418,9 @@ function lmb_packages_list()
     return $_ENV['LIMB_PACKAGES_INITED'];
 }
 
-function lmb_require_package_source($package, $path_in_package_src)
+function lmb_require_package_class($package, $path_in_package_src)
 {
-  $file_path = lmb_package_get_path($package).'/src/'.$path_in_package_src;
+  $file_path = lmb_package_get_path($package).'/src/'.$path_in_package_src.'.class.php';
   lmb_require($file_path);
 }
 
