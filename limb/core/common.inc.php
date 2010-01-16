@@ -9,10 +9,15 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8020 2010-01-15 17:35:59Z korchasa $
+ * @version $Id: common.inc.php 8023 2010-01-16 01:06:14Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
+define('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
+
+lmb_require('limb/core/src/exception/lmbException.class.php');
+lmb_require('limb/core/src/exception/lmbInvalidArgumentException.class.php');
+lmb_require('limb/core/src/lmbBacktrace.class.php');
 
 function lmb_env_has($name)
 {
@@ -244,10 +249,18 @@ function lmb_autoload($name)
   {
     $file_path = $_ENV['LIMB_LAZY_CLASS_PATHS'][$name];
     //is it safe to use include here instead of include_once?
-    if(!@include_once($file_path))
+    if(!@include($file_path))
     {
-      $trace = new lmbBacktrace(10, 1);
-      throw new lmbException("Could not include source file '$file_path'", array('trace' => $trace->toString()));
+      $message = "Could not include source file '$file_path'";
+      if(class_exists('lmbException') && class_exists('lmbBacktrace'))
+      {
+        $trace = new lmbBacktrace(10, 1);
+        throw new lmbException($message, array('trace' => $trace->toString()));
+      }
+      else
+      {
+        throw new Exception($message);
+      }
     }
   }
 }
@@ -396,9 +409,59 @@ function lmb_packages_list()
     return array_keys($_ENV['LIMB_PACKAGES_INITED']);
 }
 
-lmb_env_setor('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
+function lmb_assert_true($value)
+{
+  if(!$value)
+    throw new lmbInvalidArgumentException('Value must be true', array('value' => $value), 0, 1);
+}
 
-lmb_require('limb/core/src/exception/lmbException.class.php');
-lmb_require('limb/core/src/lmbBacktrace.class.php');
+function lmb_assert_type($value, $expected_type)
+{
+  $given_type = gettype($value);
+
+  if($expected_type === $given_type)
+    return;
+
+  $aliases = array(
+    'bool' => 'boolean',
+    'numeric' => 'integer',
+    'float' => 'double',
+  );
+  if(isset($aliases[$expected_type]) && $aliases[$expected_type] == $given_type)
+    return;
+
+  if('array' == $expected_type && 'object' == $given_type && $value instanceof ArrayAccess)
+    return;
+
+  if('object' == $given_type && $value instanceof $expected_type)
+    return;
+
+  throw new lmbInvalidArgumentException('Value must be a '.$expected_type.' type.', array('value' => $value), 0, 1);
+}
+
+function lmb_assert_array_with_key($array, $key)
+{
+  if(!is_array($array) && !(is_object($array) && $array instanceof ArrayAccess))
+    throw new lmbInvalidArgumentException('Given value not a array', array('value' => $array), 0, 1);
+
+  if(!isset($array[$key]))
+    throw new lmbInvalidArgumentException('Array have no key '.$key, array(), 0, 1);
+}
+
+function lmb_assert_reg_exp($string, $pattern)
+{
+  if(!is_string($string) && !(is_object($string) && method_exists($string, '__toString')))
+    throw new lmbInvalidArgumentException('Given value not a string', array('string' => $string), 0, 1);
+
+  if('/' != $pattern{0} && '{' != $pattern{0} && '|' != $pattern{0})
+  {
+    if(false !== strpos($string, $pattern))
+      return;
+  }
+  elseif(preg_match($pattern, $string))
+    return;
+
+  throw new lmbInvalidArgumentException("Pattern '{$pattern}' not found in '{$string}'", array(), 0, 1);
+}
 
 spl_autoload_register('lmb_autoload');
