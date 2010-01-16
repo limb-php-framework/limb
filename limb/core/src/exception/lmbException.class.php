@@ -2,22 +2,22 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class lmbException.
  *
  * @package core
- * @version $Id: lmbException.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbException.class.php 8022 2010-01-16 01:04:55Z korchasa $
  */
 class lmbException extends Exception
 {
   protected $params = array();
 
-  function __construct($message, $params = array(), $code = 0)
+  function __construct($message, $params = array(), $code = 0, $hide_calls_count = 0)
   {
     if(is_array($params) && sizeof($params))
     {
@@ -25,7 +25,7 @@ class lmbException extends Exception
       $message .= "\n[params: " . var_export($params, true) . "]\n";
     }
 
-    $this->backtrace = debug_backtrace();
+    $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count + 1);
     parent :: __construct($message, $code);
   }
 
@@ -33,7 +33,7 @@ class lmbException extends Exception
   {
     return $this->params;
   }
-  
+
   function getParam($name)
   {
     if(isset($this->params[$name]))
