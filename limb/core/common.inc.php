@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8026 2010-01-16 02:48:48Z korchasa $
+ * @version $Id: common.inc.php 8027 2010-01-16 02:50:57Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -170,8 +170,6 @@ function lmb_require($file_path, $class = '')
   else
     $tried[$file_path . $class] = true;
 
-  //do we really need this stuff here?
-
   if(strpos($file_path, '*') !== false)
   {
     $file_paths = lmb_glob($file_path);
@@ -201,7 +199,7 @@ function lmb_require($file_path, $class = '')
     return;
   }
 
-  if(!@include_once($file_path))
+  if(!@include($file_path))
   {
     if(class_exists('lmbException'))
       $exception_class = 'lmbException';
