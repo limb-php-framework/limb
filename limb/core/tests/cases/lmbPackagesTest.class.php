@@ -38,14 +38,14 @@ class lmbPackagesFunctionsTest extends UnitTestCase
   function testPackageInclude()
   {
     $this->createPackageMainFile('include', lmb_env_get('LIMB_PACKAGES_DIR'));
-    lmb_package_include('include');
+    lmb_package_require('include');
     $this->assertIdentical(1, lmbPackagesFunctionsTest::$counter);
   }
 
   function testPackageInclude_NotExistedPackage()
   {
     try {
-      lmb_package_include($name = 'not_existed', $package_dir = 'darkside');
+      lmb_package_require($name = 'not_existed', $package_dir = 'darkside');
       $this->fail();
     } catch (lmbNoSuchPackageException $e) {
       $this->assertEqual($package_dir, $e->getParam('dir'));
@@ -56,7 +56,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
   function testPackageInclude_CustomPath()
   {
     $this->createPackageMainFile('include_custom', lmb_var_dir());
-    lmb_package_include('include_custom', lmb_var_dir());
+    lmb_package_require('include_custom', lmb_var_dir());
     $this->assertIdentical(1, lmbPackagesFunctionsTest::$counter);
   }
 
@@ -78,8 +78,8 @@ class lmbPackagesFunctionsTest extends UnitTestCase
   {
     $this->createPackageMainFile('include_many', lmb_env_get('LIMB_PACKAGES_DIR'));
 
-    lmb_package_include('include_many');
-    lmb_package_include('include_many');
+    lmb_package_require('include_many');
+    lmb_package_require('include_many');
 
     $this->assertIdentical(1, lmbPackagesFunctionsTest::$counter);
   }

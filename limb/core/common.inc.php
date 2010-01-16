@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8023 2010-01-16 01:06:14Z korchasa $
+ * @version $Id: common.inc.php 8024 2010-01-16 01:23:30Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -372,7 +372,7 @@ function lmb_var_dir($value = null)
     return lmb_env_get('LIMB_VAR_DIR');
 }
 
-function lmb_package_include($name, $packages_dir = null)
+function lmb_package_require($name, $packages_dir = null)
 {
   if(is_null($packages_dir))
     $packages_dir = lmb_env_get('LIMB_PACKAGES_DIR');
