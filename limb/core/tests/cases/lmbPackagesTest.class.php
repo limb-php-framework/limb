@@ -67,13 +67,6 @@ class lmbPackagesFunctionsTest extends UnitTestCase
     $this->assertTrue(lmb_package_registered('foo'));
   }
 
-  function testPackageRegisterAndRegistered_CustomPath()
-  {
-    lmb_package_register('foo', lmb_var_dir());
-    $this->assertFalse(lmb_package_registered('foo'));
-    $this->assertTrue(lmb_package_registered('foo', lmb_var_dir()));
-  }
-
   function testPackageInclude_ManyTimes()
   {
     $this->createPackageMainFile('include_many', lmb_env_get('LIMB_PACKAGES_DIR'));
@@ -91,7 +84,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
     lmb_package_register('foo');
     lmb_package_register('bar', 'baz/');
 
-    $this->assertEqual(array('foo', 'baz/bar'), lmb_packages_list());
+    $this->assertEqual(array('foo', 'bar'), lmb_packages_list());
   }
 
 
