@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8027 2010-01-16 02:50:57Z korchasa $
+ * @version $Id: common.inc.php 8028 2010-01-16 04:27:42Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -388,12 +388,12 @@ function lmb_package_require($name, $packages_dir = '')
   }
 }
 
-function lmb_package_register($name)
+function lmb_package_register($name, $package_dir)
 {
   if(!isset($_ENV['LIMB_PACKAGES_INITED']))
     $_ENV['LIMB_PACKAGES_INITED'] = array();
 
-  $_ENV['LIMB_PACKAGES_INITED'][$name] = true;
+  $_ENV['LIMB_PACKAGES_INITED'][$name] = $package_dir.$name;
 }
 
 function lmb_package_registered($name)
@@ -401,12 +401,27 @@ function lmb_package_registered($name)
   return isset($_ENV['LIMB_PACKAGES_INITED'][$name]);
 }
 
+function lmb_package_get_path($name)
+{
+  if(!isset($_ENV['LIMB_PACKAGES_INITED'][$name]))
+    throw new lmbNoSuchPackageException(
+        "Package '{$name}' not registered", array( 'name' => $name)
+    );
+  return $_ENV['LIMB_PACKAGES_INITED'][$name];
+}
+
 function lmb_packages_list()
 {
   if(!isset($_ENV['LIMB_PACKAGES_INITED']))
     return array();
   else
-    return array_keys($_ENV['LIMB_PACKAGES_INITED']);
+    return $_ENV['LIMB_PACKAGES_INITED'];
+}
+
+function lmb_require_package_source($package, $path_in_package_src)
+{
+  $file_path = lmb_package_get_path($package).'/src/'.$path_in_package_src;
+  lmb_require($file_path);
 }
 
 function lmb_assert_true($value)
@@ -465,3 +480,4 @@ function lmb_assert_reg_exp($string, $pattern)
 }
 
 spl_autoload_register('lmb_autoload');
+new lmbException('ugly hack');
