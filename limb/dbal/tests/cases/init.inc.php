@@ -39,13 +39,9 @@ function lmb_tests_setup_db($prefix)
   $dump->load();
 }
 
-function lmb_tests_teardown_db($prefix)
+function lmb_tests_teardown_db()
 {
-  $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
-  if(!file_exists($prefix.$type))
-    return;
-
   lmb_require('limb/dbal/src/lmbDbDump.class.php');
-  $dump = new lmbDbDump($prefix . $type);
+  $dump = new lmbDbDump(null);
   $dump->clean();
 }
