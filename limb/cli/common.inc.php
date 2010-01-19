@@ -9,8 +9,7 @@
 
 /**
  * @package cli
- * @version $Id: common.inc.php 7686 2009-03-04 19:57:12Z korchasa $
+ * @version $Id: common.inc.php 8036 2010-01-19 20:12:58Z korchasa $
  */
 require_once('limb/core/common.inc.php');
-
-
+lmb_package_register('cli', dirname(__FILE__));
