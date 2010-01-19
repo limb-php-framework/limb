@@ -12,6 +12,8 @@
  * @version $Id$
  */
 require_once('limb/core/common.inc.php');
+lmb_package_require('toolkit');
+
 lmb_require('limb/view/toolkit.inc.php');
 
-
+lmb_package_register('view', dirname(__FILE__));

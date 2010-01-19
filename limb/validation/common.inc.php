@@ -9,9 +9,9 @@
 
 /**
  * @package validation
- * @version $Id: common.inc.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: common.inc.php 8048 2010-01-19 22:12:02Z korchasa $
  */
 require_once('limb/core/common.inc.php');
-require_once('limb/i18n/common.inc.php');
+lmb_package_require('i18n');
 
-
+lmb_package_register('validation', dirname(__FILE__));

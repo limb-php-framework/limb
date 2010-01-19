@@ -12,6 +12,6 @@
  * @version $Id$
  */
 require_once('limb/core/common.inc.php');
-require_once('limb/fs/toolkit.inc.php');
+lmb_package_require('fs');
 
-
+lmb_package_register('config', dirname(__FILE__));

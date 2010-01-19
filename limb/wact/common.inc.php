@@ -9,9 +9,11 @@
 
 /**
  * @package wact
- * @version $Id: common.inc.php 7686 2009-03-04 19:57:12Z korchasa $
+ * @version $Id: common.inc.php 8048 2010-01-19 22:12:02Z korchasa $
  */
-require_once(dirname(__FILE__) . '/error.inc.php');
+require_once('limb/core/common.inc.php');
+
+lmb_require('limb/wact/error.inc.php');
 
 if(!defined('WACT_DEFAULT_CONFIG_DIR'))
   define('WACT_DEFAULT_CONFIG_DIR', 'limb/wact/config/');
@@ -19,4 +21,6 @@ if(!defined('WACT_DEFAULT_CONFIG_DIR'))
 if(!defined('WACT_CACHE_DIR'))
   define('WACT_CACHE_DIR', dirname(__FILE__) . '/cache/');
 
-  if(version_compare(PHP_VERSION,"5.3","<")) set_magic_quotes_runtime(0);
+if(version_compare(PHP_VERSION,"5.3","<")) set_magic_quotes_runtime(0);
+
+lmb_package_register('wact', dirname(__FILE__));

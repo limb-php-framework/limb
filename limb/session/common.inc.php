@@ -9,10 +9,13 @@
 
 /**
  * @package session
- * @version $Id: common.inc.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: common.inc.php 8048 2010-01-19 22:12:02Z korchasa $
  */
 require_once('limb/core/common.inc.php');
-lmb_require('limb/dbal/common.inc.php');
+lmb_package_require('dbal');
+
 lmb_require('limb/session/src/lmbSession.class.php');
+
+lmb_package_register('session', dirname(__FILE__));
 
 
