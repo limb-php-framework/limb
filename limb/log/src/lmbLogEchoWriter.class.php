@@ -7,18 +7,18 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 
+lmb_require('limb/src/lmbLogWriter.interface.php');
+
 /**
  * class lmbLogEchoWriter.
  *
  * @package log
  * @version $Id$
  */
-class lmbLogEchoWriter
+class lmbLogEchoWriter implements lmbLogWriter
 {
-  function write($entry)
+  function write(lmbLogEntry $entry)
   {
     echo $entry->toString();
   }
 }
-
-

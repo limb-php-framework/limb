@@ -8,6 +8,7 @@
  */
 
 lmb_require('limb/fs/src/lmbFs.class.php');
+lmb_require('limb/fs/src/lmbLogWriter.interface.php');
 
 /**
  * class lmbLogFileWriter.
@@ -19,17 +20,18 @@ class lmbLogFileWriter
 {
   protected $log_files;
 
-  function __construct($log_dir)
+  function __construct(lmbUri $dsn)
   {
+  	$log_dir = $dsn->getPath();
     $this->log_files = array(
-      lmbLog :: NOTICE => $log_dir . '/notice.log',
-      lmbLog :: WARNING => $log_dir . '/warning.log',
-      lmbLog :: ERROR => $log_dir . '/error.log',
-      lmbLog :: INFO => $log_dir . '/debug.log'
+      lmbLog :: LEVEL_NOTICE => $log_dir . '/notice.log',
+      lmbLog :: LEVEL_WARNING => $log_dir . '/warning.log',
+      lmbLog :: LEVEL_ERROR => $log_dir . '/error.log',
+      lmbLog :: LEVEL_INFO => $log_dir . '/debug.log'
     );
   }
 
-  function write($entry)
+  function write(lmbLogEntry $entry)
   {
     $this->_appendToFile($this->getLogFile($entry->getLevel()),
                          $entry->asText(),

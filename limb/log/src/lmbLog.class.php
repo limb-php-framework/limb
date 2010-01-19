@@ -6,8 +6,11 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+lmb_require('limb/log/src/lmbLogWriter.interface.php');
 lmb_require('limb/log/src/lmbLogEntry.class.php');
 lmb_require('limb/core/src/lmbBacktrace.class.php');
+lmb_require('limb/net/src/lmbUri.class.php');
+lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
 /**
  * class lmbLog.
@@ -17,10 +20,10 @@ lmb_require('limb/core/src/lmbBacktrace.class.php');
  */
 class lmbLog
 {
-  const NOTICE  = 1;
-  const WARNING = 2;
-  const ERROR   = 3;
-  const INFO    = 4;
+  const LEVEL_NOTICE  = 1;
+  const LEVEL_WARNING = 2;
+  const LEVEL_ERROR   = 3;
+  const LEVEL_INFO    = 4;
 
   protected $logs = array();
   protected $log_writers = array();
@@ -36,31 +39,31 @@ class lmbLog
   function __construct()
   {
     $this->allowed_levels = array(
-      lmbLog :: NOTICE => true,
-      lmbLog :: WARNING => true,
-      lmbLog :: ERROR => true,
-      lmbLog :: INFO => true
+      lmbLog :: LEVEL_NOTICE => true,
+      lmbLog :: LEVEL_WARNING => true,
+      lmbLog :: LEVEL_ERROR => true,
+      lmbLog :: LEVEL_INFO => true
     );
   }
 
   function skipNotice()
   {
-    $this->_skipErrorLevel(lmbLog :: NOTICE);
+    $this->_skipErrorLevel(lmbLog :: LEVEL_NOTICE);
   }
 
   function skipWarning()
   {
-    $this->_skipErrorLevel(lmbLog :: WARNING);
+    $this->_skipErrorLevel(lmbLog :: LEVEL_WARNING);
   }
 
   function skipError()
   {
-    $this->_skipErrorLevel(lmbLog :: ERROR);
+    $this->_skipErrorLevel(lmbLog :: LEVEL_ERROR);
   }
 
   function skipInfo()
   {
-    $this->_skipErrorLevel(lmbLog :: INFO);
+    $this->_skipErrorLevel(lmbLog :: LEVEL_INFO);
   }
 
   function _skipErrorLevel($level)
@@ -71,6 +74,11 @@ class lmbLog
   function registerWriter($writer)
   {
     $this->log_writers[] = $writer;
+  }
+  
+  function getWriters()
+  {
+  	return $this->log_writers;
   }
 
   function reset()
@@ -100,7 +108,7 @@ class lmbLog
     if(!$backtrace)
       $backtrace = new lmbBacktrace($this->backtrace_depth['notice']);
 
-    $this->_write(lmbLog :: NOTICE, $message, $params, $backtrace);
+    $this->_write(lmbLog :: LEVEL_NOTICE, $message, $params, $backtrace);
   }
 
   function warning($message, $params = array(), $backtrace = null)
@@ -111,7 +119,7 @@ class lmbLog
     if(!$backtrace)
       $backtrace = new lmbBacktrace($this->backtrace_depth['warning']);
 
-    $this->_write(lmbLog :: WARNING, $message, $params, $backtrace);
+    $this->_write(lmbLog :: LEVEL_WARNING, $message, $params, $backtrace);
   }
 
   function error($message, $params = array(), $backtrace = null)
@@ -122,7 +130,7 @@ class lmbLog
     if(!$backtrace)
       $backtrace = new lmbBacktrace($this->backtrace_depth['error']);
 
-    $this->_write(lmbLog :: ERROR, $message, $params, $backtrace);
+    $this->_write(lmbLog :: LEVEL_ERROR, $message, $params, $backtrace);
   }
 
   function exception($e)
@@ -172,6 +180,15 @@ class lmbLog
   function isLogEnabled()
   {
     return (bool) lmb_env_get('LIMB_LOG_ENABLE', true);
+  }
+  
+  static function getLogClassByDsn(lmbUri $dsn)
+  {
+  	$writer_name = 'lmbLog'.ucfirst($dsn->getProtocol()).'Writer';
+  	$file = dirname(__FILE__).'/'.$writer_name.'.class.php';
+    if(!file_exists($file))
+      throw new lmbFileNotFoundException($file, 'log writer class not found');
+    return $writer_name;
   }
 }
 
