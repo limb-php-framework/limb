@@ -24,7 +24,11 @@ function lmb_camel_case($str, $ucfirst = true)
   for($i=0;$i<$len;$i++)
   {
     $item = $items[$i];
-    if($item)
+    if (is_numeric($item) && !$first)
+     {
+      $res .= '_'. $item;
+    }
+    elseif($item)
     {
       //we don't ucfirst first word by default
       $res .= ($first && !$ucfirst ? $item : ucfirst($item));
@@ -50,7 +54,7 @@ function lmb_under_scores($str)
   $items = preg_split('~([A-Z][a-z0-9]+)~', $str, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
   $res = '';
   foreach($items as $item)
-    $res .= ($item == '_' ? '' : '_') . strtolower($item);
+    $res .= ($item == '_' || $item[0] == '_' ? '' : '_') . strtolower($item);
   $res = substr($res, 1);
   $cache[$str] = $res;
   return $res;

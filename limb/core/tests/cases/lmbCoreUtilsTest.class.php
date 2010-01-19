@@ -51,6 +51,17 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_plural('half'), 'halves');
     $this->assertEqual(lmb_plural('man'), 'men');
   }
-  
+
+  function testCamelCaseWithNumbers()
+  {
+    $this->assertEqual(lmb_camel_case('foo_0'), 'Foo_0');
+    $this->assertEqual(lmb_camel_case('foo_1_bar'), 'Foo_1Bar');
+  }
+
+  function testUnderScoresWithNumbers()
+  {
+    $this->assertEqual(lmb_under_scores('Foo_0'), 'foo_0');
+    $this->assertEqual(lmb_under_scores('Foo_1Bar'), 'foo_1_bar');
+  }
 }
 
