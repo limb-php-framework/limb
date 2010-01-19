@@ -21,9 +21,9 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
    * @var lmbCacheAbstractConnection
    */
   protected $cache;
-  
+
   protected $storage_init_file;
-  
+
   function __construct()
   {
     if($this->storage_init_file)
@@ -40,7 +40,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     @unlink(LIMB_VAR_DIR . '/diff_thread.php');
     $this->cache->flush();
   }
-  
+
   protected function _getUniqueId()
   {
     return mt_rand();
@@ -63,7 +63,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $id1 = $this->_getUniqueId();
     $id2 = $this->_getUniqueId();
     $id3 = $this->_getUniqueId();
-    
+
     $this->cache->set($id1, $v1 = 'value1');
     $this->cache->set($id2, $v2 = 'value2');
 
@@ -73,11 +73,11 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $this->assertEqual($v2, $var[$id2]);
     $this->assertNull($var[$id3]);
   }
-  
+
   function testGet_Positive_Multiple_WithZero()
   {
     $id1 = $this->_getUniqueId();
-    
+
     $this->cache->add($id1, $v1 = 0);
 
     $var = $this->cache->get(array($id1));
@@ -90,7 +90,6 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $this->cache->set($id = $this->_getUniqueId(), $v = false);
     $var = $this->cache->get($id);
     $this->assertIdentical($var, $v);
-
   }
 
   function testAdd()
@@ -154,7 +153,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $this->assertNull($this->cache->get($id_short));
     $this->assertIdentical($value, $this->cache->get($id_long));
   }
-  
+
   function testGetWithTtl_differentThread()
   {
     $value = 'value';
@@ -208,27 +207,30 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
     $this->assertEqual(42, $cache->get('bar'));
   }
-  
+
   function testIncrementAndDecrement()
   {
     $key = $this->_getUniqueId();
 
     $this->assertFalse($this->cache->increment($key));
 
-    $this->cache->set($key, "string");
-    $this->assertEqual(1, $this->cache->increment($key));
-    
-    $this->cache->set($key, 0);
-    $this->assertEqual(1, $this->cache->increment($key));
-    
-    $this->cache->increment($key, 10);
-    $this->assertEqual(11, $this->cache->get($key));
+    $this->cache->set($key.'1', "string");
+    $this->assertEqual(1, $this->cache->increment($key.'1'));
 
-    $this->cache->decrement($key, 1);
-    $this->assertEqual(10, $this->cache->get($key));
+    $this->cache->set($key.'2', 0);
+    $this->assertEqual(1, $this->cache->increment($key.'2'));
 
-    $this->cache->decrement($key, 100);
-    $this->assertEqual(0, $this->cache->get($key));
+    $this->cache->set($key.'3', 1);
+    $this->cache->increment($key.'3', 10);
+    $this->assertEqual(11, $this->cache->get($key.'3'));
+
+    $this->cache->set($key.'4', 11);
+    $this->cache->decrement($key.'4', 1);
+    $this->assertEqual(10, $this->cache->get($key.'4'));
+
+    $this->cache->set($key.'5', 11);
+    $this->cache->decrement($key.'5', 100);
+    $this->assertEqual(0, $this->cache->get($key.'5'));
   }
 
   function testSafeIncrement()
@@ -243,13 +245,13 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $this->assertEqual(0, $this->cache->safeDecrement($key));
     $this->assertFalse(null === $this->cache->get($key));
   }
-  
+
   function testLock()
   {
     $this->assertTrue($this->cache->lock($id = $this->_getUniqueId()));
     $this->assertFalse($this->cache->lock($id));
   }
-  
+
   function testUnlock()
   {
     $this->assertTrue($this->cache->lock($id = $this->_getUniqueId()));
@@ -260,13 +262,13 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
   protected function _makeGetFromDifferentThread($id)
   {
     $filename = LIMB_VAR_DIR . '/diff_thread.php';
-        
+
     $cur_file_dir = dirname(__FILE__);
-    
+
     $include_path = get_include_path();
-    
+
     $cur_process_dir = getcwd();
-    
+
     $request_code = <<<EOD
 <?php
     ob_start();
@@ -282,18 +284,18 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     echo \$cache->get('$id');
 EOD;
     $storage_init_file = $limb_db_dsn = $limb_var_dir = '';
-    
+
     if($this->storage_init_file)
       $storage_init_file = "lmb_require('{$this->storage_init_file}');";
-      
+
     if(lmb_env_has('LIMB_DB_DSN'))
       $limb_db_dsn = "lmb_env_setor('LIMB_DB_DSN', '" . LIMB_DB_DSN . "');";
-      
+
     if(lmb_env_has('LIMB_VAR_DIR'))
       $limb_var_dir = "lmb_env_setor('LIMB_VAR_DIR', '" . LIMB_VAR_DIR . "');";
 
     $request_code = sprintf($request_code, $storage_init_file, $limb_db_dsn, $limb_var_dir);
-    
+
     file_put_contents($filename, $request_code);
     return shell_exec("php $filename");
   }

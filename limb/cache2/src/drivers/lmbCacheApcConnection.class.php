@@ -73,5 +73,21 @@ class lmbCacheApcConnection extends lmbCacheAbstractConnection
     );
   }
 
+  protected function _resolveKey($keys)
+  {
+    if(is_array($keys))
+    {
+      $new_keys = array();
+      foreach($keys as $pos => $key)
+        $new_keys[$pos] = (string) $this->prefix . $key;
+    }
+    else
+    {
+      $new_keys  = (string) $this->prefix . $keys;
+    }
+
+    return $new_keys;
+  }
+
 }
 

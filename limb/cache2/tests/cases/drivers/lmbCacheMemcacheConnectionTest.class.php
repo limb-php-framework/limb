@@ -49,7 +49,7 @@ class lmbCacheMemcacheConnectionTest extends lmbCacheConnectionTest
 
     $result = $this->cache->get(array($id1, $id2, $id3));
 
-    $this->assertEqual('value1', $result[$id1]);
+    $this->assertNotEqual('value1', $result[$id1]);
     $this->assertEqual('value2', $result[$id2]);
     $this->assertEqual('value3', $result[$id3]);
   }

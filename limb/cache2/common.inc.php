@@ -13,3 +13,4 @@
  */
 require_once('limb/core/common.inc.php');
 lmb_require('limb/cache2/toolkit.inc.php');
+lmb_package_register('cache2', dirname(__FILE__));

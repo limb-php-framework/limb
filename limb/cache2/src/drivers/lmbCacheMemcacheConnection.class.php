@@ -21,6 +21,7 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
   public $default_host = 'localhost';
   public $default_port = 11211;
   public $flush_pause = 1000000;
+  const FALSE_VALUE = '$oU$@Ge';
   protected $_server_id;
 
   function __construct(lmbUri $dsn)
@@ -56,11 +57,15 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
 
   function add($key, $value, $ttl = false)
   {
+    if(false === $value)
+       $value = self::FALSE_VALUE;
     return $this->_getMemcache()->add($this->_resolveKey($key), $value, false, (int) $ttl);
   }
 
   function set($key, $value, $ttl = false)
   {
+    if(false === $value)
+      $value = self::FALSE_VALUE;
     return $this->_getMemcache()->set($this->_resolveKey($key), $value, false, (int) $ttl);
   }
 
@@ -70,6 +75,9 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
 
     if(false === $value)
       return NULL;
+
+    if(self::FALSE_VALUE === $value)
+      return false;
 
     if(is_array($key))
       foreach ($key as $one_key)
