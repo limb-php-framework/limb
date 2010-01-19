@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/net/src/lmbIp.class.php');
 
@@ -26,8 +26,16 @@ class lmbIpTest extends UnitTestCase
     $this->assertIdentical(lmbIp::decode(2130706432), '127.0.0.0');
 
     //with overflow
-    $this->assertIdentical(lmbIp::encode('128.0.0.0', lmbIp::SIGNED), (int)-2147483648);
-    $this->assertIdentical(lmbIp::decode(-2147483648), '128.0.0.0');
+    if(!$this->_is64bit())
+    {
+      $this->assertIdentical(lmbIp::encode('128.0.0.0', lmbIp::SIGNED), (int)-2147483648);
+      $this->assertIdentical(lmbIp::decode(-2147483648), '128.0.0.0');
+    }
+    else
+    {
+      $this->assertIdentical(lmbIp::encode('128.0.0.0', lmbIp::SIGNED), 2147483648);
+      $this->assertIdentical(lmbIp::decode(2147483648), '128.0.0.0');
+    }
   }
 
   function testEncodeDecodeUnsigned()
@@ -37,8 +45,16 @@ class lmbIpTest extends UnitTestCase
     $this->assertIdentical(lmbIp::decode(2130706432), '127.0.0.0');
 
     //with overflow
-    $this->assertIdentical(lmbIp::encode('128.0.0.0', lmbIp::UNSIGNED), 2147483648.0);
-    $this->assertIdentical(lmbIp::decode(2147483648), '128.0.0.0');
+    if(!$this->_is64bit())
+    {
+      $this->assertIdentical(lmbIp::encode('128.0.0.0', lmbIp::UNSIGNED), 2147483648.0);
+      $this->assertIdentical(lmbIp::decode(2147483648), '128.0.0.0');
+    }
+    else
+    {
+      $this->assertIdentical(lmbIp::encode('128.0.0.0', lmbIp::UNSIGNED), 2147483648);
+      $this->assertIdentical(lmbIp::decode(2147483648), '128.0.0.0');
+    }
   }
 
   function testEncodeDecodeUnsignedString()
@@ -79,7 +95,7 @@ class lmbIpTest extends UnitTestCase
   function testEncodeIpRangeSigned()
   {
     $ip_list = lmbIp::encodeIpRange('192.168.0.1', '192.168.10.10', lmbIp::SIGNED);
-    
+
     $this->assertEqual((pow(256, 1)*10 + pow(256, 0)*10) - (pow(256, 1) * 0 + pow(256, 0) * 1)+1, sizeof($ip_list));
     $this->assertIdentical(false, array_search(lmbIp::encode('192.168.0.0', lmbIp::SIGNED), $ip_list));
     $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.0.1', lmbIp::SIGNED), $ip_list));
@@ -110,6 +126,11 @@ class lmbIpTest extends UnitTestCase
     $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.0.255', lmbIp::USTRING), $ip_list));
     $this->assertNotIdentical(false, array_search(lmbIp::encode('192.168.10.10', lmbIp::USTRING), $ip_list));
     $this->assertIdentical(false, array_search(lmbIp::encode('192.168.10.11', lmbIp::USTRING), $ip_list));
+  }
+
+  protected function _is64bit()
+  {
+    return PHP_INT_SIZE == 8;
   }
 
 }
