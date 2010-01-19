@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 7910 2009-05-05 04:56:14Z vasiatka $
+ * @version $Id: lmbHttpRequest.class.php 8039 2010-01-19 20:46:39Z korchasa $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -150,12 +150,20 @@ class lmbHttpRequest extends lmbSet
 
   function getGetFiltered($key, $filter, $default = LIMB_UNDEFINED)
   {
-    return filter_var($this->getGet($key, $default), $filter);
+    $value = $this->getGet($key, $default);
+    if (is_array($key))
+      return filter_var_array($value, $filter);
+    else
+      return filter_var($value, $filter);
   }
 
   function getPostFiltered($key, $filter, $default = LIMB_UNDEFINED)
   {
-    return filter_var($this->getPost($key, $default), $filter);
+    $value = $this->getPost($key, $default);
+    if (is_array($key))
+      return filter_var_array($value, $filter);
+    else
+      return filter_var($value, $filter);
   }
 
   protected function _get(&$arr, $key = null, $default = LIMB_UNDEFINED)

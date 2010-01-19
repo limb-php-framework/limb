@@ -102,12 +102,32 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->getGetFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
   }
 
+  function testGetGetFiltered_Array()
+  {
+    $request = new lmbHttpRequest('http://test.com', array('c' => 'c1', 'ju' => 'jitsu42'));
+    $vars = $request->getGetFiltered(
+        array('c', 'ju'),
+        array('c' => FILTER_SANITIZE_NUMBER_INT, 'ju' => FILTER_SANITIZE_NUMBER_INT)
+    );
+    $this->assertEqual($vars['c'], 1);
+    $this->assertEqual($vars['ju'], 42);
+  }
+
   function testGetPostFiltered()
   {
     $post = array('c' => 'c1');
     $request = new lmbHttpRequest('http://test.com', array(), $post);
     $this->assertEqual($request->getPostFiltered('c', FILTER_SANITIZE_NUMBER_INT), 1);
     $this->assertEqual($request->getPostFiltered('d', FILTER_SANITIZE_NUMBER_INT, 1), 1);
+  }
+
+  function testGetPostFiltered_Array()
+  {
+    $post = array('c' => 'c1', 'ju' => 'jitsu42');
+    $request = new lmbHttpRequest('http://test.com', array(), $post);
+    $vars = $request->getPostFiltered(array('c', 'ju'), FILTER_SANITIZE_NUMBER_INT);
+    $this->assertEqual($vars['c'], 1);
+    $this->assertEqual($vars['ju'], 42);
   }
 
   function testGetCookie()
@@ -280,12 +300,12 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testForThrowExceptionOnReservedParams()
   {
-    try 
+    try
     {
       new lmbHttpRequest('http://test.com?__request=1');
       $this->fail();
-    } 
-    catch(Exception $e) 
+    }
+    catch(Exception $e)
     {
       $this->pass();
     }
