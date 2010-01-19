@@ -11,13 +11,13 @@ lmb_require('limb/fs/src/lmbFs.class.php');
 
 class lmbConfTest extends UnitTestCase
 {
-  
-      
+
+
   protected function _getConfigPath($config_name)
   {
-    return LIMB_VAR_DIR.'/configs/'.$config_name;
+    return lmb_var_dir().'/configs/'.$config_name;
   }
-  
+
   function _createConfig($name = 'conf.php', $content = false)
   {
     if(!$content)
@@ -25,40 +25,40 @@ class lmbConfTest extends UnitTestCase
       $content = <<<EOD
 <?php
 \$conf = array('foo' => 1,
-              'bar' => 2);   
+              'bar' => 2);
 EOD;
     }
-    lmbFs::safeWrite($this->_getConfigPath($name), $content); 
+    lmbFs::safeWrite($this->_getConfigPath($name), $content);
     return new lmbConf($this->_getConfigPath($name));
   }
-  
+
   function testGet()
   {
-   $conf = $this->_createConfig();
-   $this->assertEqual($conf->get('foo'), 1);
-   $this->assertEqual($conf->get('bar'), 2);
+    $conf = $this->_createConfig();
+    $this->assertEqual($conf->get('foo'), 1);
+    $this->assertEqual($conf->get('bar'), 2);
   }
 
   function testOverride()
-  {       
+  {
     $content = <<<EOD
 <?php
 \$conf['foo'] = 1;
 EOD;
     $this->_createConfig('conf.override.php', $content);
     $config = $this->_createConfig('conf.php');
-  
+
     $this->assertEqual($config->get('foo'), 1);
     $this->assertEqual($config->get('bar'), 2);
   }
 
   function testImplementsIterator()
-  {    
+  {
    $conf = $this->_createConfig();
    $result = array();
    foreach ($conf as $key => $value)
      $result[$key] = $value;
-     
+
    $this->assertEqual($result, array(
      'foo' => 1,
      'bar' => 2
@@ -90,5 +90,20 @@ EOD;
     {
       $this->pass();
     }
-  }  
+  }
+
+  function testGetWithoutOptionName()
+  {
+    $conf = $this->_createConfig();
+    try
+    {
+      $this->assertEqual($conf->get(''), 1);
+      $this->fail();
+    }
+    catch(lmbInvalidArgumentException $e)
+    {
+      $this->pass();
+    }
+  }
+
 }

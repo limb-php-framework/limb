@@ -15,7 +15,7 @@ lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
  * class lmbConf.
  *
  * @package config
- * @version $Id: lmbConf.class.php 7497 2009-01-28 08:13:09Z korchasa $
+ * @version $Id: lmbConf.class.php 8038 2010-01-19 20:19:00Z korchasa $
  */
 class lmbConf extends lmbObject
 {
@@ -26,21 +26,21 @@ class lmbConf extends lmbObject
     $this->_file = $file;
 
     $conf = $this->_attachConfFile($file);
-        
+
     if($override_file = $this->_getOverrideFile($file))
        $conf = $this->_attachConfFile($override_file, $conf);
-    
+
     parent :: __construct($conf);
   }
-  
+
   protected function _attachConfFile($file, $existed_conf = array())
-  {    
+  {
     $conf = $existed_conf;
     if(!file_exists($file))
       throw new lmbFileNotFoundException("Config file '$file' not found");
-      
+
     include($file);
-      
+
     if(!is_array($conf))
       throw new lmbException("Config must be a array", array('file' => $file, 'content' => $conf));
     return $conf;
@@ -59,6 +59,8 @@ class lmbConf extends lmbObject
 
   function get($name, $default = LIMB_UNDEFINED)
   {
+    if(!$name)
+      throw new lmbInvalidArgumentException('Option name not given');
     try {
       return parent::get($name, $default);
     }
@@ -68,4 +70,3 @@ class lmbConf extends lmbObject
     }
   }
 }
-
