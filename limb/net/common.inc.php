@@ -9,9 +9,11 @@
 
 /**
  * @package net
- * @version $Id: common.inc.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: common.inc.php 8041 2010-01-19 20:49:36Z korchasa $
  */
 require_once('limb/core/common.inc.php');
-require_once(dirname(__FILE__) . '/toolkit.inc.php');
+lmb_package_require('toolkit');
 
+lmb_require('limb/net/toolkit.inc.php');
 
+lmb_package_register('net', dirname(__FILE__));
