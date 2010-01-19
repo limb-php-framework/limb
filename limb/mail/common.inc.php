@@ -12,5 +12,6 @@
  * @version $Id: common.inc.php 7486 2009-01-26 19:13:20Z pachanga $
  */
 require_once('limb/core/common.inc.php');
-
 lmb_require_optional('limb/view/common.inc.php');
+
+lmb_package_register('mail', dirname(__FILE__));
