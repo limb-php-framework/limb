@@ -19,12 +19,12 @@ class lmbImageKitTest extends UnitTestCase
 
   function _getInputImage()
   {
-    return dirname(__FILE__).'/../var/input.jpg';
+    return dirname(__FILE__).'/../fixture/images/input.jpg';
   }
 
   function _getOutputImage()
   {
-    return dirname(__FILE__).'/../var/output.jpg';
+    return lmb_var_dir().'/output.jpg';
   }
 
   function testCreateGdConvertor()
@@ -59,7 +59,7 @@ class lmbImageKitTest extends UnitTestCase
 
   function testPassingParamsToConvertor()
   {
-    lmbImageKit::load($this->_getInputImage(), '', 'gd', '', array('add_filters_scan_dirs' => dirname(__FILE__).'/../var/filters'))
+    lmbImageKit::load($this->_getInputImage(), '', 'gd', '', array('add_filters_scan_dirs' => dirname(__FILE__).'/../fixture/filters'))
       ->test();
   }
 
