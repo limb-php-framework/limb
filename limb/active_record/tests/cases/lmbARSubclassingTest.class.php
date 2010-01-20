@@ -36,7 +36,7 @@ class CourseForTestForTypedLecture extends lmbActiveRecord
 
 class lmbARSubclassingTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('lecture_for_typed_test', 'course_for_typed_test', 'test_one_table_typed_object'); 
+  protected $tables_to_cleanup = array('lecture_for_typed_test', 'course_for_typed_test', 'test_one_table_typed_object');
 
   function testCreate()
   {
@@ -145,11 +145,10 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
     $criteria2 = lmbSQlCriteria::equal('title','Some other title');
 
     $criteria = new lmbSQlCriteria();
-    $criteria->addOr($criteria1);
-    $criteria->addOr($criteria2);
-
+    $criteria->add($criteria1->addOr($criteria2));
 
     $rs = lmbActiveRecord :: find('BarFooOneTableTestObject',array('criteria'=>$criteria));
+
     $this->assertEqual($rs->count(), 2);
   }
 
