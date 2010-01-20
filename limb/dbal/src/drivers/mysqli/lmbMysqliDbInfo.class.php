@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
 lmb_require('limb/dbal/src/drivers/mysqli/lmbMysqliTableInfo.class.php');
@@ -19,7 +19,6 @@ class lmbMysqliDbInfo extends lmbDbInfo
 {
   protected $connection;
   protected $isExisting = false;
-  protected $isTablesLoaded = false;
 
   function __construct($connection, $name, $isExisting = false)
   {
@@ -35,7 +34,7 @@ class lmbMysqliDbInfo extends lmbDbInfo
 
   function loadTables()
   {
-    if($this->isExisting && !$this->isTablesLoaded)
+    if($this->isExisting)
     {
       $queryId = $this->connection->execute("SHOW TABLES FROM `" . $this->name . "`");
       while(is_array($row = Mysqli_fetch_row($queryId)))
@@ -44,6 +43,10 @@ class lmbMysqliDbInfo extends lmbDbInfo
       }
       Mysqli_free_result($queryId);
       $this->isTablesLoaded = true;
+    }
+    else
+    {
+      $this->tables = array();
     }
   }
 

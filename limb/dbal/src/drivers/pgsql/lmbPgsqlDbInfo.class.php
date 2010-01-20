@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
 lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlTableInfo.class.php');
@@ -13,7 +13,7 @@ lmb_require('limb/dbal/src/drivers/pgsql/lmbPgsqlTableInfo.class.php');
  * class lmbPgsqlDbInfo.
  *
  * @package dbal
- * @version $Id: lmbPgsqlDbInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbPgsqlDbInfo.class.php 8072 2010-01-20 08:33:41Z korchasa $
  */
 class lmbPgsqlDbInfo extends lmbDbInfo
 {
@@ -35,9 +35,8 @@ class lmbPgsqlDbInfo extends lmbDbInfo
 
   function loadTables()
   {
-    if($this->isExisting && !$this->isTablesLoaded)
+    if($this->isExisting)
     {
-
       $result = $this->connection->execute("SELECT oid, relname FROM pg_class
                                                 WHERE relkind = 'r' AND relnamespace = (SELECT oid
                                                   FROM pg_namespace

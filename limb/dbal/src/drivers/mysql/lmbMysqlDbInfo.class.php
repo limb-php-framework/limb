@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
 lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlTableInfo.class.php');
@@ -13,13 +13,12 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlTableInfo.class.php');
  * class lmbMysqlDbInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlDbInfo.class.php 7997 2009-10-04 17:09:01Z pachanga $
+ * @version $Id: lmbMysqlDbInfo.class.php 8072 2010-01-20 08:33:41Z korchasa $
  */
 class lmbMysqlDbInfo extends lmbDbInfo
 {
   protected $connection;
   protected $isExisting = false;
-  protected $isTablesLoaded = false;
 
   function __construct($connection, $name, $isExisting = false)
   {
@@ -35,9 +34,10 @@ class lmbMysqlDbInfo extends lmbDbInfo
 
   function loadTables()
   {
-    if($this->isExisting && !$this->isTablesLoaded)
+    if($this->isExisting)
     {
       $queryId = $this->connection->execute("SHOW TABLES FROM `" . $this->name . "`");
+      $this->tables = array();
       while(is_array($row = mysql_fetch_row($queryId)))
         $this->tables[$row[0]] = null;
 

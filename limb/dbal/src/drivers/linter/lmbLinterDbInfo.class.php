@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
 lmb_require('limb/dbal/src/drivers/linter/lmbLinterTableInfo.class.php');
@@ -35,7 +35,7 @@ class lmbLinterDbInfo extends lmbDbInfo
 
   function loadTables()
   {
-    if($this->isExisting && !$this->isTablesLoaded)
+    if($this->isExisting)
     {
 
       $result = $this->connection->execute("select TABLE_NAME from TABLES WHERE TABLE_TYPE='TABLE' ORDER BY TABLE_NAME");
@@ -52,10 +52,10 @@ class lmbLinterDbInfo extends lmbDbInfo
   {
     if(!$this->hasTable($name))
       throw new lmbDbException('Table does not exist ' . $name);
-      
+
     if(!is_object($this->tables[$name]))
       $this->tables[$name] = new lmbLinterTableInfo($this, $name, true, $this->tables[$name]);
-      
+
     return $this->tables[$name];
   }
 }

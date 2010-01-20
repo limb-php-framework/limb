@@ -35,7 +35,7 @@ class lmbSqliteDbInfo extends lmbDbInfo
 
   function loadTables()
   {
-    if($this->isExisting && !$this->isTablesLoaded)
+    if($this->isExisting)
     {
       $sql = "SELECT name FROM sqlite_master WHERE type='table' UNION ALL " .
              "SELECT name FROM sqlite_temp_master WHERE type='table' ORDER BY name;";
