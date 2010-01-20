@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Rotate image filter
@@ -22,9 +22,9 @@ class lmbImRotateImageFilter extends lmbAbstractImageFilter
     $angle = $this->getAngle();
     if(!$angle)
       return;
-    $bgcolor = $this->getBgColor();
+    $bgcolor = $this->colorArrayToStr($this->getBgColor());
     $image = $container->getResource();
-    $image->rotateImage(new ImagickPixel("#".$bgcolor), $angle);
+    $image->rotateImage(new ImagickPixel($bgcolor), $angle);
     $container->replaceResource($image);
   }
 
@@ -35,6 +35,20 @@ class lmbImRotateImageFilter extends lmbAbstractImageFilter
 
   function getBgColor()
   {
-    return $this->getParam('bgcolor', 'FFFFFF');
+    return $this->colorStrToArray($this->getParam('bgcolor', 'FFFFFF'));
+  }
+
+  protected function colorStrToArray($color_str)
+  {
+    return array(
+      'red'   => hexdec(substr($color_str, 0, 2)),
+      'green' => hexdec(substr($color_str, 2, 2)),
+      'blue'  => hexdec(substr($color_str, 4, 2)),
+    );
+  }
+
+  protected function colorArrayToStr($color_array)
+  {
+    return '#'.dechex($color_array['red']).dechex($color_array['green']).dechex($color_array['blue']);
   }
 }

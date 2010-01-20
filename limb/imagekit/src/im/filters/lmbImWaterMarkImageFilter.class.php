@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Watermark image filter
@@ -27,14 +27,20 @@ class lmbImWaterMarkImageFilter extends lmbAbstractImageFilter
     $container->getResource()->compositeImage($wm_cont, Imagick::COMPOSITE_OVER, $x, $y, Imagick::CHANNEL_ALL);
   }
 
-  function calcPosition($x, $y, $width, $height)
+  function calcPosition($x, $y, $width, $height, $wm_width = false, $wm_height = false)
   {
-  	if($x >= 0 && $y >= 0)
-      return array($x, $y);
-    if($x < 0)
-      $x += $width;
-    if($y < 0)
-      $y += $height;
+    if($wm_width !== false)
+      $x += round(($width - $wm_width) / 2);
+    else
+      if($x < 0)
+        $x += $width;
+
+    if($wm_height !== false)
+      $y += round(($height - $wm_height) / 2);
+    else
+      if($y < 0)
+        $y += $height;
+
     return array($x, $y);
   }
 

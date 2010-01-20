@@ -7,14 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/fs/src/lmbFileLocationsList.class.php');
-lmb_require('limb/fs/src/lmbFileLocator.class.php');
+lmb_require('fs/src/lmbFileLocationsList.class.php');
+lmb_require('fs/src/lmbFileLocator.class.php');
 
 /**
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageConvertor.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbAbstractImageConvertor.class.php 8065 2010-01-20 04:18:19Z korchasa $
  */
 abstract class lmbAbstractImageConvertor
 {

@@ -13,7 +13,7 @@ lmb_require('limb/imagekit/src/lmbAbstractImageContainer.class.php');
  * Abstract image filter
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbAbstractImageFilter.class.php 8065 2010-01-20 04:18:19Z korchasa $
  */
 abstract class lmbAbstractImageFilter
 {
@@ -62,8 +62,8 @@ abstract class lmbAbstractImageFilter
         $scale = $scale_w;
       else
         $scale = $scale_h;
-      $w = intval($src_w * $scale);
-      $h = intval($src_h * $scale);
+      $w = (int) round($src_w * $scale);
+      $h = (int) round($src_h * $scale);
     }
     elseif($save_min_size)
     {
@@ -77,7 +77,7 @@ abstract class lmbAbstractImageFilter
 
   function getParam($name, $default = null)
   {
-  	$param = $default;
+    $param = $default;
     if(isset($this->params[$name]))
       $param = $this->params[$name];
     return $param;

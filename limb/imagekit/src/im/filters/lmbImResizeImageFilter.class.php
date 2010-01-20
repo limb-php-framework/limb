@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
@@ -16,20 +16,16 @@ lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
  */
 class lmbImResizeImageFilter extends lmbAbstractImageFilter
 {
+	const RESIZE_TYPE_FIT = 1;
+	const RESIZE_TYPE_CUT = 2;
+	
   function apply(lmbAbstractImageContainer $container)
   {
     $src_w = $container->getWidth();
     $src_h = $container->getHeight();
     list($dst_w, $dst_h) = $this->calcNewSize($src_w, $src_h);
     $image = $container->getResource();
-    if ($this->getPreserveAspectRatio())
-    {
-      $image->thumbnailImage($dst_w, $dst_h, true);
-    }
-    else
-    {
-      $image->thumbnailImage($dst_w, $dst_h, false);
-    }
+    $image->thumbnailImage($dst_w, $dst_h, false);
     $container->replaceResource($image);
   }
 

@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Rotate image filter
  * @package imagekit
- * @version $Id: lmbGdRotateImageFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbGdRotateImageFilter.class.php 8065 2010-01-20 04:18:19Z korchasa $
  */
 class lmbGdRotateImageFilter extends lmbAbstractImageFilter
 {

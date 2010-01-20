@@ -7,19 +7,19 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Crop image filter
  * @package imagekit
- * @version $Id: lmbGdCropImageFilter.class.php 7973 2009-07-25 13:24:53Z cmz $
+ * @version $Id: lmbGdCropImageFilter.class.php 8065 2010-01-20 04:18:19Z korchasa $
  */
 class lmbGdCropImageFilter extends lmbAbstractImageFilter
 {
   function apply(lmbAbstractImageContainer $container)
   {
     list($x, $y, $width, $height) = $this->calculateCropArea($container->getWidth(), $container->getHeight());
-    $im = $container->createBlankImage($width, $height);
+    $im = $container->isPallete() ? imagecreate($width, $height) : imagecreatetruecolor($width, $height);
     imagecopy($im, $container->getResource(), 0, 0, $x, $y, $width, $height);
     $container->replaceResource($im);
   }

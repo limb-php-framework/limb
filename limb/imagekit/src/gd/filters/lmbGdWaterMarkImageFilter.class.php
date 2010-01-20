@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdWaterMarkImageFilter.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbGdWaterMarkImageFilter.class.php 8065 2010-01-20 04:18:19Z korchasa $
  */
 class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
 {
@@ -43,23 +43,17 @@ class lmbGdWaterMarkImageFilter extends lmbAbstractImageFilter
   function calcPosition($x, $y, $width, $height, $wm_width = false, $wm_height = false)
   {
     if($wm_width !== false)
-    {
       $x += round(($width - $wm_width) / 2);
-    }
     else
-    {
       if($x < 0)
         $x += $width;
-    }
+
     if($wm_height !== false)
-    {
       $y += round(($height - $wm_height) / 2);
-    }
     else
-    {
       if($y < 0)
         $y += $height;
-    }
+
     return array($x, $y);
   }
 

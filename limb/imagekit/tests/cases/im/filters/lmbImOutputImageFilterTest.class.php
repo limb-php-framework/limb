@@ -6,22 +6,14 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+lmb_require('limb/imagekit/src/im/filters/lmbImOutputImageFilter.class.php');
+lmb_require('limb/imagekit/tests/cases/filters/lmbBaseOutputImageFilterTest.class.php');
 
-lmb_require(dirname(__FILE__).'/../../../../src/im/lmbImImageContainer.class.php');
-lmb_require(dirname(__FILE__).'/../../../../src/im/filters/lmbImOutputImageFilter.class.php');
-
-class lmbImOutputImageFilterTest extends UnitTestCase 
+/**
+ * @package imagekit
+ * @version $Id: lmbGdCropImageFilterTest.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ */
+class lmbImOutputImageFilterTest extends lmbBaseOutputImageFilterTest
 {
-
-  function testChangeOutput()
-  {
-    $cont = new lmbImImageContainer();
-    $cont->setOutputType('gif');
-
-    $filter = new lmbImOutputImageFilter(array('type' => 'jpeg'));
-    $filter->apply($cont);
-
-    $this->assertEqual($cont->getOutputType(), 'jpeg');
-  }
-
+  protected $driver = 'im';
 }

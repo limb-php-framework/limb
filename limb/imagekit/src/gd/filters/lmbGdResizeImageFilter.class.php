@@ -7,12 +7,12 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
- * @version $Id: lmbGdResizeImageFilter.class.php 7973 2009-07-25 13:24:53Z cmz $
+ * @version $Id: lmbGdResizeImageFilter.class.php 8065 2010-01-20 04:18:19Z korchasa $
  */
 class lmbGdResizeImageFilter extends lmbAbstractImageFilter
 {
@@ -21,8 +21,7 @@ class lmbGdResizeImageFilter extends lmbAbstractImageFilter
     $src_w = $container->getWidth();
     $src_h = $container->getHeight();
     list($dst_w, $dst_h) = $this->calcNewSize($src_w, $src_h);
-    $container->toTrueColor();
-    $im = $container->createBlankImage($dst_w, $dst_h, true);
+    $im = imagecreatetruecolor($dst_w, $dst_h);
     imagecopyresampled($im, $container->getResource(), 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h);
     $container->replaceResource($im);
   }
