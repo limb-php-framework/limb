@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/lmbDbDSN.class.php');
 
@@ -98,6 +98,15 @@ class lmbDbDSNTest extends UnitTestCase
     $this->assertEqual($dsn->getParam2(), 'wow');
 
     $this->assertEqual($dsn->toString(), 'mysql://wow:here@localhost:8080/db?param1=hey&param2=wow');
+  }
+
+  function testBuildUri()
+  {
+    $dsn = new lmbDbDSN(array('driver' => 'mysql', 'host' => 'localhost'));
+    $this->assertEqual($dsn->buildUri()->toString(), 'mysql://localhost/');
+
+    $dsn->host = 'somehost';
+    $this->assertEqual($dsn->buildUri()->toString(), 'mysql://somehost/');
   }
 }
 

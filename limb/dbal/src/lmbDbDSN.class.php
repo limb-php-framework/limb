@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * class lmbDbDSN.
  *
  * @package dbal
- * @version $Id: lmbDbDSN.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbDbDSN.class.php 8069 2010-01-20 08:16:38Z korchasa $
  */
 class lmbDbDSN extends lmbObject
 {
@@ -61,22 +61,27 @@ class lmbDbDSN extends lmbObject
 
   function _getUri()
   {
-    if(is_object($this->uri))
-      return $this->uri;
-
-    $this->uri = new lmbUri();
-    $this->uri->setProtocol($this->driver);
-    $this->uri->setHost($this->host);
-    $this->uri->setUser($this->user);
-    $this->uri->setPassword($this->password);
-    $this->uri->setPath('/' . $this->database);
-
-    if(isset($this->port))
-      $this->uri->setPort($this->port);
-    if(count($this->extra))
-      $this->uri->setQueryItems($this->extra);
+    if(!is_object($this->uri))
+      $this->uri = $this->buildUri();
 
     return $this->uri;
+  }
+
+  function buildUri()
+  {
+  	$uri = new lmbUri();
+    $uri->setProtocol($this->driver);
+    $uri->setHost($this->host);
+    $uri->setUser($this->get('user', ''));
+    $uri->setPassword($this->get('password', ''));
+    $uri->setPath('/' . $this->get('database', ''));
+
+    if(isset($this->port))
+      $uri->setPort($this->port);
+    if(count($this->extra))
+      $uri->setQueryItems($this->extra);
+
+    return $uri;
   }
 
   function toString()
