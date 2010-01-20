@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/config/src/lmbIni.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -15,17 +15,17 @@ class lmbIniTest extends UnitTestCase
 {
   function setUp()
   {
-    lmbFs :: mkdir(lmb_env_get('LIMB_VAR_DIR') . '/tmp_ini');
+    lmbFs :: mkdir(lmb_var_dir() . '/tmp_ini');
   }
 
   function tearDown()
   {
-    lmbFs :: rm(lmb_env_get('LIMB_VAR_DIR') . '/tmp_ini');
+    lmbFs :: rm(lmb_var_dir() . '/tmp_ini');
   }
 
   function _createIni($contents)
   {
-    file_put_contents($file = lmb_env_get('LIMB_VAR_DIR') . '/tmp_ini/' . mt_rand() . '.ini', $contents);
+    file_put_contents($file = lmb_var_dir() . '/tmp_ini/' . mt_rand() . '.ini', $contents);
     return new lmbIni($file);
   }
 

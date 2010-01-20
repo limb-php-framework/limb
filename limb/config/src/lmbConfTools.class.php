@@ -17,7 +17,7 @@ lmb_env_setor('LIMB_CONF_INCLUDE_PATH', 'settings;limb/*/settings');
  * class lmbConfTools.
  *
  * @package config
- * @version $Id: lmbConfTools.class.php 7676 2009-03-03 22:37:28Z korchasa $
+ * @version $Id: lmbConfTools.class.php 8067 2010-01-20 08:12:37Z korchasa $
  */
 class lmbConfTools extends lmbAbstractTools
 {
@@ -39,25 +39,25 @@ class lmbConfTools extends lmbAbstractTools
     {
       return false;
     }
-  }  
-  
+  }
+
   function setConfIncludePath($path)
   {
     $this->conf_include_path = $path;
   }
-  
+
   function getConfIncludePath()
   {
     if(!$this->conf_include_path)
       $this->conf_include_path = lmb_env_get('LIMB_CONF_INCLUDE_PATH');
     return $this->conf_include_path;
   }
-  
-  protected function _locateFiles($name, $find_all = false)
+
+  protected function _locateConfFiles($name)
   {
-    return $this->toolkit->findFileByAlias($name, $this->toolkit->getConfIncludePath(), 'config', $find_all);
+    return $this->toolkit->findFileByAlias($name, $this->toolkit->getConfIncludePath(), 'config', false);
   }
-  
+
   function getConf($name)
   {
     $name = $this->_normalizeConfName($name);
@@ -69,7 +69,7 @@ class lmbConfTools extends lmbAbstractTools
 
     if($ext == '.ini')
     {
-      $file = $this->_locateFiles($name);
+      $file = $this->_locateConfFiles($name);
       if(lmb_env_has('LIMB_VAR_DIR'))
         $this->confs[$name] = new lmbCachedIni($file, lmb_env_get('LIMB_VAR_DIR') . '/ini/');
       else
@@ -77,17 +77,17 @@ class lmbConfTools extends lmbAbstractTools
     }
     elseif($ext == '.conf.php')
     {
-      $file = $this->_locateFiles($name);
+      $file = $this->_locateConfFiles($name);
       if(!count($file))
         throw new lmbFileNotFoundException($name);
-        
+
       $this->confs[$name] = new lmbConf(lmbFs::normalizePath($file));
     }
     else
       throw new lmbException("'$ext' type configuration is not supported!");
 
     return $this->confs[$name];
-  }  
+  }
 
   protected function _normalizeConfName($name)
   {

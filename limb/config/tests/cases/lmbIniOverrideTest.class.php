@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/config/src/lmbIni.class.php');
 
@@ -12,19 +12,19 @@ class lmbIniOverrideTest extends UnitTestCase
 {
   function setUp()
   {
-    lmbFs :: mkdir(LIMB_VAR_DIR . '/tmp_ini');
+    lmbFs :: mkdir(lmb_var_dir() . '/tmp_ini');
   }
 
   function tearDown()
   {
-    lmbFs :: rm(LIMB_VAR_DIR . '/tmp_ini');
+    lmbFs :: rm(lmb_var_dir() . '/tmp_ini');
   }
 
   function _createIniFileNames()
   {
     $name = mt_rand();
-    $file = LIMB_VAR_DIR . '/tmp_ini/' . $name . '.ini';
-    $override_file = LIMB_VAR_DIR . '/tmp_ini/' . $name . '.override.ini';
+    $file = lmb_var_dir() . '/tmp_ini/' . $name . '.ini';
+    $override_file = lmb_var_dir() . '/tmp_ini/' . $name . '.override.ini';
     return array($file, $override_file);
   }
 
