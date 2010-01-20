@@ -1,12 +1,12 @@
 <?php
+require_once('limb/fs/src/lmbFs.class.php');
 
 function lmb_tests_init_var_dir($value)
 {
-  if(!is_dir($value) && !mkdir($value))
-    throw new Exception("Could not create LIMB_VAR_DIR at '" . $value . "' during tests execution");
-
-  lmb_env_setor('LIMB_VAR_DIR', realpath($value));
-
-  lmb_require('limb/fs/src/lmbFs.class.php');
-  try { lmbFs :: mkdir(LIMB_VAR_DIR); } catch(lmbFsException $e) {}
+  if(file_exists($value))
+    lmbFs::rm($value);
+  lmbFs :: mkdir($value);
+  $real = realpath($value);
+  lmb_var_dir($real);
+  echo "INFO: Var dir inited in {$real}\n";
 }

@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8031 2010-01-19 00:04:47Z korchasa $
+ * @version $Id: common.inc.php 8068 2010-01-20 08:14:56Z korchasa $
  */
 $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
@@ -106,7 +106,7 @@ function lmb_require($file_path, $class = '')
     return;
   }
 
-  if(!include_once($file_path))
+  if(!@include_once($file_path))
   {
     if(class_exists('lmbException'))
       $exception_class = 'lmbException';
@@ -154,7 +154,7 @@ function lmb_autoload($name)
   {
     $file_path = $_ENV['LIMB_LAZY_CLASS_PATHS'][$name];
     //is it safe to use include here instead of include_once?
-    if(!include_once($file_path))
+    if(!@include_once($file_path))
     {
       $message = "Could not include source file '$file_path'";
       if(class_exists('lmbException') && class_exists('lmbBacktrace'))
