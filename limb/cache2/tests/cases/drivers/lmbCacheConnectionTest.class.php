@@ -41,28 +41,28 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $this->cache->flush();
   }
 
-  protected function _getUniqueId()
+  protected function _getUniqueId($prefix)
   {
-    return mt_rand();
+    return $prefix . mt_rand();
   }
 
   function testGet_Negative()
   {
-    $this->assertNull($this->cache->get($id = $this->_getUniqueId()));
+    $this->assertNull($this->cache->get($id = $this->_getUniqueId('testGet_Negative')));
   }
 
   function testGet_Positive()
   {
-    $this->cache->set($id = $this->_getUniqueId(), $v = 'value');
+    $this->cache->set($id = $this->_getUniqueId('testGet_Positive'), $v = 'value');
     $var = $this->cache->get($id);
     $this->assertEqual($v, $var);
   }
 
   function testGet_Positive_Multiple()
   {
-    $id1 = $this->_getUniqueId();
-    $id2 = $this->_getUniqueId();
-    $id3 = $this->_getUniqueId();
+    $id1 = $this->_getUniqueId('testGet_Positive_Multiple1');
+    $id2 = $this->_getUniqueId('testGet_Positive_Multiple2');
+    $id3 = $this->_getUniqueId('testGet_Positive_Multiple3');
 
     $this->cache->set($id1, $v1 = 'value1');
     $this->cache->set($id2, $v2 = 'value2');
@@ -76,7 +76,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   function testGet_Positive_Multiple_WithZero()
   {
-    $id1 = $this->_getUniqueId();
+    $id1 = $this->_getUniqueId('testGet_Positive_Multiple_WithZero');
 
     $this->cache->add($id1, $v1 = 0);
 
@@ -87,43 +87,38 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   function testGet_Positive_FalseValue()
   {
-    $this->cache->set($id = $this->_getUniqueId(), $v = false);
+    $this->cache->set($id = $this->_getUniqueId('testGet_Positive_FalseValue'), $v = false);
     $var = $this->cache->get($id);
     $this->assertIdentical($var, $v);
   }
 
   function testAdd()
   {
-    $this->cache->add($id = $this->_getUniqueId(), $v = 'value');
+    $this->cache->add($id = $this->_getUniqueId('testAdd'), $v = 'value');
     $var = $this->cache->get($id);
     $this->assertEqual($v, $var);
   }
 
   function testAddNonUnique()
   {
-    $this->assertTrue($this->cache->add($id = $this->_getUniqueId(), $v = 'value'));
+    $this->assertTrue($this->cache->add($id = $this->_getUniqueId('testAddNonUnique'), $v = 'value'));
     $this->assertFalse($this->cache->add($id, $v));
   }
 
   function testSet()
   {
-    $this->cache->set($first_id = $this->_getUniqueId(), $v1 = 'value1');
-
-    foreach($this->_getCachedValues() as $v2)
+    foreach($this->_getCachedValues() as $position => $v2)
     {
-      $this->cache->set($id = $this->_getUniqueId(), $v2);
+      $this->cache->set($id = $this->_getUniqueId('testSet'.$position), $v2);
       $cache_value = $this->cache->get($id);
       $this->assertIdentical($cache_value, $v2);
     }
-
-    $cache_value = $this->cache->get($first_id);
-    $this->assertIdentical($cache_value, $v1);
   }
 
   function testDelete()
   {
-    $this->cache->set($id1 = $this->_getUniqueId(), $v1 = 'value1');
-    $this->cache->set($id2 = $this->_getUniqueId(), $v2 = 'value2');
+    $this->cache->set($id1 = $this->_getUniqueId('testDelete1'), $v1 = 'value1');
+    $this->cache->set($id2 = $this->_getUniqueId('testDelete2'), $v2 = 'value2');
 
     $this->cache->delete($id1);
 
@@ -135,20 +130,18 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   function testFlush()
   {
-    $this->cache->set($id1 = $this->_getUniqueId(), $v1 = 'value1');
-    $this->cache->set($id2 = $this->_getUniqueId(), $v2 = 'value2');
+    $this->cache->set($id = $this->_getUniqueId('testFlush1'), $value = 'value1');
 
     $this->cache->flush();
 
-    $this->assertFalse($this->cache->get($id1));
-    $this->assertFalse($this->cache->get($id2));
+    $this->assertFalse($this->cache->get($id));
   }
 
   function testGetWithTtl_sameThread()
   {
     $value = 'value';
-    $this->cache->set($id_short = $this->_getUniqueId(), $value, $ttl = 1);
-    $this->cache->set($id_long = $this->_getUniqueId(), $value, $ttl = 10);
+    $this->cache->set($id_short = $this->_getUniqueId('testGetWithTtl_sameThread1'), $value, $ttl = 1);
+    $this->cache->set($id_long = $this->_getUniqueId('testGetWithTtl_sameThread2'), $value, $ttl = 10);
     sleep(2);
     $this->assertNull($this->cache->get($id_short));
     $this->assertIdentical($value, $this->cache->get($id_long));
@@ -157,8 +150,8 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
   function testGetWithTtl_differentThread()
   {
     $value = 'value';
-    $this->cache->set($id_short = $this->_getUniqueId(), $value, $ttl = 1);
-    $this->cache->set($id_long = $this->_getUniqueId(), $value, $ttl = 10);
+    $this->cache->set($id_short = $this->_getUniqueId('testGetWithTtl_differentThread1'), $value, $ttl = 1);
+    $this->cache->set($id_long = $this->_getUniqueId('testGetWithTtl_differentThread2'), $value, $ttl = 10);
     sleep(2);
     $this->assertNull($this->_makeGetFromDifferentThread($id_short));
     $this->assertIdentical($value, $this->_makeGetFromDifferentThread($id_long));
@@ -169,7 +162,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $obj = new lmbObject();
     $obj->set('foo', 'wow');
 
-    $this->cache->set($id = $this->_getUniqueId(), $obj);
+    $this->cache->set($id = $this->_getUniqueId('testProperSerializing'), $obj);
 
     $this->assertEqual($obj, $this->cache->get($id));
   }
@@ -181,7 +174,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $obj = new lmbObject();
     $obj->set('foo', $value);
 
-    $this->cache->set($id = $this->_getUniqueId(), $obj);
+    $this->cache->set($id = $this->_getUniqueId('testObjectClone'), $obj);
 
     $obj->set('foo', 'new value');
 
@@ -202,15 +195,16 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $dsn_with_prefix->addQueryItem('prefix', 'foo');
     $cache_with_prefix = lmbCacheFactory::createConnection($dsn_with_prefix);
 
-    $cache->set('bar', 42);
-    $cache_with_prefix->set('bar', 24);
+    $id = $this->_getUniqueId('testWithPrefix_NotIntercepting');
+    $cache->set($id, 42);
+    $cache_with_prefix->set($id, 24);
 
-    $this->assertEqual(42, $cache->get('bar'));
+    $this->assertEqual(42, $cache->get($id));
   }
 
   function testIncrementAndDecrement()
   {
-    $key = $this->_getUniqueId();
+    $key = $this->_getUniqueId('testIncrementAndDecrement');
 
     $this->assertFalse($this->cache->increment($key));
 
@@ -235,39 +229,42 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   function testSafeIncrement()
   {
-    $key = $this->_getUniqueId();
+    $key = $this->_getUniqueId('testSafeIncrement');
     $this->assertEqual(1, $this->cache->safeIncrement($key));
   }
 
   function testSafeDecrement()
   {
-    $key = $this->_getUniqueId();
+    $key = $this->_getUniqueId('testSafeDecrement');
     $this->assertEqual(0, $this->cache->safeDecrement($key));
     $this->assertFalse(null === $this->cache->get($key));
   }
 
   function testLock()
   {
-    $this->assertTrue($this->cache->lock($id = $this->_getUniqueId()));
+    $this->assertTrue($this->cache->lock($id = $this->_getUniqueId('testLock')));
     $this->assertFalse($this->cache->lock($id));
   }
 
   function testUnlock()
   {
-    $this->assertTrue($this->cache->lock($id = $this->_getUniqueId()));
+    $this->assertTrue($this->cache->lock($id = $this->_getUniqueId('testUnlock')));
     $this->cache->unlock($id);
     $this->assertTrue($this->cache->lock($id));
   }
 
   protected function _makeGetFromDifferentThread($id)
   {
+      return $this->_makeCallFromDifferentThread('get', array($id));
+  }
+
+  protected function _makeCallFromDifferentThread($method, $arguments)
+  {
     $filename = LIMB_VAR_DIR . '/diff_thread.php';
-
     $cur_file_dir = dirname(__FILE__);
-
     $include_path = get_include_path();
-
     $cur_process_dir = getcwd();
+    $arguments_str = implode("', '", $arguments);
 
     $request_code = <<<EOD
 <?php
@@ -275,13 +272,11 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     chdir('$cur_process_dir');
     set_include_path('$include_path');
     require_once('$cur_file_dir/../.setup.php');
-    %s
-    %s
-    %s
+
     lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
     \$cache = lmbCacheFactory::createConnection('{$this->dsn}');
     ob_end_clean();
-    echo \$cache->get('$id');
+    echo serialize(\$cache->$method('$arguments_str'));
 EOD;
     $storage_init_file = $limb_db_dsn = $limb_var_dir = '';
 
@@ -289,20 +284,22 @@ EOD;
       $storage_init_file = "lmb_require('{$this->storage_init_file}');";
 
     if(lmb_env_has('LIMB_DB_DSN'))
-      $limb_db_dsn = "lmb_env_setor('LIMB_DB_DSN', '" . LIMB_DB_DSN . "');";
+      $limb_db_dsn = "lmb_env_setor('LIMB_DB_DSN', '" . lmb_env_get('LIMB_DB_DSN') . "');";
 
     if(lmb_env_has('LIMB_VAR_DIR'))
-      $limb_var_dir = "lmb_env_setor('LIMB_VAR_DIR', '" . LIMB_VAR_DIR . "');";
+      $limb_var_dir = "lmb_env_setor('LIMB_VAR_DIR', '" . lmb_env_get('LIMB_VAR_DIR') . "');";
 
     $request_code = sprintf($request_code, $storage_init_file, $limb_db_dsn, $limb_var_dir);
 
     file_put_contents($filename, $request_code);
-    return shell_exec("php $filename");
+    $result = shell_exec("php $filename");
+    return unserialize($result);
   }
 
   function _getCachedValues()
   {
-    return array(NULL,
+    return array(
+      NULL,
       'some value',
       array('some value'),
       new CacheableFooBarClass(),
