@@ -221,6 +221,24 @@ class lmbHttpRequestTest extends UnitTestCase
     $_SERVER['CONTENT_TYPE'] = $old;
   }
 
+  function testHasFiles()
+  {
+    $files = array(
+      'form' => array(
+        'name' => array('file1' => 'file'),
+        'type' => array('file1' => 'file_type'),
+        'tmp_name' => array('file1' => 'file_tmp_name'),
+        'size' => array('file1' => 'file_size'),
+        'error' => array('file1' => 'file_err_code'),
+      ),
+    );
+
+    $request = new lmbHttpRequest('http://test.com', array(), array(), array(), $files);
+    $this->assertEqual($request->hasFiles(), true);
+    $this->assertEqual($request->hasFiles('form'), true);
+    $this->assertEqual($request->hasFiles('not_existed_form'), false);
+  }
+
   function testInitByServerVariables()
   {
     $old_uri = @$_SERVER['REQUEST_URI'];

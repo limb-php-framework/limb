@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 8039 2010-01-19 20:46:39Z korchasa $
+ * @version $Id: lmbHttpRequest.class.php 8073 2010-01-20 08:39:32Z korchasa $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -88,6 +88,11 @@ class lmbHttpRequest extends lmbSet
   function hasAttribute($name)
   {
     return $this->has($name);
+  }
+
+  function hasFiles($key = null)
+  {
+    return $this->_get($this->__files, $key);
   }
 
   function getFiles($key = null)
