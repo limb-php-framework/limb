@@ -221,6 +221,18 @@ class lmbSQLCriteriaTest extends UnitTestCase
     $criteria = lmbSQLCriteria :: isNull('id');
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', null, lmbSQLFieldCriteria :: IS_NULL));
   }
+
+  function testGreater()
+  {
+    $criteria = lmbSQLCriteria :: greater('id', 11);
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 11, lmbSQLFieldCriteria :: GREATER));
+  }
+
+  function testLess()
+  {
+    $criteria = lmbSQLCriteria :: less('id', 12);
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 12, lmbSQLFieldCriteria :: LESS));
+  }
 }
 
 

@@ -14,7 +14,7 @@ lmb_require(dirname(__FILE__) . '/lmbSQLFieldCriteria.class.php');
  * class lmbSQLCriteria.
  *
  * @package dbal
- * @version $Id: lmbSQLCriteria.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbSQLCriteria.class.php 8071 2010-01-20 08:30:55Z korchasa $
  */
 class lmbSQLCriteria extends lmbSQLBaseCriteria
 {
@@ -87,7 +87,27 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
   {
     return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: EQUAL);
   }
-  
+
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
+  static function greater($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: GREATER);
+  }
+
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
+  static function less($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: LESS);
+  }
+
   /**
    * @param string $column
    * @param string $value
@@ -97,7 +117,7 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
   {
     return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: LIKE);
   }
-  
+
   /**
    * @param string $column
    * @return lmbSQLFieldCriteria
