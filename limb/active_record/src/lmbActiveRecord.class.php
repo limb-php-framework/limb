@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 8017 2010-01-13 19:10:09Z pachanga $
+ * @version $Id: lmbActiveRecord.class.php 8062 2010-01-20 03:54:22Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1778,6 +1778,7 @@ class lmbActiveRecord extends lmbObject
     $query = lmbARQuery :: create(get_class($this), $params = array('criteria' => $criteria, 'sort' => $sort_params), $this->_db_conn);
     return $query->fetch($decorate = false);
   }
+
   /**
    *  Adds class name criterion to passed in criteria
    *  @param string|object criteria
@@ -1785,16 +1786,18 @@ class lmbActiveRecord extends lmbObject
    */
   function addClassCriteria($criteria)
   {
+    if(!is_object($criteria))
+      $criteria = lmbSQLCriteria::objectify($criteria);
+
     if($this->_isInheritable())
-      return lmbSQLCriteria :: objectify($criteria)->addAnd(array($this->_db_conn->quoteIdentifier(self :: $_inheritance_field) .
-                                                                  $this->getInheritanceCondition()));
+      $criteria = $criteria->addAnd($this->_getInheritanceCriteria());
 
     return $criteria;
   }
 
-  function getInheritanceCondition()
+  protected function _getInheritanceCriteria()
   {
-    return " LIKE '" . $this->_getInheritancePath() . "%'";
+    return lmbSQLCriteria::like($this->getInheritanceField(), $this->_getInheritancePath() . "%");
   }
 
   protected function _getInheritancePath()
