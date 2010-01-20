@@ -18,7 +18,7 @@ class lmbARQuery extends lmbSelectRawQuery
   protected $attach_relations = array();
   protected $sort_params = array();
   protected $use_proxy = false;
-  
+
   function __construct($base_class_name_or_obj, $conn, $sql = '', $magic_params = array())
   {
     if(isset($magic_params['proxy']) && $magic_params['proxy'])
@@ -44,7 +44,7 @@ class lmbARQuery extends lmbSelectRawQuery
     else
       parent :: __construct($sql, $conn);
   }
-  
+
   function eagerJoin($relation_name, $params = array())
   {
     $this->join_relations[$relation_name] = $params;
@@ -56,26 +56,26 @@ class lmbARQuery extends lmbSelectRawQuery
   {
     return $this->eagerJoin($relation_name, $params);
   }
-  
+
   function eagerAttach($relation_name, $params = array())
   {
     $this->attach_relations[$relation_name] = $params;
     return $this;
   }
-  
+
   //should be removed before release
   function attachRelation($relation_name, $params = array())
   {
     return $this->eagerAttach($relation_name, $params);
   }
-  
+
   protected function _addFieldsForObject($object, $table_name = '', $prefix = '', $magic_params = array())
   {
     if(isset($magic_params['fields']) && is_array($magic_params['fields']))
       $object->setLazyAttributesExcept($magic_params['fields']);
 
     $lazy_attributes = $object->getLazyAttributes();
-    
+
     if(isset($magic_params['with_lazy_attributes']))
     {
       if(!is_array($magic_params['with_lazy_attributes']))
@@ -83,12 +83,12 @@ class lmbARQuery extends lmbSelectRawQuery
       else
         $lazy_attributes = array_diff($lazy_attributes, $magic_params['with_lazy_attributes']);
     }
-    
+
     $fields = $object->getDbTable()->getColumnsForSelect($table_name, $lazy_attributes, $prefix);
     foreach($fields as $field => $alias)
       $this->addField($field, $alias);
   }
-  
+
   function addOrder($field, $type='ASC')
   {
     if(is_array($field))
@@ -96,7 +96,7 @@ class lmbARQuery extends lmbSelectRawQuery
     else
       $this->sort_params[$field] = $type;
   }
-  
+
   function getRecordSet()
   {
     $rs = parent :: getRecordSet();
@@ -104,39 +104,39 @@ class lmbARQuery extends lmbSelectRawQuery
       $rs->sort($this->sort_params);
     return $rs;
   }
-  
+
   function fetch($decorate = true)
   {
     $this->_applyJoins($this->base_object, $this->join_relations);
-    
+
     $rs = parent :: fetch();
 
     if($decorate)
     {
       $rs = new lmbARRecordSetDecorator(
-                    $rs, 
-                    $this->base_object, 
-                    $this->_conn, 
+                    $rs,
+                    $this->base_object,
+                    $this->_conn,
                     $this->base_object->getLazyAttributes(),
                     $this->use_proxy
                 );
     }
-    
+
     $rs = $this->_decorateWithJoinDecorator($rs);
-    
+
     $rs =  $this->_decorateWithAttachDecorator($rs);
-    
+
     if($this->sort_params)
       $rs->sort($this->sort_params);
-    
+
     return $rs;
   }
-  
+
   protected function _applyJoins($base_object, $joins, $parent_relation_name = '')
   {
     if(is_string($joins))
       $joins = array($joins => array());
-    
+
     if($parent_relation_name)
       $prefix = $parent_relation_name . '__';
     else
@@ -144,33 +144,33 @@ class lmbARQuery extends lmbSelectRawQuery
       $parent_relation_name = $base_object->getTableName();
       $prefix = '';
     }
-    
+
     foreach($joins as $relation_name => $params)
     {
       $relation_info = $base_object->getRelationInfo($relation_name);
-      
+
       if(!$relation_info || !isset($relation_info['class']))
         throw new lmbException('Relation info "' . $relation_name .'" not found in "' . get_class($base_object) . '" or does not contain "class" property');
-      
+
       $class_name = $relation_info['class'];
       $object = new $class_name(null, $this->_conn);
       $this->_addFieldsForObject($object, $prefix . $relation_name, $prefix . $relation_name . '__', $params);
-      
+
       $relation_type = $base_object->getRelationType($relation_name);
       switch($relation_type)
       {
         case lmbActiveRecord :: HAS_ONE:
         case lmbActiveRecord :: MANY_BELONGS_TO:
-          $this->addLeftJoin($object->getTableName(), 
+          $this->addLeftJoin($object->getTableName(),
                              $object->getPrimaryKeyName(),
-                             $parent_relation_name, 
+                             $parent_relation_name,
                              $relation_info['field'],
                              $prefix . $relation_name);
         break;
         case lmbActiveRecord :: BELONGS_TO:
-          $this->addLeftJoin($object->getTableName(), 
+          $this->addLeftJoin($object->getTableName(),
                              $relation_info['field'],
-                             $parent_relation_name, 
+                             $parent_relation_name,
                              $base_object->getPrimaryKeyName(),
                              $prefix . $relation_name);
         break;
@@ -178,7 +178,7 @@ class lmbARQuery extends lmbSelectRawQuery
            throw new lmbARException('"' . $relation_name . '" has a wrong relation type for JOIN operation');
         break;
       }
-      
+
       if(isset($params['join']))
         $this->_applyJoins($object, $params['join'], $prefix . $relation_name);
     }
@@ -191,7 +191,7 @@ class lmbARQuery extends lmbSelectRawQuery
     else
       return $rs;
   }
-  
+
   protected function _decorateWithAttachDecorator($rs)
   {
     if(count($this->attach_relations))
@@ -199,19 +199,26 @@ class lmbARQuery extends lmbSelectRawQuery
     else
       return $rs;
   }
-  
+
+  /**
+   * @param string|object $class_name_or_obj
+   * @param array $params
+   * @param lmbDbConnection $conn
+   * @param string $sql
+   * @return lmbARQuery
+   */
   static function create($class_name_or_obj, $params = array(), $conn = null, $sql = '')
   {
     if(!$conn)
       $conn = lmbToolkit :: instance()->getDefaultDbConnection();
-    
+
     if(!is_object($class_name_or_obj))
       $class_name_or_obj = new $class_name_or_obj;
 
     $query = new lmbARQuery($class_name_or_obj, $conn, $sql, $params);
 
     if(isset($params['criteria']) && $params['criteria'])
-      $criteria = lmbSQLCriteria :: objectify($params['criteria']); 
+      $criteria = lmbSQLCriteria :: objectify($params['criteria']);
     else
       $criteria = lmbSQLCriteria :: create();
 
@@ -225,19 +232,19 @@ class lmbARQuery extends lmbSelectRawQuery
 
     if(!$has_class_criteria)
       $class_name_or_obj->addClassCriteria($criteria);
-    
+
     $query->where($criteria);
-    
+
     $sort_params = (isset($params['sort']) && $params['sort']) ? $params['sort'] : $class_name_or_obj->getDefaultSortParams();
     $query->order($sort_params);
 
     if(isset($params['group']) && $params['group'])
     	$query->group($params['group']);
-    
+
     $join = (isset($params['join']) && $params['join']) ? $params['join'] : array();
     if(!is_array($join))
       $join = explode(',', $join);
-    
+
     foreach($join as $relation_name=> $params_or_relation_name)
     {
       if(is_numeric($relation_name))
@@ -249,7 +256,7 @@ class lmbARQuery extends lmbSelectRawQuery
     $attach = (isset($params['attach']) && $params['attach']) ? $params['attach'] : array();
     if(!is_array($attach))
       $attach = explode(',', $attach);
-    
+
     foreach($attach as $relation_name => $params_or_relation_name)
     {
       if(is_numeric($relation_name))
@@ -257,7 +264,7 @@ class lmbARQuery extends lmbSelectRawQuery
       else
         $query->eagerAttach(trim($relation_name), $params_or_relation_name);
     }
-    
+
     return $query;
   }
 }
