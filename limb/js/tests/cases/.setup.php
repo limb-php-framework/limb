@@ -5,5 +5,4 @@ require_once('limb/core/tests/cases/init.inc.php');
 
 lmb_tests_init_var_dir(dirname(__FILE__) . '/../../../var');
 
-lmb_env_setor('LIMB_JS_INCLUDE_PATH', rtrim(LIMB_VAR_DIR, '/\\'));
-
+lmb_env_setor('LIMB_JS_INCLUDE_PATH', rtrim(lmb_var_dir(), '/\\'));
