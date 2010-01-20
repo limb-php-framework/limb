@@ -23,7 +23,7 @@ class lmbCacheMemcacheConnectionTest extends lmbCacheConnectionTest
   }
 
   function testAddAfterDelete() {
-    $id = $this->_getUniqueId();
+    $id = $this->_getUniqueId('testAddAfterDelete');
     $this->assertTrue($this->cache->add($id, $v = 'value'));
 
     $this->assertEqual($this->cache->get($id), $v);
