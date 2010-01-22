@@ -11,7 +11,7 @@
  * class lmbRoutes.
  *
  * @package web_app
- * @version $Id: lmbRoutes.class.php 8019 2010-01-15 16:43:46Z korchasa $
+ * @version $Id: lmbRoutes.class.php 8086 2010-01-22 01:32:51Z korchasa $
  */
 class lmbRoutes
 {
@@ -198,15 +198,15 @@ class lmbRoutes
 
     foreach($params as $param_name => $param_value)
     {
-      if(strpos($path, ':'.$param_name) === false)
-        continue;
-
       if (isset($route['defaults'][$param_name]) && ($route['defaults'][$param_name] === $param_value)) {
         unset($params[$param_name]); // default params will be substituted lower
         continue;
       }
 
-      $path = str_replace(':'. $param_name, $param_value, $path);
+      if(strpos($path, ':'.$param_name) === false)
+        continue;
+
+      $path = preg_replace('/\:'. preg_quote($param_name) .'\:?/', $param_value, $path);
       unset($params[$param_name]);
     }
 

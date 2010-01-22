@@ -44,6 +44,15 @@ class lmbRoutesToUrlTest extends UnitTestCase
     $this->assertEqual($routes->toUrl(array('controller' => 'news'), 'default'), '/news/display');
   }
 
+  function testToUrlWithPrefix()
+  {
+    $config = array('default' => array('path' => '/:controller/:action/:id:.html',
+                          'defaults' => array('action' => 'display')));
+
+    $routes = new lmbRoutes($config);
+    $this->assertEqual($routes->toUrl(array('controller' => 'news', 'action' => 'display', 'id' => 'test')), '/news/display/test.html');
+  }
+
   function testToUrlApplyDefaultParamValue()
   {
     $config = array('default' => array('path' => '/:controller/:action',
@@ -51,6 +60,15 @@ class lmbRoutesToUrlTest extends UnitTestCase
 
     $routes = new lmbRoutes($config);
     $this->assertEqual($routes->toUrl(array('controller' => 'news'), 'default'), '/news/');
+  }
+
+  function testToUrlApplyDefaultParamValueWithNoParamsInPath()
+  {
+    $config = array('default' => array('path' => '/news/:action/:id',
+                          'defaults' => array('controller' => 'news', 'action' => 'display')));
+
+    $routes = new lmbRoutes($config);
+    $this->assertEqual($routes->toUrl(array('controller' => 'news', 'action' => 'display', 'id' => 'test')), '/news/display/test');
   }
 
   function testThrowExceptionIfNotEnoughParams()

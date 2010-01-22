@@ -241,6 +241,8 @@ class lmbRoutesDispatchTest extends UnitTestCase
                      array('path' => '/test2:controller/:action',
                            'defaults' => array('action' => 'display')),
                      array('path' => '/test3:controller:test5/:action/:id:.htm',
+                           'defaults' => array('action' => 'display')),
+                     array('path' => '/:controller:test6/:id:.htm',
                            'defaults' => array('action' => 'display')));
 
     $routes = new lmbRoutes($config);
@@ -255,6 +257,12 @@ class lmbRoutesDispatchTest extends UnitTestCase
     $this->assertEqual($result['action'], 'display');
 
     $result = $routes->dispatch('/test3blogtest5/display/test.htm');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'display');
+    $this->assertEqual($result['id'], 'test');
+
+  $result = $routes->dispatch('/blogtest6/test.htm');
 
     $this->assertEqual($result['controller'], 'blog');
     $this->assertEqual($result['action'], 'display');
