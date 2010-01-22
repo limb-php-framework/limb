@@ -16,7 +16,7 @@ lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
  * class lmbSimpleDb.
  *
  * @package dbal
- * @version $Id: lmbSimpleDb.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbSimpleDb.class.php 8083 2010-01-22 00:57:23Z korchasa $
  */
 class lmbSimpleDb
 {
@@ -148,6 +148,14 @@ class lmbSimpleDb
     $info = $this->conn->getDatabaseInfo();
     foreach($info->getTableList() as $table)
       $this->conn->newStatement("DELETE FROM $table")->execute();
+    return $this;
+  }
+
+  function cleanup()
+  {
+    $info = $this->conn->getDatabaseInfo();
+    foreach($info->getTableList() as $table)
+      $this->conn->newStatement("DROP TABLE `$table`")->execute();
     return $this;
   }
 

@@ -8,20 +8,20 @@
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbBaseConnection.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlDbInfo.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlQueryStatement.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlInsertStatement.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlManipulationStatement.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlStatement.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlTypeInfo.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlRecord.class.php');
-lmb_require(dirname(__FILE__) . '/lmbMysqlRecordSet.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlDbInfo.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlQueryStatement.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlInsertStatement.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlManipulationStatement.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlStatement.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlTypeInfo.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecord.class.php');
+lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecordSet.class.php');
 
 /**
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 7957 2009-06-20 17:15:17Z pachanga $
+ * @version $Id: lmbMysqlConnection.class.php 8083 2010-01-22 00:57:23Z korchasa $
  */
 class lmbMysqlConnection extends lmbDbBaseConnection
 {
@@ -41,7 +41,7 @@ class lmbMysqlConnection extends lmbDbBaseConnection
 
   function connect()
   {
-    if(isset($this->config['pconnect']) && $this->config['pconnect']) 
+    if(isset($this->config['pconnect']) && $this->config['pconnect'])
     {
       $this->connectionId = mysql_pconnect($this->config['host'],
                                           $this->config['user'],
@@ -108,7 +108,7 @@ class lmbMysqlConnection extends lmbDbBaseConnection
       $this->_raiseError($sql);
     return $result;
   }
-  
+
   function executeStatement($stmt)
   {
     return (bool) $this->execute($stmt->getSQL());

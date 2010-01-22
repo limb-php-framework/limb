@@ -17,7 +17,7 @@ lmb_require('limb/dbal/src/query/lmbBulkInsertQuery.class.php');
  * class lmbDBAL.
  *
  * @package dbal
- * @version $Id: lmbDBAL.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbDBAL.class.php 8083 2010-01-22 00:57:23Z korchasa $
  */
 class lmbDBAL
 {
@@ -104,6 +104,16 @@ class lmbDBAL
   static function insertQuery($table, $conn = null)
   {
     return new lmbInsertQuery($table, $conn);
+  }
+
+  /**
+   * @param string $table
+   * @param [lmbDbConnection] $conn
+   * @return lmbInsertOnDuplicateUpdateQuery
+   */
+  static function insertOnDuplicateUpdateQuery($table, $conn = null)
+  {
+    return new lmbInsertOnDuplicateUpdateQuery($table, $conn);
   }
 
   /**
