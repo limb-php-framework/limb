@@ -1,3 +1,2 @@
 <?php
-
-$this->dump->clean();
+lmb_tests_teardown_db();
