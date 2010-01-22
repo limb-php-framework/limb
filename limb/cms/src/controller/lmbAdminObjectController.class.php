@@ -47,7 +47,7 @@ abstract class lmbAdminObjectController extends lmbObjectController
     if(!in_array($direction, array('asc','desc')))
       $direction = 'asc';
 
-    if($sort==false) return; 
+    if($sort==false) return;
     $this->items->sort(array($sort=>$direction));
   }
 
@@ -167,8 +167,10 @@ abstract class lmbAdminObjectController extends lmbObjectController
   {
     $this->_onBeforeImport();
     $this->item->import($this->request);
-	foreach ($this->request->getFiles() as $field => $file)
+    if($this->request->hasFiles()) {
+	  foreach ($this->request->getFiles() as $field => $file)
 	    $this->item->set($field, $file->getName());
+    }
     $this->_onAfterImport();
   }
 
