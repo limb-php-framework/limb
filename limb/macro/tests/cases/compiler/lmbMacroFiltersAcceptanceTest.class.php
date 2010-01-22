@@ -7,6 +7,8 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
+lmb_require('limb/macro/src/compiler/lmbMacroFilter.class.php');
+
 class MacroFilterFooTest extends lmbMacroFilter
 {
   function getValue()
