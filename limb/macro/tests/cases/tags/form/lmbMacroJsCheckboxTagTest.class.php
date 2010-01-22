@@ -14,11 +14,15 @@ class lmbMacroJsCheckboxTagTest extends lmbBaseMacroTest
     $template = '{{js_checkbox name="my_checkbox" value="$#var"/}}';
 
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
-    $page->set('var', 1);     
+    $page->set('var', 1);
+
+    $html = new SimpleXMLElement('<foo>'.$page->render().'</foo>');
+
+    $this->assertEqual($html->input[0]['type'], 'checkbox');
     
-    $expected = '<input type="checkbox" value="1" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
-                '<input type="hidden" id="_my_checkbox" name="my_checkbox" value="0" />';
-    $this->assertEqual($page->render(), $expected);
+    $this->assertEqual($html->input[1]['type'], 'hidden');
+    $this->assertEqual($html->input[1]['name'], 'my_checkbox');
+    $this->assertEqual($html->input[1]['value'], '0');
   }
 
   function testRenderHiddenWithCheckedCheckbox()
@@ -28,9 +32,10 @@ class lmbMacroJsCheckboxTagTest extends lmbBaseMacroTest
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
     $page->set('var', 1);     
     
-    $expected = '<input checked="checked" type="checkbox" value="1" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
-                '<input type="hidden" id="_my_checkbox" name="my_checkbox" value="1" />';
-    $this->assertEqual($page->render(), $expected);
+    $html = new SimpleXMLElement('<foo>'.$page->render().'</foo>');
+
+    $this->assertEqual($html->input[1]['type'], 'hidden');
+    $this->assertEqual($html->input[1]['value'], 1);       
   }
   
   function testChecked_With_CheckedValueAttribute()
@@ -40,10 +45,10 @@ class lmbMacroJsCheckboxTagTest extends lmbBaseMacroTest
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
     $page->set('var', 1);     
     
-    $expected = '<input checked="checked" type="checkbox" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
-                '<input type="hidden" id="_my_checkbox" name="my_checkbox" value="1" />';
-    $this->assertEqual($page->render(), $expected);
-    
+    $html = new SimpleXMLElement('<foo>'.$page->render().'</foo>');
+
+    $this->assertEqual($html->input[0]['checked'], 'checked');
+    $this->assertEqual($html->input[1]['value'], 1);        
   }
 
   function testNotChecked_With_CheckedValueAttribute_And_ValueAttribute()
@@ -51,11 +56,15 @@ class lmbMacroJsCheckboxTagTest extends lmbBaseMacroTest
     $template = '{{js_checkbox name="my_checkbox" checked_value="$#var" value="1" checked="checked"/}}';
 
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
-    $page->set('var', 2);     
+    $page->set('var', 2);
+
+    $html = new SimpleXMLElement('<foo>'.$page->render().'</foo>');
+
+    $this->assertEqual($html->input[0]['type'], 'checkbox');
+    $this->assertEqual($html->input[0]['value'], 1);
     
-    $expected = '<input value="1" type="checkbox" onchange="this.form.elements[\'_my_checkbox\'].value = 1*this.checked" />'.
-                '<input type="hidden" id="_my_checkbox" name="my_checkbox" value="0" />';
-    $this->assertEqual($page->render(), $expected);
+    $this->assertEqual($html->input[1]['type'], 'hidden');
+    $this->assertEqual($html->input[1]['value'], 0);    
   }
 }
 

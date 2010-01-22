@@ -18,18 +18,18 @@ lmb_require('limb/macro/src/tags/form/lmbMacroCheckableInputWidget.class.php');
 class lmbMacroJSCheckboxWidget extends lmbMacroCheckableInputWidget
 {
   protected $skip_render = array('name', 'checked_value');
-  
+  protected $hidden_id;
+    
   function renderAttributes()
   {
     parent :: renderAttributes();
 
-    $hidden_id = '_' . $this->getRuntimeId();
-    echo " onchange=\"this.form.elements['{$hidden_id}'].value = 1*this.checked\"";
+    $this->hidden_id = (string) microtime().mt_rand();
+    echo " onchange=\"this.form.elements['{$this->hidden_id}'].value = 1*this.checked\"";
   }
 
   function renderHidden()
   {
-    $hidden_id = '_' . $this->getRuntimeId();
     $hidden_name = $this->getAttribute('name');
     
     if($this->isChecked())
@@ -37,7 +37,7 @@ class lmbMacroJSCheckboxWidget extends lmbMacroCheckableInputWidget
     else
       $value = 0;
       
-    echo "<input type=\"hidden\" id=\"{$hidden_id}\" name=\"{$hidden_name}\" value=\"{$value}\" />";
+    echo "<input type=\"hidden\" id=\"{$this->hidden_id}\" name=\"{$hidden_name}\" value=\"{$value}\" />";
   }
 }
 
