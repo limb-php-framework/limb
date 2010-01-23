@@ -1,2 +1,2 @@
 <?php
-try { lmbFs :: rm(LIMB_VAR_DIR); } catch(lmbFsException $e) {}
+try { lmbFs :: rm(lmb_var_dir()); } catch(lmbFsException $e) {}

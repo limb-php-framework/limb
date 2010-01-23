@@ -14,6 +14,6 @@ class lmbCacheFileConnectionTest extends lmbCacheConnectionTest
 {
   function __construct()
   {
-    $this->dsn = 'file:///' . LIMB_VAR_DIR . '/cache';
+    $this->dsn = 'file:///'.lmb_var_dir().'/cache2';
   }
 }

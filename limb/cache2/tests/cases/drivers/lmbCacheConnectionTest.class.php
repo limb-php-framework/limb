@@ -37,7 +37,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   function tearDown()
   {
-    @unlink(LIMB_VAR_DIR . '/diff_thread.php');
+    @unlink(lmb_var_dir() . '/diff_thread.php');
     $this->cache->flush();
   }
 
@@ -155,6 +155,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     sleep(2);
     $this->assertNull($this->_makeGetFromDifferentThread($id_short));
     $this->assertIdentical($value, $this->_makeGetFromDifferentThread($id_long));
+
   }
 
   function testProperSerializing()
@@ -260,18 +261,19 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
   protected function _makeCallFromDifferentThread($method, $arguments)
   {
-    $filename = LIMB_VAR_DIR . '/diff_thread.php';
+    $filename = lmb_var_dir() . '/diff_thread.php';
     $cur_file_dir = dirname(__FILE__);
     $include_path = get_include_path();
     $cur_process_dir = getcwd();
     $arguments_str = implode("', '", $arguments);
+    $setup_file = realpath($cur_file_dir.'/../../../common.inc.php');
 
     $request_code = <<<EOD
 <?php
     ob_start();
     chdir('$cur_process_dir');
     set_include_path('$include_path');
-    require_once('$cur_file_dir/../.setup.php');
+    require_once('$setup_file');
 
     lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
     \$cache = lmbCacheFactory::createConnection('{$this->dsn}');
