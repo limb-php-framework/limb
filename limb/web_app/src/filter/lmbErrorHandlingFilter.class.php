@@ -29,7 +29,7 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
     if(!$error500_page)
       $error500_page = dirname(__FILE__) . '/../../template/server_error.html';
 
-    $this->error_page = $error500_page;    
+    $this->error_page = $error500_page;
   }
 
   function run($filter_chain)
@@ -44,9 +44,9 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
 
   function handleFatalError($error)
   {
-    $this->toolkit->getLog()->error($error['message']);
+    $this->toolkit->getLog()->log($error['message'], LOG_ERR);
     $this->toolkit->getResponse()->reset();
-    
+
     header('HTTP/1.x 500 Server Error');
 
     if($this->toolkit->isWebAppDebugEnabled())
@@ -62,11 +62,11 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
     if(function_exists('debugBreak'))
       debugBreak();
 
-    $this->toolkit->getLog()->exception($e);
+    $this->toolkit->getLog()->logException($e);
     $this->toolkit->getResponse()->reset();
 
     header('HTTP/1.x 500 Server Error');
-    
+
     if($this->toolkit->isWebAppDebugEnabled())
       $this->_echoExceptionBacktrace($e);
     else

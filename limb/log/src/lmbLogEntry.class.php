@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/core/src/lmbSys.class.php');
@@ -22,6 +22,12 @@ class lmbLogEntry
   protected $message;
   protected $params;
   protected $backtrace;
+  protected $names_map = array(
+    LOG_INFO    => 'Info',
+    LOG_NOTICE  => 'Notice',
+    LOG_WARNING => 'Warning',
+    LOG_ERR     => 'Error',
+  );
 
   function __construct($level, $message, $params = array(), $backtrace = null, $time = null)
   {
@@ -47,6 +53,16 @@ class lmbLogEntry
     return $this->time;
   }
 
+  function getParams()
+  {
+    return $this->params;
+  }
+
+  function getBacktrace()
+  {
+    return $this->backtrace;
+  }
+
   function isLevel($level)
   {
     return $this->level == $level;
@@ -54,27 +70,7 @@ class lmbLogEntry
 
   function getLevelForHuman()
   {
-    $level = '';
-
-    switch($this->level)
-    {
-      case lmbLog :: NOTICE:
-        $level = 'notice';
-      break;
-
-      case lmbLog :: WARNING:
-        $level = 'warning';
-      break;
-
-      case lmbLog :: ERROR:
-        $level = 'error';
-      break;
-
-      case lmbLog :: INFO:
-        $level = 'info';
-      break;
-    }
-    return $level;
+    return $this->names_map[$this->level];
   }
 
   function toString()
@@ -84,7 +80,7 @@ class lmbLogEntry
 
   function asText()
   {
-    $string = "Message: {$this->message}";
+    $string = $this->getLevelForHuman()." message: {$this->message}";
     $string .= (count($this->params) ? "\nAdditional attributes: " . var_export($this->params, true) : '');
     if($this->backtrace)
       $string .= "\nBack trace:\n" . $this->backtrace->toString();

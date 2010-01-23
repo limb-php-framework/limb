@@ -2,13 +2,12 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-
 lmb_require('limb/fs/src/lmbFs.class.php');
-lmb_require('limb/fs/src/lmbLogWriter.interface.php');
+lmb_require('limb/log/src/lmbLogWriter.interface.php');
 
 /**
  * class lmbLogFileWriter.
@@ -16,26 +15,18 @@ lmb_require('limb/fs/src/lmbLogWriter.interface.php');
  * @package log
  * @version $Id$
  */
-class lmbLogFileWriter
+class lmbLogFileWriter implements lmbLogWriter
 {
-  protected $log_files;
+  protected $log_file;
 
   function __construct(lmbUri $dsn)
   {
-  	$log_dir = $dsn->getPath();
-    $this->log_files = array(
-      lmbLog :: LEVEL_NOTICE => $log_dir . '/notice.log',
-      lmbLog :: LEVEL_WARNING => $log_dir . '/warning.log',
-      lmbLog :: LEVEL_ERROR => $log_dir . '/error.log',
-      lmbLog :: LEVEL_INFO => $log_dir . '/debug.log'
-    );
+  	$this->log_file = $dsn->getPath();
   }
 
   function write(lmbLogEntry $entry)
   {
-    $this->_appendToFile($this->getLogFile($entry->getLevel()),
-                         $entry->asText(),
-                         $entry->getTime());
+    $this->_appendToFile($this->getLogFile(), $entry->asText(), $entry->getTime());
   }
 
   protected function _appendToFile($file_name, $message, $stamp)
@@ -72,10 +63,9 @@ class lmbLogFileWriter
     }
   }
 
-  function getLogFile($level)
+  function getLogFile()
   {
-    if(isset($this->log_files[$level]))
-      return $this->log_files[$level];
+    return $this->log_file;
   }
 }
 
