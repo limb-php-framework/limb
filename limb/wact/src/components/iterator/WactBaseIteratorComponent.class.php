@@ -114,7 +114,7 @@ abstract class WactBaseIteratorComponent extends WactRuntimeComponent
 
   protected function _processForFirstRecord($dataset)
   {
-    if(method_exists('paginate', $dataset))
+    if(method_exists($dataset, 'paginate'))
       $dataset->paginate(0, 1);
 
     $dataset->rewind();

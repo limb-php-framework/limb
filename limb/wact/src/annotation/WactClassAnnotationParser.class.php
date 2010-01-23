@@ -2,16 +2,16 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * class WactClassAnnotationParser.
  *
  * @package wact
- * @version $Id: WactClassAnnotationParser.class.php 7686 2009-03-04 19:57:12Z korchasa $
+ * @version $Id: WactClassAnnotationParser.class.php 8090 2010-01-23 05:55:20Z korchasa $
  */
 class WactClassAnnotationParser
 {
@@ -109,6 +109,8 @@ class WactClassAnnotationParser
 
   function _invokeListener($method, $params)
   {
+    if(!is_array($params))
+      $params = array($params);
     if (method_exists($this->listener, $method))
       call_user_func_array (array($this->listener, $method), $params);
   }
