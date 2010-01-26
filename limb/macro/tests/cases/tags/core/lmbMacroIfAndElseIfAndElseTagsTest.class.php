@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbMacroCopyAndCutTagsTest extends lmbBaseMacroTest
+class lmbMacroIfAndElseIfAndElseTagsTest extends lmbBaseMacroTest
 {
   function testIfTag()
   {
