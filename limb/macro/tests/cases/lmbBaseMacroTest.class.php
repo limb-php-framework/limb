@@ -20,14 +20,14 @@ class lmbBaseMacroTest extends UnitTestCase
 
   function setUp()
   {
-    $this->base_dir = LIMB_VAR_DIR . '/tpl';
+    $this->base_dir = lmb_var_dir() . '/tpl';
     $this->tpl_dir = $this->base_dir;
     $this->cache_dir = $this->base_dir . '/compiled';
     $this->tags_dir = dirname(__FILE__).'/../../src/tags';
     $this->filters_dir = dirname(__FILE__).'/../../src/filters';
 
-    lmbFs :: rm(LIMB_VAR_DIR);
-    lmbFs :: mkdir(LIMB_VAR_DIR);
+    lmbFs :: rm(lmb_var_dir());
+    lmbFs :: mkdir(lmb_var_dir());
     lmbFs :: mkdir($this->base_dir);
     lmbFs :: mkdir($this->tpl_dir);
     lmbFs :: mkdir($this->cache_dir);
