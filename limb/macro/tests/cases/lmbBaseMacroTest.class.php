@@ -17,15 +17,15 @@ class lmbBaseMacroTest extends UnitTestCase
   public $cache_dir;
   public $tags_dir;
   public $filters_dir;
-  
+
   function setUp()
   {
     $this->base_dir = LIMB_VAR_DIR . '/tpl';
-    $this->tpl_dir = $this->base_dir;      
+    $this->tpl_dir = $this->base_dir;
     $this->cache_dir = $this->base_dir . '/compiled';
     $this->tags_dir = dirname(__FILE__).'/../../src/tags';
     $this->filters_dir = dirname(__FILE__).'/../../src/filters';
-    
+
     lmbFs :: rm(LIMB_VAR_DIR);
     lmbFs :: mkdir(LIMB_VAR_DIR);
     lmbFs :: mkdir($this->base_dir);
@@ -33,33 +33,50 @@ class lmbBaseMacroTest extends UnitTestCase
     lmbFs :: mkdir($this->cache_dir);
   }
 
+  /**
+   * @param string $file
+   * @return lmbMacroTemplate
+   */
   protected function _createMacro($file)
   {
     return new lmbMacroTemplate($file, $this->_createMacroConfig());
   }
 
+  /**
+   * @param string $code
+   * @param string $name
+   * @return string filename
+   */
   protected function _createTemplate($code, $name = false)
   {
     if(!$name)
-      $name = mt_rand() . '.phtml';    
+      $name = mt_rand() . '.phtml';
     $file = $this->tpl_dir . '/'. $name;
     file_put_contents($file, $code);
-   
+
     return $file;
   }
 
+  /**
+   * @param string $code
+   * @param string $name
+   * @return lmbMacroTemplate
+   */
   protected function _createMacroTemplate($code, $name = false)
   {
     $file = $this->_createTemplate($code, $name);
     return $this->_createMacro($file);
   }
 
+  /**
+   * @return lmbMacroConfig
+   */
   protected function _createMacroConfig()
   {
     $config = array(
       'cache_dir' => $this->cache_dir,
       'forcecompile' => true,
-      'forcescan' => true,     
+      'forcescan' => true,
       'tpl_scan_dirs' =>  array($this->tpl_dir),
       'tags_scan_dirs' => array('src/tags', 'limb/*/src/macro', 'limb/macro/src/tags'),
       'filters_scan_dirs' => array('src/filters', 'limb/*/src/macro', 'limb/macro/src/filters')
