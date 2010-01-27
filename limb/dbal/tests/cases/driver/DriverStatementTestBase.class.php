@@ -126,144 +126,78 @@ abstract class DriverStatementTestBase extends UnitTestCase
     $this->assertNull($record->getString('type_blob'));
   }
 
-  function checkSmallIntValue($value)
-  {
-    $stmt = $this->connection->newStatement('SELECT :literal:');
-    $stmt->setSmallInt('literal', $value);
-    $this->assertEqual($stmt->getOneValue(), $value);
-
-    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_SMALLINT, 'type_smallint', $value);
-    $this->assertIdentical($record->getInteger('type_smallint'), $value);
-    $this->assertEqual($record->get('type_smallint'), $value);
-  }
-
   function testSetSmallInt()
   {
-    $this->checkSmallIntValue(1);
-    $this->checkSmallIntValue(0);
-    $this->checkSmallIntValue(null);
-    $this->checkSmallIntValue(32767);
-    $this->checkSmallIntValue(-32767);
-  }
-
-  function checkIntegerValue($value)
-  {
-    $stmt = $this->connection->newStatement('SELECT :literal:');
-    $stmt->setInteger('literal', $value);
-    $this->assertEqual($stmt->getOneValue(), $value);
-
-    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_INTEGER, 'type_integer', $value);
-    $this->assertIdentical($record->getInteger('type_integer'), $value);
-    $this->assertEqual($record->get('type_integer'), $value);
+    $this->_checkSmallIntValue(1);
+    $this->_checkSmallIntValue(0);
+    $this->_checkSmallIntValue(null);
+    $this->_checkSmallIntValue(32767);
+    $this->_checkSmallIntValue(-32767);
+    try {
+        $this->_checkSmallIntValue('foo');
+        $this->fail();
+    } catch(lmbDbException $e) {}
   }
 
   function testSetInteger()
   {
-    $this->checkIntegerValue(1);
-    $this->checkIntegerValue(0);
-    $this->checkIntegerValue(null);
-    $this->checkIntegerValue(99999);
-    $this->checkIntegerValue(-99999);
-  }
-
-  function checkBooleanValue($value)
-  {
-    $stmt = $this->connection->newStatement('SELECT :literal:');
-    $stmt->setBoolean('literal', $value);
-    $this->assertEqual($stmt->getOneValue(), $value);
-
-    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_BOOLEAN, 'type_boolean', $value);
-    if(is_null($value))
-    {
-      $this->assertNull($record->getBoolean('type_boolean'));
-    }
-    else
-    {
-      $this->assertIdentical($record->getBoolean('type_boolean'), (boolean) $value);
-    }
+    $this->_checkIntegerValue(1);
+    $this->_checkIntegerValue(0);
+    $this->_checkIntegerValue(null);
+    $this->_checkIntegerValue(99999);
+    $this->_checkIntegerValue(-99999);
+    try {
+        $this->_checkIntegerValue('foo');
+        $this->fail();
+    } catch(lmbDbException $e) {}
   }
 
   function testSetBoolean()
   {
-    $this->checkBooleanValue(null);
-    $this->checkBooleanValue(true);
-    $this->checkBooleanValue(false);
-    $this->checkBooleanValue(1);
-    $this->checkBooleanValue(0);
-  }
-
-  function checkFloatValue($value)
-  {
-    $stmt = $this->connection->newStatement('SELECT :literal:');
-    $stmt->setFloat('literal', $value);
-    $this->assertEqual($stmt->getOneValue(), (float) $value);
-
-    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_FLOAT, 'type_float', $value);
-    if(is_null($value))
-    {
-      $this->assertNull($record->getFloat('type_float'));
-    }
-    else
-    {
-      $this->assertIdentical($record->getFloat('type_float'), (float) $value);
-    }
-    $this->assertEqual($record->get('type_float'), $value);
+    $this->_checkBooleanValue(null);
+    $this->_checkBooleanValue(true);
+    $this->_checkBooleanValue(false);
+    $this->_checkBooleanValue(1);
+    $this->_checkBooleanValue(0);
   }
 
   function testSetFloat()
   {
-    $this->checkFloatValue((float) 0);
-    $this->checkFloatValue(null);
-    $this->checkFloatValue(3.14);
-    $this->checkFloatValue('3.14');
-  }
-
-  function checkDoubleValue($value)
-  {
-    $stmt = $this->connection->newStatement('SELECT :literal:');
-    $stmt->setDouble('literal', $value);
-    $this->assertEqual($stmt->getOneValue(), $value);
-
-    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_DOUBLE, 'type_double', $value);
-    if(is_string($value))
-    {
-      $this->assertEqual($record->getStringFixed('type_double'), $value);
-    }
-    else
-    {
-      $this->assertEqual($record->getFloat('type_double'), $value);
-    }
-    $this->assertEqual($record->get('type_double'), $value);
+    $this->_checkFloatValue((float) 0);
+    $this->_checkFloatValue(null);
+    $this->_checkFloatValue(3.14);
+    $this->_checkFloatValue('3.14');
+    try {
+        $this->_checkFloatValue('foo');
+        $this->fail();
+    } catch(lmbDbException $e) {}
   }
 
   function testSetDouble()
   {
-    $this->checkDoubleValue(0);
-    $this->checkDoubleValue((float) 0);
-    $this->checkDoubleValue(null);
-    $this->checkDoubleValue(3.14);
-    $this->checkDoubleValue('3.14');
-  }
-
-  function checkDecimalValue($value)
-  {
-    $stmt = $this->connection->newStatement('SELECT :literal:');
-    $stmt->setDecimal('literal', $value);
-    $this->assertEqual($stmt->getOneValue(), $value);
-
-    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_DECIMAL, 'type_decimal', $value);
-    $this->assertEqual($record->getStringFixed('type_decimal'), $value);
-    $this->assertEqual($record->get('type_decimal'), $value);
+    $this->_checkDoubleValue(0);
+    $this->_checkDoubleValue((float) 0);
+    $this->_checkDoubleValue(null);
+    $this->_checkDoubleValue(3.14);
+    $this->_checkDoubleValue('3.14');
+    try {
+        $this->_checkDoubleValue('foo');
+        $this->fail();
+    } catch(lmbDbException $e) {}
   }
 
   function testSetDecimal()
   {
-    $this->checkDecimalValue(0);
-    $this->checkDecimalValue((float) 0);
-    $this->checkDecimalValue(null);
-    $this->checkDecimalValue(3.14);
-    $this->checkDecimalValue('3.14');
-    $this->checkDecimalValue('1234567890123456789.01'); // To big for float
+    $this->_checkDecimalValue(0);
+    $this->_checkDecimalValue((float) 0);
+    $this->_checkDecimalValue(null);
+    $this->_checkDecimalValue(3.14);
+    $this->_checkDecimalValue('3.14');
+    $this->_checkDecimalValue('1234567890123456789.01'); // To big for float
+    try {
+        $this->_checkDecimalValue('foo');
+        $this->fail();
+    } catch(lmbDbException $e) {}
   }
 
   function testSetChar()
@@ -444,6 +378,93 @@ abstract class DriverStatementTestBase extends UnitTestCase
     $value = 'Bad TimeStamp Value';
     // What should the expected behavior be?
   }
+
+  protected function _checkSmallIntValue($value)
+  {
+    $stmt = $this->connection->newStatement('SELECT :literal:');
+    $stmt->setSmallInt('literal', $value);
+    $this->assertEqual($stmt->getOneValue(), $value);
+
+    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_SMALLINT, 'type_smallint', $value);
+    $this->assertIdentical($record->getInteger('type_smallint'), $value);
+    $this->assertEqual($record->get('type_smallint'), $value);
+  }
+
+  protected function _checkIntegerValue($value)
+  {
+    $stmt = $this->connection->newStatement('SELECT :literal:');
+    $stmt->setInteger('literal', $value);
+    $this->assertEqual($stmt->getOneValue(), $value);
+
+    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_INTEGER, 'type_integer', $value);
+    $this->assertIdentical($record->getInteger('type_integer'), $value);
+    $this->assertEqual($record->get('type_integer'), $value);
+  }
+
+  protected function _checkBooleanValue($value)
+  {
+    $stmt = $this->connection->newStatement('SELECT :literal:');
+    $stmt->setBoolean('literal', $value);
+    $this->assertEqual($stmt->getOneValue(), $value);
+
+    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_BOOLEAN, 'type_boolean', $value);
+    if(is_null($value))
+    {
+      $this->assertNull($record->getBoolean('type_boolean'));
+    }
+    else
+    {
+      $this->assertIdentical($record->getBoolean('type_boolean'), (boolean) $value);
+    }
+  }
+
+  protected function _checkDecimalValue($value)
+  {
+    $stmt = $this->connection->newStatement('SELECT :literal:');
+    $stmt->setDecimal('literal', $value);
+    $this->assertEqual($stmt->getOneValue(), $value);
+
+    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_DECIMAL, 'type_decimal', $value);
+    $this->assertEqual($record->getStringFixed('type_decimal'), $value);
+    $this->assertEqual($record->get('type_decimal'), $value);
+  }
+
+  protected function _checkDoubleValue($value)
+  {
+    $stmt = $this->connection->newStatement('SELECT :literal:');
+    $stmt->setDouble('literal', $value);
+    $this->assertEqual($stmt->getOneValue(), $value);
+
+    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_DOUBLE, 'type_double', $value);
+    if(is_string($value))
+    {
+      $this->assertEqual($record->getStringFixed('type_double'), $value);
+    }
+    else
+    {
+      $this->assertEqual($record->getFloat('type_double'), $value);
+    }
+    $this->assertEqual($record->get('type_double'), $value);
+  }
+
+  protected function _checkFloatValue($value)
+  {
+    $stmt = $this->connection->newStatement('SELECT :literal:');
+    $stmt->setFloat('literal', $value);
+    $this->assertEqual($stmt->getOneValue(), (float) $value);
+
+    $record = $this->setTypedValue(lmbDbTypeInfo::TYPE_FLOAT, 'type_float', $value);
+    if(is_null($value))
+    {
+      $this->assertNull($record->getFloat('type_float'));
+    }
+    else
+    {
+      $this->assertIdentical($record->getFloat('type_float'), (float) $value);
+    }
+    $this->assertEqual($record->get('type_float'), $value);
+  }
+
 }
 
 

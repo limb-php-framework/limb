@@ -12,11 +12,14 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbMysqlStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlStatement.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbMysqlStatement.class.php 8105 2010-01-27 00:31:17Z korchasa $
  */
 class lmbMysqlStatement implements lmbDbStatement
 {
   protected $statement;
+  /**
+   * @var lmbMysqlConnection
+   */
   protected $connection;
   protected $parameters = array();
 
@@ -43,94 +46,77 @@ class lmbMysqlStatement implements lmbDbStatement
 
   function setSmallInt($name, $value)
   {
+  	if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the small int", array('value' => $value));
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
   }
 
   function setInteger($name, $value)
   {
+  	if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the integer", array('value' => $value));
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
   }
 
   function setFloat($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    'null' :
-    floatval($value);
+  	if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the float", array('value' => $value));
+    $this->parameters[$name] = is_null($value) ? 'null' : floatval($value);
   }
 
   function setDouble($name, $value)
   {
     if(is_float($value) || is_integer($value))
-    {
       $this->parameters[$name] = $value;
-    }
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
-    {
       $this->parameters[$name] = $value;
-    }
-    else
-    {
+    else if(!$value)
       $this->parameters[$name] = 'null';
-    }
+    else
+      throw new lmbDbException("Can't convert given value to the double", array('value' => $value));
   }
 
   function setDecimal($name, $value)
   {
     if(is_float($value) || is_integer($value))
-    {
       $this->parameters[$name] = $value;
-    }
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
-    {
       $this->parameters[$name] = $value;
-    }
-    else
-    {
+    else if(!$value)
       $this->parameters[$name] = 'null';
-    }
+    else
+      throw new lmbDbException("Can't convert given value to the decimal", array('value' => $value));
   }
 
   function setBoolean($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    'null' :(($value) ?  '1' : '0');
+    $this->parameters[$name] = is_null($value) ? 'null' :(($value) ?  '1' : '0');
   }
 
   function setChar($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    'null' :
-    "'" . mysql_escape_string((string) $value) . "'";
+    $this->parameters[$name] = is_null($value) ? 'null' : "'" . $this->_escape((string) $value) . "'";
   }
 
   function setVarChar($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    'null' :
-    "'" . mysql_escape_string((string) $value) . "'";
+    $this->setChar($name, $value);
   }
 
   function setClob($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    'null' :
-    "'" . mysql_escape_string((string) $value) . "'";
+    $this->setChar($name, $value);
   }
 
   protected function _setDate($name, $value, $format)
   {
     if(is_int($value))
-    {
       $this->parameters[$name] = "'" . date($format, $value) . "'";
-    }
     else if(is_string($value))
-    {
-      $this->parameters[$name] = "'" . mysql_escape_string((string) $value) . "'";
-    }
+      $this->setChar($name, $value);
     else
-    {
       $this->parameters[$name] = 'null';
-    }
   }
 
   function setDate($name, $value)
@@ -156,48 +142,39 @@ class lmbMysqlStatement implements lmbDbStatement
   function set($name, $value)
   {
     if(is_string($value))
-    {
       $this->setChar($name, $value);
-    }
     else if(is_int($value))
-    {
       $this->setInteger($name, $value);
-    }
     else if(is_bool($value))
-    {
       $this->setBoolean($name, $value);
-    }
     else if(is_float($value))
-    {
       $this->setFloat($name, $value);
-    }
     else
-    {
       $this->setNull($name);
-    }
   }
 
   function import($paramList)
   {
     foreach($paramList as $name=>$value)
-    {
       $this->set($name, $value);
-    }
   }
 
   function getSQL()
   {
     $sql = $this->statement;
     foreach($this->parameters as $key => $value)
-    {
       $sql = str_replace(':' . $key . ':', $value, $sql);
-    }
     return $sql;
   }
 
   function execute()
   {
     return $this->connection->executeStatement($this);
+  }
+
+  protected function _escape($value)
+  {
+  	return mysql_escape_string($value);
   }
 }
 
