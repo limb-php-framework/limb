@@ -1,18 +1,22 @@
 <?php
 /**
- * class lmbMacroCopyTag.
+ * class lmbMacroElseIfTag.
  * @tag elseif
- * @req_attributes var
+ * @parent_tag_class lmbMacroIfTag
  * @forbid_end_tag
  */
 class lmbMacroElseIfTag extends lmbMacroTag
 {
+  function preParse($compiler)
+  {    
+    if(!$this->has('var') && !$this->has('expr'))
+      throw new lmbMacroException("'var'( alias 'expr') attribute is required for 'elseif' tag");
+    parent::preParse($compiler);
+  }
+
   protected function _generateContent($code_writer)
   {
-    if(!$this->findParentByClass('lmbMacroIfTag'))
-    {
-      throw new lmbMacroException('If tag not found');
-    }
-    $code_writer->writePHP('} elseif('.$this->get('var').') {');
+    $var = $this->has('var') ? $this->get('var') : $this->get('expr');
+    $code_writer->writePHP('} elseif('.$var.') {'.PHP_EOL);
   }
 }
