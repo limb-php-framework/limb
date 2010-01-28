@@ -9,7 +9,7 @@
 
 /**
  * @package imagekit
- * @version $Id: lmbImageKit.class.php 8065 2010-01-20 04:18:19Z korchasa $
+ * @version $Id: lmbImageKit.class.php 8110 2010-01-28 14:20:12Z korchasa $
  */
 class lmbImageKit
 {
@@ -17,7 +17,7 @@ class lmbImageKit
   {
     $image_class_name = 'lmb' . ucfirst($library) . 'ImageConvertor';
 
-    $class_path = 'imagekit/src/' .  $library . '/' . $image_class_name . '.class.php';
+    $class_path = 'limb/imagekit/src/' .  $library . '/' . $image_class_name . '.class.php';
 
     lmb_require($class_path);
 

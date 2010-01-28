@@ -7,11 +7,11 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('imagekit/src/lmbAbstractImageContainer.class.php');
-lmb_require('imagekit/src/exception/lmbImageTypeNotSupportedException.class.php');
-lmb_require('imagekit/src/exception/lmbImageCreateFailedException.class.php');
-lmb_require('imagekit/src/exception/lmbImageSaveFailedException.class.php');
-lmb_require('fs/src/exception/lmbFileNotFoundException.class.php');
+lmb_require('limb/imagekit/src/lmbAbstractImageContainer.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageTypeNotSupportedException.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageCreateFailedException.class.php');
+lmb_require('limb/imagekit/src/exception/lmbImageSaveFailedException.class.php');
+lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 
 /**
  * Imagick image container
@@ -74,7 +74,7 @@ class lmbImImageContainer extends lmbAbstractImageContainer
 
     $this->img->setImageFormat($type);
     $this->img->setImageFilename($file_name);
-    
+
     if(!is_null($quality) && strtolower($type) == 'jpeg')
     {
     	if(method_exists($this->img, 'setImageCompression'))
@@ -86,9 +86,9 @@ class lmbImImageContainer extends lmbAbstractImageContainer
     	{
         $this->img->setCompression(imagick::COMPRESSION_JPEG);
         $this->img->setCompressionQuality($quality);
-    	}      
+    	}
     }
-    
+
     if (!$this->img->writeImage($file_name))
       throw new lmbImageSaveFailedException($file_name);
 

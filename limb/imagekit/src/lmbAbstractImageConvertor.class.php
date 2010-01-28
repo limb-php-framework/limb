@@ -7,25 +7,25 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('fs/src/lmbFileLocationsList.class.php');
-lmb_require('fs/src/lmbFileLocator.class.php');
+lmb_require('limb/fs/src/lmbFileLocationsList.class.php');
+lmb_require('limb/fs/src/lmbFileLocator.class.php');
 
 /**
  * Abstract image convertor
  *
  * @package imagekit
- * @version $Id: lmbAbstractImageConvertor.class.php 8065 2010-01-20 04:18:19Z korchasa $
+ * @version $Id: lmbAbstractImageConvertor.class.php 8110 2010-01-28 14:20:12Z korchasa $
  */
 abstract class lmbAbstractImageConvertor
 {
   protected $container = null;
   protected $params;
-  
+
   function __construct($params = array())
-  {    
+  {
     $this->params = $params;
   }
-  
+
   function __call($name, $args)
   {
     $params = (isset($args[0]) && is_array($args[0])) ? $args[0] : array();
@@ -38,7 +38,7 @@ abstract class lmbAbstractImageConvertor
     $filter->apply($this->container);
     return $this;
   }
-  
+
   /**
    * Return filter locator
    *
@@ -51,7 +51,7 @@ abstract class lmbAbstractImageConvertor
       $dirs = $this->params['filters_scan_dirs'];
     else
       $dirs['filters_scan_dirs'] = $this->params['filters_scan_dirs'];
-      
+
     if(isset($this->params['add_filters_scan_dirs']))
     {
       if(is_array($this->params['add_filters_scan_dirs']))
@@ -59,10 +59,10 @@ abstract class lmbAbstractImageConvertor
       else
         $dirs[] = $this->params['add_filters_scan_dirs'];
     }
-    
+
     return new lmbFileLocator(new lmbFileLocationsList($dirs));
   }
-  
+
   function getContainer()
   {
     return $this->container;
