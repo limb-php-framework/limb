@@ -3,17 +3,16 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2020 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSerializable.class.php');
-
 
 /**
  * Wrapper class for global $_SESSION variable
  *
  * @see lmbWebAppTools :: getSession()
- * @version $Id: lmbSession.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbSession.class.php 8111 2010-01-28 17:19:42Z korchasa $
  * @package session
  */
 class lmbSession implements ArrayAccess,Iterator,Countable
@@ -84,7 +83,7 @@ class lmbSession implements ArrayAccess,Iterator,Countable
    */
   function set($name, $value)
   {
-    if(is_object($value))
+    if(is_object($value) && !($value instanceof lmbSerializable))
       $_SESSION[$name] = new lmbSerializable($value);
     else
       $_SESSION[$name] = $value;
@@ -187,7 +186,7 @@ class lmbSession implements ArrayAccess,Iterator,Countable
     return $str;
   }
   /**
-   * Removes variable from session 
+   * Removes variable from session
    * Alias for destroy() method
    * @see destroy()
    * @param string $offset
@@ -196,51 +195,49 @@ class lmbSession implements ArrayAccess,Iterator,Countable
 	function offsetUnset($offset){
 		$this->destroy($offset);
 	}
-	
+
 	function offsetExists($offset)
 	{
 		return $this->exists($offset);
 	}
-	
+
 	function offsetGet($offset)
 	{
 		return $this->get($offset);
 	}
-	
+
 	function offsetSet($offset,$value)
 	{
 		return $this->set($offset,$value);
 	}
-	
+
 	function current()
 	{
 		return current($_SESSION);
 	}
-	
+
 	function next()
 	{
 		return next($_SESSION);
 	}
-	
+
 	function key()
 	{
 		return key($_SESSION);
 	}
-	
+
 	function valid()
 	{
 		return !is_null($this->key());
 	}
-	
+
 	function rewind()
 	{
 		return reset($_SESSION);
 	}
-	
+
 	function count()
 	{
 		return count($_SESSION);
 	}
-	
-	
 }
