@@ -231,7 +231,7 @@ class lmbARQuery extends lmbSelectRawQuery
     }
 
     if(!$has_class_criteria)
-      $class_name_or_obj->addClassCriteria($criteria);
+      $criteria = $class_name_or_obj->addClassCriteria($criteria);
 
     $query->where($criteria);
 

@@ -125,31 +125,30 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
 
   function testFindWithKind()
   {
-    $object1 = new FooOneTableTestObject();
-    $object1->setTitle('Some title');
-    $object1->save();
+    $valid_object1 = new BarFooOneTableTestObject();
+    $valid_object1->setTitle('title1');
+    $valid_object1->save();
 
-    $object2 = new FooOneTableTestObject();
-    $object2->setTitle('Some other title');
-    $object2->save();
+    $valid_object2 = new BarFooOneTableTestObject();
+    $valid_object2->setTitle('title2');
+    $valid_object2->save();
 
-    $object3 = new BarFooOneTableTestObject();
-    $object3->setTitle('Some other title');
-    $object3->save();
+    $wrong_class_object = new FooOneTableTestObject();
+    $wrong_class_object->setTitle('title1');
+    $wrong_class_object->save();
 
-    $object4 = new BarFooOneTableTestObject();
-    $object4->setTitle('Some other title2');
-    $object4->save();
+    $wrong_title_object = new FooOneTableTestObject();
+    $wrong_title_object->setTitle('wrong_title');
+    $wrong_title_object->save();
 
-    $criteria1 = lmbSQlCriteria::equal('title','Some other title2');
-    $criteria2 = lmbSQlCriteria::equal('title','Some other title');
+    $criteria = new lmbSQLCriteria();
+    $criteria->add(lmbSQLCriteria::equal('title', 'title1'));
+    $criteria->addOr(lmbSQLCriteria::equal('title','title2'));
 
-    $criteria = new lmbSQlCriteria();
-    $criteria->add($criteria1->addOr($criteria2));
-
-    $rs = lmbActiveRecord :: find('BarFooOneTableTestObject',array('criteria'=>$criteria));
-
-    $this->assertEqual($rs->count(), 2);
+    $records = lmbActiveRecord :: find('BarFooOneTableTestObject', $criteria)->sort(array('id'))->getArray();
+    $this->assertEqual(count($records), 2);
+    $this->assertEqual($records[0]->title, $valid_object1->title);
+    $this->assertEqual($records[1]->title, $valid_object2->title);
   }
 
   function testTypedRelationFind()

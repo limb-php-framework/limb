@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 8062 2010-01-20 03:54:22Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 8108 2010-01-28 00:46:47Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -1790,7 +1790,7 @@ class lmbActiveRecord extends lmbObject
       $criteria = lmbSQLCriteria::objectify($criteria);
 
     if($this->_isInheritable())
-      $criteria = $criteria->addAnd($this->_getInheritanceCriteria());
+      $criteria = $this->_getInheritanceCriteria()->add($criteria);
 
     return $criteria;
   }
