@@ -22,7 +22,7 @@ class lmbLogTools extends lmbAbstractTools
 
   function getLogDSNes()
   {
-    $default_dsn = 'file://'.lmb_env_get('LIMB_VAR_DIR').'/log/error.log';
+    $default_dsn = 'file://'.lmb_env_get('LIMB_VAR_DIR').'log/error.log';
 
     if(!$this->toolkit->hasConf('common'))
       return array($default_dsn);
