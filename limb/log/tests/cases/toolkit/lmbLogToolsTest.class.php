@@ -26,7 +26,7 @@ class lmbLogToolsTest extends UnitTestCase
   function testGetLogDSNes_default()
   {
     $dsnes = $this->toolkit->getLogDSNes();
-    $this->assertEqual('file://'.lmb_env_get('LIMB_VAR_DIR').'/log/', $dsnes[0]);
+    $this->assertEqual('file://'.lmb_env_get('LIMB_VAR_DIR').'/error.log', $dsnes[0]);
   }
 
   function testGetLogDSNes_fromConfig()
