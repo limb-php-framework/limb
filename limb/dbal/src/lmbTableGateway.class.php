@@ -19,7 +19,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 7834 2009-04-02 08:43:39Z korchasa $
+ * @version $Id: lmbTableGateway.class.php 8116 2010-01-29 05:47:33Z korchasa $
  */
 class lmbTableGateway
 {
@@ -215,13 +215,13 @@ class lmbTableGateway
 
       $this->_stmt = $query->getStatement();
       $this->_bindValuesToStatement($this->_stmt, $set);
-      $this->_stmt->execute();
+      return $this->_stmt->execute();
     }
     else
     {
       $query->addRawField($set);
       $this->_stmt = $query->getStatement();
-      $this->_stmt->execute();
+      return $this->_stmt->execute();
     }
   }
 

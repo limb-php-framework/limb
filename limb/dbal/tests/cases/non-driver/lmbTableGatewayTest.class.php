@@ -118,10 +118,10 @@ class lmbTableGatewayTest extends UnitTestCase
     $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description'));
     $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));
 
-    $this->db_table_test->update(array('description' =>  'new_description',
-                                       'junk!!!' => 'junk!!!'));
+    $updated_rows_count = $this->db_table_test->update(array('description' =>  'new_description', 'junk!!!' => 'junk!!!'));
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
+    $this->assertEqual($updated_rows_count, 2);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
@@ -140,9 +140,11 @@ class lmbTableGatewayTest extends UnitTestCase
     $this->db_table_test->insert(array('ordr' =>  '1'));
     $this->db_table_test->insert(array('ordr' =>  '10'));
 
-    $this->db_table_test->update($this->conn->quoteIdentifier('ordr') . '=' . $this->conn->quoteIdentifier('ordr') . '+1');
+    $raw_criteria = $this->conn->quoteIdentifier('ordr') . '=' . $this->conn->quoteIdentifier('ordr') . '+1';
+    $updated_rows_count = $this->db_table_test->update($raw_criteria);
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
+    $this->assertEqual($updated_rows_count, 2);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table");
     $records = $stmt->getRecordSet();
@@ -162,13 +164,13 @@ class lmbTableGatewayTest extends UnitTestCase
     $this->db_table_test->insert(array('title' =>  'wow', 'description' => 'description2'));//should be changed
     $this->db_table_test->insert(array('title' =>  'yo', 'description' => 'description3'));
 
-    $this->db_table_test->update(
-      array('description' =>  'new_description',
-            'title' => 'wow2',
-            'junk!!!' => 'junk!!!'),
-      new lmbSQLFieldCriteria('title', 'wow'));
+    $updated_rows_count = $this->db_table_test->update(
+      array('description' =>  'new_description', 'title' => 'wow2', 'junk!!!' => 'junk!!!'),
+      new lmbSQLFieldCriteria('title', 'wow')
+    );
 
     $this->assertEqual($this->db_table_test->getAffectedRowCount(), 2);
+    $this->assertEqual($updated_rows_count, 2);
 
     $stmt = $this->conn->newStatement("SELECT * FROM test_db_table ORDER BY " . $this->conn->quoteIdentifier('id'));
     $records = $stmt->getRecordSet();

@@ -21,7 +21,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecordSet.class.php');
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 8083 2010-01-22 00:57:23Z korchasa $
+ * @version $Id: lmbMysqlConnection.class.php 8116 2010-01-29 05:47:33Z korchasa $
  */
 class lmbMysqlConnection extends lmbDbBaseConnection
 {
@@ -111,7 +111,11 @@ class lmbMysqlConnection extends lmbDbBaseConnection
 
   function executeStatement($stmt)
   {
-    return (bool) $this->execute($stmt->getSQL());
+    $result = $this->execute($stmt->getSQL());
+    if($stmt instanceof lmbDbManipulationStatement)
+      return $stmt->getAffectedRowCount();
+    else
+      return $result;
   }
 
   function beginTransaction()
