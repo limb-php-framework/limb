@@ -9,9 +9,9 @@
 
 /**
  * @package web_app
- * @version $Id: wact.inc.php 7686 2009-03-04 19:57:12Z korchasa $
+ * @version $Id: wact.inc.php 8117 2010-01-31 11:20:22Z Forumsky $
  */
-@define('WACT_CACHE_DIR', LIMB_VAR_DIR . '/limb/wact/');
+@define('WACT_CACHE_DIR', lmb_env_get('LIMB_VAR_DIR') . '/limb/wact/');
 
 require_once('limb/wact/common.inc.php');
 

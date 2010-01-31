@@ -21,7 +21,7 @@ lmb_require('limb/view/src/lmbDummyView.class.php');
  * class lmbController.
  *
  * @package web_app
- * @version $Id: lmbController.class.php 7984 2009-08-24 15:48:35Z 3dmax $
+ * @version $Id: lmbController.class.php 8117 2010-01-31 11:20:22Z Forumsky $
  */
 class lmbController
 {
@@ -344,7 +344,7 @@ class lmbController
 
   function _loadCache()
   {
-    if($this->isCacheEnabled() && file_exists($cache = LIMB_VAR_DIR . '/locators/controller_action2tpl.cache'))
+    if($this->isCacheEnabled() && file_exists($cache = lmb_env_get('LIMB_VAR_DIR') . '/locators/controller_action2tpl.cache'))
       $this->action_template_map = unserialize(file_get_contents($cache));
   }
 
@@ -352,7 +352,7 @@ class lmbController
   {
     if($this->map_changed && $this->isCacheEnabled())
     {
-      lmbFs :: safeWrite(LIMB_VAR_DIR . '/locators/controller_action2tpl.cache',
+      lmbFs :: safeWrite(lmb_env_get('LIMB_VAR_DIR') . '/locators/controller_action2tpl.cache',
                          serialize($this->action_template_map));
     }
   }
