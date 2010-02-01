@@ -6,26 +6,10 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+require_once('limb/core/tests/cases/lmbRequireBaseTest.class.php');
 
-class lmbRequireClassTest extends UnitTestCase
+class lmbRequireClassTest extends lmbRequireBaseTest
 {
-  var $tmp_dir;
-
-  function setUp()
-  {
-    if(!is_dir(LIMB_VAR_DIR))
-      mkdir(LIMB_VAR_DIR);
-
-    $this->tmp_dir = LIMB_VAR_DIR . '/lmb_require_class/';
-    $this->_rm($this->tmp_dir);
-    mkdir($this->tmp_dir);
-  }
-
-  function tearDown()
-  {
-    $this->_rm($this->tmp_dir);
-  }
-
   function testLazyLoadClass()
   {
     $name1 = $this->_rndName();
@@ -133,7 +117,7 @@ class lmbRequireClassTest extends UnitTestCase
 
     $foo = new $name();
   }
-  
+
   function testLazyLoadClassConstant()
   {
     $name = $this->_rndName();
@@ -142,66 +126,19 @@ class lmbRequireClassTest extends UnitTestCase
     $this->assertEqual(constant("$name::Foo"), "value");
   }
 
-  function _writeClassFile($name, $ext = '.class.php')
+  /**
+   * Identical protection mechanism for both maps (lmb_require and lmb_autoload). For consistency between them
+   */
+  function testAutoload_mapsConsistency()
   {
-    $path = $this->tmp_dir . $name . $ext;
-    $this->_write($path, $this->_classCode($name));
-    return $path;
-  }
+    $name = $this->_rndName();
+    $path = $this->_writeClassFile($name, '.class.php');
 
-  function _writeInterfaceFile($name, $ext = '.interface.php')
-  {
-    $path = $this->tmp_dir . $name . $ext;
-    $this->_write($path, $this->_faceCode($name));
-    return $path;
-  }
-
-  function _writeModule($name, $contents)
-  {
-    $path = $this->tmp_dir . $name;
-    $this->_write($path, $contents);
-    return $path;
-  }
-
-  function _classCode($name)
-  {
-    return "<?php class $name {} ?>";
-  }
-
-  function _faceCode($name)
-  {
-    return "<?php interface $name {} ?>";
-  }
-
-  function _rndName()
-  {
-    return 'Foo' . mt_rand(1, 1000) . uniqid();
-  }
-
-  function _rnd()
-  {
-    return mt_rand(1, 1000) . uniqid();
-  }
-
-  function _write($file, $contents='')
-  {
-    file_put_contents($file, $contents);
-  }
-
-  function _rm($path)
-  {
-    if(!is_dir($path))
-      return;
-    $dir = opendir($path);
-    while($entry = readdir($dir))
-    {
-     if(is_file("$path/$entry"))
-       unlink("$path/$entry");
-     elseif(is_dir("$path/$entry") && $entry != '.' && $entry != '..')
-       $this->_rm("$path/$entry");
-    }
-    closedir($dir);
-    return rmdir($path);
+    lmb_require($path);
+    $_ENV = array();
+    lmb_require($path);
+    lmb_autoload($name);
+    $this->assertTrue(class_exists($name));
   }
 }
 

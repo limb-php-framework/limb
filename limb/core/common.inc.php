@@ -9,9 +9,12 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8068 2010-01-20 08:14:56Z korchasa $
+ * @version $Id: common.inc.php 8119 2010-02-01 13:11:44Z korchasa $
  */
-$_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
+if(!isset($_ENV['LIMB_LAZY_CLASS_PATHS']))
+  $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
+if(!isset($_ENV['LIMB_LAZY_TRIED']))
+  $_ENV['LIMB_LAZY_TRIED'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
 define('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
 
@@ -70,12 +73,10 @@ function lmb_is_path_absolute($path)
 
 function lmb_require($file_path, $class = '')
 {
-  static $tried = array();
-
-  if(isset($tried[$file_path . $class]))
+  if(isset($_ENV['LIMB_LAZY_TRIED'][$file_path . $class]))
     return;
   else
-    $tried[$file_path . $class] = true;
+    $_ENV['LIMB_LAZY_TRIED'][$file_path . $class] = true;
 
   if(strpos($file_path, '*') !== false)
   {

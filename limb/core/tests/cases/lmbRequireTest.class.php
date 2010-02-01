@@ -6,26 +6,10 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
+require_once('limb/core/tests/cases/lmbRequireBaseTest.class.php');
 
-class lmbRequireTest extends UnitTestCase
+class lmbRequireTest extends lmbRequireBaseTest
 {
-  var $tmp_dir;
-
-  function setUp()
-  {
-    if(!is_dir(LIMB_VAR_DIR))
-      mkdir(LIMB_VAR_DIR);
-
-    $this->tmp_dir = LIMB_VAR_DIR . '/lmb_require/';
-    $this->_rm($this->tmp_dir);
-    mkdir($this->tmp_dir);
-  }
-
-  function tearDown()
-  {
-    $this->_rm($this->tmp_dir);
-  }
-
   function testLazyLoadClass()
   {
     $name1 = $this->_rndName();
@@ -60,7 +44,7 @@ class lmbRequireTest extends UnitTestCase
     $this->assertFalse(in_array($name1, get_declared_classes()));
     $this->assertFalse(in_array($name2, get_declared_classes()));
 
-    $this->assertTrue(class_exists($name2, true));//triggers autoload, we try 2nd class first since we need to check how behaves static $tried cache 
+    $this->assertTrue(class_exists($name2, true));//triggers autoload, we try 2nd class first since we need to check how behaves static $tried cache
 
     $this->assertTrue(in_array($name1, get_declared_classes()));
     $this->assertTrue(in_array($name2, get_declared_classes()));
@@ -256,79 +240,6 @@ class lmbRequireTest extends UnitTestCase
   function testRequireOptionalGlobDoesntThrowExceptionForNonExistingFiles()
   {
     lmb_require_optional($file = 'foo_' . mt_rand() . uniqid() . '*.php');
-  }
-
-  function _locateIncludeOnceLine($file, $start_line)
-  {
-    $c = 0;
-    foreach(file($file) as $line)
-    {
-      $c++;
-      if($c >= $start_line && strpos($line, 'include_once') !== false)
-        return $c;
-    }
-  }
-
-  function _writeClassFile($name, $ext = '.class.php')
-  {
-    $path = $this->tmp_dir . $name . $ext;
-    $this->_write($path, $this->_classCode($name));
-    return $path;
-  }
-
-  function _writeInterfaceFile($name, $ext = '.interface.php')
-  {
-    $path = $this->tmp_dir . $name . $ext;
-    $this->_write($path, $this->_faceCode($name));
-    return $path;
-  }
-
-  function _writeModule($name, $contents)
-  {
-    $path = $this->tmp_dir . $name;
-    $this->_write($path, $contents);
-    return $path;
-  }
-
-  function _classCode($name)
-  {
-    return "<?php class $name {} ?>";
-  }
-
-  function _faceCode($name)
-  {
-    return "<?php interface $name {} ?>";
-  }
-
-  function _rndName()
-  {
-    return 'Foo' . md5(microtime());
-  }
-
-  function _rnd()
-  {
-    return mt_rand(1, 1000) . uniqid();
-  }
-
-  function _write($file, $contents='')
-  {
-    file_put_contents($file, $contents);
-  }
-
-  function _rm($path)
-  {
-    if(!is_dir($path))
-      return;
-    $dir = opendir($path);
-    while($entry = readdir($dir))
-    {
-     if(is_file("$path/$entry"))
-       unlink("$path/$entry");
-     elseif(is_dir("$path/$entry") && $entry != '.' && $entry != '..')
-       $this->_rm("$path/$entry");
-    }
-    closedir($dir);
-    return rmdir($path);
   }
 }
 
