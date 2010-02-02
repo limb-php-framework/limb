@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 8121 2010-02-02 09:48:30Z hidrarg $
+ * @version $Id: lmbHttpRequest.class.php 8122 2010-02-02 09:54:14Z hidrarg $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -97,8 +97,6 @@ class lmbHttpRequest extends lmbSet
 
   function getFiles($key = null)
   {
-    $this->_ensureMultipartFormData();
-
     return $this->_get($this->__files, $key);
   }
 
@@ -273,15 +271,6 @@ class lmbHttpRequest extends lmbSet
   function dump()
   {
     return $this->toString();
-  }
-
-  protected function _ensureMultipartFormData()
-  {
-    if(!$this->hasPost() || $this->__files)
-      return;
-
-    if(strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') === false)
-      throw new lmbException("Submitted form does not have enctype='multipart/form-data' attribute, no files loaded!");
   }
 }
 

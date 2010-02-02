@@ -200,27 +200,6 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request->get('form'), $expected['form']);
   }
 
-  function testGetFilesMultipartException()
-  {
-    $old = @$_SERVER['CONTENT_TYPE'];
-
-    $_SERVER['CONTENT_TYPE'] = 'blah';
-
-    $request = new lmbHttpRequest('http://test.com');
-    $request->getFiles();//it's ok, no post request
-
-    $request->pretendPost();
-
-    try
-    {
-      $request->getFiles();
-      $this->assertTrue(false);
-    }
-    catch(lmbException $e){}
-
-    $_SERVER['CONTENT_TYPE'] = $old;
-  }
-
   function testHasFiles()
   {
     $files = array(
