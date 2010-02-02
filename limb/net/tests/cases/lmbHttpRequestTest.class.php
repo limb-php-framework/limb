@@ -316,17 +316,11 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertNull($request->get('n'));
   }
 
-  function testForThrowExceptionOnReservedParams()
+  function testForNotSetReservedParams()
   {
-    try
-    {
-      new lmbHttpRequest('http://test.com?__request=1');
-      $this->fail();
-    }
-    catch(Exception $e)
-    {
-      $this->pass();
-    }
+    $request = new lmbHttpRequest('http://test.com?__request=1');
+    $this->assertNull($request->get('__request'));
+    $this->assertEqual('1', $request->getGet('__request'));
   }
 
   function testArrayAccess()

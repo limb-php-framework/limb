@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 8073 2010-01-20 08:39:32Z korchasa $
+ * @version $Id: lmbHttpRequest.class.php 8121 2010-02-02 09:48:30Z hidrarg $
  */
 class lmbHttpRequest extends lmbSet
 {
@@ -59,7 +59,7 @@ class lmbHttpRequest extends lmbSet
     foreach($this->__request as $k => $v)
     {
       if(in_array($k, $this->__reserved_attrs))
-        throw new lmbException("Attribute with name '$k' is reserved for internal usage");
+        continue;
       $this->set($k, $v);
     }
   }
