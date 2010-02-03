@@ -13,7 +13,7 @@ lmb_require('limb/core/src/lmbArrayHelper.class.php');
  * class lmbUri.
  *
  * @package net
- * @version $Id: lmbUri.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbUri.class.php 8124 2010-02-03 17:03:21Z 3dmax $
  */
 class lmbUri extends lmbSet
 {
@@ -435,11 +435,11 @@ class lmbUri extends lmbSet
   protected function _parseQueryString($query_string)
   {
     parse_str($query_string, $arr);
-    
+
     foreach($arr as $key => $item)
     {
       if(!is_array($item))
-        $arr[$key] = urldecode($item);
+        $arr[$key] = rawurldecode($item);
     }
 
     return $arr;

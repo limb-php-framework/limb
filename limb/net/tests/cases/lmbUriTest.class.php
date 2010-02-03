@@ -56,7 +56,7 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->getHost(), '');
 
     $this->assertEqual($uri->getPath(), 'c:\dir\another_dir\\');
-    
+
     $str = 'file://c:/dir/another_dir';
 
     $uri = new lmbUri($str);
@@ -65,7 +65,7 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->getHost(), '');
 
     $this->assertEqual($uri->getPath(), 'c:/dir/another_dir');
-        
+
     $str = 'file://c:\dir/another_dir';
 
     $uri = new lmbUri($str);
@@ -87,7 +87,7 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->getPassword(), 'pass');
     $this->assertEqual($uri->getHost(), 'localhost');
     $this->assertEqual($uri->getPath(), '/dir/file');
-    
+
     $str = 'file://user:pass@localhost/c:\dir\file';
 
     $uri = new lmbUri($str);
@@ -622,6 +622,14 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->toString(), $str);
   }
 
+  function testUrlDecode()
+  {
+    $test_value = '+text';
+    $uri = new lmbUri('/index.html?var=' . urlencode($test_value));
+
+    $q_items = $uri->getQueryItems();
+    $this->assertEqual($q_items['var'], $test_value);
+  }
 }
 
 
