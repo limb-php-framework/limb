@@ -117,7 +117,7 @@ EOD;
     $this->assertIdentical(1, lmbPackagesFunctionsTest::$counter);
 
     lmb_require_package_class($package_name, 'SourceFileForTests');
-    $package_class::increase();
+    call_user_func(array($package_class, 'increase'));
     $this->assertIdentical(2, lmbPackagesFunctionsTest::$counter);
   }
 }
