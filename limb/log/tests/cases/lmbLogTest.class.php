@@ -19,7 +19,7 @@ class lmbLogTest extends UnitTestCase {
   function setUp()
   {
     $this->log = new lmbLog();
-    $this->log->registerWriter(new lmbLogWriterForLogTests);
+    $this->log->registerWriter(new lmbLogWriterForLogTests(new lmbUri()));
   }
 
   function testWritersManipulation()
@@ -27,7 +27,7 @@ class lmbLogTest extends UnitTestCase {
     $log = new lmbLog();
     $this->assertEqual(array(), $log->getWriters());
 
-    $log->registerWriter($writer = new lmbLogWriterForLogTests);
+    $log->registerWriter($writer = new lmbLogWriterForLogTests(new lmbUri()));
     $this->assertEqual(array($writer), $log->getWriters());
 
     $log->resetWriters();
@@ -83,7 +83,7 @@ class lmbLogWriterForLogTests implements lmbLogWriter {
 
     protected $entry;
 
-    function __construct(lmbUri $dsn = null) {}
+    function __construct(lmbUri $dsn) {}
 
     function write(lmbLogEntry $entry)
     {
