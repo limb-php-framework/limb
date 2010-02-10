@@ -137,7 +137,7 @@ abstract class lmbAdminObjectController extends lmbObjectController
       return $this->forwardTo404();
 
     $this->_onBeforePublish();
-    $item->setIsPublished(true);
+    $item->setIsPublished(1);
     $item->save();
     $this->_onAfterPublish();
 
