@@ -15,24 +15,24 @@ abstract class lmbBaseImageKitTest extends lmbImageKitTestCase
   {
     lmbImageKit::load($this->_getInputImage())->
       apply('resize', array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->
-      apply('rotate', array('angle' => 90))->
+      apply('crop', array('width' => 30, 'height' => 40, 'x' => 0, 'y' => 0))->
       save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
-    $this->assertEqual($width, 60);
-    $this->assertEqual($height, 50);
+    $this->assertEqual($width, 30);
+    $this->assertEqual($height, 40);
   }
 
   function testTraversingByOverloading()
   {
     lmbImageKit::load($this->_getInputImage())->
       resize(array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->
-      rotate(array('angle' => 90))->
+      crop(array('width' => 30, 'height' => 40, 'x' => 0, 'y' => 0))->
       save($this->_getOutputImage());
 
     list($width, $height, $type) = getimagesize($this->_getOutputImage());
-    $this->assertEqual($width, 60);
-    $this->assertEqual($height, 50);
+    $this->assertEqual($width, 30);
+    $this->assertEqual($height, 40);
   }
 
   function testPassingParamsToConvertor()
