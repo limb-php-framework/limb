@@ -1,5 +1,5 @@
 <?php
 
 $conf = array(
-  'debug_enabled' => true,
+  'debug_enabled' => true
 );

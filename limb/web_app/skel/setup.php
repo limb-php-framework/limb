@@ -9,10 +9,15 @@
 
 /**
  * @package web_app
- * @version $Id: setup.php 7835 2009-04-02 11:18:27Z slevin $
+ * @version $Id: setup.php 8131 2010-02-15 19:45:22Z conf $
  */
-set_include_path(dirname(__FILE__) . PATH_SEPARATOR .
-                 dirname(__FILE__) . '/lib/' . PATH_SEPARATOR);
+set_include_path(implode(PATH_SEPARATOR,
+  array(
+    dirname(__FILE__),
+    dirname(__FILE__) . '/lib/',
+    get_include_path()
+  )
+));
 
 if(file_exists(dirname(__FILE__) . '/setup.override.php'))
   require_once(dirname(__FILE__) . '/setup.override.php');
