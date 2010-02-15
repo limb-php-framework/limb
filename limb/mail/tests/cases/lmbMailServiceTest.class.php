@@ -21,8 +21,8 @@ subj
 {\$#foo}bar
 EOD;
 
-    $this->_createTemplate($mail_template, '_mail/baz.phtml');
-    $service = new lmbMailService('baz');
+    $this->_createTemplate($mail_template, '_mail/testGetMailHtmlContent.phtml');
+    $service = new lmbMailService('testGetMailHtmlContent');
     $service->set('foo', 42);
 
     $this->assertEqual('subj', $service->getSubject());
@@ -37,9 +37,9 @@ subj
 {\$#bar}foo
 EOD;
 
-    $this->_createTemplate($mail_template, '_mail/baz.phtml');
+    $this->_createTemplate($mail_template, '_mail/testGetMailTextContent.phtml');
 
-    $service = new lmbMailService('baz');
+    $service = new lmbMailService('testGetMailTextContent');
     $service->set('bar', 11);
 
     $this->assertEqual('subj', $service->getSubject());
@@ -49,21 +49,22 @@ EOD;
   function testGetMailBothContents()
   {
   	$mail_template = <<<EOD
-subj
+{\$#subj_dynamic}subj
 
 {\$#text_dynamic}text_static
 
 {\$#html_dynamic}html_static
 EOD;
 
-    $this->_createTemplate($mail_template, '_mail/baz.phtml');
+    $this->_createTemplate($mail_template, '_mail/testGetMailBothContents.phtml');
 
-    $service = new lmbMailService('baz');
-    $service->set('text_dynamic', 42);
-    $service->set('html_dynamic', 11);
+    $service = new lmbMailService('testGetMailBothContents');
+    $service->set('subj_dynamic', 4);
+    $service->set('text_dynamic', 8);
+    $service->set('html_dynamic', 15);
 
-    $this->assertEqual('subj', $service->getSubject());
-    $this->assertEqual('42text_static', $service->getTextContent());
-    $this->assertEqual('11html_static', $service->getHtmlContent());
+    $this->assertEqual('4subj', $service->getSubject());
+    $this->assertEqual('8text_static', $service->getTextContent());
+    $this->assertEqual('15html_static', $service->getHtmlContent());
   }
 }
