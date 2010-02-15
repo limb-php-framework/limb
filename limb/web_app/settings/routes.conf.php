@@ -1,20 +1,17 @@
 <?php
-$conf = array(
 
-'MainPage' =>
-  array('path' => '/',
-        'defaults' => array('controller' => 'main_page',
-                            'action' => 'display')),
+if (empty($conf))
+   $conf = array();
 
-'ControllerActionId' =>
-  array('path' => '/:controller/:action/:id',
-        'defaults' => array('action' => 'display')),
+$conf['ControllerActionId'] = array(
+   'path' => '/:controller/:action/:id',
+);
 
-'ControllerAction' =>
-  array('path' => '/:controller/:action',
-        'defaults' => array('action' => 'display')),
+$conf['ControllerAction'] = array(
+   'path' => '/:controller/:action',
+);
 
-'Controller' =>
-  array('path' => '/:controller'),
+$conf['Controller'] = array(
+   'path' => '/:controller'
 );
 
