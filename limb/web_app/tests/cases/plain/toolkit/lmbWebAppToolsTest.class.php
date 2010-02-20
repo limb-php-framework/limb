@@ -69,6 +69,58 @@ class lmbWebAppToolsTest extends UnitTestCase
     $this->assertFalse($toolkit->isWebAppDebugEnabled());
   }
 
+  function testAddVersionToUrl()
+  {
+    $toolkit = lmbToolkit :: merge(new lmbWebAppTools());
+    lmb_env_set('LIMB_DOCUMENT_ROOT', null);
+    try 
+    {
+      $toolkit->addVersionToUrl('js/main.js');
+      $this->assertTrue(false);
+    } catch (lmbException $e)  {
+      $this->assertTrue(true);
+    }
+    
+    lmb_env_set('LIMB_DOCUMENT_ROOT', lmb_env_get('LIMB_VAR_DIR').'/www');
+    lmbFs :: rm(lmb_env_get('LIMB_DOCUMENT_ROOT').'/js/main.js');
+
+    try 
+    {
+      $toolkit->addVersionToUrl('js/main.js');
+      $this->assertTrue(false);
+    } catch (lmbException $e)  {
+      $this->assertTrue(true);
+    }
+
+    lmbFs :: safeWrite(lmb_env_get('LIMB_DOCUMENT_ROOT').'/js/main.js', '(function() {})()');
+    $url = $toolkit->addVersionToUrl('js/main.js');
+    $url_abs = $toolkit->addVersionToUrl(lmb_env_get('LIMB_HTTP_BASE_PATH') . 'js/main.js');
+    $this->assertEqual($url, $url_abs);
+  }
+
+  function testAddVersionToUrl_Safe()
+  {
+    $toolkit = lmbToolkit :: merge(new lmbWebAppTools());
+    lmb_env_set('LIMB_DOCUMENT_ROOT', null);
+    try 
+    {
+      $url = $toolkit->addVersionToUrl('js/main.js', true);
+      $this->assertEqual($url, 'js/main.js');
+      $this->assertTrue(true);
+    } catch (lmbException $e)  {
+      $this->assertTrue(false);
+    }
+    
+    lmb_env_set('LIMB_DOCUMENT_ROOT', lmb_env_get('LIMB_VAR_DIR').'/www');
+    lmbFs :: rm(lmb_env_get('LIMB_DOCUMENT_ROOT').'/js/main.js');
+
+    try 
+    {
+      $url = $toolkit->addVersionToUrl('js/main.js', true);
+      $this->assertEqual('js/main.js?0', $url);
+      $this->assertTrue(true);
+    } catch (lmbException $e)  {
+      $this->assertTrue(false);
+    }
+  }
 }
-
-

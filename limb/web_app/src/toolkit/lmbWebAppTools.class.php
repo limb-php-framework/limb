@@ -14,7 +14,7 @@ lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/*/src/contro
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 8011 2009-12-25 08:51:27Z korchasa $
+ * @version $Id: lmbWebAppTools.class.php 8136 2010-02-20 10:08:37Z hidrarg $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -154,6 +154,31 @@ class lmbWebAppTools extends lmbAbstractTools
     catch (lmbFileNotFoundException $e) {}
 
     return $mode;
+  }
+
+  function addVersionToUrl($file_src, $safe = false)
+  { 
+    $doc_root = lmb_env_get('LIMB_DOCUMENT_ROOT', false);
+    if(!$doc_root)
+      if($safe)
+        return $file_src;
+      else
+        throw new lmbException('Not set require env LIMB_DOCUMENT_ROOT!');
+    if(strpos($file_src, LIMB_HTTP_BASE_PATH) === 0)
+      $file = substr($file_src, strlen(LIMB_HTTP_BASE_PATH), strlen($file_src));
+    else
+      $file = $file_src;
+
+    $path = $doc_root . '/' . $file;
+    if(is_file($path) && is_readable($path))
+      $version = crc32(file_get_contents($path));
+    else
+      if($safe)
+        $version = 0;
+      else
+        throw new lmbException('File \'' . $file_src . '\' not found in document root (' . $doc_root . ')');
+    //return '_/' . base_convert(abs($version), 10, 36) . '/' . ltrim($file, '/');
+    return ltrim($file, '/') . '?' . base_convert(abs($version), 10, 36);
   }
 }
 
