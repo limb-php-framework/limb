@@ -40,6 +40,35 @@ class lmbJsCombinedMacroTagTest extends lmbMacroTestCase
     $this->assertEqual(file_get_contents($root . 'media/var/'.$file), $js_content);
   }
 
+  function testFileNameNotDependOrderFiles()
+  {
+    lmb_env_set('LIMB_DOCUMENT_ROOT', ($root = lmb_env_get('LIMB_VAR_DIR').'/www/')); 
+    lmbFs :: safeWrite($root . 'js/main.js', 'content');
+    lmbFs :: safeWrite($root . 'js/blog.js', 'content');
+
+    lmbFs :: rm($root . '/media/var');
+
+    $template = '
+    {{js:combined dir="media/var"}}
+      {{js_once src="js/main.js" }}
+      {{js_once src="js/blog.js" }}
+    {{/js:combined}}';
+
+    $this->_createMacroTemplate($template, 'tpl.html')->render(); 
+    $file_name_one = array_shift(lmbFs :: ls($root.'/media/var/'));
+    
+    $template = '
+    {{js:combined dir="media/var"}}
+      {{js_once src="js/blog.js" }}
+      {{js_once src="js/main.js" }}
+    {{/js:combined}}';
+    
+    $this->_createMacroTemplate($template, 'tpl.html')->render(); 
+    $file_name_two = array_shift(lmbFs :: ls($root.'/media/var/'));
+
+    $this->assertEqual($file_name_one, $file_name_two);
+  }
+
   function testNotFoundFile()
   {
     $root = lmb_env_get('LIMB_VAR_DIR').'/www';

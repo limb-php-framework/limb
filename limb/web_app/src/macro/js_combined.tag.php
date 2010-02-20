@@ -40,6 +40,7 @@ class lmbJsCombinedMacroTag extends lmbMacroTag
       else
         $child->generate($code);
     }
+    sort($files, SORT_STRING);
     $url = lmbFs :: normalizePath(ltrim($this->get('dir') . '/' . md5(implode("\n", $files)).'.js', '/'));
     lmbFs :: safeWrite($root_dir . '/' . $url, trim($join_contents));
     $code->writeHTML('<script type="text/javascript" src="' . lmbToolkit :: instance()->addVersionToUrl($url) . '"></script>'); 
