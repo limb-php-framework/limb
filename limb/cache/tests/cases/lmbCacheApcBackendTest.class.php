@@ -37,4 +37,9 @@ class lmbCacheApcBackendTest extends lmbCacheBackendTest
     $this->cache->set(2, 'new value');
     $this->assertEqual($this->cache->get(2), 'new value');
   }
+
+  function testGetWithTtlFalse()
+  {
+    $this->skipIf(true, 'APC caches time comparizon results within 1 request, so testGetWithTtlFalse cannot be run properly, see http://pecl.php.net/bugs/bug.php?id=13331.');
+  }
 }
