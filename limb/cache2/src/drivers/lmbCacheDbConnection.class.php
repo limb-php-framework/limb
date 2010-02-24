@@ -40,7 +40,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   {
     $resolved_key = $this->_resolveKey($key);
 
-    $lock = $this->db_table->selectFirstRecord('`key` = \''.$resolved_key.'\'');
+    $lock = $this->db_table->selectFirstRecord("`key` = '$resolved_key'");
 
     if($lock['is_locked'])
       return false;
@@ -48,7 +48,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     try {
       $this->db_table->insertOnDuplicateUpdate(array(
         'key' => $resolved_key,
-        'is_locked' => true,
+        'is_locked' => 1,
       ));
       return true;
     }
@@ -62,10 +62,10 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   {
     $resolved_key = $this->_resolveKey($key);
 
-    $this->db_table->update(array('is_locked' => false), '`key` = \''.$resolved_key.'\'');
+    $this->db_table->update(array('is_locked' => 0), "`key` = '$resolved_key'");
   }
 
-  function add ($key, $value, $ttl = false)
+  function add($key, $value, $ttl = false)
   {
     $resolved_key = $this->_resolveKey($key);
 
@@ -111,7 +111,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   {
     $resolved_key = $this->_resolveKey($key);
 
-    if(!$record = $this->db_table->selectFirstRecord('`key` = \''.$resolved_key.'\''))
+    if(!$record = $this->db_table->selectFirstRecord("`key` = '$resolved_key'"))
       return NULL;
 
     $ttl = (int) $record['ttl'];
@@ -125,7 +125,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   function delete($key)
   {
     $resolved_key = $this->_resolveKey($key);
-    $this->db_table->delete('`key` = \''.$resolved_key.'\'');
+    $this->db_table->delete("`key` = '$resolved_key'");
   }
 
   function flush()
