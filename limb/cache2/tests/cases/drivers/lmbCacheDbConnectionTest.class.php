@@ -16,7 +16,7 @@ class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
 
   function skip()
   {
-    return lmb_tests_is_db_dump_exists($this->fixture_path, 'CACHE2');
+    $this->skipIf(lmb_tests_db_dump_does_not_exist($this->fixture_path, 'CACHE2'), 'Db test skipped (no fixture found).');
   }
 
   function __construct()

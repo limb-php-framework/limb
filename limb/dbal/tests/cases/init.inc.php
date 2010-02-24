@@ -15,7 +15,7 @@ function lmb_tests_init_db_dsn()
     {
       echo "INFO: Using database '{$dsn->toString()}'\n";
       $reported_about = $dsn;
-    }    
+    }
   }
   else
   {
@@ -26,7 +26,7 @@ function lmb_tests_init_db_dsn()
   }
 }
 
-function lmb_tests_is_db_dump_exists($prefix, $package)
+function lmb_tests_db_dump_does_not_exist($prefix, $package)
 {
   $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
   $skip = !file_exists($prefix.$type);
