@@ -1,6 +1,7 @@
 <?php
 lmb_package_require('dbal');
 lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
+lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 lmb_require('limb/core/src/lmbSerializable.class.php');
 
 class lmbCacheDbConnection extends lmbCacheAbstractConnection
@@ -36,11 +37,16 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     return 'Db';
   }
 
+  private function _getKeyCriteria($resolved_key, $column = 'key')
+  {
+    return lmbSQLCriteria::equal($column, $resolved_key);
+  }
+
   function lock($key)
   {
     $resolved_key = $this->_resolveKey($key);
 
-    $lock = $this->db_table->selectFirstRecord("`key` = '$resolved_key'");
+    $lock = $this->db_table->selectFirstRecord($this->_getKeyCriteria($resolved_key));
 
     if($lock['is_locked'])
       return false;
@@ -62,7 +68,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   {
     $resolved_key = $this->_resolveKey($key);
 
-    $this->db_table->update(array('is_locked' => 0), "`key` = '$resolved_key'");
+    $this->db_table->update(array('is_locked' => 0), $this->_getKeyCriteria($resolved_key));
   }
 
   function add($key, $value, $ttl = false)
@@ -111,7 +117,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   {
     $resolved_key = $this->_resolveKey($key);
 
-    if(!$record = $this->db_table->selectFirstRecord("`key` = '$resolved_key'"))
+    if(!$record = $this->db_table->selectFirstRecord($this->_getKeyCriteria($resolved_key)))
       return NULL;
 
     $ttl = (int) $record['ttl'];
@@ -125,7 +131,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   function delete($key)
   {
     $resolved_key = $this->_resolveKey($key);
-    $this->db_table->delete("`key` = '$resolved_key'");
+    $this->db_table->delete($this->_getKeyCriteria($resolved_key));
   }
 
   function flush()
