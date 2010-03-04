@@ -13,7 +13,9 @@ function lmb_tests_init_db_dsn()
     static $reported_about;
     if(is_null($reported_about) || $reported_about != $dsn)
     {
-      echo "INFO: Using database '{$dsn->toString()}'\n";
+      $pass = $dsn->_getUri()->getPassword();
+      $masked_dsn = str_replace($pass, str_pad('*', strlen($pass), '*'), $dsn->toString());
+      echo "INFO: Using database '$masked_dsn'\n";
       $reported_about = $dsn;
     }
   }
