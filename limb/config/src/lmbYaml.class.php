@@ -57,7 +57,7 @@ class lmbYaml
    *
    *  Usage:
    *  <code>
-   *   $array = sfYaml::load('config.yml');
+   *   $array = lmbYaml::load('config.yml');
    *   print_r($array);
    *  </code>
    *
@@ -76,7 +76,7 @@ class lmbYaml
     {
       $file = $input;
 
-    
+
       ob_start();
       $retval = include($input); // Enable to use php code in yaml configs
       $content = ob_get_clean();
@@ -118,7 +118,7 @@ class lmbYaml
    */
   public static function dump($array, $inline = 2)
   {
-    require_once dirname(__FILE__).'/sfYamlDumper.php';
+    require_once dirname(__FILE__).'/lmbYamlDumper.php';
 
     $yaml = new lmbYamlDumper();
 
