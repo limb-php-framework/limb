@@ -13,7 +13,7 @@ lmb_require('limb/mail/src/lmbBaseMailerInterface.interface.php');
  * class lmbMailer.
  *
  * @package mail
- * @version $Id: lmbMailer.class.php 8134 2010-02-16 08:44:19Z Forumsky $
+ * @version $Id: lmbMailer.class.php 8145 2010-03-05 19:53:29Z Forumsky $
  */
 class lmbMailer implements lmbBaseMailerInterface
 {
@@ -54,7 +54,7 @@ class lmbMailer implements lmbBaseMailerInterface
 
   protected function _createMailer()
   {    
-    $mailer = new PHPMailer();
+    $mailer = new PHPMailer(true);
     $mailer->set('LE', "\r\n");
 
     if($this->use_phpmail)
@@ -96,33 +96,40 @@ class lmbMailer implements lmbBaseMailerInterface
 
   function sendPlainMail($recipients, $sender, $subject, $body, $charset = 'utf-8')
   {
-    $mailer = $this->_createMailer();
+  	try 
+	{
+      $mailer = $this->_createMailer();
 
-    $mailer->IsHTML(false);
-    $mailer->CharSet = $charset;
+      $mailer->IsHTML(false);
+      $mailer->CharSet = $charset;
 
-    if(!empty($this->attachments))
-      $this->_addAttachments($mailer);
+      if(!empty($this->attachments))
+        $this->_addAttachments($mailer);
 
-    if(!empty($this->images))
-      $this->_addEmbeddedImages($mailer);
+      if(!empty($this->images))
+        $this->_addEmbeddedImages($mailer);
 
-    $this->_addRepliesTo($mailer);
+      $this->_addRepliesTo($mailer);
     
-    $recipients = $this->processMailRecipients($recipients);
+      $recipients = $this->processMailRecipients($recipients);
 
-    foreach($recipients as $recipient)
-      $mailer->AddAddress($recipient['address'], $recipient['name']);
+      foreach($recipients as $recipient)
+        $mailer->AddAddress($recipient['address'], $recipient['name']);
 
-    if(!$sender = $this->processMailAddressee($sender))
-      return false;
+      if(!$sender = $this->processMailAddressee($sender))
+        return false;
 
-    $mailer->From = $sender['address'];
-    $mailer->FromName = $sender['name'];
-    $mailer->Subject = $subject;
-    $mailer->Body    = $body;
+      $mailer->From = $sender['address'];
+      $mailer->FromName = $sender['name'];
+      $mailer->Subject = $subject;
+      $mailer->Body    = $body;
 
-    return $mailer->Send();
+      return $mailer->Send();
+	}
+    catch (phpmailerException $e)
+    {
+      throw new lmbException($e->getMessage());
+    }
   }
 
   function addReplyTo($replyTo) 
@@ -132,37 +139,44 @@ class lmbMailer implements lmbBaseMailerInterface
   
   function sendHtmlMail($recipients, $sender, $subject, $html, $text = null, $charset = 'utf-8')
   {
-    $mailer = $this->_createMailer();
-
-    $mailer->IsHTML(true);
-    $mailer->CharSet = $charset;
-
-    $mailer->Body = $html;
-
-    if(!empty($this->attachments))
-      $this->_addAttachments($mailer);
-
-    if(!empty($this->images))
-      $this->_addEmbeddedImages($mailer);
+  	try
+    {
+	  $mailer = $this->_createMailer();
+	
+	  $mailer->IsHTML(true);
+	  $mailer->CharSet = $charset;
+	
+	  $mailer->Body = $html;
+	
+	  if(!empty($this->attachments))
+	    $this->_addAttachments($mailer);
+	
+	  if(!empty($this->images))
+	    $this->_addEmbeddedImages($mailer);
+	    
+	  $this->_addRepliesTo($mailer);
+	
+	  if(!is_null($text))
+	    $mailer->AltBody = $text;
+	
+	  $recipients = $this->processMailRecipients($recipients);
+	
+	  foreach($recipients as $recipient)
+	    $mailer->AddAddress($recipient['address'], $recipient['name']);
+	
+	  if(!$sender = $this->processMailAddressee($sender))
+	    return false;
+	
+	  $mailer->From = $sender['address'];
+	  $mailer->FromName = $sender['name'];
+	  $mailer->Subject = $subject;
     
-    $this->_addRepliesTo($mailer);
-
-    if(!is_null($text))
-      $mailer->AltBody = $text;
-
-    $recipients = $this->processMailRecipients($recipients);
-
-    foreach($recipients as $recipient)
-      $mailer->AddAddress($recipient['address'], $recipient['name']);
-
-    if(!$sender = $this->processMailAddressee($sender))
-      return false;
-
-    $mailer->From = $sender['address'];
-    $mailer->FromName = $sender['name'];
-    $mailer->Subject = $subject;
-
-    return $mailer->Send();
+      return $mailer->Send();
+    }
+    catch (phpmailerException $e)
+    {
+      throw new lmbException($e->getMessage());
+    }
   }
 
   function processMailRecipients($recipients)

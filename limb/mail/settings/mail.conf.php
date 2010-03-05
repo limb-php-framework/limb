@@ -8,6 +8,6 @@ $conf = array(
   'smtp_auth' 	=> lmb_env_get('LIMB_SMTP_AUTH', false),
   'smtp_user' 	=> lmb_env_get('LIMB_SMTP_USER', ''),
   'smtp_password' => lmb_env_get('LIMB_SMTP_PASSWORD', ''),
-  'sender'		=> '"Default LIMB sender" <set-me-in-mail-conf@limb-project.com>'
+  'sender'		=> 'set-me-in-mail-conf@limb-project.com'
 
 );
