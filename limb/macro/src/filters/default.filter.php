@@ -18,4 +18,10 @@ class lmbMacroDefaultFilter extends lmbMacroFunctionBasedFilter
 {
   protected $function = 'lmb_macro_apply_default';
   protected $include_file = 'limb/macro/src/filters/lmbMacroDefaultFilter.inc.php';
+
+  protected function _getBaseValue()
+  {
+    $base_value = parent::_getBaseValue();
+    return "isset($base_value) ? $base_value : null";
+  }
 } 
