@@ -15,7 +15,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlIndexInfo.class.php');
  * class lmbMysqlTableInfo.
  *
  * @package dbal
- * @version $Id: lmbMysqlTableInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbMysqlTableInfo.class.php 8149 2010-03-24 12:27:15Z conf $
  */
 class lmbMysqlTableInfo extends lmbDbTableInfo
 {
@@ -99,19 +99,23 @@ class lmbMysqlTableInfo extends lmbDbTableInfo
 
     while($row = mysql_fetch_assoc($queryId))
     {
-      $column_name = $row['Column_name'];
 
-      $name =$row['Key_name'];
-      if('PRIMARY' == $name)
-        $name = $column_name;
+      $index = new lmbMysqlIndexInfo();
+      $index->column_name = $row['Column_name'];
 
-      $type = lmbDbIndexInfo::TYPE_COMMON;
-      if($row['Non_unique'] == 0)
-        $type = lmbDbIndexInfo::TYPE_UNIQUE;
-      elseif($row['Key_name'] == 'PRIMARY')
-        $type = lmbDbIndexInfo::TYPE_PRIMARY;
+      $index->name = $row['Key_name'];
+      if ('PRIMARY' == $row['Key_name'])
+      {
+        $index->name = $index->column_name;
+        $index->type = lmbDbIndexInfo::TYPE_PRIMARY;
+      }
+      else
+      {
+        $index->type = $row['Non_unique']
+          ? lmbDbIndexInfo::TYPE_COMMON : lmbDbIndexInfo::TYPE_UNIQUE;
+      }
 
-      $this->indexes[$name] = new lmbMysqlIndexInfo($this, $column_name, $name, $type);
+      $this->indexes[$index->name] = $index;
     }
     $this->isIndexesLoaded = true;
   }

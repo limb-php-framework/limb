@@ -27,6 +27,8 @@ function DriverMysqliSetup($conn)
         "INSERT INTO founding_fathers VALUES (3, 'Benjamin', 'Franklin');"
   );
 
+  foreach($inserts as $sql)
+    DriverMysqliExec($conn, $sql);
 
   DriverMysqliExec($conn, 'DROP TABLE IF EXISTS indexes;');
 
@@ -67,8 +69,6 @@ function DriverMysqliSetup($conn)
 
   DriverMysqliExec($conn, 'TRUNCATE `standard_types`');
 
-  foreach($inserts as $sql)
-    DriverMysqliExec($conn, $sql);
 }
 
 function DriverMysqliExec($conn, $sql)

@@ -99,19 +99,23 @@ class lmbMysqliTableInfo extends lmbDbTableInfo
 
     while($row = mysqli_fetch_assoc($queryId))
     {
-      $column_name = $row['Column_name'];
 
-      $name =$row['Key_name'];
-      if('PRIMARY' == $name)
-        $name = $column_name;
+      $index = new lmbMysqliIndexInfo();
+      $index->column_name = $row['Column_name'];
 
-      $type = lmbDbIndexInfo::TYPE_COMMON;
-      if($row['Non_unique'] == 0)
-        $type = lmbDbIndexInfo::TYPE_UNIQUE;
-      elseif($row['Key_name'] == 'PRIMARY')
-        $type = lmbDbIndexInfo::TYPE_PRIMARY;
+      $index->name = $row['Key_name'];
+      if ('PRIMARY' == $row['Key_name'])
+      {
+        $index->name = $index->column_name;
+        $index->type = lmbDbIndexInfo::TYPE_PRIMARY;
+      }
+      else
+      {
+        $index->type = $row['Non_unique']
+          ? lmbDbIndexInfo::TYPE_COMMON : lmbDbIndexInfo::TYPE_UNIQUE;
+      }
 
-      $this->indexes[$name] = new lmbMysqliIndexInfo($this, $column_name, $name, $type);
+      $this->indexes[$index->name] = $index;
     }
     $this->isIndexesLoaded = true;
   }
