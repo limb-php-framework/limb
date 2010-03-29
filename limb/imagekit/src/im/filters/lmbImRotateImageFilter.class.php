@@ -7,14 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/filters/lmbBaseRotateImageFilter.class.php');
 
 /**
  * Rotate image filter
  * @package imagekit
  * @version $Id$
  */
-class lmbImRotateImageFilter extends lmbAbstractImageFilter
+class lmbImRotateImageFilter extends lmbBaseRotateImageFilter
 {
 
   function apply(lmbAbstractImageContainer $container)
@@ -26,11 +26,6 @@ class lmbImRotateImageFilter extends lmbAbstractImageFilter
     $image = $container->getResource();
     $image->rotateImage(new ImagickPixel($bgcolor), $angle);
     $container->replaceResource($image);
-  }
-
-  function getAngle()
-  {
-    return $this->getParam('angle', 0);
   }
 
   function getBgColor()

@@ -7,59 +7,19 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/filters/lmbBaseCropImageFilter.class.php');
 
 /**
  * Crop image filter
  * @package imagekit
  * @version $Id: $
  */
-class lmbImCropImageFilter extends lmbAbstractImageFilter
+class lmbImCropImageFilter extends lmbBaseCropImageFilter
 {
   function apply(lmbAbstractImageContainer $container)
   {
     list($x, $y, $width, $height) = $this->calculateCropArea($container->getWidth(), $container->getHeight());
     $container->getResource()->cropImage($width, $height, $x, $y);
-  }
-
-  function calculateCropArea($image_width, $image_height)
-  {
-    $width = $this->getWidth();
-    $height = $this->getHeight();
-    if($width === null)
-      $width = $image_width;
-    if($height === null)
-      $height = $image_height;
-
-    $x = $this->getX();
-    $y = $this->getY();
-
-    if($x + $width > $image_width)
-      $width -= $x + $width - $image_width;
-    if($y + $height > $image_height)
-      $height -= $y + $height - $image_height;
-
-    return array($x, $y, $width, $height);
-  }
-
-  function getWidth()
-  {
-  	return $this->getParam('width');
-  }
-
-  function getHeight()
-  {
-    return $this->getParam('height');
-  }
-
-  function getX()
-  {
-    return $this->getParam('x', 0);
-  }
-
-  function getY()
-  {
-    return $this->getParam('y', 0);
   }
 
 }

@@ -17,6 +17,11 @@ abstract class lmbImageKitTestCase extends UnitTestCase
     return dirname(__FILE__) . '/../fixture/images/input.jpg';
   }
 
+  protected function _getInputImageType()
+  {
+    return 'jpeg';
+  }
+
   protected function _getInputPalleteImage()
   {
     return dirname(__FILE__) . '/../fixture/images/water_mark.gif';

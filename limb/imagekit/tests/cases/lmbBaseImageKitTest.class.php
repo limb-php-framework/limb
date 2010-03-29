@@ -13,7 +13,7 @@ abstract class lmbBaseImageKitTest extends lmbImageKitTestCase
 {
   function testTraversing()
   {
-    lmbImageKit::load($this->_getInputImage())->
+    lmbImageKit::load($this->_getInputImage(), $this->_getInputImageType(), $this->driver)->
       apply('resize', array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->
       apply('crop', array('width' => 30, 'height' => 40, 'x' => 0, 'y' => 0))->
       save($this->_getOutputImage());
@@ -25,7 +25,7 @@ abstract class lmbBaseImageKitTest extends lmbImageKitTestCase
 
   function testTraversingByOverloading()
   {
-    lmbImageKit::load($this->_getInputImage())->
+    lmbImageKit::load($this->_getInputImage(), $this->_getInputImageType(), $this->driver)->
       resize(array('width' => 50, 'height' => 60, 'preserve_aspect_ratio' => false))->
       crop(array('width' => 30, 'height' => 40, 'x' => 0, 'y' => 0))->
       save($this->_getOutputImage());

@@ -7,18 +7,18 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/filters/lmbBaseResizeImageFilter.class.php');
 
 /**
  * Resize image filter
  * @package imagekit
  * @version $Id$
  */
-class lmbImResizeImageFilter extends lmbAbstractImageFilter
+class lmbImResizeImageFilter extends lmbBaseResizeImageFilter
 {
-	const RESIZE_TYPE_FIT = 1;
-	const RESIZE_TYPE_CUT = 2;
-	
+  const RESIZE_TYPE_FIT = 1;
+  const RESIZE_TYPE_CUT = 2;
+
   function apply(lmbAbstractImageContainer $container)
   {
     $src_w = $container->getWidth();
@@ -28,42 +28,4 @@ class lmbImResizeImageFilter extends lmbAbstractImageFilter
     $image->thumbnailImage($dst_w, $dst_h, false);
     $container->replaceResource($image);
   }
-
-  protected function calcNewSize($src_w, $src_h)
-  {
-    $dst_w = $this->getWidth();
-    if(!$dst_w)
-      $dst_w = $src_w;
-    $dst_h = $this->getHeight();
-    if(!$dst_h)
-      $dst_h = $src_h;
-
-    return $this->calcSize($src_w, $src_h, $dst_w, $dst_h, $this->getPreserveAspectRatio(), $this->getSaveMinSize());
-  }
-
-  function getWidth()
-  {
-    return $this->getParam('width');
-  }
-
-  function getHeight()
-  {
-    return $this->getParam('height');
-  }
-
-  function getPreserveAspectRatio()
-  {
-    return $this->getParam('preserve_aspect_ratio', true);
-  }
-
-  function getSaveMinSize()
-  {
-    return $this->getParam('save_min_size', false);
-  }
-
-  function getXxx()
-  {
-    return $this->getParam('xxx', false);
-  }
-
 }

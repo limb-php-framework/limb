@@ -7,14 +7,14 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('imagekit/src/lmbAbstractImageFilter.class.php');
+lmb_require('limb/imagekit/src/filters/lmbBaseWaterMarkImageFilter.class.php');
 
 /**
  * Watermark image filter
  * @package imagekit
  * @version $Id$
  */
-class lmbImWaterMarkImageFilter extends lmbAbstractImageFilter
+class lmbImWaterMarkImageFilter extends lmbBaseWaterMarkImageFilter
 {
 
   function apply(lmbAbstractImageContainer $container)
@@ -25,42 +25,5 @@ class lmbImWaterMarkImageFilter extends lmbAbstractImageFilter
     $wm_cont->readImage($this->getWaterMark());
     list($x, $y) = $this->calcPosition($this->getX(), $this->getY(), $width, $height);
     $container->getResource()->compositeImage($wm_cont, Imagick::COMPOSITE_OVER, $x, $y, Imagick::CHANNEL_ALL);
-  }
-
-  function calcPosition($x, $y, $width, $height, $wm_width = false, $wm_height = false)
-  {
-    if($wm_width !== false)
-      $x += round(($width - $wm_width) / 2);
-    else
-      if($x < 0)
-        $x += $width;
-
-    if($wm_height !== false)
-      $y += round(($height - $wm_height) / 2);
-    else
-      if($y < 0)
-        $y += $height;
-
-    return array($x, $y);
-  }
-
-  function getWaterMark()
-  {
-  	return $this->getParam('water_mark');
-  }
-
-  function getX()
-  {
-    return $this->getParam('x', 0);
-  }
-
-  function getY()
-  {
-    return $this->getParam('y', 0);
-  }
-
-  function getOpacity()
-  {
-    return $this->getParam('opacity', 0);
   }
 }
