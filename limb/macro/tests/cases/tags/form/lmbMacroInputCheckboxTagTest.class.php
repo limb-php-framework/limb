@@ -57,5 +57,23 @@ class lmbMacroInputCheckboxTagTest extends lmbBaseMacroTest
     $expected = '<input type="checkbox" id="test" name="my_input" value="1" />';
     $this->assertEqual($page->render(), $expected);
   }
+  
+function testNotCheckedInputs_When_FirstInputChecked()
+  {
+    $template = '{{form id="my_form"}}'.
+    			'<?php $values = array(3 => "aa", 4 => "bb") ?>'. 
+    			'<?php foreach($values as $id => $v) : ?>
+					{{input type="checkbox" id="test_{$id}" name="test_{$id}" value="{$v}" /}}
+				<?php endforeach; ?>'.
+    			'{{/form}}';
+
+    $page = $this->_createMacroTemplate($template, 'tpl.html'); 
+
+    $page->set('form_my_form_datasource', array("test_3" => "aa"));
+
+    $expected = '<form id="my_form"><input type="checkbox" id="test_3" name="test_3" value="aa" checked="checked" /><input type="checkbox" id="test_4" name="test_4" value="bb" /></form>';
+
+    $this->assertEqual(preg_match('~\s{2,}~', '', $page->render()), $expected);
+  }
 }
 

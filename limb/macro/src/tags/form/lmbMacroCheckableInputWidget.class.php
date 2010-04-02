@@ -17,6 +17,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormElementWidget.class.php');
 class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
 {
   protected $skip_render = array('checked_value');
+  protected $logical_checked_attr = false;
 
   function getName()
   {
@@ -26,8 +27,14 @@ class lmbMacroCheckableInputWidget extends lmbMacroFormElementWidget
 
   function renderAttributes()
   {
+  	if ($this->logical_checked_attr)
+  	  $this->removeAttribute('checked');
+  	  
     if($this->isChecked())
+    {
       $this->setAttribute('checked', 'checked');
+      $this->logical_checked_attr = true;
+    }
     else
       $this->removeAttribute('checked');
 
