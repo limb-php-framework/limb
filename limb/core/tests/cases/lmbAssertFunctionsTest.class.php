@@ -11,7 +11,6 @@ class lmbAssertFunctionsTest extends UnitTestCase
 {
   function testAssertTrue()
   {
-
     $this->_checkPositive('true', true);
     $this->_checkNegative('true', false);
 
@@ -28,6 +27,19 @@ class lmbAssertFunctionsTest extends UnitTestCase
     $this->_checkNegative('true', array());
 
     $this->_checkPositive('true', new stdClass());
+  }
+
+  function testAssertTrue_CustomMessage()
+  {
+    $message = uniqid('lmb_assert_true');
+    try
+    {
+      lmb_assert_true(false, $message);
+    }
+    catch(lmbInvalidArgumentException $e)
+    {
+      $this->assertPattern('/'.$message.'/', $e->getMessage());
+    }
   }
 
   function testAssertType_Bool()
@@ -102,6 +114,19 @@ class lmbAssertFunctionsTest extends UnitTestCase
     $this->_checkNegative('type', new ArrayObject(), 'Foo');
   }
 
+  function testAssertType_CustomMessage()
+  {
+    $message = uniqid('lmb_assert_type');
+    try
+    {
+      lmb_assert_type(true, 'string', $message);
+    }
+    catch(lmbInvalidArgumentException $e)
+    {
+      $this->assertPattern('/'.$message.'/', $e->getMessage());
+    }
+  }
+
   function testAssertArrayWithKey()
   {
     $this->_checkNegative('array_with_key', 'not_array', 'needle');
@@ -109,6 +134,26 @@ class lmbAssertFunctionsTest extends UnitTestCase
 
     $this->_checkPositive('array_with_key', array('foo' => 1), 'foo');
     $this->_checkPositive('array_with_key', new ArrayObject(array('foo' => 1)), 'foo');
+  }
+
+  function testAssertArrayWithKey_MultipleCheck()
+  {
+    $this->_checkNegative('array_with_key', array('foo' => 1, 'bar' => 2), array('foo', 'baz'));
+
+    $this->_checkPositive('array_with_key', array('foo' => 1, 'bar' => 2), array('foo', 'bar'));
+  }
+
+  function testAssertArrayWithKey_CustomMessage()
+  {
+    $message = uniqid('lmb_assert_array_with_key');
+    try
+    {
+      lmb_assert_array_with_key(array(), 'some_key', $message);
+    }
+    catch(lmbInvalidArgumentException $e)
+    {
+      $this->assertPattern('/'.$message.'/', $e->getMessage());
+    }
   }
 
   function testAssertRegExp()
@@ -128,6 +173,19 @@ class lmbAssertFunctionsTest extends UnitTestCase
 
     $this->_checkPositive('reg_exp', $string_provider, '/bc/');
     $this->_checkNegative('reg_exp', $string_provider, '/xy/');
+  }
+
+  function testAssertRegExp_CustomMessage()
+  {
+    $message = uniqid('lmb_assert_reg_exp');
+    try
+    {
+      lmb_assert_reg_exp(array(), 'foo', $message);
+    }
+    catch(lmbInvalidArgumentException $e)
+    {
+      $this->assertPattern('/'.$message.'/', $e->getMessage());
+    }
   }
 
   protected function _callCheck($check_name, $first_check_param, $second_check_param)
@@ -152,6 +210,7 @@ class lmbAssertFunctionsTest extends UnitTestCase
     catch(lmbInvalidArgumentException $e)
     {
       $this->pass();
+      return $e->getMessage();
     }
   }
 }
