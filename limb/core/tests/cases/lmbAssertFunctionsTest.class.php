@@ -29,6 +29,19 @@ class lmbAssertFunctionsTest extends UnitTestCase
     $this->_checkPositive('true', new stdClass());
   }
 
+  function testAssertTrue_DefaultMessage()
+  {
+    try
+    {
+      lmb_assert_true(false);
+      $this->fail();
+    }
+    catch(lmbInvalidArgumentException $e)
+    {
+      $this->assertPattern('/Value must be true/', $e->getMessage());
+    }
+  }
+
   function testAssertTrue_CustomMessage()
   {
     $message = uniqid('lmb_assert_true');
@@ -50,11 +63,11 @@ class lmbAssertFunctionsTest extends UnitTestCase
         'values'=> array(true, false)
       ),
       array(
-        'names' => array('integer', 'numeric'),
+        'names' => array('integer', 'numeric', 'int'),
         'values'=> array(42, 0, -1)
       ),
       array(
-        'names' => array('float', 'double'),
+        'names' => array('float', 'double', 'real'),
         'values'=> array(42.1, 0.0, 0xffffffffffffffff)
       ),
       array(
