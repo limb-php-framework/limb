@@ -8,8 +8,8 @@
  */ 
  
 /**
- * class lmbMacroClipFilter.
- * Does nothing. Used in case if you need to cancel default html filter but not need any other filters to be applied.
+ * class lmbMacroClipFilter
+ * Clipping the string by given lenght. Multibyte unsafe
  *
  * @filter clip
  * @package macro
