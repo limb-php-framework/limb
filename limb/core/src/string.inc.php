@@ -15,20 +15,20 @@ function lmb_camel_case($str, $ucfirst = true)
 {
   //if there are no _, why process at all
   if(strpos($str, '_') === false)
-    return ($ucfirst) ? ucfirst($str) : $str;
+    return $ucfirst ? ucfirst($str) : $str;
 
   $items = explode('_', $str);
   $len = sizeof($items);
   $first = true;
   $res = '';
-  for($i=0;$i<$len;$i++)
+  for($i = 0; $i < $len; $i++)
   {
     $item = $items[$i];
-    if (is_numeric($item) && !$first)
-     {
+    if (!$item || is_numeric($item))
+    {
       $res .= '_'. $item;
     }
-    elseif($item)
+    else
     {
       //we don't ucfirst first word by default
       $res .= ($first && !$ucfirst ? $item : ucfirst($item));
@@ -37,11 +37,9 @@ function lmb_camel_case($str, $ucfirst = true)
       if($i+1 < $len-1 && !$items[$i+1])
         $i++;
     }
-    else
-      $res .= '_';
   }
 
-  return ($ucfirst) ? ucfirst($res) : $res;
+  return $res;
 }
 
 function lmb_under_scores($str)
