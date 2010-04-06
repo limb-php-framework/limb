@@ -17,8 +17,7 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_camel_case('foo_bar_hey_wow'), 'FooBarHeyWow');
     $this->assertEqual(lmb_camel_case('_foo_bar'), '_FooBar');
     $this->assertEqual(lmb_camel_case('_foo_bar_'), '_FooBar_');
-    $this->assertEqual(lmb_camel_case('___foo___bar'), '___Foo_Bar');
-    $this->assertEqual(lmb_camel_case('___foo___bar_hey'), '___Foo_BarHey');
+    $this->assertEqual(lmb_camel_case('___foo___'), '___Foo___');
   }
 
   function testCamelCaseDontUcfirst()
@@ -29,8 +28,7 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_camel_case('foo_bar_hey_wow', false), 'fooBarHeyWow');
     $this->assertEqual(lmb_camel_case('_foo_bar', false), '_fooBar');
     $this->assertEqual(lmb_camel_case('_foo_bar_', false), '_fooBar_');
-    $this->assertEqual(lmb_camel_case('___foo___bar', false), '___foo_Bar');
-    $this->assertEqual(lmb_camel_case('___foo___bar_hey', false), '___foo_BarHey');
+    $this->assertEqual(lmb_camel_case('___foo___', false), '___foo___');
   }
   
   function testUnderScores()

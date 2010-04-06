@@ -28,14 +28,14 @@ function lmb_camel_case($str, $ucfirst = true)
     {
       $res .= '_'. $item;
     }
+    elseif (!$first)
+    {
+      $res .= ucfirst($item);
+    }
     else
     {
-      //we don't ucfirst first word by default
-      $res .= ($first && !$ucfirst ? $item : ucfirst($item));
+      $res .= $ucfirst ? ucfirst($item) : $item;
       $first = false;
-      //skipping next "_" if it's not last
-      if($i+1 < $len-1 && !$items[$i+1])
-        $i++;
     }
   }
 
