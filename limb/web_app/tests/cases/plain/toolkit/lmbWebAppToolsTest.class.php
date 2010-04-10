@@ -105,7 +105,7 @@ class lmbWebAppToolsTest extends UnitTestCase
     try 
     {
       $url = $toolkit->addVersionToUrl('js/main.js', true);
-      $this->assertEqual($url, 'js/main.js');
+      $this->assertEqual($url, 'js/main.js?00');
       $this->assertTrue(true);
     } catch (lmbException $e)  {
       $this->assertTrue(false);
@@ -117,7 +117,7 @@ class lmbWebAppToolsTest extends UnitTestCase
     try 
     {
       $url = $toolkit->addVersionToUrl('js/main.js', true);
-      $this->assertEqual('js/main.js?0', $url);
+      $this->assertEqual('js/main.js?00', $url);
       $this->assertTrue(true);
     } catch (lmbException $e)  {
       $this->assertTrue(false);

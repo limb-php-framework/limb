@@ -1,5 +1,7 @@
 <?php
 
+lmb_require('limb/web_app/src/macro/file_version.tag.php');
+
 /**
  * @tag js:require_once
  * @aliases js_once
@@ -7,7 +9,7 @@
  * @forbid_end_tag
  */  
 
-class lmbJsRequireOnceMacroTag extends lmbMacroTag
+class lmbJsRequireOnceMacroTag extends lmbFileVersionMacroTag
 {  
   static protected $_writes = array();
 
@@ -18,6 +20,8 @@ class lmbJsRequireOnceMacroTag extends lmbMacroTag
       return;
     self :: $_writes[$code->getClass()][$file] = 1;
 
-    $code->writeHTML('<script type="text/javascript" src="' . lmbToolkit :: instance()->addVersionToUrl($file, $this->getBool('safe')) . '" ></script>');
+    if(!$this->has('type'))
+      $this->set('type', 'js');
+    parent :: _generateContent($code);
   }
 }
