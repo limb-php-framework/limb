@@ -7,7 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbSetInterface.interface.php');
-//lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/core/src/exception/lmbNoSuchMethodException.class.php');
 lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
 /**
@@ -67,10 +66,14 @@ lmb_require('limb/core/src/exception/lmbNoSuchPropertyException.class.php');
  * @version $Id: lmbObject.class.php 5567 2007-04-06 14:37:24Z serega $
  * @package core
  */
-class lmbObject implements lmbSetInterface 
+class lmbObject implements lmbSetInterface
 {
-  protected $_dynamic_properties = array();
-  
+  private $_map = array(
+    'public' => array(),
+    'dynamic' => array(),
+    'guarded' => array('_map' => true),
+  );
+
   /**
    * Constructor.
    * Fills internals properties if any
@@ -78,6 +81,14 @@ class lmbObject implements lmbSetInterface
    */
   function __construct($properties = array())
   {
+    // registering predefined properties
+    $var_names = get_object_vars($this);
+    foreach($var_names as $key => $item)
+    {
+      $section = $this->_isGuarded($key) ? 'guarded' : 'public';
+      $this->_map[$section][$key] = $key;
+    }
+
     if($properties)
       $this->import($properties);
   }
@@ -113,11 +124,9 @@ class lmbObject implements lmbSetInterface
   function export()
   {
     $exported = array();
-    foreach(get_object_vars($this) as $name => $var)
-    {
-      if(!$this->_isGuarded($name))
-        $exported[$name] = $var;
-    }
+    foreach($this->getPropertiesNames() as $name)
+      $exported[$name] = $this->$name;
+
     return $exported;
   }
 
@@ -131,20 +140,37 @@ class lmbObject implements lmbSetInterface
     return $this->_hasProperty($name) || $this->_mapPropertyToMethod($name);
   }
 
+  protected function _hasPublicProperty($name)
+  {
+    return isset($this->_map['public'][$name]);
+  }
+
+  /**
+   * Returns true if object has guarded property $name
+   *
+   * @param  $name property name
+   * @return boolean
+   */
+  protected function _hasGuardedProperty($name)
+  {
+    // we can rely on this cache, because guarded properties can't be set during runtime
+    return isset($this->_map['guarded'][$name]);
+  }
+
   protected function _hasProperty($name)
   {
-    return property_exists($this, $name);
+    return $this->_hasPublicProperty($name) || $this->_hasGuardedProperty($name);
   }
 
   function getPropertiesNames()
   {
-    return array_keys($this->export());
+    return array_keys($this->_map['public']);
   }
-  
+
   /**
    * Alias for getPropertiesNames
    *
-   * @deprecated 
+   * @deprecated
    */
   function getAttributesNames()
   {
@@ -157,8 +183,12 @@ class lmbObject implements lmbSetInterface
    */
   function remove($name)
   {
-    if($this->_hasProperty($name) && !$this->_isGuarded($name))
+    if($this->_hasPublicProperty($name))
+    {
+      unset($this->_map['public'][$name]);
+      unset($this->_map['dynamic'][$name]);
       unset($this->$name);
+    }
   }
 
   /**
@@ -166,6 +196,8 @@ class lmbObject implements lmbSetInterface
    */
   function reset()
   {
+    $this->_map['public'] = array();
+    $this->_map['dynamic'] = array();
     foreach($this->getPropertiesNames() as $name)
       unset($this->$name);
   }
@@ -181,12 +213,12 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
 
-    if($this->_hasProperty($name) && !$this->_isGuarded($name))
+    if($this->_hasPublicProperty($name))
       return $this->_getRaw($name);
 
     if(LIMB_UNDEFINED !== $default)
       return $default;
-    
+
     throw new lmbNoSuchPropertyException("No such property '$name' in " . get_class($this));
   }
 
@@ -197,7 +229,10 @@ class lmbObject implements lmbSetInterface
    * @param mixed value
    */
   function set($property, $value)
-  {    
+  {
+    if (!$property)
+      return;
+
     if($method = $this->_mapPropertyToSetMethod($property))
       return $this->$method($value);
 
@@ -213,7 +248,8 @@ class lmbObject implements lmbSetInterface
 
   protected function _setRaw($name, $value)
   {
-    $this->_dynamic_properties[$name] = $name;
+    $this->_map['public'][$name] = $name;
+    $this->_map['dynamic'][$name] = $name;
     $this->$name = $value;
   }
 
@@ -253,8 +289,6 @@ class lmbObject implements lmbSetInterface
     {
       if($this->has($property))
         return $this->get($property);
-      else
-        throw new lmbNoSuchMethodException("No such method '$method' in " . get_class($this));
     }
     elseif($property = $this->_mapSetToProperty($method))
     {
@@ -267,13 +301,13 @@ class lmbObject implements lmbSetInterface
 
   protected function _mapGetToProperty($method)
   {
-    if(substr($method, 0, 3) == 'get')
+    if(0 === strpos($method, 'get'))
       return lmb_under_scores(substr($method, 3));
   }
 
   protected function _mapSetToProperty($method)
   {
-    if(substr($method, 0, 3) == 'set')
+    if(0 === strpos($method, 'set'))
       return lmb_under_scores(substr($method, 3));
   }
 
@@ -303,22 +337,22 @@ class lmbObject implements lmbSetInterface
   {
     if($this->_isGuarded($property))
       $property = substr($property, 1);
-      
+
     $method = 'set' . lmb_camel_case($property);
     if($method !== 'set' && method_exists($this, $method))
       return $method;
-  }  
+  }
 
   /**
    * __set  an alias of set()
    * @see set, offsetSet
    */
-  function __set($property,$value)
+  function __set($property, $value)
   {
-    if(in_array($property, $this->_dynamic_properties))
+    if (isset($this->_map['dynamic'][$property]))
       $this->$property = $value;
-    else     
-      $this->set($property, $value);    
+    else
+      $this->set($property, $value);
   }
 
   /**
@@ -348,30 +382,30 @@ class lmbObject implements lmbSetInterface
   {
     return $this->remove($name);
   }
-  
+
   function current()
   {
-    return $this->_getRaw(current($this->_dynamic_properties));
+    return $this->_getRaw($this->key());
   }
-  
+
   function next()
   {
-    return $this->_getRaw(next($this->_dynamic_properties));
+    return $this->_getRaw(next($this->_map['public']));
   }
-  
+
   function key()
   {
-    return current($this->_dynamic_properties);
+    return current($this->_map['public']);
   }
-  
+
   function valid()
   {
-    return (bool) current($this->_dynamic_properties);
+    return (bool) $this->key();
   }
-  
+
   function rewind()
   {
-    reset($this->_dynamic_properties);
+    reset($this->_map['public']);
   }
 }
 
