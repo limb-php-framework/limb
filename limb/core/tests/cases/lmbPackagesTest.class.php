@@ -13,7 +13,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
 
     self::$counter = 0;
 
-    $packages_dir = lmb_var_dir() . '/core_packages_test/';
+    $packages_dir = lmb_var_dir() . 'core_packages_test/';
     if(!file_exists($packages_dir))
       mkdir($packages_dir);
     lmb_env_set('LIMB_PACKAGES_DIR', $packages_dir);
@@ -30,7 +30,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
       mkdir($packages_dir . $name);
 
     $path = $packages_dir . $name . '/common.inc.php';
-    $content = '<?php lmbPackagesFunctionsTest::$counter++; lmb_package_register("'.$name.'", "'.$packages_dir.'"); ?>';
+    $content = '<?php lmbPackagesFunctionsTest::$counter++; lmb_package_register("'.$name.'", dirname(__FILE__)); ?>';
     file_put_contents($path, $content);
   }
 
@@ -83,13 +83,13 @@ class lmbPackagesFunctionsTest extends UnitTestCase
     lmb_package_register('foo', '/bar/');
     lmb_package_register('baz', 'zoo/zoo2/');
 
-    $this->assertEqual(array('foo' => '/bar/foo', 'baz' => 'zoo/zoo2/baz'), lmb_packages_list());
+    $this->assertEqual(array('foo' => '/bar', 'baz' => 'zoo/zoo2'), lmb_packages_list());
   }
 
   function testPackagePath()
   {
     lmb_package_register('foo', '/bar/');
-    $this->assertEqual('/bar/foo', lmb_package_get_path('foo'));
+    $this->assertEqual('/bar', lmb_package_get_path('foo'));
   }
 
   function testRequirePackageClass()
