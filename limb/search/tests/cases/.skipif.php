@@ -7,7 +7,7 @@ if(!lmbToolkit::instance()->isDefaultDbDSNAvailable())
   return true;
 }
 
-if(lmbToolkit :: instance()->getDefaultDbConnection()->getType() != 'mysql')
+if(strpos(lmbToolkit :: instance()->getDefaultDbConnection()->getType(), 'mysql') === false)
 {
   echo "\nSEARCH package tests are skipped! Only MySQL database is supported\n\n";
   return true;
