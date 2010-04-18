@@ -16,10 +16,10 @@ class lmbCacheFactoryTest extends UnitTestCase
   {
     if(!extension_loaded('memcache'))
       return $this->pass('Memcache extension not found. Test skipped.');
-          
+
     if(!class_exists('Memcache'))
       return $this->pass('Memcache class not found. Test skipped.');
-      
+
     $cache = lmbCacheFactory::createConnection('memcache://some_host:1112');
     $this->assertTrue('memcache' , $cache->getType());
   }
@@ -30,6 +30,11 @@ class lmbCacheFactoryTest extends UnitTestCase
     $cache = lmbCacheFactory::createConnection('file://' . $cache_dir);
     $this->assertTrue('file' , $cache->getType());
     $this->assertEqual($cache_dir, $cache->getCacheDir());
+  }
+
+  function testCacheCreation_WithWrapper()
+  {
+
   }
 
   function testCacheApcCreation()
