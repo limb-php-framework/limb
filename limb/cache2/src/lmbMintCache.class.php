@@ -6,18 +6,18 @@
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/cache2/src/drivers/lmbCacheConnection.interface.php');
+lmb_require('limb/cache2/src/lmbCacheBaseWrapper.class.php');
+
 // inspired by MintCache by gfranxman (see http://www.djangosnippets.org/snippets/155/)
 
-class lmbMintCache implements lmbCacheConnection
+class lmbMintCache extends lmbCacheBaseWrapper
 {
-  protected $cache;
   protected $fake_ttl;
   protected $default_ttl;
 
   function __construct($cache, $default_ttl = 300, $fake_ttl = 86400, $cooled_ttl = 60)
   {
-    $this->cache = $cache;
+    parent::__construct($cache);
     $this->fake_ttl = $fake_ttl;
     $this->default_ttl = $default_ttl;
     $this->cooled_ttl = $cooled_ttl;
@@ -25,17 +25,17 @@ class lmbMintCache implements lmbCacheConnection
 
   function add($key, $value, $ttl = false)
   {
-    return $this->cache->add($key, $this->_getRealValue($value, $ttl), $this->fake_ttl);
+    return $this->wrapped_cache->add($key, $this->_getRealValue($value, $ttl), $this->fake_ttl);
   }
 
   function set($key, $value, $ttl = false)
   {
-    return $this->cache->set($key, $this->_getRealValue($value, $ttl), $this->fake_ttl);
+    return $this->wrapped_cache->set($key, $this->_getRealValue($value, $ttl), $this->fake_ttl);
   }
 
   function coolDownKey($key)
   {
-    $real_value = $this->cache->get($key);
+    $real_value = $this->wrapped_cache->get($key);
 
     if(!$real_value || !is_array($real_value))
       return;
@@ -43,7 +43,7 @@ class lmbMintCache implements lmbCacheConnection
     list($value, $expire_time) = $real_value;
 
     // "-1" is a second before now. Means next time anyone gets this cached item it should receive null and so to refresh cached item
-    $this->cache->set($key, $this->_getRealValue($value, -1), $this->cooled_ttl);
+    $this->wrapped_cache->set($key, $this->_getRealValue($value, -1), $this->cooled_ttl);
   }
 
   protected function _getRealValue($value, $ttl)
@@ -57,7 +57,7 @@ class lmbMintCache implements lmbCacheConnection
 
   function get($key)
   {
-    $real_value = $this->cache->get($key);
+    $real_value = $this->wrapped_cache->get($key);
     if(!$real_value || !is_array($real_value))
       return $real_value;
 
@@ -69,24 +69,19 @@ class lmbMintCache implements lmbCacheConnection
     {
       // now we refresh ttl for this item and return null. We hope that controller will refresh the cached item in this case.
       // $this->cooled_ttl seconds should be enough for any process to refresh cached item.
-      $this->cache->set($key, $this->_getRealValue($value, $this->cooled_ttl), $this->cooled_ttl);
+      $this->wrapped_cache->set($key, $this->_getRealValue($value, $this->cooled_ttl), $this->cooled_ttl);
       return NULL;
     }
-  }
-  
-  function getType()
-  {
-    return $this->cache->getType();
   }
 
   function delete($key)
   {
-    return $this->cache->delete($key);
+    return $this->wrapped_cache->delete($key);
   }
 
   function flush()
   {
-    $this->cache->flush();
+    $this->wrapped_cache->flush();
   }
 }
 

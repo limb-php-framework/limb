@@ -15,7 +15,7 @@ lmb_require('limb/net/src/lmbUri.class.php');
  * @version $Id: lmbDBAL.class.php 6930 2008-04-14 11:22:49Z pachanga $
  */
 class lmbCacheFactory
-{  
+{
   /**
    * @param string $dsn
    * @return lmbCacheAbstractConnection
@@ -25,6 +25,17 @@ class lmbCacheFactory
     if(!is_object($dsn))
       $dsn = new lmbUri($dsn);
 
+    $class = self::getConnectionClass($dsn);
+    $connection = new $class($dsn);
+
+    foreach(self::getWrappers($dsn) as $wrapper)
+      $connection = new $wrapper($connection);
+
+    return $connection;
+  }
+
+  static protected function getConnectionClass($dsn)
+  {
     $driver = $dsn->getProtocol();
 
     $class = 'lmbCache' . ucfirst($driver) . 'Connection';
@@ -37,7 +48,20 @@ class lmbCacheFactory
 
       lmb_require($file);
     }
-    return new $class($dsn);
+
+    return $class;
+  }
+
+  static protected function getWrappers($dsn)
+  {
+    $wrapper = $dsn->getQueryItem('wrapper');
+
+    if(!$wrapper)
+      return array();
+
+    if(!is_array($wrapper))
+      $wrapper = array($wrapper);
+    return $wrapper;
   }
 
   /**

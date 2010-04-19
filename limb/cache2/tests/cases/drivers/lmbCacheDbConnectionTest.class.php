@@ -13,23 +13,33 @@ require_once('limb/dbal/tests/cases/init.inc.php');
 class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
 {
   protected $storage_init_file = 'limb/dbal/common.inc.php';
+  protected $skip = false;
 
   function skip()
   {
-    $this->skipIf(lmb_tests_db_dump_does_not_exist($this->fixture_path, 'CACHE2'), 'Db test skipped (no fixture found).');
+    $this->skipIf(
+      $this->skip,
+      'lmbCacheDbConnection test skipped (no fixture found).'
+    );
   }
 
   function __construct()
   {
+    lmb_tests_init_db_dsn();
+
     $this->dsn = 'db://dsn?table=lmb_cache2';
     $this->fixture_path = dirname(__FILE__) . '/../../../init/cache.';
-    lmb_tests_init_db_dsn();
-    lmb_tests_setup_db($this->fixture_path);
+    $this->skip = lmb_tests_db_dump_does_not_exist($this->fixture_path, 'CACHE2');
+
+    if(!$this->skip)
+      lmb_tests_setup_db($this->fixture_path);
+
     parent::__construct();
   }
 
   function __destruct()
   {
-    lmb_tests_teardown_db();
+    if(!$this->skip)
+      lmb_tests_teardown_db();
   }
 }

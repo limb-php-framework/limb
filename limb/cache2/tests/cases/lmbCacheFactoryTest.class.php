@@ -21,20 +21,37 @@ class lmbCacheFactoryTest extends UnitTestCase
       return $this->pass('Memcache class not found. Test skipped.');
 
     $cache = lmbCacheFactory::createConnection('memcache://some_host:1112');
-    $this->assertTrue('memcache' , $cache->getType());
+    $this->assertEqual('memcache' , $cache->getType());
   }
 
   function testCacheFileCreation()
   {
-    $cache_dir = LIMB_VAR_DIR . '/some_dir';
+    $cache_dir = lmb_var_dir() . '/some_dir';
     $cache = lmbCacheFactory::createConnection('file://' . $cache_dir);
+    $this->assertEqual('file' , $cache->getType());
+    $this->assertEqual($cache_dir, $cache->getCacheDir());
+  }
+
+  function testCacheCreation_WithOneWrapper()
+  {
+    $cache_dir = lmb_var_dir() . '/some_dir';
+    $cache = lmbCacheFactory::createConnection('file://' . $cache_dir.'?wrapper=lmbMintCache');
+    $this->assertIsA($cache, 'lmbMintCache');
+
     $this->assertTrue('file' , $cache->getType());
     $this->assertEqual($cache_dir, $cache->getCacheDir());
   }
 
-  function testCacheCreation_WithWrapper()
+  function testCacheCreation_WithMultipleWrappers()
   {
+    $cache_dir = lmb_var_dir() . '/some_dir';
+    $cache = lmbCacheFactory::createConnection(
+      'file://' . $cache_dir.'?wrapper[]=lmbMintCache&wrapper[]=lmbTaggableCache'
+    );
+    $this->assertIsA($cache, 'lmbTaggableCache');
 
+    $this->assertTrue('file' , $cache->getType());
+    $this->assertEqual($cache_dir, $cache->getCacheDir());
   }
 
   function testCacheApcCreation()

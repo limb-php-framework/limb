@@ -1,17 +1,13 @@
 <?php
-lmb_require('limb/cache2/src/lmbCache.interface.php');
+lmb_require('limb/cache2/src/lmbCacheBaseWrapper.class.php');
 
-class lmbTaggableCache implements lmbCache
+class lmbTaggableCache extends lmbCacheBaseWrapper
 {
-  /**
-  * @var lmbCacheConnection
-  */
-  protected $connection;
   public $tags_prefix = 'tag42_';
 
   function __construct(lmbCacheConnection $connection)
   {
-    $this->connection = $connection;
+    parent::__construct($connection);
   }
 
   protected function _resolveTagsKeys($tags_keys)
@@ -31,13 +27,13 @@ class lmbTaggableCache implements lmbCache
   protected function _createContainer($value, $tags)
   {
     $tags = $this->_resolveTagsKeys($tags);
-    $tags_values = (array) $this->connection->get($tags);
+    $tags_values = (array) $this->wrapped_cache->get($tags);
 
     foreach($tags as $tag_key )
       if(!isset($tags_values[$tag_key]) || is_null($tags_values[$tag_key]))
     {
         $tags_values[$tag_key] = 0;
-        $this->connection->add($tag_key, 0);
+        $this->wrapped_cache->add($tag_key, 0);
     }
 
     return array('tags' => $tags_values, 'value' => $value);
@@ -45,7 +41,7 @@ class lmbTaggableCache implements lmbCache
 
   protected function _isTagsValid($tags)
   {
-    $tags_versions = (array) $this->connection->get(array_keys($tags));
+    $tags_versions = (array) $this->wrapped_cache->get(array_keys($tags));
 
     foreach($tags_versions as $tag_key => $tag_version)
       if(is_null($tag_version) || $tags[$tag_key] != $tag_version)
@@ -72,38 +68,38 @@ class lmbTaggableCache implements lmbCache
 
   function add($key, $value, $ttl = false, $tags_keys = 'default')
   {
-    return $this->connection->add($key, $this->_prepareValue ($value, $tags_keys), $ttl);
+    return $this->wrapped_cache->add($key, $this->_prepareValue ($value, $tags_keys), $ttl);
   }
 
   function set($key, $value, $ttl = false, $tags_keys = 'default')
   {
-    return $this->connection->set($key, $this->_prepareValue ($value, $tags_keys), $ttl);
+    return $this->wrapped_cache->set($key, $this->_prepareValue ($value, $tags_keys), $ttl);
   }
 
   function get($key)
   {
-    if(is_null($container = $this->connection->get($key)))
+    if(is_null($container = $this->wrapped_cache->get($key)))
       return NULL;
 
     if(is_null($value = $this->_getFromContainer($container)))
-      $this->connection->delete($key);
+      $this->wrapped_cache->delete($key);
 
     return $value;
   }
 
   function delete($key)
   {
-    $this->connection->delete($key);
+    $this->wrapped_cache->delete($key);
   }
 
   function deleteByTag($tag)
   {
     $tag = $this->_resolveTagsKeys($tag);
-    $this->connection->safeIncrement($tag);
+    $this->wrapped_cache->safeIncrement($tag);
   }
 
   function flush()
   {
-    $this->connection->flush();
+    $this->wrapped_cache->flush();
   }
 }

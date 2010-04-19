@@ -38,20 +38,7 @@ class lmbCacheTools extends lmbAbstractTools
 
   function createCache($name)
   {
-    $conf = $this->toolkit->getConf('cache');
-
-    $backend = $this->createCacheConnectionByName($name);
-
-    if($conf->get('mint_cache_enabled', false))
-      $backend = new lmbMintCache($backend);
-
-    if ($conf->get('taggable_cache_enabled', false))
-      $backend = new lmbTaggableCache($backend);
-
-    if($conf->get('cache_log_enabled', false))
-      $backend = new lmbLoggedCache($backend, $name);
-
-    return $backend;
+    return $this->createCacheConnectionByName($name);
   }
 
   function createCacheConnectionByName($name)
@@ -60,10 +47,22 @@ class lmbCacheTools extends lmbAbstractTools
 
     if($conf->get('cache_enabled'))
     {
-
       try
       {
         $dsn = lmbToolkit::instance()->getConf('cache')->get($name.'_cache_dsn');
+
+        if(!is_object($dsn))
+          $dsn = new lmbUri($dsn);
+
+        if ($conf->get('taggable_cache_enabled', false))
+          $dsn->addQueryItem('wrapper', 'lmbTaggableCache');
+
+        if($conf->get('mint_cache_enabled', false))
+          $dsn->addQueryItem('wrapper', 'lmbMintCache');
+
+        if($conf->get('cache_log_enabled', false))
+          $dsn->addQueryItem('wrapper', 'lmbLoggedCache');
+
         return $this->createCacheConnectionByDSN($dsn);
       }
       catch (Exception $e)

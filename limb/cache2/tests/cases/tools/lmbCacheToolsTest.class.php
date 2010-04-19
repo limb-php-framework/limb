@@ -79,7 +79,7 @@ class lmbCacheToolsTest extends UnitTestCase
     $config->set('mint_cache_enabled',true);
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCache('dsn');
-    $this->assertTrue($connection instanceof lmbMintCache);
+    $this->assertIsA($connection, 'lmbMintCache');
     $connection->set('var','test');
     $this->assertEqual($connection->get('var'),'test');
   }
@@ -90,11 +90,13 @@ class lmbCacheToolsTest extends UnitTestCase
     $config->set('mint_cache_enabled',true);
     $config->set('cache_log_enabled',true);
     lmbToolkit::instance()->setConf('cache',$config);
+
     $connection = lmbToolkit::instance()->createCache('dsn');
-    $this->assertTrue($connection instanceof lmbLoggedCache);
-    $this->assertEqual($connection->getName(),'dsn');
-    $connection->set('var','test');
-    $this->assertEqual($connection->get('var'),'test');
+
+    $this->assertIsA($connection, 'lmbLoggedCache');
+
+    $connection->set('var', 'test');
+    $this->assertEqual($connection->get('var'), 'test');
   }
 
   function testCreateLoggedCacheWithOutMintCache()
@@ -103,10 +105,11 @@ class lmbCacheToolsTest extends UnitTestCase
     $config->set('cache_log_enabled',true);
     lmbToolkit::instance()->setConf('cache',$config);
     $connection = lmbToolkit::instance()->createCache('dsn');
-    $this->assertTrue($connection instanceof lmbLoggedCache);
-    $this->assertEqual($connection->getName(),'dsn');
-    $connection->set('var','test');
-    $this->assertEqual($connection->get('var'),'test');
+
+    $this->assertIsA($connection, 'lmbLoggedCache');
+
+    $connection->set('var', 'test');
+    $this->assertEqual($connection->get('var'), 'test');
   }
 
   function testGetCacheByName()
