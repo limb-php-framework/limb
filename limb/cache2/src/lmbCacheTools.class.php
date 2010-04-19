@@ -54,14 +54,17 @@ class lmbCacheTools extends lmbAbstractTools
         if(!is_object($dsn))
           $dsn = new lmbUri($dsn);
 
+        $wrapper = array();
         if ($conf->get('taggable_cache_enabled', false))
-          $dsn->addQueryItem('wrapper', 'lmbTaggableCache');
+          $wrapper['taggable'] = 'lmbTaggableCache';
 
         if($conf->get('mint_cache_enabled', false))
-          $dsn->addQueryItem('wrapper', 'lmbMintCache');
+          $wrapper['mint'] = 'lmbMintCache';
 
         if($conf->get('cache_log_enabled', false))
-          $dsn->addQueryItem('wrapper', 'lmbLoggedCache');
+          $wrapper['logged'] = 'lmbLoggedCache';
+
+        $dsn->addQueryItem('wrapper', $wrapper);
 
         return $this->createCacheConnectionByDSN($dsn);
       }

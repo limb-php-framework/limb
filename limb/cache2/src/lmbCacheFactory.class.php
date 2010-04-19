@@ -55,13 +55,7 @@ class lmbCacheFactory
   static protected function getWrappers($dsn)
   {
     $wrapper = $dsn->getQueryItem('wrapper');
-
-    if(!$wrapper)
-      return array();
-
-    if(!is_array($wrapper))
-      $wrapper = array($wrapper);
-    return $wrapper;
+    return $wrapper ? (array) $wrapper : array();
   }
 
   /**
