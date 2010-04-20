@@ -19,7 +19,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbCachedInfo.class.php');
  * class lmbTableGateway.
  *
  * @package dbal
- * @version $Id: lmbTableGateway.class.php 8116 2010-01-29 05:47:33Z korchasa $
+ * @version $Id: lmbTableGateway.class.php 8170 2010-04-20 10:33:14Z serega $
  */
 class lmbTableGateway
 {
@@ -86,6 +86,11 @@ class lmbTableGateway
   function getConnection()
   {
     return $this->_conn;
+  }
+
+  function setConnection($conn)
+  {
+    $this->_conn = $conn;
   }
 
   function getColumnInfo($name)
