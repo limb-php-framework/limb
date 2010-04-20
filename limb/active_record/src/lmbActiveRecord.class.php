@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 8108 2010-01-28 00:46:47Z korchasa $
+ * @version $Id: lmbActiveRecord.class.php 8171 2010-04-20 10:34:12Z serega $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -231,6 +231,7 @@ class lmbActiveRecord extends lmbObject
     $this->_db_table_fields = $this->_db_meta_info->getDbColumnsNames();
 
     $this->_db_table = $this->_db_meta_info->getDbTable();
+    $this->_db_table->setConnection($this->_db_conn);
     $this->_db_table->setPrimaryKeyName($this->_primary_key_name);
     $this->_error_list = new lmbErrorList();
 
