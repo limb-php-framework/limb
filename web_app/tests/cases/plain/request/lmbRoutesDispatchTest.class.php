@@ -269,6 +269,60 @@ class lmbRoutesDispatchTest extends UnitTestCase
     $this->assertEqual($result['id'], 'test');
   }
 
+  function testRequestMethod()
+  {
+    $config = array(array('path' => '/blog',
+                          'defaults' => array('controller' => 'blog',
+                                              'action' => 'display'),
+                          'request_method' => 'GET'
+                    ),
+                    array('path' => '/news',
+                          'defaults' => array('controller' => 'newsline',
+                                              'action' => 'display')));
+
+    $routes = new lmbRoutes($config);
+    $result = $routes->dispatch('/blog');
+
+    $this->assertTrue(empty($result));
+
+
+    $result = $routes->dispatch('/blog', 'POST');
+    $this->assertTrue(empty($result));
+
+    $result = $routes->dispatch('/blog', 'GET');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'display');
+  }
+
+  function testRequestMethod_SeveralRequestMethods()
+  {
+    $config = array(array('path' => '/blog',
+                          'defaults' => array('controller' => 'blog',
+                                              'action' => 'display'),
+                          'request_method' => 'GET'
+                    ),
+                    array('path' => '/blog',
+                          'defaults' => array('controller' => 'blog',
+                                              'action' => 'save'),
+                          'request_method' => 'POST'
+                    ),
+                    array('path' => '/news',
+                          'defaults' => array('controller' => 'newsline',
+                                              'action' => 'display')));
+
+    $routes = new lmbRoutes($config);
+    $result = $routes->dispatch('/blog', 'GET');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'display');
+
+    $result = $routes->dispatch('/blog', 'POST');
+
+    $this->assertEqual($result['controller'], 'blog');
+    $this->assertEqual($result['action'], 'save');
+  }
+
   function _processDispatchResult(&$dispatched)
   {
     if(isset($dispatched['controller']))
