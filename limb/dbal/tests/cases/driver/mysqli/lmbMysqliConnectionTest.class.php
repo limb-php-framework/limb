@@ -29,6 +29,19 @@ class lmbMysqliConnectionTest extends DriverConnectionTestBase
     parent::setUp();
   }
 
+  function getSocket() {
+    if (is_string($default_socket = ini_get('mysqli.default_socket'))) {
+      return $default_socket;
+    }
+    ob_start();
+    phpinfo();
+    $info = ob_get_clean();
+
+    if (preg_match('/^MYSQLI?_SOCKET => (.*)$/m', $info, $matches)) {
+      return trim($matches[1]);
+    }
+  }
+
   function testEscape()
   {
     $unescaped_string = "\x00 \n \r \ ' \x1a";

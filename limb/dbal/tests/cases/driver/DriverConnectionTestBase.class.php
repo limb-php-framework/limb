@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 abstract class DriverConnectionTestBase extends UnitTestCase
@@ -27,6 +27,30 @@ abstract class DriverConnectionTestBase extends UnitTestCase
   {
     $this->connection->disconnect();
     unset($this->connection);
+  }
+
+  function getSocket() {
+    $this->skipIf(true, 'Socket guessing is not implemented for this connection');
+  }
+
+  function testSocketConnection() {
+    lmb_require('core/src/lmbSys.class.php');
+    $this->skipIf(lmbSys::isWin32(), "Windows platform doesn't support sockets.");
+
+    $config = $this->connection->getConfig()->export();
+    $config['socket'] = $this->getSocket();
+    $connection_class = get_class($this->connection);
+    try {
+      $connection = new $connection_class($config);
+      $connection->connect();
+    } catch (Exception $e) {
+      $this->fail("Connection through socket $config[socket] failed.");
+    }
+
+    if (isset($connection)) {
+      $connection->disconnect();
+      unset($connection);
+    }
   }
 
   function testNewStatementSelect()

@@ -44,25 +44,22 @@ class lmbMysqliConnection extends lmbDbBaseConnection
 
   function connect()
   {
-    $this->connectionId = mysqli_connect($this->config['host'],
-                                         $this->config['user'],
-                                         $this->config['password']);
+    $port = !empty($this->config['port']) ? (int) $this->config['port'] : null;
+    $socket = !empty($this->config['socket']) ? $this->config['socket'] : null;
+    $this->connectionId = mysqli_connect(
+      $this->config['host'], $this->config['user'], $this->config['password'],
+      $this->config['database'], $port, $socket
+    );
 
     if($this->connectionId === false)
     {
       $this->_raiseError();
     }
 
-    if(mysqli_select_db( $this->connectionId, $this->config['database']) === false)
+    if(!empty($this->config['charset']))
     {
-      $this->_raiseError();
+      $this->execute("SET NAMES '{$this->config['charset']}'");
     }
-
-    if(isset($this->config['charset']) && $charset = $this->config['charset'])
-    {
-      $this->execute("SET NAMES '$charset'");
-    }
-
   }
 
   function __wakeup()
