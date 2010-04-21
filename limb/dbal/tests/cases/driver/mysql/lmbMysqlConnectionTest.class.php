@@ -29,6 +29,9 @@ class lmbMysqlConnectionTest extends DriverConnectionTestBase
     if (is_string($default_socket = ini_get('mysql.default_socket'))) {
       return $default_socket;
     }
+    if (file_exists($socket = '/var/run/mysqld/mysqld.sock')) {
+      return $socket;
+    }
     ob_start();
     phpinfo();
     $info = ob_get_clean();
