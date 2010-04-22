@@ -12,7 +12,7 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbMysqlStatement.
  *
  * @package dbal
- * @version $Id: lmbMysqlStatement.class.php 8105 2010-01-27 00:31:17Z korchasa $
+ * @version $Id: lmbMysqlStatement.class.php 8174 2010-04-22 06:37:01Z conf $
  */
 class lmbMysqlStatement implements lmbDbStatement
 {
@@ -174,7 +174,7 @@ class lmbMysqlStatement implements lmbDbStatement
 
   protected function _escape($value)
   {
-  	return mysql_escape_string($value);
+  	return $this->connection->escape($value);
   }
 }
 
