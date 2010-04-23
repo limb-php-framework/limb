@@ -8,6 +8,10 @@
  */
 lmb_require('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
 
+class TestOneTableObjectWithCustomProperty extends TestOneTableObject {
+  protected $custom_property = true;
+}
+
 class TestOneTableObjectWithCustomDestroy extends lmbActiveRecord
 {
   protected $_db_table_name = 'test_one_table_object';
@@ -95,8 +99,13 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
   {
     $object = new TestOneTableObject();
     $this->assertTrue(isset($object['annotation']));
-    unset($object['annotation']); // Does not make any sence since db fields always available
+    unset($object['annotation']); // Does not make any sense since db fields always available
     $this->assertTrue(isset($object['annotation']));
+  }
+
+  function testGetCustomProperty() {
+    $object = new TestOneTableObjectWithCustomProperty();
+    $object->getCustomProperty();
   }
 
   function testGetWithDefaultValue()

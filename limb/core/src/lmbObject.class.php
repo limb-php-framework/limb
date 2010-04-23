@@ -71,7 +71,7 @@ class lmbObject implements lmbSetInterface
   private $_map = array(
     'public' => array(),
     'dynamic' => array(),
-    'guarded' => array('_map' => true),
+    'initialized' => false,
   );
 
   /**
@@ -81,16 +81,24 @@ class lmbObject implements lmbSetInterface
    */
   function __construct($properties = array())
   {
-    // registering predefined properties
-    $var_names = get_object_vars($this);
-    foreach($var_names as $key => $item)
-    {
-      $section = $this->_isGuarded($key) ? 'guarded' : 'public';
-      $this->_map[$section][$key] = $key;
-    }
+    $this->_registerPredefinedVariables();
 
     if($properties)
       $this->import($properties);
+  }
+
+  protected function _registerPredefinedVariables() {
+    if ($this->_map['initialized']) {
+      return;
+    }
+    $var_names = get_object_vars($this);
+    foreach($var_names as $key => $item)
+    {
+      if (!$this->_isGuarded($key))
+        $this->_map['public'][$key] = $key;
+    }
+
+    $this->_map['initialized'] = true;
   }
   /**
    * Returns class name using PHP built in get_class
@@ -112,10 +120,7 @@ class lmbObject implements lmbSetInterface
       return;
 
     foreach($values as $property => $value)
-    {
-      if(!$this->_isGuarded($property))
-        $this->_setRaw($property, $value);
-    }
+      $this->_setRaw($property, $value);
   }
   /**
    * Exports all object properties as an array
@@ -132,7 +137,7 @@ class lmbObject implements lmbSetInterface
 
   /**
    * Checks if such property exists
-   * Can be overriden in child classes like lmbActiveRecord
+   * Can be overridden in child classes like lmbActiveRecord
    * @return bool returns true even if attribute is null
    */
   function has($name)
@@ -140,30 +145,15 @@ class lmbObject implements lmbSetInterface
     return $this->_hasProperty($name) || $this->_mapPropertyToMethod($name);
   }
 
-  protected function _hasPublicProperty($name)
-  {
-    return isset($this->_map['public'][$name]);
-  }
-
-  /**
-   * Returns true if object has guarded property $name
-   *
-   * @param  $name property name
-   * @return boolean
-   */
-  protected function _hasGuardedProperty($name)
-  {
-    // we can rely on this cache, because guarded properties can't be set during runtime
-    return isset($this->_map['guarded'][$name]);
-  }
-
   protected function _hasProperty($name)
   {
-    return $this->_hasPublicProperty($name) || $this->_hasGuardedProperty($name);
+    $this->_registerPredefinedVariables();
+    return isset($this->_map['public'][$name]);
   }
 
   function getPropertiesNames()
   {
+    $this->_registerPredefinedVariables();
     return array_keys($this->_map['public']);
   }
 
@@ -183,12 +173,12 @@ class lmbObject implements lmbSetInterface
    */
   function remove($name)
   {
-    if($this->_hasPublicProperty($name))
-    {
-      unset($this->_map['public'][$name]);
-      unset($this->_map['dynamic'][$name]);
-      unset($this->$name);
-    }
+    if ($this->_isGuarded($name))
+      return;
+
+    unset($this->_map['public'][$name]);
+    unset($this->_map['dynamic'][$name]);
+    unset($this->$name);
   }
 
   /**
@@ -213,7 +203,7 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToMethod($name))
       return $this->$method();
 
-    if($this->_hasPublicProperty($name))
+    if($this->_hasProperty($name))
       return $this->_getRaw($name);
 
     if(LIMB_UNDEFINED !== $default)
@@ -236,8 +226,7 @@ class lmbObject implements lmbSetInterface
     if($method = $this->_mapPropertyToSetMethod($property))
       return $this->$method($value);
 
-    if(!$this->_isGuarded($property))
-      $this->_setRaw($property, $value);
+    $this->_setRaw($property, $value);
   }
 
   protected function _getRaw($name)
@@ -248,6 +237,9 @@ class lmbObject implements lmbSetInterface
 
   protected function _setRaw($name, $value)
   {
+    if ($this->_isGuarded($name))
+      return;
+
     $this->_map['public'][$name] = $name;
     $this->_map['dynamic'][$name] = $name;
     $this->$name = $value;
@@ -335,9 +327,6 @@ class lmbObject implements lmbSetInterface
 
   protected function _mapPropertyToSetMethod($property)
   {
-    if($this->_isGuarded($property))
-      $property = substr($property, 1);
-
     $method = 'set' . lmb_camel_case($property);
     if($method !== 'set' && method_exists($this, $method))
       return $method;
