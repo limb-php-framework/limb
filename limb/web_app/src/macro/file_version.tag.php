@@ -34,6 +34,9 @@ class lmbFileVersionMacroTag extends lmbMacroTag
       case 'js':
         $code->writeHTML('<script type="text/javascript" src="' . htmlspecialchars($url, 3) . '" ></script>');
         break;
+      case 'css':
+        $code->writeHTML('<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($url, 3).'" />');
+        break;
       default:
         throw new lmbMacroException('Unknown type '.$type);
     }

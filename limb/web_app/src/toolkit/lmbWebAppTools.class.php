@@ -14,7 +14,7 @@ lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/*/src/contro
  * class lmbWebAppTools.
  *
  * @package web_app
- * @version $Id: lmbWebAppTools.class.php 8160 2010-04-10 15:41:41Z hidrarg $
+ * @version $Id: lmbWebAppTools.class.php 8176 2010-04-23 16:41:47Z hidrarg $
  */
 class lmbWebAppTools extends lmbAbstractTools
 {
@@ -186,6 +186,12 @@ class lmbWebAppTools extends lmbAbstractTools
         throw new lmbException('File \'' . $file_src . '\' not found in document root (' . $doc_root . ')');
     $version = ($version > 0 ? '1' : '0') . base_convert(abs($version), 10, 36);
     return array($file, $version);
+  }
+    
+  function selectDomainForFile($domains, $file_src, $safe = false)
+  { 
+    list($file_src, $version) = $this->toolkit->getNormalizeUrlAndVersion($file_src, $safe);
+    return '//' . $domains[floor(fmod(abs(crc32($file_src)), count($domains)))] . '/_/' . $version . '/' . ltrim($file_src, '/');
   }
 }
 
