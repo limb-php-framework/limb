@@ -36,7 +36,7 @@ lmb_require('limb/core/src/lmbObject.class.php');
  * </code>
  * @see lmbToolkitTools
  * @package toolkit
- * @version $Id: lmbToolkit.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbToolkit.class.php 8177 2010-04-23 18:10:17Z conf $
  */
 class lmbToolkit extends lmbObject
 {
@@ -271,11 +271,7 @@ class lmbToolkit extends lmbObject
 
   protected function _hasGetMethodFor($property)
   {
-    $this->_ensureSignatures();
-
-    $capsed = lmb_camel_case($property);
-    $method = 'get' . $capsed;
-    return isset($this->_tools_signatures[$method]);
+    return (bool) $this->_mapPropertyToGetMethod($property);
   }
 
   protected function _mapPropertyToGetMethod($property)
