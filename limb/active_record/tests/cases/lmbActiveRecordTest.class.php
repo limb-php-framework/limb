@@ -105,7 +105,7 @@ class lmbActiveRecordTest extends lmbARBaseTestCase
 
   function testGetCustomProperty() {
     $object = new TestOneTableObjectWithCustomProperty();
-    $object->getCustomProperty();
+    $this->assertTrue($object->getCustomProperty());
   }
 
   function testGetWithDefaultValue()
