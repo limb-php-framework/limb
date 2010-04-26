@@ -21,7 +21,7 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlRecordSet.class.php');
  * class lmbMysqlConnection.
  *
  * @package dbal
- * @version $Id: lmbMysqlConnection.class.php 8172 2010-04-21 13:48:19Z conf $
+ * @version $Id: lmbMysqlConnection.class.php 8180 2010-04-26 08:45:46Z korchasa $
  */
 class lmbMysqlConnection extends lmbDbBaseConnection
 {
@@ -61,7 +61,8 @@ class lmbMysqlConnection extends lmbDbBaseConnection
     {
       $this->connectionId = mysql_connect($host,
                                           $this->config['user'],
-                                          $this->config['password']);
+                                          $this->config['password'],
+                                          $force_new_link = true);
     }
 
     if($this->connectionId === false)
