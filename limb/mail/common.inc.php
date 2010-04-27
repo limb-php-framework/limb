@@ -13,5 +13,6 @@
  */
 require_once('limb/core/common.inc.php');
 lmb_require_optional('limb/view/common.inc.php');
+lmb_require('limb/mail/toolkit.inc.php');
 
 lmb_package_register('mail', dirname(__FILE__));
