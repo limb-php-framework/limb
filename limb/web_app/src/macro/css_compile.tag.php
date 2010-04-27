@@ -43,11 +43,14 @@ class lmbCssCompiledMacroTag extends lmbFileVersionMacroTag
 
     $contents = file_get_contents($abs_file);
     $css_dir = dirname($file);
-    if(preg_match_all('~url\(([^\)]+)\)~', $contents, $matches))
+    if(preg_match_all('~url\(([^\)]+)\)~', $contents, $matches))  // simple. not support url('name (comment).jpg') or url('(").jpg') etc
     {
       $replaces = array();
       foreach($matches[1] as $key => $match)
+      {
+        $match = trim($match, '\'" ');
         $replaces[$matches[0][$key]] = 'url('.$this->addVersion(lmbFs :: normalizePath($css_dir.'/'.$match, lmbFs :: UNIX)).')';
+      }
       $contents = str_replace(array_keys($replaces), array_values($replaces), $contents);
     }
 

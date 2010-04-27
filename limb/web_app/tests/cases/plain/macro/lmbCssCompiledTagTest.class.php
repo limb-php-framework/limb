@@ -14,7 +14,7 @@ class lmbCssCompiledTagTest extends lmbMacroTestCase
   {
     $root = lmb_env_get('LIMB_VAR_DIR').'/www/';
     lmb_env_set('LIMB_DOCUMENT_ROOT', $root);
-    lmbFs :: safeWrite($root . 'style/main.css', 'body {background-url: url(../images/one.jpg);}');
+    lmbFs :: safeWrite($root . 'style/main.css', 'body {background-url: url("../images/one.jpg");}');
     lmbFs :: safeWrite($root . 'images/one.jpg', 'simple content');
     
     $template = '{{css_compiled src="style/main.css" dir="media/css" /}}';
