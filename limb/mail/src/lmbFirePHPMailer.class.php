@@ -29,6 +29,8 @@ class lmbFirePHPMailer implements lmbBaseMailerInterface
     $this->_send($mail);
   }
 
+  function setConfig($config)  {}
+  
   protected function _send($content)
   {
     if(!function_exists('fb'))

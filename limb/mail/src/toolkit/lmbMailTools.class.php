@@ -39,7 +39,9 @@ class lmbMailTools extends lmbAbstractTools
   		break;
   	}
   	
-  	return new $template_parser_class($template_id);
+  	$mail_template = new $template_parser_class($template_id);
+  	$mail_template->setDefaultSender($conf['sender']);
+  	return $mail_template;
   }
 	
   function getMailer()
@@ -55,6 +57,8 @@ class lmbMailTools extends lmbAbstractTools
         $mailer_class = 'lmbResponseMailer';
     }
     
-    return new $mailer_class;
+    $mailer = new $mailer_class;
+    $mailer->setConfig($conf);
+    return $mailer;
   }
 }

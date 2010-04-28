@@ -36,6 +36,8 @@ EOD;
     $this->_send($recipients,$content);
   }
 
+  function setConfig($config)  {}
+    
   protected function _send($recipients, $content)
   {
     lmbFs::safeWrite(lmb_env_get('LIMB_VAR_DIR').'/mail/'.(pow(2,31) - time()).'_'.$recipients.'_'.microtime(true).'.txt', $content);

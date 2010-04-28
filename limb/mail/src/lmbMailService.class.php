@@ -24,6 +24,8 @@ class lmbMailService
   protected $subject;
   protected $html_content;
   protected $text_content;
+  
+  protected $default_sender;
 
   function __construct($template_id)
   {
@@ -88,19 +90,9 @@ class lmbMailService
 
   function sendMailTo($email)
   {
-    $conf = lmbToolkit::instance()->getConf('mail');
-
-    $mailer_class = 'lmbMailer';
-
-    if(isset($conf['mode']))
-      if($conf['mode'] == 'testing')
-        $mailer_class = 'lmbMemoryMailer';
-      elseif($conf['mode'] == 'devel')
-        $mailer_class = 'lmbResponseMailer';
-
-    $this->mailer = new $mailer_class($conf);
+    $this->mailer = lmbToolkit::instance()->getMailer();
     $this->mailer->sendHtmlMail($email,
-                          $conf['sender'],
+                          $this->getDefaultSender(),
                           $this->getSubject(),
                           $this->getHtmlContent(),
                           $this->getTextContent());
@@ -109,5 +101,15 @@ class lmbMailService
   function getMailer()
   {
     return $this->mailer;
+  }
+  
+  function setDefaultSender($sender)
+  {
+  	$this->default_sender = $sender; 
+  }
+  
+  function getDefaultSender()
+  {
+  	return $this->default_sender;
   }
 }

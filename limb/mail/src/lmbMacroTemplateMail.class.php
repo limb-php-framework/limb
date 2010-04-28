@@ -6,6 +6,7 @@ class lmbMacroTemplateMail
 {
   protected $template_id;
   protected $dataset;
+  protected $default_sender;
   
   function __construct($template_id)
   {
@@ -28,8 +29,13 @@ class lmbMacroTemplateMail
     $tools = lmbToolkit :: instance();
     $parts = self :: _parseMailpartTags($this->_renderTemplate($tools));
     
-    if (!$sender && isset($parts['sender']))
-      $sender = $parts['sender'];
+    if (!$sender)
+    { 
+      if (isset($parts['sender']))
+        $sender = $parts['sender'];
+      else
+        $sender = $this->getDefaultSender();
+    }
     
     if (!$subject)
     {      
@@ -55,6 +61,16 @@ class lmbMacroTemplateMail
       throw new lmbException('Contents required for mail message');
       
     return $mailer;
+  }
+  
+  function setDefaultSender($sender)
+  {
+  	$this->default_sender = $sender; 
+  }
+  
+  function getDefaultSender()
+  {
+  	return $this->default_sender; 
   }
   
   protected function _renderTemplate($tools)

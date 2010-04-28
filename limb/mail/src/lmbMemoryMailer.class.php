@@ -43,4 +43,6 @@ class lmbMemoryMailer implements lmbBaseMailerInterface
   {
     self::$mail_contents = array();
   }
+  
+  function setConfig($config)  {}
 }
