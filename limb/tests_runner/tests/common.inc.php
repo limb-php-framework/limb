@@ -54,10 +54,10 @@ class GeneratedTestClass
   function generateClass()
   {
     $parts = array();
-    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n"; 
+    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n";
     $parts['%class_footer%'] = "\n}\n";
-    $parts['%class%'] = $parts['%class_header%'] . 
-                        "function testMe() {echo \"" . $this->getOutput() . "\";}" . 
+    $parts['%class%'] = $parts['%class_header%'] .
+                        "function testMe() {echo \"" . $this->getOutput() . "\";}" .
                         $parts['%class_footer%'];
 
     return str_replace(array_keys($parts), array_values($parts), $this->body);
@@ -66,10 +66,22 @@ class GeneratedTestClass
   function generateClassFailing()
   {
     $parts = array();
-    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n"; 
+    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n";
     $parts['%class_footer%'] = "\n}\n";
-    $parts['%class%'] = $parts['%class_header%'] . 
-                        "function testMe() {\$this->assertTrue(false);echo \"" . $this->getOutput() . "\";}" . 
+    $parts['%class%'] = $parts['%class_header%'] .
+                        "function testMe() {\$this->assertTrue(false);echo \"" . $this->getOutput() . "\";}" .
+                        $parts['%class_footer%'];
+
+    return str_replace(array_keys($parts), array_values($parts), $this->body);
+  }
+
+  function generateClassThrowingException()
+  {
+    $parts = array();
+    $parts['%class_header%'] = "\nclass {$this->class_name} extends UnitTestCase {\n";
+    $parts['%class_footer%'] = "\n}\n";
+    $parts['%class%'] = $parts['%class_header%'] .
+                        "function testMe() {throw new Exception('thrown from {$this->getOutput()}');}" .
                         $parts['%class_footer%'];
 
     return str_replace(array_keys($parts), array_values($parts), $this->body);
@@ -99,9 +111,7 @@ abstract class lmbTestRunnerBase extends UnitTestCase
 
   function _createTestCase($file, $body = '%class%')
   {
-    $dir = dirname($file);
-    if(!is_dir($dir))
-      mkdir($dir, 0777, true);
+    $this->_createDirForFile($file);
 
     $generated = new GeneratedTestClass($body);
     file_put_contents($file, "<?php\n" . $generated->generateClass() . "\n?>");
@@ -110,13 +120,28 @@ abstract class lmbTestRunnerBase extends UnitTestCase
 
   function _createTestCaseFailing($file, $body = '%class%')
   {
-    $dir = dirname($file);
-    if(!is_dir($dir))
-      mkdir($dir, 0777, true);
+    $this->_createDirForFile($file);
 
     $generated = new GeneratedTestClass($body);
     file_put_contents($file, "<?php\n" . $generated->generateClassFailing() . "\n?>");
     return $generated;
+  }
+
+  function _createTestCaseThrowingException($file, $body = '%class%')
+  {
+    $this->_createDirForFile($file);
+
+    $generated = new GeneratedTestClass($body);
+    file_put_contents($file, "<?php\n" . $generated->generateClassThrowingException() . "\n?>");
+    return $generated;
+  }
+
+  protected function _createDirForFile($file)
+  {
+    $dir = dirname($file);
+    if (!is_dir($dir)) {
+      mkdir($dir, 0777, true);
+    }
   }
 
   function _runNodeAndAssertOutput($node, $expected)
