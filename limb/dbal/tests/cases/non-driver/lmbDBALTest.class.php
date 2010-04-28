@@ -95,6 +95,20 @@ class lmbDBALTest extends UnitTestCase
     $this->assertEqual($rs, 'result');
   }
 
+  function testFetchWithWrongSQL()
+  {
+    try
+    {
+      $rs = lmbDBAL :: fetch($sql = 'SLECT 1=1');
+      $this->fail();
+    }
+    catch(lmbDbException $e)
+    {
+      $this->assertPattern('/The result of this SQL query can not be fetched./', $e->getMessage());
+      $this->assertEqual($e->getParam('query'), $sql);
+    }
+  }
+
   function testDbMethod()
   {
     $db = lmbDBAL :: db($this->conn);
