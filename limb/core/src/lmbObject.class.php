@@ -87,7 +87,8 @@ class lmbObject implements lmbSetInterface
       $this->import($properties);
   }
 
-  protected function _registerPredefinedVariables() {
+  protected function _registerPredefinedVariables()
+  {
     if ($this->_map['initialized']) {
       return;
     }
