@@ -89,18 +89,19 @@ class lmbObject implements lmbSetInterface
 
   protected function _registerPredefinedVariables()
   {
-    if ($this->_map['initialized']) {
+    if($this->_map['initialized'])
       return;
-    }
+
     $var_names = get_object_vars($this);
     foreach($var_names as $key => $item)
     {
-      if (!$this->_isGuarded($key))
+      if(!$this->_isGuarded($key))
         $this->_map['public'][$key] = $key;
     }
 
     $this->_map['initialized'] = true;
   }
+
   /**
    * Returns class name using PHP built in get_class
    * @see get_class
@@ -123,6 +124,7 @@ class lmbObject implements lmbSetInterface
     foreach($values as $property => $value)
       $this->_setRaw($property, $value);
   }
+
   /**
    * Exports all object properties as an array
    * @return array
@@ -174,7 +176,7 @@ class lmbObject implements lmbSetInterface
    */
   function remove($name)
   {
-    if ($this->_isGuarded($name))
+    if($this->_isGuarded($name))
       return;
 
     unset($this->_map['public'][$name]);
@@ -221,7 +223,7 @@ class lmbObject implements lmbSetInterface
    */
   function set($property, $value)
   {
-    if (!$property)
+    if(!$property)
       return;
 
     if($method = $this->_mapPropertyToSetMethod($property))
@@ -238,7 +240,7 @@ class lmbObject implements lmbSetInterface
 
   protected function _setRaw($name, $value)
   {
-    if ($this->_isGuarded($name))
+    if($this->_isGuarded($name))
       return;
 
     $this->_map['public'][$name] = $name;
@@ -339,7 +341,7 @@ class lmbObject implements lmbSetInterface
    */
   function __set($property, $value)
   {
-    if (isset($this->_map['dynamic'][$property]))
+    if(isset($this->_map['dynamic'][$property]))
       $this->$property = $value;
     else
       $this->set($property, $value);
