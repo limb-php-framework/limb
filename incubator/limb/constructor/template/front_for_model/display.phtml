@@ -1,0 +1,11 @@
+[[wrap with="front_page_layout.phtml" in="content_zone"]]
+  <h1>{$#model_name}</h1>  
+  [[list:list using="$#items" as="$item"]]
+  <ul>
+    [[list:item]]
+      <?php $model_url_name = lmb_under_scores($this->model_name); ?>
+      <li><a href="/{$model_url_name}/item/[$item.id]">[$item.id]</a></li>
+    [[/list:item]]
+  </ul>
+  [[/list:list]]
+[[/wrap]]

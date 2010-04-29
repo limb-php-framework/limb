@@ -1,0 +1,29 @@
+[[include file='_admin/form_errors.phtml'/]]
+
+<div class='tabs'>
+
+  <ul>
+    <li id='properties'><a>Свойства</a></li>
+  </ul>
+
+  <div id="tab_properties">
+    {{list using="{$#column_names}" as="$column_name"}}
+      {{list:item}}
+        <dl class='field'>
+          <dt>[[label for="{$column_name}"]]{$column_name}:[[/label]]</dt>
+          <dd>{$#form_fields[$column_name]|raw}</dd>
+        </dl>
+      {{/list:item}}
+    {{/list}}
+     <dl class="field">
+      <dt><label for="choose_parent">Выбрать родителя:</label></dt>
+      <dd>
+        <%=  $data = lmbToolkit :: instance()->getDataForTreeSelect('{$#model_name}'); =%>
+        <%= if(!$this->parent) $this->parent = $this->item->getParent(); =%>
+        [[tree_select id="choose_parent" name="choose_parent" options="$data" restricted_branch="[$#item.id]" value="$#parent.id" title="Выбрать родителя"/]]
+      </dd>
+    </dl>
+  </div>
+
+</div>
+[[include file='_admin/form_buttons.phtml'/]]

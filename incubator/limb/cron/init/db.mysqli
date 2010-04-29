@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS `lmb_cron_log`;
+CREATE TABLE `lmb_cron_log` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL default '',
+  `time` int(11) NOT NULL default '0',
+  `status` varchar(25) NOT NULL default '0',
+  `info` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

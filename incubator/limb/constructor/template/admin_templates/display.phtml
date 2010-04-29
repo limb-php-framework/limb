@@ -1,0 +1,56 @@
+[[wrap with="admin_page_layout.phtml" in="content_zone"]]
+
+  [[include file="_admin/selectors.phtml"/]]
+  [[include file="_admin_object/actions.phtml"/]]
+
+  <div id="header">
+    <h1>{$#model_name}</h1>
+    <div class="header_actions">
+      [[apply template="object_action" action="create" is_link="true" title="Создать {$#model_name}"/]]
+    </div>
+
+    [[include file='_admin/pager.phtml' items='[$#items]'/]]
+  </div>
+
+  <div id="body">
+
+    [[list using="[$#items]" as="$item" counter="$counter" parity='$parity']]
+
+      <div class='list'>
+        <div class='list_actions'>
+          [[apply template="selectors_button" action="delete" title="Удалить" /]]
+        </div>
+        <table>
+          <tr>
+            <th>[[apply template="selectors_toggler"/]]</th>{{list using="{$#columns}" as="$column"}}{{list:item}}
+            <th>{$column->getName()}
+            [[include file='_admin/sort_by_column.phtml' field='{$column->getName()}'/]]
+            </th>{{/list:item}}
+            <th>Действия</th>
+          {{/list}}</tr>
+
+          [[list:item]]
+            <tr class="[$parity]">
+              <td>[[apply template="selector" value="[$item.id]"/]]</td>{{list using="{$#columns}" as="$column"}}{{list:item}}
+              <td><? $column_name = $column->getName(); ?>{$#fields_for_display[$column_name]|raw}</td>{{/list:item}}{{/list}}
+              <td class='actions'>
+                [[apply template="object_action_edit" item="[$item]"/]]
+                {$#apply_publish_templates|raw}
+                [[apply template="object_action_delete" item="[$item]"/]]
+              </td>
+            </tr>
+          [[/list:item]]
+          [[list:empty]]
+            <div class="empty_list">{$#model_name} отсутствуют</div>
+          [[/list:empty]]
+        </table>
+        <div class='list_actions'>
+          [[apply template="selectors_button" action="delete" title="Удалить" /]]
+        </div>
+      </div>
+
+    [[/list]]
+
+  </div>
+
+[[/wrap]]

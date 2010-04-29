@@ -1,0 +1,42 @@
+[[wrap with="admin_page_layout.phtml"]]
+  [[into slot="content_zone"]]
+
+    <div id="header">
+      <h1>
+        <%= if($this->item->isRoot()) : =%>
+        {$#model_name}
+        <%=  else :  =%>
+           &laquo;[$#item.title]&raquo;
+        <%= endif; =%>
+      </h1>
+
+      [[include file='_widgets/cms_document_breadcrumbs.phtml' item="[$#item]" base_path="/admin_<?php echo $this->model_url; ?>/display/" link_field='id' root_path='/admin_<?php echo $this->model_url; ?>/' /]]
+
+      <div class="header_actions">
+        <%= if(!$this->item->isRoot()) : =%>
+
+          [[apply template="object_action" item="[$#item]" action="create" is_link="true" title="Добавить дочерний элемент" icon="page_add"/]]
+          [[apply template="object_action_edit" item="[$#item]" icon="page_edit" is_link="true" title="Редактировать"/]]
+          <%= if($this->item->getIsPublished()) : =%>
+            [[apply template="object_action_unpublish" item="[$#item]" icon="lightbulb_off" is_link="true" title="Снять с публикации"/]]
+          <%= else : =%>
+            [[apply template="object_action_publish" item="[$#item]" icon="lightbulb" is_link="true" title="Опубликовать"/]]
+          <%= endif =%>
+          [[apply template="object_action_delete" item="[$#item]" is_link="true" title="Удалить"/]]
+
+        <%= else : =%>
+
+          <%= $item = {$#model_name} :: findRoot(); =%>
+          [[apply template="object_action" item="[$item]" action="create" title="Создать" icon="page_add" is_link="true"/]]
+        <%= endif; =%>
+      </div>
+
+    </div>
+
+    <div id="body">
+      [[include file='admin_<?php echo $this->model_url?>/include/items_list.phtml' items="[$#items]"/]]
+      [[include file='_admin/pager.phtml' items="[$#items]"/]]
+    </div>
+
+    [[/into]]
+[[/wrap]]

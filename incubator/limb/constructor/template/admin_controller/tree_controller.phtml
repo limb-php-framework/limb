@@ -1,0 +1,122 @@
+lmb_require('limb/cms/src/controller/lmbAdminObjectController.class.php');
+lmb_require('src/model/{$#model_name}.class.php');
+
+class Admin{$#model_name}Controller extends lmbAdminObjectController
+{
+  protected $_object_class_name = '{$#model_name}';
+
+  function doDisplay()
+  {
+    if(!$id = $this->request->getInteger('id'))
+      $this->item = {$#model_name} :: findRoot();
+     else
+     {
+       $this->item = {$#model_name} :: findById($id);
+       if(is_null($this->item))
+         return $this->forwardTo404();
+     }
+
+    $this->items = $this->item->getChildren();
+    $this->items->sort(array('priority' => 'asc'));
+
+    $sort = $this->toolkit->getRequest()->getGet('sort',false);
+    $direction = $this->toolkit->getRequest()->getGet('direction','asc');
+
+    if($sort===false) return;
+    $this->items->sort(array($sort=>$direction));
+  }
+
+  function doReplace()
+  {
+    $this->model = $this->_object_class_name;
+    $this->parent_id = $this->request->get('item_id');
+
+    if(!$this->request->hasPost())
+      $ids = $this->request->get('ids');
+    else
+      $ids = $this->request->getPost('ids');
+
+    $this->restricted_branch = $ids;
+    $this->items = lmbActiveRecord :: findByIds($this->_object_class_name, $ids);
+
+    if(!$this->request->hasPost())
+      return;
+
+    lmb_require('limb/cms/src/validation/rule/lmbTreeUniqueIdentifierRule.class.php');
+
+    $parent_id = $this->request->getInteger('choose_parent');
+
+    $errors = array();
+    
+    if($parent_id != 0)
+      foreach($this->items as $item)
+      {
+        $error_list = new lmbErrorList();
+        
+        $rule = new lmbTreeUniqueIdentifierRule("identifier", $item, 'Элемент со значением поля "Идентификатор" "' . $item->getIdentifier() . '" уже существует', $parent_id);
+        $rule->validate($item, $error_list);
+        
+        if($error_list->isValid())
+          $item->move($parent_id);
+        else
+          $errors = array_merge($errors, $error_list->getReadable());
+      }
+
+    if(!empty($errors))
+      foreach($errors as $error)
+        $this->flashError($error);
+
+    $this->_endDialog();
+
+  }
+
+  function doPriority()
+  {
+    $this->_changeItemsPriority($this->_object_class_name, 'parent_id', $this->request->get('parent_id'));
+
+    $this->_endDialog();
+  }
+
+  function doCreate()
+  {
+    if(!$this->parent = $this->_getObjectByRequestedId())
+      $this->forwardTo404();
+
+    $this->item = new $this->_object_class_name();
+
+    $this->_onCreate();
+
+    $this->useForm($this->_form_name);
+    $this->setFormDatasource($this->item);
+
+    if($this->request->hasPost())
+    {
+      $this->_import();
+      $this->item->setParent($this->parent);
+      $this->_validateAndSave($create = true);
+    }
+    else
+      $this->_initCreateForm();
+  }
+
+  protected function _onAfterValidate()
+  {
+    if(!$parent_id = $this->request->get('choose_parent'))
+      return;
+
+    lmb_require('limb/cms/src/validation/rule/lmbTreeUniqueIdentifierRule.class.php');
+
+    $rule = new lmbTreeUniqueIdentifierRule("identifier", $this->item, 'Элемент сo значением поля "Идентификатор" "' . $this->item->getIdentifier() . '" уже существует', $parent_id);
+    $rule->validate($this->item, $this->error_list);
+
+    if($this->error_list->isValid())
+    {
+      $parent_item = lmbActiveRecord :: findById($this->_object_class_name, $parent_id);
+
+      if($this->item->isNew())
+        $this->item->setParent($parent_item);
+      else
+        $this->item->move($parent_item);
+    }
+  }    
+}

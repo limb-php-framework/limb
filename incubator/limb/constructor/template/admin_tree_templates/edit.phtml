@@ -1,0 +1,8 @@
+[[wrap with="admin_modal_page_layout.phtml" into="content_zone"]]
+  [[form id='object_form' name='object_form' method='post' enctype="multipart/form-data" runat='server']]
+
+    <h1>Редактирование {$#model_url} &laquo;[$#item.id]&raquo;</h1>
+
+    [[include file='admin_{$#model_url}/include/form_fields.phtml'/]]
+  [[/form]]
+[[/wrap]]

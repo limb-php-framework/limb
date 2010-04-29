@@ -1,0 +1,12 @@
+[[wrap with="admin_modal_page_layout.phtml"]]
+  [[into slot='content_zone']]
+  [[form id='object_form' name='user_form' method='post' enctype="multipart/form-data"]]
+    <%= if($this->parent->getId() == Persons :: findRoot()->getId()) : =%>
+    <h1>Создать {$#model_url}</h1>
+    <%= else : =%>
+    <h1>Добавление дочернего элемента &laquo;{$#parent.title}&raquo;</h1>
+    <%= endif; =%>
+    [[include file='admin_{$#model_url}/include/form_fields.phtml'/]]
+  [[/form]]
+ [[/into]]
+[[/wrap]]

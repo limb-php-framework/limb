@@ -1,0 +1,71 @@
+DROP TABLE IF EXISTS `social_security`;
+CREATE TABLE `social_security` (
+  `id` int(11) NOT NULL auto_increment,
+  `code` varchar(50) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `person`;
+CREATE TABLE `person` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(50) default NULL,
+  `social_security_id` int(11) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE (`social_security_id`)
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course` (
+ `id` int(11) NOT NULL auto_increment,
+ `program_id` int(11) default NULL,
+ `title` varchar(50) default NULL,
+ PRIMARY KEY  (`id`)
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `lecture`;
+CREATE TABLE `lecture` (
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(50) default NULL,
+  `course_id` int(11) default NULL,
+  `alt_course_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `group`;
+CREATE TABLE `group` (
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(50) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL auto_increment,
+  `first_name` varchar(50) default NULL,
+  `linked_object_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user2group`;
+CREATE TABLE `user2group` (
+ `user_id` int(11) default NULL,
+ `group_id` int(11) default NULL
+) ENGINE=Memory DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `document`;
+CREATE TABLE `document` (
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255),
+  `description` varchar(256),
+  `content` text default NULL,
+  `ctime` int(11) NOT NULL default '0',
+  `utime` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE `image` (
+  `id` int(11) NOT NULL auto_increment,
+  `image_extension` varchar(6),
+  PRIMARY KEY  (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8;

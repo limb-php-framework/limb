@@ -1,0 +1,63 @@
+[[list using='[$items]' parity='[$parity]']]
+
+  [[include file="_admin/selectors.phtml"/]]
+  [[include file="_admin_object/actions.phtml"/]]
+
+  <div class="list">
+    <div class='list_actions'>
+      [[apply template="selectors_button" action="delete" title="Удалить" /]]
+      [[apply template="save_priority_button" action="priority" params="parent_id=[$#item.id]"/]]
+      [[apply template="selectors_button" action="replace" title="Переместить" /]]
+      [[apply template="selectors_button" controller="admin_{$#model_url}" action="revert_publish" title="Изменить статус"/]]
+    </div>
+    <table>
+      <tr>
+        <th>[[apply template="selectors_toggler"/]]</th>
+        <th>#ID</th>
+        <th>Порядок</th>
+        <th>Название</th>
+        <th>Статус</th>
+        <th>Дата<br/>создания</th>
+        <th>Последнее<br/>обновление</th>
+        <th>Действия</th>
+      </tr>
+      [[list:item]]
+      <tr class='[$parity]'>
+        <td>[[apply template="selector" value="[$item.id]"/]]</td>
+        <td>#[$item.id]</td>
+        <td>[[include file="_admin/priority_input.phtml" item="$item"/]]</td>
+        <td width="80%">
+          <a href='[[route_url params="action:display,id:[$item.id]"/]]' title="Просмотр дочернего меню" style="font-weight:bold;">[$item.title]</a> ([$item.kids->count()])
+          <br/>\[<a href="[$item.uri]" title="Посмотреть на сайте" target="_blank">[$item.uri]</a>\]
+        </td>
+        <td>
+        [[include file="_admin/object_visibility.phtml" object="$item" /]]
+        </td>
+        <td>[$item.ctime|i18n_date:"", "stamp", "short_date_time"]</td>
+        <td>[$item.utime|i18n_date:"", "stamp", "short_date_time"]</td>
+        <td class='actions'>
+          [[apply template="object_action" item="[$item]" action="create" title="Добавить дочерний пункт меню" icon="table_add"/]]
+          <%= if($item->getIsPublished()): =%>
+            [[apply template="object_action_unpublish" item="[$item]" icon="page_red"/]]
+          <%= else:  =%>
+            [[apply template="object_action_publish" item="[$item]" icon="page_green"/]]
+          <%= endif; =%>
+          [[apply template="object_action_edit" item="[$item]" icon="table_edit"/]]
+          [[apply template="object_action_delete" item="[$item]" icon="table_delete"/]]
+        </td>
+      </tr>
+      [[/list:item]]
+      [[list:empty]]
+        <div class="empty_list">{$#model_name} отсутствует</div>
+      [[/list:empty]]
+    </table>
+    <div class='list_actions'>
+      [[apply template="selectors_button" action="delete" title="Удалить" /]]
+      [[apply template="save_priority_button" action="priority" params="parent_id=[$#item.id]"/]]
+      [[apply template="selectors_button" action="replace" title="Переместить" /]]
+      [[apply template="selectors_button" controller="admin_{$#model_url}" action="revert_publish" title="Сменить статус"/]]
+    </div>
+  </div>
+
+[[/list]]
+

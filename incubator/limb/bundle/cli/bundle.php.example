@@ -1,0 +1,17 @@
+#!/usr/bin/php
+<?php
+set_time_limit(0);
+
+require(dirname(__FILE__).'/../../src/util/lmbBundler.class.php');
+
+$include_path = '/www/project/:/www/project/lib/:/usr/local/lib/php/PEAR';
+
+$bundler = new lmbBundler($include_path);
+$files = file(dirname(__FILE__) . '/files.txt');
+
+foreach($files as $file)
+{
+  $bundler->add($file);
+}
+
+$bundler->makeBundle();

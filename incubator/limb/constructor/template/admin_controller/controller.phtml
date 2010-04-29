@@ -1,0 +1,18 @@
+lmb_require('limb/cms/src/controller/lmbAdminObjectController.class.php');
+lmb_require('src/model/{$#model_name}.class.php');
+
+class Admin{$#model_name}Controller extends lmbAdminObjectController
+{
+  protected $_object_class_name = '{$#model_name}';
+
+  {{trim}}
+  {{if expr="$#datetime_columns"}}
+  protected function _onBeforeValidate()
+  {
+    parent :: _onBeforeValidate();
+
+    {{list using="{$#datetime_columns}"}}{{list:item}}$this->_validateAndSetDateFormatted($this->item, '{$item->getName()}');{{/list:item}}{{/list}}
+  }
+  {{/if}}
+  {{/trim}}
+}

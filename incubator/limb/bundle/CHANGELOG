@@ -1,0 +1,56 @@
+===== Limb3-2007.4 (Frozzy) =====
+
+  * ACTIVE_RECORD package better error and invalid fields handling using exceptions, support for different names of primary keys added
+  * CORE package cruft cleanup, refactoring and misc. code optimizations
+  * CACHE package cleanup and better implementation, added initial APC and Memcached support
+  * DATETIME package refactoring, renaming lmbDate into lmbDateTime, etc
+  * MACRO alternative to WACT templating engine added with almost all WACT alike functionality
+  * IMAGEKIT package complete redesign using filters and fluent interfaces
+  * TESTS_RUNNER test groups and methods filters, better coverage support
+  * JS package upgraded jQuery to 1.2.1
+  * MAIL package upgraded phpmailer to 1.73
+  * WEB_APP package major cleanup: removed all commands and obsolete controllers
+  * VIEW package support for view selection based on template extension added(currently MACRO and WACT)
+  * TREE package ArrayAccess and ArrayIterator compatibility fixes
+  * FS package more generic iterators added
+
+===== Limb3-2007.3 (Grassler) =====
+
+  * PHP-5.2 compatibility
+  * lmbActiveRecord better inheritance and value objects support
+  * DATASOURCE package cruft cleanup and unification
+  * merge of DATASOURCE and CLASSKIT packages into CORE package
+  * new FS package(merging FILE_SCHEMA and UTIL packages)
+  * new LOG package(extracted from ERROR package)
+  * TREE package code overhaul and new features(nested sets driver is available again)
+  * more friendly error subsystem
+  * form errors better implementation
+  * TESTS_RUNNER improved CLI and phpSpikesCoverage support
+  * LIMB_VAR_DIR dependency removal from base classes
+  * reimplementation of CALENDAR package using better JavaScript alternative
+  * DATETIME package cleanup and misc improvements
+  * initial TinyMC support in WYSIWYG package
+  * FCKEditor upgraded to 2.4.2
+  * WACT better expressions support
+  * SQLite DB driver
+  * DBAL package refactoring and cleanup, lmbDBAL is a central facade for accessing mis. tools in a package
+  * JS package cleanup, moving to jQuery instead of Prototype
+  * more isolated packages tests
+
+===== Limb3-2007.2 (Snowbreak) =====
+
+  * Limb3 CLI universal runner
+  * Total rewrite of I18N translations subsystem
+  * Limb3 skeleton application(LIMB_APP)
+  * Optional WACT templates strict mode(all tags should be balanced)
+  * More robust CLI unit tests runner in TESTS_RUNNER package
+  * Updating FCKEditor to 2.4 in WYSIWYG
+  * Filter chains can be intercepting filters
+  * Inheritance and interfaces emulation in JavaScript
+  * Better uploaded files support in NET package
+  * Remove required DBAL and ACTIVE_RECORD dependencies from WEB_APP package
+  * Better application integration testing tools in WEB_APP
+  * WEB_APP basic support for running web applications in sub-domains
+  * Unification of CONF package
+  * More robust toolkit implementation
+
