@@ -30,7 +30,8 @@ class lmbEmailRule extends lmbDomainRule
   function error($message, $values = array(), $i18n_params = array())
   {
     if(isset($this->custom_error))
-    {  if($this->is_valid)
+    {
+      if($this->is_valid)
         parent::error($message, $values = array(), $i18n_params = array());
     }
     else
@@ -39,7 +40,7 @@ class lmbEmailRule extends lmbDomainRule
 
   protected function _checkUser($value)
   {
-    if (!preg_match('/^[a-z0-9_]+([_.-][a-z0-9]+|[_])*$/i', $value))
+    if (!preg_match('/^[a-z0-9._%+-]+$/i', $value))
         $this->error('Invalid user in {Field}.');
   }
 

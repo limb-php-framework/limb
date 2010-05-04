@@ -117,14 +117,25 @@ class lmbEmailRuleTest extends lmbValidationRuleTestCase
 
     $rule->validate($dataspace, $this->error_list);
   }
-  
-  function testEmailDoubleUnderscore() {
-  	$rule = new lmbEmailRule('testfield');
-  	$dataspace = new lmbSet();
-  	$dataspace->set('testfield', '__ps__@mail.ru');
-  	
-  	$this->error_list->expectNever('addError');
-  	$rule->validate($dataspace, $this->error_list);  	
+
+  function testEmailDoubleUnderscore()
+  {
+    $rule = new lmbEmailRule('testfield');
+    $dataspace = new lmbSet();
+    $dataspace->set('testfield', '__ps__@mail.ru');
+
+    $this->error_list->expectNever('addError');
+    $rule->validate($dataspace, $this->error_list);
+  }
+
+  function testEmailMixedDashUnderscore()
+  {
+      $rule = new lmbEmailRule('testfield');
+      $dataspace = new lmbSet();
+      $dataspace->set('testfield', 'test-_-account@mail.ru');
+
+      $this->error_list->expectNever('addError');
+      $rule->validate($dataspace, $this->error_list);
   }
 }
 
