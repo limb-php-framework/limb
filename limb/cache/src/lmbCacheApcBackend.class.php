@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/cache/src/lmbCacheBackend.interface.php');
 lmb_require('limb/core/src/lmbSerializable.class.php');
@@ -17,8 +17,9 @@ lmb_require('limb/core/src/lmbSerializable.class.php');
  */
 class lmbCacheApcBackend implements lmbCacheBackend
 {
-  function add($key, $value, $params = array()) 
+  function add($key, $value, $params = array())
   {
+    $key = (string) $key;
     if (array_key_exists("raw", $params))
     {
       return apc_add($key, $value, $this->_getTtl($params));
@@ -30,9 +31,10 @@ class lmbCacheApcBackend implements lmbCacheBackend
     }
 
   }
-  
-  function set($key, $value, $params = array()) 
+
+  function set($key, $value, $params = array())
   {
+    $key = (string) $key;
     if (array_key_exists("raw", $params))
     {
       return apc_store($key, $value, $this->_getTtl($params));
@@ -69,7 +71,7 @@ class lmbCacheApcBackend implements lmbCacheBackend
   {
     apc_clear_cache('user');
   }
-  
+
   function stat($params = array())
   {
     return apc_cache_info(
@@ -77,7 +79,7 @@ class lmbCacheApcBackend implements lmbCacheBackend
         isset($params['limited']) ? (bool) $params['limited'] : true
     );
   }
-  
+
   protected function _getTtl($params)
   {
     if (!isset($params['ttl']))
