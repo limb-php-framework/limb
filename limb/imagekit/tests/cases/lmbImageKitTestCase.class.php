@@ -37,9 +37,9 @@ abstract class lmbImageKitTestCase extends UnitTestCase
     return str_replace('%', lmb_camel_case($this->driver), $template);
   }
 
-  function _getConvertor($params = array())
+  function _getConverter($params = array())
   {
-    $class_name = $this->_getClass('lmb%ImageConvertor');
+    $class_name = $this->_getClass('lmb%ImageConverter');
     lmb_require('limb/imagekit/src/'.$this->driver.'/'.$class_name.'.class.php');
     return new $class_name($params);
   }

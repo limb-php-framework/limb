@@ -27,10 +27,10 @@ class lmbImageKitTest extends UnitTestCase
     return lmb_var_dir().'/output.jpg';
   }
 
-  function testCreateGdConvertor()
+  function testCreateGdConverter()
   {
     $conv = lmbImageKit::create('gd');
-    $this->assertIsA($conv, 'lmbGdImageConvertor');
+    $this->assertIsA($conv, 'lmbGdImageConverter');
   }
 
   function testTraversing()
@@ -57,7 +57,7 @@ class lmbImageKitTest extends UnitTestCase
     $this->assertEqual($height, 50);
   }
 
-  function testPassingParamsToConvertor()
+  function testPassingParamsToConverter()
   {
     lmbImageKit::load($this->_getInputImage(), '', 'gd', '', array('add_filters_scan_dirs' => dirname(__FILE__).'/../fixture/filters'))
       ->test();

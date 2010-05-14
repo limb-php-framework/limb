@@ -35,7 +35,7 @@ abstract class lmbBaseImageKitTest extends lmbImageKitTestCase
     $this->assertEqual($height, 40);
   }
 
-  function testPassingParamsToConvertor()
+  function testPassingParamsToConverter()
   {
     lmbImageKit::load($this->_getInputImage(),
                       '',
