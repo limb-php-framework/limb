@@ -27,8 +27,11 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
    */
   protected $inc_dec_ttl = 1;
 
-  function __construct(lmbUri $dsn)
+  function __construct($dsn)
   {
+  	if(!is_object($dsn))
+  	  $dsn = new lmbUri($dsn);
+
     $this->dsn = $dsn;
 
     foreach($dsn as $option_name => $option_value)
@@ -62,7 +65,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 
     return $new_keys;
   }
-  
+
   function _getDataFromContainer($container)
   {
     if($this->need_serialization)
@@ -70,7 +73,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     else
       return $container;
   }
-  
+
   function _createContainer($data)
   {
     if($this->need_serialization)
@@ -171,6 +174,4 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 
     return $this->decrement($key, $value);
   }
-
-  abstract function getType();
 }

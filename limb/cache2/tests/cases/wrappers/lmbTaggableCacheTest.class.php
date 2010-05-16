@@ -1,5 +1,5 @@
 <?php
-lmb_require('limb/cache2/src/lmbTaggableCache.class.php');
+lmb_require('limb/cache2/src/wrappers/lmbTaggableCacheWrapper.class.php');
 lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
 lmb_require('limb/cache2/src/drivers/lmbCacheMemoryConnection.class.php');
 
@@ -12,7 +12,7 @@ class lmbTaggableCacheTest extends UnitTestCase
 
   function setUp()
   {
-    $this->cache = new lmbTaggableCache(lmbCacheFactory::createConnection('file:///'.lmb_env_get('LIMB_VAR_DIR').'/cache'));
+    $this->cache = new lmbTaggableCacheWrapper(lmbCacheFactory::createConnection('file:///'.lmb_var_dir().'/cache'));
   }
 
   function tearDown()

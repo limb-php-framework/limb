@@ -1,7 +1,7 @@
 <?php
-lmb_require('limb/cache2/src/lmbCacheBaseWrapper.class.php');
+lmb_require('limb/cache2/src/wrappers/lmbCacheBaseWrapper.class.php');
 
-class lmbTaggableCache extends lmbCacheBaseWrapper
+class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
 {
   public $tags_prefix = 'tag42_';
 

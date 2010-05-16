@@ -29,6 +29,9 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
    */
   function __construct($dsn)
   {
+  	if(!is_object($dsn))
+      $dsn = new lmbUri($dsn);
+
     parent::__construct($dsn);
 
     $cache_dir = $dsn->getPath();
@@ -63,17 +66,17 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
     $key = $this->_resolveKey($key);
 
     $this->delete($key);
-    
+
     if($ttl)
     {
       $ttl_file = $this->_getCacheTtlFileName($key);
-      lmbFs :: safeWrite($ttl_file, (string) ($ttl + time()));      
+      lmbFs :: safeWrite($ttl_file, (string) ($ttl + time()));
     }
-    
-    $file = $this->_getCacheFileName($key);    
+
+    $file = $this->_getCacheFileName($key);
     lmbFs :: safeWrite($file, $this->_createContainer($value));
-    
-    return true;    
+
+    return true;
   }
 
   function _getSingleKeyValue($resolved_key)

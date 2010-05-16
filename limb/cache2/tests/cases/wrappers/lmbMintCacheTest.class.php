@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_require('limb/cache2/src/lmbMintCache.class.php');
+lmb_require('limb/cache2/src/wrappers/lmbMintCacheWrapper.class.php');
 lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
 
 Mock :: generate('lmbCacheAbstractConnection', 'MockCacheConnection');
@@ -22,7 +22,7 @@ class lmbMintCacheTest extends UnitTestCase
   function setUp()
   {
     $this->cache_backend = new MockCacheConnection();
-    $this->cache = new lmbMintCache($this->cache_backend, 300, $this->fake_ttl, $this->cooled_ttl);
+    $this->cache = new lmbMintCacheWrapper($this->cache_backend, 300, $this->fake_ttl, $this->cooled_ttl);
   }
 
   function testSet_SetsChangedValueToBackend_WithCachedValueAndExpirationTime()
