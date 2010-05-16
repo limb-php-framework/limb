@@ -11,7 +11,7 @@ lmb_require('limb/cache2/src/lmbCacheLog.class.php');
 lmb_require('limb/core/src/lmbBacktrace.class.php');
 lmb_require('limb/dbal/src/query/lmbInsertQuery.class.php');
 
-class lmbLoggedCache extends lmbCacheBaseWrapper
+class lmbLoggedCacheWrapper extends lmbCacheBaseWrapper
 {
   protected $cache_name;
   protected $db_connection;

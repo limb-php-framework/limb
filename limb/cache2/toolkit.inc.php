@@ -12,6 +12,6 @@
  * @version $Id: toolkit.inc.php 6599 2007-12-07 08:56:13Z alex433 $
  */
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
-lmb_require('limb/cache2/src/lmbCacheTools.class.php');
+lmb_require('limb/cache2/src/toolkit/lmbCacheTools.class.php');
 
 lmbToolkit :: merge(new lmbCacheTools());

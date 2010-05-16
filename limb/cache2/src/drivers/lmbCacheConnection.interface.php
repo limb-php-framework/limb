@@ -20,4 +20,5 @@ interface lmbCacheConnection
   function get ($key);
   function delete($key);
   function flush();
+  function getType();
 }

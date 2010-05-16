@@ -9,7 +9,7 @@
 lmb_require('limb/net/src/lmbUri.class.php');
 
 /**
- * class lmbCache.
+ * class lmbCacheFactory
  *
  * @package cache
  * @version $Id: lmbDBAL.class.php 6930 2008-04-14 11:22:49Z pachanga $
@@ -29,9 +29,24 @@ class lmbCacheFactory
     $connection = new $class($dsn);
 
     foreach(self::getWrappers($dsn) as $wrapper)
-      $connection = new $wrapper($connection);
+      $connection = self::applyWrapper($connection, $wrapper);
 
     return $connection;
+  }
+
+  /**
+   * @param lmbUri $dsn
+   * @return array
+   */
+  static protected function getWrappers($dsn)
+  {
+    if(!$wrappers = $dsn->getQueryItem('wrapper'))
+      return array();
+
+    if(!is_array($wrappers))
+      $wrappers = array($wrappers);
+
+    return $wrappers;
   }
 
   static protected function getConnectionClass($dsn)
@@ -39,7 +54,6 @@ class lmbCacheFactory
     $driver = $dsn->getProtocol();
 
     $class = 'lmbCache' . ucfirst($driver) . 'Connection';
-
     if(!class_exists($class))
     {
       $file = DIRNAME(__FILE__).'/drivers/' . $class . '.class.php';
@@ -52,10 +66,26 @@ class lmbCacheFactory
     return $class;
   }
 
-  static protected function getWrappers($dsn)
+  static protected function applyWrapper($connection, $wrapper_name)
   {
-    $wrapper = $dsn->getQueryItem('wrapper');
-    return $wrapper ? (array) $wrapper : array();
+    $wrapper_class = 'lmb'. ucfirst($wrapper_name) . 'CacheWrapper';
+    if(!class_exists($wrapper_class))
+    {
+      $file = DIRNAME(__FILE__).'/wrappers/' . $wrapper_class . '.class.php';
+      if(!file_exists($file))
+        throw new lmbException(
+          "Cache wripper '$wrapper_class' file not found",
+          array(
+            'dsn'   => $dsn,
+            'name'  => $wrapper_name,
+            'class' => $wrapper_class,
+            'file'  => $file,
+        )
+      );
+
+      lmb_require($file);
+    }
+  	return new $wrapper_class($connection);
   }
 
   /**

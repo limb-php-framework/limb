@@ -11,6 +11,8 @@ lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
 lmb_require('limb/cache2/src/lmbMintCache.class.php');
 lmb_require('limb/cache2/src/lmbLoggedCache.class.php');
 lmb_require('limb/cache2/src/lmbTaggableCache.class.php');
+lmb_require('limb/net/src/lmbUri.class.php');
+
 /**
  * class lmbCacheTools.
  *
@@ -45,7 +47,11 @@ class lmbCacheTools extends lmbAbstractTools
   {
     $conf = $this->toolkit->getConf('cache');
 
-    if($conf->get('cache_enabled'))
+    if(!$conf->get('cache_enabled'))
+    {
+    	return $this->createCacheFakeConnection();
+    }
+    else
     {
       try
       {
@@ -54,15 +60,17 @@ class lmbCacheTools extends lmbAbstractTools
         if(!is_object($dsn))
           $dsn = new lmbUri($dsn);
 
-        $wrapper = array();
+        if(!$wrapper = $dsn->getQueryItem('wrapper'))
+          $wrapper = array();
+
         if ($conf->get('taggable_cache_enabled', false))
-          $wrapper['taggable'] = 'lmbTaggableCache';
+          $wrapper[] = 'taggable';
 
         if($conf->get('mint_cache_enabled', false))
-          $wrapper['mint'] = 'lmbMintCache';
+          $wrapper[] = 'mint';
 
         if($conf->get('cache_log_enabled', false))
-          $wrapper['logged'] = 'lmbLoggedCache';
+          $wrapper[] = 'logged';
 
         $dsn->addQueryItem('wrapper', $wrapper);
 
@@ -73,8 +81,6 @@ class lmbCacheTools extends lmbAbstractTools
         return $this->createCacheFakeConnection();
       }
     }
-    else
-      return $this->createCacheFakeConnection();
   }
 
   function createCacheFakeConnection()
@@ -87,7 +93,7 @@ class lmbCacheTools extends lmbAbstractTools
     return lmbCacheFactory :: createConnection($dsn);
   }
 
-  function setCache($cache, $name = 'default')
+  function setCache($name = 'default', $cache)
   {
     $this->_cache[$name] = $cache;
   }

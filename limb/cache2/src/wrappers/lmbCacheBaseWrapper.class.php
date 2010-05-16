@@ -25,4 +25,9 @@ abstract class lmbCacheBaseWrapper implements lmbCacheWrapper
 
     return call_user_func_array(array($this->wrapped_cache, $method), $args);
   }
+
+  function getType()
+  {
+  	return $this->wrapped_cache->getType();
+  }
 }
