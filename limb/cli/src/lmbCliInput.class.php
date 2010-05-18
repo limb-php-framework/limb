@@ -2,11 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-
+lmb_require('limb/cli/src/lmbCliOption.class.php');
 /**
  * class lmbCliInput.
  *
@@ -24,18 +24,6 @@ class lmbCliInput
 
   function __construct()
   {
-    $args = func_get_args();
-    $this->_addOptions($args);
-  }
-
-  function strictMode($flag = true)
-  {
-    $this->strict_mode = $flag;
-  }
-
-  function setMinimumArguments($minimum_args)
-  {
-    $this->minimum_args = $minimum_args;
   }
 
   function read($argv = null, $is_posix = true)
@@ -51,9 +39,8 @@ class lmbCliInput
         array_shift($this->argv);
 
       $this->_parse($this->argv);
-      $this->_validate();
     }
-    catch(lmbCliException $e)
+    catch(lmbCliExceptio $e)
     {
       if($this->throw_exception)
         throw $e;
@@ -101,15 +88,9 @@ class lmbCliInput
   function hasOption($name)
   {
     if($option = $this->getOption($name))
-      return $option->isPresent();
+      return true;
 
     return false;
-  }
-
-  //@obsolete
-  function isOptionPresent($name)
-  {
-    return $this->hasOption($name);
   }
 
   function getOptionValue($name, $default = null)
@@ -140,15 +121,6 @@ class lmbCliInput
     return $this->arguments;
   }
 
-  protected function _validate()
-  {
-    if(!is_null($this->minimum_args) && $this->minimum_args > sizeof($this->arguments))
-      throw new lmbCliException("Minimum {$this->minimum_args} required");
-
-    foreach($this->options as $option)
-      $option->validate();
-  }
-
   protected function _addOptions($args)
   {
     foreach($args as $arg)
@@ -160,42 +132,13 @@ class lmbCliInput
     }
   }
 
-  protected function _objectify($str)
-  {
-    $opts = array();
-    foreach(explode(';', $str) as $item)
-    {
-      if(!$item)
-        continue;
-
-      if(preg_match('~^(?:((\w)\|([a-zA-Z0-9-_]+))|(\w\b)|([a-zA-Z0-9-_]+)?)(=)?~', $item, $m))
-      {
-        $req = isset($m[6]) ? lmbCliOption :: VALUE_REQ : lmbCliOption :: VALUE_NO;
-
-        if($m[1])
-          $opt = new lmbCliOption($m[2], $m[3], $req);
-        elseif($m[4])
-          $opt = new lmbCliOption($m[4], $req);
-        elseif($m[5])
-          $opt = new lmbCliOption($m[5], $req);
-        else
-          throw new lmbCliException("Invalid option descriptor '$item'");
-
-        $opts[] = $opt;
-      }
-      else
-        throw new lmbCliException("Invalid option descriptor '$item'");
-    }
-    return $opts;
-  }
-
   protected function _parse($argv)
   {
     $this->_reset();
 
     $postponed_option = null;
 
-    for($i=0;$i<sizeof($argv);$i++)
+    for($i = 0; $i < count($argv); $i++)
     {
       $arg = $argv[$i];
 
@@ -204,39 +147,34 @@ class lmbCliInput
         $postponed_option = $this->_addLongOption($name);
 
         if(isset($value))
-        {
           $postponed_option->setValue($value);
-          unset($postponed_option);
+        elseif(isset($argv[$i + 1]) && !$this->_isOptionNext($argv,$i))
+        {
+          $i++;
+          if(!$this->_hasOptionsAfter($argv, $i - 1))
+            $this->arguments[] = $argv[$i];
+          $postponed_option->setValue($argv[$i]);
         }
       }
       elseif($this->_extractShortOption($arg, $name, $value))
       {
-        $postponed_option = $this->_addShortOption($name, $value);
+        $postponed_option = $this->_addShortOption($name);
 
         if(isset($value))
+          $postponed_option->setValue($value);
+        elseif(isset($argv[$i + 1]) && !$this->_isOptionNext($argv,$i))
         {
-          if(!$postponed_option->isValueForbidden())
-            $postponed_option->setValue($value);
-          elseif($this->_maybeArgumentNext($argv, $i))
-          {
-            $this->arguments[] = $value;
-            $i++;
-          }
-
-          unset($postponed_option);
+          $i++;
+          if(!$this->_hasOptionsAfter($argv, $i - 1))
+            $this->arguments[] = $argv[$i];
+          $postponed_option->setValue($argv[$i]);
         }
-        elseif($postponed_option->isValueForbidden())
-          unset($postponed_option);
-      }
-      elseif(isset($postponed_option) && $this->strict_mode)
-      {
-        $postponed_option->setValue($arg);
-        unset($postponed_option);
       }
       else
       {
         $this->arguments[] = $arg;
       }
+      unset($postponed_option);
     }
   }
 
@@ -262,8 +200,25 @@ class lmbCliInput
 
   protected function _maybeArgumentNext($argv, $i)
   {
-    return (isset($argv[$i+1]) &&
-            strpos($argv[$i+1], '-') === false);
+    return (isset($argv[$i+1]) && strpos($argv[$i+1], '-') === false);
+  }
+
+  protected function _isOptionNext($argv, $i)
+  {
+    if(!isset($argv[$i + 1]))
+      return false;
+    return '-' === $argv[$i + 1]{0};
+  }
+
+  protected function _hasOptionsAfter($argv, $i)
+  {
+    while($i < count($argv))
+    {
+      if('-' === $argv[$i]{0})
+        return true;
+      $i++;
+    }
+    return false;
   }
 
   protected function _reset()
@@ -291,18 +246,8 @@ class lmbCliInput
 
   protected function _approveOption($name)
   {
-    if(!$option = $this->getOption($name))
-    {
-      if(!$this->strict_mode)
-      {
-        $option = new lmbCliOption($name);
-        $this->addOption($option);
-      }
-      else
-        throw new lmbCliException("Option '{$name}' is illegal");
-    }
-
-    $option->touch();
+    $option = new lmbCliOption($name);
+    $this->addOption($option);
     return $option;
   }
 

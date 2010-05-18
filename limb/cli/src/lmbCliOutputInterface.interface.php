@@ -6,13 +6,17 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/cli/src/lmbCliOutput.class.php');
+
 /**
- * class lmbCliResponse.
- * @deprecated
+ * interface lmbCliOutputInterface.
+ *
  * @package cli
- * @version $Id: lmbCliResponse.class.php 7686 2009-03-04 19:57:12Z korchasa $
+ * @version $Id$
  */
-class lmbCliResponse extends lmbCliOutput {}
+interface lmbCliOutputInterface
+{
+  function write($message, $params = array());
+  function error($message, $params = array(), $level);
+}
 
 

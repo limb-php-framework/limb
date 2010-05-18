@@ -17,28 +17,27 @@ lmb_require('limb/cli/src/lmbCliInput.class.php');
 abstract class lmbCliBaseCmd
 {
   /**
+   * @var lmbCliInput
+   */
+  protected $input;
+  /**
    * @var lmbCliResponse
    */
   protected $output;
 
-  function __construct($output)
+  function __construct(lmbCliInput $input, lmbCliOutputInterface $output)
   {
+    $this->input = $input;
     $this->output = $output;
   }
 
-  function help($argv)
-  {
-    return 0;
-  }
-
-  function execute($argv)
-  {
-    return 0;
-  }
+  abstract function validate();
+  abstract function help();
+  abstract function execute();
 
   protected function _error($msg)
   {
-    $this->output->write($msg);
+    $this->output->error($msg);
     exit(1);
   }
 }

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/cli/src/lmbCliException.class.php');
 
@@ -24,7 +24,6 @@ class lmbCliOption
   protected $long_name;
   protected $value_mode;
   protected $value;
-  protected $is_present = false;
 
   function __construct($short_or_long_name, $long_name = null, $value_mode = self :: VALUE_NO)
   {
@@ -70,39 +69,16 @@ class lmbCliOption
     return $this->long_name;
   }
 
-  function getValueMode()
+  function getName()
   {
-    return $this->value_mode;
-  }
-
-  function isValueRequired()
-  {
-    return $this->value_mode === self :: VALUE_REQ;
-  }
-
-  function isValueOptional()
-  {
-    return $this->value_mode === self :: VALUE_OPT;
-  }
-
-  function isValueForbidden()
-  {
-    return $this->value_mode === self :: VALUE_NO;
-  }
-
-  function touch()
-  {
-    $this->is_present = true;
-  }
-
-  function isPresent()
-  {
-    return $this->is_present;
+    if($this->long_name)
+      return $this->long_name;
+    else
+      return $this->short_name;
   }
 
   function setValue($value)
   {
-    $this->touch();
     $this->value = $value;
   }
 

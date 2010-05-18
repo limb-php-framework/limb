@@ -2,14 +2,12 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/cli/src/lmbCliBaseCmd.class.php');
-
-@define('LIMB_CLI_INCLUDE_PATH', 'cli;limb/*/cli');
-
+lmb_require('limb/cli/src/lmbCliException.class.php');
 /**
  * class lmbCliRunner.
  *
@@ -21,35 +19,17 @@ class lmbCliRunner
   protected $input;
   protected $output;
   protected $return_on_exit = false;
-  protected $use_exception = false;
-  protected $search_path;
 
-  function __construct($input, $output)
+  function __construct(lmbCliInput $input, lmbCliBaseOutput $output)
   {
     $this->input = $input;
     $this->output = $output;
-    $this->search_path = LIMB_CLI_INCLUDE_PATH;
   }
 
-  static function commandToClass($name)
+  static function commandFileToClass($path)
   {
-    return lmb_camel_case(self :: sanitizeName($name)) . 'CliCmd';
-  }
-
-  static function actionToMethod($name)
-  {
-    return lmb_camel_case(self :: sanitizeName($name));
-  }
-
-  static function sanitizeName($name)
-  {
-    $name = preg_replace('~\W~', '_', $name);
-    return $name;
-  }
-
-  function setCommandSearchPath($path)
-  {
-    $this->search_path = $path;
+    $file_name = basename($path);
+    return substr($file_name, 0, strpos($file_name, '.'));
   }
 
   function returnOnExit($flag = true)
@@ -57,34 +37,37 @@ class lmbCliRunner
     $this->return_on_exit = $flag;
   }
 
-  function throwOnError($flag = true)
+  function execute($command_file)
   {
-    $this->use_exception = $flag;
-  }
+    if(!$command = $this->_mapCommandToObject($command_file))
+      throw new lmbCliException(
+        "Command '$command_file' is invalid(could not map it to the command class)", array('command' => $command_file)
+      );
 
-  function execute()
-  {
-    if(!$command_name = $this->input->getArgument(0))
-      $this->_error('You should specify command');
-
-    if(!$command = $this->_mapCommandToObject($command_name))
-      $this->_error("Command '$command_name' is invalid(could not map it to the command class)");
-
-    $argv = $this->input->getArgv();
-    array_shift($argv);
-
-    $action = 'execute';
-
-    if($arg = $this->input->getArgument(1))
+    try
     {
-      $method = self :: actionToMethod($arg);
-      if(method_exists($command, $method))
+      $validate_result = $command->validate();
+      if(false === $validate_result)
       {
-        $action = $method;
-        array_shift($argv);
+        echo $command->help();
+        return $this->_exit(1);
+      }
+      elseif(true === $validate_result)
+      {
+        $result = (int) $command->execute();
+        return $this->_exit($result);
+      }
+      else
+      {
+        throw new lmbCliException(
+          'validate() method of command object should return bool value', array('value' => $validate_result)
+        );
       }
     }
-    return $this->_exit((int)$command->$action($argv));
+    catch (lmbException $e)
+    {
+      $this->output->exception($e);
+    }
   }
 
   protected function _exit($code = 0)
@@ -95,28 +78,32 @@ class lmbCliRunner
       exit($code);
   }
 
-  protected function _error($message = '')
+  protected function _mapCommandToObject($command_file)
   {
-    if($this->use_exception)
-      throw new lmbException($message);
-    else
-      exit(1);
+    if(!file_exists($command_file))
+    {
+      $this->_error("Command file '{$command_file}' not found");
+      return $this->_exit(1);
+    }
+    if(!is_file($command_file))
+    {
+      $this->_error("Given command file '{$command_file}' not a file");
+      return $this->_exit(1);
+    }
+    $class = self :: commandFileToClass($command_file);
+    $object = $this->_createCommandObject($command_file, $class);
+    if(!$object instanceof lmbCliBaseCmd)
+    {
+      $this->_error("Created command not a instance of lmbCliBaseCmd", array('object' => $object));
+      return $this->_exit(1);
+    }
+    return $object;
   }
 
-  protected function _mapCommandToObject($command_name)
+  protected function _createCommandObject($command_file, $class)
   {
-    $items = explode(';', $this->search_path);
-    foreach($items as $item)
-    {
-      $class = self :: commandToClass($command_name);
-      $path = $item . '/' . $class . '.class.php';
-
-      if($resolved = lmb_glob($path))
-      {
-        require_once($resolved[0]);
-        return new $class($this->output);
-      }
-    }
+      require_once($command_file);
+      return new $class($this->input, $this->output);
   }
 }
 
