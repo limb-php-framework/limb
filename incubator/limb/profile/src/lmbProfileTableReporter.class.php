@@ -8,21 +8,21 @@ class lmbProfileTableReporter extends lmbProfilePanelReporter
   {
   	return '
   	  <style>
-  	    div.profile {color: #000; font: 12px verdana, monospace}
-  	    div.profile table { border-bottom:1px solid #000; }
-  	    div.profile table.profile caption {
+  	    div.lmb_profile {color: #000; font: 12px verdana, monospace}
+  	    div.lmb_profile table { border-bottom:1px solid #000; }
+  	    div.lmb_profile table.lmb_profile caption {
   	      font-size:16px;
   	      padding: 15px 0 0 15px;
   	      text-align:left
         }
-  	    div.profile table.profile td, th {
+  	    div.lmb_profile table.profile td, div.lmb_profile table.profile th {
   	      border-top:1px solid #000;
           border-right:1px solid #999;
           text-align: left;
           padding:5px;
         }
   	  </style>
-  	  <div class="profile">
+  	  <div class="lmb_profile">
   	';
   }
 
@@ -33,7 +33,7 @@ class lmbProfileTableReporter extends lmbProfilePanelReporter
 
   protected function _getSectionHtml($name, $data)
   {
-    $html = '<table class="profile"  cellpadding="0" cellspacing="0">';
+    $html = '<table class="lmb_profile"  cellpadding="0" cellspacing="0">';
     $html .= "<caption>$name</caption>";
 
     foreach($data as $key => $value)
@@ -56,7 +56,7 @@ class lmbProfileTableReporter extends lmbProfilePanelReporter
     foreach ($queries as $key => $query)
       $time += $query['time'];
 
-    $ret = '<table class="profile">';
+    $ret = '<table class="lmb_profile">';
     $ret .= "<caption>$name (" . count($queries) . "): ". $time ."</caption>";
 
     foreach($queries as $key => $info)
@@ -67,7 +67,7 @@ class lmbProfileTableReporter extends lmbProfilePanelReporter
       if(isset($info['trace']))
       {
         $hash = md5($name).$key;
-        $ret .=  "<td><a href='#' onclick='jQuery(\"#trace_".$hash."\").toggle(); return false;'>TRACE</a><div id='trace_".$hash."' style='display:none;'>".nl2br($info['trace'])."</div></td>";
+        $ret .=  "<td><a href='#' onclick='jQuery(\"#trace_".$hash."\").toggle(); return false;'>TRACE</a><div id='lmb_trace_".$hash."' style='display:none;'>".nl2br($info['trace'])."</div></td>";
       }
       $ret .= "</tr>";
     }

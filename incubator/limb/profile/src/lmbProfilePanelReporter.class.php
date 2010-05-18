@@ -8,7 +8,7 @@ class lmbProfilePanelReporter extends lmbProfileBaseReporter
 	{
 		$header =<<<EOD
 <style>
-div.profile {
+div.lmb_profile {
   position:absolute;
   top:0px;
   right:0px;
@@ -19,17 +19,17 @@ div.profile {
   z-index:1000000;
   font: 15px Arial, sans-serif;
 }
-div.profile ul { padding:0px; margin:0px; text-align:right; }
-  div.profile ul li { border-right:1px solid #CCC; display: inline; padding:0px 5px }
-    div.profile table, .trace { display:none; }
-      div.profile td, th {
+div.lmb_profile ul { padding:0px; margin:0px; text-align:right; }
+  div.lmb_profile ul li { border-right:1px solid #CCC; display: inline; padding:0px 5px }
+    div.lmb_profile table, .lmb_trace { display:none; }
+      div.lmb_profile td, div.lmb_profile th {
         padding: 5px;
         text-align:left;
         border-bottom:1px solid #000;
         border-right:1px solid #999;
         font-size:11px;
     }
-div.profile #section_content { background-color:#EEE; color:#333;}
+div.lmb_profile #lmb_section_content { background-color:#EEE; color:#333;}
 
 </style>
 
@@ -39,25 +39,25 @@ function showSection(hash)
   closeSections();
   var content = document.getElementById(hash).cloneNode(true);
   content.style.display = "block";
-  var section = document.getElementById("section_content");
+  var section = document.getElementById("lmb_section_content");
   section.appendChild(content);
   return false;
 }
 function closeSections()
 {
-  var section = document.getElementById("section_content");
+  var section = document.getElementById("lmb_section_content");
   if(0 != section.childNodes.length)
     section.removeChild(section.childNodes[0]);
   return false;
 }
 function showTrace(hash)
 {
-  jQuery("#section_content #" + hash).toggle();
+  jQuery("#lmb_section_content #" + hash).toggle();
   return false;
 }
 </script>
 
-<div class="profile">
+<div class="lmb_profile">
 <ul>
 EOD;
       return $header;
@@ -68,7 +68,7 @@ EOD;
     $footer =<<<EOD
     <li onclick="return closeSections();">X</li>
   </ul>
-  <div id="section_content"></div>
+  <div id="lmb_section_content"></div>
 </div>
 EOD;
     return $footer;
@@ -98,8 +98,8 @@ EOD;
   protected function _getSectionHtml($name, $data)
   {
   	$hash = md5($name);
-    $html = "<li onclick='return showSection(\"section_$hash\")'>";
-    $html .= $name."<table id='section_$hash' class='profile' border='1'>\n";
+    $html = "<li onclick='return showSection(\"lmb_section_$hash\")'>";
+    $html .= $name."<table id='lmb_section_$hash' class='lmb_profile' border='1'>\n";
 
     foreach($data as $key => $value)
     {
@@ -124,8 +124,8 @@ EOD;
     $section_name = $name.": ".count($queries)." / ".round($time, 3)." s";
     $section_hash = md5($name);
 
-    $ret = "<li onclick='return showSection(\"section_$section_hash\")'>\n";
-    $ret .= $section_name."<table id='section_$section_hash' border='1'>\n";
+    $ret = "<li onclick='return showSection(\"lmb_section_$section_hash\")'>\n";
+    $ret .= $section_name."<table id='lmb_section_$section_hash' border='1'>\n";
 
     foreach($queries as $key => $info)
     {
@@ -136,8 +136,8 @@ EOD;
       {
       	$hash = md5($name).$key;
         $ret .= "<td>\n";
-        $ret .= "<a href='#' onclick='return showTrace(\"trace_$hash\")'>TRACE</a>\n";
-        $ret .= "<div id='trace_".$hash."' class='trace'>".nl2br($info['trace'])."</div>\n";
+        $ret .= "<a href='#' onclick='return showTrace(\"lmb_trace_$hash\")'>TRACE</a>\n";
+        $ret .= "<div id='lmb_trace_".$hash."' class='lmb_trace'>".nl2br($info['trace'])."</div>\n";
         $ret .= "</td>\n";
       }
       $ret .= "</tr>\n";

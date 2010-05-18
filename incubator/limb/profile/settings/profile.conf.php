@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-$conf['profile_enabled'] = true;
+$conf['enabled'] = true;
 $conf['profile_reporter'] = 'lmbProfilePanelReporter';
 
 ?>
