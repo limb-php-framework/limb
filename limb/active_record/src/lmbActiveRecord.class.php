@@ -27,7 +27,7 @@ lmb_require('limb/active_record/src/lmbARMetaInfo.class.php');
 /**
  * Base class responsible for ActiveRecord design pattern implementation. Inspired by Rails ActiveRecord class.
  *
- * @version $Id: lmbActiveRecord.class.php 8171 2010-04-20 10:34:12Z serega $
+ * @version $Id: lmbActiveRecord.class.php 8108 2010-01-28 00:46:47Z korchasa $
  * @package active_record
  */
 class lmbActiveRecord extends lmbObject
@@ -39,11 +39,11 @@ class lmbActiveRecord extends lmbObject
   /**
    * @var string database column name used to store object's create time
    */
-  protected static $_ctime_field = 'ctime';
+  protected $_ctime_field = 'ctime';
   /**
    * @var string database column name used to store object's update time
    */
-  protected static $_utime_field = 'utime';
+  protected $_utime_field = 'utime';
   /**
    * @var array global event listeners which receieve events from ALL lmbActiveRecord instances
    */
@@ -1193,12 +1193,12 @@ class lmbActiveRecord extends lmbObject
   protected function _setAutoTimes()
   {
     if($this->isNew() && $this->_hasCreateTime())
-      $this->_setRaw(self :: $_ctime_field, $this->_makeCreateTime());
+      $this->_setRaw($this->_ctime_field, $this->_makeCreateTime());
 
     if($this->_hasUpdateTime())
     {
-      $this->_setRaw(self :: $_utime_field, $this->_makeUpdateTime());
-      $this->_markDirtyProperty(self :: $_utime_field);
+      $this->_setRaw($this->_utime_field, $this->_makeUpdateTime());
+      $this->_markDirtyProperty($this->_utime_field);
     }
   }
 
@@ -1214,12 +1214,12 @@ class lmbActiveRecord extends lmbObject
 
   protected function _hasUpdateTime()
   {
-    return $this->_db_meta_info->hasColumn(self :: $_utime_field);
+    return $this->_db_meta_info->hasColumn($this->_utime_field);
   }
 
   protected function _hasCreateTime()
   {
-    return $this->_db_meta_info->hasColumn(self :: $_ctime_field);
+    return $this->_db_meta_info->hasColumn($this->_ctime_field);
   }
 
   protected function _isInheritable()
@@ -1880,12 +1880,12 @@ class lmbActiveRecord extends lmbObject
 
   function getUpdateTime()
   {
-    return $this->_getRaw(self :: $_utime_field);
+    return $this->_getRaw($this->_utime_field);
   }
 
   function getCreateTime()
   {
-    return $this->_getRaw(self :: $_ctime_field);
+    return $this->_getRaw($this->_ctime_field);
   }
 
   /**
@@ -2090,6 +2090,8 @@ class lmbActiveRecord extends lmbObject
    */
   function import($source)
   {
+    lmb_assert_type($source, 'array');
+
     if(is_object($source))
     {
       if($source instanceof lmbActiveRecord)

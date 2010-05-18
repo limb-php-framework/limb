@@ -479,6 +479,14 @@ class lmbARImportTest extends lmbARBaseTestCase
     $this->assertEqual($member->getName()->getLast(), $last);
   }
 
+  function testImportWithNonArrayArgument()
+  {
+    $member = new MemberForTest();
+
+    $this->expectException('lmbInvalidArgumentException');
+    $member->import('somewrongargument');
+  }
+
   function testOnAfterImport()
   {
     $lesson = new LessonForTestWithCustomImport();
