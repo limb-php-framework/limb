@@ -23,18 +23,19 @@ class lmbLogEntry
   protected $params;
   protected $backtrace;
   protected $names_map = array(
+    LOG_DEBUG   => 'Debug',
     LOG_INFO    => 'Info',
     LOG_NOTICE  => 'Notice',
     LOG_WARNING => 'Warning',
     LOG_ERR     => 'Error',
   );
 
-  function __construct($level, $message, $params = array(), $backtrace = null, $time = null)
+  function __construct($level, $message, $params = array(), lmbBacktrace $backtrace = null, $time = null)
   {
     $this->level = $level;
     $this->message = $message;
     $this->params = $params;
-    $this->backtrace = $backtrace;
+    $this->backtrace = !$backtrace ? new lmbBacktrace() : $backtrace;
     $this->time = !$time ? time() : $time;
   }
 
@@ -80,10 +81,10 @@ class lmbLogEntry
 
   function asText()
   {
-    $string = $this->getLevelForHuman()." message: {$this->message}";
-    $string .= (count($this->params) ? "\nAdditional attributes: " . var_export($this->params, true) : '');
-    if($this->backtrace)
-      $string .= "\nBack trace:\n" . $this->backtrace->toString();
+    $string = $this->getLevelForHuman().": {$this->message}";
+    $string .= (count($this->params) ? "\nAdditional attributes: " . print_r($this->params, true) : '').PHP_EOL;
+    if($this->backtrace && $this->backtrace->toString())
+      $string .= "Back trace:\n" . $this->backtrace->toString();
 
     return $string;
   }

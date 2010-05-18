@@ -9,12 +9,12 @@
 lmb_require('limb/log/src/lmbLogWriter.interface.php');
 
 /**
- * class lmbLogEchoWriter.
+ * class lmbLogMemoryWriter.
  *
  * @package log
  * @version $Id$
  */
-class lmbLogEchoWriter implements lmbLogWriter
+class lmbLogMemoryWriter implements lmbLogWriter
 {
   function __construct(lmbUri $dsn)
   {

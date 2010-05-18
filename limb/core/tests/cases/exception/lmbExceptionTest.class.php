@@ -58,8 +58,8 @@ class lmbExceptionTest extends UnitTestCase
     $this->assertEqual($trace_full[1], $trace_with_hidden_call[0]);
   }
 
-  protected function _createException() {
-    return new lmbException('foo');
+  protected function _createException($message) {
+    return new lmbException($message);
   }
 }
 

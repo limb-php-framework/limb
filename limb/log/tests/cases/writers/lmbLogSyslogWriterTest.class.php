@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/log/src/lmbLogSyslogWriter.class.php');
+lmb_require('limb/log/src/writers/lmbLogSyslogWriter.class.php');
 
 class lmbLogSyslogWriterTest extends UnitTestCase {
 
@@ -18,9 +18,14 @@ class lmbLogSyslogWriterTest extends UnitTestCase {
   function testWrite()
   {
     $writer = new lmbLogSyslogWriter(new lmbUri());
-    $writer->write(new lmbLogEntry(LOG_ERR, "foo\nbar"));
+    $identifier = mt_rand();
+    $writer->write(new lmbLogEntry(LOG_ERR, "foo\nbar".$identifier));
+
+    usleep(500000); //ugly hack for syslogd
+
     $content = file_get_contents('/var/log/syslog');
     $this->assertPattern('/Error/', $content);
     $this->assertPattern('/foo/', $content);
+    $this->assertPattern('/'.$identifier.'/', $content);
   }
 }

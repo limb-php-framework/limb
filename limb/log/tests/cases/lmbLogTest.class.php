@@ -19,7 +19,7 @@ class lmbLogTest extends UnitTestCase {
   function setUp()
   {
     $this->log = new lmbLog();
-    $this->log->registerWriter(new lmbLogWriterForLogTests(new lmbUri()));
+    $this->log->registerWriter(new lmbLogWriterForLogTests);
   }
 
   function testWritersManipulation()
@@ -27,30 +27,42 @@ class lmbLogTest extends UnitTestCase {
     $log = new lmbLog();
     $this->assertEqual(array(), $log->getWriters());
 
-    $log->registerWriter($writer = new lmbLogWriterForLogTests(new lmbUri()));
+    $log->registerWriter($writer = new lmbLogWriterForLogTests);
     $this->assertEqual(array($writer), $log->getWriters());
 
     $log->resetWriters();
     $this->assertEqual(array(), $log->getWriters());
   }
 
+  function testAddWritersByConstruct()
+  {
+    $writer1 = new lmbLogWriterForLogTests;
+    $writer2 = new lmbLogWriterForLogTests;
+
+    $log = new lmbLog(array($writer1, $writer2));
+    $writers = $log->getWriters();
+
+    $this->assertIdentical($writer1, $writers[0]);
+    $this->assertIdentical($writer2, $writers[1]);
+  }
+
   function testLog()
   {
-    $this->log->log('imessage', LOG_INFO, 'iparam', 'ibacktrace');
+    $this->log->log('imessage', LOG_INFO, 'iparam', $backtrace = new lmbBacktrace(1));
     $this->assertTrue($this->_getLastLogEntry()->isLevel(LOG_INFO));
     $this->assertEqual('imessage', $this->_getLastLogEntry()->getMessage());
     $this->assertEqual('iparam', $this->_getLastLogEntry()->getParams());
-    $this->assertEqual('ibacktrace', $this->_getLastLogEntry()->getBacktrace());
+    $this->assertEqual($backtrace, $this->_getLastLogEntry()->getBacktrace());
   }
 
   function testLogException()
   {
-    $this->log->logException(new lmbException('exmessage', $code = 42));
+    $this->log->logException(new lmbInvalidArgumentException('exmessage', $code = 42));
 
     $entry = current($this->log->getWriters())->getWritten();
 
     $this->assertTrue($entry->isLevel(LOG_ERR));
-    $this->assertEqual('exmessage', $entry->getMessage());
+    $this->assertEqual('lmbInvalidArgumentException: exmessage', $entry->getMessage());
   }
 
   function testSetErrorLevel()
@@ -83,7 +95,7 @@ class lmbLogWriterForLogTests implements lmbLogWriter {
 
     protected $entry;
 
-    function __construct(lmbUri $dsn) {}
+    function __construct(lmbUri $dsn = null) {}
 
     function write(lmbLogEntry $entry)
     {

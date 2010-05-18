@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path());
+ini_set('memory_limit', '64M');
 
 //function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
 //{

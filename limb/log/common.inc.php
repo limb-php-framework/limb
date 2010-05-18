@@ -12,5 +12,6 @@
  * @version $Id$
  */
 require_once('limb/core/common.inc.php');
+require_once('limb/log/toolkit.inc.php');
 
 lmb_package_register('log', dirname(__FILE__));

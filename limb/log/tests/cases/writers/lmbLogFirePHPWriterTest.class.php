@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/log/src/lmbLogFirePHPWriter.class.php');
+lmb_require('limb/log/src/writers/lmbLogFirePHPWriter.class.php');
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/net/src/lmbNetTools.class.php');
 lmb_require('limb/net/src/lmbHttpResponse.class.php');

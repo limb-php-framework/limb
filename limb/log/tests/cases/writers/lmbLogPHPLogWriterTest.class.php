@@ -6,7 +6,7 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-lmb_require('limb/log/src/lmbLogPHPLogWriter.class.php');
+lmb_require('limb/log/src/writers/lmbLogPHPLogWriter.class.php');
 
 class lmbLogPHPLogWriterTest extends UnitTestCase {
 

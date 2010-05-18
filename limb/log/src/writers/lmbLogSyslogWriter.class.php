@@ -25,7 +25,7 @@ class lmbLogSyslogWriter implements lmbLogWriter
 
   function write(lmbLogEntry $entry)
   {
-    $message = $entry->getLevelForHuman().': '.str_replace("\n", self::DELIMITER ,$entry->getMessage());
+    $message = str_replace("\n", self::DELIMITER ,$entry->asText());
     syslog($entry->getLevel(), $message);
   }
 

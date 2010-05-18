@@ -10,6 +10,9 @@ lmb_require('limb/log/toolkit.inc.php');
 
 class lmbLogToolsTest extends UnitTestCase
 {
+  /**
+   * @var lmbLogTools
+   */
   protected $toolkit;
 
   function setUp()
@@ -23,27 +26,128 @@ class lmbLogToolsTest extends UnitTestCase
     lmbToolkit :: restore();
   }
 
-  function testGetLogDSNes_default()
+  function testCreateLogWriterByDSN()
   {
-    $dsnes = $this->toolkit->getLogDSNes();
-    $this->assertEqual('file://'.realpath(lmb_env_get('LIMB_VAR_DIR')).'/log/error.log', $dsnes[0]);
+    $writer = $this->toolkit->createLogWriterByDSN('file:///testCreateLogWriterByDSN');
+    $this->assertIsA($writer, 'lmbLogFileWriter');
+    $this->assertEqual($writer->getLogFile(), '/testCreateLogWriterByDSN');
   }
 
-  function testGetLogDSNes_fromConfig()
+  function testCreateLog_ByWriters()
   {
-    $this->toolkit->setConf('common', array('logs' => array('foo')));
-
-    $dsnes = $this->toolkit->getLogDSNes();
-    $this->assertEqual('foo', $dsnes[0]);
+    $log = $this->toolkit->createLog(array(
+      new lmbLogFileWriter(new lmbUri('file:///a')),
+      new lmbLogEchoWriter(new lmbUri('echo:/')),
+    ));
+    $writers = $log->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/a');
+    $this->assertIsA($writers[1], 'lmbLogEchoWriter');
   }
 
-  function testGetLog()
+  function testCreateLog_ByDSNes()
   {
-    $logs_conf = array('logs' => array('firePHP://localhost/?check_extension=0'));
-    $this->toolkit->setConf('common', $logs_conf);
+    $log = $this->toolkit->createLog(array(
+      new lmbUri('file:///a'),
+      new lmbUri('echo:/'),
+    ));
+    $writers = $log->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/a');
+    $this->assertIsA($writers[1], 'lmbLogEchoWriter');
+  }
 
-    $writer = current($this->toolkit->getLog()->getWriters());
-    $this->assertIsA($writer, 'lmbLogFirePHPWriter');
-    $this->assertFalse($writer->isClientExtensionCheckEnabled());
+  function testCreateLog_ByDSNesStrings()
+  {
+    $log = $this->toolkit->createLog(array(
+      'file:///a',
+      'echo:/',
+    ));
+    $writers = $log->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/a');
+    $this->assertIsA($writers[1], 'lmbLogEchoWriter');
+  }
+
+  function testGetLog_Default()
+  {
+    $writers = $this->toolkit->getLog()->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), lmb_var_dir().'/logs/error.log');
+  }
+
+  function testSetAndGetLog()
+  {
+    $log = $this->toolkit->createLog(array('file:///testSetAndGetLog'));
+    $this->toolkit->setLog($log);
+    $writers = $this->toolkit->getLog()->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/testSetAndGetLog');
+  }
+
+  function testSetAndGetLog_ByName()
+  {
+    $log = $this->toolkit->createLog(array('file:///testSetAndGetLog'));
+    $this->toolkit->setLog($log, 'custom_log');
+    $writers = $this->toolkit->getLog('custom_log')->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/testSetAndGetLog');
+  }
+
+  function testGetLog_fromConf()
+  {
+    $conf = array(
+      'logs' => array('foo' => 'file:///testCreateLogByName')
+    );
+    $this->toolkit->setConf('log', $conf);
+    $log = $this->toolkit->getLog('foo');
+    $writers = $log->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/testCreateLogByName');
+  }
+
+  function testGetLog_fromConf_MultipleWriters()
+  {
+    $conf = array(
+      'logs' => array(
+        'foo' => array(
+          'file:///testCreateLogByName_MultipleWriters',
+          'file:///testCreateLogByName_MultipleWriters2'
+        )
+      )
+    );
+    $this->toolkit->setConf('log', $conf);
+
+    $log = $this->toolkit->getLog('foo');
+    $writers = $log->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/testCreateLogByName_MultipleWriters');
+    $this->assertIsA($writers[1], 'lmbLogFileWriter');
+    $this->assertEqual($writers[1]->getLogFile(), '/testCreateLogByName_MultipleWriters2');
+  }
+
+  function testGetLogByName()
+  {
+    $conf = array(
+      'logs' => array('foo' => 'file:///testGetLogByName')
+    );
+    $this->toolkit->setConf('log', $conf);
+    $log_writers = $this->toolkit->getLog('foo')->getWriters();
+    $this->assertIsA($log_writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($log_writers[0]->getLogFile(), '/testGetLogByName');
+  }
+
+  function testGetLogFromConf()
+  {
+    $conf = array(
+      'logs' => array('foo' => 'file:///testGetLogFromConf')
+    );
+    $this->toolkit->setConf('log', $conf);
+    $log = $this->toolkit->getLogFromConf('foo');
+    
+    $this->assertIsA($log, 'lmbLog');
+    $writers = $log->getWriters();
+    $this->assertIsA($writers[0], 'lmbLogFileWriter');
+    $this->assertEqual($writers[0]->getLogFile(), '/testGetLogFromConf');
   }
 }

@@ -25,13 +25,20 @@ class lmbLog
   protected $level = PHP_INT_MAX;
 
   protected $backtrace_depth = array(
-    LOG_NOTICE  => 1,
+    LOG_ERR     => 5,
     LOG_WARNING => 1,
+    LOG_NOTICE  => 1,
     LOG_INFO    => 3,
-    LOG_ERR     => 5
+    LOG_DEBUG   => 3,
   );
 
-  function registerWriter($writer)
+  function __construct(array $writers = array())
+  {
+    foreach ($writers as $writer)
+      $this->registerWriter($writer);
+  }
+
+  function registerWriter(lmbLogWriter $writer)
   {
     $this->log_writers[] = $writer;
   }
@@ -65,8 +72,13 @@ class lmbLog
     if(!$this->isLogEnabled())
       return;
 
+    lmb_assert_type($level, 'integer');
+
     if(!$backtrace)
+    {
+      lmb_assert_array_with_key($this->backtrace_depth, $level);
       $backtrace = new lmbBacktrace($this->backtrace_depth[$level]);
+    }
 
     $this->_write($level, $message, $params, $backtrace);
   }
@@ -77,21 +89,20 @@ class lmbLog
       return;
 
     $backtrace_depth = $this->backtrace_depth[LOG_ERR];
+    $message = get_class($exception).': '.$exception->getMessage();
 
     if($exception instanceof lmbException)
-      $this->log(
-        $exception->getMessage(),
-        LOG_ERR,
-        $exception->getParams(),
-        new lmbBacktrace($exception->getTrace(), $backtrace_depth)
-      );
+    {
+      $backtrace = $exception->getBacktrace();
+      $params = $exception->getParams();
+    }
     else
-      $this->log(
-        $exception->getMessage(),
-        LOG_ERR,
-        array(),
-        new lmbBacktrace($exception->getTrace(), $backtrace_depth)
-      );
+    {
+      $backtrace = $exception->getTrace();
+      $params = null;
+    }
+
+    $this->log($message, LOG_ERR, $params, new lmbBacktrace($backtrace, $backtrace_depth));
   }
 
   protected function _write($level, $string, $params = array(), $backtrace = null)
