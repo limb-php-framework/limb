@@ -47,16 +47,17 @@ class lmbSerializableTest extends UnitTestCase
   function testRemoveIncludePathFromClassPath()
   {
     //generating class and placing it in a temp dir
-    $var_dir = lmb_env_get('LIMB_VAR_DIR');
-    $class = 'Foo' . mt_rand();
-    file_put_contents("$var_dir/foo.php", "<?php class $class { function say() {return 'hello';} }");
+    $var_dir = lmb_var_dir();
+    $class = 'TestRemoveIncludePathFromClassPath' . mt_rand();
+    $file_name = $class.'.php';
+    file_put_contents("$var_dir/$file_name", "<?php class $class { function say() {return 'hello';} }");
 
     //adding temp dir to include path
     $prev_inc_path = get_include_path();
     set_include_path($var_dir . PATH_SEPARATOR . get_include_path());
 
     //including class and serializing it
-    include('foo.php');
+    include($file_name);
     $foo = new $class();
     $container = new lmbSerializable($foo);
     $file = $this->_writeToFile(serialize($container));
@@ -64,7 +65,7 @@ class lmbSerializableTest extends UnitTestCase
     //now moving generated class's file into subdir
     $new_dir = mt_rand();
     mkdir("$var_dir/$new_dir");
-    rename("$var_dir/foo.php", "$var_dir/$new_dir/foo.php");
+    rename("$var_dir/$file_name", "$var_dir/$new_dir/$file_name");
 
     //emulating new include path settings
     $this->assertEqual($this->_phpSerializedObjectCall($file, '->say()', "$var_dir/$new_dir"), $foo->say());
@@ -75,16 +76,17 @@ class lmbSerializableTest extends UnitTestCase
   function testRemoveIncludePathWithTrailingSlashFromClassPath()
   {
     //generating class and placing it in a temp dir
-    $var_dir = lmb_env_get('LIMB_VAR_DIR');
-    $class = 'Foo' . mt_rand();
-    file_put_contents("$var_dir/foo.php", "<?php class $class { function say() {return 'hello';} }");
+    $var_dir = lmb_var_dir();
+    $class = 'TestRemoveIncludePathWithTrailingSlashFromClassPath' . mt_rand();
+    $file_name = $class.'.php';
+    file_put_contents("$var_dir/$file_name", "<?php class $class { function say() {return 'hello';} }");
 
     //adding temp dir to include path
     $prev_inc_path = get_include_path();
     set_include_path("$var_dir//" . PATH_SEPARATOR . get_include_path());
 
     //including class and serializing it
-    include('foo.php');
+    include($file_name);
     $foo = new $class();
     $container = new lmbSerializable($foo);
     $file = $this->_writeToFile(serialize($container));
@@ -92,7 +94,7 @@ class lmbSerializableTest extends UnitTestCase
     //now moving generated class's file into subdir
     $new_dir = mt_rand();
     mkdir("$var_dir/$new_dir");
-    rename("$var_dir/foo.php", "$var_dir/$new_dir/foo.php");
+    rename("$var_dir/$file_name", "$var_dir/$new_dir/$file_name");
 
     //emulating new include path settings
     $this->assertEqual($this->_phpSerializedObjectCall($file, '->say()', "$var_dir/$new_dir"), $foo->say());
@@ -121,15 +123,14 @@ class lmbSerializableTest extends UnitTestCase
     try
     {
       serialize($container);
-      $this->assertTrue(false);
+      $this->fail();
     }
     catch(lmbException $e){}
-
   }
 
   function _writeToFile($serialized)
   {
-    $tmp_serialized_file = LIMB_VAR_DIR . '/serialized.' . mt_rand() . uniqid();
+    $tmp_serialized_file = lmb_var_dir() . '/serialized.' . mt_rand() . uniqid();
     file_put_contents($tmp_serialized_file, $serialized);
     return $tmp_serialized_file;
   }
@@ -143,7 +144,6 @@ class lmbSerializableTest extends UnitTestCase
            "echo unserialize(file_get_contents('$file'))->getSubject()$call;\"";
 
     exec($cmd, $out, $ret);
-    //var_dump($out);
     return implode("", $out);
   }
 

@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -93,7 +93,7 @@ class lmbSerializable
         continue;
       $inc_path = rtrim($inc_path, '/\\');
       if(strpos($path, $inc_path) === 0)
-        return substr($path, strlen($inc_path)+1); 
+        return substr($path, strlen($inc_path)+1);
     }
     return $path;
   }
@@ -106,13 +106,13 @@ class lmbSerializable
     else
       return array();
   }
-  
+
   static function serialize($raw_data)
   {
     $container = new lmbSerializable($raw_data);
     return serialize($container);
   }
-  
+
   static function unserialize($serialized_data)
   {
     $container = unserialize($serialized_data);
