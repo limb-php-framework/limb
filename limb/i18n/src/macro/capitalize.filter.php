@@ -11,8 +11,14 @@
  * @package i18n
  * @version $Id$
  */
-class lmbI18NMacroCapitalizeFilter extends lmbMacroFunctionBasedFilter
+class lmbI18NMacroCapitalizeFilter extends lmbMacroFilter
 {
-  protected $function = 'lmb_ucfirst';
-  protected $include_file = 'limb/i18n/utf8.inc.php';
+  function getValue()
+  {
+    $value = $this->base->getValue();
+
+    return 'lmb_ucfirst('. $value . ')';
+  }
 }
+
+
