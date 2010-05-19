@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-class lmbCoreUtilsTest extends UnitTestCase
+class lmbStringFunctionsTest extends UnitTestCase
 {
   function testCamelCaseUcfirst()
   {
@@ -17,7 +17,8 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_camel_case('foo_bar_hey_wow'), 'FooBarHeyWow');
     $this->assertEqual(lmb_camel_case('_foo_bar'), '_FooBar');
     $this->assertEqual(lmb_camel_case('_foo_bar_'), '_FooBar_');
-    $this->assertEqual(lmb_camel_case('___foo___'), '___Foo___');
+    $this->assertEqual(lmb_camel_case('___foo___bar'), '___Foo_Bar');
+    $this->assertEqual(lmb_camel_case('___foo___bar_hey'), '___Foo_BarHey');
   }
 
   function testCamelCaseDontUcfirst()
@@ -28,9 +29,10 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_camel_case('foo_bar_hey_wow', false), 'fooBarHeyWow');
     $this->assertEqual(lmb_camel_case('_foo_bar', false), '_fooBar');
     $this->assertEqual(lmb_camel_case('_foo_bar_', false), '_fooBar_');
-    $this->assertEqual(lmb_camel_case('___foo___', false), '___foo___');
+    $this->assertEqual(lmb_camel_case('___foo___bar', false), '___foo_Bar');
+    $this->assertEqual(lmb_camel_case('___foo___bar_hey', false), '___foo_BarHey');
   }
-  
+
   function testUnderScores()
   {
     $this->assertEqual(lmb_under_scores('FooBar'), 'foo_bar');
@@ -39,13 +41,13 @@ class lmbCoreUtilsTest extends UnitTestCase
     $this->assertEqual(lmb_under_scores('_FooBarZoo'), '_foo_bar_zoo');
     $this->assertEqual(lmb_under_scores('_FooBarZoo_'), '_foo_bar_zoo_');
   }
-  
+
   function testPlural()
   {
     //$this->assertEqual(lmb_plural('dog'), 'dogs');
     $this->assertEqual(lmb_plural('glass'), 'glasses');
-    $this->assertEqual(lmb_plural('dictionary'), 'dictionaries');    
-    $this->assertEqual(lmb_plural('boy'), 'boys');    
+    $this->assertEqual(lmb_plural('dictionary'), 'dictionaries');
+    $this->assertEqual(lmb_plural('boy'), 'boys');
     $this->assertEqual(lmb_plural('half'), 'halves');
     $this->assertEqual(lmb_plural('man'), 'men');
   }
