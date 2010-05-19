@@ -28,6 +28,9 @@ class lmbHandle extends lmbProxy
       $this->class = $class;
 
     $this->class_path = $class_path;
+
+    if(!is_array($args))
+      $args = array($args);
     $this->args = $args;
   }
 
@@ -46,7 +49,7 @@ class lmbHandle extends lmbProxy
     lmb_require($this->_getClassFullPath());
 
     $refl = new ReflectionClass($this->class);
-    return call_user_func_array(array($refl, 'newInstance'),$this->args);
+    return call_user_func_array(array($refl, 'newInstance'), $this->args);
   }
 
   protected function _getClassName($class_path)
