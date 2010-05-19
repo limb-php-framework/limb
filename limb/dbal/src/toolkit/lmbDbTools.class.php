@@ -198,7 +198,7 @@ class lmbDbTools extends lmbAbstractTools
   {
     if(is_null($this->is_db_info_cache_enabled))
     {
-      $this->is_db_info_cache_enabled = false;      
+      $this->is_db_info_cache_enabled = true;      
       
       if(lmb_env_has('LIMB_CACHE_DB_META_IN_FILE'))
         $this->is_db_info_cache_enabled = lmb_env_get('LIMB_CACHE_DB_META_IN_FILE');
