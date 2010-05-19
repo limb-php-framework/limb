@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbInvalidValueRule.class.php');
 
@@ -89,7 +89,31 @@ class lmbInvalidValueRuleTest extends lmbValidationRuleTestCase
 
     $rule->validate($data, $this->error_list);
   }
+  function testInvalidValueRule_Error_Array()
+  {
+    $rule = new lmbInvalidValueRule('testfield', array('foo','bar','baz'));
 
+    $data = new lmbSet();
+    $data->set('testfield', 'baz');
+
+    $this->error_list->expectOnce('addError');
+
+    $rule->validate($data, $this->error_list);
+
+  }
+
+  function testInvalidValueRule_Success_Array()
+  {
+    $rule = new lmbInvalidValueRule('testfield', array('foo','bar'));
+
+    $data = new lmbSet();
+    $data->set('testfield', 'baz');
+
+    $this->error_list->expectNever('addError');
+
+    $rule->validate($data, $this->error_list);
+
+  }
 }
 
 

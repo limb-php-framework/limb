@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
 
@@ -31,13 +31,22 @@ class lmbInvalidValueRule extends lmbSingleFieldRule
 
   function check($value)
   {
-    $invalid_value = $this->invalid_value;
-
-    settype($invalid_value, 'string');//???
-
-    if ($value == $invalid_value)
+    if (is_array($this->invalid_value))
     {
-      $this->error('{Field} value is wrong');
+      if(in_array($value, $this->invalid_value))
+      {
+        $this->error('{Field} value is wrong');
+      }
+    }
+    else
+    {
+      $invalid_value = $this->invalid_value;
+      settype($invalid_value, 'string');
+
+      if ($value == $invalid_value)
+      {
+        $this->error('{Field} value is wrong');
+      }
     }
   }
 }
