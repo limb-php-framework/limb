@@ -9,7 +9,7 @@
 
 /**
  * @package core
- * @version $Id: common.inc.php 8127 2010-02-10 10:40:35Z conf $
+ * @version $Id: common.inc.php 8119 2010-02-01 13:11:44Z korchasa $
  */
 if(!isset($_ENV['LIMB_LAZY_CLASS_PATHS']))
   $_ENV['LIMB_LAZY_CLASS_PATHS'] = array();
@@ -107,7 +107,7 @@ function lmb_require($file_path, $class = '')
     return;
   }
 
-  if(!@include_once($file_path))
+  if(!include_once($file_path))
   {
     if(class_exists('lmbException'))
       $exception_class = 'lmbException';
