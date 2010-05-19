@@ -9,10 +9,19 @@
 
 class lmbMacroDefaultFilterTest extends lmbBaseMacroTest
 {
-  function testNotDefinedLocalVariable()
+  function testEmptyVariable()
+  {
+    $code = '{$#var|default:"val"}';
+    $tpl = $this->_createMacroTemplate($code, 'empty');
+    $tpl->set('var', '');
+    $out = $tpl->render();
+    $this->assertEqual($out, 'val');
+  }
+
+  function testNotDefinedVariable()
   {
     $code = '{$var|default:"val"}';
-    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
+    $tpl = $this->_createMacroTemplate($code, 'not_defined');
     $out = $tpl->render();
     $this->assertEqual($out, 'val');
   }
