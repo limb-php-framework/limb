@@ -5,9 +5,10 @@ class lmbTypeRule extends lmbSingleFieldRule
 {
   protected $type;
 
-  function __construct($field_name, $type, $custom_error = '{Field} must contain only integer values')
+  function __construct($field_name, $type, $custom_error = '{Field} must contain only "{Type}" values')
   {
     $this->type = $type;
+    $custom_error = str_replace('{Type}', $type, $custom_error);
     parent::__construct($field_name, $custom_error);
   }
 
