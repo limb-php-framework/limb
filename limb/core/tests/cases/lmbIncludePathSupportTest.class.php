@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 class lmbIncludePathSupportTest extends UnitTestCase
@@ -32,7 +32,7 @@ class lmbIncludePathSupportTest extends UnitTestCase
   function testResolveIncludePathFileFailed()
   {
     $_ = $this->_rnd();
-    $this->assertNull(lmb_resolve_include_path("{$_}bar.inc.php"));
+    $this->assertFalse(lmb_resolve_include_path("{$_}bar.inc.php"));
   }
 
   function testResolveIncludePathFile()
@@ -51,7 +51,7 @@ class lmbIncludePathSupportTest extends UnitTestCase
     mkdir(LIMB_VAR_DIR . '/tmp/' . $_);
 
     $resolved = lmb_resolve_include_path($_);
-    $this->assertEqual($resolved, LIMB_VAR_DIR . '/tmp/' . $_);
+    $this->assertEqual(realpath($resolved), realpath(LIMB_VAR_DIR . '/tmp/'. $_));
 
     rmdir(LIMB_VAR_DIR . '/tmp/' . $_);
   }

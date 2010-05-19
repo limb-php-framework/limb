@@ -37,6 +37,8 @@ function lmb_resolve_include_path($path)
     if(is_file($full_path) || is_dir($full_path))
       return $full_path;
   }
+
+  return false;
 }
 
 function lmb_glob($path)
