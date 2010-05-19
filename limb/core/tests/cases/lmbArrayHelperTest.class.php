@@ -101,6 +101,28 @@ class lmbArrayHelperTest extends UnitTestCase
 
     $res = lmbArrayHelper :: sortArray($arr, array('a' => 'DESC', 'b' => 'ASC'), false);
     $this->assertEqual($res, array(array('a' => 2, 'b' => 0), array('a' => 2, 'b' => 1), array('a' => 1, 'b' => 2)));
+
+    $res = lmbArrayHelper :: sortArray(array(), array('a' => 'DESC', 'b' => 'ASC'), false);
+    $this->assertEqual($res, array());
+  }
+
+  function testSortArray_Negative()
+  {
+    $this->_callSortInTryCatch('wrong value - string', array('a'), false);
+    $this->_callSortInTryCatch(array(), 'wrong value - string', false);
+  }
+
+  protected function _callSortInTryCatch()
+  {
+    try
+    {
+      call_user_func_array(array('lmbArrayHelper', 'sortArray'), func_get_args());
+      $this->fail();
+    }
+    catch(lmbException $e)
+    {
+      $this->pass();
+    }
   }
 }
 

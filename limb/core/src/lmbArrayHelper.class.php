@@ -150,6 +150,11 @@ class lmbArrayHelper
   //e.g, $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')
   static function & sortArray($array, $sort_params, $preserve_keys = true)
   {
+    lmb_assert_type($array, 'array');
+    lmb_assert_type($sort_params, 'array');
+    if(empty($array))
+      return $array;
+
     $array_mod = array();
     foreach ($array as $key => $value)
      $array_mod['_' . $key] = $value;
