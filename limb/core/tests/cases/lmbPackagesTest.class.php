@@ -1,5 +1,6 @@
 <?php
 lmb_require('core/src/exception/lmbException.class.php');
+lmb_require('core/src/lmbErrorGuard.class.php');
 
 class lmbPackagesFunctionsTest extends UnitTestCase
 {
@@ -13,7 +14,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
 
     self::$counter = 0;
 
-    $packages_dir = lmb_var_dir() . 'core_packages_test/';
+    $packages_dir = lmb_var_dir() . '/core_packages_test/';
     if(!file_exists($packages_dir))
       mkdir($packages_dir);
     lmb_env_set('LIMB_PACKAGES_DIR', $packages_dir);
@@ -30,7 +31,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
       mkdir($packages_dir . $name);
 
     $path = $packages_dir . $name . '/common.inc.php';
-    $content = '<?php lmbPackagesFunctionsTest::$counter++; lmb_package_register("'.$name.'", dirname(__FILE__)); ?>';
+    $content = '<?php lmbPackagesFunctionsTest::$counter++; lmb_package_register("'.$name.'", "'.$packages_dir.'"); ?>';
     file_put_contents($path, $content);
   }
 
@@ -43,6 +44,9 @@ class lmbPackagesFunctionsTest extends UnitTestCase
 
   function testPackageInclude_NotExistedPackage()
   {
+    //specially to catch the error from include() in lmb_require()
+    set_error_handler(array(__CLASS__, 'errorToException'));
+
     try {
       lmb_package_require($name = 'not_existed', $package_dir = 'darkside/');
       $this->fail();
@@ -50,6 +54,13 @@ class lmbPackagesFunctionsTest extends UnitTestCase
       $this->assertEqual($package_dir, $e->getParam('dir'));
       $this->assertEqual($name, $e->getParam('name'));
     }
+
+    restore_error_handler();
+  }
+
+  static function errorToException($errno, $errstr, $errfile, $errline)
+  {
+      throw new lmbException($errstr);
   }
 
   function testPackageInclude_CustomPath()
@@ -83,13 +94,13 @@ class lmbPackagesFunctionsTest extends UnitTestCase
     lmb_package_register('foo', '/bar/');
     lmb_package_register('baz', 'zoo/zoo2/');
 
-    $this->assertEqual(array('foo' => '/bar', 'baz' => 'zoo/zoo2'), lmb_packages_list());
+    $this->assertEqual(array('foo' => '/bar/foo', 'baz' => 'zoo/zoo2/baz'), lmb_packages_list());
   }
 
   function testPackagePath()
   {
     lmb_package_register('foo', '/bar/');
-    $this->assertEqual('/bar', lmb_package_get_path('foo'));
+    $this->assertEqual('/bar/foo', lmb_package_get_path('foo'));
   }
 
   function testRequirePackageClass()
@@ -117,7 +128,7 @@ EOD;
     $this->assertIdentical(1, lmbPackagesFunctionsTest::$counter);
 
     lmb_require_package_class($package_name, 'SourceFileForTests');
-    call_user_func(array($package_class, 'increase'));
+    $package_class::increase();
     $this->assertIdentical(2, lmbPackagesFunctionsTest::$counter);
   }
 }
