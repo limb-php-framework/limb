@@ -15,18 +15,27 @@
  */
 class lmbException extends Exception
 {
+  protected $original_message;
   protected $params = array();
+  protected $backtrace;
 
   function __construct($message, $params = array(), $code = 0, $hide_calls_count = 0)
   {
+    $this->original_message = $message;
     if(is_array($params) && sizeof($params))
     {
       $this->params = $params;
       $message .= "\n[params: " . var_export($params, true) . "]\n";
     }
 
-    $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count);
+    $this->params = $params;
+    $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count + 1);
     parent :: __construct($message, $code);
+  }
+
+  function getOriginalMessage()
+  {
+    return $this->original_message;
   }
 
   function getParams()

@@ -26,12 +26,17 @@ class lmbExceptionTest extends UnitTestCase
   function testGetMessage()
   {
     $original_message = 'foo';
-    $param_key = 'bar';
-    $param_value = 'baz';
-    $e = new lmbException($original_message, array($param_key => $param_value));
+    $e = new lmbException($original_message, array('bar' => 'baz'));
     $this->assertPattern("/{$original_message}/", $e->getMessage());
-    $this->assertPattern("/{$param_key}/", $e->getMessage());
-    $this->assertPattern("/{$param_value}/", $e->getMessage());
+    $this->assertPattern("/bar/", $e->getMessage());
+    $this->assertPattern("/baz/", $e->getMessage());
+  }
+
+  function testGetOriginalMessage()
+  {
+    $original_message = 'foo';
+    $e = new lmbException($original_message);
+    $this->assertEqual($original_message, $e->getOriginalMessage());
   }
 
   function testGetNiceTraceAsString()
@@ -44,7 +49,7 @@ class lmbExceptionTest extends UnitTestCase
     $this->assertPattern('/_createException/', $first_call);
     $this->assertPattern('/foo/', $first_call);
     $this->assertPattern('/'.basename(__FILE__).'/', $first_call);
-    $this->assertPattern('/39/', $first_call);
+    $this->assertPattern('/44/', $first_call);
   }
 
   function testGetNiceTraceAsString_HideCalls()
@@ -58,8 +63,8 @@ class lmbExceptionTest extends UnitTestCase
     $this->assertEqual($trace_full[1], $trace_with_hidden_call[0]);
   }
 
-  protected function _createException($message) {
-    return new lmbException($message);
+  protected function _createException() {
+    return new lmbException('foo');
   }
 }
 
