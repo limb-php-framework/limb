@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -28,15 +28,13 @@ class lmbBacktrace
     {
       $this->backtrace = debug_backtrace();
       $limit = $limit_or_backtrace;
-      $offset = (int)$limit_or_offset;
+      $offset = (int) $limit_or_offset;
     }
 
-    //we skip this function call also
-    for($i=0; $i<($offset+1); $i++)
-      array_shift($this->backtrace);
+    if(is_null($limit))
+      $limit = count($this->backtrace) - $offset;
 
-    if(!is_null($limit))
-      $this->backtrace = array_splice($this->backtrace, 0, $limit);
+    $this->backtrace = array_splice($this->backtrace, $offset, $limit);
   }
 
   function get()
