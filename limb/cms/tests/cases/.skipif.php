@@ -8,6 +8,7 @@ lmb_tests_init_var_dir(dirname(__FILE__) . '/../../../var');
 require_once('limb/dbal/tests/cases/init.inc.php');
 lmb_tests_init_db_dsn();
 
-return lmb_tests_is_db_dump_exists(dirname(__FILE__) . '/../../init/db.', 'CMS');
+$is_package_fixture_not_exists = lmb_tests_db_dump_does_not_exist(dirname(__FILE__) . '/../../init/db.', 'CMS');
+$is_tests_fixture_not_exists = lmb_tests_db_dump_does_not_exist(dirname(__FILE__) . '/fixture/init_tests.', 'CMS');
 
-
+return $is_package_fixture_not_exists && $is_tests_fixture_not_exists;
