@@ -20,7 +20,7 @@ class lmbCacheMemcacheConnection extends lmbCacheAbstractConnection
   static $_connected_servers;
   public $default_host = 'localhost';
   public $default_port = 11211;
-  public $flush_pause = 1000000;
+  public $flush_pause = 1;
   const FALSE_VALUE = '$oU$@Ge';
   protected $_server_id;
 
