@@ -26,8 +26,8 @@ class lmbLog
 
   protected $backtrace_depth = array(
     LOG_ERR     => 5,
-    LOG_WARNING => 1,
-    LOG_NOTICE  => 1,
+    LOG_WARNING => 3,
+    LOG_NOTICE  => 3,
     LOG_INFO    => 3,
     LOG_DEBUG   => 3,
   );
