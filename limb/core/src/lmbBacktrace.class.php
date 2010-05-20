@@ -17,8 +17,10 @@ class lmbBacktrace
 {
   protected $backtrace = array();
 
-  function __construct($limit_or_backtrace = null, $limit_or_offset = null, $offset = 0)
+  function __construct($limit_or_backtrace = null, $limit_or_offset = 0, $offset = 0)
   {
+    lmb_assert_true(!is_object($limit_or_backtrace), "Backtrace can't be a object");
+
     if(is_array($limit_or_backtrace))
     {
       $this->backtrace = $limit_or_backtrace;
