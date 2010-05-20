@@ -24,6 +24,8 @@ class lmbFs
 
   static function safeWrite($file, $content, $perm=0664)
   {
+    lmb_assert_type($file, 'string', 'File name must be a string');
+    lmb_assert_true($file, 'File name must be a string');
     self :: mkdir(dirname($file));
 
     $tmp = self :: generateTmpFile('_');
