@@ -17,7 +17,7 @@ class lmbBacktrace
 {
   protected $backtrace = array();
 
-  function __construct($limit_or_backtrace = null, $limit_or_offset = 0, $offset = 0)
+  function __construct($limit_or_backtrace = null, $limit_or_offset = null, $offset = 0)
   {
     lmb_assert_true(!is_object($limit_or_backtrace), "Backtrace can't be a object");
 
@@ -30,7 +30,7 @@ class lmbBacktrace
     {
       $this->backtrace = debug_backtrace();
       $limit = $limit_or_backtrace;
-      $offset = (int) $limit_or_offset;
+      $offset = (int) $limit_or_offset + 1;
     }
 
     if(is_null($limit))
@@ -46,7 +46,7 @@ class lmbBacktrace
 
   function getContext()
   {
-    reurn (sizeof($this->backtrace)) ? $this->backtrace[0] : '';
+    return (sizeof($this->backtrace)) ? $this->backtrace[0] : '';
   }
 
   function toString()
@@ -119,6 +119,11 @@ class lmbBacktrace
     }
 
     return $trace_string;
+  }
+
+  static function create($limit = null, $offset = null, $backtrace = null)
+  {
+    return new self($backtrace, $limit, $offset);
   }
 }
 
