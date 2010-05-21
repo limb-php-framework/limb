@@ -30,6 +30,7 @@ class lmbCliRunnerTest extends UnitTestCase
   {
     $input = new lmbCliInput();
     $output = new lmbCliResponse();
+    $output->setVerbose(false);
 
     $runner = new lmbCliRunner($input, $output);
     $runner->returnOnExit();
