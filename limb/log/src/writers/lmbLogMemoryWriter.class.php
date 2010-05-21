@@ -16,12 +16,17 @@ lmb_require('limb/log/src/lmbLogWriter.interface.php');
  */
 class lmbLogMemoryWriter implements lmbLogWriter
 {
-  function __construct(lmbUri $dsn)
-  {
-  }
+  protected $entries = array();
+
+  function __construct(lmbUri $dsn) {}
 
   function write(lmbLogEntry $entry)
   {
-    echo $entry->toString();
+    $this->entries[] = $entry;
+  }
+
+  function getEntries()
+  {
+    return $this->entries;
   }
 }

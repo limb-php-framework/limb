@@ -10,6 +10,6 @@ lmb_require('limb/log/src/lmbLogEntry.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
 
 interface lmbLogWriter {
-    function __construct(lmbUri $dsn);
+  function __construct(lmbUri $dsn);
 	function write(lmbLogEntry $entry);
 }
