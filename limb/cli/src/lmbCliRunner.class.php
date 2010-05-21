@@ -20,7 +20,7 @@ class lmbCliRunner
   protected $output;
   protected $return_on_exit = false;
 
-  function __construct(lmbCliInput $input, lmbCliBaseOutput $output)
+  function __construct(lmbCliInput $input, lmbCliOutputInterface $output)
   {
     $this->input = $input;
     $this->output = $output;
@@ -43,9 +43,9 @@ class lmbCliRunner
       throw new lmbCliException(
         "Command '$command_file' is invalid(could not map it to the command class)", array('command' => $command_file)
       );
-
     try
     {
+
       $validate_result = $command->validate();
       if(false === $validate_result)
       {
@@ -73,7 +73,7 @@ class lmbCliRunner
   protected function _exit($code = 0)
   {
     if($this->return_on_exit)
-      return $code;
+      return;
     else
       exit($code);
   }
@@ -82,12 +82,12 @@ class lmbCliRunner
   {
     if(!file_exists($command_file))
     {
-      $this->_error("Command file '{$command_file}' not found");
+      $this->output->error("Command file '{$command_file}' not found");
       return $this->_exit(1);
     }
     if(!is_file($command_file))
     {
-      $this->_error("Given command file '{$command_file}' not a file");
+      $this->output->error("Given command file '{$command_file}' not a file");
       return $this->_exit(1);
     }
     $class = self :: commandFileToClass($command_file);

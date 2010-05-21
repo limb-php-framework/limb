@@ -33,7 +33,6 @@ class lmbCliRunnerTest extends UnitTestCase
 
     $runner = new lmbCliRunner($input, $output);
     $runner->returnOnExit();
-    $runner->throwOnError();
 
     try
     {
@@ -80,7 +79,6 @@ class lmbCliRunnerTest extends UnitTestCase
 
     $runner = new lmbCliRunner($input, $output);
     $runner->returnOnExit();
-    $runner->throwOnError();
 
     $file = $this->_createCommandClass(
       'TestPassArgvToExecute',
@@ -107,7 +105,6 @@ class lmbCliRunnerTest extends UnitTestCase
 
     $runner = new lmbCliRunner($input, $output);
     $runner->returnOnExit();
-    $runner->throwOnError();
 
     $file = $this->_createCommandClass(
       'TestProcessCommandValidateResult_Positive',
