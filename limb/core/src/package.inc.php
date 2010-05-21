@@ -34,7 +34,7 @@ function lmb_package_register($name, $package_dir)
   if(!isset($_ENV['LIMB_PACKAGES_INITED']))
     $_ENV['LIMB_PACKAGES_INITED'] = array();
 
-  $_ENV['LIMB_PACKAGES_INITED'][$name] = $package_dir.$name;
+  $_ENV['LIMB_PACKAGES_INITED'][$name] = rtrim($package_dir, '/');
 }
 
 function lmb_package_registered($name)
@@ -44,7 +44,7 @@ function lmb_package_registered($name)
 
 function lmb_package_get_path($name)
 {
-  if(!isset($_ENV['LIMB_PACKAGES_INITED'][$name]))
+  if(!lmb_package_registered($name))
     throw new lmbNoSuchPackageException(
         "Package '{$name}' not registered", array( 'name' => $name)
     );
