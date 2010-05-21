@@ -209,9 +209,6 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
 
     $this->assertFalse($this->cache->increment($key));
 
-    $this->cache->set($key.'1', "string");
-    $this->assertEqual(1, $this->cache->increment($key.'1'));
-
     $this->cache->set($key.'2', 0);
     $this->assertEqual(1, $this->cache->increment($key.'2'));
 
@@ -268,6 +265,21 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     $arguments_str = implode("', '", $arguments);
     $setup_file = realpath($cur_file_dir.'/../../../common.inc.php');
 
+    if(lmb_env_has('LIMB_DB_DSN'))
+      $limb_db_dsn = "lmb_env_setor('LIMB_DB_DSN', '" . lmb_env_get('LIMB_DB_DSN') . "');";
+    else
+      $limb_db_dsn = '';
+
+    if(lmb_env_has('LIMB_VAR_DIR'))
+      $limb_var_dir = "lmb_env_setor('LIMB_VAR_DIR', '" . lmb_env_get('LIMB_VAR_DIR') . "');";
+    else
+      $limb_var_dir = '';
+
+    if($this->storage_init_file)
+      $storage_init_file = "lmb_require('{$this->storage_init_file}');";
+    else
+      $storage_init_file = '';
+
     $request_code = <<<EOD
 <?php
     ob_start();
@@ -275,27 +287,23 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     set_include_path('$include_path');
     require_once('$setup_file');
 
+    {$limb_db_dsn}
+    {$limb_var_dir}
+    {$storage_init_file}
+
     lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
     \$cache = lmbCacheFactory::createConnection('{$this->dsn}');
     ob_end_clean();
     echo serialize(\$cache->$method('$arguments_str'));
 EOD;
-    $storage_init_file = $limb_db_dsn = $limb_var_dir = '';
-
-    if($this->storage_init_file)
-      $storage_init_file = "lmb_require('{$this->storage_init_file}');";
-
-    if(lmb_env_has('LIMB_DB_DSN'))
-      $limb_db_dsn = "lmb_env_setor('LIMB_DB_DSN', '" . lmb_env_get('LIMB_DB_DSN') . "');";
-
-    if(lmb_env_has('LIMB_VAR_DIR'))
-      $limb_var_dir = "lmb_env_setor('LIMB_VAR_DIR', '" . lmb_env_get('LIMB_VAR_DIR') . "');";
-
-    $request_code = sprintf($request_code, $storage_init_file, $limb_db_dsn, $limb_var_dir);
 
     file_put_contents($filename, $request_code);
-    $result = shell_exec("php $filename");
-    return unserialize($result);
+    $response = shell_exec("php $filename");
+    $result = unserialize($response);
+    if(false === $result)
+      throw new lmbException("Can't parse response", array('response' => $response));
+    else
+      return $result;
   }
 
   function _getCachedValues()
