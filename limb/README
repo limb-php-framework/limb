@@ -2,8 +2,7 @@
             Limb3 Web Application Framework - http://limb-project.com
 ################################################################################
 
-Limb3 is a general PHP5 only Web Application Framework consisting of many packages
-distributed via Limb3 PEAR channel(http://pear.limb-project.com).
+Limb3 is a general PHP5 only Web Application Framework consisting of many packages.
 
 Here is the list of the most notable packages at the moment:
 
