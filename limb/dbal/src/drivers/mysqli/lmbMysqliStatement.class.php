@@ -16,5 +16,8 @@ lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlStatement.class.php');
  */
 class lmbMysqliStatement extends lmbMysqlStatement
 {
-  
+  protected function _escape($value)
+  {
+  	return $this->connection->escape($value);
+  }
 }
