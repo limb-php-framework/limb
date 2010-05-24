@@ -147,7 +147,7 @@ class lmbSimpleDb
   {
     $info = $this->conn->getDatabaseInfo();
     foreach($info->getTableList() as $table)
-      $this->conn->newStatement("DELETE FROM $table")->execute();
+      $this->conn->newStatement("DELETE FROM `$table`")->execute();
     return $this;
   }
 
