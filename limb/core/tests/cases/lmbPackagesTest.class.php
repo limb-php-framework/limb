@@ -44,7 +44,7 @@ class lmbPackagesFunctionsTest extends UnitTestCase
   function testPackageInclude_NotExistedPackage()
   {
     try {
-      lmb_package_require($name = 'not_existed', $package_dir = 'darkside/');
+      @lmb_package_require($name = 'not_existed', $package_dir = 'darkside/');
       $this->fail();
     } catch (lmbNoSuchPackageException $e) {
       $this->assertEqual($package_dir, $e->getParam('dir'));
