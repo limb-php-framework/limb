@@ -542,11 +542,14 @@ class TaskmanTest extends UnitTestCase
   //  $this->assertEqual(24, strlen($shared));
   //}
 
-  protected function _run($contents, $cmd)
+  protected function _run($contents, $additional_cmd)
   {
     $file = LIMB_VAR_DIR . '/taskman-script.' . mt_rand() . '.php';
     file_put_contents($file, "<?php\nrequire_once('" . dirname(__FILE__) . "/../taskman.inc.php');\ntaskman_run();\n$contents");
-    exec("php $file $cmd", $out, $res);
+    $cmd = "php $file $additional_cmd";
+    if(!$this->isWin())
+      $cmd .= ' 2>&1';
+    exec($cmd, $out, $res);
     return array($res, implode($out));
   }
 
