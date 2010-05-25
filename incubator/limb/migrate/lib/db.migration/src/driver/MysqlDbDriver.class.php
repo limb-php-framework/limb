@@ -77,18 +77,19 @@ class MysqlDbDriver extends DbDriver
 	
 	function _create_tmp_db($dsn)
 	{
-	  extract($dsn);
-	  $database = "temp_mysql_" . uniqid();
-	  $this->_log("Creating tmp db '$database'...");
-	  $this->_nondb_exec($dsn, "CREATE DATABASE $database");
+	  $dsn['database'] = $dsn['database'] . '_migration';
+	  $this->_log("Creating tmp db '{$dsn['database']}'...");
+	  $this->_nondb_exec($dsn, "DROP DATABASE IF EXISTS {$dsn['database']}");
+	  $this->_nondb_exec($dsn, "CREATE DATABASE {$dsn['database']}");
 	  $this->_log("done\n");
-	  return $database;
+	  return $dsn['database'];
 	}
 	
 	function _db_drop($dsn)
 	{
 	  extract($dsn);
 	  $this->_log("Dropping database '$database'\n");
+	  
 	  $this->_exec($dsn, "DROP DATABASE $database");
 	}
 	
@@ -284,13 +285,13 @@ class MysqlDbDriver extends DbDriver
 	    return;
 	
 	  if(!$this->_table_exists($dsn, 'schema_info'))
-	    $this->_exec($dsn, 'CREATE TABLE schema_info ("version" integer default 0);');
+	    $this->_exec($dsn, 'CREATE TABLE schema_info ("version" integer default 1);');
 	
 	  if(!$this->_exec($dsn, 'SELECT COUNT(*) as c FROM schema_info'))
-	    $this->_exec($dsn, 'INSERT INTO schema_info VALUES (' . (int)$since . ');');
+	    $this->_exec($dsn, 'INSERT INTO schema_info VALUES (' . (int) $since . ');');
 	
 	  if(is_null($since))
-	    $since = (int)$this->_exec($dsn, 'SELECT version FROM schema_info');
+	    $since = (int) $this->_exec($dsn, 'SELECT version FROM schema_info');
 	
 	  $this->_log("Searching for dumps since version '$since' in '$migrations_dir'\n");
 	  foreach($this->_get_migration_files_since($migrations_dir, $since) as $version => $file)
@@ -310,20 +311,20 @@ class MysqlDbDriver extends DbDriver
 	  return (int)$this->_exec($dsn, 'SELECT version FROM schema_info');
 	}
 
-	function _set_schema_version($dsn, $since = null)
+	function _set_schema_version($dsn, $since = 1)
 	{
 	  extract($dsn);
 	
-	  $this->_log('Setting schema version ' . (int)$since . PHP_EOL);
-    if(!$this->_table_exists($dsn, 'schema_info'))
-      $this->_exec($dsn, 'CREATE TABLE schema_info ("version" integer default 0);');
+	  $this->_log('Setting schema version ' . (int) $since . PHP_EOL);
+      if(!$this->_table_exists($dsn, 'schema_info'))
+        $this->_exec($dsn, 'CREATE TABLE schema_info ("version" integer default 1);');
   
-    if((int)$this->_exec($dsn, 'SELECT COUNT(*) as c FROM schema_info'))
-      $this->_exec($dsn, 'UPDATE schema_info SET version = ' . (int)$since . ';');
-    else
-      $this->_exec($dsn, 'INSERT INTO schema_info VALUES (' . (int)$since . ');');
+      if((int)$this->_exec($dsn, 'SELECT COUNT(*) as c FROM schema_info'))
+        $this->_exec($dsn, 'UPDATE schema_info SET version = ' . (int) $since . ';');
+      else
+        $this->_exec($dsn, 'INSERT INTO schema_info VALUES (' . (int) $since . ');');
 
-    return (int)$this->_exec($dsn, 'SELECT version FROM schema_info');
+      return (int)$this->_exec($dsn, 'SELECT version FROM schema_info');
 	}
 
 	function _copy_tables_contents($dsn_src, $dsn_dst, $tables)
@@ -391,81 +392,81 @@ class MysqlDbDriver extends DbDriver
  
     extract($dsn);
 
-		if(preg_match('~INSERT\s+INTO\s+.*schema_info\D+(\d+)~i', file_get_contents($data), $m))
-		  $since = $m[1];
-		else
-		  $since = -1;
-		
-		//collecting all not applied migrations
-		$migrations = array();
-		foreach(glob($migrations_dir . '/*.sql') as $migration)
-		{
-		  list($version,) = explode('_', basename($migration));
-		  if($since < intval($version))
-		    $migrations[] = $migration;
-		}
-		asort($migrations);
-		
-		$working_db = array(
-		  'hostname' => $host,
-		  'username' => $user,
-		  'password' => $password,
-		  'database' => $database
-		);
-		
-		$conn = new MysqlConnection($host, $user, $password);
-		$conn->open();
-		$tmp_db = $conn->createTemporaryDatabase();
-		
-		$repos_db = $working_db;
-		$repos_db['database'] = $tmp_db;
-		
-		$conn->importSql($tmp_db, $schema);
-		
-		foreach($migrations as $migration)
-		  $conn->importSql($tmp_db, $migration);
-		
-		$diff = generateScript($repos_db, $working_db);
-		
-		$conn->dropDatabase($tmp_db);
-		$conn->close();
-		
-		return $diff;
+	if(preg_match('~INSERT\s+INTO\s+.*schema_info\D+(\d+)~i', file_get_contents($data), $m))
+	  $since = $m[1];
+	else
+	  $since = -1;
+	
+	//collecting all not applied migrations
+	$migrations = array();
+	foreach(glob($migrations_dir . '/*.sql') as $migration)
+	{
+	  list($version,) = explode('_', basename($migration));
+	  if($since < intval($version))
+	    $migrations[] = $migration;
+	}
+	asort($migrations);
+	
+	$working_db = array(
+	  'hostname' => $host,
+	  'username' => $user,
+	  'password' => $password,
+	  'database' => $database
+	);
+	
+	$conn = new MysqlConnection($host, $user, $password);
+	$conn->open();
+	$tmp_db = $conn->createTemporaryDatabase();
+	
+	$repos_db = $working_db;
+	$repos_db['database'] = $tmp_db;
+	
+	$conn->importSql($tmp_db, $schema);
+	
+	foreach($migrations as $migration)
+	  $conn->importSql($tmp_db, $migration);
+	
+	$diff = generateScript($repos_db, $working_db);
+	
+	$conn->dropDatabase($tmp_db);
+	$conn->close();
+	
+	return $diff;
   }
   
   function _create_migration($dsn, $name, $schema, $data, $migrations_dir, $since = 0)
   {
-		extract($dsn);
+	extract($dsn);
 
-		$this->_log("===== Migrating production DB to apply all migrations =====\n");
-		$this->_migrate($dsn, $migrations_dir, null);
-		
-		$diff = $this->_diff($dsn, $schema, $data, $migrations_dir);
-		
-		if($diff)
-		{
-		  $last = $this->_get_last_migration_file($migrations_dir);
-		  if(file_get_contents($last) == $diff)
-		  {
-		    $this->_log("The last migration file '$last' is identical to the new migration, skipped\n");
-		    return;
-		  }
-		
-		  $stamp = time();
-		  $file = "$migrations_dir/{$stamp}_{$name}.sql";
-		
-		  $this->_log("Writing new migration to file '$file'...");
-		  file_put_contents($file, $diff);
-		  $this->_log("done! (" . strlen($diff). " bytes)\n");
-		
-		  if(!$this->_test_migration($dsn, $schema, $data, $migrations_dir))
-		    $this->_log("\nWARNING: migration has errors, please correct them before committing! Try dry-running it with mysql_migrate.php --dry-run\n");
-		
-		  $this->_log("Updating version info...");
-		  $this->_exec($dsn, "UPDATE schema_info SET version = $stamp;");
-		  $this->_log("done!\n");
-		}
-		else
-		  $this->_log("There haven't been any changes according to the latest dump\n");
+	$this->_log("===== Migrating production DB to apply all migrations =====\n");
+	$this->_migrate($dsn, $migrations_dir, null);
+	
+	$diff = $this->_diff($dsn, $schema, $data, $migrations_dir);
+	
+	if($diff)
+	{
+	  $last = $this->_get_last_migration_file($migrations_dir);
+	  if(is_file($last) and file_get_contents($last) == $diff)
+	  {
+	    $this->_log("The last migration file '$last' is identical to the new migration, skipped\n");
+	    return;
+	  }
+	
+	  $stamp = time();
+	  $file = "$migrations_dir/{$stamp}_{$name}.sql";
+	
+	  $this->_log("Writing new migration to file '$file'...");
+	  file_put_contents($file, $diff);
+	  $this->_log("done! (" . strlen($diff). " bytes)\n");
+	
+	  if(!$this->_test_migration($dsn, $schema, $data, $migrations_dir))
+	    $this->_log("\nWARNING: migration has errors, please correct them before committing! Try dry-running it with mysql_migrate.php --dry-run\n");
+	
+	  $this->_log("Updating version info...");
+	  $this->_exec($dsn, "UPDATE schema_info SET version = $stamp;");
+	  $this->_log("done!\n");
+	}
+	else
+	  $this->_log("There haven't been any changes according to the latest dump\n");
   }
 }

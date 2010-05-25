@@ -1,24 +1,24 @@
 <?php
 
-class DbMigration {
+class DbMigration
+{
+  
+  protected $_driver_dir; 
 
-	protected $_driver_dir; 
+  /**
+   * @var MysqlDbDriver
+   */
+  protected $_db; 
 
-	/**
-	 * @var MysqlDbDriver
-	 */
-	protected $_db; 
+  protected $_dsn = array();
 
-	protected $_dsn = array();
+  protected $_schemaPath;
 
-	protected $_schemaPath;
+  protected $_dataPath;
 
-	protected $_dataPath;
+  protected $_migrationsDir;
 
-	protected $_migrationsDir;
-
-
-	static protected $_defaultDsn;
+  static protected $_defaultDsn;
 
   /**
    * DataBase migration tool
@@ -47,23 +47,41 @@ class DbMigration {
     return $this->getDb()->_diff($this->_dsn, $this->_schemaPath, $this->_dataPath, $this->_migrationsDir);
   } 
 
-  public function dump()
+  public function dump($ignore = null)
   {
-    $this->_writeable($this->_schemaPath);
-    $this->_writeable($this->_dataPath);
 
-    $this->getDb()->_dump_schema($this->_dsn, $this->_schemaPath);
-    $this->getDb()->_dump_data($this->_dsn, $this->_dataPath);
-  } 
+    if (is_null($ignore) or 'schema'<>$ignore)
+    {
+      $this->_writeable($this->_schemaPath);
+      $this->getDb()->_dump_schema($this->_dsn, $this->_schemaPath);
+    }
+    else
+    {
+      $ourFileHandle = fopen($this->_schemaPath, 'w') or die("can't open file");
+      fclose($ourFileHandle);
+    }
+
+    if (is_null($ignore) or 'data'<>$ignore)
+    {
+      $this->_writeable($this->_dataPath);
+      $this->getDb()->_dump_data($this->_dsn, $this->_dataPath);
+    } 
+    else
+    {
+      $ourFileHandle = fopen($this->_dataPath, 'w') or die("can't open file");
+      fclose($ourFileHandle);
+    }
+  }
 
   public function init($version = null)
   {
     $this->_writeable($this->_schemaPath);
     $this->_writeable($this->_dataPath);
     
-    if(!is_null($version) OR !$this->getDb()->_get_schema_version($this->_dsn))
-      $this->getDb()->_set_schema_version($this->_dsn, $version);
-
+    if(!$this->getDb()->_get_schema_version($this->_dsn))
+      $version = 1;     
+    $this->getDb()->_set_schema_version($this->_dsn, $version);
+    
     $this->getDb()->_dump_schema($this->_dsn, $this->_schemaPath);
     $this->getDb()->_dump_data($this->_dsn, $this->_dataPath);
   }
@@ -73,10 +91,10 @@ class DbMigration {
     $this->_ensurePath($this->_schemaPath);
     $this->_ensurePath($this->_dataPath);
 
-		$this->getDb()->_db_cleanup($this->_dsn);
+	$this->getDb()->_db_cleanup($this->_dsn);
 
-		$this->getDb()->_dump_load($this->_dsn, $this->_schemaPath);
-		$this->getDb()->_dump_load($this->_dsn, $this->_dataPath);
+	$this->getDb()->_dump_load($this->_dsn, $this->_schemaPath);
+	$this->getDb()->_dump_load($this->_dsn, $this->_dataPath);
   } 
 
   public function migrate($bDryRun)

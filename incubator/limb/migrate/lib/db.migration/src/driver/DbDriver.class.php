@@ -172,31 +172,29 @@ abstract class DbDriver {
   function _test_migration($dsn, $sql_schema, $sql_data, $migrations_dir)
   {
     extract($dsn);
-	  $this->_log("===== Testing migration of DB(dry-run) =====\n");
+	$this->_log("===== Testing migration of DB(dry-run) =====\n");		
 
-
-	  $this->_dump_schema($dsn, $this->_tmpSchema);
+	$tmp_db = $this->_create_tmp_db($dsn);
+	$dsn['database'] = $tmp_db;
 	
-	  // getting version of loaded schema
-	  $since = $this->_get_schema_version($dsn);
-
-	  $tmp_db = $this->_create_tmp_db($dsn);
-	  $dsn['database'] = $tmp_db;
-
-	  $this->_load($dsn, $this->_tmpSchema);
-	  try
-	  {
-	    $this->_migrate($dsn, $migrations_dir, $since);
-	  }
-	  catch(Exception $e)
-	  {
-	    $this->_log("\nWARNING: migration error:\n" . $e->getMessage());
-	    $this->_log("\nPlease correct the migration\n");
-	    $this->_db_drop($dsn);
-	    return false;
-	  }
+	// getting version of loaded schema
+	$since = $this->_get_schema_version($dsn);
+	
+	$this->_dump_load($dsn, $this->_schemaPath);
+//	$this->_load($dsn, $this->_tmpSchema);
+	try
+	{
+	  $this->_migrate($dsn, $migrations_dir, $since);
+	}
+	catch(Exception $e)
+	{
+	  $this->_log("\nWARNING: migration error:\n" . $e->getMessage());
+	  $this->_log("\nPlease correct the migration\n");
 	  $this->_db_drop($dsn);
-	  $this->_log("Everything seems to be OK\n");
+	  return false;
+	}
+	$this->_db_drop($dsn);
+	$this->_log("Everything seems to be OK\n");
     return true;
   }
   
