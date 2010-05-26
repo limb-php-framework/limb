@@ -11,7 +11,7 @@ class lmbCronJobLogger
   const STATUS_CONFLICT = 'CONFLICT';
 
   protected $cron_job_name = 'unknown';
-  public $table_name = 'cron_job_log';
+  public $table_name = 'lmb_cron_log';
 
   /**
    * @var lmbMysqliConnection
@@ -19,7 +19,7 @@ class lmbCronJobLogger
   protected $conn;
 
   function __construct()
-  {  	
+  {
     $this->conn = lmbToolkit::instance()->getDefaultDbConnection();
   }
 
@@ -42,7 +42,7 @@ class lmbCronJobLogger
     $table  = $this->_getTable();
     $table->insert($record);
   }
-  
+
   function setJobName($job_name)
   {
   	$this->cron_job_name = $job_name;

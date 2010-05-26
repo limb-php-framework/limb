@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `cron_job_log`;
-CREATE TABLE `cron_job_log` (
+DROP TABLE IF EXISTS `lmb_cron_log`;
+CREATE TABLE `lmb_cron_log` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `time` int(11) NOT NULL default '0',
