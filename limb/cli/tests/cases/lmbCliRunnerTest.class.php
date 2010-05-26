@@ -46,16 +46,16 @@ class lmbCliRunnerTest extends UnitTestCase
     }
   }
 
-  function estCantMapToCmdObject()
+  function testCantMapToCmdObject()
   {
     $input = new lmbCliInput();
     $output = new lmbCliResponse();
+    $output->setVerbose(false);
 
     $input->read(array('foo.php', 'foo'));
 
     $runner = new lmbCliRunner($input, $output);
     $runner->returnOnExit();
-    $runner->throwOnError();
 
     try
     {
@@ -65,13 +65,13 @@ class lmbCliRunnerTest extends UnitTestCase
     catch(lmbException $e){}
   }
 
-  function estCommandToClass()
+  function testCommandToClass()
   {
     $this->assertEqual(lmbCliRunner :: commandFileToClass('Foo.class.php'), 'Foo');
     $this->assertEqual(lmbCliRunner :: commandFileToClass('/BarBaz.class.php'), 'BarBaz');
   }
 
-  function estPassArgvToExecute()
+  function testPassArgvToExecute()
   {
     $input = new lmbCliInput();
     $output = new lmbCliResponse();
@@ -97,7 +97,7 @@ class lmbCliRunnerTest extends UnitTestCase
     $this->assertEqual('Ybar', $str);
   }
 
-  function estProcessCommandValidateResult_Positive()
+  function testProcessCommandValidateResult_Positive()
   {
     $input = new lmbCliInput();
     $output = new lmbCliResponse();
@@ -121,7 +121,7 @@ class lmbCliRunnerTest extends UnitTestCase
     $this->assertEqual('validexecute', $str);
   }
 
-  function estProcessCommandValidateResult_Negative()
+  function testProcessCommandValidateResult_Negative()
   {
     $input = new lmbCliInput();
     $output = new lmbCliResponse();
