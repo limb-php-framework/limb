@@ -96,12 +96,18 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
       ob_end_clean();
 
     $session = htmlspecialchars($this->toolkit->getSession()->dump());
-    echo $this->_renderTemplate($message, $trace, $file, $line, $context, $request, $session);
+    echo $this->_renderTemplate($message, array(), $trace, $file, $line, $context, $request, $session);
   }
 
-  protected function _echoExceptionBacktrace($e)
+  protected function _echoExceptionBacktrace(lmbException $e)
   {
     $error = htmlspecialchars($e->getMessage());
+
+    $params = '';
+    foreach($e->getParams() as $name => $value)
+      $params .= $name . '  =>  ' . print_r($value, true) . PHP_EOL;
+    $params = htmlspecialchars($params);
+
     $trace = htmlspecialchars($e->getTraceAsString());
     list($file, $line) = $this->_extractExceptionFileAndLine($e);
     $context = htmlspecialchars($this->_getFileContext($file, $line));
@@ -111,10 +117,10 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
     for($i=0; $i < ob_get_level(); $i++)
       ob_end_clean();
 
-    echo $this->_renderTemplate($error, $trace, $file, $line, $context, $request, $session);
+    echo $this->_renderTemplate($error, $params, $trace, $file, $line, $context, $request, $session);
   }
 
-  protected function _renderTemplate($error, $trace, $file, $line, $context, $request, $session)
+  protected function _renderTemplate($error, $params, $trace, $file, $line, $context, $request, $session)
   {
     $formatted_error = nl2br($error);
 
@@ -167,6 +173,11 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
 
 <a href="#" onclick="TextDump(); return false;">Raw dump</a>
 
+<div id="Params">
+<h3>Params:</h3>
+<pre>{$params}</pre>
+</div>
+
 <div id="Context" style="display: block;">
 <h3>Error in '{$file}' around line {$line}:</h3>
 <pre>{$context}</pre>
@@ -178,12 +189,12 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
 </div>
 
 <div id="Request">
-<h2>Request</h2>
+<h3>Request</h3>
 <pre>{$request}</pre>
 </div>
 
 <div id="Session">
-<h2>Session</h2>
+<h3>Session</h3>
 <pre>{$session}</pre>
 </div>
 
