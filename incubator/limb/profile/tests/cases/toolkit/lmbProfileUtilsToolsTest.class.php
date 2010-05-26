@@ -12,7 +12,7 @@
  * @version $Id$
  */
 lmb_require('limb/toolkit/src/lmbMockToolsWrapper.class.php');
-lmb_require('limb/web_app/src/toolkit/lmbProfileUtilsTools.class.php');
+lmb_require('limb/profile/src/toolkit/lmbProfileUtilsTools.class.php');
 
 class lmbProfileUtilsToolsTest extends UnitTestCase
 {
