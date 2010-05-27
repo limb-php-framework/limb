@@ -25,6 +25,7 @@ lmb_require('limb/core/src/string.inc.php');
 lmb_require('limb/core/src/exception/lmbException.class.php');
 lmb_require('limb/core/src/exception/lmbInvalidArgumentException.class.php');
 lmb_require('limb/core/src/lmbBacktrace.class.php');
+lmb_require('limb/core/src/lmbErrorGuard.class.php');
 
 function lmb_resolve_include_path($path)
 {
@@ -205,3 +206,5 @@ function lmb_var_dir($value = null)
 
 spl_autoload_register('lmb_autoload');
 new lmbException('ugly hack');
+
+lmbErrorGuard::registerErrorHandler('lmbErrorGuard', 'convertErrorsToExceptions');

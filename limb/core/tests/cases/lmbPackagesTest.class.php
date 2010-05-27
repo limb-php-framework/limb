@@ -43,13 +43,16 @@ class lmbPackagesFunctionsTest extends UnitTestCase
 
   function testPackageInclude_NotExistedPackage()
   {
+    lmbErrorGuard::registerErrorHandler('lmbErrorGuard', 'convertErrorsToExceptions');
     try {
-      @lmb_package_require($name = 'not_existed', $package_dir = 'darkside/');
+      lmb_package_require($name = 'not_existed', $package_dir = 'darkside/');
       $this->fail();
     } catch (lmbNoSuchPackageException $e) {
       $this->assertEqual($package_dir, $e->getParam('dir'));
       $this->assertEqual($name, $e->getParam('name'));
     }
+
+    restore_error_handler();
   }
 
   function testPackageInclude_CustomPath()
