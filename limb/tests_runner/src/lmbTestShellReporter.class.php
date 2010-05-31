@@ -124,7 +124,7 @@ class lmbTestShellReporter extends TextReporter
 
     foreach($e->getTrace() as $item)
     {
-      if($item['file'] == $test_file)
+      if(isset($item['file']) && $item['file'] == $test_file)
         return $item['file'] . ':' . $item['line'];
     }
     return '???:???';
