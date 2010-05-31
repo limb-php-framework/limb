@@ -155,7 +155,6 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
     sleep(2);
     $this->assertNull($this->_makeGetFromDifferentThread($id_short));
     $this->assertIdentical($value, $this->_makeGetFromDifferentThread($id_long));
-
   }
 
   function testProperSerializing()
@@ -235,7 +234,7 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
   {
     $key = $this->_getUniqueId('testSafeDecrement');
     $this->assertEqual(0, $this->cache->safeDecrement($key));
-    $this->assertFalse(null === $this->cache->get($key));
+    $this->assertEqual(0, $this->cache->get($key));
   }
 
   function testLock()

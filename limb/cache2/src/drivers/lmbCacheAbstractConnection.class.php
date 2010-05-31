@@ -20,12 +20,9 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
   protected $dsn;
   protected $prefix;
   protected $need_serialization = true;
-  /**
-   * Operations lock ttl
-   *
-   * @var integer
-   */
-  protected $inc_dec_ttl = 1;
+
+  const LOCK_NAME_INC_DEC = 'inc_dec';
+  const TTL_INC_DEC = 1;
 
   function __construct($dsn)
   {
@@ -100,11 +97,8 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     return $values;
   }
 
-  protected function _getLockName($key, $lock_name)
+  protected function _getLockName($key, $lock_name = 'lock')
   {
-    if(!$lock_name)
-      $lock_name = 'lock';
-
     return $key.'_'.$lock_name;
   }
 
@@ -123,14 +117,20 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     if(is_null($current_value = $this->get($key)))
       return false;
 
-    if(!$this->lock($key, $this->inc_dec_ttl, 'inc_dec'))
+    if(!$this->lock($key, self::TTL_INC_DEC, self::LOCK_NAME_INC_DEC))
       return false;
+
+    if(is_array($current_value))
+      throw new lmbInvalidArgumentException("The value can't be a array", array('value' => $current_value));
+
+    if(is_object($current_value))
+      throw new lmbInvalidArgumentException("The value can't be a object", array('value' => $current_value));
 
     $new_value = $current_value + $value;
 
     $this->set($key, $new_value, $ttl);
 
-    $this->unlock($key, 'inc_dec');
+    $this->unlock($key, self::LOCK_NAME_INC_DEC);
 
     return $new_value;
   }
@@ -140,7 +140,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     if(is_null($current_value = $this->get($key)))
       return false;
 
-    if(!$this->lock($key, $this->inc_dec_ttl, 'inc_dec'))
+    if(!$this->lock($key, self::TTL_INC_DEC, self::LOCK_NAME_INC_DEC))
       return false;
 
     $new_value = $current_value - $value;
@@ -150,7 +150,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 
     $this->set($key, $new_value, $ttl);
 
-    $this->unlock($key, 'inc_dec');
+    $this->unlock($key, self::LOCK_NAME_INC_DEC);
 
     return $new_value;
   }

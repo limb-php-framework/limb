@@ -55,12 +55,8 @@ class lmbMintCacheWrapper extends lmbCacheBaseWrapper
     return array($value, $expire_time);
   }
 
-  function get($key)
+  protected function _extractRealValue($key, $real_value)
   {
-    $real_value = $this->wrapped_cache->get($key);
-    if(!$real_value || !is_array($real_value))
-      return $real_value;
-
     list($value, $expire_time) = $real_value;
 
     if($expire_time > time())
@@ -72,6 +68,85 @@ class lmbMintCacheWrapper extends lmbCacheBaseWrapper
       $this->wrapped_cache->set($key, $this->_getRealValue($value, $this->cooled_ttl), $this->cooled_ttl);
       return NULL;
     }
+  }
+
+  function get($keys)
+  {
+    $real_values = $this->wrapped_cache->get($keys);
+    if(!$real_values || !is_array($real_values))
+      return null;
+
+    if(!is_array($keys))
+      return $this->_extractRealValue($keys, $real_values);
+
+    $result = array();
+    foreach($real_values as $key => $real_value)
+      $result[$key] = $this->_extractRealValue($key, $real_value);
+
+    return $result;
+  }
+
+  function increment($key, $value = 1, $ttl = false)
+  {
+    if(is_null($current_value = $this->get($key)))
+      return false;
+
+    if(!$this->lock($key, lmbCacheAbstractConnection::TTL_INC_DEC, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC))
+      return false;
+
+    if(is_array($current_value))
+      throw new lmbInvalidArgumentException("The value can't be a array", array('value' => $current_value));
+
+    if(is_object($current_value))
+      throw new lmbInvalidArgumentException("The value can't be a object", array('value' => $current_value));
+
+    $new_value = $current_value + $value;
+
+    $this->set($key, $new_value, $ttl);
+
+    $this->unlock($key, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC);
+
+    return $new_value;
+  }
+
+  function decrement($key, $value = 1, $ttl = false)
+  {
+    if(is_null($current_value = $this->get($key)))
+      return false;
+
+    if(!$this->lock($key, lmbCacheAbstractConnection::TTL_INC_DEC, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC))
+      return false;
+
+    $new_value = $current_value - $value;
+
+    if($new_value < 0)
+      $new_value = 0;
+
+    $this->set($key, $new_value, $ttl);
+
+    $this->unlock($key, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC);
+
+    return $new_value;
+  }
+
+  function safeIncrement($key, $value = 1, $ttl = false)
+  {
+    if($result = $this->increment($key, $value))
+      return $result;
+
+    $this->add($key, 0, $ttl);
+
+    return $this->increment($key, $value);
+  }
+
+  function safeDecrement($key, $value = 1, $ttl = false)
+  {
+    if($result = $this->decrement($key, $value))
+      return $result;
+
+    $this->add($key, 0, $ttl);
+
+    return $this->decrement($key, $value);
   }
 
   function delete($key)

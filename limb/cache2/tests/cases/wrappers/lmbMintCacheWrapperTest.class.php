@@ -12,7 +12,7 @@ lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
 
 Mock :: generate('lmbCacheAbstractConnection', 'MockCacheConnection');
 
-class lmbMintCacheTest extends UnitTestCase
+class lmbMintCacheWrapperTest extends UnitTestCase
 {
   protected $cache;
   protected $cache_backend;

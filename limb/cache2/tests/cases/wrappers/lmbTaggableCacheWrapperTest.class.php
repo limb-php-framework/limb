@@ -3,7 +3,7 @@ lmb_require('limb/cache2/src/wrappers/lmbTaggableCacheWrapper.class.php');
 lmb_require('limb/cache2/src/lmbCacheFactory.class.php');
 lmb_require('limb/cache2/src/drivers/lmbCacheMemoryConnection.class.php');
 
-class lmbTaggableCacheTest extends UnitTestCase
+class lmbTaggableCacheWrapperTest extends UnitTestCase
 {
   /**
    * @var lmbTaggableCache

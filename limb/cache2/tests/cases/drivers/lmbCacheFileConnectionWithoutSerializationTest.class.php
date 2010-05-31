@@ -14,25 +14,25 @@ class lmbCacheFileConnectionWithoutSerializationTest extends lmbCacheFileConnect
 {
   function __construct()
   {
-    $dir = LIMB_VAR_DIR . '/cache';
+    $dir = lmb_var_dir() . '/cache';
     $this->dsn = 'file:///' . $dir . '?need_serialization=0';
   }
-  
+
   function testObjectClone()
   {
     // can't work without serilization
   }
-  
+
   function testGet_Positive_FalseValue()
   {
     // can't work without serilization
   }
-  
+
   function testProperSerializing()
   {
     // can't work without serilization
   }
-  
+
   function _getCachedValues()
   {
     return array(
