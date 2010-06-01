@@ -53,8 +53,8 @@ class lmbMacroTemplateTest extends lmbBaseMacroTest
 
   function testPreprocessor_ShortTagWithQuotedStringAsLiteral()
   {
-    $view = $this->_createMacroTemplate("<?php echo '<?xml version=\"1\"'?>");
-    $this->assertEqual($view->render(), '<?xml version="1"');
+    $view = $this->_createMacroTemplate("<?php echo '<?xml version=\"1\" encoding=\"UTF-8\"?>'?>");
+    $this->assertEqual($view->render(), '<?xml version="1" encoding="UTF-8"?>');
   }
 }
 
