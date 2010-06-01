@@ -24,7 +24,7 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
     return $new_keys;
   }
 
-  protected function _createContainer($value, $tags)
+  protected function _createTagsContainer($value, $tags)
   {
     $tags = $this->_resolveTagsKeys($tags);
     $tags_values = (array) $this->wrapped_cache->get($tags);
@@ -53,7 +53,7 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
     return true;
   }
 
-  protected function _getFromContainer($key, $container)
+  protected function _getFromTagsContainer($key, $container)
   {
     if($this->_isTagsValid($container['tags']))
       return $container['value'];
@@ -69,7 +69,7 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
     if(!is_array($tags_keys))
       $tags_keys = array($tags_keys);
 
-    return $this->_createContainer($value, $tags_keys);
+    return $this->_createTagsContainer($value, $tags_keys);
   }
 
   function add($key, $value, $ttl = false, $tags_keys = 'default')
@@ -88,13 +88,13 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
       return NULL;
 
     if(!is_array($keys))
-      return $this->_getFromContainer($keys, $containers);
+      return $this->_getFromTagsContainer($keys, $containers);
 
     $result = array();
     foreach($containers as $key => $container)
     {
       if($container)
-        $result[$key] = $this->_getFromContainer($key, $container);
+        $result[$key] = $this->_getFromTagsContainer($key, $container);
       else
         $result[$key] = NULL;
     }
@@ -111,49 +111,6 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
   {
     $tag = $this->_resolveTagsKeys($tag);
     $this->wrapped_cache->safeIncrement($tag);
-  }
-
-  function increment($key, $value = 1, $ttl = false)
-  {
-    if(is_null($current_value = $this->get($key)))
-      return false;
-
-    if(!$this->lock($key, lmbCacheAbstractConnection::TTL_INC_DEC, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC))
-      return false;
-
-    if(is_array($current_value))
-      throw new lmbInvalidArgumentException("The value can't be a array", array('value' => $current_value));
-
-    if(is_object($current_value))
-      throw new lmbInvalidArgumentException("The value can't be a object", array('value' => $current_value));
-
-    $new_value = $current_value + $value;
-
-    $this->set($key, $new_value, $ttl);
-
-    $this->unlock($key, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC);
-
-    return $new_value;
-  }
-
-  function decrement($key, $value = 1, $ttl = false)
-  {
-    if(is_null($current_value = $this->get($key)))
-      return false;
-
-    if(!$this->lock($key, lmbCacheAbstractConnection::TTL_INC_DEC, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC))
-      return false;
-
-    $new_value = $current_value - $value;
-
-    if($new_value < 0)
-      $new_value = 0;
-
-    $this->set($key, $new_value, $ttl);
-
-    $this->unlock($key, lmbCacheAbstractConnection::LOCK_NAME_INC_DEC);
-
-    return $new_value;
   }
 
   function flush()

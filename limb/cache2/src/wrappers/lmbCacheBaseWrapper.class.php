@@ -1,7 +1,8 @@
 <?php
 lmb_require('limb/cache2/src/lmbCacheWrapper.interface.php');
+lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
 
-abstract class lmbCacheBaseWrapper implements lmbCacheWrapper
+abstract class lmbCacheBaseWrapper extends lmbCacheAbstractConnection implements lmbCacheWrapper
 {
   /**
   * @var lmbCacheConnection
