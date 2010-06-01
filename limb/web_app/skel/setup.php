@@ -24,7 +24,7 @@ require_once('limb/core/common.inc.php');
 if(file_exists(dirname(__FILE__) . '/setup.override.php'))
   require_once(dirname(__FILE__) . '/setup.override.php');
 
-require_once('limb/web_app/common.inc.php');
+lmb_package_require('web_app');
 
 lmb_env_setor('LIMB_VAR_DIR', dirname(__FILE__) . '/var/');
 lmb_env_setor('LIMB_APP_MODE' , 'production');
