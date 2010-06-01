@@ -84,7 +84,8 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
     if (is_null($file = $this->_getCacheFile($resolved_key)))
       return NULL;
 
-    return $this->_getDataFromContainer(file_get_contents($file));
+    $data = $this->_getDataFromContainer(file_get_contents($file));
+    return $data;
   }
 
   function delete($key)

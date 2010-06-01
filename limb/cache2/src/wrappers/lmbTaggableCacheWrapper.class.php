@@ -31,10 +31,10 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
 
     foreach($tags as $tag_key )
       if(!isset($tags_values[$tag_key]) || is_null($tags_values[$tag_key]))
-    {
+      {
         $tags_values[$tag_key] = 0;
         $this->wrapped_cache->add($tag_key, 0);
-    }
+      }
 
     return array('tags' => $tags_values, 'value' => $value);
   }
@@ -45,8 +45,10 @@ class lmbTaggableCacheWrapper extends lmbCacheBaseWrapper
     $tags_versions = (array) $this->wrapped_cache->get(array_keys($tags));
 
     foreach($tags_versions as $tag_key => $tag_version)
+    {
       if(is_null($tag_version) || $tags[$tag_key] != $tag_version)
         return false;
+    }
 
     return true;
   }

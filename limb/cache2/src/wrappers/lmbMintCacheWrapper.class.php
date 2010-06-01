@@ -57,6 +57,9 @@ class lmbMintCacheWrapper extends lmbCacheBaseWrapper
 
   protected function _extractRealValue($key, $real_value)
   {
+    if(!$real_value)
+      return NULL;
+
     list($value, $expire_time) = $real_value;
 
     if($expire_time > time())
