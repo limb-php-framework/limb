@@ -19,9 +19,12 @@ lmb_require('limb/core/src/lmbHandle.class.php');
 class lmbWebApplication extends lmbFilterChain
 {
   protected $default_controller_name = "not_found";
+
+  protected $init_filters = array();
   protected $pre_dispatch_filters = array();
   protected $pre_action_filters = array();
   protected $pre_view_filters = array();
+
   protected $request_dispatcher = null;
 
   function setDefaultControllerName($name)
@@ -39,6 +42,18 @@ class lmbWebApplication extends lmbFilterChain
     if(!is_object($this->request_dispatcher))
       return new lmbHandle('limb/web_app/src/request/lmbRoutesRequestDispatcher');
     return $this->request_dispatcher;
+  }
+
+  protected function _getRequestDispathingFilter()
+  {
+    return new lmbHandle('limb/web_app/src/filter/lmbRequestDispatchingFilter',
+                         array($this->_getRequestDispatcher(),
+                         $this->default_controller_name));
+  }
+
+  function addInitFilter($filter)
+  {
+    $this->init_filters[] = $filter;
   }
 
   function addPreDispatchFilter($filter)
@@ -65,21 +80,19 @@ class lmbWebApplication extends lmbFilterChain
   protected function _registerFilters()
   {
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbErrorHandlingFilter'));
+    $this->_addFilters($this->init_filters);
+
+    $this->registerFilter(new lmbHandle('limb/dbal/src/filter/lmbAutoDbTransactionFilter'));
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbSessionStartupFilter'));
 
     $this->_addFilters($this->pre_dispatch_filters);
-
-    $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbRequestDispatchingFilter',
-                                        array($this->_getRequestDispatcher(), 
-                                              $this->default_controller_name)));
+    $this->registerFilter($this->_getRequestDispathingFilter());
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbResponseTransactionFilter'));
 
     $this->_addFilters($this->pre_action_filters);
-
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbActionPerformingFilter'));
 
     $this->_addFilters($this->pre_view_filters);
-
     $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbViewRenderingFilter'));
   }
 

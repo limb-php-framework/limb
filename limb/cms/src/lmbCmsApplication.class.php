@@ -1,19 +1,11 @@
 <?php
-lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
-lmb_require('limb/core/src/lmbHandle.class.php');
+lmb_require('limb/web_app/src/lmbWebApplication.class.php');
 
-class lmbCmsApplication extends lmbFilterChain
+class lmbCmsApplication extends lmbWebApplication
 {
-  function __construct()
+  protected function _getRequestDispathingFilter()
   {
-    $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbErrorHandlingFilter'));
-    $this->registerFilter(new lmbHandle('limb/dbal/src/filter/lmbAutoDbTransactionFilter'));
-    $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbSessionStartupFilter'));
-    $this->registerFilter(new lmbHandle('limb/cms/src/filter/lmbCmsRequestDispatchingFilter'));
-    $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbResponseTransactionFilter'));
-    $this->registerFilter(new lmbHandle('limb/cms/src/filter/lmbCmsAccessPolicyFilter'));
-    $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbActionPerformingFilter'));
-    $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbViewRenderingFilter'));
+    return new lmbHandle('limb/cms/src/filter/lmbCmsRequestDispatchingFilter');
   }
 }
 
