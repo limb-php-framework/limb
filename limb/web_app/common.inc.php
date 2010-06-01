@@ -15,6 +15,8 @@ require_once('limb/core/common.inc.php');
 lmb_package_require('active_record');
 lmb_package_require('session');
 
+lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/web_app/src/controller');
+
 lmb_require('limb/web_app/toolkit.inc.php');
 lmb_require('limb/web_app/http.inc.php');
 

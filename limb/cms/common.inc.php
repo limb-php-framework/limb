@@ -15,6 +15,8 @@ require_once('limb/core/common.inc.php');
 lmb_package_require('web_app');
 lmb_require('limb/cms/toolkit.inc.php');
 
+lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/cms/src/controller;limb/web_app/src/controller');
+
 lmb_env_setor('JQUERY_FILE_URL','/shared/js/js/jquery/v1.2.3.js');
 lmb_env_setor('CMS_STATIC_FILES_VERSION', '2');
 
