@@ -101,7 +101,7 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
 
   protected function _echoExceptionBacktrace(lmbException $e)
   {
-    $error = htmlspecialchars($e->getMessage());
+    $error = htmlspecialchars($e->getOriginalMessage());
 
     $params = '';
     foreach($e->getParams() as $name => $value)
