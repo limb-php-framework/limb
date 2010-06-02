@@ -22,6 +22,8 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
    */
   protected $cache;
 
+  protected $cache_with_prefix;
+
   protected $storage_init_file;
 
   function __construct()
@@ -39,6 +41,9 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
   {
     @unlink(lmb_var_dir() . '/diff_thread.php');
     $this->cache->flush();
+    if (!empty($this->cache_with_prefix)) {
+      $this->cache_with_prefix->flush();
+    }
   }
 
   protected function _getUniqueId($prefix)
@@ -183,23 +188,33 @@ abstract class lmbCacheConnectionTest extends UnitTestCase
       $this->assertEqual($value, $cached_obj->get('foo'));
   }
 
-  function testWithPrefix_NotIntercepting()
-  {
+  protected function _cloneConnectionWithPrefix($prefix = 'prefix') {
     $dsn = $this->dsn;
     if(!is_object($dsn))
     $dsn = new lmbUri($dsn);
 
-    $cache = lmbCacheFactory::createConnection($dsn);
-
     $dsn_with_prefix = clone($dsn);
-    $dsn_with_prefix->addQueryItem('prefix', 'foo');
-    $cache_with_prefix = lmbCacheFactory::createConnection($dsn_with_prefix);
+    $dsn_with_prefix->addQueryItem('prefix', $prefix);
+    return $this->cache_with_prefix = lmbCacheFactory::createConnection($dsn_with_prefix);
+  }
+
+  function testWithPrefix() {
+    $cache_with_prefix = $this->_cloneConnectionWithPrefix();
+
+    $id = $this->_getUniqueId('testWithPrefix');
+    $cache_with_prefix->add($id, 32);
+    $this->assertEqual(32, $cache_with_prefix->get($id));
+  }
+
+  function testWithPrefix_NotIntercepting()
+  {
+    $cache_with_prefix = $this->_cloneConnectionWithPrefix('foo');
 
     $id = $this->_getUniqueId('testWithPrefix_NotIntercepting');
-    $cache->set($id, 42);
+    $this->cache->set($id, 42);
     $cache_with_prefix->set($id, 24);
 
-    $this->assertEqual(42, $cache->get($id));
+    $this->assertEqual(42, $this->cache->get($id));
   }
 
   function testIncrementAndDecrement()

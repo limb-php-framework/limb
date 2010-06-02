@@ -64,13 +64,4 @@ class lmbTaggableCacheWrapperTest extends UnitTestCase
     $this->assertTrue($this->cache->add($key = $this->_createId(), $value = 'value', false, $key));
     $this->assertIdentical($this->cache->get($key), $value);
   }
-
-  function testWorkWithPrefix()
-  {
-  	$key = uniqid('testWorkWithPrefix');
-  	$cache = lmbCacheFactory::createConnection('file:///'.lmb_var_dir().'/cache?prefix=prefix1&wrapper[]=taggable');
-
-    $cache->add($key, 'foo');
-    $this->assertEqual('foo', $cache->get($key));
-  }
 }

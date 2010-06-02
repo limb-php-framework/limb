@@ -10,15 +10,15 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
 
   function add ($key, $value, $ttl = false)
   {
-    $key = $this->_resolveKey($key);
+    $resolved_key = $this->_resolveKey($key);
 
-    if(isset($this->_caches[$key]) && (
-      !isset($this->_cache_ttls[$key]) || $this->_cache_ttls[$key] > time())
+    if(isset($this->_caches[$resolved_key]) && (
+      !isset($this->_cache_ttls[$resolved_key]) || $this->_cache_ttls[$resolved_key] > time())
     )
       return false;
 
     return $this->set($key, $value, $ttl);
-  }  
+  }
 
   function set($key, $value, $ttl = false)
   {
@@ -26,7 +26,7 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
 
     if($ttl)
       $this->_cache_ttls[$key] = $ttl + time();
-      
+
     $this->_caches[$key] = $this->_createContainer($value);
 
     return true;
@@ -36,7 +36,7 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
   {
     if(!isset($this->_caches[$resolved_key]))
       return null;
-      
+
     if(
       isset($this->_cache_ttls[$resolved_key])
       && $this->_cache_ttls[$resolved_key] <= time()
@@ -44,7 +44,7 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
       return null;
 
     $container = $this->_caches[$resolved_key];
-    
+
     return $this->_getDataFromContainer($container);
   }
 

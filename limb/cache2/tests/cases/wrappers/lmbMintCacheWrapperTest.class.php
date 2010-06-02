@@ -86,14 +86,4 @@ class lmbMintCacheWrapperTest extends UnitTestCase
     $this->cache_backend->expectOnce('set', array($key, array($value, time() - 1), $this->cooled_ttl));
     $this->cache->cooldownKey($key);
   }
-
-  function testWorkWithPrefix()
-  {
-    $key = uniqid('testWorkWithPrefix');
-    $cache = lmbCacheFactory::createConnection('file:///'.lmb_var_dir().'/cache?prefix=prefix1&wrapper[]=mint');
-
-    $cache->add($key, 'foo');
-    $this->assertEqual('foo', $cache->get($key));
-  }
-
 }

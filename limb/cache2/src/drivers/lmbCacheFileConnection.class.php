@@ -29,15 +29,9 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
    */
   function __construct($dsn)
   {
-  	if(!is_object($dsn))
-      $dsn = new lmbUri($dsn);
-
     parent::__construct($dsn);
 
-    $cache_dir = $dsn->getPath();
-
-    $this->_cache_dir = $cache_dir;
-
+    $this->_cache_dir = $this->dsn->getPath();
     lmbFs :: mkdir($this->_cache_dir);
   }
 
@@ -53,9 +47,7 @@ class lmbCacheFileConnection extends lmbCacheAbstractConnection
 
   function add($key, $value, $ttl = false)
   {
-    $key = $this->_resolveKey($key);
-
-    if ($file = $this->_getCacheFile($key))
+    if ($file = $this->_getCacheFile($this->_resolveKey($key)))
       return false;
 
     return $this->set($key, $value, $ttl);
