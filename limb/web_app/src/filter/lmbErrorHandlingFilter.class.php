@@ -118,7 +118,11 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
       $params .= $name . '  =>  ' . print_r($value, true) . PHP_EOL;
     $params = htmlspecialchars($params);
 
-    $trace = htmlspecialchars($e->getTraceAsString());
+    if($e instanceof lmbException)
+      $trace = htmlspecialchars($e->getNiceTraceAsString());
+    else
+      $trace = htmlspecialchars($e->getTraceAsString());
+
     list($file, $line) = $this->_extractExceptionFileAndLine($e);
     $context = htmlspecialchars($this->_getFileContext($file, $line));
     $request = htmlspecialchars($this->toolkit->getRequest()->dump());
@@ -221,6 +225,10 @@ EOD;
       $params = $e->getParams();
       if(isset($params['file']))
         return array($params['file'], $params['line']);
+    }
+    elseif($e instanceof lmbException)
+    {
+      return array($e->getRealFile(), $e->getRealLine());
     }
     return array($e->getFile(), $e->getLine());
   }

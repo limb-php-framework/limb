@@ -17,6 +17,8 @@ class lmbException extends Exception
 {
   protected $original_message;
   protected $params = array();
+  protected $file;
+  protected $line;
   protected $backtrace;
 
   function __construct($message, $params = array(), $code = 0, $hide_calls_count = 0)
@@ -30,12 +32,24 @@ class lmbException extends Exception
 
     $this->params = $params;
     $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count + 1);
+    $this->file = $this->backtrace[0]['file'];
+    $this->line = $this->backtrace[0]['line'];
     parent :: __construct($message, $code);
   }
 
   function getOriginalMessage()
   {
     return $this->original_message;
+  }
+
+  function getRealFile()
+  {
+    return $this->file;
+  }
+
+  function getRealLine()
+  {
+    return $this->line;
   }
 
   function getParams()

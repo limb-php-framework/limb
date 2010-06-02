@@ -50,11 +50,10 @@ class lmbErrorGuard
       return false;
 
     $params = array(
-      "errno" => $errno,
-      "errfile" => $errfile,
-      "errline" => $errline
+      "file" => $errfile,
+      "line" => $errline,
     );
-    throw new lmbException($errstr, $params);
+    throw new lmbException($errstr, $params, $errno, 3);
   }
 
   static function _shutdownHandler()
