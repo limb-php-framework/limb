@@ -1,5 +1,6 @@
 <?php
-lmb_require('limb/cms/src/macro/allowed.tag.php');
+lmb_require('limb/acl/src/macro/allowed.tag.php');
+lmb_require('limb/fs/src/lmbFs.class.php');
 lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/macro/tests/cases/lmbBaseMacroTest.class.php');
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
@@ -50,8 +51,6 @@ lmbToolkit::merge(new FakeMemberAndAclTools());
 
 class lmbAllowedTagTest extends lmbBaseMacroTest
 {
-  protected $_cache_storage;
-
   function setUp()
   {
     parent::setUp();
