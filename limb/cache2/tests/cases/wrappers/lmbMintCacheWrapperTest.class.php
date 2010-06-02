@@ -89,7 +89,7 @@ class lmbMintCacheWrapperTest extends UnitTestCase
 
   function testWorkWithPrefix()
   {
-    $key = uniqid('testWithWorkPrefix');
+    $key = uniqid('testWorkWithPrefix');
     $cache = lmbCacheFactory::createConnection('file:///'.lmb_var_dir().'/cache?prefix=prefix1&wrapper[]=mint');
 
     $cache->add($key, 'foo');

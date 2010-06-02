@@ -8,7 +8,7 @@
  */
 
 /**
- * interface lmbNonTransparentCache.
+ * interface lmbCacheConnection
  *
  * @package cache
  * @version $Id$

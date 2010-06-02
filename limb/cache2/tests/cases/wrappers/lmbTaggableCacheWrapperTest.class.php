@@ -67,7 +67,7 @@ class lmbTaggableCacheWrapperTest extends UnitTestCase
 
   function testWorkWithPrefix()
   {
-  	$key = uniqid('testWithWorkPrefix');
+  	$key = uniqid('testWorkWithPrefix');
   	$cache = lmbCacheFactory::createConnection('file:///'.lmb_var_dir().'/cache?prefix=prefix1&wrapper[]=taggable');
 
     $cache->add($key, 'foo');
