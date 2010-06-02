@@ -32,11 +32,11 @@ class lmbDate3SelectWidget extends lmbMacroInputWidget
     $lang = $this->getAttribute('lang') ? $this->getAttribute('lang') : 'en';
     $this->show_default = $this->getBoolAttribute('show_default');
     $this->dw_lang_file = 'lang/calendar-' . $lang . '.js';
-    
-    $this->dw_year_class = ('' != $this->getAttribute('month_class')) ? $this->getAttribute('month_class') : $this->getAttribute('class');
+
+    $this->dw_year_class = ('' != $this->getAttribute('year_class')) ? $this->getAttribute('year_class') : $this->getAttribute('class');
     $this->dw_month_class = ('' != $this->getAttribute('month_class')) ? $this->getAttribute('month_class') : $this->getAttribute('class');
     $this->dw_day_class = ('' != $this->getAttribute('day_class')) ? $this->getAttribute('day_class') : $this->getAttribute('class');
-    
+
     $this->dw_lib_path = preg_replace('/\/+$/', '/', $this->calendar_lib_path).'datewidget.js';
     $min_year = intval($this->getAttribute('min_year'));
     $this->min_year = $min_year > 0 ? $min_year : date('Y', 0);
