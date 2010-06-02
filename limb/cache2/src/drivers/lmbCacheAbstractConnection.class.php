@@ -57,7 +57,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
     }
     else
     {
-      $new_keys  = $this->prefix . $keys;
+      $new_keys = $this->prefix . $keys;
     }
 
     return $new_keys;
@@ -81,17 +81,16 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 
   function get($keys)
   {
-    $keys = $this->_resolveKey($keys);
-
     if(!is_array($keys))
     {
-      $values = $this->_getSingleKeyValue($keys);
+      $values = $this->_getSingleKeyValue($this->_resolveKey($keys));
     }
     else
     {
+      $resolved_keys = $this->_resolveKey($keys);
       $values = array();
-      foreach($keys as $key)
-        $values[$key] = $this->_getSingleKeyValue($key);
+      foreach($resolved_keys as $key_index => $resolved_key)
+        $values[$keys[$key_index]] = $this->_getSingleKeyValue($resolved_key);
     }
 
     return $values;

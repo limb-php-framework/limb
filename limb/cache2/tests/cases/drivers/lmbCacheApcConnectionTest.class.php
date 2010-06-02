@@ -19,6 +19,7 @@ class lmbCacheApcConnectionTest extends lmbCacheConnectionTest
   function skip()
   {
     $this->skipIf(!extension_loaded('apc'), 'APC extension not found. Test skipped.');
+    $this->skipIf(!ini_get('apc.enable_cli'), 'APC is not enabled in cli mode. Test skipped.');
   }
 
   function testAddNonUnique()
