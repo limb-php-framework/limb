@@ -13,6 +13,6 @@ class lmbMintCacheWrapperBcTest extends lmbCacheConnectionTest
   function __construct()
   {
     $dir = lmb_var_dir() . '/cache';
-    $this->dsn = 'file:///' . $dir . '?wrapper[]=taggable';
+    $this->dsn = 'file:///' . $dir . '?wrapper[]=mint';
   }
 }
