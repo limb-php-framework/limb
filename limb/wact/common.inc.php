@@ -19,7 +19,7 @@ if(!defined('WACT_DEFAULT_CONFIG_DIR'))
   define('WACT_DEFAULT_CONFIG_DIR', 'limb/wact/config/');
 
 if(!defined('WACT_CACHE_DIR'))
-  define('WACT_CACHE_DIR', dirname(__FILE__) . '/cache/');
+  define('WACT_CACHE_DIR', lmb_env_get('LIMB_VAR_DIR') . '/cache/');
 
 if(version_compare(PHP_VERSION,"5.3","<")) set_magic_quotes_runtime(0);
 
