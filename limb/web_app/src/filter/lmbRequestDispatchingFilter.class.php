@@ -62,9 +62,9 @@ class lmbRequestDispatchingFilter implements lmbInterceptingFilter
     {
       $controller = $this->toolkit->createController($dispatched_params['controller']);
     }
-    catch(lmbException $e)
+    catch(lmbFileNotFoundException $e)
     {
-      $controller = $this->toolkit->createController($this->default_controller_name);
+      $controller = $this->_createDefaultController();
     }
 
     return $controller;
