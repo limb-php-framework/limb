@@ -26,8 +26,8 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 
   function __construct($dsn)
   {
-  	if(!is_object($dsn))
-  	  $dsn = new lmbUri($dsn);
+    if(!is_object($dsn))
+      $dsn = new lmbUri($dsn);
 
     $this->dsn = $dsn;
 

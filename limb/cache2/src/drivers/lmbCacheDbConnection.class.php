@@ -113,7 +113,7 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     }
   }
 
-  function _getSingleKeyValue ($resolved_key)
+  function _getSingleKeyValue($resolved_key)
   {
     if(!$record = $this->db_table->selectFirstRecord($this->_getKeyCriteria($resolved_key)))
       return NULL;

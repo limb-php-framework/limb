@@ -8,7 +8,7 @@ class lmbCacheMemoryConnection extends lmbCacheAbstractConnection
   protected $_caches = array();
   protected $_cache_ttls = array();
 
-  function add ($key, $value, $ttl = false)
+  function add($key, $value, $ttl = false)
   {
     $resolved_key = $this->_resolveKey($key);
 
