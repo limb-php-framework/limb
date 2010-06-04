@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS "lmb_cms_document";
 CREATE TABLE "lmb_cms_document" (
-  "id" int(11) PRIMARY KEY,
+  "id" INTEGER PRIMARY KEY,
   "title" varchar(255) NOT NULL default '',
   "description" varchar(255) NOT NULL default '',
   "keywords" varchar(255) NOT NULL default '',
@@ -125,7 +125,7 @@ INSERT INTO "lmb_cms_document" ("title", "is_published", "content") VALUES ('/',
 
 DROP TABLE IF EXISTS "lmb_cms_user";
 CREATE TABLE  "lmb_cms_user" (
-  "id" int(11) PRIMARY KEY,
+  "id" INTEGER PRIMARY KEY,
   "email" varchar(255) default NULL,
   "name" varchar(255) default NULL,
   "hashed_password" varchar(64) default NULL,
@@ -149,7 +149,7 @@ INSERT INTO "lmb_cms_user" VALUES(
 
 DROP TABLE IF EXISTS "lmb_cms_text_block";
 CREATE TABLE  "lmb_cms_text_block" (
-  "id" int(11) PRIMARY KEY,
+  "id" INTEGER PRIMARY KEY,
   "identifier" varchar(255) default NULL,
   "title" varchar(255) default NULL,
   "content" longtext
@@ -158,7 +158,7 @@ CREATE INDEX "identifier" ON "lmb_cms_text_block" ("identifier");
 
 DROP TABLE IF EXISTS "lmb_cms_seo";
 CREATE TABLE "lmb_cms_seo" (
-  "id" int(11) PRIMARY KEY,
+  "id" INTEGER PRIMARY KEY,
   "url" varchar(255) collate utf8_unicode_ci NOT NULL,
   "title" varchar(255) collate utf8_unicode_ci NOT NULL,
   "description" text collate utf8_unicode_ci NOT NULL,
@@ -170,4 +170,4 @@ INSERT INTO "lmb_cms_seo" ("id", "url", "title", "description", "keywords") VALU
   'Главная страница Сайта',
   'Описание',
   'Ключевые слова'
-);*/
+);

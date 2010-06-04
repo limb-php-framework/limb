@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS "cms_object_for_testing";
 CREATE TABLE "cms_object_for_testing" (
-  "id" int(11) PRIMARY KEY,
+  "id" INTEGER PRIMARY KEY,
   "field" varchar(255) default NULL
 );
