@@ -147,7 +147,7 @@ class lmbSimpleDb
   {
     $info = $this->conn->getDatabaseInfo();
     foreach($info->getTableList() as $table)
-      $this->conn->newStatement("DELETE FROM `$table`")->execute();
+      $this->conn->newStatement(sprintf("DELETE FROM %s", $this->quote($table)))->execute();
     return $this;
   }
 
@@ -155,7 +155,7 @@ class lmbSimpleDb
   {
     $info = $this->conn->getDatabaseInfo();
     foreach($info->getTableList() as $table)
-      $this->conn->newStatement("DROP TABLE `$table`")->execute();
+      $this->conn->newStatement(sprintf("DROP TABLE %s", $this->quote($table)))->execute();
     return $this;
   }
 
