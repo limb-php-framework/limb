@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
 lmb_require('limb/web_app/src/filter/lmbRequestDispatchingFilter.class.php');
@@ -58,7 +58,7 @@ class lmbRequestDispatchingFilterTestTools extends lmbAbstractTools
   function createController($controller_name)
   {
     if($controller_name == $this->exception_controller_name)
-      throw new lmbException('Controller not created!');
+      throw new lmbFileNotFoundException('Controller not found!');
     else
       return $this->controller;
   }
@@ -188,8 +188,8 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
     $this->assertEqual($this->request->get('id'), 150);
     $this->assertEqual($this->request->get('extra'), 'bla-bla');
   }
-  
-  function testIsRequestAvailableInControllerConstructor() 
+
+  function testIsRequestAvailableInControllerConstructor()
   {
     //this is quite a "hacky" trick which removes the fixture toolkit, this should be refactored
     //alas, this means the whole test suite must be reconsidered as well
