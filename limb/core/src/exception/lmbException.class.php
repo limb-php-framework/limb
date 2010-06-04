@@ -32,8 +32,15 @@ class lmbException extends Exception
 
     $this->params = $params;
     $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count + 1);
-    $this->file = $this->backtrace[0]['file'];
-    $this->line = $this->backtrace[0]['line'];
+
+    foreach($this->backtrace as $item) {
+      if (isset($item['file'])) {
+        $this->file = $item['file'];
+        $this->line = $item['line'];
+        break;
+      }
+    }
+
     parent :: __construct($message, $code);
   }
 
