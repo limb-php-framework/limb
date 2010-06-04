@@ -63,13 +63,13 @@ class lmbExceptionTest extends UnitTestCase
     $this->assertEqual($trace_full[1], $trace_with_hidden_call[0]);
   }
 
-  function testExceptionContext_CalledFromCallUserFunc_ReturnsCallUserFuncContext() {
+  function testExceptionContext_CalledFromCallUserFunc_ReturnsCallUserFuncContext()
+  {
     // placing two statements one one line critical for this test
     $e = call_user_func(array($this, '_createException')); $line = __LINE__;
 
     $this->assertEqual(__FILE__, $e->getRealFile());
     $this->assertEqual($line, $e->getRealLine());
-    
   }
 
   protected function _createException() {
