@@ -67,6 +67,13 @@ class lmbBacktraceTest extends UnitTestCase
     $this->assertEqual($backtrace, $backtrace2);
   }
 
+  function testToStringWithResourceArg() {
+    $resource = fopen(__FILE__, 'r');
+    $backtrace = $this->_createBacktrace($resource, 1);
+    fclose($resource);
+    $this->assertPattern('/RESOURCE\[stream\]/', $backtrace->toString());
+  }
+
   protected function _createBacktrace($foo, $bar)
   {
     return new lmbBacktrace();

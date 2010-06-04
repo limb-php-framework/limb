@@ -91,12 +91,18 @@ class lmbBacktrace
           $trace_string .= 'ARRAY[' . sizeof($arg) . ']';
         elseif(is_object($arg))
           $trace_string .= 'OBJECT:' . get_class($arg);
+        elseif(is_resource($arg))
+        {
+          $resource_id = strstr((string) $arg, '#');
+          $trace_string .= 'RESOURCE[' . get_resource_type($arg) . "]: $resource_id";
+        }
         elseif(is_bool($arg))
           $trace_string .= $arg ? 'TRUE' : 'FALSE';
         else
         {
+          $arg = (string) $arg;
           $trace_string .= '"';
-          $trace_string .= htmlspecialchars(substr((string) @$arg, 0, 100));
+          $trace_string .= htmlspecialchars(substr($arg, 0, 100));
 
           if(strlen($arg) > 100)
             $trace_string .= '...';
