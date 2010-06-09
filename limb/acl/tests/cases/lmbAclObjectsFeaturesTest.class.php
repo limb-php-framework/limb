@@ -32,13 +32,13 @@ class Acl_Tests_User implements lmbRoleProviderInterface
 
 class Acl_Tests_Member implements lmbRoleProviderInterface
 {
-  public $name;  
+  public $name;
 
   function __construct($name)
   {
     $this->name = $name;
   }
-  
+
   function getRole()
   {
     return 'member';
@@ -47,23 +47,23 @@ class Acl_Tests_Member implements lmbRoleProviderInterface
 }
 
 class Acl_Tests_Article implements lmbRolesResolverInterface, lmbResourceProviderInterface
-{  
+{
 
   function getRoleFor($object)
   {
-    $roles = array();   
-    
+    $roles = array();
+
     if('Bob' === $object->name)
       $roles[] = 'owner';
     if('Valtazar' === $object->name)
     {
       $roles[] = 'approver';
       $roles[] = 'daemon';
-    }      
-      
+    }
+
     return $roles;
   }
-  
+
   function getResource()
   {
     return 'article';
@@ -116,23 +116,23 @@ class lmbAclObjectsFeatureTest extends UnitTestCase
 
     $this->assertTrue($this->acl->isAllowed($owner, $article, 'edit'));
   }
-  
+
   function testMultipleRoles()
   {
     $article = new Acl_Tests_Article();
 
-    $approver = new Acl_Tests_Member('Valtazar');  
-    
+    $approver = new Acl_Tests_Member('Valtazar');
+
     $this->acl->addRole('member');
-            
+
     $this->acl->addRole('daemon');
     $this->acl->addRole('approver');
-        
+
     $this->acl->addResource('article');
-    
+
     $this->acl->allow('approver', 'article', 'edit');
     $this->acl->allow('daemon', 'article', 'burn');
-  
+
     $this->assertTrue($this->acl->isAllowed($approver, $article, 'edit'));
     $this->assertTrue($this->acl->isAllowed($approver, $article, 'burn'));
   }

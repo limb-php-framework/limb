@@ -62,7 +62,7 @@ class lmbAclTest extends UnitTestCase
   function testRoleInheritsOnNotExistedRole()
   {
     try {
-      $this->acl->addRole('guest','tiabaltu');
+      $this->acl->addRole('guest', 'tiabaltu');
       $this->fail();
     } catch(lmbAclException $e) {
       $this->pass();
@@ -124,7 +124,7 @@ class lmbAclTest extends UnitTestCase
   function testResourceInheritsOnNotExistedResource()
   {
     try {
-      $this->acl->addResource('content','tiabaltu');
+      $this->acl->addResource('content', 'tiabaltu');
       $this->fail();
     } catch(lmbAclException $e) {
       $this->pass();

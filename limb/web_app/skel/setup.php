@@ -13,8 +13,8 @@
  */
 set_include_path(implode(PATH_SEPARATOR,
   array(
-    dirname(__FILE__),
     dirname(__FILE__) . '/lib/',
+    dirname(__FILE__),
     get_include_path()
   )
 ));
