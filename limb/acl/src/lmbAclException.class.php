@@ -7,4 +7,6 @@
 * @license    LGPL http://www.gnu.org/copyleft/lesser.html
 */
 
-class lmbAclException extends lmbException {}
+class lmbAclException extends lmbException
+{
+}

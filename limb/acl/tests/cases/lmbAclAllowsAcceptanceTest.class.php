@@ -8,7 +8,7 @@
 */
 lmb_require('limb/acl/src/lmbAcl.class.php');
 
-class lmbAclAllowsAcceptanceTest extends UnitTestCase  
+class lmbAclAllowsAcceptanceTest extends UnitTestCase
 {
   function testAcceptance()
   {

@@ -11,22 +11,22 @@ lmb_require('limb/acl/src/lmbAcl.class.php');
 class AllowedTag extends lmbMacroTag
 {
   protected $_storage;
-  const default_role = 'lmbToolkit::instance()->getMember()';  
+  const DEFAULT_ROLE = 'lmbToolkit::instance()->getMember()';
 
   protected function _generateContent($code)
   {
     $code->writePHP("if(lmbToolkit::instance()->getAcl()->isAllowed(");
-    
+
     if(!$role = $this->getEscaped('role'))
-      $role = self::default_role;
+      $role = self::DEFAULT_ROLE;
     $code->writePHP($role);
-    
+
     $code->writePHP(', '.$this->getEscaped('resource'));
-        
+
     if($privelege = $this->getEscaped('privelege'))
       $code->writePHP(', '.$privelege);
-      
-    $code->writePHP(')) {'.PHP_EOL);          
+
+    $code->writePHP(')) {'.PHP_EOL);
     parent :: _generateContent($code);
     $code->writePHP('}'.PHP_EOL);
   }

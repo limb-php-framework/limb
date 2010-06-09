@@ -203,7 +203,9 @@ class lmbAcl
       $this->_privileges_rules[$role][$resource] = array();
 
     foreach($privileges as $privilege)
-      $this->_privileges_rules[$role][$resource] = array_merge($this->_privileges_rules[$role][$resource], array($privilege => $rule));
+      $this->_privileges_rules[$role][$resource] = array_merge(
+        $this->_privileges_rules[$role][$resource], array($privilege => $rule)
+      );
   }
 
   protected function _removePrivilegesRule($role, $resource)
@@ -228,15 +230,15 @@ class lmbAcl
       throw new lmbAclException('Resource not exist', array('resource' => $resource));
   }
 
-  protected function _mergeRoles($role1, $role2)
+  protected function _mergeRoles($first_role, $second_role)
   {
-    if (!is_array($role1))
-      $role1 = array($role1);
+    if (!is_array($first_role))
+      $first_role = array($first_role);
 
-    if (!is_array($role2))
-      $role2 = array($role2);
+    if (!is_array($second_role))
+      $second_role = array($second_role);
 
-    return array_unique(array_merge($role1, $role2));
+    return array_unique(array_merge($first_role, $second_role));
   }
 
   protected function _processRoleAndResource($role, $resource)
@@ -318,7 +320,7 @@ class lmbAcl
     return $this->_hasRule(true, $role, $resource, $privilege);
   }
 
-  function setRule($role, $resource = null, $privileges = array(), $rule)
+  function setRule($role, $resource, $privileges, $rule)
   {
     if(!is_array($privileges))
       $privileges = array($privileges);
