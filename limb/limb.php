@@ -1,6 +1,4 @@
-#!/usr/bin/env php
 <?php
-
 $current_dir = lmb_cli_find_project_dir(getcwd());
 $project_dir = lmb_cli_ask_for_option('Project directory', $current_dir);
 
