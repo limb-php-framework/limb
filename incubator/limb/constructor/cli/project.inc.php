@@ -105,15 +105,6 @@ function task_init_db($argv)
  */
 function task_install($args)
 {
-  /*
-mkdir $HOME/limb_site
-mkdir $HOME/limb_site/www $HOME/limb_site/lib
-cp -R $HOME/src/limb3/limb $HOME/limb_site/lib/limb
-cp -R $HOME/src/limb3/incubator/limb/constructor $HOME/limb_site/lib/limb/
-cd $HOME/limb_site
-cp -R lib/limb/constructor/cli ./cli
-cp -R lib/limb/web_app/skel/*
-  */
 
   if(!count($args)) throw new Exception('path to install not specified');
   $path = $args[0];
@@ -134,6 +125,31 @@ cp -R lib/limb/web_app/skel/*
   lmbFs::cp($path.'/lib/limb/web_app/skel',$path);
 }
 
+
+
+/**
+ * @desc create db by specified DSN
+ * @example project.php create_db -D DSN=mysqli://root:test@localhost/limb_app?charset=utf8
+ */
+function task_create_db($args)
+{
+  $dsn = taskman_propor('DSN', '');
+  if(!$dsn)
+  {
+    taskman_sysmsg("ERROR: DSN prop is required and must be valid DSN string\n");
+    exit(1);
+  }
+  
+  $temp = lmbToolkit :: instance()->castToDsnObject($dsn)->export();
+  $db = $temp['database'];
+  $temp['database'] = false;
+  $DSN2 = new lmbDbDSN($temp);
+  lmbToolkit :: instance()->setDefaultDbDSN($DSN2);
+  $conn = lmbToolkit::instance()->getDefaultDbConnection();
+  $conn->connect();
+  $conn->execute('CREATE DATABASE '.$conn->quoteIdentifier($db));
+
+}
 
 
 /**
