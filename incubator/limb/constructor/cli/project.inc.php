@@ -151,6 +151,59 @@ function task_create_db($args)
 
 }
 
+/**
+ * @desc init cms installation
+ * @example project.php init_cms
+ */
+function task_init_cms($args)
+{
+  $application =
+    '<?php'."\n".
+    'lmb_require(\'limb/cms/src/lmbCmsApplication.class.php\');'."\n".
+    "\n".
+    '/**'."\n".
+    ' * class LimbApplication.'."\n".
+    ' *'."\n".
+    ' * @package web_app'."\n".
+    ' */'."\n".
+    'class LimbApplication extends lmbCmsApplication'."\n".
+    '{'."\n".
+    '  /*function __construct()'."\n".
+    '  {'."\n".
+    '    //register your own custom filter chain here'."\n".
+    '  }'."\n".
+    '  */'."\n".
+    '}';
+  $setup =
+    '<?php'."\n".
+    '/*'."\n".
+    ' * Limb PHP Framework'."\n".
+    ' *'."\n".
+    ' * @link http://limb-project.com'."\n".
+    ' * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)'."\n".
+    ' * @license    LGPL http://www.gnu.org/copyleft/lesser.html'."\n".
+    ' */'."\n".
+    "\n".
+    'set_include_path(implode(PATH_SEPARATOR,'."\n".
+    '  array('."\n".
+    '    dirname(__FILE__),'."\n".
+    '    dirname(__FILE__) . \'/lib/\','."\n".
+    '    get_include_path()'."\n".
+    '  )'."\n".
+    '));'."\n".
+    "\n".
+    'if(file_exists(dirname(__FILE__) . \'/setup.override.php\'))'."\n".
+    '  require_once(dirname(__FILE__) . \'/setup.override.php\');'."\n".
+    "\n".
+    'require_once(\'limb/core/common.inc.php\');'."\n".
+    'require_once(\'limb/cms/common.inc.php\');'."\n".
+    "\n".
+    'lmb_env_setor(\'LIMB_VAR_DIR\', dirname(__FILE__) . \'/var/\');'."\n";
+
+  $root = taskman_prop('PROJECT_DIR');
+  file_put_contents($root.'/src/LimbApplication.class.php', $application);
+  file_put_contents($root.'/setup.php', $setup);
+}
 
 /**
  * @desc Init project meta task
