@@ -21,11 +21,17 @@ lmb_require('limb/net/src/lmbUri.class.php');
  */
 class lmbCacheTools extends lmbAbstractTools
 {
+  protected $partial_html_cache_name = 'partial_html';
   protected $_cache = array();
 
   function getCache($name = 'default')
   {
     return $this->getCacheByName($name);
+  }
+
+  function hasCache($name)
+  {
+    return array_key_exists($name, $this->_cache);
   }
 
   function getCacheByName($name)
@@ -96,6 +102,16 @@ class lmbCacheTools extends lmbAbstractTools
   function setCache($name = 'default', $cache)
   {
     $this->_cache[$name] = $cache;
+  }
+
+  function getPartialHtmlCacheStorage()
+  {
+    return $this->toolkit->getCache();
+  }
+
+  function setPartialHtmlCacheStorage(lmbCacheAbstractConnection $storage)
+  {
+    return $this->setCache($this->partial_html_cache_name, $storage);
   }
 }
 
