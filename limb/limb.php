@@ -12,11 +12,21 @@ taskman_propset('PROJECT_DIR', $project_dir);
 taskman_propset('LIMB_DIR', $limb_dir);
 taskman_run();
 
-function lmb_cli_ask_for_option($option_name, $default_value)
+function lmb_cli_ask_for_option($option_name, $default_value = '')
 {
-  fputs(STDOUT, "{$option_name} [{$default_value}]: ");
-  if(!$user_in = trim(fgets(STDIN)))
-    $user_in = $default_value;
+  if($default_value)
+    $question_str = "{$option_name} [{$default_value}]: ";
+  else
+    $question_str = "{$option_name}: ";
+
+  do
+  {
+    fputs(STDOUT, $question_str);
+    if(!($user_in = trim(fgets(STDIN))) && $default_value)
+      $user_in = $default_value;
+  }
+  while(!$user_in);
+
   return $user_in;
 }
 
