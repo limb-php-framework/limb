@@ -93,7 +93,7 @@ class lmbException extends Exception
   function toNiceString($without_backtrace = false)
   {
     $string = '';
-    $string .= get_class($this).': '.$this->getMessage().PHP_EOL;
+    $string .= get_class($this).': '.$this->getOriginalMessage().PHP_EOL;
     if($this->params)
         $string .= 'Additional params: '.strstr(print_r($this->params, true), PHP_EOL);
     if(!$without_backtrace)
