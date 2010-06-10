@@ -72,7 +72,6 @@ function lmb_cli_init_limb($limb_dir)
 {
   if(file_exists($limb_dir . '/limb/core/common.inc.php'))
   {
-    set_include_path($limb_dir);
     require_once('limb/core/common.inc.php');
     lmb_require_glob($limb_dir . '/limb/*/cli/*.inc.php');
     return true;
