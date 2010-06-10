@@ -7,6 +7,9 @@ if(!lmb_cli_init_limb($limb_dir))
   die("ERROR: Limb not found".PHP_EOL);
 
 lmb_require('limb/taskman/taskman.inc.php');
+
+taskman_propset('PROJECT_DIR', $project_dir);
+taskman_propset('LIMB_DIR', $limb_dir);
 taskman_run();
 
 function lmb_cli_ask_for_option($option_name, $default_value)
@@ -15,6 +18,18 @@ function lmb_cli_ask_for_option($option_name, $default_value)
   if(!$user_in = trim(fgets(STDIN)))
     $user_in = $default_value;
   return $user_in;
+}
+
+function lmb_cli_ask_for_accept($question)
+{
+  do
+  {
+    fputs(STDOUT, "{$question} [y/n]: ");
+    $user_in = trim(fgets(STDIN));
+  }
+  while($user_in != 'y' && $user_in != 'n');
+
+  return $user_in == 'y' ? true : false;
 }
 
 function lmb_cli_find_project_dir($current_dir)
@@ -47,9 +62,10 @@ function lmb_cli_init_limb($limb_dir)
 {
   if(file_exists($limb_dir . '/limb/core/common.inc.php'))
   {
-      require_once('limb/core/common.inc.php');
-      lmb_require_glob('limb/*/cli/*.inc.php');
-      return true;
+    set_include_path($limb_dir);
+    require_once('limb/core/common.inc.php');
+    lmb_require_glob($limb_dir . '/limb/*/cli/*.inc.php');
+    return true;
   }
   return false;
 }
