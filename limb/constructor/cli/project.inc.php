@@ -144,27 +144,42 @@ function task_project_db_load($argv)
 {
   require_once('limb/dbal/src/lmbDbDump.class.php');
 
-  $type = lmbToolkit :: instance()->getDefaultDbConnection()->getType();
-  $dump_file = taskman_prop('PROJECT_DIR') . '/lib/limb/'.taskman_propor('INIT_PACKAGE','cms'). '/init/db.' . $type;
-  $dump = new lmbDbDump($dump_file);
+  $code = <<<EOD
+    \$toolkit = lmbToolkit :: instance();
+    echo \$toolkit->getDefaultDbDSN()->toString();
+EOD;
+  $output = lmb_cli_run_code_in_project_env($code);
+  $dsn = new lmbDbDSN($output);
+
+  $conn = lmbToolkit :: instance()->createDbConnection($dsn);
+  $dump_file = taskman_prop('PROJECT_DIR')
+    . '/lib/limb/' . taskman_propor('INIT_PACKAGE','cms')
+    . '/init/db.' . $conn->getType();
+  $dump = new lmbDbDump($dump_file, $conn);
   $dump->load();
   taskman_msg("Dump ($dump_file) loaded...\n");
 }
 
 /**
  * @desc create db by specified DSN
- * @deps project_db_init_config,project_setup_project
+ * @deps project_db_init_config
  * @example project.php create_db -D DSN=mysqli://root:test@localhost/limb_app?charset=utf8
  */
 function task_project_db_create($args)
 {
-  require_once('limb/dbal/src/lmbDbDump.class.php');
+  lmb_package_require('dbal');
+  lmb_require('limb/dbal/src/lmbDbDSN.class.php');
 
-  $toolkit = lmbToolkit :: instance();
-  $fake_dsn = clone($toolkit->getDefaultDbDSN());
-  $db_name = $fake_dsn->database;
-  $fake_dsn->database = false;
-  $conn = $toolkit->createDbConnection($fake_dsn);
+  $code = <<<EOD
+    \$toolkit = lmbToolkit :: instance();
+    echo \$toolkit->getDefaultDbDSN()->toString();
+EOD;
+  $output = lmb_cli_run_code_in_project_env($code);
+
+  $dsn = new lmbDbDSN($output);
+  $db_name = $dsn->database;
+  $dsn->database = false;
+  $conn = lmbToolkit::instance()->createDbConnection($dsn);
   lmbDBAL::execute('CREATE DATABASE '.$conn->quoteIdentifier($db_name), $conn);
   taskman_msg("Database ($db_name) created...\n");
 }
@@ -183,22 +198,25 @@ function task_project_db_init_config()
       return;
 
   if(!$dsn_str = taskman_propor('DSN', ''))
-    $dsn_str = lmb_cli_ask_for_option('Dsn');
+    $dsn_str = lmb_cli_ask_for_option('Dsn (example: mysqli://root:test@localhost/limb_app?charset=utf8)');
 
   lmb_require('limb/dbal/src/lmbDbDSN.class.php');
   $dsn = new lmbDbDSN($dsn_str);
 
-  $config_text = <<<EOD
-<?php
-
-\$conf = array('dsn' => '$dsn_str');
-EOD;
+  $config_text = "<?php\n\n \$conf = array('dsn' => '{$dsn_str}');";
 
   file_put_contents($config_file, $config_text);
   taskman_msg("DB config ($config_file) writed...Done\n");
 }
 
-function task_project_setup_project()
+function lmb_cli_run_code_in_project_env($internal_code)
 {
-  require_once(taskman_prop('PROJECT_DIR') . '/setup.php');
+  $tmp_file = tempnam(sys_get_temp_dir(), 'Limb');
+  $code = "<?php\n"
+   . "require_once '" . taskman_prop('PROJECT_DIR') . "/setup.php';\n"
+   . $internal_code;
+  file_put_contents($tmp_file, $code);
+  $output = shell_exec("php ".$tmp_file);
+  unlink($tmp_file);
+  return $output;
 }
