@@ -3,7 +3,7 @@ if(!defined('LIMB_PROJECT_DIR'))
   define('LIMB_PROJECT_DIR', lmb_cli_ask_for_option('Project directory', lmb_cli_find_project_dir(getcwd())));
 
 if(!defined('LIMB_FW_DIR'))
-  define('LIMB_FW_DIR', lmb_cli_ask_for_option('Limb directory', lmb_cli_find_limb_dir($project_dir)));
+  define('LIMB_FW_DIR', lmb_cli_ask_for_option('Limb directory', lmb_cli_find_limb_dir(LIMB_PROJECT_DIR)));
 
 if(!lmb_cli_init_tasks(LIMB_FW_DIR))
   die("ERROR: Limb not found".PHP_EOL);
