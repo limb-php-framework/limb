@@ -8,7 +8,7 @@
  */
 lmb_require('limb/constructor/tests/cases/lmbConstructorUnitTestCase.class.php');
 lmb_require('limb/constructor/src/lmbModelConstructor.class.php');
-lmb_require('limb/cli/src/lmbCliResponse.class.php');
+lmb_require('limb/cli/src/lmbCliOutput.class.php');
 
 class lmbModelConstructorTest extends lmbConstructorUnitTestCase
 {
@@ -21,7 +21,7 @@ class lmbModelConstructorTest extends lmbConstructorUnitTestCase
   {
     $table = $this->conn->getDatabaseInfo()->getTable($table_name);
     $model_constructor = new lmbModelConstructor(
-      new lmbProjectConstructor($this->dir_for_test_case, new lmbCliResponse()),
+      new lmbProjectConstructor($this->dir_for_test_case, new lmbCliOutput()),
       $this->conn->getDatabaseInfo(),
       $table,
       $object_name
@@ -38,7 +38,7 @@ class lmbModelConstructorTest extends lmbConstructorUnitTestCase
   {
     $table = $this->conn->getDatabaseInfo()->getTable('lecture');
     $model_constructor = new lmbModelConstructor(
-      new lmbProjectConstructor($this->dir_for_test_case, new lmbCliResponse()),
+      new lmbProjectConstructor($this->dir_for_test_case, new lmbCliOutput()),
       $this->conn->getDatabaseInfo(),
       $table
     );

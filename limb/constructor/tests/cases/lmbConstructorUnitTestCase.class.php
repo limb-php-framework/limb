@@ -23,7 +23,7 @@ class lmbConstructorUnitTestCase extends UnitTestCase
 
     $this->conn = lmbToolkit::instance()->getDefaultDbConnection();
 
-    $dir_for_tests = LIMB_VAR_DIR . '/constructor/';
+    $dir_for_tests = lmb_var_dir() . '/constructor/';
 
     $this->dir_for_test_case = $dir_for_tests . '/' . get_class($this);
     lmbFs::mkdir($this->dir_for_test_case);
@@ -31,6 +31,6 @@ class lmbConstructorUnitTestCase extends UnitTestCase
 
   function tearDown()
   {
-    lmbFs::rm(LIMB_VAR_DIR . '/constructor/');
+    //lmbFs::rm(lmb_var_dir() . '/constructor/');
   }
 }
