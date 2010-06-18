@@ -1,53 +1,42 @@
 <?php
 
+require_once(DB_MIGRATION_LIB . '/DbMigration.class.php');
+
 class CliRunner
 {
-  static function getParams($argv)
+  protected $command;
+  protected $params = array();
+
+  function applyParamsFromFile($file_name)
   {
-    return array_slice(self::parseArgs($argv), 1);
-  }
-
-  static function getCommand($argv)
-  {
-    return array_shift(self::parseArgs($argv));
-  }
-
-  static function getParamsFromConfig()
-  {
-    if(file_exists(DB_MIGRATION_CONFIG_MAIN) and is_readable(DB_MIGRATION_CONFIG_MAIN))
-      require(DB_MIGRATION_CONFIG_MAIN);
-
-    if(!isset($migration_conf))
-      $migration_conf = array();
-
-    if(file_exists(DB_MIGRATION_CONFIG_OVERRIDE) and is_readable(DB_MIGRATION_CONFIG_OVERRIDE))
-      require(DB_MIGRATION_CONFIG_OVERRIDE);
-
-    return $migration_conf;
-  }
-
-  static function applyCliParams($migration_conf, $args)
-  {
-    $hParams = array(
-      'dsn' => null,
-      'schema' => null,
-      'data' => null,
-      'migrations' => null,
-    );
-    foreach($hParams as $sParam=>$v)
+    if(!file_exists($file_name))
     {
-      if(isset($args[$sParam]) and $args[$sParam])
-        $hParams[$sParam] = $args[$sParam];
-      else
-        $hParams[$sParam] = isset($migration_conf[$sParam]) ? $migration_conf[$sParam] : null;
+      echo "NOTICE: Params file '{$file_name}' not found.\n";
+      return;
     }
-
-    return $hParams;
+    require_once($file_name);
+    if(!isset($migration_conf) || !is_array($migration_conf))
+    {
+      echo "ERROR: Params file '{$file_name}' have no \$migration_conf array.\n";
+      return;
+    }
+    $this->params = $this->params + $migration_conf;
   }
 
-  static function isUsageAsked($args)
+  function setCliParams(array $argv)
   {
-    return isset($args['h']) || isset($args['help']) || isset($args['usage']);
+    $this->command = array_shift(self::parseArgs($argv));
+    $this->params = array_slice(self::parseArgs($argv), 1);
+  }
+
+  function isCommandAsked()
+  {
+    return (bool) $this->command;
+  }
+
+  function isUsageAsked()
+  {
+    return isset($this->params['h']) || isset($this->params['help']) || isset($this->params['usage']);
   }
 
   static function showUsage()
@@ -74,13 +63,17 @@ class CliRunner
       PHP_EOL;
   }
 
-  static function runCommand($oMigration, $command, $params)
+  function run()
   {
+    $params = $this->params;
+
+    $migrator = new DbMigration($params['dsn'], $params['schema'], $params['data'], $params['migrations']);
+
     $bDryRun = isset($params['test']) ? true: false;
 
-    echo 'DSN: ' . $params['dsn'] . PHP_EOL . PHP_EOL;
+    echo 'DSN: ' . $params['dsn'] . PHP_EOL;
 
-    switch($command)
+    switch($this->command)
     {
       case 'config':
         echo "Configs:" . PHP_EOL .
@@ -98,35 +91,35 @@ class CliRunner
 
       case 'dump':
         $ignore = isset($params['ignore']) ? $params['ignore']: null;
-        $oMigration->dump($ignore);
+        $migrator->dump($ignore);
         break;
 
       case 'init':
         $version = isset($params['version']) ? $params['version']: null;
-        $oMigration->init($version);
+        $migrator->init($version);
         break;
 
       case 'load':
-        $oMigration->load();
+        $migrator->load();
         break;
 
       case 'diff':
-        echo $oMigration->diff();
+        echo $migrator->diff();
         break;
 
       case 'migrate':
-        $oMigration->migrate($bDryRun);
+        $migrator->migrate($bDryRun);
         break;
 
       case 'create_migration':
         if(isset($params['name']) and $params['name'])
-          $oMigration->createMigration($params['name']);
+          $migrator->createMigration($params['name']);
         else
           echo "create_migration requires --name=new_migration_name option" . PHP_EOL;
         break;
 
       default:
-        echo PHP_EOL . "ERROR: Unknown command '$command'" . PHP_EOL . PHP_EOL;
+        echo PHP_EOL . "ERROR: Unknown command '{$this->command}'" . PHP_EOL . PHP_EOL;
         self::showUsage();
     }
   }
@@ -138,7 +131,7 @@ class CliRunner
    * @since         August 21, 2009
    * @filesource      http://pwfisher.com/nucleus/index.php?itemid=45
    */
-  protected static function parseArgs($argv)
+  static function parseArgs($argv)
   {
     array_shift($argv); $o = array();
     foreach ($argv as $a){

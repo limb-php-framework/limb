@@ -17,7 +17,7 @@ abstract class DbDriver {
   protected $_tmpSchema = '/tmp/tmp_migration_schema';
   /**
    * DataBase migration driver
-   * 
+   *
    * @param string $sDsn            DSN formatted string like "mysql://user:password@host.name:port/database_name?charset=UTF8"
    * @param string $sSchemaPath     Path to Schema file
    * @param string $sDataPath       Path to Data file
@@ -116,9 +116,9 @@ abstract class DbDriver {
 
   abstract function _db_drop($dsn);
 
-  abstract function _dump_schema($dsn, $file, $tables = array());
+  abstract function _dump_schema($dsn, $file);
 
-  abstract function _dump_data($dsn, $file, $tables = array());
+  abstract function _dump_data($dsn, $file);
 
   abstract function _dump_load($dsn, $file);
 
@@ -129,17 +129,17 @@ abstract class DbDriver {
   function _db_cleanup($dsn)
   {
     extract($dsn);
-  
+
     $tables = $this->_get_tables($dsn);
     $this->_drop_tables($dsn, $tables);
-  
+
     $this->_log("Starting clean up of '$database' DB...\n");
-  
+
     $this->_log("done\n");
   }
 
   abstract function _drop_tables($dsn, $tables);
-  
+
   abstract function _truncate_tables($dsn, $tables);
 
   function _get_migration_files_since($migrations_dir, $base_version)
@@ -155,31 +155,31 @@ abstract class DbDriver {
     ksort($files);
     return $files;
   }
-  
+
   function _get_last_migration_file($migrations_dir)
   {
     $files = glob($migrations_dir . '*');
     krsort($files);
     return reset($files);
   }
-  
+
   abstract function _migrate($dsn, $migrations_dir, $since = null);
-  
+
   abstract function _get_schema_version($dsn);
-  
+
   abstract function _set_schema_version($dsn, $since = null);
-  
+
   function _test_migration($dsn, $sql_schema, $sql_data, $migrations_dir)
   {
     extract($dsn);
-	$this->_log("===== Testing migration of DB(dry-run) =====\n");		
+	$this->_log("===== Testing migration of DB(dry-run) =====\n");
 
 	$tmp_db = $this->_create_tmp_db($dsn);
 	$dsn['database'] = $tmp_db;
-	
+
 	// getting version of loaded schema
 	$since = $this->_get_schema_version($dsn);
-	
+
 	$this->_dump_load($dsn, $this->_schemaPath);
 //	$this->_load($dsn, $this->_tmpSchema);
 	try
@@ -197,6 +197,6 @@ abstract class DbDriver {
 	$this->_log("Everything seems to be OK\n");
     return true;
   }
-  
+
   abstract function _copy_tables_contents($dsn_src, $dsn_dst, $tables);
 }

@@ -1,4 +1,5 @@
 <?php
+
 require_once(dirname(__FILE__) . '/DbDriver.class.php');
 
 class MysqlDbDriver extends DbDriver
@@ -9,13 +10,13 @@ class MysqlDbDriver extends DbDriver
 	  $password = ($password)? '-p' . $password : '';
 	  return "mysql -h$host -u$user $password";
 	}
-
+	
 	function _nondb_exec($dsn, $cmd)
 	{
 	  $dsn['database'] = '';
 	  return $this->_exec($dsn, $cmd);
 	}
-
+	
 	function _exec($dsn, $cmd)
 	{
 	  extract($dsn);
@@ -25,46 +26,46 @@ class MysqlDbDriver extends DbDriver
 
 	  if($ret)
 	    throw new Exception("Shell command '$shell_cmd' executing error \n'$outstr'");
-
+	
 	  if(preg_match('~ERROR\s+\d+\s+\(\d+\)~', $outstr))
 	    throw new Exception("MySQL command '$cmd' with error \n'$outstr'");
-
+	
 	  return $outstr;
 	}
-
+	
 	function _load($dsn, $file)
 	{
 	  extract($dsn);
 	  $cmd = $this->_connect_string($dsn) . " $database < $file 2>&1";
-
+	
 	  echo "Starting to load '$file' file to '$database' DB...";
-
+	
 	  exec($cmd, $out, $ret);
 	  $outstr = trim(implode("\n", $out));
-
+	
 	  if($ret)
 	    throw new Exception("Shell command '$cmd' executing error \n'$outstr'");
-
+	
 	  if(preg_match('~ERROR\s+\d+\s+\(\d+\)~', $outstr))
 	    throw new Exception("MySQL specific error \n'$outstr'");
-
+	
 	  $this->_log("done\n");
 	}
-
+	
 	function _db_exists($dsn)
 	{
 	  extract($dsn);
 	  $res = $this->_nondb_exec($dsn, "SHOW DATABASES");
 	  return strpos($res, $database) !== false;
 	}
-
+	
 	function _table_exists($dsn, $table)
 	{
 	  extract($dsn);
 	  $res = $this->_exec($dsn, "SHOW TABLES");
 	  return strpos($res, $table) !== false;
 	}
-
+	
 	function _get_tables($dsn)
 	{
 	  extract($dsn);
@@ -73,7 +74,7 @@ class MysqlDbDriver extends DbDriver
 	  $tables = array_filter(explode("\n", `$cmd`));
 	  return $tables;
 	}
-
+	
 	function _create_tmp_db($dsn)
 	{
 	  $dsn['database'] = $dsn['database'] . '_migration';
@@ -83,15 +84,15 @@ class MysqlDbDriver extends DbDriver
 	  $this->_log("done\n");
 	  return $dsn['database'];
 	}
-
+	
 	function _db_drop($dsn)
 	{
 	  extract($dsn);
 	  $this->_log("Dropping database '$database'\n");
-
+	  
 	  $this->_exec($dsn, "DROP DATABASE $database");
 	}
-
+	
 	function _dump_schema($dsn, $file)
 	{
 	  extract($dsn);
@@ -101,9 +102,9 @@ class MysqlDbDriver extends DbDriver
 	         "--quote-names --allow-keywords --add-drop-table " .
 	         "--set-charset --result-file=$file " .
 	         "$database ";
-
+	
 	  $this->_log("Starting to dump schema to '$file' file...");
-
+	
 	  system($cmd, $ret);
 
     // dumping shema_info table data to schema_info
@@ -121,7 +122,7 @@ class MysqlDbDriver extends DbDriver
 	  else
 	    $this->_log("error!\n");
 	}
-
+	
 	function _dump_data($dsn, $file)
 	{
 	  extract($dsn);
@@ -132,51 +133,51 @@ class MysqlDbDriver extends DbDriver
 	         "--allow-keywords --max_allowed_packet=16M --quote-names " .
 	         "--complete-insert --set-charset --ignore-table=$database.schema_info --result-file=$file " .
 	         "$database ";
-
-
+	
+	
 	  $this->_log("Starting to dump to '$file' file...");
-
+	
 	  system($cmd, $ret);
-
+	
 	  if(!$ret)
 	    $this->_log("done! (" . filesize($file) . " bytes)\n");
 	  else
 	   $this->_log("error!\n");
 	}
-
+	
 	function _dump_load($dsn, $file)
 	{
 	  extract($dsn);
 	  $password = ($password)? '-p' . $password : '';
 	  $cmd = "mysql -u$user $password -h$host --default-character-set=$charset $database < $file";
-
+	
 	  $this->_log("Starting to load '$file' file to '$database' DB...");
-
+	
 	  system($cmd, $ret);
-
+	
 	  if(!$ret)
 	    $this->_log("done! (" . filesize($file) . " bytes)\n");
 	  else
 	   $this->_log("error!\n");
 	}
-
+	
 	function _copy_schema($dsn_src, $dsn_dst)
 	{
 	  extract($dsn_src, EXTR_PREFIX_ALL, 'src');
 	  extract($dsn_dst, EXTR_PREFIX_ALL, 'dst');
-
+	
 	  $tables = $this->_get_tables($dsn_src);
-
+	
 	  $src_password = ($src_password)? '-p' . $src_password : '';
 	  $dst_password = ($dst_password)? '-p' . $dst_password : '';
-
+	
 	  $this->_log("Starting to clone schema from '$src_database' DB to '$dst_database' DB...\n");
-
+	
 	  foreach($tables as $table)
 	  {
 	    $cmd = "mysql -NB -u$src_user $src_password -h$src_host -e\"SHOW CREATE TABLE $table\" $src_database";
 	    list(,$create_schema) = explode("\t", `$cmd`, 2);
-
+	
 	    $create_schema = str_replace('\n', '', escapeshellarg(trim($create_schema)));
 	    $cmd = "mysql -u$dst_user $dst_password -h$dst_host -e$create_schema $dst_database";
 	    system($cmd, $ret);
@@ -187,29 +188,29 @@ class MysqlDbDriver extends DbDriver
 	  }
 	  $this->_log("done\n");
 	}
-
+	
 	function _copy_schema_and_use_memory_engine($dsn_src, $dsn_dst)
 	{
 	  extract($dsn_src, EXTR_PREFIX_ALL, 'src');
 	  extract($dsn_dst, EXTR_PREFIX_ALL, 'dst');
-
+	
 	  $tables = $this->_get_tables($dsn_src);
-
+	
 	  $src_password = ($src_password)? '-p' . $src_password : '';
 	  $dst_password = ($dst_password)? '-p' . $dst_password : '';
-
+	
 	  $this->_log("Starting to clone schema from '$src_database' DB to '$dst_database' DB...\n");
-
+	
 	  foreach($tables as $table)
 	  {
 	    $cmd = "mysql -NB -u$src_user $src_password -h$src_host -e\"SHOW CREATE TABLE $table\" $src_database";
 	    list(,$create_schema) = explode("\t", `$cmd`, 2);
-
+	
 	    $create_schema = str_replace('\n', '', escapeshellarg(trim($create_schema)));
 	    $create_schema = preg_replace('/(.*)ENGINE=([^\s]*)(.*)/', '${1}ENGINE=MEMORY${3}', $create_schema);
-
+	
 	    $create_schema = str_replace(array(' longtext', ' blob', ' text'), ' varchar(255)', $create_schema);
-
+	
 	    $cmd = "mysql -u$dst_user $dst_password -h$dst_host -e$create_schema $dst_database";
 	    system($cmd, $ret);
 	    if(!$ret)
@@ -219,24 +220,24 @@ class MysqlDbDriver extends DbDriver
 	  }
 	  $this->_log("done\n");
 	}
-
-
+	
+	
 	function _db_cleanup($dsn)
 	{
 	  extract($dsn);
-
+	
 	  $tables = $this->_get_tables($dsn);
 	  $this->_drop_tables($dsn, $tables);
-
+	
 	  $this->_log("Starting clean up of '$database' DB...\n");
-
+	
 	  $this->_log("done\n");
 	}
-
+	
 	function _drop_tables($dsn, $tables)
 	{
 	  extract($dsn);
-
+	
 	  $password = ($password)? '-p' . $password : '';
 	  foreach($tables as $table)
 	  {
@@ -248,11 +249,11 @@ class MysqlDbDriver extends DbDriver
 	      $this->_log("error while removing '$table'\n");
 	  }
 	}
-
+	
 	function _truncate_tables($dsn, $tables)
 	{
 	  extract($dsn);
-
+	
 	  $password = ($password)? '-p' . $password : '';
 	  foreach($tables as $table)
 	  {
@@ -264,7 +265,7 @@ class MysqlDbDriver extends DbDriver
 	      echo "error while truncating '$table'\n";
 	  }
 	}
-
+	
 	function _get_migration_files_since($migrations_dir, $base_version)
 	{
 	  $files = array();
@@ -278,30 +279,30 @@ class MysqlDbDriver extends DbDriver
 	  ksort($files);
 	  return $files;
 	}
-
+	
 	function _get_last_migration_file($migrations_dir)
 	{
 	  $files = glob($migrations_dir . '/*');
 	  krsort($files);
 	  return reset($files);
 	}
-
+	
 	function _migrate($dsn, $migrations_dir, $since = null)
 	{
 	  extract($dsn);
-
+	
 	  if(!$this->_db_exists($dsn))
 	    return;
-
+	
 	  if(!$this->_table_exists($dsn, 'schema_info'))
 	    $this->_exec($dsn, 'CREATE TABLE schema_info ("version" integer default 1);');
-
+	
 	  if(!$this->_exec($dsn, 'SELECT COUNT(*) as c FROM schema_info'))
 	    $this->_exec($dsn, 'INSERT INTO schema_info VALUES (' . (int) $since . ');');
 
 	  if(is_null($since))
 	    $since = (int) $this->_exec($dsn, 'SELECT version FROM schema_info');
-
+	
 	  $this->_log("Searching for dumps since version '$since' in '$migrations_dir'\n");
 	  foreach($this->_get_migration_files_since($migrations_dir, $since) as $version => $file)
 	  {
@@ -313,21 +314,21 @@ class MysqlDbDriver extends DbDriver
 	function _get_schema_version($dsn)
 	{
 	  extract($dsn);
-
+	
 	  if(!$this->_table_exists($dsn, 'schema_info'))
 	    return null;
-
+	
 	  return (int)$this->_exec($dsn, 'SELECT version FROM schema_info');
 	}
 
 	function _set_schema_version($dsn, $since = 1)
 	{
 	  extract($dsn);
-
+	
 	  $this->_log('Setting schema version ' . (int) $since . PHP_EOL);
       if(!$this->_table_exists($dsn, 'schema_info'))
         $this->_exec($dsn, 'CREATE TABLE schema_info ("version" integer default 1);');
-
+  
       if((int)$this->_exec($dsn, 'SELECT COUNT(*) as c FROM schema_info'))
         $this->_exec($dsn, 'UPDATE schema_info SET version = ' . (int) $since . ';');
       else
@@ -340,17 +341,17 @@ class MysqlDbDriver extends DbDriver
 	{
 	  extract($dsn_src, EXTR_PREFIX_ALL, 'src');
 	  extract($dsn_dst, EXTR_PREFIX_ALL, 'dst');
-
+	
 	  $this->_log("\nStarting to copy tables contents from '$src_database' DB to '$dst_database' DB...\n");
-
+	
 	  $conn = mysql_connect($src_host, $src_user, $src_password);
-
+	
 	  mysql_query("set character_set_client='utf8'", $conn);
 	  mysql_query("set character_set_results='utf8'", $conn);
 	  mysql_query("set collation_connection='utf8_general_ci'", $conn);
-
+	
 	  mysql_select_db($src_database, $conn);
-
+	
 	  $dump = array();
 	  foreach($tables as $table)
 	  {
@@ -361,17 +362,17 @@ class MysqlDbDriver extends DbDriver
 	      $dump[$table][] = $record;
 	    }
 	  }
-
+	
 	  mysql_close($conn);
-
+	
 	  $conn = mysql_connect($dst_host, $dst_user, $dst_password);
-
+	
 	  mysql_query("set character_set_client='utf8'", $conn);
 	  mysql_query("set character_set_results='utf8'", $conn);
 	  mysql_query("set collation_connection='utf8_general_ci'", $conn);
-
+	
 	  mysql_select_db($dst_database, $conn);
-
+	
 	  foreach($dump as $table => $records)
 	  {
 	    $sql = "INSERT INTO " . $table . " VALUES (";
@@ -379,18 +380,18 @@ class MysqlDbDriver extends DbDriver
 	    {
 	      foreach($record as $field)
 	        $sql .= "'" . substr($field, 0, 255) . "',";
-
+	
 	      $sql = preg_replace('/,$/', '', $sql);
 	      $sql .= "),(";
 	    }
 	    $sql = preg_replace('/,\($/', ';', $sql);
-
+	
 	    if(mysql_query($sql, $conn))
 	      $this->_log("'" . $table . "' copied content\n");
 	  }
-
+	
 	  mysql_close($conn);
-
+	
 	  $this->_log("done\n");
 	}
 
@@ -398,14 +399,14 @@ class MysqlDbDriver extends DbDriver
   {
     require_once (dirname(__FILE__) . '/MysqlConnection.class.php');
     require_once (dirname(__FILE__) . '/Mysql.functions.php');
-
+ 
     extract($dsn);
 
-	if(preg_match('~INSERT\s+INTO\s+.*schema_info\D+(\d+)~i', file_get_contents($schema), $m))
+	if(preg_match('~INSERT\s+INTO\s+.*schema_info\D+(\d+)~i', file_get_contents($data), $m))
 	  $since = $m[1];
 	else
 	  $since = -1;
-
+	
 	//collecting all not applied migrations
 	$migrations = array();
 	foreach(glob($migrations_dir . '/*.sql') as $migration)
@@ -415,43 +416,43 @@ class MysqlDbDriver extends DbDriver
 	    $migrations[] = $migration;
 	}
 	asort($migrations);
-
+	
 	$working_db = array(
 	  'hostname' => $host,
 	  'username' => $user,
 	  'password' => $password,
 	  'database' => $database
 	);
-
+	
 	$conn = new MysqlConnection($host, $user, $password);
 	$conn->open();
 	$tmp_db = $conn->createTemporaryDatabase();
-
+	
 	$repos_db = $working_db;
 	$repos_db['database'] = $tmp_db;
-
+	
 	$conn->importSql($tmp_db, $schema);
-
+	
 	foreach($migrations as $migration)
 	  $conn->importSql($tmp_db, $migration);
-
+	
 	$diff = generateScript($repos_db, $working_db);
-
+	
 	$conn->dropDatabase($tmp_db);
 	$conn->close();
-
+	
 	return $diff;
   }
-
+  
   function _create_migration($dsn, $name, $schema, $data, $migrations_dir, $since = 0)
   {
 	extract($dsn);
 
 	$this->_log("===== Migrating production DB to apply all migrations =====\n");
 	$this->_migrate($dsn, $migrations_dir, null);
-
+	
 	$diff = $this->_diff($dsn, $schema, $data, $migrations_dir);
-
+	
 	if($diff)
 	{
 	  $last = $this->_get_last_migration_file($migrations_dir);
@@ -460,17 +461,17 @@ class MysqlDbDriver extends DbDriver
 	    $this->_log("The last migration file '$last' is identical to the new migration, skipped\n");
 	    return;
 	  }
-
+	
 	  $stamp = time();
 	  $file = "$migrations_dir/{$stamp}_{$name}.sql";
-
+	
 	  $this->_log("Writing new migration to file '$file'...");
 	  file_put_contents($file, $diff);
 	  $this->_log("done! (" . strlen($diff). " bytes)\n");
-
+	
 	  if(!$this->_test_migration($dsn, $schema, $data, $migrations_dir))
 	    $this->_log("\nWARNING: migration has errors, please correct them before committing! Try dry-running it with mysql_migrate.php --dry-run\n");
-
+	
 	  $this->_log("Updating version info...");
 	  $this->_exec($dsn, "UPDATE schema_info SET version = $stamp;");
 	  $this->_log("done!\n");

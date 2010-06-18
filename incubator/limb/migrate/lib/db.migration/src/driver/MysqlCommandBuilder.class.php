@@ -120,8 +120,8 @@ class MysqlCommandBuilder {
         } else {
           $added_fields[] = $vk;
           if ( $this->getOption("short") ) {
-            $altering.=($altering==""?"":$this->_translate(",")."\n")."    ".$this->_highlightString("ADD")." ".$this->_fieldString($target["fields"][$vk]).( isset($lastfield) ? " ".$this->_highlightString("AFTER")." `$lastfield`" : " ".$this->_highlightString("FIRST") );
-          } else $result .= $this->_highlightString("ALTER TABLE")." ".$this->_objectName($target["name"])." ".$this->_highlightString("ADD")." ".$this->_fieldString($target["fields"][$vk]).( isset($lastfield) ? " ".$this->_highlightString("AFTER")." `$lastfield`" : " ".$this->_highlightString("FIRST") ).$this->_translate(";")."\n";
+            $altering.=($altering==""?"":$this->_translate(",")."\n")."    ".$this->_highlightString("ADD")." ".$this->_fieldString($target["fields"][$vk]).( isset($lastfield) ? " ".$this->_highlightString("AFTER")." $lastfield" : " ".$this->_highlightString("FIRST") );
+          } else $result .= $this->_highlightString("ALTER TABLE")." ".$this->_objectName($target["name"])." ".$this->_highlightString("ADD")." ".$this->_fieldString($target["fields"][$vk]).( isset($lastfield) ? " ".$this->_highlightString("AFTER")." $lastfield" : " ".$this->_highlightString("FIRST") ).$this->_translate(";")."\n";
         }
         $altered++;
       }
@@ -353,7 +353,7 @@ class MysqlCommandBuilder {
     "Private" methods ...
   */
   function _alternateNullDefault($type) {
-    if ( strtolower(substr($type, 0, 4))=="int(" || strtolower(substr($type, 0, 7))=="bigint(" || strtolower(substr($type, 0, 9))=="smallint(" || strtolower(substr($type, 0, 8))=="tinyint(" || strtolower(substr($type, 0, 10))=="mediumint(" ) {
+    if ( strtolower(substr($type, 0, 4))=="int(" || strtolower(substr($type, 0, 8))=="bigint(" || strtolower(substr($type, 0, 8))=="smallint(" || strtolower(substr($type, 0, 8))=="tinyint(" || strtolower(substr($type, 0, 10))=="mediumint(" ) {
       $result="0";
     } else if ( strtolower(substr($type, 0, 8))=="datetime" ) {
       $result="0000-00-00 00:00:00";
@@ -394,13 +394,12 @@ class MysqlCommandBuilder {
 
     if(!isset($field["extra"]) || strstr($field["extra"], "auto_increment") === false)
     {
+      $result .= " ".$this->_highlightString("DEFAULT", "ddl");
       if ( isset($field["default"]) ) {
-        $result .= " ".$this->_highlightString("DEFAULT", "ddl");
         $result .= " ".$this->_highlightstring("'".$field["default"]."'", "values");
+      } else {
+        $result .= " ".($field["null"] ? $this->_highlightString("NULL", "const") : $this->_highlightstring($this->_alternateNullDefault($field["type"]), "values"));
       }
-      //else {
-        //$result .= " ".($field["null"] ? $this->_highlightString("NULL", "const") : $this->_highlightstring($this->_alternateNullDefault($field["type"]), "values"));
-      //}
     }
 
     if ( isset($field["comment"]) && $this->_con->serverVersionCompare("4.1.0") >= 0 ) {

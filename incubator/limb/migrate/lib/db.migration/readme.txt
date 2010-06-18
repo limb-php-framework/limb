@@ -10,10 +10,12 @@ ACTIONS (options marked like <option_name>):
 
 dump:
     Dumps database <dsn> to <schema> and <data> files.
+    You can ignore schema using --ignore=scheme or data using --ignore=data.
 
 init:
     Sets up <version> of databse <dsn> (0 for new db) to 'schema_info' table. Creates table if needed.
     Then makes dump action.
+    You can ignore schema using --ignore=scheme or data using --ignore=data.
 
 load:
     Cleans up database <dsn> and Loads <schema>, <data> instead 
@@ -44,6 +46,8 @@ OPTIONS:
 --name=<migration_patch_name> - name for new migration patch file.
 
 --test - used to test migration process and correct posible errors before applying it to life database.
+
+--ignore=(schema|data) - ignore selected type while dumping database to  <schema> and <data> files.
 
 
 You can set default values for <dsn>, <schema>, <data>, <migrations> in migration.conf.php. Format is simple php array:

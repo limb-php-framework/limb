@@ -2,27 +2,20 @@
 
 class DbMigration
 {
-  
-  protected $_driver_dir; 
-
+  protected $_driver_dir;
   /**
    * @var MysqlDbDriver
    */
-  protected $_db; 
-
+  protected $_db;
   protected $_dsn = array();
-
   protected $_schemaPath;
-
   protected $_dataPath;
-
   protected $_migrationsDir;
-
   static protected $_defaultDsn;
 
   /**
    * DataBase migration tool
-   * 
+   *
    * @param string $sDsn            DSN formatted string like "mysql://user:password@host.name:port/database_name?charset=UTF8"
    * @param string $sSchemaPath     Path to Schema file
    * @param string $sDataPath       Path to Data file
@@ -45,7 +38,7 @@ class DbMigration
     $this->_ensurePath($this->_migrationsDir);
 
     return $this->getDb()->_diff($this->_dsn, $this->_schemaPath, $this->_dataPath, $this->_migrationsDir);
-  } 
+  }
 
   public function dump($ignore = null)
   {
@@ -65,7 +58,7 @@ class DbMigration
     {
       $this->_writeable($this->_dataPath);
       $this->getDb()->_dump_data($this->_dsn, $this->_dataPath);
-    } 
+    }
     else
     {
       $ourFileHandle = fopen($this->_dataPath, 'w') or die("can't open file");
@@ -73,17 +66,35 @@ class DbMigration
     }
   }
 
-  public function init($version = null)
+  public function init($version = null, $ignore = null)
   {
-    $this->_writeable($this->_schemaPath);
-    $this->_writeable($this->_dataPath);
-    
-    if(!$this->getDb()->_get_schema_version($this->_dsn))
-      $version = 1;     
+
+    if (!$this->getDb()->_get_schema_version($this->_dsn))
+      $version = 1;
+
     $this->getDb()->_set_schema_version($this->_dsn, $version);
-    
-    $this->getDb()->_dump_schema($this->_dsn, $this->_schemaPath);
-    $this->getDb()->_dump_data($this->_dsn, $this->_dataPath);
+
+    if (is_null($ignore) or 'schema'<>$ignore)
+    {
+      $this->_writeable($this->_schemaPath);
+      $this->getDb()->_dump_schema($this->_dsn, $this->_schemaPath);
+    }
+    else
+    {
+      $ourFileHandle = fopen($this->_schemaPath, 'w') or die("can't open file");
+      fclose($ourFileHandle);
+    }
+
+    if (is_null($ignore) or 'data'<>$ignore)
+    {
+      $this->_writeable($this->_dataPath);
+      $this->getDb()->_dump_data($this->_dsn, $this->_dataPath);
+    }
+    else
+    {
+      $ourFileHandle = fopen($this->_dataPath, 'w') or die("can't open file");
+      fclose($ourFileHandle);
+    }
   }
 
   public function load()
@@ -91,11 +102,11 @@ class DbMigration
     $this->_ensurePath($this->_schemaPath);
     $this->_ensurePath($this->_dataPath);
 
-	$this->getDb()->_db_cleanup($this->_dsn);
+    $this->getDb()->_db_cleanup($this->_dsn);
 
-	$this->getDb()->_dump_load($this->_dsn, $this->_schemaPath);
-	$this->getDb()->_dump_load($this->_dsn, $this->_dataPath);
-  } 
+    $this->getDb()->_dump_load($this->_dsn, $this->_schemaPath);
+    $this->getDb()->_dump_load($this->_dsn, $this->_dataPath);
+  }
 
   public function migrate($bDryRun)
   {
@@ -103,19 +114,21 @@ class DbMigration
     $this->_ensurePath($this->_dataPath);
     $this->_ensurePath($this->_migrationsDir);
 
-    if($bDryRun) {
-    	$this->getDb()->_test_migration(
-                        $this->_dsn,
-                        $this->_schemaPath,
-                        $this->_dataPath,
-                        $this->_migrationsDir
-    	                 );
+    if ($bDryRun)
+    {
+      $this->getDb()->_test_migration(
+              $this->_dsn,
+              $this->_schemaPath,
+              $this->_dataPath,
+              $this->_migrationsDir
+      );
     }
-    else {
+    else
+    {
       $this->getDb()->_migrate(
-                        $this->_dsn,
-                        $this->_migrationsDir
-                       );
+              $this->_dsn,
+              $this->_migrationsDir
+      );
     }
   }
 
@@ -128,12 +141,12 @@ class DbMigration
     $this->_checkFileName($sName);
 
     $this->getDb()->_create_migration(
-                        $this->_dsn,
-                        $sName,
-                        $this->_schemaPath,
-                        $this->_dataPath,
-                        $this->_migrationsDir
-                        );
+            $this->_dsn,
+            $sName,
+            $this->_schemaPath,
+            $this->_dataPath,
+            $this->_migrationsDir
+    );
   }
 
   /**
@@ -142,56 +155,56 @@ class DbMigration
    */
   public function _importDsn($sDsn)
   {
-  	if(!$sDsn)
-  	 $sDsn = self::getDefaultDsn();
+    if (!$sDsn)
+      $sDsn = self::getDefaultDsn();
 
-  	$sDsn = trim($sDsn);
+    $sDsn = trim($sDsn);
 
-    if(!$hUrl = @parse_url($sDsn))
+    if (!$hUrl = @parse_url($sDsn))
       throw new Exception("DSN '$sDsn' is not valid");
 
     $this->_dsn = array(
-                    'sDsn' => $sDsn,
-                    'scheme' => '',
-                    'host' => '',
-                    'port' => '',
-                    'password' => '',
-                    'path' => '',
-                    'query' => array(),
-                    'charset' => 'utf8',
-                    'fragment' => '',
-                    );
+        'sDsn'=>$sDsn,
+        'scheme'=>'',
+        'host'=>'',
+        'port'=>'',
+        'password'=>'',
+        'path'=>'',
+        'query'=>array(),
+        'charset'=>'utf8',
+        'fragment'=>'',
+    );
 
-    foreach($hUrl as $sKey => $sValue)
+    foreach ($hUrl as $sKey=>$sValue)
     {
-      switch($sKey)
+      switch ($sKey)
       {
         case 'scheme':
-        	$this->_dsn['protocol'] = $sValue;
-        	break;
+          $this->_dsn['protocol'] = $sValue;
+          break;
         case 'host':
-        	$this->_dsn['host'] = $sValue;
-        	break;
+          $this->_dsn['host'] = $sValue;
+          break;
         case 'port':
-        	$this->_dsn['port'] = $sValue;
-        	break;
+          $this->_dsn['port'] = $sValue;
+          break;
         case 'user':
-        	$this->_dsn['user'] = $sValue;
-        	break;
+          $this->_dsn['user'] = $sValue;
+          break;
         case 'pass':
-        	$this->_dsn['password'] = $sValue;
-        	break;
+          $this->_dsn['password'] = $sValue;
+          break;
         case 'path':
-        	$this->_dsn['database'] = substr($sValue, 1);//removing first slash
-        	break;
+          $this->_dsn['database'] = substr($sValue, 1);//removing first slash
+          break;
         case 'query':
-        	parse_str($sValue, $this->_dsn['query']);
-        	if(isset($this->_dsn['query']['charset']))
-        	 $this->_dsn['charset'] = $this->_dsn['query']['charset'];
-        	break;
+          parse_str($sValue, $this->_dsn['query']);
+          if (isset($this->_dsn['query']['charset']))
+            $this->_dsn['charset'] = $this->_dsn['query']['charset'];
+          break;
         case 'fragment':
-        	$this->_dsn['fragment'] = $sValue;
-        	break;
+          $this->_dsn['fragment'] = $sValue;
+          break;
       }
     }
   }
@@ -201,54 +214,58 @@ class DbMigration
    */
   protected function _loadDbDriver()
   {
-  	$sDriverName = ucfirst(strtolower($this->_dsn['protocol']));
+    $sDriverName = ucfirst(strtolower($this->_dsn['protocol']));
 
-  	$sClassName = $sDriverName . 'DbDriver';
-  	$sClassPath = 'driver/' . $sClassName . '.class.php';
-  	$sIncludePath  = dirname(__FILE__) . '/' . $sClassPath;
+    $sClassName = $sDriverName.'DbDriver';
+    $sClassPath = 'driver/'.$sClassName.'.class.php';
+    $sIncludePath = realpath(dirname(__FILE__)).'/'.$sClassPath;
 
-  	@require_once($sIncludePath);
-  	if(!class_exists($sClassName))
-     throw new Exception("Couldn't load $sDriverName driver (must be in ./$sClassPath)");
-     
-  	$this->_db = new $sClassName($this->_dsn['sDsn'], null, $this->_schemaPath, $this->_dataPath, $this->_migrationsDir);
+    if (!file_exists($sIncludePath))
+    {
+      throw new Exception("Couldn't load $sDriverName driver (must be in ./$sIncludePath)");
+    }
+
+    require_once($sIncludePath);
+
+    $this->_db = new $sClassName($this->_dsn['sDsn'], null, $this->_schemaPath, $this->_dataPath, $this->_migrationsDir);
   }
 
   /**
    * Get DbDriver
-   * 
+   *
    * @return MysqlDbDriver
    */
   public function getDb()
   {
-  	return $this->_db;
+    return $this->_db;
   }
 
   protected function _ensurePath($sPath)
   {
-    if(!is_file($sPath) and !is_dir($sPath))
+    if (!is_file($sPath) and!is_dir($sPath))
       throw new Exception("Path '$sPath' does not exist");
   }
 
   protected function _checkFileName($sName)
   {
-    if(!preg_match('/[a-zA-Z0-9_\-.]/', $sName))
+    if (!preg_match('/[a-zA-Z0-9_\-.]/', $sName))
       throw new Exception("File Name '$sName' must use only latin letters, diggits and _ - .");
   }
 
   protected function _writeable($sPath)
   {
-    if(!@is_writeable($sPath) and !@is_writeable(dirname($sPath)))
+    if (!@is_writeable($sPath) and!@is_writeable(dirname($sPath)))
       throw new Exception("Couldn't write to '$sPath'");
   }
 
   public static function setDefaultDsn($sDsn)
   {
-  	self::$_defaultDsn = $sDsn;
+    self::$_defaultDsn = $sDsn;
   }
 
   public static function getDefaultDsn()
   {
-  	return self::$_defaultDsn;
-  } 
+    return self::$_defaultDsn;
+  }
+
 }
