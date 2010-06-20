@@ -68,8 +68,9 @@ class lmbMysqlConnection extends lmbDbBaseConnection
     if($this->connectionId === false)
       $this->_raiseError();
 
-    if(mysql_select_db($this->config['database'], $this->connectionId) === false)
-      $this->_raiseError();
+    if(!empty($this->config['database']))
+      if(mysql_select_db($this->config['database'], $this->connectionId) === false)
+        $this->_raiseError();
 
     if(isset($this->config['charset']) && $charset = $this->config['charset'])
       mysql_query("SET NAMES '$charset'",  $this->connectionId);

@@ -15,7 +15,7 @@ abstract class DriverConnectionTestBase extends UnitTestCase
   var $default_stmt_class;
   var $connection;
 
-  function DriverConnectionTestBase($query_stmt_class, $insert_stmt_class, $manip_stmt_class, $default_stmt_class)
+  function __construct($query_stmt_class, $insert_stmt_class, $manip_stmt_class, $default_stmt_class)
   {
     $this->query_stmt_class = $query_stmt_class;
     $this->insert_stmt_class = $insert_stmt_class;
@@ -33,7 +33,8 @@ abstract class DriverConnectionTestBase extends UnitTestCase
     $this->skipIf(true, 'Socket guessing is not implemented for this connection');
   }
 
-  function testSocketConnection() {
+  function testSocketConnection()
+  {
     lmb_require('core/src/lmbSys.class.php');
     $this->skipIf(lmbSys::isWin32(), "Windows platform doesn't support sockets.");
 
@@ -50,6 +51,32 @@ abstract class DriverConnectionTestBase extends UnitTestCase
     if (isset($connection)) {
       $connection->disconnect();
       unset($connection);
+    }
+  }
+
+  function testConnectionWithoutDbSelect()
+  {
+    $type = $this->connection->getType();
+    if(!in_array($type,array('mysql','mysqli')))
+    {
+      echo ("Skip: testConnectionWithoutDbSelect not implemented for this driver");
+      return;
+    }
+
+    $toolkit = lmbToolkit :: instance();
+    $new_dsn = clone($toolkit->getDefaultDbDSN());
+    $new_dsn->database = false;
+
+    try {
+      $conn = $toolkit->createDbConnection($new_dsn);
+      $conn->execute('SELECT 1');
+    } catch (Exception $e) {
+      $this->fail("Connection without DB select failed.");
+    }
+
+    if (isset($conn)) {
+      $conn->disconnect();
+      unset($conn);
     }
   }
 

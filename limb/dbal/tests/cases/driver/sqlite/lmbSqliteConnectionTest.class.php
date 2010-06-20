@@ -12,10 +12,14 @@ require_once(dirname(__FILE__) . '/fixture.inc.php');
 
 class lmbSqliteConnectionTest extends DriverConnectionTestBase
 {
-
-  function lmbSqliteConnectionTest()
+  function __construct()
   {
-    parent :: DriverConnectionTestBase('lmbSqliteQueryStatement', 'lmbSqliteInsertStatement', 'lmbSqliteManipulationStatement', 'lmbSqliteStatement');
+    parent :: __construct(
+      'lmbSqliteQueryStatement',
+      'lmbSqliteInsertStatement',
+      'lmbSqliteManipulationStatement',
+      'lmbSqliteStatement'
+    );
   }
 
   function setUp()
@@ -25,9 +29,7 @@ class lmbSqliteConnectionTest extends DriverConnectionTestBase
     parent::setUp();
   }
 
-  function testSocketConnection() {
-    $this->skipIf(true, 'Socket connection is not supported by this driver.');
-  }
+  function testSocketConnection() {}
 }
 
 
