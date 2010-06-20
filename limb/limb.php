@@ -1,17 +1,21 @@
 <?php
-if(!defined('LIMB_PROJECT_DIR'))
-  define('LIMB_PROJECT_DIR', lmb_cli_ask_for_option('Project directory', lmb_cli_find_project_dir(getcwd())));
+if(!$project_dir = get_cfg_var('limb.project_dir'))
+  $project_dir = lmb_cli_ask_for_option('Project directory', lmb_cli_find_project_dir(getcwd()));
+else
+  echo "Project directory loaded from PHP config: {$project_dir}\n";
 
-if(!defined('LIMB_FW_DIR'))
-  define('LIMB_FW_DIR', lmb_cli_ask_for_option('Limb directory', lmb_cli_find_limb_dir(LIMB_PROJECT_DIR)));
+if(!$limb_dir = get_cfg_var('limb.dir'))
+  $limb_dir = lmb_cli_ask_for_option('Limb directory', lmb_cli_find_limb_dir($project_dir));
+else
+  echo "Limb directory loaded from PHP config: {$limb_dir}\n";
 
-if(!lmb_cli_init_tasks(LIMB_FW_DIR))
+if(!lmb_cli_init_tasks($limb_dir))
   die("ERROR: Limb not found".PHP_EOL);
 
 lmb_require('limb/taskman/taskman.inc.php');
 
-taskman_propset('PROJECT_DIR', LIMB_PROJECT_DIR);
-taskman_propset('LIMB_DIR', LIMB_FW_DIR);
+taskman_propset('PROJECT_DIR', $project_dir);
+taskman_propset('LIMB_DIR', $limb_dir);
 taskman_run();
 
 function lmb_cli_ask_for_option($option_name, $default_value = '')
