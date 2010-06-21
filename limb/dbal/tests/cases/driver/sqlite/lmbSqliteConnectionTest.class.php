@@ -12,15 +12,10 @@ require_once(dirname(__FILE__) . '/fixture.inc.php');
 
 class lmbSqliteConnectionTest extends DriverConnectionTestBase
 {
-  function __construct()
-  {
-    parent :: __construct(
-      'lmbSqliteQueryStatement',
-      'lmbSqliteInsertStatement',
-      'lmbSqliteManipulationStatement',
-      'lmbSqliteStatement'
-    );
-  }
+  protected $query_stmt_class = 'lmbSqliteQueryStatement';
+  protected $insert_stmt_class = 'lmbSqliteInsertStatement';
+  protected $manip_stmt_class = 'lmbSqliteManipulationStatement';
+  protected $default_stmt_class = 'lmbSqliteStatement';
 
   function setUp()
   {

@@ -12,15 +12,10 @@ require_once(dirname(__FILE__) . '/fixture.inc.php');
 
 class lmbMysqliConnectionTest extends DriverConnectionTestBase
 {
-  /**
-   * @var lmbMysqliConnection
-   */
-  var $connection;
-
-  function lmbMysqliConnectionTest()
-  {
-    parent :: DriverConnectionTestBase('lmbMysqliQueryStatement', 'lmbMysqliInsertStatement', 'lmbMysqliManipulationStatement', 'lmbMysqliStatement');
-  }
+  protected $query_stmt_class = 'lmbMysqliQueryStatement';
+  protected $insert_stmt_class = 'lmbMysqliInsertStatement';
+  protected $manip_stmt_class = 'lmbMysqliManipulationStatement';
+  protected $default_stmt_class = 'lmbMysqliStatement';
 
   function setUp()
   {

@@ -9,19 +9,11 @@
 
 abstract class DriverConnectionTestBase extends UnitTestCase
 {
-  var $query_stmt_class;
-  var $insert_stmt_class;
-  var $manip_stmt_class;
-  var $default_stmt_class;
-  var $connection;
-
-  function __construct($query_stmt_class, $insert_stmt_class, $manip_stmt_class, $default_stmt_class)
-  {
-    $this->query_stmt_class = $query_stmt_class;
-    $this->insert_stmt_class = $insert_stmt_class;
-    $this->manip_stmt_class = $manip_stmt_class;
-    $this->default_stmt_class = $default_stmt_class;
-  }
+  protected $query_stmt_class;
+  protected $insert_stmt_class;
+  protected $manip_stmt_class;
+  protected $default_stmt_class;
+  protected $connection;
 
   function tearDown()
   {
@@ -57,9 +49,10 @@ abstract class DriverConnectionTestBase extends UnitTestCase
   function testConnectionWithoutDbSelect()
   {
     $type = $this->connection->getType();
-    if(!in_array($type,array('mysql','mysqli')))
+    $should_skip = !in_array($type, array('mysql', 'mysqli'));
+    if ($should_skip)
     {
-      echo ("Skip: testConnectionWithoutDbSelect not implemented for this driver");
+      $this->skipIf($should_skip, "testConnectionWithoutDbSelect not implemented for this driver");
       return;
     }
 
@@ -74,7 +67,8 @@ abstract class DriverConnectionTestBase extends UnitTestCase
       $this->fail("Connection without DB select failed.");
     }
 
-    if (isset($conn)) {
+    if (isset($conn))
+    {
       $conn->disconnect();
       unset($conn);
     }
