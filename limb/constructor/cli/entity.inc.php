@@ -31,14 +31,16 @@ function task_entity_parse_table_argument($args)
   $database_info = lmbToolkit :: instance()->getDefaultDbConnection()->getDatabaseInfo();
   taskman_msg('DATABASE: '.$database_info->getName().PHP_EOL);
 
-  if('all' !== $args[0])
-    $tables = array($database_info->getTable($args[0]));
+  $table_name = lmb_cli_ask_for_option("Table name (could be 'all')");
+
+  if('all' !== $table_name)
+    $tables = array($database_info->getTable($table_name));
   else
     $tables = _filter_tables($database_info->getTables(), 'lmb_');
 
   if(!count($tables))
   {
-    taskman_sysmsg('No tables found in '.$args[0]);
+    taskman_sysmsg('No tables found in '.$table_name);
     exit(1);
   }
 
