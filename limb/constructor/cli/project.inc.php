@@ -67,6 +67,7 @@ class LimbApplication extends lmbCmsApplication
   {
     //register your own custom filter chain here
   }
+ */
 }
 
 EOD;
