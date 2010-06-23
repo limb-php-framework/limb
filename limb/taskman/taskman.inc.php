@@ -244,13 +244,14 @@ if(!function_exists('__'))
 else
   taskman_sysmsg("Function __ is already defined somewhere else, use taskman_str() instead");
 
-function taskman_run($argv = null, $help_func = 'task_help')
+function taskman_run($argv = null, $help_func = 'taskman_default_usage')
 {
   if(is_null($argv))
     $argv = $GLOBALS['argv'];
 
   $bench = microtime(true);
 
+  taskman_configset('help_func', $help_func);
   taskman_process_argv($argv);
   $GLOBALS['TASKMAN_SCRIPT'] = array_shift($argv);
 
@@ -287,7 +288,7 @@ function taskman_run($argv = null, $help_func = 'task_help')
     }
     else
     {
-      $help_func();
+      taskman_runtask('help');
       exit();
     }
   }
@@ -634,7 +635,8 @@ function task_help($args = array())
 
   $maxlen = -1;
   $tasks = array();
-  foreach(taskman_gettasks() as $task)
+  $all = taskman_gettasks();
+  foreach($all as $task)
   {
     if($filter && strpos($task->getName(), $filter) === false)
       continue;
@@ -645,12 +647,9 @@ function task_help($args = array())
     $tasks[] = $task;
   }
 
-  echo "\nUsage:\n php <taskman-script> [OPTIONS] <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
-  echo "Available options:\n";
-  echo " -c    specify PHP script to be included(handy for setting props,config options,etc)\n";
-  echo " -v    be verbose(default)\n";
-  echo " -q    be quite\n";
-  echo " -b    batch mode: be super quite, don't even output any system messages\n";
+  $help_func = taskman_config('help_func', 'taskman_default_usage');
+  $help_func();
+
   echo "\n";
   echo "Available tasks:\n";
   foreach($tasks as $task)
@@ -668,6 +667,16 @@ function task_help($args = array())
     echo " " . $task->getName() .  $props_string . "\n";
   }
   echo "\n";
+}
+
+function taskman_default_usage()
+{
+  echo "\nUsage:\n php <taskman-script> [OPTIONS] <task-name1>[,<task-name2>,..] [-D PROP1=value [-D PROP2]]\n\n";
+  echo "Available options:\n";
+  echo " -c    specify PHP script to be included(handy for setting props,config options,etc)\n";
+  echo " -v    be verbose(default)\n";
+  echo " -q    be quite\n";
+  echo " -b    batch mode: be super quite, don't even output any system messages\n";
 }
 
 //}}}

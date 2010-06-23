@@ -67,6 +67,7 @@ class LimbApplication extends lmbCmsApplication
   {
     //register your own custom filter chain here
   }
+ */
 }
 
 EOD;
@@ -115,12 +116,17 @@ function task_project_shares()
     else
       lmbFs::rm($destination);
 
-    if(function_exists('symlink'))
-    {
-      symlink($pkg_shared, $destination);
-      taskman_msg("Created symlink for $pkg ($destination)...\n");
+    try {
+      if(function_exists('symlink'))
+      {
+        symlink($pkg_shared, $destination);
+        taskman_msg("Created symlink for $pkg ($destination)...\n");
+      }
+      else
+        throw new Exception();
     }
-    else
+    // case: mounted FS doesn't support symlink
+    catch (Exception $e)
     {
       lmbFs::cp($pkg_shared, $destination);
       taskman_msg("Copied share for $pkg ($destination)...\n");

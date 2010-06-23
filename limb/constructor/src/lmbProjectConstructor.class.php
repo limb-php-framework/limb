@@ -25,7 +25,8 @@ class lmbProjectConstructor
     $file = $dir.'/'.$name;
 
     if(!$always_override && !$this->_override_files && file_exists($file))
-      return false;
+      if(!lmb_cli_ask_for_accept("Overwrite '$file'"))
+        return false;
 
     return lmbFs::safeWrite($file, $content);
   }
