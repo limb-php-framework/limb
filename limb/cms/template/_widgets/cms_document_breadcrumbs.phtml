@@ -24,7 +24,7 @@
       <? if(isset($root_path) && ($counter == 1)){ ?>
         <a href='{$item["root_path"]}'><b>{$item["root_title"]}</b></a>&nbsp;&raquo;
       <? }else{ ?>
-        <a href='{$base_path}{$item[$link_field]}'><b>{$item.title}</b></a>&nbsp;&raquo;
+        <a href='{$base_path|default:""}{$item[$link_field]}'><b>{$item.title}</b></a>&nbsp;&raquo;
       <? } ?>
     {{/list:item}}
     {$#item.title}
