@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
@@ -12,10 +12,12 @@ lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
  * class lmbOciRecord.
  *
  * @package dbal
- * @version $Id: lmbOciRecord.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbOciRecord.class.php,v 1.1 2009/06/16 13:23:49 mike Exp $
  */
 class lmbOciRecord extends lmbDbBaseRecord
 {
+  protected $properties = array();
+
   function __construct($data = array())
   {
     $this->import($data);
@@ -114,6 +116,13 @@ class lmbOciRecord extends lmbDbBaseRecord
   {
     return $this->get($name);
   }
+
+  function getBit($name)
+  {
+    $value = $this->get($name);
+    return is_null($value) ?  null : bindec($value);
+  }
+
 
   function getIntegerTimeStamp($name)
   {

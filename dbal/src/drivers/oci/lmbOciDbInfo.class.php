@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciTableInfo.class.php');
@@ -13,12 +13,13 @@ lmb_require(dirname(__FILE__) . '/lmbOciTableInfo.class.php');
  * class lmbOciDbInfo.
  *
  * @package dbal
- * @version $Id: lmbOciDbInfo.class.php 8072 2010-01-20 08:33:41Z korchasa $
+ * @version $Id: lmbOciDbInfo.class.php,v 1.1 2009/06/16 13:23:48 mike Exp $
  */
 class lmbOciDbInfo extends lmbDbInfo
 {
   protected $connection;
   protected $isExisting = false;
+  protected $isTablesLoaded = false;
 
   function __construct($connection, $name, $isExisting = false)
   {
@@ -34,7 +35,7 @@ class lmbOciDbInfo extends lmbDbInfo
 
   function loadTables()
   {
-    if($this->isExisting)
+    if($this->isExisting && !$this->isTablesLoaded)
     {
       $config = $this->connection->getConfig();
       $schema = strtoupper($config['user']);

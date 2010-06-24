@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
@@ -12,11 +12,12 @@ lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
  * class lmbOciStatement.
  *
  * @package dbal
- * @version $Id: lmbOciStatement.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbOciStatement.class.php,v 1.1 2009/06/16 13:23:49 mike Exp $
  */
 class lmbOciStatement implements lmbDbStatement
 {
   protected $sql;
+  protected $originalSql;
   protected $statement = null;
   protected $connection;
   protected $modified = false;
@@ -25,6 +26,7 @@ class lmbOciStatement implements lmbDbStatement
   function __construct($connection, $sql)
   {
     $this->sql = $sql;
+    $this->originalSql = $sql;
     $this->connection = $connection;
   }
   
@@ -52,7 +54,7 @@ class lmbOciStatement implements lmbDbStatement
 
   function getStatement()
   {
-    if(!$this->statement || $this->hasChanged)
+    if(!is_resource($this->statement) || $this->hasChanged)
       $this->_prepareStatement();
     return $this->statement;
   }
@@ -106,7 +108,12 @@ class lmbOciStatement implements lmbDbStatement
 
   function execute()
   {
-    return $this->connection->executeStatement($this);
+      return $this->connection->executeStatement($this/*->getStatement()*/);
+  }
+
+  function executeWOTrace()
+  {
+      return $this->connection->executeStatementWOTrace($this/*->getStatement()*/);
   }
 
   function free()
@@ -196,6 +203,12 @@ class lmbOciStatement implements lmbDbStatement
   function setTimeStamp($name, $value)
   {
     $this->parameters[$name] = is_null($value) ? null : intval($value);
+    $this->hasChanged = true;
+  }
+
+  function setBit($name, $value)
+  {
+    $this->parameters[$name] = decbin($value);
     $this->hasChanged = true;
   }
 

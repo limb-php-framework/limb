@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbInsertStatement.interface.php');
@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciManipulationStatement.class.php');
  * class lmbOciInsertStatement.
  *
  * @package dbal
- * @version $Id: lmbOciInsertStatement.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbOciInsertStatement.class.php,v 1.1 2009/06/16 13:23:48 mike Exp $
  */
 class lmbOciInsertStatement extends lmbOciManipulationStatement implements lmbDbInsertStatement
 {

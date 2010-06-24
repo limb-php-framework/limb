@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html
+ * @link http://limb-project.com 
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbTableInfo.class.php');
 lmb_require(dirname(__FILE__) . '/lmbOciColumnInfo.class.php');
@@ -13,7 +13,7 @@ lmb_require(dirname(__FILE__) . '/lmbOciColumnInfo.class.php');
  * class lmbOciTableInfo.
  *
  * @package dbal
- * @version $Id: lmbOciTableInfo.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbOciTableInfo.class.php,v 1.1 2009/06/16 13:23:49 mike Exp $
  */
 class lmbOciTableInfo extends lmbDbTableInfo
 {
@@ -62,12 +62,6 @@ class lmbOciTableInfo extends lmbDbTableInfo
   function getDatabase()
   {
     return $this->database;
-  }
-
-  function loadIndexes()
-  {
-    lmb_require('limb/core/src/exception/lmbNotYetImplementedException.class.php');
-    throw new lmbNotYetImplementedException();
   }
 }
 

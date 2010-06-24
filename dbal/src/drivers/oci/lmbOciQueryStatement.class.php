@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/dbal/src/drivers/lmbDbQueryStatement.interface.php');
@@ -16,16 +16,17 @@ lmb_require(dirname(__FILE__) . '/lmbOciArraySet.class.php');
  * class lmbOciQueryStatement.
  *
  * @package dbal
- * @version $Id: lmbOciQueryStatement.class.php 7486 2009-01-26 19:13:20Z pachanga $
+ * @version $Id: lmbOciQueryStatement.class.php,v 1.1 2009/06/16 13:23:48 mike Exp $
  */
 class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatement
 {
+
   function paginate($start, $limit)
   {
     // Extract the fields being selected (swiped from PEAR::DB)
     $sql = "SELECT * FROM ({$this->sql}) WHERE 1=1";
     $stmt = new lmbOciStatement($this->connection, $sql);
-    $queryId = $this->connection->executeStatement($stmt->getStatement());
+    $queryId = $this->connection->executeStatement($stmt/*->getStatement()*/);
 
     $ncols = oci_num_fields($queryId);
 
@@ -35,17 +36,24 @@ class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatemen
     $fields = implode(',', $cols);
 
     // Build the paginated query...
+/*
     $sql = "SELECT $fields FROM".
        "  (SELECT rownum as linenum, $fields FROM".
        "      ({$this->sql})".
        '  WHERE rownum <= '. ($start + $limit) .
        ') WHERE linenum >= ' . ++$start;
+ */
+    $sql = "SELECT $fields FROM".
+       " (SELECT rownum as linenum, $fields FROM".
+       " ({$this->sql})".
+       ") WHERE linenum between " . ($start+1) . " and " . ($start + $limit);
 
     $this->sql = $sql;
   }
 
   function addOrder($sort_params)
   {
+    $this->sql = $this->originalSql;
     if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $this->sql))
       $this->sql .= ',';
     else
@@ -59,19 +67,21 @@ class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatemen
 
   function count()
   {
+    
     $stmt = clone $this;
     $stmt->sql = "SELECT COUNT(*) AS THEROWC FROM ($this->sql)";
     $stmt->hasChanged = true;
-    $queryId = $stmt->execute();
+    $queryId = $stmt->executeWOTrace();
 
     $row = oci_fetch_assoc($queryId);
     $stmt->free();
     return $row['THEROWC'];
+    //return oci_num_rows($this->getStatement());
   }
 
   function getOneRecord()
   {
-    $queryId = $this->connection->executeStatement($this->getStatement());
+    $queryId = $this->connection->executeStatement($this/*->getStatement()*/);
     $values = oci_fetch_array($queryId, OCI_ASSOC+OCI_RETURN_NULLS);
     oci_free_statement($queryId);
     if(is_array($values))
@@ -80,7 +90,7 @@ class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatemen
 
   function getOneValue()
   {
-    $queryId = $this->connection->executeStatement($this->getStatement());
+    $queryId = $this->connection->executeStatement($this/*->getStatement()*/);
     $row = oci_fetch_array($queryId, OCI_NUM+OCI_RETURN_NULLS);
     oci_free_statement($queryId);
     if(is_array($row) && isset($row[0]))
@@ -90,7 +100,7 @@ class lmbOciQueryStatement extends lmbOciStatement implements lmbDbQueryStatemen
   function getOneColumnAsArray()
   {
     $column = array();
-    $queryId = $this->connection->executeStatement($this->getStatement());
+    $queryId = $this->connection->executeStatement($this/*->getStatement()*/);
     while(is_array($row = oci_fetch_array($queryId, OCI_NUM+OCI_RETURN_NULLS)))
       $column[] = $row[0];
     oci_free_statement($queryId);
