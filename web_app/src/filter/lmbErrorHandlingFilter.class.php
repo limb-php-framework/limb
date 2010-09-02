@@ -109,15 +109,22 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
     echo $this->_renderTemplate($message, array(), $trace, $file, $line, $context, $request, $session);
   }
 
-  protected function _echoExceptionBacktrace(lmbException $e)
+  protected function _echoExceptionBacktrace(Exception $e)
   {
-    $error = htmlspecialchars($e->getOriginalMessage());
-
-    $params = '';
-    foreach($e->getParams() as $name => $value)
-      $params .= $name . '  =>  ' . print_r($value, true) . PHP_EOL;
-    $params = htmlspecialchars($params);
-
+	$params = '';
+	if ($e instanceof lmbException)
+	{
+		$error = htmlspecialchars($e->getOriginalMessage());
+		foreach($e->getParams() as $name => $value)
+            $params .= $name . '  =>  ' . print_r($value, true) . PHP_EOL;
+        
+		$params = htmlspecialchars($params);
+	}
+	else 
+	{
+		$error = htmlspecialchars($e->getMessage());
+	}
+	  
     if($e instanceof lmbException)
       $trace = htmlspecialchars($e->getNiceTraceAsString());
     else

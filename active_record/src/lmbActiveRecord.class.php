@@ -201,12 +201,6 @@ class lmbActiveRecord extends lmbObject
    */
   function __construct($magic_params = null, $conn = null)
   {
-    $this->_defineRelations();
-
-    // For optimization purposes
-    $this->_relations = $this->_getAllRelations();
-    $this->_single_object_relations = $this->_getSingleObjectRelations();
-
     if(is_object($conn))
       $this->_db_conn = $conn;
     else
@@ -235,6 +229,12 @@ class lmbActiveRecord extends lmbObject
     $this->_db_table->setPrimaryKeyName($this->_primary_key_name);
     $this->_error_list = new lmbErrorList();
 
+    $this->_defineRelations();
+
+    // For optimization purposes
+    $this->_relations = $this->_getAllRelations();
+    $this->_single_object_relations = $this->_getSingleObjectRelations();
+	
     if($magic_params)
     {
       if(is_int($magic_params))

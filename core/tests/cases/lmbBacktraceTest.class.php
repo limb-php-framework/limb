@@ -72,7 +72,7 @@ class lmbBacktraceTest extends UnitTestCase
     $resource = fopen(__FILE__, 'r');
     $backtrace = $this->_createBacktrace($resource, 1);
     fclose($resource);
-    $this->assertPattern('/RESOURCE\[stream\]/', $backtrace->toString());
+    $this->assertPattern('/RESOURCE\(#[0-9]*\) of type \(stream\)/', $backtrace->toString());
   }
 
   protected function _createBacktrace($foo, $bar)

@@ -10,7 +10,7 @@ lmb_require('limb/fs/src/lmbFileLocations.interface.php');
 lmb_require('limb/fs/src/lmbFileLocator.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
 
-Mock :: generate('lmbFileLocations', 'MockFileLocaions');
+Mock :: generate('lmbFileLocations', 'MockFileLocations');
 
 class lmbFileLocatorTest extends UnitTestCase
 {
@@ -70,6 +70,12 @@ class lmbFileLocatorTest extends UnitTestCase
 
     $this->assertEqual(lmbFs :: normalizePath($all_files[1]),
                        lmbFs :: normalizePath(dirname(__FILE__) . '/design/_en/test1.html'));
+  }
+
+  function testNullInFileNameFixe()
+  {
+    $locator = new lmbFileLocator($mock = new MockFileLocations());
+    $this->assertTrue(false === $locator->locate(dirname(__FILE__) . '/design/_en/test1.html'."\0 Hello Bug!"));
   }
 }
 

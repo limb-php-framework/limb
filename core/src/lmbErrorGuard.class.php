@@ -64,7 +64,7 @@ class lmbErrorGuard
     if(!$error = error_get_last())
       return;
 
-    if($error['type'] == E_ERROR)
+    if($error['type'] & (E_ERROR | E_COMPILE_ERROR))
       self :: $fatal_error_delegate->invoke($error);
   }
 }

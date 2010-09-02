@@ -19,7 +19,7 @@ lmb_require("limb/cms/src/model/lmbCmsUserRoles.class.php");
 class lmbCmsUser extends lmbActiveRecord
 {
   protected $password;
-  protected $is_logged_in = false;
+  protected $_is_logged_in = false;
 
   const ROLE_NAME_ADMIN = 'admin';
   const ROLE_NAME_EDITOR = 'editor';
@@ -65,7 +65,6 @@ class lmbCmsUser extends lmbActiveRecord
 
   function login($login, $password)
   {
-
     $criteria = new lmbSQLFieldCriteria('login', $login);
     $user = lmbActiveRecord ::findFirst('lmbCmsUser', array('criteria' => $criteria));
 
@@ -73,12 +72,12 @@ class lmbCmsUser extends lmbActiveRecord
     {
       $this->import($user);
       $this->setIsNew(false);
-      $this->setIsLoggedIn(true);
+      $this->setLoggedIn(true);
       return true;
     }
     else
     {
-      $this->setIsLoggedIn(false);
+      $this->setLoggedIn(false);
       return false;
     }
   }
@@ -86,17 +85,17 @@ class lmbCmsUser extends lmbActiveRecord
   function logout()
   {
     $this->reset();
-    $this->is_logged_in = false;
+    $this->setLoggedIn(false);
   }
 
   function isLoggedIn()
   {
-    return $this->is_logged_in;
+    return $this->_is_logged_in;
   }
 
   function setLoggedIn($logged_in)
   {
-    $this->is_logged_in = $logged_in;
+    $this->_is_logged_in = $logged_in;
   }
 
   function getCryptedPassword($password)

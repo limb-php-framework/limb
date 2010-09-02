@@ -45,28 +45,32 @@ class lmbFullPageCacheFilter implements lmbInterceptingFilter
   function run($filter_chain)
   {
     $toolkit = lmbToolkit :: instance();
-    $request = $toolkit->getRequest();
-
-    $this->cache = new lmbFullPageCache($this->_createCacheWriter(),
-                                        $this->_createCachePolicy());
-
-    $cache_request = new lmbFullPageCacheRequest($request, $this->user);
-    if(!$this->cache->openSession($cache_request))
+    if (!$toolkit->isWebAppDebugEnabled())
     {
-      $filter_chain->next();
-      return;
-    }
+      $request = $toolkit->getRequest();
 
-    $response = $toolkit->getResponse();
-    if($content = $this->cache->get())
-    {
-      $response->write($content);
-    }
-    else
-    {
-      $filter_chain->next();
-      $content = $response->getResponseString();
-      $this->cache->save($content);
+      $this->cache = new lmbFullPageCache($this->_createCacheWriter(),
+                                          $this->_createCachePolicy());
+
+      $cache_request = new lmbFullPageCacheRequest($request, $this->user);
+      if(!$this->cache->openSession($cache_request))
+      {
+        $filter_chain->next();
+        return;
+      }
+
+      $response = $toolkit->getResponse();
+      if($content = $this->cache->get())
+      {
+        $response->write($content);
+        $response->commit();
+      }
+      else
+      {
+        $filter_chain->next();
+        $content = $response->getResponseString();
+        $this->cache->save($content);
+      }
     }
   }
 

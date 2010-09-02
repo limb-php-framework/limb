@@ -235,6 +235,7 @@
 
 
 /*FORM*/
+  /* style for DL, DT, DD tags are deprecated */
   dl.field {clear:both;padding:0;margin:0 0 20px;padding:0 0 0 175px;}
     .field:after {content: '.';display: block;clear:both;visibility: hidden;height:0;font-size:0;}
     .field dt {position:relative;left:-175px;float:left;width:160px;text-align:right;margin:0 -160px 0 0;}
@@ -243,6 +244,12 @@
   .multiline, .left_side .field, .right_side .field {padding:0;}
     .multiline dt, .left_side .field dt, .right_side .field dt {left:0;float:none;width:auto;margin:0 0 3px;text-align:left;}
     .multiline dd, .left_side .field dd, .right_side .field dd {float:none;}
+  
+  .fieldset { width:100%; }
+  .fieldset td { padding:8px 5px; }
+  .fieldset td.field_name { text-align:right; white-space:nowrap; width: 15%; max-width: 250px }
+  .fieldset tr.odd td { background-color:#F3F3F3; }
+  
   label {margin:0 15px 0 0;}
   select{width:280px;border:solid 1px #B5B8C8;height:1.8em;background: url(../images/bgr/text-bg.png) repeat-x top left;border: 1px solid #B5B8C8;}
     select option {background:#fff;}

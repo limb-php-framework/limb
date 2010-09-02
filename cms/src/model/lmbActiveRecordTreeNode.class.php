@@ -7,9 +7,9 @@ abstract class lmbActiveRecordTreeNode extends lmbActiveRecord
 {
   protected $_tree;
 
-  function __construct($magic_params = null)
+  function __construct($magic_params = null, $conn = null)
   {
-    parent :: __construct($magic_params);
+    parent :: __construct($magic_params, $conn);
 
     $this->_tree = $this->getTree();
   }

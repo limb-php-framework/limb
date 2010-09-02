@@ -19,7 +19,7 @@ class lmbLogTest extends UnitTestCase {
   function setUp()
   {
     $this->log = new lmbLog();
-    $this->log->registerWriter(new lmbLogWriterForLogTests);
+    $this->log->registerWriter(new lmbLogWriterForLogTests(new lmbUri()));
   }
 
   function testWritersManipulation()
@@ -27,7 +27,7 @@ class lmbLogTest extends UnitTestCase {
     $log = new lmbLog();
     $this->assertEqual(array(), $log->getWriters());
 
-    $log->registerWriter($writer = new lmbLogWriterForLogTests);
+    $log->registerWriter($writer = new lmbLogWriterForLogTests(new lmbUri()));
     $this->assertEqual(array($writer), $log->getWriters());
 
     $log->resetWriters();
@@ -36,8 +36,8 @@ class lmbLogTest extends UnitTestCase {
 
   function testAddWritersByConstruct()
   {
-    $writer1 = new lmbLogWriterForLogTests;
-    $writer2 = new lmbLogWriterForLogTests;
+    $writer1 = new lmbLogWriterForLogTests(new lmbUri());
+    $writer2 = new lmbLogWriterForLogTests(new lmbUri());
 
     $log = new lmbLog(array($writer1, $writer2));
     $writers = $log->getWriters();
@@ -93,20 +93,60 @@ class lmbLogTest extends UnitTestCase {
 
 class lmbLogWriterForLogTests implements lmbLogWriter {
 
-    protected $entry;
+  protected $entry;
+  protected $_log_level;
+  protected $_dsn;
 
-    function __construct(lmbUri $dsn = null) {}
+  /**
+   * @param lmbUri $dsn
+   */
+  function __construct(lmbUri $dsn)
+  {
+    $this->_dsn = $dsn;
+    $this->_log_level = ($level = $this->_dsn->getQueryItem('level')) !== false ? $level : LOG_INFO;
+  }
 
-    function write(lmbLogEntry $entry)
-    {
-        $this->entry = $entry;
-    }
+  /**
+   * @param int $level
+   */
+  function setErrorLevel($level)
+  {
+    $this->_log_level = $level;
+  }
 
-    /**
-     *@return lmbLogEntry
-     */
-    function getWritten()
-    {
-        return $this->entry;
-    }
+  /**
+   * @param lmbLogEntry $entry
+   * @return boolean
+   */
+  function isAllowedLevel(lmbLogEntry $entry)
+  {
+    return $entry->getLevel() <= $this->_log_level;
+  }
+
+  /**
+   * @param lmbLogEntry $entry
+   * @return boolean
+   */
+  function write(lmbLogEntry $entry)
+  {
+    if($this->isAllowedLevel($entry))
+      return $this->_write($entry);
+  }
+
+  /**
+   * @param lmbLogEntry $entry
+   * @return boolean
+   */
+  protected function _write(lmbLogEntry $entry)
+  {
+    return $this->entry = $entry;
+  }
+
+  /**
+   *@return lmbLogEntry
+   */
+  function getWritten()
+  {
+      return $this->entry;
+  }
 }

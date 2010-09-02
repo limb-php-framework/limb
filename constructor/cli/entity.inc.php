@@ -28,6 +28,7 @@ function _filter_tables($tables, $filter)
  */
 function task_entity_parse_table_argument($args)
 {
+  lmb_package_require('dbal');
   $database_info = lmbToolkit :: instance()->getDefaultDbConnection()->getDatabaseInfo();
   taskman_msg('DATABASE: '.$database_info->getName().PHP_EOL);
 
@@ -49,6 +50,7 @@ function task_entity_parse_table_argument($args)
 
 function _createAndRunConstructor($constructor_name)
 {
+  lmb_package_require('dbal');
   $database_info = lmbToolkit :: instance()->getDefaultDbConnection()->getDatabaseInfo();
 
   foreach(taskman_prop('TABLES') as $table)
@@ -72,47 +74,45 @@ function _createAndRunConstructor($constructor_name)
  */
 function task_entity_create_model()
 {
+  lmb_require('limb/constructor/src/lmbModelConstructor.class.php');
   _createAndRunConstructor('lmbModelConstructor');
 }
 
 /**
  * @desc create front controller and front templates for entity specified by table name
  * @param table_name|all
- * @deps parse_entity_table_argument
+ * @deps entity_parse_table_argument
  */
 function task_entity_create_front()
 {
+  lmb_require('limb/constructor/src/lmbFrontStuffConstructor.class.php');
   _createAndRunConstructor('lmbFrontStuffConstructor');
 }
 
 /**
  * @desc create admin controller and admin templates for entity specified by table name
  * @param table_name|all
- * @deps parse_entity_table_argument
+ * @deps entity_parse_table_argument
  */
 function task_entity_create_admin()
 {
+  lmb_require('limb/constructor/src/lmbAdminControllerConstructor.class.php');
   _createAndRunConstructor('lmbAdminControllerConstructor');
+  lmb_require('limb/constructor/src/lmbAdminTemplatesConstructor.class.php');
   _createAndRunConstructor('lmbAdminTemplatesConstructor');
 }
 
 /**
  * @desc create model, front and admin controllers, front and admin templates for entity specified by table name
  * @param table_name|all
- * @deps parse_entity_table_argument
+ * @deps entity_parse_table_argument,entity_create_model,entity_create_front,entity_create_admin
  */
-function task_entity_create()
-{
-  _createAndRunConstructor('lmbModelConstructor');
-  _createAndRunConstructor('lmbFrontStuffConstructor');
-  _createAndRunConstructor('lmbAdminControllerConstructor');
-  _createAndRunConstructor('lmbAdminTemplatesConstructor');
-}
+function task_entity_create() {}
 
 /**
  * @desc create model, front and admin controllers, front and admin templates for tree entity specified by table name
  * @param table_name
- * @deps parse_entity_table_argument
+ * @deps entity_parse_table_argument
  */
 function task_entity_create_tree()
 {

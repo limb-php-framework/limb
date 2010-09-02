@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/fs/src/lmbFs.class.php');
-lmb_require('limb/log/src/lmbLogWriter.interface.php');
+lmb_require('limb/log/src/writers/lmbLogBaseWriter.class.php');
 
 /**
  * class lmbLogFileWriter.
@@ -15,16 +15,17 @@ lmb_require('limb/log/src/lmbLogWriter.interface.php');
  * @package log
  * @version $Id$
  */
-class lmbLogFileWriter implements lmbLogWriter
+class lmbLogFileWriter extends lmbLogBaseWriter
 {
   protected $log_file;
 
   function __construct(lmbUri $dsn)
   {
   	$this->log_file = $dsn->getPath();
+  	parent::__construct($dsn);
   }
 
-  function write(lmbLogEntry $entry)
+  protected function _write(lmbLogEntry $entry)
   {
     $this->_appendToFile($this->getLogFile(), $entry->asText(), $entry->getTime());
   }

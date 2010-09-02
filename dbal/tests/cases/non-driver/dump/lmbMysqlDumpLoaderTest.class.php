@@ -37,6 +37,7 @@ SET FOREIGN_KEY_CHECKS=0;
 create database if not exists `foo`;
 
 /*Table structure for table `bar` */
+-- Test comment
 
 drop table if exists `bar`;
 

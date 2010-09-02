@@ -10,10 +10,9 @@
   <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie6.css" /><![endif]-->
 </head>
 <body id='login_form' onload="document.getElementById('login').focus()">
-
   <div id="login_form_wrapper">
 
-    <form method="POST" id='user_form' runat='server'>
+    <form method="POST" id='user_form' runat="server">
 
         <div id="logo_limb">
           <a href="http://limb-project.com"><img src="/shared/cms/images/logo.limb.png" alt='LIMB'/></a>
@@ -38,7 +37,7 @@
 
           <input type='hidden' name='redirect' value='{$#request.redirect}' runat='client'/>
 
-          <a href="/user/forgot_password" class="forgot_password_link">Забыли пароль?</a>
+          <a href="/cms_user/forgot_password" class="forgot_password_link">Забыли пароль?</a>
 
           {{include file='_admin/notify_zone.phtml'/}}
 

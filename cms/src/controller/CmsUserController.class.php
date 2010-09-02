@@ -4,8 +4,13 @@ lmb_require('limb/mail/src/lmbMailer.class.php');
 lmb_require('limb/cms/src/model/lmbCmsUser.class.php');
 lmb_require('limb/view/src/lmbMacroView.class.php');
 
-class UserController extends lmbController
+class CmsUserController extends lmbController
 {
+  function doDisplay()
+  {
+    return $this->redirect('/cms_user/login');
+  }
+
   function doForgotPassword()
   {
     if(!$this->request->hasPost())
@@ -24,28 +29,28 @@ class UserController extends lmbController
     $user->setGeneratedPassword($user->getCryptedPassword($password));
     $user->saveSkipValidation();
 
-    $template = new lmbMacroView('user/forgot_password_email.txt');
+    $template = new lmbMacroView('cms_user/forgot_password_email.txt');
     $template->set('user', $user);
     $template->set('approve_password_url',
-                   'http://'.$_SERVER['HTTP_HOST'] . '/user/approve/'.$user->getGeneratedPassword());
+                   'http://'.$_SERVER['HTTP_HOST'] . '/cms_user/approve/'.$user->getGeneratedPassword());
     $email_body = $template->render();
 
     $mailer = new lmbMailer();
     $mailer->sendPlainMail($user->getEmail(), lmb_env_get('ADMIN_EMAIL', "no_reply@bit-cms.com"), "Password recovery", $email_body);
 
-    $this->flashAndRedirect("Новый пароль выслан на ваш email", '/user/login');
+    $this->flashAndRedirect("Новый пароль выслан на ваш email", '/cms_user/login');
   }
 
   function doApprove()
   {
     if(!$user = lmbActiveRecord :: findFirst('lmbCmsUser', array('generated_password = ?', $this->request->get('id'))))
-      return $this->flashAndRedirect('Вы прошли по неверной ссылке! Убедитесь, что она соответствует ссылке в отправленном вам письме', '/user/forgot_password');
+      return $this->flashAndRedirect('Вы прошли по неверной ссылке! Убедитесь, что она соответствует ссылке в отправленном вам письме', '/cms_user/forgot_password');
 
     $user->setHashedPassword($user->getGeneratedPassword());
     $user->setGeneratedPassword('');
     $user->saveSkipValidation();
 
-    $this->flashAndRedirect('Новый пароль активирован', '/user/login');
+    $this->flashAndRedirect('Новый пароль активирован', '/cms_user/login');
   }
 
   function doLogin()
@@ -64,7 +69,6 @@ class UserController extends lmbController
         $this->toolkit->redirect($redirect_url);
       else
         $this->flashError("Неверный логин или пароль");
-
     }
   }
 
@@ -72,8 +76,7 @@ class UserController extends lmbController
   {
     $user = $this->toolkit->getCmsUser();
     $user->logout();
+    $this->toolkit->resetCmsUser();
     $this->response->redirect('/');
   }
 }
-
-?>

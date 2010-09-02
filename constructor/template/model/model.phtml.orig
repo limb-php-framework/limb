@@ -1,0 +1,20 @@
+
+class {$#model_name} extends lmbActiveRecord
+{
+  protected $_db_table_name = '{$#table_name}';
+
+  protected $_default_sort_params = array('id'=>'asc');
+
+<? if(count($this->lazy_attributes)) { ?>  protected $_lazy_attributes = array('<? echo implode("', '", $this->lazy_attributes); ?>');<? echo "\n\r"; } ?>
+
+<? if($this->relations_exist) { ?>  protected function _defineRelations()
+  {
+<? if($this->has_many) { ?>    $this->_has_many = {$#has_many|raw};<? echo "\n\r"; } ?>
+<? if($this->many_belongs_to) { ?>    $this->_many_belongs_to = {$#many_belongs_to|raw};<? echo "\n\r"; } ?>
+<? if($this->has_one) { ?>    $this->_has_one = {$#has_one|raw};<? echo "\n\r"; } ?>
+<? if($this->belongs_to) { ?>    $this->_belongs_to = {$#belongs_to|raw};<? echo "\n\r"; } ?>
+<? if($this->has_many_to_many) { ?>    $this->_has_many_to_many = {$#has_many_to_many|raw};<? echo "\n\r"; } ?>
+  }
+
+<? } ?>
+}

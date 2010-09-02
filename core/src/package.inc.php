@@ -20,7 +20,7 @@ function lmb_package_require($name, $packages_dir = '')
   try {
     lmb_require($packages_dir . $name . '/common.inc.php');
   }
-  catch(lmbException $e)
+  catch(lmbPHPFileNotFoundException $e)
   {
     lmb_require('limb/core/src/exception/lmbNoSuchPackageException.class.php');
     throw new lmbNoSuchPackageException(

@@ -9,24 +9,34 @@
 
 class lmbMacroClipFilterTest extends lmbBaseMacroTest
 {
-  function testStatic()
-  {
-    $code = '{$#str|clip:1}{$#str|clip:2}{$#str|clip:3}';
-    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
-    $tpl->set('str', '12');
-    $out = $tpl->render();
-    $this->assertEqual($out, '11212');        
-  }  
-  
-  function testDinamic()
-  {
-    $code = '{$#str|clip:$#cnt}';
-    $tpl = $this->_createMacroTemplate($code, 'tpl.html');
-    $tpl->set('str', 'foo');
-    $tpl->set('cnt', '1');
-    $out = $tpl->render();
-    $this->assertEqual($out, 'f');        
-  }  
-  
+	function testStatic()
+	{
+		$code = '{$#str|clip:1}{$#str|clip:2}{$#str|clip:3}';
+		$tpl = $this->_createMacroTemplate($code, 'tpl.html');
+		$tpl->set('str', '12');
+		$out = $tpl->render();
+		$this->assertEqual($out, '11212');
+	}
+
+	function testDinamic()
+	{
+		$code = '{$#str|clip:$#cnt}';
+		$tpl = $this->_createMacroTemplate($code, 'tpl.html');
+		$tpl->set('str', 'foo');
+		$tpl->set('cnt', '1');
+		$out = $tpl->render();
+		$this->assertEqual($out, 'f');
+	}
+
+	function testWithEndSymbol()
+	{
+		$code = '{$#str|clip:$#limit1,"."}{$#str|clip:$#limit2,"."}';
+		$tpl = $this->_createMacroTemplate($code, 'tpl.html');
+		$tpl->set('str', 'abc');
+		$tpl->set('limit1', '1');
+		$tpl->set('limit2', '3');
+		$out = $tpl->render();
+		$this->assertEqual($out, 'a.abc');
+	}
 }
 

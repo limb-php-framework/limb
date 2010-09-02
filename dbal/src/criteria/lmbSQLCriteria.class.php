@@ -93,6 +93,16 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
    * @param string $value
    * @return lmbSQLFieldCriteria
    */
+  static function notEqual($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: NOT_EQUAL);
+  }
+
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
   static function greater($column, $value)
   {
     return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: GREATER);

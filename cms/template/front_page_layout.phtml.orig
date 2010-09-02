@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Powered by LIMB | http://www.limb-project.com/ -->
+<!-- Designed by BIT | http://www.bit-creative.com/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <?php lmb_require('limb/cms/src/model/lmbCmsSeo.class.php'); ?>
+  <meta name="description" content="<?php echo  lmbCmsSeo :: getMetaDescription(); ?>"/>
+  <meta name="keywords" content="<?php echo lmbCmsSeo :: getMetaKeywords(); ?>"/>
+  <title><?php echo lmbCmsSeo :: getMetaTitle(); ?></title>
+</head>
+<body>
+  {{slot id='content_zone'/}}
+</body>
+</html>

@@ -2,11 +2,11 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @link http://limb-project.com
+ * @copyright  Copyright &copy; 2004-2020 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
- 
+
 /**
  * @tag route_url
  * @forbid_end_tag
@@ -17,12 +17,12 @@ class lmbMacroRouteUrlTag extends lmbMacroTag
 {
   protected function _generateContent($code)
   {
-    $code->registerInclude('limb/core/src/lmbArrayHelper.class.php'); 
-    
+    $code->registerInclude('limb/core/src/lmbArrayHelper.class.php');
+
     $fake_params = $code->generateVar();
     $params = $code->generateVar();
     $code->writePhp("{$params} = array();\n");
-    
+
     if(!$this->has('route'))
       $this->set('route', "");
 

@@ -24,14 +24,9 @@ class lmbException extends Exception
   function __construct($message, $params = array(), $code = 0, $hide_calls_count = 0)
   {
     $this->original_message = $message;
-    if(is_array($params) && sizeof($params))
-    {
-      $this->params = $params;
-      $message .= "\n[params: " . var_export($params, true) . "]\n";
-    }
-
     $this->params = $params;
-    $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count + 1);
+
+    $this->backtrace = array_slice(debug_backtrace(), $hide_calls_count);
 
     foreach($this->backtrace as $item)
     {
@@ -42,6 +37,8 @@ class lmbException extends Exception
         break;
       }
     }
+
+    $message = $this->toNiceString();
 
     parent :: __construct($message, $code);
   }
@@ -95,7 +92,7 @@ class lmbException extends Exception
     $string = '';
     $string .= get_class($this).': '.$this->getOriginalMessage().PHP_EOL;
     if($this->params)
-        $string .= 'Additional params: '.strstr(print_r($this->params, true), PHP_EOL);
+      $string .= 'Additional params: '.PHP_EOL.lmb_var_export($this->params).PHP_EOL;
     if(!$without_backtrace)
       $string .= 'Backtrace: '.PHP_EOL.$this->getBacktraceObject()->toString();
     return $string;

@@ -102,8 +102,17 @@ class lmbMysqlDumpLoader extends lmbSQLDumpLoader
                || ($char == ' ' && $i > 1 && $sql[$i-2] . $sql[$i-1] == '--'))
       {
         // starting position of the comment depends on the comment type
-        $start_of_comment = (($sql[$i] == '#') ? $i : $i-2);
-        $end_of_comment = self :: _getEndOfCommentPosition($sql, $i+2);
+        if ($sql[$i] == '#')
+        {
+          $start_of_comment = $i;
+          $end_of_comment = self :: _getEndOfCommentPosition($sql, $i+2);
+        }
+        // -- style comments
+        else
+        {
+          $start_of_comment = $i - 2;
+          $end_of_comment = strpos($sql, "\n", $i+2);
+        }
 
         if(!$end_of_comment)
         {

@@ -20,4 +20,16 @@ class lmbLogEchoWriterTest extends UnitTestCase {
     $this->assertPattern('/Error/', $output);
     $this->assertPattern('/foo/', $output);
   }
+
+  function testSetErrorLevel()
+  {
+    $writer = new lmbLogEchoWriter(new lmbUri());
+    $writer->setErrorLevel(LOG_WARNING);
+    ob_start();
+    $writer->write(new lmbLogEntry(LOG_ERR, 'foo'));
+    $output = ob_get_contents();
+    ob_end_clean();
+    $this->assertPattern('/Error/', $output);
+    $this->assertPattern('/foo/', $output);
+  }
 }

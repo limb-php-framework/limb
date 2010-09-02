@@ -61,13 +61,20 @@ class lmbLog
   function setErrorLevel($level)
   {
     $this->level = $level;
+    $this->_setWriersErrorLevel($level);
+  }
+
+  protected function _setWriersErrorLevel($level)
+  {
+    foreach($this->log_writers as $writer)
+      $writer->setErrorLevel($level);
   }
 
   function setBacktraceDepth($log_level, $depth) {
     $this->backtrace_depth[$log_level] = $depth;
   }
 
-  function log($message, $level = LOG_INFO, $params = array(), $backtrace = null)
+  function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null)
   {
     if(!$this->isLogEnabled())
       return;
@@ -83,7 +90,7 @@ class lmbLog
     $this->_write($level, $message, $params, $backtrace);
   }
 
-  function logException($exception)
+  function logException(Exception $exception)
   {
     if(!$this->isLogEnabled())
       return;
@@ -107,9 +114,6 @@ class lmbLog
 
   protected function _write($level, $string, $params = array(), $backtrace = null)
   {
-    if(!$this->_isAllowedLevel($level))
-      return;
-
     $entry = new lmbLogEntry($level, $string, $params, $backtrace);
     $this->logs[] = $entry;
 

@@ -58,9 +58,9 @@ class lmbFullPageCacheWriter
     return false;
   }
 
-  function flushAll()
+  function flushAll($dir = null)
   {
-    return lmbFs :: rm($this->storage_dir);
+    return lmbFs :: rm($this->storage_dir . $dir);
   }
 
   function getCacheSize()

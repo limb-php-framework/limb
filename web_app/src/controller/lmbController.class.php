@@ -7,7 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-lmb_env_setor('LIMB_CONTROLLER_CACHE_ENABLED', true);
+lmb_env_setor('LIMB_CONTROLLER_CACHE_ENABLED', lmbToolkit::instance()->isWebAppDebugEnabled());
 
 lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/core/src/lmbMixable.class.php');

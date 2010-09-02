@@ -17,12 +17,14 @@ if(!isset($_ENV['LIMB_LAZY_TRIED']))
   $_ENV['LIMB_LAZY_TRIED'] = array();
 define('LIMB_UNDEFINED', 'undefined' . microtime());
 define('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
+define('LIMB_DUMP_MAX_DEPTH', 7);
 
 lmb_require('limb/core/src/assert.inc.php');
 lmb_require('limb/core/src/env.inc.php');
 lmb_require('limb/core/src/package.inc.php');
 lmb_require('limb/core/src/string.inc.php');
 lmb_require('limb/core/src/exception/lmbException.class.php');
+lmb_require('limb/core/src/exception/lmbPHPFileNotFoundException.class.php');
 lmb_require('limb/core/src/exception/lmbInvalidArgumentException.class.php');
 lmb_require('limb/core/src/lmbBacktrace.class.php');
 lmb_require('limb/core/src/lmbErrorGuard.class.php');
@@ -110,14 +112,17 @@ function lmb_require($file_path, $class = '')
     return;
   }
 
-  if(!include_once($file_path))
-  {
-    if(class_exists('lmbException'))
-      $exception_class = 'lmbException';
+  try {
+    $file_found = include_once $file_path;
+  } catch (lmbException $e) {
+    if (strpos($e->getMessage(), "include_once($file_path)") !== false)
+      $file_found = false;
     else
-      $exception_class = 'Exception';
-    throw new $exception_class("Could not include source file '$file_path'");
+      throw $e;
   }
+
+  if(!$file_found)
+    throw new lmbPHPFileNotFoundException("Could not include source file '$file_path'");
 }
 
 function lmb_require_class($file_path, $class = '')
@@ -174,26 +179,106 @@ function lmb_autoload($name)
   }
 }
 
-function lmb_var_dump($obj, $echo = false)
+function lmb_var_dump($arg, $echo = false, $level = 1)
 {
-  ob_start();
-  var_dump($obj);
-  $dump = ob_get_contents();
-  ob_end_clean();
+	if($echo)
+	  echo lmb_var_export($arg, $level);
+	else
+	  return lmb_var_export($arg, $level);
+}
 
-  if($echo)
+function lmb_var_export($arg, $level = 1)
+{
+	$prefix = str_repeat('  ', ($level > 0) ? ($level - 1) : 0);
+  switch(gettype($arg))
   {
-    if(PHP_SAPI != 'cli')
-    {
-      echo '<pre>';
-      echo $dump;
-      echo '</pre>';
-    }
-    else
-      echo $dump;
+  	case 'NULL':
+  		return 'NULL';
+
+  	case 'boolean':
+  		return $arg ? 'TRUE' : 'FALSE';
+
+    case 'integer':
+      return 'INT('.$arg.')';
+
+    case 'double':
+      return 'FLOAT('.$arg.')';
+
+  	case 'resource':
+  		if(is_resource($arg))
+  		{
+        $resource_id = strstr((string) $arg, '#');
+        $resource_type = get_resource_type($arg);
+        return "RESOURCE($resource_id) of type (" . get_resource_type($arg) . ")";
+  		}
+  		else
+  		  return lmb_var_export((string) $arg);
+
+    case 'object':
+
+    	if (LIMB_DUMP_MAX_DEPTH == $level)
+    	  return 'OBJECT(' . get_class($arg) . ') { <RECURSION> }';
+    	$_ENV['LIMB_VAR_EXPORT_SHOWED_OBJECTS'][spl_object_hash($arg)] = true;
+
+      if ($level == LIMB_DUMP_MAX_DEPTH)
+      	return 'OBJECT(' . get_class($arg) . ")";
+      else
+      {
+	      $dump =  'OBJECT(' . get_class($arg) . ") {".PHP_EOL;
+	      foreach(get_object_vars($arg) as $name => $value)
+	      {
+	      	$dump .= $prefix . "  [\"$name\"]=> "
+	      	  . lmb_var_export($value, $level + 1)
+	      	  . PHP_EOL;
+	      }
+	      $dump .= $prefix . "}";
+	      return $dump;
+      }
+
+  	case 'array':
+
+  		if($level == LIMB_DUMP_MAX_DEPTH)
+  		   return 'ARRAY(' . sizeof($arg) . ')';
+  		else
+      {
+        $dump = "ARRAY(".sizeof($arg).') [';
+        if(sizeof($arg))
+        {
+          $dump .= PHP_EOL;
+	        foreach($arg as $arr_key => $arr_value)
+	          $dump .= $prefix . "  [$arr_key] => ".lmb_var_export($arr_value, $level + 1).PHP_EOL;
+	        $dump .= $prefix;
+        }
+	      $dump .= "]";
+	      return $dump;
+	    }
+
+  	case 'string':
+      $dump = 'STRING('.strlen($arg).') "';
+      $dump .= lmb_escape_string((string) $arg, 100);
+
+      if(strlen($arg) > 100)
+        $dump .= '...';
+
+      $dump .= '"';
+      return $dump;
+
+  	default:
+  		return var_export($arg, true);
   }
+}
+
+/**
+ * Escaping string for log.
+ * If we work in cli mode we don't need htmlspecialchars
+ * @param $string
+ */
+function lmb_escape_string($string, $length_limit = 100)
+{
+  if ('cli' == php_sapi_name())
+    return substr($string, 0, $length_limit);
   else
-    return $dump;
+    return htmlspecialchars(substr($string, 0, $length_limit));
 }
 
 function lmb_var_dir($value = null)
@@ -206,5 +291,6 @@ function lmb_var_dir($value = null)
 
 spl_autoload_register('lmb_autoload');
 new lmbException('ugly hack');
+new lmbPHPFileNotFoundException('ugly hack');
 
 lmbErrorGuard::registerErrorHandler('lmbErrorGuard', 'convertErrorsToExceptions');

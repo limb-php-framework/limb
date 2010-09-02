@@ -5,13 +5,16 @@
   </ul>
 
   <div id="tab_properties">
-    {{list using="{$#column_names}" as="$column_name"}}
+    {{list using="{$#column_names}" as="$column_name" parity='$parity'}}
+    <table class='fieldset'>
       {{list:item}}
-        <dl class='field'>
-          <dt>[[label for="{$column_name}"]]{$column_name}:[[/label]]</dt>
-          <dd>{$#form_fields[$column_name]|raw}</dd>
-        </dl>
+        <tr class="{$parity}">
+          <td class="field_name">[[label for="{$column_name}"]]{$column_name}:[[/label]]</td>
+          <td class="field_value">{$#form_fields[$column_name]|raw}</td>
+          <td class="field_comment"></td>
+        </tr>
       {{/list:item}}
+    </table>
     {{/list}}
   </div>
 

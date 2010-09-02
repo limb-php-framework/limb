@@ -24,7 +24,7 @@
       <a href="/admin"><img src="/shared/cms/images/logo.limb.png"  alt='LIMB' id='logo_project'/></a>
       <ul id='user_data'>
         <li>{$#toolkit.cms_user.login} [ {$#toolkit.cms_user.name} ]</li>
-        <li><a href='/user/logout' class='logout'>Выйти</a></li>
+        <li><a href='/cms_user/logout' class='logout'>Выйти</a></li>
       </ul>
     </div>
 
@@ -43,7 +43,7 @@
       <dl id='main_menu'>
       {{list:list id='navigation' using='$#navigation'}}
         {{list:item}}
-        <dt class='{$item.id}'><img src='{$item.icon}'/> {$item.title} </dt>
+        <dt class='{$item.id}'><img src='/{$item.icon}'/> {$item.title} </dt>
         <dd>
           {{list:list using='$item.children' as="$sub_item"}}
             <ul>

@@ -525,8 +525,8 @@ class TestSuite {
     /**
      *    @deprecated
      */
-    function addTestCase(&$test_case) {
-        $this->_test_cases[] = &$test_case;
+    function addTestCase($test_case) {
+        $this->_test_cases[] = $test_case;
     }
 
     /**
@@ -636,7 +636,7 @@ class TestSuite {
      *    @access public
      *    @static
      */
-    function getBaseTestCase($class) {
+    static function getBaseTestCase($class) {
         while ($class = get_parent_class($class)) {
             $class = strtolower($class);
             if ($class == 'simpletestcase' || $class == 'testsuite') {

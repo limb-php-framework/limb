@@ -21,10 +21,3 @@ lmb_require('limb/log/toolkit.inc.php');
 lmb_require('limb/toolkit/src/lmbToolkit.class.php');
 lmb_require('limb/web_app/src/toolkit/lmbWebAppTools.class.php');
 lmbToolkit :: merge(new lmbWebAppTools());
-
-if(lmbToolkit::instance()->isWebAppDebugEnabled())
-{
-  lmb_require('limb/web_app/src/toolkit/lmbProfileTools.class.php');
-  lmbToolkit::merge(new lmbProfileTools());
-}
-

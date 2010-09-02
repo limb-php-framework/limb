@@ -43,13 +43,13 @@ class lmbExceptionTest extends UnitTestCase
   {
     $e = $this->_createException('foo');
     $trace = $e->getNiceTraceAsString();
-    $first_call = array_shift(explode(PHP_EOL, $trace));
+    list($first_call, $second_call) = explode(PHP_EOL, $trace);
 
     $this->assertPattern('/lmbExceptionTest/', $first_call);
-    $this->assertPattern('/_createException/', $first_call);
+    $this->assertPattern('/lmbException::__construct/', $first_call);
     $this->assertPattern('/foo/', $first_call);
     $this->assertPattern('/'.basename(__FILE__).'/', $first_call);
-    $this->assertPattern('/44/', $first_call);
+    $this->assertPattern('/_createException/', $second_call);
   }
 
   function testGetNiceTraceAsString_HideCalls()
@@ -63,13 +63,15 @@ class lmbExceptionTest extends UnitTestCase
     $this->assertEqual($trace_full[1], $trace_with_hidden_call[0]);
   }
 
-  function testExceptionContext_CalledFromCallUserFunc_ReturnsCallUserFuncContext()
+  function testExceptionWithCycleInParams()
   {
-    // placing two statements one one line critical for this test
-    $e = call_user_func(array($this, '_createException')); $line = __LINE__;
+    $a = new stdClass();
+    $b = new stdClass();
+    $a->b = $b;
+    $b->a = $a;
 
-    $this->assertEqual(__FILE__, $e->getRealFile());
-    $this->assertEqual($line, $e->getRealLine());
+    //at this line we can get a recursion
+    $exception = new lmbException('some_text', array($a, $b));
   }
 
   protected function _createException() {

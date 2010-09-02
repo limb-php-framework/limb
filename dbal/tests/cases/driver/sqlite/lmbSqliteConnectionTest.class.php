@@ -24,7 +24,7 @@ class lmbSqliteConnectionTest extends DriverConnectionTestBase
     parent::setUp();
   }
 
-  function testSocketConnection() {}
+  function testSocketConnection() {
+    $this->skipIf(true, 'Socket connection is not supported by this driver.');
+  }
 }
-
-

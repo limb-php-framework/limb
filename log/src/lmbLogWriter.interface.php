@@ -11,5 +11,7 @@ lmb_require('limb/net/src/lmbUri.class.php');
 
 interface lmbLogWriter {
   function __construct(lmbUri $dsn);
+  function isAllowedLevel(lmbLogEntry $entry);
+  function setErrorLevel($level);
 	function write(lmbLogEntry $entry);
 }

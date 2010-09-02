@@ -212,14 +212,18 @@ class lmbRequireTest extends lmbRequireBaseTest
 
   function testRequireThrowsExceptionForNonExistingFile()
   {
+    lmbErrorGuard::registerErrorHandler('lmbErrorGuard', 'convertErrorsToExceptions');
     try
     {
-      @lmb_require($file = 'foo_' . mt_rand() . uniqid() . '.inc.php');
+      lmb_require($file = 'foo_' . mt_rand() . uniqid() . '.inc.php');
+      $this->fail('lmb_require() should throw exception for non-existing file!');
     }
-    catch(lmbException $e)
+    catch(lmbPHPFileNotFoundException $e)
     {
       $this->assertPattern('~' . preg_quote($file) . '~', $e->getMessage());
     }
+    
+    restore_error_handler();
   }
 
   function testRequireOptionalOk()

@@ -32,7 +32,7 @@ class lmbCmsAccessPolicyFilter implements lmbInterceptingFilter
       if(!$user->isLoggedIn())
       {
         $this->toolkit->flashMessage("Вы не авторизованы");
-        $this->toolkit->redirect(array('controller' => 'user', 'action' => 'login'), null, '?redirect=' . $current_path);
+        $this->toolkit->redirect(array('controller' => 'cms_user', 'action' => 'login'), null, '?redirect=' . $current_path);
         return;
       }
       elseif(!$this->_allowAccess($user))

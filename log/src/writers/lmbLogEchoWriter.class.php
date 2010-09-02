@@ -16,11 +16,6 @@ lmb_require('limb/log/src/writers/lmbLogBaseWriter.class.php');
  */
 class lmbLogEchoWriter extends lmbLogBaseWriter
 {
-  function __construct(lmbUri $dsn)
-  {
-
-  }
-
   function write(lmbLogEntry $entry)
   {
     echo $this->_getDelimiter($entry).PHP_EOL.$this->_getDefaultEntryString($entry);
