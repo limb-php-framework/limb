@@ -43,7 +43,7 @@
       <dl id='main_menu'>
       {{list:list id='navigation' using='$#navigation'}}
         {{list:item}}
-        <dt class='{$item.id}'><img src='/{$item.icon}'/> {$item.title} </dt>
+        <dt class='{$item.id}'><img src='{$item.icon}'/> {$item.title} </dt>
         <dd>
           {{list:list using='$item.children' as="$sub_item"}}
             <ul>
