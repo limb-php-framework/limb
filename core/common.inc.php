@@ -224,14 +224,19 @@ function lmb_var_export($arg, $level = 1)
       	return 'OBJECT(' . get_class($arg) . ")";
       else
       {
-	      $dump =  'OBJECT(' . get_class($arg) . ") {".PHP_EOL;
-	      foreach(get_object_vars($arg) as $name => $value)
+	      $dump =  'OBJECT(' . get_class($arg) . ") {";
+	      if (get_object_vars($arg))
 	      {
-	      	$dump .= $prefix . "  [\"$name\"]=> "
-	      	  . lmb_var_export($value, $level + 1)
-	      	  . PHP_EOL;
+	      	$dump .= PHP_EOL;
+		      foreach(get_object_vars($arg) as $name => $value)
+		      {
+		      	$dump .= $prefix . "  [\"$name\"]=> "
+		      	  . lmb_var_export($value, $level + 1)
+		      	  . PHP_EOL;
+		      }
+		      $dump .= $prefix;
 	      }
-	      $dump .= $prefix . "}";
+	      $dump .=  "}";
 	      return $dump;
       }
 
