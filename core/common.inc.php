@@ -217,7 +217,7 @@ function lmb_var_export($arg, $level = 1)
     case 'object':
 
     	if (LIMB_DUMP_MAX_DEPTH == $level)
-    	  return 'OBJECT(' . get_class($arg) . ') { <RECURSION> }';
+    	  return 'OBJECT(' . get_class($arg) . ')';
     	$_ENV['LIMB_VAR_EXPORT_SHOWED_OBJECTS'][spl_object_hash($arg)] = true;
 
       if ($level == LIMB_DUMP_MAX_DEPTH)

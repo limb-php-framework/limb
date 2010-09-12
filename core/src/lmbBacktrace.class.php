@@ -85,7 +85,7 @@ class lmbBacktrace
         $trace_string .= $sep;
         $sep = ', ';
 
-        $trace_string .= lmb_var_export($arg);
+        $trace_string .= lmb_var_export($arg, LIMB_DUMP_MAX_DEPTH);
       }
     }
 

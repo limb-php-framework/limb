@@ -65,7 +65,7 @@ OBJECT(stdClass) {
         ["parent"]=> OBJECT(stdClass) {
           ["child"]=> OBJECT(stdClass) {
             ["property"]=> INT(42)
-            ["parent"]=> OBJECT(stdClass) { <RECURSION> }
+            ["parent"]=> OBJECT(stdClass)
           }
         }
       }
