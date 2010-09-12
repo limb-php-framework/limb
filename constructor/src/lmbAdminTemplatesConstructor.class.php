@@ -93,7 +93,7 @@ class lmbAdminTemplatesConstructor extends lmbAbstractConstructor
     $this->_project->addTemplate($this->_getResultTemplatePath('display.phtml'), $content);
 
     $content = $this->_createContentFromTemplate('admin_templates/form_fields.phtml', $vars, false);
-    $this->_project->addTemplate($this->_getResultTemplatePath('form_fields.phtml'), $content);
+    $this->_project->addTemplate($this->_getResultTemplatePath('include/form_fields.phtml'), $content);
 
     $content = $this->_createContentFromTemplate('admin_templates/create.phtml', $vars, false);
     $this->_project->addTemplate($this->_getResultTemplatePath('create.phtml'), $content);
