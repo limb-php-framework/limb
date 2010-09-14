@@ -95,20 +95,21 @@ class lmbLog
     if(!$this->isLogEnabled())
       return;
 
-    $backtrace_depth = $this->backtrace_depth[LOG_ERR];
-    $message = get_class($exception).': '.$exception->getMessage();
-
+    $message = get_class($exception) . ': ';
     if($exception instanceof lmbException)
     {
+      $message .= $exception->getOriginalMessage();
       $backtrace = $exception->getBacktrace();
       $params = $exception->getParams();
     }
     else
     {
+      $message .= $exception->getMessage();
       $backtrace = $exception->getTrace();
       $params = null;
     }
 
+    $backtrace_depth = $this->backtrace_depth[LOG_ERR];
     $this->log($message, LOG_ERR, $params, new lmbBacktrace($backtrace, $backtrace_depth));
   }
 
