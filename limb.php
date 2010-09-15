@@ -1,22 +1,81 @@
 <?php
-if(!$project_dir = get_cfg_var('limb.project_dir'))
-  $project_dir = lmb_cli_ask_for_option('Project directory', lmb_cli_find_project_dir(getcwd()));
-else
-  echo "Project directory loaded from PHP config: {$project_dir}\n";
+$limb_dir = dirname(__FILE__);
 
-if(!$limb_dir = get_cfg_var('limb.dir'))
-  $limb_dir = lmb_cli_ask_for_option('Limb directory', lmb_cli_find_limb_dir($project_dir));
-else
-  echo "Limb directory loaded from PHP config: {$limb_dir}\n";
+require_once($limb_dir.'/taskman/taskman.inc.php');
 
-if(!lmb_cli_init_tasks($limb_dir))
-  die("ERROR: Limb not found".PHP_EOL);
+lmb_cli_init_limb($limb_dir);
+var_dump(get_include_path());
 
-lmb_require('limb/taskman/taskman.inc.php');
+taskman_propset('TASKS_MASKS', 'limb/*/cli/*.inc.php' . PATH_SEPARATOR . 'src/*/cli/*.inc.php');
+taskman_propset('PROJECT_DIR', lmb_get_project_dir());
+taskman_propset('LIMB_DIR', $limb_dir.'/../');
 
-taskman_propset('PROJECT_DIR', $project_dir);
-taskman_propset('LIMB_DIR', $limb_dir);
+lmb_cli_init_tasks();
 taskman_run();
+
+function lmb_get_project_dir()
+{
+  if(!$project_dir = get_cfg_var('limb.project_dir'))
+    $project_dir = lmb_cli_ask_for_option('Project directory', lmb_cli_find_project_dir(getcwd()));
+  else
+    echo "Project directory loaded from PHP config: {$project_dir}\n";
+  return $project_dir;
+}
+
+function lmb_cli_find_project_dir($current_dir)
+{
+  if(file_exists($current_dir . '/setup.php'))
+  {
+  	ob_start();
+  	register_shutdown_function('lmb_cli_check_limb_instance');
+  	lmb_require($current_dir . '/setup.php');
+  	ob_end_clean();
+  	lmb_cli_check_limb_instance($disable = true);
+
+    return $current_dir;
+  }
+  else
+  {
+    $parent_dir = dirname($current_dir);
+    if($current_dir != $parent_dir)
+      return lmb_cli_find_project_dir($parent_dir);
+    else
+      return getcwd();
+  }
+}
+
+/**
+ * Ugly hack for check situation when limb already included from another dir
+ */
+function lmb_cli_check_limb_instance($disable = false)
+{
+	static $is_disabled = false;
+	if($disable)
+	  $is_disabled = true;
+
+  if($is_disabled || !$error = error_get_last())
+    return;
+
+  ob_end_clean();
+
+  if(false !== strstr($error['message'], 'Cannot redeclare lmb_resolve_include_path()'))
+  {
+    taskman_sysmsg("You must use the same instance of Limb as in the project!\n");
+    exit(1);
+  }
+}
+
+function lmb_cli_init_limb($limb_dir)
+{
+  set_include_path(get_include_path() . PATH_SEPARATOR . $limb_dir . '/../');
+  require_once('limb/core/common.inc.php');
+}
+
+function lmb_cli_init_tasks()
+{
+	foreach(explode(PATH_SEPARATOR, taskman_prop('TASKS_MASKS')) as $mask)
+    lmb_require_glob($mask);
+}
 
 function lmb_cli_ask_for_option($option_name, $default_value = '')
 {
@@ -46,50 +105,4 @@ function lmb_cli_ask_for_accept($question)
   while($user_in != 'y' && $user_in != 'n');
 
   return $user_in == 'y' ? true : false;
-}
-
-function lmb_cli_find_project_dir($current_dir)
-{
-  if(file_exists($current_dir . '/setup.php'))
-    return $current_dir;
-  else
-  {
-    $parent_dir = dirname($current_dir);
-    if($current_dir != $parent_dir)
-      return lmb_cli_find_project_dir($parent_dir);
-    else
-      return getcwd();
-  }
-}
-
-function lmb_cli_find_limb_dir($project_dir)
-{
-  if(file_exists($project_dir . '/setup.php'))
-    require_once($project_dir . '/setup.php');
-
-  foreach(explode(PATH_SEPARATOR, get_include_path()) as $path)
-  {
-    if(file_exists($path . '/limb/core/common.inc.php'))
-      return $path;
-
-  }
-  return '';
-}
-
-function lmb_cli_init_tasks($limb_dir)
-{
-  if(file_exists($limb_dir . '/limb/core/common.inc.php'))
-  {
-    if(!lmb_is_limb_included())
-      set_include_path($limb_dir);
-    require_once($limb_dir.'/limb/core/common.inc.php');
-    lmb_require_glob($limb_dir . '/limb/*/cli/*.inc.php');
-    return true;
-  }
-  return false;
-}
-
-function lmb_is_limb_included()
-{
-  return defined('LIMB_UNDEFINED');
 }
