@@ -96,7 +96,7 @@ class lmbAdminTemplatesConstructorTest extends lmbConstructorUnitTestCase
                   'form_fields' => array('code' => '[[input id="code" name="code" type="text" title="code"/]]'));
 
     $expected_content = $this->_getExpectedAdminTemplateContent($vars, 'form_fields');
-    $generated_content = $this->_getGeneratedAdminTemplateContent($table, $model_name, '/template/admin_social_security/form_fields.phtml');
+    $generated_content = $this->_getGeneratedAdminTemplateContent($table, $model_name, '/template/admin_social_security/include/form_fields.phtml');
 
     $this->assertEqual($expected_content, $generated_content);
   }
@@ -114,7 +114,7 @@ class lmbAdminTemplatesConstructorTest extends lmbConstructorUnitTestCase
                                          ));
 
     $expected_content = $this->_getExpectedAdminTemplateContent($vars, 'form_fields');
-    $generated_content = $this->_getGeneratedAdminTemplateContent($table, $model_name, '/template/admin_document/form_fields.phtml');
+    $generated_content = $this->_getGeneratedAdminTemplateContent($table, $model_name, '/template/admin_document/include/form_fields.phtml');
 
     $this->assertEqual($expected_content, $generated_content);
   }
@@ -129,7 +129,7 @@ class lmbAdminTemplatesConstructorTest extends lmbConstructorUnitTestCase
                   'form_fields' => array('name' => '[[input id="name" name="name" type="text" title="name"/]]'));
 
     $expected_content = $this->_getExpectedAdminTemplateContent($vars, 'form_fields');
-    $generated_content = $this->_getGeneratedAdminTemplateContent($table, $model_name, '/template/admin_person/form_fields.phtml');
+    $generated_content = $this->_getGeneratedAdminTemplateContent($table, $model_name, '/template/admin_person/include/form_fields.phtml');
 
     $this->assertEqual($expected_content, $generated_content);
   }
