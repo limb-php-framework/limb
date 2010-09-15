@@ -39,16 +39,6 @@ function task_project_files($args)
   taskman_msg('Skel is copied...');
   lmbFs::cp($proj_dir.'/lib/limb/web_app/skel', $proj_dir);
   taskman_msg("Done\n");
-
-  if(lmb_cli_ask_for_accept('Do you need a incubator packages?'))
-  {
-    $incubator_dir = lmb_cli_ask_for_option('Incubator dir', $limb_dir . '/incubator/limb');
-    taskman_msg('Incubator packages is copied...');
-    foreach(lmbFs::ls($incubator_dir) as $package_name)
-      lmbFs::cp(realpath($incubator_dir), $proj_dir . '/lib/limb');
-
-    taskman_msg("Done\n");
-  }
 }
 
 /**
@@ -208,8 +198,9 @@ function task_project_db_init_config()
 
   $config_file = taskman_prop('PROJECT_DIR').'/settings/db.conf.php';
   if(file_exists($config_file))
-    if(!lmb_cli_ask_for_accept('Database config exists. Overwrite it?'))
-      return;
+    return;
+
+  taskman_msg("Database config does not exists...\n");
 
   if(!$dsn_str = taskman_propor('DSN', ''))
     $dsn_str = lmb_cli_ask_for_option('Dsn (example: mysqli://root:test@localhost/limb_app?charset=utf8)');
