@@ -58,7 +58,7 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testGetGet()
   {
-  	$get = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
+    $get = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
     $request = new lmbHttpRequest('http://test.com', $get);
     $this->assertEqual($request->getGet(), $get);
     $this->assertEqual($request->getGet('c'), 1);
@@ -74,7 +74,7 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testGetPost()
   {
-  	$post = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
+    $post = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
     $request = new lmbHttpRequest('http://test.com', array(), $post);
     $this->assertEqual($request->getPost(), $post);
     $this->assertEqual($request->getPost('c'), 1);
@@ -132,7 +132,7 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testGetCookie()
   {
-  	$cookie = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
+    $cookie = array('c' => 1, 'ju' => 'jitsu', 'kung' => 'fu');
     $request = new lmbHttpRequest('http://test.com', array(), array(), $cookie);
     $this->assertEqual($request->getCookie(), $cookie);
     $this->assertEqual($request->getCookie('c'), 1);
@@ -236,6 +236,48 @@ class lmbHttpRequestTest extends UnitTestCase
     $_SERVER['SERVER_PORT'] = $old_port;
   }
 
+  function testInitByServerVariablesWithoutRequestUri_Unix()
+  {
+    $old_uri = @$_SERVER['REQUEST_URI'];
+    $old_host = @$_SERVER['HTTP_HOST'];
+    $old_port = @$_SERVER['SERVER_PORT'];
+    $old_self = @$_SERVER['PHP_SELF'];
+
+    $_SERVER['REQUEST_URI'] = null;
+    $_SERVER['HTTP_HOST'] = 'test.com';
+    $_SERVER['SERVER_PORT'] = '8080';
+    $_SERVER['PHP_SELF'] = '/var/dev/limb/runtests.php';
+
+    $request = new lmbHttpRequest();
+    $this->assertEqual($request->getRawUriString(), 'http://test.com:8080/runtests.php');
+
+    $_SERVER['REQUEST_URI'] = $old_uri;
+    $_SERVER['HTTP_HOST'] = $old_host;
+    $_SERVER['SERVER_PORT'] = $old_port;
+    $_SERVER['PHP_SELF'] = $old_self;
+  }
+
+  function testInitByServerVariablesWithoutRequestUri_Win()
+  {
+    $old_uri = @$_SERVER['REQUEST_URI'];
+    $old_host = @$_SERVER['HTTP_HOST'];
+    $old_port = @$_SERVER['SERVER_PORT'];
+    $old_self = @$_SERVER['PHP_SELF'];
+
+    $_SERVER['REQUEST_URI'] = null;
+    $_SERVER['HTTP_HOST'] = 'test.com';
+    $_SERVER['SERVER_PORT'] = '8080';
+    $_SERVER['PHP_SELF'] = 'D:\var\dev\limb\runtests.php';
+
+    $request = new lmbHttpRequest();
+    $this->assertEqual($request->getRawUriString(), 'http://test.com:8080/runtests.php');
+
+    $_SERVER['REQUEST_URI'] = $old_uri;
+    $_SERVER['HTTP_HOST'] = $old_host;
+    $_SERVER['SERVER_PORT'] = $old_port;
+    $_SERVER['PHP_SELF'] = $old_self;
+  }
+
   function testExtractPortFromHost()
   {
     $old_uri = @$_SERVER['REQUEST_URI'];
@@ -309,5 +351,3 @@ class lmbHttpRequestTest extends UnitTestCase
     $this->assertEqual($request['get']['z'], '1');
   }
 }
-
-

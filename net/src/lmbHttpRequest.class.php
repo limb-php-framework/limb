@@ -241,9 +241,9 @@ class lmbHttpRequest extends lmbSet
     if(isset($_SERVER['REQUEST_URI']))
       $url = $_SERVER['REQUEST_URI'];
     elseif(isset($_SERVER['QUERY_STRING']))
-      $url = basename($_SERVER['PHP_SELF']) . '?' . $_SERVER['QUERY_STRING'];
+      $url = '/' . basename($_SERVER['PHP_SELF']) . '?' . $_SERVER['QUERY_STRING'];
     else
-      $url = basename($_SERVER['PHP_SELF']);
+      $url = '/' . basename($_SERVER['PHP_SELF']);
 
     return $server . $url;
   }
