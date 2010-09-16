@@ -129,6 +129,36 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->toString(), $expected_url);
   }
 
+  function testToString_CorrectParseSimpleMultipleArray()
+  {
+    $str = 'http://localhost/test.php?key=alfa&key=bravo&key=charle';
+    $expected_url = 'http://localhost/test.php?key[0]=alfa&key[1]=bravo&key[2]=charle';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->toString(), $expected_url);
+  }
+
+  function testToString_CorrectParseSimpleMultipleArray_2()
+  {
+    $str = 'http://localhost/test.php?key=alfa&key[]=bravo&key[3]=charle';
+    $expected_url = 'http://localhost/test.php?key[0]=alfa&key[1]=bravo&key[3]=charle';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->toString(), $expected_url);
+  }
+
+  function testToString_CorrectParseSimpleMultipleArray_3()
+  {
+    $str = 'http://localhost/test.php?key=alfa&key[]=bravo&key[2]=charle';
+    $expected_url = 'http://localhost/test.php?key[0]=alfa&key[1]=bravo&key[2]=charle';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->toString(), $expected_url);
+  }
+
   function testToStringNoProtocol()
   {
     $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
