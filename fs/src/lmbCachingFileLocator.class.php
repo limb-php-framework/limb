@@ -85,6 +85,19 @@ class lmbCachingFileLocator extends lmbFileLocatorDecorator
 
     return $this->_cached_paths[$hash];
   }
+
+  function locateAll($alias)
+  {
+    $hash = md5($alias);
+
+    if(isset($this->_cached_paths[$hash]))
+      return $this->_cached_paths[$hash];
+
+    $this->_cached_paths[$hash] = $this->locator->locateAll($alias);
+    $this->_changed = true;
+
+    return $this->_cached_paths[$hash];
+  }
 }
 
 
