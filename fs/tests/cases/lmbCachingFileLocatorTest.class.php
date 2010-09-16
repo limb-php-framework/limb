@@ -55,7 +55,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
     $this->assertEqual($this->locator->locate('path-to-file'), 'located-path-to-file');
   }
 
-  function testLocale_NotCacheHitOnOtherParams()
+  function testLocate_NotCacheHitOnOtherParams()
   {
     $this->wrapped_locator->expectCallCount('locate', 2);
     $this->wrapped_locator->setReturnValueAt(0, 'locate', 'located-path-to-file1', array('path-to-file', array()));
@@ -67,7 +67,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
     $this->assertEqual($path, 'located-path-to-file2');
   }
 
-  function testLocale_WriteToCacheOnDestroy()
+  function testLocate_WriteToCacheOnDestroy()
   {
     $this->wrapped_locator->setReturnValue('locate', 'located-path-to-file', array('path-to-file', array()));
     $this->locator->locate('path-to-file');
@@ -81,7 +81,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
     $this->assertEqual($cached_locations, array('path-to-file' => 'located-path-to-file'));
   }
 
-  function testLocale_WriteToCacheOnlyIfChanged()
+  function testLocate_WriteToCacheOnlyIfChanged()
   {
     $this->wrapped_locator->setReturnValue('locate', 'located-path-to-file', array('path-to-file', array()));
     $this->locator->locate('path-to-file');
@@ -100,7 +100,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
     $this->assertFalse(file_exists($this->cache_file));
   }
 
-  function testLocale_FlushCache()
+  function testLocate_FlushCache()
   {
     $this->wrapped_locator->setReturnValue('locate', 'located-path-to-file', array('path-to-file', array()));
     $this->locator->locate('path-to-file');
@@ -111,7 +111,7 @@ class lmbCachingFileLocatorTest extends UnitTestCase
     $this->assertFalse(file_exists($this->cache_file));
   }
 
-  function testLocale_LoadFromCache()
+  function testLocate_LoadFromCache()
   {
     $php = serialize(array("path-to-file" => "located-path-to-file"));
     file_put_contents($this->cache_file, $php);
