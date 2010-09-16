@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
@@ -29,7 +29,7 @@ class lmbPgsqlStatement implements lmbDbStatement
     $this->sql = $sql;
     $this->connection = $connection;
   }
-  
+
   function setConnection($connection)
   {
     $this->connection = $connection;
@@ -42,56 +42,52 @@ class lmbPgsqlStatement implements lmbDbStatement
 
   function setSmallInt($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the small int", array('value' => $value));
     $this->parameters[$name] = is_null($value) ?  null : intval($value);
   }
 
   function setInteger($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the integer", array('value' => $value));
     $this->parameters[$name] = is_null($value) ?  null : intval($value);
   }
 
   function setBit($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?  null : intval($value);
+    $this->parameters[$name] = is_null($value) ?  null : decbin($value);
   }
-  
+
   function setFloat($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    null :
-    floatval($value);
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the float", array('value' => $value));
+    $this->parameters[$name] = is_null($value) ? null : floatval($value);
   }
 
   function setDouble($name, $value)
   {
     if(is_float($value) || is_integer($value))
-    {
       $this->parameters[$name] = $value;
-    }
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
-    {
       $this->parameters[$name] = $value;
-    }
-    else
-    {
+    else if(!$value)
       $this->parameters[$name] = null;
-    }
+    else
+      throw new lmbDbException("Can't convert given value to the double", array('value' => $value));
   }
 
   function setDecimal($name, $value)
   {
     if(is_float($value) || is_integer($value))
-    {
       $this->parameters[$name] = $value;
-    }
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
-    {
       $this->parameters[$name] = $value;
-    }
-    else
-    {
+    else if(!$value)
       $this->parameters[$name] = null;
-    }
+    else
+      throw new lmbDbException("Can't convert given value to the decimal", array('value' => $value));
   }
 
   function setBoolean($name, $value)
@@ -111,7 +107,7 @@ class lmbPgsqlStatement implements lmbDbStatement
     $this->parameters[$name] = is_null($value) ?
     null : $value;
   }
-  
+
   function setClob($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
@@ -121,20 +117,15 @@ class lmbPgsqlStatement implements lmbDbStatement
   protected function _setDate($name, $value, $format)
   {
     if(is_int($value))
-    {
       $this->parameters[$name] = date($format, $value);
-    }
+
     else if(is_string($value))
-    {
       $this->parameters[$name] =  (string) $value;
-    }
+
     else
-    {
       $this->parameters[$name] = null;
-    }
   }
-  
-  
+
   function setDate($name, $value)
   {
     $this->_setDate($name, $value, 'Y-m-d');
@@ -150,44 +141,35 @@ class lmbPgsqlStatement implements lmbDbStatement
     $this->_setDate($name, $value, 'Y-m-d H:i:s');
   }
 
-  
   function setBlob($name, $value)
   {
     $this->parameters[$name] = is_null($value) ?
     null :
     (string) $value;
   }
-  
+
   function set($name, $value)
   {
     if(is_string($value))
-    {
       $this->setChar($name, $value);
-    }
+
     else if(is_int($value))
-    {
       $this->setInteger($name, $value);
-    }
+
     else if(is_bool($value))
-    {
       $this->setBoolean($name, $value);
-    }
+
     else if(is_float($value))
-    {
       $this->setFloat($name, $value);
-    }
+
     else
-    {
       $this->setNull($name);
-    }
   }
 
   function import($paramList)
   {
     foreach($paramList as $name=>$value)
-    {
       $this->set($name, $value);
-    }
   }
 
   function getStatement()
@@ -195,7 +177,7 @@ class lmbPgsqlStatement implements lmbDbStatement
     $this->_prepareStatement();
     return $this->statement;
   }
-  
+
   protected function _prepareStatement()
   {
     $sql = $this->_handleBindVars($this->sql);
@@ -203,15 +185,14 @@ class lmbPgsqlStatement implements lmbDbStatement
     {
       $this->statement_name = "pgsql_statement_" . $this->connection->getStatementNumber();
       $this->statement = pg_prepare($this->connection->getConnectionId(), $this->statement_name, $sql);
-    }    
+    }
     if(!$this->statement)
     {
       $this->connection->_raiseError("");
       return;
     }
   }
-  
-  
+
   protected function _handleBindVars($sql)
   {
     $this->prepParams = array();
@@ -221,6 +202,7 @@ class lmbPgsqlStatement implements lmbDbStatement
       $cast_types = true;
     else
       $cast_types = false;
+
     while(preg_match('/^(\'[^\']*?\')|(--[^(\n)]*?\n)|(:(?-U)\w+:(?U))|.+/Us', $sql, $matches))
     {
       if(isset($matches[3]))
@@ -235,23 +217,19 @@ class lmbPgsqlStatement implements lmbDbStatement
         if ($cast_types)
         {
           $this->statement_name = null;
-          $newsql .= '::'; 
+          $newsql .= '::';
+
           if (is_null($this->parameters[$param]))
-          {
             $newsql .= 'int';
-          }
+
           elseif (is_integer($this->parameters[$param]))
-          {
             $newsql .= 'int';
-          }
+
           elseif (is_float($this->parameters[$param]))
-          {
             $newsql .= 'float';
-          }
+
           else
-          {
             $newsql .= 'varchar';
-          }
         }
         $index++;
       }
@@ -260,27 +238,30 @@ class lmbPgsqlStatement implements lmbDbStatement
 
       $sql = substr($sql, strlen($matches[0]));
     }
+
     return $newsql;
   }
-  
+
   function getSQL()
   {
-    return $this->sql;
+    $keys = array();
+    foreach($this->parameters as $key => $value)
+      $keys[] = ':' . $key . ':';
+
+    return str_replace($keys, $this->parameters, $this->sql);
   }
 
-  
-  
   function getPrepParams()
   {
     return $this->prepParams;
   }
-  
+
   function getStatementName()
   {
     $this->getStatement();
     return $this->statement_name;
   }
-  
+
   function execute($sql = "")
   {
     if (!empty($sql))
@@ -289,15 +270,17 @@ class lmbPgsqlStatement implements lmbDbStatement
       $this->sql = $sql;
       $this->free();
     }
+
     $queryId = $this->connection->executeStatement($this);
     if (isset($stored_sql))
     {
       $this->sql = $stored_sql;
       $this->free();
     }
+
     return $queryId;
   }
-  
+
   function addOrder($sort_params)
   {
     if(preg_match('~(?<=FROM).+\s+ORDER\s+BY\s+~i', $this->sql))
@@ -310,31 +293,27 @@ class lmbPgsqlStatement implements lmbDbStatement
 
     $this->sql = rtrim($this->sql, ',');
   }
-  
+
   function addLimit($offset, $limit)
   {
-     $this->sql .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
+    $this->sql .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
   }
-  
+
   function count()
   {
     if (!$this->queryId)
       $this->queryId = $this->execute();
-      
+
     return pg_num_rows($this->queryId);
   }
-  
+
   function free()
   {
     if ($this->queryId && is_resource($this->queryId))
       pg_free_result($this->queryId);
-      
+
     $this->queryId = null;
     $this->statement = null;
-    $this->statement_name = null;      
+    $this->statement_name = null;
   }
-  
-  
 }
-
-
