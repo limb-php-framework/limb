@@ -8,6 +8,7 @@
  */
 lmb_require('limb/net/src/lmbHttpRequest.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
+lmb_require('limb/core/src/lmbSys.class.php');
 
 class lmbHttpRequestTest extends UnitTestCase
 {
@@ -238,19 +239,28 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testInitByServerVariablesWithoutRequestUri_Unix()
   {
+    if (!lmbSys::isUnix()) {
+      $this->skipIf(!lmbSys::isUnix(), __METHOD__ . ' can be run only on Unix.');
+      return;
+    }
+    
+    $this->initByServerVariablesWithoutRequestUri('/var/dev/limb/runtests.php');
+  }
+    
+  protected function initByServerVariablesWithoutRequestUri($php_self) {
     $old_uri = @$_SERVER['REQUEST_URI'];
     $old_host = @$_SERVER['HTTP_HOST'];
     $old_port = @$_SERVER['SERVER_PORT'];
     $old_self = @$_SERVER['PHP_SELF'];
-
+    
     $_SERVER['REQUEST_URI'] = null;
     $_SERVER['HTTP_HOST'] = 'test.com';
     $_SERVER['SERVER_PORT'] = '8080';
-    $_SERVER['PHP_SELF'] = '/var/dev/limb/runtests.php';
-
+    $_SERVER['PHP_SELF'] = $php_self;
+    
     $request = new lmbHttpRequest();
     $this->assertEqual($request->getRawUriString(), 'http://test.com:8080/runtests.php');
-
+    
     $_SERVER['REQUEST_URI'] = $old_uri;
     $_SERVER['HTTP_HOST'] = $old_host;
     $_SERVER['SERVER_PORT'] = $old_port;
@@ -259,23 +269,12 @@ class lmbHttpRequestTest extends UnitTestCase
 
   function testInitByServerVariablesWithoutRequestUri_Win()
   {
-    $old_uri = @$_SERVER['REQUEST_URI'];
-    $old_host = @$_SERVER['HTTP_HOST'];
-    $old_port = @$_SERVER['SERVER_PORT'];
-    $old_self = @$_SERVER['PHP_SELF'];
-
-    $_SERVER['REQUEST_URI'] = null;
-    $_SERVER['HTTP_HOST'] = 'test.com';
-    $_SERVER['SERVER_PORT'] = '8080';
-    $_SERVER['PHP_SELF'] = 'D:\var\dev\limb\runtests.php';
-
-    $request = new lmbHttpRequest();
-    $this->assertEqual($request->getRawUriString(), 'http://test.com:8080/runtests.php');
-
-    $_SERVER['REQUEST_URI'] = $old_uri;
-    $_SERVER['HTTP_HOST'] = $old_host;
-    $_SERVER['SERVER_PORT'] = $old_port;
-    $_SERVER['PHP_SELF'] = $old_self;
+    if (!lmbSys::isWin32()) {
+        $this->skipIf(!lmbSys::isWin32(), __METHOD__ . ' can be run only on Windows.');
+        return;
+    }
+    
+    $this->initByServerVariablesWithoutRequestUri('D:\var\dev\limb\runtests.php');
   }
 
   function testExtractPortFromHost()
