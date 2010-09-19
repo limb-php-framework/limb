@@ -198,10 +198,22 @@ class lmbSQLCriteriaTest extends UnitTestCase
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', array(1, 2), lmbSQLFieldCriteria :: IN));
   }
 
-  function testInWithArrayProcessor()
+  function testIn_WithArrayProcessor()
   {
     $criteria = lmbSQLCriteria :: in('id', array("10foo", "20bar"), 'intval');
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', array(10, 20), lmbSQLFieldCriteria :: IN));
+  }
+
+  function testNotIn()
+  {
+    $criteria = lmbSQLCriteria :: notIn('id', array(1, 2));
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', array(1, 2), lmbSQLFieldCriteria :: NOT_IN));
+  }
+
+  function testNotIn_WithArrayProcessor()
+  {
+    $criteria = lmbSQLCriteria :: notIn('id', array("10foo", "20bar"), 'intval');
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', array(10, 20), lmbSQLFieldCriteria :: NOT_IN));
   }
 
   function testEqual()
@@ -210,10 +222,22 @@ class lmbSQLCriteriaTest extends UnitTestCase
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 1, lmbSQLFieldCriteria :: EQUAL));
   }
 
+  function testNotEqual()
+  {
+    $criteria = lmbSQLCriteria :: notEqual('id', 1);
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 1, lmbSQLFieldCriteria :: NOT_EQUAL));
+  }
+
   function testLike()
   {
     $criteria = lmbSQLCriteria :: like('id', '%foo%');
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', '%foo%', lmbSQLFieldCriteria :: LIKE));
+  }
+
+  function testNotLike()
+  {
+    $criteria = lmbSQLCriteria :: notLike('id', '%foo%');
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', '%foo%', lmbSQLFieldCriteria :: NOT_LIKE));
   }
 
   function testIsNull()
@@ -222,7 +246,19 @@ class lmbSQLCriteriaTest extends UnitTestCase
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', null, lmbSQLFieldCriteria :: IS_NULL));
   }
 
+  function testIsNotNull()
+  {
+    $criteria = lmbSQLCriteria :: isNotNull('id');
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', null, lmbSQLFieldCriteria :: IS_NOT_NULL));
+  }
+
   function testGreater()
+  {
+    $criteria = lmbSQLCriteria :: greaterOrEqual('id', 11);
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 11, lmbSQLFieldCriteria :: GREATER_EQUAL));
+  }
+
+  function testGreaterOrEqual()
   {
     $criteria = lmbSQLCriteria :: greater('id', 11);
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 11, lmbSQLFieldCriteria :: GREATER));
@@ -232,6 +268,12 @@ class lmbSQLCriteriaTest extends UnitTestCase
   {
     $criteria = lmbSQLCriteria :: less('id', 12);
     $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 12, lmbSQLFieldCriteria :: LESS));
+  }
+
+  function testLessOrEqual()
+  {
+    $criteria = lmbSQLCriteria :: lessOrEqual('id', 12);
+    $this->assertEqual($criteria, new lmbSQLFieldCriteria('id', 12, lmbSQLFieldCriteria :: LESS_EQUAL));
   }
 }
 
