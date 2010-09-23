@@ -7,3 +7,5 @@
 .settings
 var/*
 tests/*
+
+bamboo/var/*
