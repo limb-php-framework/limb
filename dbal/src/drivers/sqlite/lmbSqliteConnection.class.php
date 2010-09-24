@@ -28,6 +28,13 @@ class lmbSqliteConnection extends lmbDbBaseConnection
   protected $connectionId;
   protected $in_transaction = false;
 
+  function __construct($config, $dsn_string = null)
+  {
+  	if (!function_exists('sqlite_query'))
+  	  throw new lmbDbException('PHP SQLite extension not enabled');
+  	parent::__construct($config, $dsn_string);
+  }
+
   function getType()
   {
     return 'sqlite';
@@ -91,9 +98,9 @@ class lmbSqliteConnection extends lmbDbBaseConnection
 
   function executeStatement($stmt)
   {
-    return (bool)$this->execute($stmt->getSQL());      
+    return (bool)$this->execute($stmt->getSQL());
   }
-  
+
   function beginTransaction()
   {
     $this->execute('BEGIN');
