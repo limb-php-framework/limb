@@ -24,12 +24,22 @@ abstract class lmbDbBaseConnection implements lmbDbConnection
 
   function __construct($config, $dsn_string = null)
   {
+  	$func_for_check = $this->getFunctionForSystemSupportCheck();
+    if (!function_exists($func_for_check))
+      throw new lmbException("Function {$func_for_check} non exists. Check your PHP configuration");
+
     $this->config = $config;
     if(is_object($config) && ($config instanceof lmbDbDSN))
       $this->dsn_string = $config->toString();
     else
       $this->dsn_string = $dsn_string;
   }
+
+  /**
+   * Valid function name. 'mysql_connect' for example
+   * @return string
+   */
+  abstract function getFunctionForSystemSupportCheck();
 
   function getConfig()
   {

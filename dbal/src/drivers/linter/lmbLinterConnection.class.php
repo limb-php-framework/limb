@@ -25,14 +25,19 @@ class lmbLinterConnection extends lmbDbBaseConnection
 {
   const CURSOR_POOL_LIMIT = 64;
   const LINTER_EMPTY_DATASET = -18;
-  
+
   protected $connectionId;
   protected $transactionCount = 0;
   protected $cursorPool = array();
   protected $mode = null;
   protected $useConnection = false;
   protected $debug = false;
-  
+
+  function getFunctionForSystemSupportCheck()
+  {
+    return 'linter_open_connect';
+  }
+
   function getType()
   {
     return 'linter';
@@ -42,7 +47,7 @@ class lmbLinterConnection extends lmbDbBaseConnection
   {
     if(!isset($this->connectionId))
       $this->connect();
-      
+
     return $this->connectionId;
   }
 
@@ -55,26 +60,26 @@ class lmbLinterConnection extends lmbDbBaseConnection
     else
       return false;
   }
-  
+
   function connect()
   {
     $persistent = null;
 
     if(isset($this->config['charset']) && ($charset = $this->config['charset']))
       $r = linter_set_codepage($this->map_charset($this->config['charset']));
-    
+
     $port = $this->config['port'];
     $database = addslashes($this->config['database']);
     $user = addslashes($this->config['user']);
     $password = addslashes($this->config['password']);
-    
+
     if (is_null($this->mode))
       $this->mode = isset($this->config['extra']['mode']) ? $this->config['extra']['mode'] : TM_AUTOCOMMIT;
-      
+
     $conn = @linter_open_connect($user, $password, $database, $this->mode);
-    
+
     $this->connectionId = $conn;
-    
+
     if ($conn < 0)
     {
       $this->_raiseError($conn);
@@ -119,7 +124,7 @@ class lmbLinterConnection extends lmbDbBaseConnection
   {
     $this->disconnect();
   }
-  
+
   function closeCursor($cursorId)
   {
     $res = linter_close_cursor($cursorId);
@@ -133,15 +138,15 @@ class lmbLinterConnection extends lmbDbBaseConnection
       $this->log("Cursor closed: Connection: ".$this->connectionId."; cursor: ".$cursorId."; pool size: ".count($this->cursorPool));
     }
   }
-  
+
   function _raiseError($code, $conn_id = null, $args=array())
   {
     if (is_null($conn_id))
       $conn_id = $this->connectionId;
-      
+
     if ($code >= 0 && $this->connectionId >= 0)
       return false;
-      
+
     if ($this->connectionId < 0)
     {
       $lin_err = linter_last_error($this->connectionId, LINTER_ERROR);
@@ -186,9 +191,9 @@ class lmbLinterConnection extends lmbDbBaseConnection
     $sql = trim($sql);
     $sql = $this->escapeTableName($sql);
     $sql = $this->escapeInsertFields($sql);
-    return $sql;    
+    return $sql;
   }
-  
+
   protected function handle_cursor_pool()
   {
     if (!$this->useConnection)
@@ -199,19 +204,19 @@ class lmbLinterConnection extends lmbDbBaseConnection
         $this->closeCursor($cursors[0]);
       }
       $result = linter_open_cursor($this->getConnectionId());
-      
+
       if ($result < 0)
         $this->_raiseError($result);
-        
+
       $this->cursorPool[$result] = "opened";
       $this->log("Cursor opened. Connection: ".$this->connectionId."; cursor: ".$result."; pool size: ".count($this->cursorPool));
     }
     else
       $result = true;
-      
+
     return $result;
   }
-  
+
   protected function handle_call_result($res, $cur, $sql)
   {
     if ($res < 0)
@@ -232,19 +237,19 @@ class lmbLinterConnection extends lmbDbBaseConnection
     else
       return $cur;
   }
-  
+
   function execute($sql)
   {
     $result = null;
     $sql = $this->prepare_sql($sql);
-    
+
     $result = $this->handle_cursor_pool();
     $res = linter_exec_direct($this->useConnection ? $this->connectionId : $result, $sql);
-    
+
     $this->log("Query direct executed: $sql, result:$res");
     return $this->handle_call_result($res, $result, $sql);
   }
-  
+
   function executeStatement($stmt)
   {
     $this->useConnection = false;
@@ -254,12 +259,12 @@ class lmbLinterConnection extends lmbDbBaseConnection
     $res = linter_prepare($cursor, $sql);
     $this->log("Query prepared: " . $sql . ", result: " . $res);
     $cursor = $this->handle_call_result($res, $cursor, $sql);
-    
+
     $res = linter_execute($cursor, $stmt->getParams());
     $this->log("Prepared query executed: " . $sql . "Cursor: " . $cursor . ", result: " . $res);
     return $this->handle_call_result($res, $cursor, $sql);
   }
-  
+
   function cexecute($sql)
   {
     $this->useConnection = true;
@@ -307,14 +312,14 @@ class lmbLinterConnection extends lmbDbBaseConnection
       //$this->mode = $mode;
     }
   }
-  
+
   function newStatement($sql)
   {
     if(preg_match('/^\s*\(*\s*(\w+).*$/m', $sql, $match))
       $statement = $match[1];
     else
       $statement = $sql;
-      
+
     switch(strtoupper($statement))
     {
       case 'SELECT':
@@ -348,12 +353,12 @@ class lmbLinterConnection extends lmbDbBaseConnection
   {
     if(!$id)
       return '';
-      
+
     $pieces = explode('.', $id);
     $quoted = '"' . $pieces[0] . '"';
     if(isset($pieces[1]))
        $quoted .= '."' . $pieces[1] . '"';
-       
+
     return $quoted;
   }
 
@@ -362,7 +367,7 @@ class lmbLinterConnection extends lmbDbBaseConnection
     $string = str_replace("'", "''", $string);
     return $string;
   }
-  
+
   function escapeTableName($sql)
   {
     if (preg_match("#(insert into|create table|from|alter table|update)(\s+)([a-zA-Z_]+)(\s|$)#siU", $sql, $matches, PREG_OFFSET_CAPTURE))
@@ -389,13 +394,13 @@ class lmbLinterConnection extends lmbDbBaseConnection
     }
     return $sql;
   }
-  
+
   function getSequenceValue($table, $colname)
   {
     return (int)($this->newStatement("SELECT last_autoinc")->getOneValue());
   }
-  
-  
+
+
   protected function map_charset($charset)
   {
     switch ($charset)
@@ -417,7 +422,7 @@ class lmbLinterConnection extends lmbDbBaseConnection
         break;
     }
   }
-  
+
   function getMbCharset()
   {
     if (!isset($this->config['charset']))
@@ -442,9 +447,9 @@ class lmbLinterConnection extends lmbDbBaseConnection
         return "Windows-1251";
         break;
     }
-    
+
   }
-  
+
   protected function log($message)
   {
     if ($this->debug)

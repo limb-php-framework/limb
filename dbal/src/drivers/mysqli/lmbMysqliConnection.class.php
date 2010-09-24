@@ -28,6 +28,11 @@ class lmbMysqliConnection extends lmbDbBaseConnection
 {
   protected $connectionId;
 
+  function getFunctionForSystemSupportCheck()
+  {
+    return 'mysqli_connect';
+  }
+
   function getType()
   {
     return 'mysqli';
