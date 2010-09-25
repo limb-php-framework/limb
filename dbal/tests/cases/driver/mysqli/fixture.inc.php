@@ -7,8 +7,6 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
-error_reporting(E_ALL);
-
 function DriverMysqliSetup($conn)
 {
   DriverMysqliExec($conn, 'DROP TABLE IF EXISTS founding_fathers;');
