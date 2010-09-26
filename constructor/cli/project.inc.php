@@ -103,6 +103,7 @@ EOD;
  */
 function task_project_shares()
 {
+  lmb_require('limb/fs/src/lmbFs.class.php');
   foreach(glob(taskman_prop('PROJECT_DIR')."/lib/limb/*/shared") as $pkg_shared)
   {
     $pkg = basename(dirname($pkg_shared));
@@ -145,6 +146,7 @@ function task_project_var_dir()
     taskman_msg("Var dir ($var_path) exists...\n");
     return;
   }
+  lmb_require('limb/fs/src/lmbFs.class.php');
   lmbFs::mkdir($var_path);
   taskman_msg("Created var dir ($var_path)...\n");
 }
