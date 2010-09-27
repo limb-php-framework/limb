@@ -27,6 +27,11 @@ class lmbMysqlConnection extends lmbDbBaseConnection
 {
   protected $connectionId;
 
+  function getFunctionForSystemSupportCheck()
+  {
+    return 'mysql_connect';
+  }
+
   function getType()
   {
     return 'mysql';
