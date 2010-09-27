@@ -81,6 +81,19 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
   /**
    * @param string $column
    * @param string $value
+   * @param string $handler
+   * @return lmbSQLFieldCriteria
+   */
+  static function notIn($column, $values, $handler = null)
+  {
+    if($handler)
+      $values = array_map($handler, $values);
+    return new lmbSQLFieldCriteria($column, $values, lmbSQLFieldCriteria :: NOT_IN);
+  }
+
+  /**
+   * @param string $column
+   * @param string $value
    * @return lmbSQLFieldCriteria
    */
   static function equal($column, $value)
@@ -113,9 +126,29 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
    * @param string $value
    * @return lmbSQLFieldCriteria
    */
+  static function greaterOrEqual($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: GREATER_EQUAL);
+  }
+
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
   static function less($column, $value)
   {
     return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: LESS);
+  }
+
+  /**
+   * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
+  static function lessOrEqual($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: LESS_EQUAL);
   }
 
   /**
@@ -130,6 +163,16 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
 
   /**
    * @param string $column
+   * @param string $value
+   * @return lmbSQLFieldCriteria
+   */
+  static function notLike($column, $value)
+  {
+    return new lmbSQLFieldCriteria($column, $value, lmbSQLFieldCriteria :: NOT_LIKE);
+  }
+
+  /**
+   * @param string $column
    * @return lmbSQLFieldCriteria
    */
   static function isNull($column)
@@ -137,6 +180,14 @@ class lmbSQLCriteria extends lmbSQLBaseCriteria
     return new lmbSQLFieldCriteria($column, null, lmbSQLFieldCriteria :: IS_NULL);
   }
 
+  /**
+   * @param string $column
+   * @return lmbSQLFieldCriteria
+   */
+  static function isNotNull($column)
+  {
+    return new lmbSQLFieldCriteria($column, null, lmbSQLFieldCriteria :: IS_NOT_NULL);
+  }
   /**
    * @param mixed $args
    * @return lmbSQLCriteria
