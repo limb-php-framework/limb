@@ -70,7 +70,7 @@ class GeneratedTestClass
     $parts['%class_header%'] = "\nclass {$this->class_name} extends {$this->parent_class_name} {\n";
     $parts['%class_footer%'] = "\n}\n";
     $parts['%class%'] = $parts['%class_header%'] .
-                        "function testMe() {".$test_body."}" .
+                        "function testMe()\n{\n".$test_body."\n}" .
                         $parts['%class_footer%'];
 
     return str_replace(array_keys($parts), array_values($parts), $this->body);
@@ -154,3 +154,46 @@ abstract class lmbTestRunnerBase extends UnitTestCase
   }
 }
 
+class lmbTestReporter extends SimpleReporter
+{
+  protected $output = '';
+
+  function __construct()
+  {
+  	$this->SimpleReporter();
+  }
+
+  function paintFail($message)
+  {
+    parent::paintFail($message);
+    $this->_addToOutput('FAIL', $message);
+  }
+
+  function paintError($message)
+  {
+    parent::paintError($message);
+    $this->_addToOutput('FORMATED', $message);
+  }
+
+  function paintException($exception)
+  {
+    parent::paintException($exception);
+    $this->_addToOutput('FORMATED', $message);
+  }
+
+  function paintSkip($message)
+  {
+    parent::paintSkip($message);
+    $this->_addToOutput('FORMATED', $message);
+  }
+
+  protected function _addToOutput($title, $message)
+  {
+  	$this->output .= $title . ': ' . $message . PHP_EOL;
+  }
+
+  function getOutput()
+  {
+  	return $this->output;
+  }
+}
