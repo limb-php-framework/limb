@@ -25,46 +25,48 @@ class lmbTestPHPUnitTestCaseAdapterTest extends lmbTestRunnerBase
   function testAssertEquals()
   {
   	$this->_mustBePassed('$this->assertEquals(1, 1);');
-    $this->_mustBeFailed('$this->assertEquals(1, 0);');
+    $this->_mustBeFailed('$this->assertEquals(42, 0);');
     $this->_mustBeFailed('$this->assertEquals(1, 0, "custom message");', 'custom message');
+  }
+
+  function testAssertRegexp()
+  {
+    $this->_mustBePassed('$this->assertRegexp("/bAr/i", "foo-bar-baz");');
+    $this->_mustBeFailed('$this->assertRegexp("/bug/", "foo-bar-baz");');
+    $this->_mustBeFailed('$this->assertRegexp(42, 0, "custom message");', 'custom message');
+  }
+
+  function testError()
+  {
+    $this->_mustBeFailed('$this->fail("custom message");', 'custom message');
   }
 
   protected function _mustBePassed($code)
   {
-    $this->_testCodeInAdapter($code, true);
+    return $this->_testCodeInAdapter($code, true);
   }
 
-  protected function _mustBeFailed($code, $fail_message)
+  protected function _mustBeFailed($code, $fail_message = null)
   {
-    $this->_testCodeInAdapter($code, false, $fail_message);
+    return $this->_testCodeInAdapter($code, false, $fail_message);
   }
 
   protected function _testCodeInAdapter($code, $pass, $fail_message = null)
   {
   	$test = new GeneratedTestClass();
     $test->setParentClass('lmbPHPUnitTestCase');
-    $test_file = LIMB_VAR_DIR . '/' . uniqid() . '.php';
 
+    $test_file = LIMB_VAR_DIR . '/' . uniqid() . '.php';
     file_put_contents($test_file, $test->generate($code));
 
     $group = new lmbTestGroup();
     $group->addFile($test_file);
+    $group->run($reporter = new lmbTestReporter());
 
-    ob_start();
-    $group->run($reporter = new TextReporter());
-    $out = ob_get_clean();
+    $this->assertEqual($pass, $reporter->getStatus());
+    if (!$pass &&  $fail_message)
+        $this->assertPattern('/' . $fail_message . '/', $reporter->getOutput(), 'Wrong error message');
 
-    if ($pass)
-    {
-      $this->assertEqual(1, $reporter->getPassCount());
-      $this->assertEqual(0, $reporter->getFailCount());
-    }
-    else
-    {
-    	$this->assertEqual(0, $reporter->getPassCount());
-      $this->assertEqual(1, $reporter->getFailCount());
-      if ($fail_message)
-        $this->assertPattern('/' . $fail_message . '/', $out, 'Wrong error message');
-    }
+    return $reporter->getOutput();
   }
 }
