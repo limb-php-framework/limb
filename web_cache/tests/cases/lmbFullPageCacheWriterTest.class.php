@@ -17,7 +17,7 @@ class lmbFullPageCacheWriterTest extends UnitTestCase
 
   function setUp()
   {
-    $this->cache_dir = LIMB_VAR_DIR . '/fpcache/';
+    $this->cache_dir = lmbToolkit::instance()->getConf('web_cache')->get('cache_dir');
     lmbFs :: mkdir($this->cache_dir);
     $this->writer = new lmbFullPageCacheWriter($this->cache_dir);
   }
@@ -89,6 +89,18 @@ class lmbFullPageCacheWriterTest extends UnitTestCase
     $this->assertFalse(file_exists($this->cache_dir));
   }
 
+  function testFlushAllByPath()
+  {
+    $this->writer->save('1/2/3', 'whatever3');
+    $this->writer->save('1', 'whatever1');
+    $this->writer->save('1/2', 'whatever2');
+
+    $this->writer->flushAll('2');
+
+    $this->assertTrue(file_exists($this->cache_dir . '1'));
+	$this->assertFalse(file_exists($this->cache_dir . '2'));
+  }
+  
   function testGetCacheSize()
   {
     $this->writer->save('1/2', $c1 = 'da');
