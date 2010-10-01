@@ -8,10 +8,29 @@
  */
 lmb_require('limb/net/src/lmbHttpRequest.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
-lmb_require('limb/core/src/lmbSys.class.php');
+
+Mock :: generate('lmbInputStreamParser', 'MockInputStreamParser');
 
 class lmbHttpRequestTest extends UnitTestCase
 {
+  function setUp()
+  {
+    parent :: setUp();
+
+    $this->_toolkit = lmbToolkit :: save();
+
+    $this->_input_stream_parser = new MockInputStreamParser();
+    $this->_toolkit->setInputStreamParser($this->_input_stream_parser);
+
+    $_SERVER['REQUEST_METHOD'] = null;
+    $_POST = array();
+  }
+
+  function tearDown()
+  {
+    lmbToolkit :: restore();
+  }
+
   function testGetUri()
   {
     $request = new lmbHttpRequest('http://test.com');
@@ -237,46 +256,6 @@ class lmbHttpRequestTest extends UnitTestCase
     $_SERVER['SERVER_PORT'] = $old_port;
   }
 
-  function testInitByServerVariablesWithoutRequestUri_Unix()
-  {
-    if (!lmbSys::isUnix()) {
-      $this->skipIf(!lmbSys::isUnix(), __METHOD__ . ' can be run only on Unix.');
-      return;
-    }
-    
-    $this->initByServerVariablesWithoutRequestUri('/var/dev/limb/runtests.php');
-  }
-    
-  protected function initByServerVariablesWithoutRequestUri($php_self) {
-    $old_uri = @$_SERVER['REQUEST_URI'];
-    $old_host = @$_SERVER['HTTP_HOST'];
-    $old_port = @$_SERVER['SERVER_PORT'];
-    $old_self = @$_SERVER['PHP_SELF'];
-    
-    $_SERVER['REQUEST_URI'] = null;
-    $_SERVER['HTTP_HOST'] = 'test.com';
-    $_SERVER['SERVER_PORT'] = '8080';
-    $_SERVER['PHP_SELF'] = $php_self;
-    
-    $request = new lmbHttpRequest();
-    $this->assertEqual($request->getRawUriString(), 'http://test.com:8080/runtests.php');
-    
-    $_SERVER['REQUEST_URI'] = $old_uri;
-    $_SERVER['HTTP_HOST'] = $old_host;
-    $_SERVER['SERVER_PORT'] = $old_port;
-    $_SERVER['PHP_SELF'] = $old_self;
-  }
-
-  function testInitByServerVariablesWithoutRequestUri_Win()
-  {
-    if (!lmbSys::isWin32()) {
-        $this->skipIf(!lmbSys::isWin32(), __METHOD__ . ' can be run only on Windows.');
-        return;
-    }
-    
-    $this->initByServerVariablesWithoutRequestUri('D:\var\dev\limb\runtests.php');
-  }
-
   function testExtractPortFromHost()
   {
     $old_uri = @$_SERVER['REQUEST_URI'];
@@ -348,5 +327,92 @@ class lmbHttpRequestTest extends UnitTestCase
     $request = new lmbHttpRequest('http://test.com/wow?z=1');
     $this->assertEqual($request['uri']['path'], '/wow');
     $this->assertEqual($request['get']['z'], '1');
+  }
+
+  function testGetPut()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'PUT';
+    $put_array = array('foo1' => 'bar1', 'foo2' => 'bar2');
+    $this->_input_stream_parser->setReturnValue('parse', $put_array);
+
+    $request = new lmbHttpRequest('http://test.com?get_param=value');
+
+    $this->assertEqual($request->getPut(), $put_array);
+    $this->assertEqual($request->getPut('foo1'), 'bar1');
+    $this->assertEqual($request->getPut('foo2'), 'bar2');
+
+    $this->assertEqual($request->get('foo1'), 'bar1');
+    $this->assertEqual($request->get('foo2'), 'bar2');
+
+    $this->assertEqual($request->get('get_param'), 'value');
+  }
+
+  function testHasPut()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'PUT';
+    $this->_input_stream_parser->setReturnValue('parse', array());
+
+    $request = new lmbHttpRequest('http://test.com?get_param=value');
+    $this->assertTrue($request->hasPut());
+  }
+
+  function testNoHasPut()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $this->_input_stream_parser->setReturnValue('parse', array('foo' => 'bar'));
+
+    $request = new lmbHttpRequest('http://test.com?get_param=value');
+    $this->assertFalse($request->hasPut());
+  }
+
+  function testHasDelete()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'DELETE';
+    $this->_input_stream_parser->setReturnValue('parse', array());
+
+    $request = new lmbHttpRequest('http://test.com?get_param=value');
+    $this->assertTrue($request->hasDelete());
+  }
+
+  function testNoHasDelete()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $this->_input_stream_parser->setReturnValue('parse', array('foo' => 'bar'));
+
+    $request = new lmbHttpRequest('http://test.com?get_param=value');
+    $this->assertFalse($request->hasDelete());
+  }
+
+  function testSetRequestMethodDefaultAsGet()
+  {
+    $request = new lmbHttpRequest();
+
+    $this->assertTrue(!isset($_SERVER['REQUEST_METHOD']));
+    $this->assertEqual($request->getRequestMethod(), 'GET');
+  }
+
+  function testNotExplicitlySetRequestMethodAsPostByParams()
+  {
+    $_POST['foo'] = 'bar';
+
+    $request = new lmbHttpRequest();
+    $this->assertTrue(!isset($_SERVER['REQUEST_METHOD']));
+    $this->assertEqual($request->getRequestMethod(), 'POST');
+  }
+
+  function testExplicitlySetRequestMethodAsGet()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+
+    $request = new lmbHttpRequest();
+    $this->assertEqual($request->getRequestMethod(), 'GET');
+  }
+
+  function testExplicitlySetRequestMethodAsPost()
+  {
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $request = new lmbHttpRequest();
+    $this->assertEqual($request->getRequestMethod(), 'POST');
   }
 }
