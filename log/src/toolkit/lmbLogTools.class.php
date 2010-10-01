@@ -20,6 +20,7 @@ lmb_require('limb/net/src/lmbUri.class.php');
 class lmbLogTools extends lmbAbstractTools
 {
   protected $_logs = array();
+  protected $_log_entry_title;
 
   function setLog($log, $name = 'default')
   {
@@ -130,6 +131,42 @@ class lmbLogTools extends lmbAbstractTools
   function getDefaultLog()
   {
     return $this->createLog('file://'.lmb_var_dir().'/logs/error.log');
+  }
+
+  function getLogEntryTitle($entry = null)
+  {
+    if(!$this->_log_entry_title && $entry)
+      return $this->_buildLogEntryTitle($entry);
+    else
+      return $this->_log_entry_title;
+  }
+
+  function setLogEntryTitle($log_entry_title)
+  {
+    $this->_log_entry_title = $log_entry_title;
+  }
+
+  protected function _buildLogEntryTitle($entry)
+  {
+    $time = strftime("%b %d %Y %H:%M:%S", $entry->getTime());
+
+    $log_title = "=========================[{$time}]";
+
+    if(isset($_SERVER['REMOTE_ADDR']))
+      $log_title .= '[' . $_SERVER['REMOTE_ADDR'] . ']';
+
+    if(isset($_SERVER['REQUEST_URI']))
+    {
+      $log_title .= "[";
+
+      if(isset($_SERVER['REQUEST_METHOD']))
+        $log_title .= $_SERVER['REQUEST_METHOD'] . " - ";
+
+      $log_title .= $_SERVER['REQUEST_URI'] . "]";
+    }
+
+    $log_title .= "=========================" . PHP_EOL;
+    return $log_title;
   }
 
   protected function _createLogObject()

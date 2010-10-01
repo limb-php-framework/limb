@@ -9,8 +9,8 @@
 lmb_require('limb/log/src/writers/lmbLogFileWriter.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
 
-class lmbLogFileWriterTest extends UnitTestCase {
-
+class lmbLogFileWriterTest extends UnitTestCase
+{
   function testWrite()
   {
     $dsn = new lmbUri('file://'.lmb_var_dir().'/logs/error'.uniqid().'.log');

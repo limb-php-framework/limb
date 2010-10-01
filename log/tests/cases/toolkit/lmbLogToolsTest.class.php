@@ -7,6 +7,7 @@
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/log/toolkit.inc.php');
+lmb_require('limb/log/src/lmbLogEntry.class.php');
 
 class lmbLogToolsTest extends UnitTestCase
 {
@@ -19,6 +20,9 @@ class lmbLogToolsTest extends UnitTestCase
   {
     lmbToolkit :: save();
     $this->toolkit = lmbToolkit :: merge(new lmbLogTools());
+
+    $_SERVER['REQUEST_URI'] = null;
+    $_SERVER['REQUEST_METHOD'] = null;
   }
 
   function tearDown()
@@ -144,10 +148,67 @@ class lmbLogToolsTest extends UnitTestCase
     );
     $this->toolkit->setConf('log', $conf);
     $log = $this->toolkit->getLogFromConf('foo');
-    
+
     $this->assertIsA($log, 'lmbLog');
     $writers = $log->getWriters();
     $this->assertIsA($writers[0], 'lmbLogFileWriter');
     $this->assertEqual($writers[0]->getLogFile(), '/testGetLogFromConf');
+  }
+
+  function testGetLogEntryTitle_EntryNotExists()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $entry_title = $this->toolkit->getLogEntryTitle();
+
+    $this->assertNull($entry_title);
+  }
+
+  function testGetLogEntryTitle_EntryExists_WithRequestUri()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+
+    $entry = new lmbLogEntry(LOG_INFO, 'message');
+    $entry_title = $this->toolkit->getLogEntryTitle($entry);
+
+    $this->assertPattern('/\/alfa\/bravo/', $entry_title);
+  }
+
+  function testGetLogEntryTitle_EntryExists_WithRequestMethod()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $entry = new lmbLogEntry(LOG_INFO, 'message');
+    $entry_title = $this->toolkit->getLogEntryTitle($entry);
+
+    $this->assertPattern('/POST/', $entry_title);
+  }
+
+
+  function testGetLogEntryTitle_EntryExists_setTitle()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $this->toolkit->setLogEntryTitle('entry title');
+
+    $entry = new lmbLogEntry(LOG_INFO, 'message');
+    $entry_title = $this->toolkit->getLogEntryTitle($entry);
+
+    $this->assertEqual($entry_title, 'entry title');
+  }
+
+  function testGetLogEntryTitle_EntryNotExists_setTitle()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $this->toolkit->setLogEntryTitle('entry title');
+
+    $entry_title = $this->toolkit->getLogEntryTitle();
+
+    $this->assertEqual($entry_title, 'entry title');
   }
 }

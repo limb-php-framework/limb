@@ -49,6 +49,11 @@ class lmbLogEntry
     return $this->message;
   }
 
+  function getTitle()
+  {
+    return lmbToolkit::instance()->getLogEntryTitle();
+  }
+
   function getTime()
   {
     return $this->time;
@@ -76,7 +81,7 @@ class lmbLogEntry
 
   function toString()
   {
-    return lmbSys :: isCli() ? $this->asText() : $this->asHtml();
+    return lmbSys :: isCli() ? $this->getTitle() . $this->asText() : $this->asHtml();
   }
 
   function asText()
