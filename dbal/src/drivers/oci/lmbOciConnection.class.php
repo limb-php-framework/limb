@@ -30,6 +30,11 @@ class lmbOciConnection extends lmbDbBaseConnection
   //Transaction state. Should be either OCI_COMMIT_ON_SUCCESS or OCI_DEFAULT
   protected $tstate = OCI_COMMIT_ON_SUCCESS;
 
+  function getFunctionForSystemSupportCheck()
+  {
+    return 'oci_connect';
+  }
+
   function getType()
   {
     return 'oci';
