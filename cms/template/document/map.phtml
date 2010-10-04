@@ -1,19 +1,24 @@
 {{wrap with="front_page_layout.phtml"}}
 
-  {{into slot="description"}}Карта сайта{{/into}}
-  {{into slot="keywords"}}sitemap карта сайт limb{{/into}}
-  {{into slot="title"}}Карта сайта{{/into}}
+  {{into slot="description"}}{{i18n text="Site map" domain="cms"/}}{{/into}}
+  {{into slot="keywords"}}sitemap{{/into}}
+  {{into slot="title"}}{{i18n text="Site map" domain="cms"/}}{{/into}}
 
   {{into slot="content_zone"}}
     <h1>Карта сайта</h1>
-    <div class="breadcrumbs"><a href="/">Начало</a>&nbsp;&raquo;&nbsp;Карта сайта</div>
+    <div class="breadcrumbs">
+      <a href="/">{{i18n text="Begin" domain="cms"/}}</a>
+      &nbsp;&raquo;&nbsp;
+      {{i18n text="Site map" domain="cms"/}}
+    </div>
 
     <?php
 
       lmb_require('limb/tree/src/lmbTreeNestedCollection.class.php');
       lmb_require('limb/tree/src/lmbTreeHelper.class.php');
 
-      $docs = lmbActiveRecord::find('lmbCmsDocument', lmbSQLCriteria::equal('is_published', 1)->addAnd(new lmbSQLCriteria('level > 0')));
+      $docs = lmbActiveRecord::find('lmbCmsDocument', lmbSQLCriteria::equal('is_published', 1)
+        ->addAnd(new lmbSQLCriteria('level > 0')));
       $sorted_docs = lmbTreeHelper :: sort($docs, array('id' => 'ASC'));
 
       $processed_docs = new lmbTreeNestedCollection($sorted_docs);

@@ -1,7 +1,8 @@
-<?php if(!isset($save_button_name)) $save_button_name = 'Сохранить'; ?>
+<?php if(!isset($save_button_name)) $save_button_name = lmb_i18n('Save', 'cms'); ?>
+<?php $cancel_button_name = lmb_i18n('Cancel', 'cms'); ?>
 <div class='list_actions'>
   {{slot id="extra_buttons"/}}
   {{input id='create' type="submit" value='{$save_button_name}' /}}
-  {{input id='cancel' type="button" value='Отмена' onclick='self.parent.tb_remove();'  runat='client'/}}
+  {{input id='cancel' type="button" value='{$cancel_button_name}' onclick='self.parent.tb_remove();' runat='client'/}}
 </div>
 
