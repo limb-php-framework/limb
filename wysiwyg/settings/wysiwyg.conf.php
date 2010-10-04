@@ -2,8 +2,24 @@
 
 $conf = array(
 
-  'default_profile' => 'default_fckeditor',
+  'default_profile' => 'default_ckeditor',
 
+  'default_ckeditor' => array(
+    'type' => 'ckeditor',
+    'basePath' => '/shared/wysiwyg/ckeditor/',
+    'Config' => array(
+      'toolbar' => 'Full',
+      'uiColor' => '#9AB8F3',
+      'customConfig' => '/shared/wysiwyg/ckeditor/ckeditor_config.js',
+	  'filebrowserBrowseUrl' => '/shared/wysiwyg/kcfinder/browse.php?type=files&opener=ckeditor',
+	  'filebrowserImageBrowseUrl' => '/shared/wysiwyg/kcfinder/browse.php?type=images&opener=ckeditor',
+      'filebrowserFlashBrowseUrl' => '/shared/wysiwyg/kcfinder/browse.php?type=flash&opener=ckeditor',
+      'filebrowserUploadUrl' => '/shared/wysiwyg/kcfinder/upload.php?type=files&opener=ckeditor',
+      'filebrowserImageUploadUrl' => '/shared/wysiwyg/kcfinder/upload.php?type=images&opener=ckeditor',
+      'filebrowserFlashUploadUrl' => '/shared/wysiwyg/kcfinder/upload.php?type=flash&opener=ckeditor'
+    ),
+  ),
+  
   'default_fckeditor' => array(
     'type' => 'fckeditor',
     'width' => '600px',

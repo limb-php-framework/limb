@@ -22,8 +22,8 @@ class lmbMacroFormElementTag extends lmbMacroRuntimeWidgetHtmlTag
       $code_writer->writeToInit("{$this->getRuntimeVar()}->setForm({$form_tag->getRuntimeVar()});\n");
       $code_writer->writeToInit("{$form_tag->getRuntimeVar()}->addChild({$this->getRuntimeVar()});\n");
     }
-  }  
-  
+  }
+
   function getRuntimeVar()
   {
     if($this->runtime_var)
@@ -31,6 +31,6 @@ class lmbMacroFormElementTag extends lmbMacroRuntimeWidgetHtmlTag
 
     $this->runtime_var = '$this->' . $this->tag . '_' . self :: generateNewRuntimeId();
     return $this->runtime_var;
-  }  
+  }
 }
 

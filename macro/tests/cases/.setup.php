@@ -11,6 +11,5 @@ lmb_require('limb/macro/src/*.class.php');
 lmb_require('limb/macro/src/compiler/*.interface.php');
 lmb_require('limb/macro/src/compiler/*.class.php');
 
-require_once(dirname(__FILE__) . '/lmbBaseMacroTest.class.php');
-
-
+lmb_require('limb/macro/tests/cases/lmbBaseMacroTest.class.php');
+lmb_require('limb/macro/tests/cases/tags/lmbBaseMacroTagTest.class.php');

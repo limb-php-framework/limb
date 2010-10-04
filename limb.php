@@ -6,7 +6,7 @@ require_once($limb_dir.'/taskman/taskman.inc.php');
 lmb_cli_init_limb($limb_dir);
 var_dump(get_include_path());
 
-taskman_propset('TASKS_MASKS', 'limb/*/cli/*.inc.php' . PATH_SEPARATOR . 'src/*/cli/*.inc.php');
+taskman_propset('TASKS_MASKS', 'limb/*/cli/*.tasks.php' . PATH_SEPARATOR . 'src/*/cli/*.tasks.php');
 taskman_propset('PROJECT_DIR', lmb_get_project_dir());
 taskman_propset('LIMB_DIR', $limb_dir.'/../');
 

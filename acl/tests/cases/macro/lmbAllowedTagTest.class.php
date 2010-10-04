@@ -5,6 +5,7 @@ lmb_require('limb/macro/src/lmbMacroTemplate.class.php');
 lmb_require('limb/macro/tests/cases/lmbBaseMacroTest.class.php');
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/acl/src/lmbRoleProviderInterface.interface.php');
+lmb_require('limb/acl/src/lmbResourceProviderInterface.interface.php');
 
 class TestsRoleProvider implements lmbRoleProviderInterface
 {
@@ -20,6 +21,21 @@ class TestsRoleProvider implements lmbRoleProviderInterface
     return $this->role;
   }
 }
+
+class TestsResourceProvider implements lmbResourceProviderInterface
+{
+  public $resource;
+
+  function setResource($resource)
+  {
+    $this->resource = $resource;
+  }
+
+  function getResource()
+  {
+    return $this->resource;
+}
+  }
 
 class FakeMemberAndAclTools extends lmbAbstractTools
 {
@@ -87,7 +103,7 @@ class lmbAllowedTagTest extends lmbBaseMacroTest
 
   function testWithAllParams_Positive()
   {
-    $macro = $this->_createMacroByText('{{allowed role="man" resource="girl" privelege="marry"}}foo{{/allowed}}');
+    $macro = $this->_createMacroByText('{{allowed role="man" resource="girl" privilege="marry"}}foo{{/allowed}}');
 
     $out = $macro->render();
     $this->assertEqual('foo', $out);
@@ -95,7 +111,15 @@ class lmbAllowedTagTest extends lmbBaseMacroTest
 
   function testWithAllParams_Negative_Privelege()
   {
-    $macro = $this->_createMacroByText('{{allowed role="boy" resource="girl" privelege="marry"}}foo{{/allowed}}');
+    $macro = $this->_createMacroByText('{{allowed role="boy" resource="girl" privilege="marry"}}foo{{/allowed}}');
+
+    $out = $macro->render();
+    $this->assertEqual('', $out);
+  }
+
+  function testBCForWrongPrivilegeAttribute()
+  {
+  	$macro = $this->_createMacroByText('{{allowed role="boy" resource="girl" privelege="marry"}}foo{{/allowed}}');
 
     $out = $macro->render();
     $this->assertEqual('', $out);
@@ -154,6 +178,38 @@ class lmbAllowedTagTest extends lmbBaseMacroTest
 
     $macro = $this->_createMacroByText('{{allowed role="{$#role}" resource="vodka"}}foo{{/allowed}}');
     $macro->set('role', $role);
+
+    $out = $macro->render();
+    $this->assertEqual('', $out);
+  }
+
+  function testDinamicResource_Positive()
+  {
+    $role = new TestsRoleProvider();
+    $role->setRole('man');
+
+    $resource = new TestsResourceProvider();
+    $resource->setResource('vodka');
+
+    $macro = $this->_createMacroByText('{{allowed role="{$#role}" resource="{$#resource}"}}foo{{/allowed}}');
+    $macro->set('role', $role);
+    $macro->set('resource', $resource);
+
+    $out = $macro->render();
+    $this->assertEqual('foo', $out);
+  }
+
+  function testDinamicResource_Negative()
+  {
+    $role = new TestsRoleProvider();
+    $role->setRole('boy');
+
+    $resource = new TestsResourceProvider();
+    $resource->setResource('vodka');
+
+    $macro = $this->_createMacroByText('{{allowed role="{$#role}" resource="{$#resource}"}}foo{{/allowed}}');
+    $macro->set('role', $role);
+    $macro->set('resource', $resource);
 
     $out = $macro->render();
     $this->assertEqual('', $out);

@@ -5,6 +5,12 @@ class lmbWysiwygConfigurationHelper
   protected $_config_name = 'wysiwyg';
   protected $_profile_name;
   protected $_wysiwyg_types = array(
+    'ckeditor' => array(
+      'macro' => array(
+        'file' => 'limb/wysiwyg/src/macro/lmbMacroCKEditorWidget.class.php',
+        'class' => 'lmbMacroCKEditorWidget'
+      )
+    ),
     'fckeditor' => array(
       'macro' => array(
         'file' => 'limb/wysiwyg/src/macro/lmbMacroFCKEditorWidget.class.php',

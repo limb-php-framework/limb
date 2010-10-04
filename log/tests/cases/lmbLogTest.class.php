@@ -75,10 +75,10 @@ class lmbLogTest extends UnitTestCase {
 
   function testSetBacktraceDepth()
   {
-    $this->log->setBacktraceDepth(LOG_NOTICE, $depth = 0);
-    $this->log->log('info', LOG_INFO);
-    $this->assertNotEqual($depth, count($this->_getLastLogEntry()->getBacktrace()->get()));
+    $this->log->setBacktraceDepth(LOG_ERR, $depth = 0);
     $this->log->log('notice', LOG_NOTICE);
+    $this->assertNotEqual($depth, count($this->_getLastLogEntry()->getBacktrace()->get()));
+    $this->log->log('error', LOG_ERR);
     $this->assertEqual($depth, count($this->_getLastLogEntry()->getBacktrace()->get()));
   }
 

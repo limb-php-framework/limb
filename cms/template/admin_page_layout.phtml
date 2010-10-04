@@ -4,7 +4,7 @@
 <? $this->static_files_version = lmb_env_get('CMS_STATIC_FILES_VERSION'); ?>
 <html>
 <head>
-  <title>Панель управления</title>
+  <title>{{i18n text="Control panel" domain="cms"/}}</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
   <link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp.css?{$#static_files_version}" />
   <!--[if IE]><link rel="stylesheet" type="text/css" href="/shared/cms/styles/cp_ie.css?{$#static_files_version}" /><![endif]-->
@@ -24,7 +24,7 @@
       <a href="/admin"><img src="/shared/cms/images/logo.limb.png"  alt='LIMB' id='logo_project'/></a>
       <ul id='user_data'>
         <li>{$#toolkit.cms_user.login} [ {$#toolkit.cms_user.name} ]</li>
-        <li><a href='/cms_user/logout' class='logout'>Выйти</a></li>
+        <li><a href='/cms_user/logout' class='logout'>{{i18n text="Exit" domain="cms"/}}</a></li>
       </ul>
     </div>
 

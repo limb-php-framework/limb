@@ -28,6 +28,11 @@ class lmbSqliteConnection extends lmbDbBaseConnection
   protected $connectionId;
   protected $in_transaction = false;
 
+  function getFunctionForSystemSupportCheck()
+  {
+  	return 'sqlite_open';
+  }
+
   function getType()
   {
     return 'sqlite';
@@ -91,9 +96,9 @@ class lmbSqliteConnection extends lmbDbBaseConnection
 
   function executeStatement($stmt)
   {
-    return (bool)$this->execute($stmt->getSQL());      
+    return (bool)$this->execute($stmt->getSQL());
   }
-  
+
   function beginTransaction()
   {
     $this->execute('BEGIN');

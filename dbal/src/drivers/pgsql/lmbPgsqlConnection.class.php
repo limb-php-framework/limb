@@ -26,6 +26,11 @@ class lmbPgsqlConnection extends lmbDbBaseConnection
   protected $connectionId;
   protected $statement_number = 0;
 
+  function getFunctionForSystemSupportCheck()
+  {
+    return 'pg_connect';
+  }
+
   function getType()
   {
     return 'pgsql';
@@ -39,7 +44,7 @@ class lmbPgsqlConnection extends lmbDbBaseConnection
     }
     return $this->connectionId;
   }
-  
+
   function getStatementNumber()
   {
       return ++$this->statement_number;
@@ -125,7 +130,7 @@ class lmbPgsqlConnection extends lmbDbBaseConnection
     }
     return $result;
   }
-  
+
   function executeStatement($stmt)
   {
       $stmt_name = $stmt->getStatementName();
@@ -207,7 +212,7 @@ class lmbPgsqlConnection extends lmbDbBaseConnection
     $seq = "{$table}_{$colname}_seq";
     return (int)$this->newStatement("SELECT currval('$seq')")->getOneValue();
   }
-  
+
   function isValid()
   {
     return @pg_ping($this->getConnectionId());

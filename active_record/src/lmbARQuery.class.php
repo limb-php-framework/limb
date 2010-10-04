@@ -89,12 +89,13 @@ class lmbARQuery extends lmbSelectRawQuery
       $this->addField($field, $alias);
   }
 
-  function addOrder($field, $type='ASC')
+  function addOrder($field, $type = 'ASC')
   {
     if(is_array($field))
       $this->sort_params = $this->sort_params + $field;
     else
       $this->sort_params[$field] = $type;
+    return $this;
   }
 
   function getRecordSet()

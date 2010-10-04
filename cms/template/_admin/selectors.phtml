@@ -38,9 +38,9 @@ $params = isset($params)? $params : '';
 $url = lmbToolkit :: instance()->getRoutesUrl(array('controller' => $controller, 'action' => $action));
 $url .= '?' . $params;
 
-$title = isset($title) ? $title : 'Изменить приоритет';
+$title = isset($title) ? $title : lmb_i18n('Change order');
 ?>
-      <input type="button" class='button' value='{$title}' onclick='openWindowForSavePriority("Изменить приоритет", "{$url}", this);return false;'/>
+      <input type="button" class='button' value='{$title}' onclick='openWindowForSavePriority("{$title}?", "{$url}", this);return false;'/>
 {{/template}}
 
 {{into slot="js"}}
