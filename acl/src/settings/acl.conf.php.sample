@@ -5,17 +5,22 @@ $conf = array(
   'default_allow_policy' => false,
   'roles' => array(
     'guest' => null,
-	'member' => 'guest',
-	'reader' => null,
-	'admin' => array('member', 'reader')
+    'member' => 'guest',
+    'reader' => null,
+    'admin' => array('member', 'reader')
   ),
-  'resources' => array('article' => null),
+  'resources' => array(
+    'article' => null,
+    'news' => null,
+  ),
   'allow' => array(
-    'member:article:write',
-    'member::write', // $acl->isAllowed('member', null, 'write') == true
-	'member',
+    'member' => array(
+      'article' => 'write',
+      'news' => array('write', 'comment')
+      '*' => 'read' // $acl->isAllowed('member', null, 'read') == true
+    )
   ),
   'deny' => array(
-    'guest:admin_zone'
+    'guest' => 'admin_zone'
   )
 );
