@@ -170,37 +170,44 @@ class lmbUri extends lmbSet
   function setProtocol($protocol)
   {
     $this->protocol = $protocol;
+    return $this;
   }
 
   function setUser($user)
   {
     $this->user = $user;
+    return $this;
   }
 
   function setPassword($password)
   {
     $this->password = $password;
+    return $this;
   }
 
   function setHost($host)
   {
     $this->host = $host;
+    return $this;
   }
 
   function setPort($port)
   {
     $this->port = $port;
+    return $this;
   }
 
   function setPath($path)
   {
     $this->path = $path;
     $this->path_elements = explode('/',$this->path);
+    return $this;
   }
 
   function setAnchor($anchor)
   {
     $this->anchor = $anchor;
+    return $this;
   }
 
   function isAbsolute()
@@ -352,11 +359,13 @@ class lmbUri extends lmbSet
   function addEncodedQueryItem($name, $value)
   {
     $this->query_items[$name] = $value;
+    return $this;
   }
 
   function addQueryItem($name, $value)
   {
     $this->query_items[$name] = $value;
+    return $this;
   }
 
   function getQueryItem($name)
@@ -375,6 +384,7 @@ class lmbUri extends lmbSet
   function setQueryItems($items)
   {
     $this->query_items = $items;
+    return $this;
   }
 
   /**
@@ -393,6 +403,7 @@ class lmbUri extends lmbSet
   function setQueryString($query_string)
   {
     $this->query_items = $this->_parseQueryString($query_string);
+    return $this;
   }
 
   /**
@@ -401,6 +412,7 @@ class lmbUri extends lmbSet
   function removeQueryItems()
   {
     $this->query_items = array();
+    return $this;
   }
 
   /**
@@ -522,8 +534,8 @@ class lmbUri extends lmbSet
         continue;
     }
 
-    $this->path = implode('/', $path);
-    $this->path_elements = explode('/',$this->path);
+    $this->setPath(implode('/', $path));
+    return $this;
   }
 }
 
