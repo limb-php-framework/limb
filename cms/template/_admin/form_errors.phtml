@@ -2,7 +2,7 @@
 
 {{list using='$fields_errors' as="$error"}}
   <div class="message_error">
-    <b class='title'>Следующие поля содержали ошибки</b>
+    <b class='title'>{{i18n text="Fields with errors" domain="cms"/}}</b>
     <ol>
       {{list:item}}
         <li><font color="red">{$error.message}</font></li>

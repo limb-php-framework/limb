@@ -660,6 +660,17 @@ class lmbUriTest extends UnitTestCase
     $q_items = $uri->getQueryItems();
     $this->assertEqual($q_items['var'], $test_value);
   }
+
+  function testChaining()
+  {
+    $uri = new lmbUri();
+    $uri->addQueryItem('chaining', 'supported')
+        ->setHost('everywhere.com')
+        ->setPath('/')
+        ->setProtocol('http');
+
+    $this->assertEqual('http://everywhere.com/?chaining=supported', $uri->toString());
+  }
 }
 
 

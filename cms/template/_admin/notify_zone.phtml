@@ -14,7 +14,9 @@
         {{apply template="flashbox" messages="$flashbox->getErrors()" box_class="error" /}}
         {{apply template="flashbox" messages="$flashbox->getMessages()" box_class="message" /}}
       </ul>
-      <a href="javascipt:void(0)" href="javascript:void(0)" class='close' onclick="this.parentNode.style.display = 'none'; return false;">Закрыть</a>
+      <a href="javascipt:void(0)" href="javascript:void(0)" class='close' onclick="this.parentNode.style.display = 'none'; return false;">
+        {{i18n text="Close" domain="cms"/}}
+      </a>
     </div>
     <?
     $flashbox->reset();

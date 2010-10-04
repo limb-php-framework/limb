@@ -23,8 +23,11 @@ class AllowedTag extends lmbMacroTag
 
     $code->writePHP(', '.$this->getEscaped('resource'));
 
-    if($privelege = $this->getEscaped('privelege'))
-      $code->writePHP(', '.$privelege);
+    if($privilege = $this->getEscaped('privelege'))
+      $code->writePHP(', '.$privilege);
+
+    if($privilege = $this->getEscaped('privilege'))
+      $code->writePHP(', '.$privilege);
 
     $code->writePHP(')) {'.PHP_EOL);
     parent :: _generateContent($code);
