@@ -16,9 +16,9 @@ lmb_require('limb/net/src/lmbUri.class.php');
  */
 class lmbInputStreamParser
 {
-  function parse()
+  function parse($dsn = "php://input")
   {
-    $put = fopen("php://input", "r");
+    $put = fopen($dsn, "r");
 
     $query_string = '';
     while($put_string = fread($put, 1024))
