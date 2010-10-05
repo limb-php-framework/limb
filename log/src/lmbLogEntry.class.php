@@ -20,6 +20,7 @@ class lmbLogEntry
   protected $level;
   protected $time;
   protected $message;
+  protected $title;
   protected $params;
   protected $backtrace;
   protected $names_map = array(
@@ -51,7 +52,12 @@ class lmbLogEntry
 
   function getTitle()
   {
-    return lmbToolkit::instance()->getLogEntryTitle();
+    return $this->title;
+  }
+
+  function setTitle($title)
+  {
+    $this->title = $title;
   }
 
   function getTime()

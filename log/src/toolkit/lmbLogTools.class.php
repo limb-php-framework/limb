@@ -22,6 +22,29 @@ class lmbLogTools extends lmbAbstractTools
   protected $_logs = array();
   protected $_log_entry_title;
 
+  function isLogEnabled()
+  {
+    return (bool) lmb_env_get('LIMB_LOG_ENABLE', true);
+  }
+
+  function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null, $log_name = 'default')
+  {
+    if(!$this->isLogEnabled())
+      return;
+
+    $log = $this->getLog($log_name);
+    $log->log($message, $level, $params, $backtrace, $this->getLogEntryTitle());
+  }
+
+  function logException(Exception $exception, $log_name = 'default')
+  {
+    if(!$this->isLogEnabled())
+      return;
+
+    $log = $this->getLog($log_name);
+    $log->logException($exception, $this->getLogEntryTitle());
+  }
+
   function setLog($log, $name = 'default')
   {
     $this->_logs[$name] = $log;
@@ -133,10 +156,10 @@ class lmbLogTools extends lmbAbstractTools
     return $this->createLog('file://'.lmb_var_dir().'/logs/error.log');
   }
 
-  function getLogEntryTitle($entry = null)
+  function getLogEntryTitle()
   {
-    if(!$this->_log_entry_title && $entry)
-      return $this->_buildLogEntryTitle($entry);
+    if(!$this->_log_entry_title)
+      return $this->_buildLogEntryTitle();
     else
       return $this->_log_entry_title;
   }
@@ -146,11 +169,9 @@ class lmbLogTools extends lmbAbstractTools
     $this->_log_entry_title = $log_entry_title;
   }
 
-  protected function _buildLogEntryTitle($entry)
+  protected function _buildLogEntryTitle()
   {
-    $time = strftime("%b %d %Y %H:%M:%S", $entry->getTime());
-
-    $log_title = "=========================[{$time}]";
+    $log_title = '';
 
     if(isset($_SERVER['REMOTE_ADDR']))
       $log_title .= '[' . $_SERVER['REMOTE_ADDR'] . ']';
@@ -164,8 +185,6 @@ class lmbLogTools extends lmbAbstractTools
 
       $log_title .= $_SERVER['REQUEST_URI'] . "]";
     }
-
-    $log_title .= "=========================" . PHP_EOL;
     return $log_title;
   }
 

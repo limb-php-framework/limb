@@ -27,17 +27,23 @@ class lmbLogFileWriter extends lmbLogBaseWriter
 
   protected function _write(lmbLogEntry $entry)
   {
-    $this->_appendToFile($this->getLogFile(), $entry->toString(), $entry->getTime());
+    $this->_appendToFile($this->getLogFile(), $entry->getTitle(), $entry->toString(), $entry->getTime());
   }
 
-  protected function _appendToFile($file_name, $message, $stamp)
+  protected function _appendToFile($file_name, $title, $message, $stamp)
   {
-    lmbFs :: mkdir(dirname($file_name), 0775);
+    lmbFs::mkdir(dirname($file_name), 0775);
     $file_existed = file_exists($file_name);
 
     if($fh = fopen($file_name, 'a'))
     {
       @flock($fh, LOCK_EX);
+
+      $time = strftime("%b %d %Y %H:%M:%S", $stamp);
+
+      $log_message = "========================= {$title} [{$time}]";
+      $log_message .= "=========================\n" . $message;
+
       fwrite($fh, $message);
       @flock($fh, LOCK_UN);
       fclose($fh);

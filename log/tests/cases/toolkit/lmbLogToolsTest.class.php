@@ -155,39 +155,27 @@ class lmbLogToolsTest extends UnitTestCase
     $this->assertEqual($writers[0]->getLogFile(), '/testGetLogFromConf');
   }
 
-  function testGetLogEntryTitle_EntryNotExists()
+  function testGetLogEntryTitle_WithRequestUri()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+
+    $entry_title = $this->toolkit->getLogEntryTitle();
+
+    $this->assertPattern('/\/alfa\/bravo/', $entry_title);
+  }
+
+  function testGetLogEntryTitle_WithRequestMethod()
   {
     $_SERVER['REQUEST_URI'] = '/alfa/bravo';
     $_SERVER['REQUEST_METHOD'] = 'POST';
 
     $entry_title = $this->toolkit->getLogEntryTitle();
-
-    $this->assertNull($entry_title);
-  }
-
-  function testGetLogEntryTitle_EntryExists_WithRequestUri()
-  {
-    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
-
-    $entry = new lmbLogEntry(LOG_INFO, 'message');
-    $entry_title = $this->toolkit->getLogEntryTitle($entry);
-
-    $this->assertPattern('/\/alfa\/bravo/', $entry_title);
-  }
-
-  function testGetLogEntryTitle_EntryExists_WithRequestMethod()
-  {
-    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
-    $_SERVER['REQUEST_METHOD'] = 'POST';
-
-    $entry = new lmbLogEntry(LOG_INFO, 'message');
-    $entry_title = $this->toolkit->getLogEntryTitle($entry);
 
     $this->assertPattern('/POST/', $entry_title);
   }
 
 
-  function testGetLogEntryTitle_EntryExists_setTitle()
+  function testGetLogEntryTitle_setTitle()
   {
     $_SERVER['REQUEST_URI'] = '/alfa/bravo';
     $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -200,15 +188,123 @@ class lmbLogToolsTest extends UnitTestCase
     $this->assertEqual($entry_title, 'entry title');
   }
 
-  function testGetLogEntryTitle_EntryNotExists_setTitle()
+  function testLog_DefaultEntryTitle()
   {
     $_SERVER['REQUEST_URI'] = '/alfa/bravo';
     $_SERVER['REQUEST_METHOD'] = 'POST';
 
+    $log_file_path = 'file://' . lmb_var_dir() . 'testLog_setTitle';
+    $conf = array(
+      'logs' => array('foo' => $log_file_path)
+    );
+
+    $this->toolkit->setConf('log', $conf);
+
+    $this->toolkit->log($message = 'message', $level = LOG_INFO, $params = array(), $backtrace = null, $log_name = 'foo');
+
+    $log_file_content = file_get_contents($log_file_path);
+    $this->assertPattern('/\/alfa\/bravo/', $log_file_content);
+  }
+
+  function testLog_setEntryTitle()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $log_file_path = 'file://' . lmb_var_dir() . 'testLog_setTitle';
+    $conf = array(
+      'logs' => array('foo' => $log_file_path)
+    );
+
+    $this->toolkit->setConf('log', $conf);
     $this->toolkit->setLogEntryTitle('entry title');
 
-    $entry_title = $this->toolkit->getLogEntryTitle();
+    $this->toolkit->log($message = 'message', $level = LOG_INFO, $params = array(), $backtrace = null, $log_name = 'foo');
 
-    $this->assertEqual($entry_title, 'entry title');
+    $log_file_content = file_get_contents($log_file_path);
+    $this->assertPattern('/entry title/', $log_file_content);
+  }
+
+  function testLog_testDefaultLogName()
+  {
+    $log_file_path_1 = 'file://' . lmb_var_dir() . 'testLog_setTitle_1';
+    $log_file_path_2 = 'file://' . lmb_var_dir() . 'testLog_setTitle_2';
+
+    $conf = array(
+      'logs' => array(
+        'foo' => $log_file_path_1,
+        'default' => $log_file_path_2
+      )
+    );
+
+    $this->toolkit->setConf('log', $conf);
+    $this->toolkit->setLogEntryTitle('entry title');
+
+    $this->toolkit->log($message = 'message');
+
+    $log_file_content = file_get_contents($log_file_path_2);
+    $this->assertPattern('/message/', $log_file_content);
+  }
+
+  function testLogException_defaultEntryTitle()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $log_file_path = 'file://' . lmb_var_dir() . 'testLogException_defaultEntryTitle';
+    $conf = array(
+      'logs' => array('foo' => $log_file_path)
+    );
+
+    $this->toolkit->setConf('log', $conf);
+
+    $this->toolkit->logException(new lmbInvalidArgumentException('exmessage', $code = 42), $log_name = 'foo');
+
+    $log_file_content = file_get_contents($log_file_path);
+
+    $this->assertPattern('/\/alfa\/bravo/', $log_file_content);
+    $this->assertPattern('/POST/', $log_file_content);
+  }
+
+  function testLogException_setEntryTitle()
+  {
+    $_SERVER['REQUEST_URI'] = '/alfa/bravo';
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+
+    $log_file_path = 'file://' . lmb_var_dir() . 'testLogException_setEntryTitle';
+    $conf = array(
+      'logs' => array('foo' => $log_file_path)
+    );
+
+    $this->toolkit->setConf('log', $conf);
+    $this->toolkit->setLogEntryTitle('entry title');
+
+    $this->toolkit->logException(new lmbInvalidArgumentException('exmessage', $code = 42), $log_name = 'foo');
+
+    $log_file_content = file_get_contents($log_file_path);
+    $this->assertPattern('/entry title/', $log_file_content);
+  }
+
+  function testLogException_testDefaultLogName()
+  {
+    $log_file_path_1 = 'file://' . lmb_var_dir() . 'testLogException_testDefaultLogName_1';
+    $log_file_path_2 = 'file://' . lmb_var_dir() . 'testLogException_testDefaultLogName_2';
+
+    $conf = array(
+      'logs' => array(
+        'foo' => $log_file_path_1,
+        'default' => $log_file_path_2
+      )
+    );
+
+    $this->toolkit->setConf('log', $conf);
+    $this->toolkit->setLogEntryTitle('entry title');
+
+    $this->toolkit->logException(new lmbInvalidArgumentException('exmessage', $code = 42));
+
+    $log_file_content = file_get_contents($log_file_path_2);
+
+    $this->assertPattern('/exmessage/', $log_file_content);
   }
 }
+

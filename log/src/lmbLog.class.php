@@ -53,11 +53,6 @@ class lmbLog
     $this->log_writers = array();
   }
 
-  function isLogEnabled()
-  {
-    return (bool) lmb_env_get('LIMB_LOG_ENABLE', true);
-  }
-
   function setErrorLevel($level)
   {
     $this->level = $level;
@@ -74,11 +69,8 @@ class lmbLog
     $this->backtrace_depth[$log_level] = $depth;
   }
 
-  function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null)
+  function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null, $entry_title = null)
   {
-    if(!$this->isLogEnabled())
-      return;
-
     lmb_assert_type($level, 'integer');
 
     if(!$backtrace)
@@ -87,14 +79,11 @@ class lmbLog
       $backtrace = new lmbBacktrace($this->backtrace_depth[$level]);
     }
 
-    $this->_write($level, $message, $params, $backtrace);
+    $this->_write($level, $message, $params, $backtrace, $entry_title);
   }
 
-  function logException(Exception $exception)
+  function logException(Exception $exception, $entry_title = null)
   {
-    if(!$this->isLogEnabled())
-      return;
-
     $message = get_class($exception) . ': ';
     if($exception instanceof lmbException)
     {
@@ -110,12 +99,16 @@ class lmbLog
     }
 
     $backtrace_depth = $this->backtrace_depth[LOG_ERR];
-    $this->log($message, LOG_ERR, $params, new lmbBacktrace($backtrace, $backtrace_depth));
+    $this->log($message, LOG_ERR, $params, new lmbBacktrace($backtrace, $backtrace_depth), $entry_title);
   }
 
-  protected function _write($level, $string, $params = array(), $backtrace = null)
+  protected function _write($level, $string, $params = array(), $backtrace = null, $entry_title = null)
   {
     $entry = new lmbLogEntry($level, $string, $params, $backtrace);
+
+    if($entry_title)
+      $entry->setTitle($entry_title);
+
     $this->logs[] = $entry;
 
     $this->_writeLogEntry($entry);
