@@ -24,7 +24,6 @@ lmb_require(dirname(__FILE__) . '/lmbPgsqlTypeInfo.class.php');
 class lmbPgsqlConnection extends lmbDbBaseConnection
 {
   protected $connectionId;
-  protected $statement_number = 0;
 
   function getFunctionForSystemSupportCheck()
   {
@@ -43,11 +42,6 @@ class lmbPgsqlConnection extends lmbDbBaseConnection
       $this->connect();
     }
     return $this->connectionId;
-  }
-
-  function getStatementNumber()
-  {
-      return ++$this->statement_number;
   }
 
   function connect()

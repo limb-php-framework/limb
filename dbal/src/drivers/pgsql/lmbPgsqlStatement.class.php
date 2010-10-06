@@ -183,7 +183,7 @@ class lmbPgsqlStatement implements lmbDbStatement
     $sql = $this->_handleBindVars($this->sql);
     if (empty($this->statement_name) || !is_resource($this->statement))
     {
-      $this->statement_name = "pgsql_statement_" . $this->connection->getStatementNumber();
+      $this->statement_name = "pgsql_statement_" . uniqid();
       $this->statement = pg_prepare($this->connection->getConnectionId(), $this->statement_name, $sql);
     }
     if(!$this->statement)
