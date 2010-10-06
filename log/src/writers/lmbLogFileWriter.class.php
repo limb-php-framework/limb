@@ -44,7 +44,7 @@ class lmbLogFileWriter extends lmbLogBaseWriter
       $log_message = "========================= {$title} [{$time}]";
       $log_message .= "=========================\n" . $message;
 
-      fwrite($fh, $message);
+      fwrite($fh, $log_message);
       @flock($fh, LOCK_UN);
       fclose($fh);
       if(!$file_existed)
