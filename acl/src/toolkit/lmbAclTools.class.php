@@ -8,6 +8,7 @@
  */
 lmb_require('limb/toolkit/src/lmbAbstractTools.class.php');
 lmb_require('limb/acl/src/lmbAcl.class.php');
+lmb_require('limb/acl/src/lmbAclConfigurator.class.php');
 
 /**
  * class lmbFsTools.
@@ -22,7 +23,7 @@ class lmbAclTools extends lmbAbstractTools
   function getAcl()
   {
     if(is_null($this->acl))
-      $this->acl = new lmbAcl();
+      $this->acl = $this->toolkit->getAclFromConf();
 
     return $this->acl;
   }
@@ -30,5 +31,16 @@ class lmbAclTools extends lmbAbstractTools
   function setAcl($acl)
   {
     $this->acl = $acl;
+  }
+  
+  function getAclFromConf()
+  {
+    if ($this->toolkit->hasConf('acl'))
+    {
+	  $configurator = new lmbAclConfigurator($this->toolkit->getConf('acl'));
+	  return $configurator->getAcl();
+    }
+    
+    return new lmbAcl();
   }
 }

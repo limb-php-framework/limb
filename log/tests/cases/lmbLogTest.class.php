@@ -48,9 +48,10 @@ class lmbLogTest extends UnitTestCase {
 
   function testLog()
   {
-    $this->log->log('imessage', LOG_INFO, 'iparam', $backtrace = new lmbBacktrace(1));
+    $this->log->log('imessage', LOG_INFO, 'iparam', $backtrace = new lmbBacktrace(1), $entry_title='title');
     $this->assertTrue($this->_getLastLogEntry()->isLevel(LOG_INFO));
     $this->assertEqual('imessage', $this->_getLastLogEntry()->getMessage());
+    $this->assertEqual('title', $this->_getLastLogEntry()->getTitle());
     $this->assertEqual('iparam', $this->_getLastLogEntry()->getParams());
     $this->assertEqual($backtrace, $this->_getLastLogEntry()->getBacktrace());
   }

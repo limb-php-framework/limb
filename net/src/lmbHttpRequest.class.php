@@ -10,23 +10,30 @@ lmb_require('limb/core/src/lmbSet.class.php');
 lmb_require('limb/core/src/lmbArrayHelper.class.php');
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/net/src/lmbUploadedFilesParser.class.php');
+lmb_require('limb/net/src/lmbInputStreamParser.class.php');
 
 /**
  * class lmbHttpRequest.
  *
  * @package net
- * @version $Id: lmbHttpRequest.class.php 8122 2010-02-02 09:54:14Z hidrarg $
+ * @version $Id$
  */
 class lmbHttpRequest extends lmbSet
 {
   protected $__uri;
   protected $__request = array();
+  protected $__request_method;
+  protected $__valid_request_methods = array('POST', 'GET', 'PUT', 'DELETE');
   protected $__get = array();
   protected $__post = array();
+  protected $__put = array();
   protected $__cookies = array();
   protected $__files = array();
   protected $__pretend_post = false;
-  protected $__reserved_attrs = array('__uri', '__request', '__get', '__post', '__cookies', '__files', '__pretend_post', '__reserved_attrs');
+  protected $__reserved_attrs = array(
+    '__uri', '__request', '__request_method', '__valid_request_methods', '__get', '__post',
+    '__put', '__cookies', '__files', '__pretend_post', '__reserved_attrs',
+  );
 
   function __construct($uri_string = null, $get = null, $post = null, $cookies = null, $files = null)
   {
@@ -47,21 +54,36 @@ class lmbHttpRequest extends lmbSet
     $this->__cookies = !is_null($cookies) ? $cookies : $_COOKIE;
     $this->__files = !is_null($files) ? $this->_parseUploadedFiles($files) : $this->_parseUploadedFiles($_FILES);
 
+    $this->_defineRequestMethod();
+
+    if($this->getRequestMethod() == 'PUT')
+      $this->__put = lmbToolkit :: instance()->getInputStreamParser()->parse();
+
     if(ini_get('magic_quotes_gpc'))
     {
       $this->__get = $this->_stripHttpSlashes($this->__get);
       $this->__post = $this->_stripHttpSlashes($this->__post);
+      $this->__put = $this->_stripHttpSlashes($this->__put);
       $this->__cookies = $this->_stripHttpSlashes($this->__cookies);
     }
 
-    $this->__request = lmbArrayHelper :: arrayMerge($this->__get, $this->__post, $this->__files);
+    $this->__request = lmbArrayHelper::arrayMerge($this->__get, $this->__post, $this->__put, $this->__files);
 
     foreach($this->__request as $k => $v)
     {
       if(in_array($k, $this->__reserved_attrs))
         continue;
+
       $this->set($k, $v);
     }
+  }
+
+  protected function _defineRequestMethod()
+  {
+    if(isset($_SERVER['REQUEST_METHOD']) && in_array($_SERVER['REQUEST_METHOD'], $this->__valid_request_methods))
+      $this->__request_method = $_SERVER['REQUEST_METHOD'];
+    else
+      $this->__request_method = ($this->hasPost() ? 'POST' : 'GET');
   }
 
   protected function _parseUploadedFiles($files)
@@ -80,6 +102,11 @@ class lmbHttpRequest extends lmbSet
         $result[$k] = stripslashes($v);
     }
     return $result;
+  }
+
+  function getRequestMethod()
+  {
+    return $this->__request_method;
   }
 
   /**
@@ -134,6 +161,21 @@ class lmbHttpRequest extends lmbSet
   function pretendPost($flag = true)
   {
     $this->__pretend_post = $flag;
+  }
+
+  function getPut($key = null, $default = LIMB_UNDEFINED)
+  {
+    return $this->_get($this->__put, $key, $default);
+  }
+
+  function hasPut()
+  {
+    return (sizeof($this->__put) > 0 || $this->getRequestMethod() == 'PUT');
+  }
+
+  function hasDelete()
+  {
+    return ($this->getRequestMethod() == 'DELETE');
   }
 
   function getCookie($key = null, $default = LIMB_UNDEFINED)
@@ -241,9 +283,9 @@ class lmbHttpRequest extends lmbSet
     if(isset($_SERVER['REQUEST_URI']))
       $url = $_SERVER['REQUEST_URI'];
     elseif(isset($_SERVER['QUERY_STRING']))
-      $url = '/' . basename($_SERVER['PHP_SELF']) . '?' . $_SERVER['QUERY_STRING'];
+      $url = basename($_SERVER['PHP_SELF']) . '?' . $_SERVER['QUERY_STRING'];
     else
-      $url = '/' . basename($_SERVER['PHP_SELF']);
+      $url = $_SERVER['PHP_SELF'];
 
     return $server . $url;
   }
@@ -273,5 +315,3 @@ class lmbHttpRequest extends lmbSet
     return $this->toString();
   }
 }
-
-
