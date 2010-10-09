@@ -3,6 +3,7 @@ lmb_package_require('dbal');
 lmb_require('limb/cache2/src/drivers/lmbCacheAbstractConnection.class.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLCriteria.class.php');
 lmb_require('limb/core/src/lmbSerializable.class.php');
+lmb_require('limb/core/src/exception/lmbNotYetImplementedException.class.php');
 
 class lmbCacheDbConnection extends lmbCacheAbstractConnection
 {
@@ -42,47 +43,15 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
     return lmbSQLCriteria::equal($column, $resolved_key);
   }
 
-  function lock($key)
-  {
-    $resolved_key = $this->_resolveKey($key);
-
-    $lock = $this->db_table->selectFirstRecord($this->_getKeyCriteria($resolved_key));
-
-    if($lock['is_locked'])
-      return false;
-
-    try {
-      $this->db_table->insertOnDuplicateUpdate(array(
-        'key' => $resolved_key,
-        'is_locked' => 1,
-      ));
-      return true;
-    }
-    catch (Exception $e)
-    {
-      return false;
-    }
-  }
-
-  function unlock($key)
-  {
-    $resolved_key = $this->_resolveKey($key);
-
-    $this->db_table->update(array('is_locked' => 0), $this->_getKeyCriteria($resolved_key));
-  }
-
   function add($key, $value, $ttl = false)
   {
     $resolved_key = $this->_resolveKey($key);
-
-    if($ttl)
-      $ttl += time();
 
     try {
       $this->db_table->insert(array(
         'key' => $resolved_key,
         'value' => lmbSerializable::serialize($value),
-        'ttl' => $ttl
+        'ttl' => $ttl += time()
       ));
       return true;
     }
@@ -96,14 +65,11 @@ class lmbCacheDbConnection extends lmbCacheAbstractConnection
   {
     $resolved_key = $this->_resolveKey($key);
 
-    if($ttl)
-      $ttl += time();
-
     try {
       $this->db_table->insertOnDuplicateUpdate(array(
         'key' => $resolved_key,
         'value' => lmbSerializable::serialize($value),
-        'ttl' => $ttl
+        'ttl' => $ttl ? $ttl + time() : 0
       ));
       return true;
     }

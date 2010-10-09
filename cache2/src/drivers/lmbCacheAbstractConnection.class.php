@@ -103,7 +103,7 @@ abstract class lmbCacheAbstractConnection implements lmbCacheConnection
 
   function lock($key, $ttl = false, $lock_name = false)
   {
-    return $this->add($this->_getLockName($key,$lock_name), '1', $ttl);
+    return $this->add($this->_getLockName($key, $lock_name), '1', $ttl);
   }
 
   function unlock($key, $lock_name = false)
