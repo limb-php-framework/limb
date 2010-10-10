@@ -11,48 +11,40 @@ class lmbAssertFunctionsTest extends UnitTestCase
 {
   function testAssertTrue()
   {
-    $this->_checkPositive('true', true);
-    $this->_checkNegative('true', false);
+    $this->_checkPositive('lmb_assert_true', array(true));
+    $this->_checkNegative('lmb_assert_true', array(false));
 
-    $this->_checkPositive('true', 1);
-    $this->_checkNegative('true', 0);
+    $this->_checkPositive('lmb_assert_true', array(1));
+    $this->_checkNegative('lmb_assert_true', array(0));
 
-    $this->_checkPositive('true', 1.1);
-    $this->_checkNegative('true', 0.0);
+    $this->_checkPositive('lmb_assert_true', array(1.1));
+    $this->_checkNegative('lmb_assert_true', array(0.0));
 
-    $this->_checkPositive('true', 'foo');
-    $this->_checkNegative('true', '');
+    $this->_checkPositive('lmb_assert_true', array('foo'));
+    $this->_checkNegative('lmb_assert_true', array(''));
 
-    $this->_checkPositive('true', array(1));
-    $this->_checkNegative('true', array());
+    $this->_checkPositive('lmb_assert_true', array(array(1)));
+    $this->_checkNegative('lmb_assert_true', array(array()));
 
-    $this->_checkPositive('true', new stdClass());
+    $this->_checkPositive('lmb_assert_true', array(new stdClass()));
   }
 
-  function testAssertTrue_DefaultMessage()
+  function testAssertTrue_Message()
   {
-    try
-    {
-      lmb_assert_true(false);
-      $this->fail();
-    }
-    catch(lmbInvalidArgumentException $e)
-    {
-      $this->assertPattern('/Value must be true/', $e->getMessage());
-    }
+  	$exception = $this->_checkNegative('lmb_assert_true', array(false));
+  	$this->assertPattern('/Value must be positive/', $exception->getMessage());
+
+  	$exception = $this->_checkNegative('lmb_assert_true', array(false, 'foo'));
+    $this->assertPattern('/foo/', $exception->getMessage());
   }
 
-  function testAssertTrue_CustomMessage()
+  function testAssertTrue_ExceptionClass()
   {
-    $message = uniqid('lmb_assert_true');
-    try
-    {
-      lmb_assert_true(false, $message);
-    }
-    catch(lmbInvalidArgumentException $e)
-    {
-      $this->assertPattern('/'.$message.'/', $e->getMessage());
-    }
+    $exception = $this->_checkNegative('lmb_assert_true', array(false));
+    $this->assertIsA($exception, 'lmbInvalidArgumentException');
+
+    $exception = $this->_checkNegative('lmb_assert_true', array(false, null, 'lmbAssertExceptionForTest'));
+    $this->assertIsA($exception, 'lmbAssertExceptionForTest');
   }
 
   function testAssertType_Bool()
@@ -85,18 +77,11 @@ class lmbAssertFunctionsTest extends UnitTestCase
     );
 
     foreach ($types as $type)
-    {
       foreach ($type['names'] as $type_name)
-      {
         foreach ($type['values'] as $value)
-        {
-          $this->_checkPositive('type', $value, $type_name);
-        }
-      }
-    }
+          $this->_checkPositive('lmb_assert_type', array($value, $type_name));
 
     foreach ($types as $key => $type)
-    {
       foreach ($types as $another_key => $another_type)
       {
         if ($key == $another_key)
@@ -106,125 +91,164 @@ class lmbAssertFunctionsTest extends UnitTestCase
         {
           foreach ($another_type['values'] as $another_type_value)
           {
-            $this->_checkNegative('type', $another_type_value, $type_name);
+            $this->_checkNegative('lmb_assert_type', array($another_type_value, $type_name));
           }
         }
       }
-    }
+
   }
 
   function testAssertType_ArrayAccessAsArray()
   {
-    $this->_checkNegative('type', new stdClass(), 'array');
-    $this->_checkPositive('type', new ArrayObject(), 'array');
+    $this->_checkNegative('lmb_assert_type', array(new stdClass(), 'array'));
+    $this->_checkPositive('lmb_assert_type', array(new ArrayObject(), 'array'));
   }
 
   function testAssertType_Objects()
   {
-    $this->_checkPositive('type', new ArrayObject(), 'ArrayAccess');
-    $this->_checkPositive('type', new ArrayObject(), 'ArrayObject');
+    $this->_checkPositive('lmb_assert_type', array(new ArrayObject(), 'ArrayAccess'));
+    $this->_checkPositive('lmb_assert_type', array(new ArrayObject(), 'ArrayObject'));
 
-    $this->_checkNegative('type', new ArrayObject(), 'Foo');
+    $this->_checkNegative('lmb_assert_type', array(new ArrayObject(), 'Foo'));
   }
 
   function testAssertType_CustomMessage()
   {
-    $message = uniqid('lmb_assert_type');
-    try
-    {
-      lmb_assert_type(true, 'string', $message);
-    }
-    catch(lmbInvalidArgumentException $e)
-    {
-      $this->assertPattern('/'.$message.'/', $e->getMessage());
-    }
+  	$exception = $this->_checkNegative('lmb_assert_type', array(false, 'string'));
+    $this->assertPattern('/Value must be a string type, but boolean given/', $exception->getMessage());
+
+    $exception = $this->_checkNegative('lmb_assert_type', array(false, 'string', '%expected%|%given%'));
+    $this->assertPattern('/string|boolean/', $exception->getMessage());
+  }
+
+  function testAssertType_ExceptionClass()
+  {
+    $exception = $this->_checkNegative('lmb_assert_type', array(false, 'string'));
+    $this->assertIsA($exception, 'lmbInvalidArgumentException');
+
+    $exception = $this->_checkNegative('lmb_assert_type', array(false, 'string', null, 'lmbAssertExceptionForTest'));
+    $this->assertIsA($exception, 'lmbAssertExceptionForTest');
   }
 
   function testAssertArrayWithKey()
   {
-    $this->_checkNegative('array_with_key', 'not_array', 'needle');
-    $this->_checkNegative('array_with_key', array('foo' => 1), 'bar');
+    $this->_checkNegative('lmb_assert_array_with_key', array(
+      'not_array', 'needle'
+    ));
+    $this->_checkNegative('lmb_assert_array_with_key', array(
+      array('foo' => 1), 'bar'
+    ));
 
-    $this->_checkPositive('array_with_key', array('foo' => 1), 'foo');
-    $this->_checkPositive('array_with_key', new ArrayObject(array('foo' => 1)), 'foo');
+    $this->_checkPositive('lmb_assert_array_with_key', array(
+      array('foo' => 1), 'foo'
+    ));
+    $this->_checkPositive('lmb_assert_array_with_key', array(
+      new ArrayObject(array('foo' => 1)), 'foo'
+    ));
   }
 
   function testAssertArrayWithKey_MultipleCheck()
   {
-    $this->_checkNegative('array_with_key', array('foo' => 1, 'bar' => 2), array('foo', 'baz'));
-
-    $this->_checkPositive('array_with_key', array('foo' => 1, 'bar' => 2), array('foo', 'bar'));
+    $this->_checkNegative('lmb_assert_array_with_key', array(
+      array('foo' => 1, 'bar' => 2), array('foo', 'baz')
+    ));
+    $this->_checkPositive('lmb_assert_array_with_key', array(
+      array('foo' => 1, 'bar' => 2), array('foo', 'bar')
+    ));
   }
 
-  function testAssertArrayWithKey_CustomMessage()
+  function testAssertArrayWithKey_Message()
   {
-    $message = uniqid('lmb_assert_array_with_key');
-    try
-    {
-      lmb_assert_array_with_key(array(), 'some_key', $message);
-    }
-    catch(lmbInvalidArgumentException $e)
-    {
-      $this->assertPattern('/'.$message.'/', $e->getMessage());
-    }
+    $exception = $this->_checkNegative('lmb_assert_array_with_key', array(
+      array('foo' => 1), array('bar', 'baz')
+    ));
+    $this->assertEqual(
+      "Value is not an array or doesn't have a key(s) \"bar, baz\"",
+      $exception->getOriginalMessage()
+    );
+
+    $exception = $this->_checkNegative('lmb_assert_array_with_key', array(
+      array('foo' => 1), array('bar', 'baz'), 'foo|%keys%'
+    ));
+    $this->assertEqual(
+      'foo|bar, baz',
+      $exception->getOriginalMessage()
+    );
+  }
+
+  function testAssertArrayWithKey_ExceptionClass()
+  {
+    $exception = $this->_checkNegative('lmb_assert_array_with_key', array(
+      array('foo' => 1), array('bar', 'baz')
+    ));
+    $this->assertIsA($exception, 'lmbInvalidArgumentException');
+
+    $exception = $this->_checkNegative('lmb_assert_array_with_key', array(
+      array('foo' => 1), array('bar', 'baz'), null, 'lmbAssertExceptionForTest'
+    ));
+    $this->assertIsA($exception, 'lmbAssertExceptionForTest');
   }
 
   function testAssertRegExp()
   {
-    $this->_checkNegative('reg_exp', array(), 'foo');
+    $this->_checkNegative('lmb_assert_reg_exp', array(array(), 'foo'));
 
-    $this->_checkPositive('reg_exp', 'foomatic', 'foo');
-    $this->_checkNegative('reg_exp', 'bar', 'foo');
+    $this->_checkPositive('lmb_assert_reg_exp', array('foomatic', 'foo'));
+    $this->_checkNegative('lmb_assert_reg_exp', array('bar', 'foo'));
 
-    $this->_checkPositive('reg_exp', 'abc', '/bc/');
-    $this->_checkNegative('reg_exp', 'abc', '/xy/');
+    $this->_checkPositive('lmb_assert_reg_exp', array('abc', '/bc/'));
+    $this->_checkNegative('lmb_assert_reg_exp', array('abc', '/xy/'));
 
     Mock::generate('stdClass', 'MockStringProvider', array('__toString'));
     $string_provider = new MockStringProvider;
     $string_provider->expectAtLeastOnce('__toString');
     $string_provider->setReturnValue('__toString', 'abc');
 
-    $this->_checkPositive('reg_exp', $string_provider, '/bc/');
-    $this->_checkNegative('reg_exp', $string_provider, '/xy/');
+    $this->_checkPositive('lmb_assert_reg_exp', array($string_provider, '/bc/'));
+    $this->_checkNegative('lmb_assert_reg_exp', array($string_provider, '/xy/'));
   }
 
-  function testAssertRegExp_CustomMessage()
+  function testAssertRegExp_Message()
   {
-    $message = uniqid('lmb_assert_reg_exp');
-    try
-    {
-      lmb_assert_reg_exp(array(), 'foo', $message);
-    }
-    catch(lmbInvalidArgumentException $e)
-    {
-      $this->assertPattern('/'.$message.'/', $e->getMessage());
-    }
+    $exception = $this->_checkNegative('lmb_assert_reg_exp', array('bar', 'foo'));
+    $this->assertEqual('Value is not an string or pattern "foo" not found', $exception->getOriginalMessage());
+
+    $exception = $this->_checkNegative('lmb_assert_reg_exp', array('bar', 'foo', 'baz|%pattern%'));
+    $this->assertEqual('baz|foo', $exception->getOriginalMessage());
   }
 
-  protected function _callCheck($check_name, $first_check_param, $second_check_param)
+  function testAssertRegExp_ExceptionClass()
   {
-    call_user_func_array('lmb_assert_'.$check_name, array($first_check_param, $second_check_param));
+    $exception = $this->_checkNegative('lmb_assert_true', array(false));
+    $this->assertIsA($exception, 'lmbInvalidArgumentException');
+
+    $exception = $this->_checkNegative('lmb_assert_true', array(false, null, 'lmbAssertExceptionForTest'));
+    $this->assertIsA($exception, 'lmbAssertExceptionForTest');
   }
 
-  protected function _checkPositive($check_name, $first_check_param, $second_check_param = null)
+  protected function _checkPositive($function, $params)
   {
-    $this->_callCheck($check_name,$first_check_param,$second_check_param);
+    call_user_func_array($function, $params);
     $this->pass();
   }
 
-  protected function _checkNegative($check_name, $first_param, $second_param = null)
+  /**
+   * @return lmbException
+   */
+  protected function _checkNegative($function, $params = array())
   {
     try
     {
-      $this->_callCheck($check_name, $first_param, $second_param);
-      $message = "fail lmb_assert_{$check_name}(".(var_export($first_param, true)).", ".var_export($second_param, true).')';
+      call_user_func_array($function, $params);
+      $message = "fail {$function}(".(var_export($params, true)).').';
       $this->fail($message);
     }
     catch(lmbInvalidArgumentException $e)
     {
       $this->pass();
-      return $e->getMessage();
+      return $e;
     }
   }
 }
 
+class lmbAssertExceptionForTest extends lmbInvalidArgumentException {}
