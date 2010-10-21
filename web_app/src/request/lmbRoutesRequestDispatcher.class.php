@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_app/src/request/lmbRequestDispatcher.interface.php');
 
@@ -21,11 +21,11 @@ class lmbRoutesRequestDispatcher implements lmbRequestDispatcher
 
   function __construct($path_offset = null, $base_path = null)
   {
-  	$this->path_offset = lmb_env_get('LIMB_HTTP_OFFSET_PATH');  	
+    $this->path_offset = lmb_env_get('LIMB_HTTP_OFFSET_PATH');
     if(!is_null($path_offset))
       $this->path_offset = $path_offset;
 
-    $this->base_path = lmb_env_get('LIMB_HTTP_BASE_PATH');    
+    $this->base_path = lmb_env_get('LIMB_HTTP_BASE_PATH');
     if(!is_null($base_path))
       $this->base_path = $base_path;
   }
@@ -39,7 +39,10 @@ class lmbRoutesRequestDispatcher implements lmbRequestDispatcher
 
     $level = $this->_getHttpBasePathOffsetLevel($uri);
 
-    $result = $routes->dispatch($uri->getPathFromLevel($level));
+    if(method_exists($request, 'getRequestMethod'))
+      $result = $routes->dispatch($uri->getPathFromLevel($level), $request->getRequestMethod());
+    else
+      $result = $routes->dispatch($uri->getPathFromLevel($level));
 
     if($action = $request->get('action'))
       $result['action'] = $action;

@@ -28,14 +28,14 @@ class lmbCliOutput implements lmbCliOutputInterface
     $this->verbose = $verbose;
   }
 
-  function error($message, $params = array(), $level = null)
+  function error($message, $params = array(), $level = LOG_ERR)
   {
     if($params)
       $message .= var_export($params, true);
     $this->write($message);
   }
 
-  function write($message, $params = array())
+  function write($message, $params = array(), $level = LOG_INFO)
   {
     if(!$this->verbose)
       return;

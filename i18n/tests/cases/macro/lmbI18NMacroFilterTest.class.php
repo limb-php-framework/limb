@@ -9,18 +9,18 @@
 require_once('limb/i18n/utf8.inc.php');
 lmb_require('limb/i18n/src/translation/lmbI18NDictionary.class.php');
 
-class lmbI18NDateMacroFilterTest extends lmbBaseMacroTest
+class lmbI18NMacroFilterTest extends lmbBaseMacroTest
 {
-	/**
-	 * @var lmbI18NTools
-	 */
-	protected $toolkit;
+  /**
+   * @var lmbI18NTools
+   */
+  protected $toolkit;
 
-	function setUp()
-	{
-		parent::setUp();
-		$this->toolkit = lmbToolkit::instance();
-	}
+  function setUp()
+  {
+    parent::setUp();
+    $this->toolkit = lmbToolkit::instance();
+  }
 
   function testUseDefaultDomain()
   {

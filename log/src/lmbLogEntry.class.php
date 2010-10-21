@@ -20,6 +20,7 @@ class lmbLogEntry
   protected $level;
   protected $time;
   protected $message;
+  protected $title;
   protected $params;
   protected $backtrace;
   protected $names_map = array(
@@ -49,6 +50,16 @@ class lmbLogEntry
     return $this->message;
   }
 
+  function getTitle()
+  {
+    return $this->title;
+  }
+
+  function setTitle($title)
+  {
+    $this->title = $title;
+  }
+
   function getTime()
   {
     return $this->time;
@@ -76,7 +87,7 @@ class lmbLogEntry
 
   function toString()
   {
-    return lmbSys :: isCli() ? $this->asText() : $this->asHtml();
+    return lmbSys :: isCli() ? $this->getTitle() . $this->asText() : $this->asHtml();
   }
 
   function asText()

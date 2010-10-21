@@ -24,7 +24,7 @@ class lmbRoutes
     $this->config = $config;
   }
 
-  function dispatch($url)
+  function dispatch($url, $request_method = null)
   {
     foreach($this->config as $route)
     {
@@ -32,6 +32,9 @@ class lmbRoutes
         continue;
 
       if(!$this->_routeParamsMeetRequirements($route, $result))
+        continue;
+
+      if(!$this->_properRequestMethod($route, $request_method))
         continue;
 
       return $this->_applyDispatchFilter($route, $result);
@@ -183,9 +186,18 @@ class lmbRoutes
 
   protected function _singleParamMeetsRequirements($route, $param_name, $param_value)
   {
-     return (!isset($route['requirements'][$param_name]) ||
+    return (!isset($route['requirements'][$param_name]) ||
             preg_match($route['requirements'][$param_name], $param_value, $req_res));
   }
+
+  protected function _properRequestMethod($route, $request_method)
+  {
+    if(!isset($route['request_method']))
+      return true;
+
+    return ($route['request_method'] == $request_method);
+  }
+
 
   function _makeUrlByRoute($params, $route)
   {

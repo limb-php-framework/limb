@@ -20,6 +20,30 @@ lmb_require('limb/net/src/lmbUri.class.php');
 class lmbLogTools extends lmbAbstractTools
 {
   protected $_logs = array();
+  protected $_log_entry_title;
+
+  function isLogEnabled()
+  {
+    return (bool) lmb_env_get('LIMB_LOG_ENABLE', true);
+  }
+
+  function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null, $log_name = 'default')
+  {
+    if(!$this->isLogEnabled())
+      return;
+
+    $log = $this->getLog($log_name);
+    $log->log($message, $level, $params, $backtrace, $this->getLogEntryTitle());
+  }
+
+  function logException(Exception $exception, $log_name = 'default')
+  {
+    if(!$this->isLogEnabled())
+      return;
+
+    $log = $this->getLog($log_name);
+    $log->logException($exception, $this->getLogEntryTitle());
+  }
 
   function setLog($log, $name = 'default')
   {
@@ -130,6 +154,38 @@ class lmbLogTools extends lmbAbstractTools
   function getDefaultLog()
   {
     return $this->createLog('file://'.lmb_var_dir().'/logs/error.log');
+  }
+
+  function getLogEntryTitle()
+  {
+    if(!$this->_log_entry_title)
+      return $this->_buildLogEntryTitle();
+    else
+      return $this->_log_entry_title;
+  }
+
+  function setLogEntryTitle($log_entry_title)
+  {
+    $this->_log_entry_title = $log_entry_title;
+  }
+
+  protected function _buildLogEntryTitle()
+  {
+    $log_title = '';
+
+    if(isset($_SERVER['REMOTE_ADDR']))
+      $log_title .= '[' . $_SERVER['REMOTE_ADDR'] . ']';
+
+    if(isset($_SERVER['REQUEST_URI']))
+    {
+      $log_title .= "[";
+
+      if(isset($_SERVER['REQUEST_METHOD']))
+        $log_title .= $_SERVER['REQUEST_METHOD'] . " - ";
+
+      $log_title .= $_SERVER['REQUEST_URI'] . "]";
+    }
+    return $log_title;
   }
 
   protected function _createLogObject()
