@@ -2,17 +2,19 @@
 
 class lmbFormConstructorHelper
 {
-  protected $columns;
+  protected $columns = array();
 
-  function __construct($columns)
+  function __construct(array $columns)
   {
     $aggrement_resolver = new lmbARRelationAggrementsResolver();
     foreach ($columns as $column)
+    {
       if(
         !$aggrement_resolver->isRelationColumn($column)
         && !$aggrement_resolver->isPrimaryKey($column)
       )
         $this->columns[] = $column;
+    }
   }
 
   function getColumnsNames()
