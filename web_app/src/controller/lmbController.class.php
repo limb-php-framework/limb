@@ -331,6 +331,10 @@ class lmbController
     return $this->forward('server_error', 'display');
   }
 
+  function forwardToSelf($action)
+  {
+    return $this->forward(str_ireplace('_controller', '', lmb_under_scores(get_class($this))), $action);
+  }
 
   function __destruct()
   {
