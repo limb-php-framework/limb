@@ -764,7 +764,6 @@ class lmbActiveRecord extends lmbObject
   function _setARField($property, $value)
   {
     $old_value = $this->_getRaw($property);
-
     parent :: set($property, $value);
 
     // if property is a table field and was not really changed, don't mark it dirty
@@ -784,6 +783,9 @@ class lmbActiveRecord extends lmbObject
   protected function _canPropertyBeDirty($property)
   {
     if($this->_db_meta_info->hasColumn($property))
+      return true;
+      
+    if($this->_isAggregatedObjectProperty($property))
       return true;
 
     if($this->_canRelationPropertyBeDirty($property, $this->_many_belongs_to))
@@ -949,7 +951,7 @@ class lmbActiveRecord extends lmbObject
       $throw_exception = $this->_has_one[$property]['throw_exception_on_not_found'];
     else
       $throw_exception = true;
-
+          
     return self :: findById($this->_has_one[$property]['class'],
                             $this->get($this->_has_one[$property]['field']),
                             $throw_exception,
@@ -968,62 +970,12 @@ class lmbActiveRecord extends lmbObject
            $this->_many_belongs_to[$property]['can_be_null'];
   }
 
-  protected function _loadAggregatedObject($property, $value = LIMB_UNDEFINED)
-  {
-    // for BC
-    if(isset($this->_composed_of[$property]['getter']))
-    {
-      if ($value === LIMB_UNDEFINED)
-      {
-        if(!$value = $this->_getRaw($property))
-          return $value;
-      }
-
-      $class = $this->_composed_of[$property]['class'];
-      $object = new $class($value);
-      return $object;
-    }
-
-    $class = $this->_composed_of[$property]['class'];
-    $object = new $class();
-
-    if(isset($this->_composed_of[$property]['mapping']))
-      $mapping = $this->_composed_of[$property]['mapping'];
-    else
-      $mapping = array($property => $property);
-
-    foreach($mapping as $aggregate_field => $ar_field)
-      $object->set($aggregate_field, $this->_getRaw($ar_field));
-
-    if(isset($this->_composed_of[$property]['setup_method']))
-    {
-      $setup_method =$this->_composed_of[$property]['setup_method'];
-      $object = $this->$setup_method($object);
-    }
-
-    return $object;
-  }
+  
 
   protected function _mapMethodToClass($method)
   {
     return substr($method, 3);
-  }
-
-  protected function _getAggregatedObject($property)
-  {
-    if(parent :: has($property))
-    {
-      $value = $this->_getRaw($property);
-
-      if(is_object($value))
-        return $value;
-    }
-
-    $object = $this->_loadAggregatedObject($property);
-    $this->_setRaw($property, $object);
-
-    return $object;
-  }
+  }  
 
   protected function _doSave($need_validation)
   {
@@ -1068,7 +1020,7 @@ class lmbActiveRecord extends lmbObject
 
         $this->_setAutoTimes();
 
-        $this->_updateDbRecord($this->_propertiesToDbFields($only_dirty_properties = true));
+        $this->_updateDbRecord($this->_mapPropertiesToDbFields($only_dirty_properties = true));
 
         $this->_onAfterUpdate();
 
@@ -1097,7 +1049,7 @@ class lmbActiveRecord extends lmbObject
 
         $this->_setAutoTimes();
 
-        $new_id = $this->_insertDbRecord($this->_propertiesToDbFields());
+        $new_id = $this->_insertDbRecord($this->_mapPropertiesToDbFields());
         $this->_is_new = false;
         $this->setId($new_id);
 
@@ -1134,44 +1086,9 @@ class lmbActiveRecord extends lmbObject
   protected function _insertDbRecord($values)
   {
     return $this->_db_table->insert($values);
-  }
+  }  
 
-  protected function _checkDirtinessOfAggregatedObjectsFields()
-  {
-    foreach($this->_composed_of as $property => $info)
-    {
-      if(!parent :: has($property))
-        continue;
-
-      $object = $this->_getRaw($property);
-      if(!is_object($object))
-        continue;
-
-      // for bc
-      if(isset($info['getter']))
-      {
-        $method = $info['getter'];
-        $value = $object->$method();
-        $this->_setARField($property, $value);
-        continue;
-      }
-
-      if(!isset($info['mapping']))
-        $mapping = array($property => $property);
-      else
-        $mapping = $info['mapping'];
-
-      foreach($mapping as $aggregate_field => $ar_field)
-      {
-        if($ar_field == $this->getPrimaryKeyName())
-          continue;
-
-        $this->_setARField($ar_field, $object->get($aggregate_field));
-      }
-    }
-  }
-
-  protected function _propertiesToDbFields($only_dirty_properties = false)
+  protected function _mapPropertiesToDbFields($only_dirty_properties = false)
   {
     $fields = $this->export();
 
@@ -1183,11 +1100,113 @@ class lmbActiveRecord extends lmbObject
           unset($fields[$field]);
       }
     }
+    
+    foreach($fields as $field => $value)
+    {
+      if($this->_isAggregatedObjectProperty($field))
+        $fields = array_merge($fields, $this->_getDbFieldsFromAggregatedObject($field, $value));
+    }
 
     if($this->isNew() && $this->_isInheritable())
       $fields[self :: $_inheritance_field] = $this->_getInheritancePath();
 
     return $fields;
+  }
+  
+  function _isAggregatedObjectProperty($property)
+  {
+    return array_key_exists($property, $this->_composed_of);
+  }
+  
+  function _getDbFieldsFromAggregatedObject($property, $object)
+  {
+    $info = $this->_composed_of[$property];
+    
+    if(!is_object($object))
+      continue;
+
+    // for bc
+    if(isset($info['getter']))
+    {
+      $method = $info['getter'];
+      return array($property => $object->$method());
+    }
+
+    if(!isset($info['mapping']))
+      $mapping = array($property => $property);
+    else
+      $mapping = $info['mapping'];
+
+    $fields = array();
+    foreach($mapping as $aggregate_field => $ar_field)
+    {
+      if($ar_field == $this->getPrimaryKeyName())
+        continue;
+
+      $fields[$ar_field] = $object->get($aggregate_field);
+    }
+    return $fields;
+  }
+  
+  protected function _checkDirtinessOfAggregatedObjectsFields()
+  {
+    foreach($this->_composed_of as $property => $info)  
+      if(isset($info['mapping']))
+      {
+        $this->_markDirtyProperty($property);
+      }
+  }
+  
+  protected function _loadAggregatedObject($property, $value = LIMB_UNDEFINED)
+  {    
+    // for BC
+    if(isset($this->_composed_of[$property]['getter']))
+    {
+      if ($value === LIMB_UNDEFINED)
+      {
+        if(!$value = $this->_getRaw($property))
+          return $value;
+      }
+
+      $class = $this->_composed_of[$property]['class'];
+      $object = new $class($value);
+      return $object;
+    }
+    
+    $class = $this->_composed_of[$property]['class'];
+    $object = new $class();
+
+    if(isset($this->_composed_of[$property]['mapping']))
+      $mapping = $this->_composed_of[$property]['mapping'];
+    else
+      $mapping = array($property => $property);
+
+    foreach($mapping as $aggregate_field => $ar_field)
+      $object->set($aggregate_field, $this->_getRaw($ar_field));
+
+    if(isset($this->_composed_of[$property]['setup_method']))
+    {
+      $setup_method =$this->_composed_of[$property]['setup_method'];
+      $object = $this->$setup_method($object);
+    }
+
+    return $object;
+  }
+
+  protected function _getAggregatedObject($property)
+  {    
+    if(parent :: has($property))
+    {
+      $value = $this->_getRaw($property);          
+
+      if(is_object($value))
+        return $value;
+    }    
+
+    $object = $this->_loadAggregatedObject($property);
+    $this->_setRaw($property, $object);
+
+    return $object;
   }
 
   protected function _setAutoTimes()
