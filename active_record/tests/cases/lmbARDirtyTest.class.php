@@ -235,14 +235,6 @@ class lmbARDirtyTest extends lmbARBaseTestCase
     $this->assertFalse($course->isDirty());
   }
 
-  function testSettingAggregatedObjectDoesNotMakesObjectDirty()
-  {
-    $member = new MemberForTest();
-
-    $member->setName(new NameForAggregateTest());
-    $this->assertFalse($member->isDirty());
-  }
-
   function testAggregatedObjectFieldsAreCheckedForDirtinessOnSaveOnly()
   {
     $name = new NameForAggregateTest();
