@@ -247,6 +247,20 @@ class lmbToolkitTest extends UnitTestCase
     lmbToolkit :: restore();
   }
 
+  function testSaveAndRestoreToolsMethods()
+  {
+    lmbToolkit :: save();
+    $toolkit = lmbToolkit :: setup(new TestTools());
+    $this->assertEqual($toolkit->commonMethod(),'commonMethod1');
+    lmbToolkit :: save();
+    lmbToolkit :: merge(new TestTools2());
+    $this->assertEqual($toolkit->commonMethod(),'commonMethod2');
+    lmbToolkit :: restore();
+    $this->assertEqual($toolkit->commonMethod(),'commonMethod1');
+    
+    lmbToolkit :: restore();
+  }
+
   function testOverloadGetterByTools()
   {
     lmbToolkit :: save();
