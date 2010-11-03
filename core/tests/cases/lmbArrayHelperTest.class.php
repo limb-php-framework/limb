@@ -116,7 +116,8 @@ class lmbArrayHelperTest extends UnitTestCase
   {
     try
     {
-      call_user_func_array(array('lmbArrayHelper', 'sortArray'), func_get_args());
+    	$params = func_get_args();
+      call_user_func_array(array('lmbArrayHelper', 'sortArray'), $params);
       $this->fail();
     }
     catch(lmbException $e)

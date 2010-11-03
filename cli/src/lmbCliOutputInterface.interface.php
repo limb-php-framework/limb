@@ -15,8 +15,8 @@
  */
 interface lmbCliOutputInterface
 {
-  function write($message, $params = array());
-  function error($message, $params = array(), $level);
+  function write($message, $params = array(), $level = LOG_INFO);
+  function error($message, $params = array(), $level = LOG_ERR);
 }
 
 

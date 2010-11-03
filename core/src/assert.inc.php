@@ -10,17 +10,24 @@
  * @package core
  * @version $Id$
  */
-function lmb_assert_true($value, $custom_message = 'Value must be true')
+function lmb_assert_true($value, $message = 'Value must be positive', $e_class = 'lmbInvalidArgumentException')
 {
-  if(!$value)
-    throw new lmbInvalidArgumentException($custom_message, array('value' => $value), 0, 1);
+  if ($value)
+    return;
+
+  if ($e_class instanceof lmbException)
+    throw new $e_class($message, array('value' => $value), 0, 1);
+  else
+    throw new $e_class($message);
 }
 
-function lmb_assert_type($value, $expected_type, $custom_message = LIMB_UNDEFINED)
+function lmb_assert_type(
+  $value,
+  $expected_type,
+  $message = 'Value must be a %expected% type, but %given% given',
+  $exception_class = 'lmbInvalidArgumentException'
+)
 {
-  if(LIMB_UNDEFINED === $custom_message)
-    $custom_message = 'Value must be a '.$expected_type.' type.';
-
   $given_type = gettype($value);
 
   if($expected_type === $given_type)
@@ -42,14 +49,22 @@ function lmb_assert_type($value, $expected_type, $custom_message = LIMB_UNDEFINE
   if('object' == $given_type && $value instanceof $expected_type)
     return;
 
-  throw new lmbInvalidArgumentException($custom_message, array('value' => $value), 0, 1);
+  $message = str_replace('%expected%', $expected_type, $message);
+  $message = str_replace('%given%', $given_type, $message);
+
+  if ($exception_class instanceof lmbException)
+    throw new $exception_class($message, array('value' => $value), 0, 1);
+  else
+    throw new $exception_class($message);
 }
 
-function lmb_assert_array_with_key($array, $key_or_keys, $custom_message = LIMB_UNDEFINED)
+function lmb_assert_array_with_key(
+  $array,
+  $key_or_keys,
+  $message = 'Value is not an array or doesn\'t have a key(s) "%keys%"',
+  $exception_class = 'lmbInvalidArgumentException'
+)
 {
-  if(LIMB_UNDEFINED === $custom_message)
-    $custom_message = 'Value is not an array or doesn\'t have a key "'.$key_or_keys.'"';
-
   if(!is_array($key_or_keys))
     $key_or_keys = array($key_or_keys);
 
@@ -65,28 +80,47 @@ function lmb_assert_array_with_key($array, $key_or_keys, $custom_message = LIMB_
     $missed_keys = array();
   }
 
-  $params = array(
-    'value type' => gettype($array),
-    'missed_keys' => $missed_keys,
-  );
-  throw new lmbInvalidArgumentException($custom_message, $params, 0, 1);
+  $message = str_replace('%keys%', implode(', ', $missed_keys), $message);
+  if ($exception_class instanceof lmbException)
+  {
+  	$params = array(
+      'value type' => gettype($array),
+      'missed keys' => $missed_keys,
+    );
+    throw new $exception_class($message, $params, 0, 1);
+  }
+  else
+    throw new $exception_class($message);
 }
 
-function lmb_assert_reg_exp($string, $pattern, $custom_message = LIMB_UNDEFINED)
+function lmb_assert_reg_exp(
+  $string,
+  $pattern,
+  $message = 'Value is not an string or pattern "%pattern%" not found',
+  $exception_class = 'lmbInvalidArgumentException'
+)
 {
-  if(LIMB_UNDEFINED === $custom_message)
-    $custom_message = 'Value is not an string or pattern  "'.$pattern.'" not found';
-
-  if(!is_string($string) && !(is_object($string) && method_exists($string, '__toString')))
-    throw new lmbInvalidArgumentException($custom_message, array('string' => $string), 0, 1);
-
-  if('/' != $pattern[0] && '{' != $pattern[0] && '|' != $pattern[0])
+  if(is_string($string) || (is_object($string) && method_exists($string, '__toString')))
   {
-    if(false !== strpos($string, $pattern))
-      return;
+	  if('/' != $pattern[0] && '{' != $pattern[0] && '|' != $pattern[0])
+	  {
+	    if(false !== strpos($string, $pattern))
+	      return;
+	  }
+	  elseif(preg_match($pattern, $string))
+	    return;
   }
-  elseif(preg_match($pattern, $string))
-    return;
 
-  throw new lmbInvalidArgumentException($custom_message, array(), 0, 1);
+  $message = str_replace('%pattern%', $pattern, $message);
+  if ($exception_class instanceof lmbException)
+  {
+  	$params = array(
+      'value type' => gettype($array),
+      'pattern' => $pattern,
+  	  'string' => $string,
+    );
+    throw new $exception_class($message, $params, 0, 1);
+  }
+  else
+    throw new $exception_class($message);
 }
