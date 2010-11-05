@@ -292,6 +292,7 @@ abstract class lmbARRelationCollection implements lmbCollectionInterface
   function at($pos)
   {
     $this->_ensureDataset();
+    lmb_assert_type($pos, 'integer');
     return $this->dataset->at($pos);
   }
 
