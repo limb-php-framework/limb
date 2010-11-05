@@ -64,6 +64,12 @@ class lmbCmsTools extends lmbAbstractTools
   {
     $this->user = $user;
   }
+  
+  function isWysiwygFileUploaderEnabled()
+  { 
+    lmbToolkit :: instance()->getSession()->start();
+    return lmbToolkit::instance()->getCmsUser()->isLoggedIn();    
+  }
 }
 
 

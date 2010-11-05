@@ -12,7 +12,7 @@
   *      @link http://kcfinder.sunhater.com
   */
 
-function __autoload($class) {
+function _autoload($class) {
     if ($class == "uploader")
         require "core/uploader.php";
     elseif ($class == "browser")
@@ -25,4 +25,4 @@ function __autoload($class) {
         require "lib/helper_$class.php";
 }
 
-?>
+spl_autoload_register('_autoload');
