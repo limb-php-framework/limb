@@ -1,5 +1,4 @@
 <?php
-
 /** This file is part of KCFinder project
   *
   *      @desc Base configuration file
@@ -15,17 +14,18 @@
 // IMPORTANT!!! Do not remove uncommented settings in this file even if
 // you are using session configuration.
 // See http://kcfinder.sunhater.com/install for setting descriptions
+require_once(dirname($_SERVER["DOCUMENT_ROOT"]).'/setup.php');
 
 $_CONFIG = array(
 
-    'disabled' => false,
+    'disabled' => !lmbToolkit::instance()->isWysiwygFileUploaderEnabled(),
     'readonly' => false,
     'denyZipDownload' => false,
 
     'theme' => "oxygen",
 
-    'uploadURL' => "/upload",
-    'uploadDir' => "",
+    'uploadURL' => '/userfiles/',
+    'uploadDir' => dirname($_SERVER["DOCUMENT_ROOT"]).'/userfiles/',
 
     'dirPerms' => 0755,
     'filePerms' => 0644,
@@ -64,7 +64,7 @@ $_CONFIG = array(
     // THE FOLLOWING SETTINGS CANNOT BE OVERRIDED WITH SESSION CONFIGURATION
 
     '_check4htaccess' => true,
-    '_tinyMCEPath' => "/demo/tiny_mce",
+    //'_tinyMCEPath' => "/demo/tiny_mce",
 
     '_sessionVar' => &$_SESSION['KCFINDER'],
     //'_sessionLifetime' => 30,
