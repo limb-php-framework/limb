@@ -57,13 +57,16 @@ class lmbErrorGuard
   }
 
   static function _shutdownHandler()
-  {
+  {   
+    if(session_id())   
+      session_write_close();    
+      
     if(!function_exists('error_get_last'))
-      return;
+      return;          
 
     if(!$error = error_get_last())
       return;
-
+      
     if($error['type'] & (E_ERROR | E_COMPILE_ERROR))
       self :: $fatal_error_delegate->invoke($error);
   }
