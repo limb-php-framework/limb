@@ -33,12 +33,7 @@ else
     throw new lmbException('LIMB_HTTP_OFFSET_PATH constant must not have starting slash(' . lmb_env_get('LIMB_HTTP_OFFSET_PATH') . ')');
 
   if(!lmb_env_has('LIMB_HTTP_GATEWAY_PATH'))
-  {
-    if(lmb_env_has('LIMB_ENABLE_MOD_REWRITE'))
-      lmb_env_setor('LIMB_HTTP_GATEWAY_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/');
-    else
-      lmb_env_setor('LIMB_HTTP_GATEWAY_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/index.php/');
-  }
+    lmb_env_setor('LIMB_HTTP_GATEWAY_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/');
 
   lmb_env_setor('LIMB_HTTP_SHARED_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/shared/');  
   if(substr(lmb_env_get('LIMB_HTTP_SHARED_PATH'), -1, 1) != '/')
