@@ -170,11 +170,9 @@ class lmbWebAppTools extends lmbAbstractTools
       if($safe)
         return array($file_src, '00');
       else
-        throw new lmbException('Not set require env LIMB_DOCUMENT_ROOT!');
-    if(strpos($file_src, LIMB_HTTP_BASE_PATH) === 0)
-      $file = substr($file_src, strlen(LIMB_HTTP_BASE_PATH), strlen($file_src));
-    else
-      $file = $file_src;
+        throw new lmbException('Not set require env LIMB_DOCUMENT_ROOT!');    
+    
+    $file = $file_src;
 
     $path = $doc_root . '/' . $file;
     if(is_file($path) && is_readable($path))
