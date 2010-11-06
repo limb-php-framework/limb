@@ -274,6 +274,18 @@ function lmb_var_export($arg, $level = 1)
 }
 
 /**
+ * Function for quice print variable data without special constructions
+ * @example $obj->callSomeMethod(lmb_var_debug($some_argument))
+ * @param mixed $arg
+ * @return original arg
+ */
+function lmb_var_debug($arg)
+{
+  echo lmb_var_export($arg);
+  return $arg;
+}
+
+/**
  * Escaping string for log.
  * If we work in cli mode we don't need htmlspecialchars
  * @param $string
