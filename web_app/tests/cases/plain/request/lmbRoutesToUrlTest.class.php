@@ -37,11 +37,25 @@ class lmbRoutesToUrlTest extends UnitTestCase
 
   function testToUrlUseNamedParam()
   {
-    $config = array('default' => array('path' => '/:controller/display',
-                          'defaults' => array('action' => 'display')));
+    $config = array(
+      'BookEdit' => array(
+        'path' => '/book-edit/',
+        'defaults' => array('controller' => 'Book', 'action' => 'edit'),
+      ),
+      'BookMain' => array(
+        'path' => '/book-:action:/',
+        'defaults' => array('controller' => 'Book'),
+      ),
+      'Book' => array(
+        'path' => '/book:id:/',
+        'defaults' => array('controller' => 'Book', 'action' => 'item'),
+      ),      
+    );
 
     $routes = new lmbRoutes($config);
-    $this->assertEqual($routes->toUrl(array('controller' => 'news'), 'default'), '/news/display');
+    $this->assertEqual($routes->toUrl(array(), 'BookEdit'), '/book-edit/');
+    $this->assertEqual($routes->toUrl(array('action' => 'create'), 'BookMain'), '/book-create/');
+    $this->assertEqual($routes->toUrl(array('id' => 42), 'Book'), '/book42/');
   }
 
   function testToUrlWithPrefix()
