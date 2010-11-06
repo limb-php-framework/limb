@@ -32,19 +32,14 @@ else
     else
       lmb_env_setor('LIMB_HTTP_OFFSET_PATH', '');
   }
-
   if(substr(lmb_env_get('LIMB_HTTP_OFFSET_PATH'), 0, 1) == '/')
-    throw new lmbException('LIMB_HTTP_OFFSET_PATH constant must not have starting slash(' . lmb_env_get('LIMB_HTTP_OFFSET_PATH') . ')!!!');
+    throw new lmbException('LIMB_HTTP_OFFSET_PATH constant must not have starting slash(' . lmb_env_get('LIMB_HTTP_OFFSET_PATH') . ')');
 
   //HTTP_BASE_PATH is defined automatically according to current host and offset settings  
   lmb_env_setor('LIMB_HTTP_BASE_PATH', $request->getUri()->toString(
-    array('protocol', 'user', 'password', 'host', 'port')). '/' . lmb_env_get('LIMB_HTTP_OFFSET_PATH'));
-    
+    array('protocol', 'user', 'password', 'host', 'port')). '/' . lmb_env_get('LIMB_HTTP_OFFSET_PATH'));    
   if(substr(lmb_env_get('LIMB_HTTP_BASE_PATH'), -1, 1) != '/')
-  {
-    die('LIMB_HTTP_BASE_PATH constant must have trailing slash(' . lmb_env_get('LIMB_HTTP_BASE_PATH') . ')');
-    exit(1);
-  }
+    throw new lmbException('LIMB_HTTP_BASE_PATH constant must have trailing slash(' . lmb_env_get('LIMB_HTTP_BASE_PATH') . ')');
 
   if(!lmb_env_has('LIMB_HTTP_GATEWAY_PATH'))
   {
@@ -56,9 +51,6 @@ else
 
   lmb_env_setor('LIMB_HTTP_SHARED_PATH', lmb_env_get('LIMB_HTTP_BASE_PATH') . 'shared/');  
   if(substr(lmb_env_get('LIMB_HTTP_SHARED_PATH'), -1, 1) != '/')
-  {
-    echo('LIMB_HTTP_SHARED_PATH constant must have trailing slash(' . lmb_env_get('LIMB_HTTP_SHARED_PATH') . ')');
-    exit(1);
-  }
+    throw new lmbException('LIMB_HTTP_SHARED_PATH constant must have trailing slash(' . lmb_env_get('LIMB_HTTP_SHARED_PATH') . ')');
 }
 
