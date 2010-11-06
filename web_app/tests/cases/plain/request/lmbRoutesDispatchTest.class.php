@@ -332,7 +332,7 @@ class lmbRoutesDispatchTest extends UnitTestCase
                                               'action' => 'display')));
 
     $routes = new lmbRoutes($config);
-    lmb_env_set('LIMB_HTTP_OFFSET_PATH', '/limb-app');
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', 'limb-app');
     $result = $routes->dispatch('/limb-app/blog');
 
     $this->assertEqual($result['controller'], 'Blog');

@@ -108,7 +108,7 @@ class lmbRoutesRequestDispatcherTest extends UnitTestCase
 
     $dispatcher = new lmbRoutesRequestDispatcher();
     
-    lmb_env_set('LIMB_HTTP_OFFSET_PATH', '/app');
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', 'app');
     $this->request->getUri()->reset('http://example.com/app/news/admin_display');
     $result = $dispatcher->dispatch($this->request);
     $this->assertEqual($result['controller'], 'news');

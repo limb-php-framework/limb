@@ -222,5 +222,21 @@ class lmbRoutesToUrlTest extends UnitTestCase
       $this->assertPattern('/route .* not found .*/i', $e->getMessage());
     }    
   }  
+  
+  function testToUrlWithHttpOffset()
+  {
+    $old_offset = lmb_env_get('LIMB_HTTP_OFFSET_PATH');
+    
+    $config = array('blog' => array('path' => '/blog',
+                          'defaults' => array('controller' => 'Blog',
+                                              'action' => 'display')));
+    
+    $routes = new lmbRoutes($config);
+    
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', 'app');    
+    $this->assertEqual($routes->toUrl(array(), 'blog'), '/app/blog');
+    
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', $old_offset);
+  } 
 }
 

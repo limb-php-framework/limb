@@ -225,11 +225,13 @@ class lmbRoutes
   protected function _makeUrlByRoute($params, $route)
   {
     $path = $route['path'];
+    if(lmb_env_get('LIMB_HTTP_OFFSET_PATH', ''))
+      $http_offset = '/' . lmb_env_get('LIMB_HTTP_OFFSET_PATH');
+    else 
+      $http_offset = '';
 
     if(!$this->_routeParamsMeetRequirements($route, $params))
-    {
-      return "";
-    }
+      return $http_offset;
 
     foreach($params as $param_name => $param_value)
     {
@@ -246,7 +248,7 @@ class lmbRoutes
     }
 
     if(count($params))
-      return '';
+      return $http_offset;
 
     if(isset($route['defaults']))
     {
@@ -273,9 +275,9 @@ class lmbRoutes
     }
 
     if(strpos($path, "/:") !== false)
-      return '';
+      return $http_offset;
 
-    return $this->_applyUrlFilter($route, $path);
+    return $http_offset . $this->_applyUrlFilter($route, $path);
   }
 }
 
