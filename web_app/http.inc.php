@@ -14,7 +14,7 @@
 if(PHP_SAPI == 'cli')
 {
   lmb_env_setor('LIMB_HTTP_GATEWAY_PATH', '/');
-  lmb_env_setor('LIMB_HTTP_SHARED_PATH', '/shared');
+  lmb_env_setor('LIMB_HTTP_SHARED_PATH', '/shared/');
   lmb_env_setor('LIMB_HTTP_OFFSET_PATH', '');
 }
 else
@@ -40,7 +40,7 @@ else
       lmb_env_setor('LIMB_HTTP_GATEWAY_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/index.php/');
   }
 
-  lmb_env_setor('LIMB_HTTP_SHARED_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/shared');  
+  lmb_env_setor('LIMB_HTTP_SHARED_PATH', lmb_env_get('LIMB_HTTP_OFFSET_PATH') . '/shared/');  
   if(substr(lmb_env_get('LIMB_HTTP_SHARED_PATH'), -1, 1) != '/')
     throw new lmbException('LIMB_HTTP_SHARED_PATH constant must have trailing slash(' . lmb_env_get('LIMB_HTTP_SHARED_PATH') . ')');
 }
