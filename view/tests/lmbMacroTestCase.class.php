@@ -39,6 +39,9 @@ class lmbMacroTestCase extends UnitTestCase
     return $file;
   }
 
+  /**
+   * @return lmbMacroTemplate
+   */
   protected function _createMacroTemplate($code, $name)
   {
     $file = $this->_createTemplate($code, $name);
