@@ -26,9 +26,13 @@ class lmbRoutes
 
   function dispatch($url, $request_method = null)
   {
+    if(!is_object($url))
+      $url = new lmbUri($url);
+    $level = $this->_getHttpBasePathOffsetLevel($url);
+    $uri = $url->getPathFromLevel($level);
     foreach($this->config as $route)
     {
-      if(($result = $this->_getResultMatchedParams($route, $url)) === null)
+      if(($result = $this->_getResultMatchedParams($route, $uri)) === null)
         continue;
 
       if(!$this->_routeParamsMeetRequirements($route, $result))
@@ -125,7 +129,7 @@ class lmbRoutes
     return $result;
   }
 
-  function _getRouteRegexp($route_path, &$named_params)
+  protected function _getRouteRegexp($route_path, &$named_params)
   {
     $elements = array();
     foreach (explode('/', $route_path) as $element)
@@ -198,8 +202,27 @@ class lmbRoutes
     return ($route['request_method'] == $request_method);
   }
 
+  protected function _getHttpBasePathOffsetLevel($uri)
+  {
+    if(!lmb_env_get('LIMB_HTTP_OFFSET_PATH'))
+      return 0;
+    
+    $base_path = $uri->toString(array('protocol', 'user', 'password', 'host', 'port'))
+                 . '/' . lmb_env_get('LIMB_HTTP_OFFSET_PATH');
+    $base_path_uri = new lmbUri(rtrim($base_path, '/'));
+    $base_path_uri->normalizePath();
 
-  function _makeUrlByRoute($params, $route)
+    $level = 1;
+    while(($uri->getPathElement($level) == $base_path_uri->getPathElement($level)) &&
+          ($level < $base_path_uri->countPath()))
+    {
+      $level++;
+    }
+
+    return $level;
+  }
+
+  protected function _makeUrlByRoute($params, $route)
   {
     $path = $route['path'];
 
