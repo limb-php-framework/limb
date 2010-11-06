@@ -308,6 +308,11 @@ function lmb_var_dir($value = null)
     return lmb_env_get('LIMB_VAR_DIR');
 }
 
+function lmb_app_mode()
+{
+  return lmb_env_get('LIMB_APP_MODE', LIMB_APP_PRODUCTION);
+}
+
 spl_autoload_register('lmb_autoload');
 new lmbException('ugly hack');
 new lmbPHPFileNotFoundException('ugly hack');
