@@ -18,6 +18,8 @@ if(!isset($_ENV['LIMB_LAZY_TRIED']))
 define('LIMB_UNDEFINED', 'undefined' . microtime());
 define('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
 define('LIMB_DUMP_MAX_DEPTH', 7);
+define('LIMB_APP_DEVELOPMENT', 'devel');
+define('LIMB_APP_PRODUCTION', 'production');
 
 lmb_require('limb/core/src/assert.inc.php');
 lmb_require('limb/core/src/env.inc.php');
