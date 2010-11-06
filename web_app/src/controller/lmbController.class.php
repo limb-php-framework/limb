@@ -6,9 +6,6 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-
-lmb_env_setor('LIMB_CONTROLLER_CACHE_ENABLED', lmbToolkit::instance()->isWebAppDebugEnabled());
-
 lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/core/src/lmbMixable.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -339,7 +336,7 @@ class lmbController
 
   function isCacheEnabled()
   {
-    return (bool) lmb_env_get('LIMB_CONTROLLER_CACHE_ENABLED');
+    return $this->toolkit->isWebAppDebugEnabled();
   }
 
   function _loadCache()
