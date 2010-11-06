@@ -73,8 +73,11 @@ class lmbConfTools extends lmbAbstractTools
     if($ext == '.ini')
     {
       $file = $this->_locateConfFiles($name);
-      if(lmb_env_has('LIMB_VAR_DIR'))
+      if(LIMB_APP_PRODUCTION == lmb_env_has('LIMB_APP_MODE', LIMB_APP_PRODUCTION)
+        && lmb_env_has('LIMB_VAR_DIR'))
+      {
         $this->confs[$name] = new lmbCachedIni($file, lmb_env_get('LIMB_VAR_DIR') . '/ini/');
+      }
       else
         $this->confs[$name] = new lmbIni($file);
     }
