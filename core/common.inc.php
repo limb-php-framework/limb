@@ -300,17 +300,20 @@ function lmb_escape_string($string, $length_limit = 100)
     return htmlspecialchars(substr($string, 0, $length_limit));
 }
 
-function lmb_var_dir($value = null)
+function lmb_var_dir($new_value = null)
 {
-  if($value)
-    lmb_env_set('LIMB_VAR_DIR', $value);
+  if($new_value)
+    lmb_env_set('LIMB_VAR_DIR', $new_value);
   else
     return lmb_env_get('LIMB_VAR_DIR');
 }
 
-function lmb_app_mode()
+function lmb_app_mode($new_value = null)
 {
-  return lmb_env_get('LIMB_APP_MODE', LIMB_APP_PRODUCTION);
+  if($new_value)
+    lmb_env_set('LIMB_APP_MODE', $new_value);
+  else
+    return lmb_env_get('LIMB_APP_MODE', LIMB_APP_PRODUCTION);
 }
 
 spl_autoload_register('lmb_autoload');
