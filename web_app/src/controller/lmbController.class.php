@@ -340,7 +340,7 @@ class lmbController
 
   function isCacheEnabled()
   {
-    return $this->toolkit->isWebAppDebugEnabled();
+    return LIMB_APP_PRODUCTION == lmb_app_mode();
   }
 
   function _loadCache()
