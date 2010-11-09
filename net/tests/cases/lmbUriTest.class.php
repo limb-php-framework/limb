@@ -159,6 +159,16 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->toString(), $expected_url);
   }
 
+  function testToString_CorrectParseSimpleMultipleArray_4()
+  {
+    $str = 'http://localhost/action?ids[]=1&ids[]=2&ids[]=3';
+    $expected_url = 'http://localhost/action?ids[0]=1&ids[1]=2&ids[2]=3';
+
+    $uri = new lmbUri($str);
+
+    $this->assertEqual($uri->toString(), $expected_url);
+  }
+
   function testToStringNoProtocol()
   {
     $str = 'http://admin:test@localhost:81/test.php?foo=bar#23';
