@@ -129,44 +129,39 @@ class lmbUriTest extends UnitTestCase
     $this->assertEqual($uri->toString(), $expected_url);
   }
 
-  function testToString_CorrectParseSimpleMultipleArray()
+  function testCorrectParseSimpleMultipleArray()
   {
-    $str = 'http://localhost/test.php?key=alfa&key=bravo&key=charle';
-    $expected_url = 'http://localhost/test.php?key[0]=alfa&key[1]=bravo&key[2]=charle';
+    $expected_key = array('alfa', 'bravo','charle');
+    //plain
+    $uri = new lmbUri('http://localhost/test.php?key=alfa&key=bravo&key=charle');
+    $this->assertEqual($uri->getQueryItem('key'), $expected_key);
+    
+    //mixed
+    $uri = new lmbUri('http://localhost/action?key[]=alfa&key=bravo&key=charle');
+    $this->assertEqual($uri->getQueryItem('key'), $expected_key);
+    
+    //mixed with index
+    $uri = new lmbUri('http://localhost/test.php?key=alfa&key[]=bravo&key[3]=charle');
+    //because of index 3
+    $this->assertNotEqual($uri->getQueryItem('key'), $expected_key);
+    $result = sort($uri->getQueryItem('key'));
+    $this->assertEqual($result, $expected_key);
+    
+    //mixed with index
+    $uri = new lmbUri('http://localhost/test.php?key=alfa&key[]=bravo&key[2]=charle');
+    $this->assertEqual($uri->getQueryItem('key'), $expected_key);
 
-    $uri = new lmbUri($str);
+    //array
+    $uri = new lmbUri('http://localhost/action?key[]=alfa&key[]=bravo&key[]=charle');
+    $this->assertEqual($uri->getQueryItem('key'), $expected_key);
 
-    $this->assertEqual($uri->toString(), $expected_url);
-  }
-
-  function testToString_CorrectParseSimpleMultipleArray_2()
-  {
-    $str = 'http://localhost/test.php?key=alfa&key[]=bravo&key[3]=charle';
-    $expected_url = 'http://localhost/test.php?key[0]=alfa&key[1]=bravo&key[3]=charle';
-
-    $uri = new lmbUri($str);
-
-    $this->assertEqual($uri->toString(), $expected_url);
-  }
-
-  function testToString_CorrectParseSimpleMultipleArray_3()
-  {
-    $str = 'http://localhost/test.php?key=alfa&key[]=bravo&key[2]=charle';
-    $expected_url = 'http://localhost/test.php?key[0]=alfa&key[1]=bravo&key[2]=charle';
-
-    $uri = new lmbUri($str);
-
-    $this->assertEqual($uri->toString(), $expected_url);
-  }
-
-  function testToString_CorrectParseSimpleMultipleArray_4()
-  {
-    $str = 'http://localhost/action?ids[]=1&ids[]=2&ids[]=3';
-    $expected_url = 'http://localhost/action?ids[0]=1&ids[1]=2&ids[2]=3';
-
-    $uri = new lmbUri($str);
-
-    $this->assertEqual($uri->toString(), $expected_url);
+    //single element array
+    $uri = new lmbUri('http://localhost/action?key[]=zetta');
+    $this->assertEqual($uri->getQueryItem('key'), array('zetta'));
+    
+    //one value
+    $uri = new lmbUri('http://localhost/action?key=string');
+    $this->assertEqual($uri->getQueryItem('key'), 'string');
   }
 
   function testToStringNoProtocol()
