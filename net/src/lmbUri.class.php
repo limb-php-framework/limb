@@ -486,6 +486,8 @@ class lmbUri extends lmbSet
       {
         if(!is_null($subkey) && $subkey != '')
           $items[$key][$subkey] = $val;
+        elseif(!is_null($subkey) && $subkey == '')
+          $items[$key][] = $val;
         else
           $items[$key] = $val;
       }
