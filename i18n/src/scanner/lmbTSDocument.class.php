@@ -16,8 +16,8 @@
  * @package i18n
  * @version $Id: lmbTSDocument.class.php 7994 2009-09-21 13:01:14Z idler $
  */
-class lmbTSDocument extends DOMDocument{
-
+class lmbTSDocument extends DOMDocument
+{
   function addMessage($message)
   {
     $message_node = $this->createElement('message');

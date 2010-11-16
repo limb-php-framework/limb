@@ -6,9 +6,6 @@
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
-
-lmb_env_setor('LIMB_CONTROLLER_CACHE_ENABLED', lmbToolkit::instance()->isWebAppDebugEnabled());
-
 lmb_require('limb/core/src/lmbClassPath.class.php');
 lmb_require('limb/core/src/lmbMixable.class.php');
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -331,6 +328,10 @@ class lmbController
     return $this->forward('server_error', 'display');
   }
 
+  function forwardToSelf($action)
+  {
+    return $this->forward(str_ireplace('_controller', '', lmb_under_scores(get_class($this))), $action);
+  }
 
   function __destruct()
   {
@@ -339,7 +340,7 @@ class lmbController
 
   function isCacheEnabled()
   {
-    return (bool) lmb_env_get('LIMB_CONTROLLER_CACHE_ENABLED');
+    return LIMB_APP_PRODUCTION == lmb_app_mode();
   }
 
   function _loadCache()

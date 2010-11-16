@@ -72,6 +72,12 @@ class PhotoForTest extends lmbActiveRecord
                                                                       'extension' => 'image_extension')),
 
                                   'extra' => array('class' =>'ExtraForAggregateTest'));
+  function _createValidator()
+  {
+    $validator = new lmbValidator();
+    $validator->addRequiredRule('extra');
+    return $validator;
+  }
 }
 
 class lmbARAggregatedObjectTest extends lmbARBaseTestCase

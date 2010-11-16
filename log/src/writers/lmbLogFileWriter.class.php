@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2012 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/fs/src/lmbFs.class.php');
@@ -13,7 +13,6 @@ lmb_require('limb/log/src/writers/lmbLogBaseWriter.class.php');
  * class lmbLogFileWriter.
  *
  * @package log
- * @version $Id$
  */
 class lmbLogFileWriter extends lmbLogBaseWriter
 {
@@ -27,7 +26,7 @@ class lmbLogFileWriter extends lmbLogBaseWriter
 
   protected function _write(lmbLogEntry $entry)
   {
-    $this->_appendToFile($this->getLogFile(), $entry->getTitle(), $entry->toString(), $entry->getTime());
+    $this->_appendToFile($this->getLogFile(), $entry->getTitle(), $entry->asText(), $entry->getTime());
   }
 
   protected function _appendToFile($file_name, $title, $message, $stamp)
@@ -63,5 +62,3 @@ class lmbLogFileWriter extends lmbLogBaseWriter
     return $this->log_file;
   }
 }
-
-

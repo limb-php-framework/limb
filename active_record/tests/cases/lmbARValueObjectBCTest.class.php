@@ -93,7 +93,10 @@ class lmbARValueObjectBCTest extends lmbARBaseTestCase
     $lesson->save();
 
     $lesson2 = lmbActiveRecord :: findById('LessonForBCTest', $lesson->getId());
+    
+    $this->assertIsA($lesson2->getDateStart(), 'TestingValueObject');
     $this->assertEqual($lesson2->getDateStart()->getValue(), $v1);
+    $this->assertIsA($lesson2->getDateEnd(), 'TestingValueObject');
     $this->assertEqual($lesson2->getDateEnd()->getValue(), $v2);
   }
 

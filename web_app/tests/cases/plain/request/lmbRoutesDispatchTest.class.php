@@ -322,6 +322,24 @@ class lmbRoutesDispatchTest extends UnitTestCase
     $this->assertEqual($result['controller'], 'blog');
     $this->assertEqual($result['action'], 'save');
   }
+  
+  function testWithHTTPOffset()
+  {
+    $old_offset = lmb_env_get('LIMB_HTTP_OFFSET_PATH');
+    
+    $config = array(array('path' => '/blog',
+                          'defaults' => array('controller' => 'Blog',
+                                              'action' => 'display')));
+
+    $routes = new lmbRoutes($config);
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', 'limb-app');
+    $result = $routes->dispatch('/limb-app/blog');
+
+    $this->assertEqual($result['controller'], 'Blog');
+    $this->assertEqual($result['action'], 'display');  
+
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', $old_offset);
+  }
 
   function _processDispatchResult(&$dispatched)
   {

@@ -284,6 +284,8 @@ class lmbHttpRequest extends lmbSet
       $url = $_SERVER['REQUEST_URI'];
     elseif(isset($_SERVER['QUERY_STRING']))
       $url = basename($_SERVER['PHP_SELF']) . '?' . $_SERVER['QUERY_STRING'];
+    elseif(PHP_SAPI == 'cli')
+      $url = basename($_SERVER['PHP_SELF']);
     else
       $url = $_SERVER['PHP_SELF'];
 

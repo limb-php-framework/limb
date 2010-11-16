@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2012 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -16,6 +16,7 @@ require_once('limb/core/common.inc.php');
 lmb_env_setor('LIMB_CONTROLLERS_INCLUDE_PATH', 'src/controller;limb/cms/src/controller;limb/web_app/src/controller');
 
 lmb_package_require('web_app');
+lmb_package_require('wysiwyg');
 lmb_require('limb/cms/toolkit.inc.php');
 
 lmb_env_setor('JQUERY_FILE_URL','/shared/js/js/jquery/v1.2.3.js');

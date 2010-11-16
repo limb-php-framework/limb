@@ -205,6 +205,12 @@ class lmbControllerTest extends UnitTestCase
     $this->assertEqual($this->toolkit->getResponse()->getResponseString(), 'Hi!');
     $this->assertFalse($testController->performAction());
   }
+  
+  function testForwardToSelf()
+  {
+    $controller = new TestingController();
+    $this->assertEqual($controller->forwardToSelf('write'), "Hi!");
+  }
 
   function testClosePopup()
   {
