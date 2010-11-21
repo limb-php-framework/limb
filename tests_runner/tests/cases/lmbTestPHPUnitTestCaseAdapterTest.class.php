@@ -33,7 +33,7 @@ class lmbTestPHPUnitTestCaseAdapterTest extends lmbTestRunnerBase
   {
     $this->_mustBePassed('$this->assertRegexp("/bAr/i", "foo-bar-baz");');
     $this->_mustBeFailed('$this->assertRegexp("/bug/", "foo-bar-baz");');
-    $this->_mustBeFailed('$this->assertRegexp(42, 0, "custom message");', 'custom message');
+    $this->_mustBeFailed('$this->assertRegexp("/42/", 0, "custom message");', 'custom message');
   }
 
   function testError()
