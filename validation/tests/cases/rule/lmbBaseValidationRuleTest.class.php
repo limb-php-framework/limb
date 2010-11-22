@@ -41,6 +41,20 @@ class lmbConditionalValidationTest extends lmbValidationRuleTestCase
     $this->assertFalse($rule->validate(new lmbSet(), $this->error_list));
     $this->assertFalse($rule->isValid());
   }
+  
+  function testSeveralValidationsWithSameRule()
+  {
+    $rule = new lmbStubBaseValidationRule();
+    $rule->result = false;
+
+    $this->assertFalse($rule->validate(new lmbSet(), $this->error_list));
+    $this->assertFalse($rule->isValid());
+
+    $rule->result = true;
+
+    $this->assertTrue($rule->validate(new lmbSet(), $this->error_list));
+    $this->assertTrue($rule->isValid());
+  }
 
 }
 
