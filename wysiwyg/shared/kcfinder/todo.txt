@@ -1,2 +1,0 @@
-* PNG thumbnails with transparency
-* Escape button in Webkit browsers

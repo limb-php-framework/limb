@@ -12,6 +12,8 @@
  * @version $Id: common.inc.php 8042 2010-01-19 20:53:10Z korchasa $
  */
 require_once('limb/core/common.inc.php');
+lmb_package_require('fs');
+
 lmb_require('limb/i18n/toolkit.inc.php');
 
 function lmb_i18n($text, $arg1 = null, $arg2 = null)
@@ -51,5 +53,4 @@ function lmb_translit_russian($input, $encoding = 'utf-8')
     return $result;
 }
 
-lmb_package_require('fs');
 lmb_package_register('i18n', dirname(__FILE__));

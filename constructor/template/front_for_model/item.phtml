@@ -1,7 +1,0 @@
-[[wrap with="front_page_layout.phtml" in="content_zone"]]
-  <h1>{$#model_name} #[$#item.id]</h1>
-  <p><a href="/{$#model_url}/">к списку</a></p>
-  {{list using="{$#columns}" as="$column"}}<ul>{{list:item}}
-    <li>{$column->getName()}: [$#item.{$column->getName()}{{if expr="$column->getNativeType() == 'text'"}}|raw{{/if}}]</li>
-  {{/list:item}}</ul>{{/list}}
-[[/wrap]]

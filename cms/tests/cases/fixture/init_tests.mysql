@@ -1,6 +1,0 @@
-DROP TABLE IF EXISTS `cms_object_for_testing`;
-CREATE TABLE `cms_object_for_testing` (
-  `id` int(11) NOT NULL auto_increment,
-  `field` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;

@@ -12,7 +12,6 @@ lmb_require('limb/view/src/lmbView.class.php');
  * class lmbBlitzView.
  *
  * @package view
- * @version $Id$
  */
 class lmbBlitzView extends lmbView
 {
@@ -40,7 +39,7 @@ class lmbBlitzView extends lmbView
   }
 
   function getTemplateInstance()
-  {
+  {    
     if(!$this->templateInstance)
     {
       if(!class_exists('Blitz'))

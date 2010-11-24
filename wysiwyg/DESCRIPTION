@@ -1,5 +1,0 @@
-This package allows to use < wysywig > tag within your WACT templates.
-
-By default bundled FCKEditor will be displayed as a wysiwyg control.
-
-< wysywig > tag operates almost like regular < textarea > tag.
