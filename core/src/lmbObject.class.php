@@ -116,13 +116,18 @@ class lmbObject implements lmbSetInterface
    * Merges existing properties with new ones
    * @param array
    */
-  function import($values)
+  function import($values, $raw = false)
   {
     if(!is_array($values))
-      return;
+      return $this;
 
     foreach($values as $property => $value)
-      $this->_setRaw($property, $value);
+      if($raw)
+        $this->_setRaw($property, $value);
+      else
+        $this->set($property, $value);
+        
+    return $this;      
   }
 
   /**
