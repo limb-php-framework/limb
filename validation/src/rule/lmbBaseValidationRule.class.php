@@ -48,9 +48,10 @@ abstract class lmbBaseValidationRule implements lmbValidationRule
   */
   function validate($datasource, $error_list)
   {
-    $this->is_valid = true;
     $this->error_list = $error_list;
+
     $this->_doValidate($datasource);
+
     return $this->is_valid;
   }
 
