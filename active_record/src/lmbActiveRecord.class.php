@@ -1374,7 +1374,8 @@ class lmbActiveRecord extends lmbObject
 
   protected function _validate($validator)
   {
-    $this->_error_list->merge($validator->getErrorList());
+    if($old_error_list = $validator->getErrorList())
+      $this->_error_list->join($old_error_list);
     $validator->setErrorList($this->_error_list);
     $validator->validate($this);
 
