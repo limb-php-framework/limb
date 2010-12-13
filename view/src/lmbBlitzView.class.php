@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @link http://limb-project.com
+ * @copyright  Copyright &copy; 2004-2012 BIT(http://bit-creative.com)
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/view/src/lmbView.class.php');
 
@@ -29,14 +29,14 @@ class lmbBlitzView extends lmbView
     if(!method_exists($tpl, $methodName))
     {
       throw new lmbException(
-          'Wrong template method called', 
+          'Wrong template method called',
           array(
             'template class' => get_class($tpl),
             'method' => $methodName,
             )
           );
     }
-    return call_user_method_array($methodName, $tpl, $params);        
+    return call_user_func_array(array($tpl, $methodName), $params);
   }
 
   function getTemplateInstance()
