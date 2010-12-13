@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2012 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 require_once('limb/active_record/src/lmbAROneToManyCollection.class.php');
@@ -12,69 +12,17 @@ require_once(dirname(__FILE__) . '/lmbAROneToManyRelationsTest.class.php');
 
 Mock :: generate('LectureForTest', 'MockLectureForTest');
 
-class lmbARTestingDSDecorator extends lmbCollectionDecorator
-{
-  protected $value;
-
-  function setValue($value)
-  {
-    $this->value = $value;
-  }
-
-  protected function _processRecord($record)
-  {
-    $record->set('value', $this->value);
-  }
-
-  function current()
-  {
-    $record = parent :: current();
-    $this->_processRecord($record);
-    return $record;
-  }
-
-  function at($pos)
-  {
-    $record = parent :: at($pos);
-    $this->_processRecord($record);
-    return $record;
-  }
-}
-
-class LectureForTestStub extends LectureForTest
-{
-  var $save_calls = 0;
-
-  function save($error_list = null)
-  {
-    parent :: save($error_list);
-    $this->save_calls++;
-  }
-}
-
-
-class SpecialCourseForTest extends CourseForTest
-{
-  protected $_has_many = array('lectures' => array('field' => 'course_id',
-                                                   'class' => 'LectureForTest',
-                                                   'sort_params' => array('id' => 'DESC')));
-}
-
-class VerySpecialCourseForTest extends CourseForTest
-{
-  protected $_has_many = array('lectures' => array('field' => 'course_id',
-                                                   'class' => 'SpecialLectureForTest'));
-}
-
-class SpecialLectureForTest extends LectureForTest
-{
-  protected $_default_sort_params = array('id' => 'DESC');
-}
-
 class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test'); 
-  
+  protected $tables_to_cleanup = array('lecture_for_test', 'course_for_test');
+
+  function testAddCheckForObjectClass()
+  {
+    $collection = new lmbAROneToManyCollection('lectures', $this->_createCourse());
+    $this->expectException('lmbInvalidArgumentException');
+    $collection->add(new stdClass());
+  }
+
   function testAddToWithExistingOwner()
   {
     $course = $this->_createCourseAndSave();
@@ -142,10 +90,10 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
     $this->assertEqual(sizeof($arr), 0);
   }
 
-  function testSaveWithExistingOwnerDoesNothing()
+  function testAddAndSaveWithExistingOwner()
   {
-    $l1 = new MockLectureForTest();
-    $l2 = new MockLectureForTest();
+    $l1 = new LectureForTestStub();
+    $l2 = new LectureForTestStub();
 
     $course = $this->_createCourseAndSave();
 
@@ -153,10 +101,10 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
     $collection->add($l1);
     $collection->add($l2);
 
-    $l1->expectNever('save');
-    $l2->expectNever('save');
-
     $collection->save();
+
+    $this->assertEqual(1, $l1->save_calls);
+    $this->assertEqual(1, $l2->save_calls);
   }
 
   function testSaveWithNonSavedOwner()
@@ -663,3 +611,61 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 }
 
 
+class lmbARTestingDSDecorator extends lmbCollectionDecorator
+{
+  protected $value;
+
+  function setValue($value)
+  {
+    $this->value = $value;
+  }
+
+  protected function _processRecord($record)
+  {
+    $record->set('value', $this->value);
+  }
+
+  function current()
+  {
+    $record = parent :: current();
+    $this->_processRecord($record);
+    return $record;
+  }
+
+  function at($pos)
+  {
+    $record = parent :: at($pos);
+    $this->_processRecord($record);
+    return $record;
+  }
+}
+
+class LectureForTestStub extends LectureForTest
+{
+  var $save_calls = 0;
+
+  function save($error_list = null)
+  {
+    parent :: save($error_list);
+    $this->save_calls++;
+  }
+}
+
+
+class SpecialCourseForTest extends CourseForTest
+{
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'LectureForTest',
+                                                   'sort_params' => array('id' => 'DESC')));
+}
+
+class VerySpecialCourseForTest extends CourseForTest
+{
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'SpecialLectureForTest'));
+}
+
+class SpecialLectureForTest extends LectureForTest
+{
+  protected $_default_sort_params = array('id' => 'DESC');
+}
