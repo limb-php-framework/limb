@@ -28,7 +28,7 @@ INSERT INTO `lmb_cms_document` (`title`, `is_published`, `content`) VALUES ('/',
     <h2><a name="примеры_для_начинающих" id="примеры_для_начинающих">Примеры для начинающих</a></h2>
     <p>Для освоения Limb3 есть 2 пошаговых примера:</p>
     <ul>
-      <li class="level1"><div class="li"> <a href="http://wiki.limb-project.com/doku.php?id=limb3:ru:tutorials:basic" class="wikilink1" title="limb3:ru:tutorials:basic">базовый пример</a>, где показаны только самые основы использования пакетов WEB_APP, ACTIVE_RECORD и WACT.</div></li>
+      <li class="level1"><div class="li"> <a href="http://wiki.limb-project.com/doku.php?id=limb3:ru:tutorials:basic" class="wikilink1" title="limb3:ru:tutorials:basic">базовый пример</a>, где показаны только самые основы использования пакетов WEB_APP, ACTIVE_RECORD и MACRO.</div></li>
       <li class="level1"><div class="li"> <a href="http://wiki.limb-project.com/doku.php?id=limb3:ru:tutorials:shop" class="wikilink1" title="limb3:ru:tutorials:shop">пример создания простого электронного магазина</a>, в котором объяснены почти все часто используемые компоненты Limb3.</div></li>
     </ul>
 
@@ -43,12 +43,12 @@ INSERT INTO `lmb_cms_document` (`title`, `is_published`, `content`) VALUES ('/',
       <li class="level1"><div class="li"> пример создание простейшего CRUD-приложения</div></li>
       <li class="level1"><div class="li"> пример создания простого электронного магазина</div></li>
       <li class="level1"><div class="li"> пример реализации корпоративной визитки с каталогом</div></li>
-      <li class="level1"><div class="li"> примеры использования шаблонизатора WACT</div></li>
+      <li class="level1"><div class="li"> примеры использования шаблонизатора MACRO</div></li>
       <li class="level1"><div class="li"> готовые приложения на базе Limb3: <a href="http://syncman.limb-project.com" class="urlextern" title="http://syncman.limb-project.com" rel="nofollow">Syncman</a> и <a href="http://buildman.limb-project.com" class="urlextern" title="http://buildman.limb-project.com" rel="nofollow">Buildman</a></div></li>
     </ul>
 
     <h2><a name="документация" id="документация">Документация</a></h2>
-    <p>Документация на Limb3 достаточно актуальна. Наиболее точными являются разделы <a href="/doku.php?id=limb3:ru:packages:wact" class="wikilink1" title="limb3:ru:packages:wact">про WACT</a> и <a href="/doku.php?id=limb3:ru:packages:active_record" class="wikilink1" title="limb3:ru:packages:active_record">про использование ACTIVE_RECORD</a>. Эти разделы мы рекомендуем прочитать после прохождения <a href="/doku.php?id=limb3:ru:tutorials:basic" class="wikilink1" title="limb3:ru:tutorials:basic">базового примера</a>.</p>
+    <p>Документация на Limb3 достаточно актуальна. Наиболее точными являются разделы <a href="/doku.php?id=limb3:ru:packages:macro" class="wikilink1" title="limb3:ru:packages:macro">про MACRO</a> и <a href="/doku.php?id=limb3:ru:packages:active_record" class="wikilink1" title="limb3:ru:packages:active_record">про использование ACTIVE_RECORD</a>. Эти разделы мы рекомендуем прочитать после прохождения <a href="/doku.php?id=limb3:ru:tutorials:basic" class="wikilink1" title="limb3:ru:tutorials:basic">базового примера</a>.</p>
 
     <p>Также есть <a href="/doku.php?id=limb3:ru:packages" class="wikilink1" title="limb3:ru:packages">описания на большинство пакетов Limb3</a>. В этих разделах информация частично, а кое-где и сильно, устарела. Хотя мы постепенно исправляем ситуацию, но это требует очень много времени, и поэтому прогресс идет достаточно медленно. Так что, если что-то из этих разделов будет вам неясным, то можете спрашивать на <a href="http://forum.limb-project.com/" class="urlextern" title="http://forum.limb-project.com/" rel="nofollow">форуме</a> - мы стараемся отвечать на большинство вопросов оперативно и развернуто.</p>
 

@@ -3,18 +3,18 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2012 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * @package core
- * @version $Id$
  */
 function lmb_package_require($name, $packages_dir = '')
-{
+{  
   if(!$packages_dir)
-    $packages_dir = lmb_env_get('LIMB_PACKAGES_DIR');
+    $packages_dir = lmb_env_get('LIMB_PACKAGES_DIR');    
+  $packages_dir = rtrim($packages_dir, '/').'/';
 
   $main_file_path = $packages_dir . $name . '/common.inc.php';
   try {
@@ -51,12 +51,22 @@ function lmb_package_get_path($name)
   return $_ENV['LIMB_PACKAGES_INITED'][$name];
 }
 
-function lmb_packages_list()
+function lmb_packages_list($in_dir = null)
 {
   if(!isset($_ENV['LIMB_PACKAGES_INITED']))
     return array();
-  else
+  elseif(null == $in_dir)
     return $_ENV['LIMB_PACKAGES_INITED'];
+  else
+  {
+    $result = array();
+    foreach($_ENV['LIMB_PACKAGES_INITED'] as $inited_package => $package_dir)
+    {
+      if(0 === strpos($package_dir, $in_dir))
+        $result[$inited_package] = $package_dir; 
+    }  
+    return $result;
+  }
 }
 
 function lmb_require_package_class($package, $path_in_package_src)

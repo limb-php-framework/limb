@@ -86,7 +86,7 @@ class lmbCachingFileLocator extends lmbFileLocatorDecorator
     return $this->_cached_paths[$hash];
   }
 
-  function locateAll($alias)
+  function locateAll($alias = '')
   {
     $hash = md5($alias);
 

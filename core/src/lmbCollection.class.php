@@ -24,10 +24,94 @@ class lmbCollection implements lmbCollectionInterface
   protected $limit = 0;
   protected $current;
   protected $valid = false;
+  protected $preserve_positions = false;
 
   function __construct($array = array())
   {
     $this->dataset = $array;
+  }
+
+  function isEmpty()
+  {
+    return sizeof($this->dataset) == 0;
+  }
+
+  function rewind()
+  {
+    if($this->preserve_positions)
+      $this->sortByKeys(SORT_NUMERIC);
+
+    $this->_setupIteratedDataset();
+
+    $values = reset($this->iteratedDataset);
+    $this->current = $this->_getCurrent($values);
+    $this->key = key($this->iteratedDataset);
+    $this->valid = $this->_isValid($values);
+  }
+
+  function valid()
+  {
+    return $this->valid;
+  }
+
+  function next()
+  {
+    $this->_setupIteratedDataset();
+
+    $values = next($this->iteratedDataset);
+    $this->current = $this->_getCurrent($values);
+    $this->key = key($this->iteratedDataset);
+    $this->valid = $this->_isValid($values);
+  }
+
+  function current()
+  {
+    return $this->current;
+  }
+
+  function key()
+  {
+    return $this->key;
+  }
+
+  function add($item, $offset = NULL)
+  {
+    if(NULL !== $offset)
+    {
+      $this->dataset[$offset] = $item;
+      $this->preserve_positions = true;
+    }
+    else
+      $this->dataset[] = $item;
+
+    $this->iteratedDataset = null;
+  }
+
+  function at($pos)
+  {
+    if(isset($this->dataset[$pos]))
+      return $this->dataset[$pos];
+  }
+
+  function remove($pos)
+  {
+    unset($this->dataset[$pos]);
+  }
+
+  function sort($params)
+  {
+    if(count($this->dataset))
+    {
+      $this->dataset = lmbArrayHelper :: sortArray($this->dataset, $params, false);
+      $this->iteratedDataset = null;
+    }
+    return $this;
+  }
+
+  function sortByKeys($sort_type = SORT_NUMERIC)
+  {
+    if(is_array($this->dataset))
+      ksort($this->dataset, $sort_type);
   }
 
   static function concat()
@@ -40,6 +124,34 @@ class lmbCollection implements lmbCollectionInterface
         $result[] = $value;
     }
     return new lmbCollection($result);
+  }
+
+  function join($another_collection)
+  {
+    lmb_assert_type($another_collection, 'array');
+    foreach($another_collection as $item)
+      $this->add($item);
+    return $this;
+  }
+
+  function paginate($offset, $limit)
+  {
+    lmb_assert_type($offset, 'integer');
+    lmb_assert_type($limit, 'integer');
+    $this->iteratedDataset = null;
+    $this->offset = $offset;
+    $this->limit = $limit;
+    return $this;
+  }
+
+  function getOffset()
+  {
+    return $this->offset;
+  }
+
+  function getLimit()
+  {
+    return $this->limit;
   }
 
   function getArray()
@@ -74,133 +186,6 @@ class lmbCollection implements lmbCollectionInterface
     return $this->dataset;
   }
 
-  function sort($params)
-  {
-    if(count($this->dataset))
-    {
-      $this->dataset = lmbArrayHelper :: sortArray($this->dataset, $params, false);
-      $this->iteratedDataset = null;
-    }
-    return $this;
-  }
-
-  function at($pos)
-  {
-    if(isset($this->dataset[$pos]))
-      return $this->dataset[$pos];
-  }
-
-  function rewind()
-  {
-    $this->_setupIteratedDataset();
-
-    $values = reset($this->iteratedDataset);
-    $this->current = $this->_getCurrent($values);
-    $this->key = key($this->iteratedDataset);
-    $this->valid = $this->_isValid($values);
-  }
-
-  function next()
-  {
-    $this->_setupIteratedDataset();
-
-    $values = next($this->iteratedDataset);
-    $this->current = $this->_getCurrent($values);
-    $this->key = key($this->iteratedDataset);
-    $this->valid = $this->_isValid($values);
-  }
-
-  function sortByKeys($sort_type = SORT_NUMERIC)
-  {
-    if(is_array($this->dataset))
-      ksort($this->dataset, $sort_type);
-  }
-
-  protected function _setupIteratedDataset()
-  {
-    if(!is_null($this->iteratedDataset))
-      return;
-
-    if(!$this->limit)
-    {
-      $this->iteratedDataset = $this->dataset;
-      return;
-    }
-
-    if($this->offset < 0 || $this->offset >= count($this->dataset))
-    {
-      $this->iteratedDataset = array();
-      return;
-    }
-
-    $to_splice_array = $this->dataset;
-    $this->iteratedDataset = array_splice($to_splice_array, $this->offset, $this->limit);
-
-    if(!$this->iteratedDataset)
-      $this->iteratedDataset = array();
-  }
-
-  function valid()
-  {
-    return $this->valid;
-  }
-
-  function current()
-  {
-    return $this->current;
-  }
-
-  function key()
-  {
-    return $this->key;
-  }
-
-  function paginate($offset, $limit)
-  {
-    $this->iteratedDataset = null;
-    $this->offset = $offset;
-    $this->limit = $limit;
-    return $this;
-  }
-
-  function getOffset()
-  {
-    return $this->offset;
-  }
-
-  function getLimit()
-  {
-    return $this->limit;
-  }
-
-  protected function _getCurrent($values)
-  {
-    if(is_object($values))
-      return $values;
-    else
-      return new lmbSet($values);
-  }
-
-  protected function _isValid($values)
-  {
-    return (is_array($values) || is_object($values));
-  }
-
-  function add($item, $offset = NULL)
-  {
-    if(NULL !== $offset)
-      $this->dataset[$offset] = $item;
-    else
-      $this->dataset[] = $item;
-
-    $this->iteratedDataset = null;
-  }
-
-  function isEmpty()
-  {
-    return sizeof($this->dataset) == 0;
-  }
-
   //Countable interface
   function count()
   {
@@ -230,7 +215,47 @@ class lmbCollection implements lmbCollectionInterface
     $this->add($value, $offset);
   }
 
-  function offsetUnset($offset){}
+  function offsetUnset($offset)
+  {
+    $this->remove($offset);
+  }
   //end
+
+  protected function _getCurrent($values)
+  {
+    if(is_object($values))
+      return $values;
+    else
+      return new lmbSet($values);
+  }
+
+  protected function _isValid($values)
+  {
+    return (is_array($values) || is_object($values));
+  }
+
+  protected function _setupIteratedDataset()
+  {
+    if(!is_null($this->iteratedDataset))
+      return;
+
+    if(!$this->limit)
+    {
+      $this->iteratedDataset = $this->dataset;
+      return;
+    }
+
+    if($this->offset < 0 || $this->offset >= count($this->dataset))
+    {
+      $this->iteratedDataset = array();
+      return;
+    }
+
+    $to_splice_array = $this->dataset;
+    $this->iteratedDataset = array_splice($to_splice_array, $this->offset, $this->limit);
+
+    if(!$this->iteratedDataset)
+      $this->iteratedDataset = array();
+  }
 }
 

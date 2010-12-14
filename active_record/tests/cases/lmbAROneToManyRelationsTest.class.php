@@ -587,6 +587,26 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     }
     
   }
+  
+  function testOffsetWithNonIntegerValues()
+  {
+    $course = $this->creator->createCourse();
+    
+    $c1 = $this->creator->createLecture($course);
+    $c2 = $this->creator->createLecture($course);
+    $c3 = $this->creator->createLecture($course);
+	
+    $this->assertEqual($course->getLectures()->at(0)->getId(), $c1->getId());
+    try 
+    {
+      $course->getLectures()->at('foo');
+      $this->fail();
+    }
+     catch (lmbException $e)
+    {
+      $this->assertTrue(true);
+    }
+  }
 }
 
  

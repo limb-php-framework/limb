@@ -8,89 +8,6 @@
  */
 lmb_require('limb/core/src/lmbObject.class.php');
 
-class ObjectTestVersion extends lmbObject
-{
-  public $bar;
-  protected $protected = 'me';
-  public $_guarded = '';
-
-  function getBar()
-  {
-    return $this->bar . '_get_called';
-  }
-
-  function setBar($value)
-  {
-    $this->bar = $value . '_set_called';
-  }
-
-  function isOk()
-  {
-    return true;
-  }
-
-  function getIsError()
-  {
-    return true;
-  }
-
-  function isError()
-  {
-    return false;
-  }
-}
-
-class ObjectTestVersion2 extends lmbObject
-{
-}
-
-class ObjectTestVersion3 extends lmbObject
-{
-  protected $protected;
-  protected $protected2;
-
-  public $getter_called_count = 0;
-  public $setter_called_count = 0;
-
-  function setProtected($value)
-  {
-    $this->setter_called_count++;
-    $this->protected = $value;
-  }
-
-  function getProtected()
-  {
-    $this->getter_called_count++;
-    return $this->protected;
-  }
-
-  function rawSet($value)
-  {
-    $this->_setRaw('protected', $value);
-  }
-
-  function rawGet()
-  {
-    return $this->_getRaw('protected');
-  }
-}
-
-class ObjectTestVersion4 extends lmbObject
-{
-  function rawGet($name)
-  {
-    return $this->_getRaw($name);
-  }
-}
-
-class ObjectTestWithOverridingConstructor extends lmbObject
-{
-  protected $pro = true;
-  public $_guarded = false;
-
-  function __construct() {}
-}
-
 class lmbObjectTest extends UnitTestCase
 {
 
@@ -286,6 +203,16 @@ class lmbObjectTest extends UnitTestCase
     $object->_guarded = 'yeah';
     $object->import(array('_guarded' => 'no'));
     $this->assertEqual($object->_guarded, 'yeah');
+  }
+  
+  function testImportUseMutators()
+  {
+    $object = new ObjectTestVersion();
+    $object->import(array('bar' => 'foo'));
+    $this->assertEqual('foo_set_called', $object->bar);
+    
+    $object->import(array('bar' => 'raw_foo'), $raw = true);
+    $this->assertEqual('raw_foo', $object->bar);
   }
 
   function testPassAttributesInConstructor()
@@ -519,3 +446,85 @@ class lmbObjectTest extends UnitTestCase
   /** /@ */
 }
 
+class ObjectTestVersion extends lmbObject
+{
+  public $bar;
+  protected $protected = 'me';
+  public $_guarded = '';
+
+  function getBar()
+  {
+    return $this->bar . '_get_called';
+  }
+
+  function setBar($value)
+  {
+    $this->bar = $value . '_set_called';
+  }
+
+  function isOk()
+  {
+    return true;
+  }
+
+  function getIsError()
+  {
+    return true;
+  }
+
+  function isError()
+  {
+    return false;
+  }
+}
+
+class ObjectTestVersion2 extends lmbObject
+{
+}
+
+class ObjectTestVersion3 extends lmbObject
+{
+  protected $protected;
+  protected $protected2;
+
+  public $getter_called_count = 0;
+  public $setter_called_count = 0;
+
+  function setProtected($value)
+  {
+    $this->setter_called_count++;
+    $this->protected = $value;
+  }
+
+  function getProtected()
+  {
+    $this->getter_called_count++;
+    return $this->protected;
+  }
+
+  function rawSet($value)
+  {
+    $this->_setRaw('protected', $value);
+  }
+
+  function rawGet()
+  {
+    return $this->_getRaw('protected');
+  }
+}
+
+class ObjectTestVersion4 extends lmbObject
+{
+  function rawGet($name)
+  {
+    return $this->_getRaw($name);
+  }
+}
+
+class ObjectTestWithOverridingConstructor extends lmbObject
+{
+  protected $pro = true;
+  public $_guarded = false;
+
+  function __construct() {}
+}

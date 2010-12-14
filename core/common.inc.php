@@ -18,6 +18,8 @@ if(!isset($_ENV['LIMB_LAZY_TRIED']))
 define('LIMB_UNDEFINED', 'undefined' . microtime());
 define('LIMB_PACKAGES_DIR', dirname(__FILE__) . '/../');
 define('LIMB_DUMP_MAX_DEPTH', 7);
+define('LIMB_APP_DEVELOPMENT', 'devel');
+define('LIMB_APP_PRODUCTION', 'production');
 
 lmb_require('limb/core/src/assert.inc.php');
 lmb_require('limb/core/src/env.inc.php');
@@ -274,6 +276,18 @@ function lmb_var_export($arg, $level = 1)
 }
 
 /**
+ * Function for quice print variable data without special constructions
+ * @example $obj->callSomeMethod(lmb_var_debug($some_argument))
+ * @param mixed $arg
+ * @return original arg
+ */
+function lmb_var_debug($arg)
+{
+  echo lmb_var_export($arg);
+  return $arg;
+}
+
+/**
  * Escaping string for log.
  * If we work in cli mode we don't need htmlspecialchars
  * @param $string
@@ -286,12 +300,20 @@ function lmb_escape_string($string, $length_limit = 100)
     return htmlspecialchars(substr($string, 0, $length_limit));
 }
 
-function lmb_var_dir($value = null)
+function lmb_var_dir($new_value = null)
 {
-  if($value)
-    lmb_env_set('LIMB_VAR_DIR', $value);
+  if($new_value)
+    lmb_env_set('LIMB_VAR_DIR', $new_value);
   else
     return lmb_env_get('LIMB_VAR_DIR');
+}
+
+function lmb_app_mode($new_value = null)
+{
+  if($new_value)
+    lmb_env_set('LIMB_APP_MODE', $new_value);
+  else
+    return lmb_env_get('LIMB_APP_MODE', LIMB_APP_PRODUCTION);
 }
 
 spl_autoload_register('lmb_autoload');

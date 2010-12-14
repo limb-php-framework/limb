@@ -33,10 +33,9 @@ function SendError( $number, $text )
 	SendUploadResults( $number, '', '', $text ) ;
 }
 
-
 // Check if this uploader has been enabled.
 if ( !$Config['Enabled'] )
-	SendUploadResults( '1', '', '', 'This file uploader is disabled. Please check the "editor/filemanager/connectors/php/config.php" file' ) ;
+	SendUploadResults( '1', '', '', 'This file uploader is disabled by lmbWysiwygTools::isWysiwygFileUploaderEnabled()' ) ;
 
 $sCommand = 'QuickUpload' ;
 
@@ -53,7 +52,4 @@ if ( ! IsAllowedCommand( $sCommand ) )
 if ( !IsAllowedType( $sType ) )
     SendUploadResults( 1, '', '', 'Invalid type specified' ) ;
 
-
-FileUpload( $sType, $sCurrentFolder, $sCommand )
-
-?>
+FileUpload( $sType, $sCurrentFolder, $sCommand );

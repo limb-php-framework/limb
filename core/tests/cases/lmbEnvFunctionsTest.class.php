@@ -127,15 +127,8 @@ class lmbEnvFunctionsTest extends UnitTestCase
     $this->assertTrue(strstr($trace_info, $value));
   }
 
-  //used for convenient tracking of the random keys
-  private function _($name)
+  function testLmbVarDir_Get()
   {
-    if(!isset($this->_keys[$name]))
-      $this->_keys[$name] = $name . mt_rand() . time();
-    return $this->_keys[$name];
-  }
-
-  function testLmbVarDir_Get() {
     $old_value = lmb_env_get('LIMB_VAR_DIR');
     $new_value = $old_value.'/';
 
@@ -145,7 +138,8 @@ class lmbEnvFunctionsTest extends UnitTestCase
     lmb_env_set('LIMB_VAR_DIR', $old_value);
   }
 
-  function testLmbVarDir_Set() {
+  function testLmbVarDir_Set()
+  {
     $old_value = lmb_env_get('LIMB_VAR_DIR');
     $new_value = $old_value.'/';
 
@@ -153,5 +147,29 @@ class lmbEnvFunctionsTest extends UnitTestCase
     $this->assertIdentical($new_value, lmb_var_dir());
 
     lmb_env_set('LIMB_VAR_DIR', $old_value);
+  }
+  
+  function testLmbAppMode()
+  {
+    $old_value = lmb_env_get('LIMB_APP_MODE');
+    
+    lmb_env_set('LIMB_APP_MODE', LIMB_APP_PRODUCTION);
+    $this->assertIdentical(LIMB_APP_PRODUCTION, lmb_app_mode());
+    
+    lmb_app_mode(LIMB_APP_DEVELOPMENT);
+    $this->assertIdentical(LIMB_APP_DEVELOPMENT, lmb_app_mode());
+    
+    lmb_env_set('LIMB_APP_MODE', $old_value);
+  }
+  
+  /** 
+   * Used for convenient tracking of the random keys
+   * @param unknown_type $name
+   */
+  private function _($name)
+  {
+    if(!isset($this->_keys[$name]))
+      $this->_keys[$name] = $name . mt_rand() . time();
+    return $this->_keys[$name];
   }
 }

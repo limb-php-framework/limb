@@ -3,7 +3,7 @@
  * Limb PHP Framework
  *
  * @link http://limb-project.com 
- * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
+ * @copyright  Copyright &copy; 2004-2012 BIT(http://bit-creative.com)
  * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
  */
 lmb_require('limb/web_app/src/request/lmbRoutesRequestDispatcher.class.php');
@@ -100,17 +100,21 @@ class lmbRoutesRequestDispatcherTest extends UnitTestCase
 
   function testDispatchWithOffset()
   {
+    $old_offset = lmb_env_get('LIMB_HTTP_OFFSET_PATH');
+     
     $config_array = array(array('path' => ':controller/:action'));
     $routes = new lmbRoutes($config_array);
     $this->toolkit->setRoutes($routes);
 
-    $dispatcher = new lmbRoutesRequestDispatcher($path_offset = '/www',
-                                                 $base_path = 'http://example.com/app/');
-
+    $dispatcher = new lmbRoutesRequestDispatcher();
+    
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', 'app');
     $this->request->getUri()->reset('http://example.com/app/news/admin_display');
     $result = $dispatcher->dispatch($this->request);
     $this->assertEqual($result['controller'], 'news');
     $this->assertEqual($result['action'], 'admin_display');
+    
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', $old_offset);
   }
 }
 

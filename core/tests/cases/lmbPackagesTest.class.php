@@ -85,10 +85,16 @@ class lmbPackagesFunctionsTest extends UnitTestCase
   {
     $this->assertEqual(array(), lmb_packages_list());
 
-    lmb_package_register('foo', '/bar/');
-    lmb_package_register('baz', 'zoo/zoo2/');
+    lmb_package_register('package1', 'dir1');
+    lmb_package_register('package2', 'dir2');            
 
-    $this->assertEqual(array('foo' => '/bar', 'baz' => 'zoo/zoo2'), lmb_packages_list());
+    $this->assertEqual(array('package1' => 'dir1', 'package2' => 'dir2'), lmb_packages_list());
+        
+    lmb_package_register('package1', 'dir/dir1');
+    lmb_package_register('package2', 'dir/dir2');
+    lmb_package_register('package3', 'dir3');
+    
+    $this->assertEqual(array('package1' => 'dir/dir1', 'package2' => 'dir/dir2'), lmb_packages_list('dir/'));
   }
 
   function testPackagePath()

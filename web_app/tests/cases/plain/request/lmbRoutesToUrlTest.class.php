@@ -37,11 +37,25 @@ class lmbRoutesToUrlTest extends UnitTestCase
 
   function testToUrlUseNamedParam()
   {
-    $config = array('default' => array('path' => '/:controller/display',
-                          'defaults' => array('action' => 'display')));
+    $config = array(
+      'BookEdit' => array(
+        'path' => '/book-edit/',
+        'defaults' => array('controller' => 'Book', 'action' => 'edit'),
+      ),
+      'BookMain' => array(
+        'path' => '/book-:action:/',
+        'defaults' => array('controller' => 'Book'),
+      ),
+      'Book' => array(
+        'path' => '/book:id:/',
+        'defaults' => array('controller' => 'Book', 'action' => 'item'),
+      ),      
+    );
 
     $routes = new lmbRoutes($config);
-    $this->assertEqual($routes->toUrl(array('controller' => 'news'), 'default'), '/news/display');
+    $this->assertEqual($routes->toUrl(array(), 'BookEdit'), '/book-edit/');
+    $this->assertEqual($routes->toUrl(array('action' => 'create'), 'BookMain'), '/book-create/');
+    $this->assertEqual($routes->toUrl(array('id' => 42), 'Book'), '/book42/');
   }
 
   function testToUrlWithPrefix()
@@ -208,5 +222,21 @@ class lmbRoutesToUrlTest extends UnitTestCase
       $this->assertPattern('/route .* not found .*/i', $e->getMessage());
     }    
   }  
+  
+  function testToUrlWithHttpOffset()
+  {
+    $old_offset = lmb_env_get('LIMB_HTTP_OFFSET_PATH');
+    
+    $config = array('blog' => array('path' => '/blog',
+                          'defaults' => array('controller' => 'Blog',
+                                              'action' => 'display')));
+    
+    $routes = new lmbRoutes($config);
+    
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', 'app');    
+    $this->assertEqual($routes->toUrl(array(), 'blog'), '/app/blog');
+    
+    lmb_env_set('LIMB_HTTP_OFFSET_PATH', $old_offset);
+  } 
 }
 

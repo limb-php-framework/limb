@@ -22,7 +22,8 @@ class lmbMacroRouteUrlTagTest extends lmbMacroTestCase
 
     $page = $this->_createMacroTemplate($template, 'tpl.html'); 
     
-    $expected = '<a href="/news/archive">Link</a>';
+    $expected = '<a href="/news/archive">Link</a>';        
+    
     $this->assertEqual($page->render(), $expected); 
   }
   
