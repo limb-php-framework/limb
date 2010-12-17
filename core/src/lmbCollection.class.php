@@ -24,23 +24,23 @@ class lmbCollection implements lmbCollectionInterface
   protected $limit = 0;
   protected $current;
   protected $valid = false;
-  protected $preserve_positions = false; 
+  protected $preserve_positions = false;
 
   function __construct($array = array())
   {
     $this->dataset = $array;
   }
-  
+
   function isEmpty()
   {
     return sizeof($this->dataset) == 0;
   }
-  
+
   function rewind()
   {
     if($this->preserve_positions)
       $this->sortByKeys(SORT_NUMERIC);
-      
+
     $this->_setupIteratedDataset();
 
     $values = reset($this->iteratedDataset);
@@ -48,7 +48,7 @@ class lmbCollection implements lmbCollectionInterface
     $this->key = key($this->iteratedDataset);
     $this->valid = $this->_isValid($values);
   }
-  
+
   function valid()
   {
     return $this->valid;
@@ -62,7 +62,7 @@ class lmbCollection implements lmbCollectionInterface
     $this->current = $this->_getCurrent($values);
     $this->key = key($this->iteratedDataset);
     $this->valid = $this->_isValid($values);
-  }  
+  }
 
   function current()
   {
@@ -73,7 +73,7 @@ class lmbCollection implements lmbCollectionInterface
   {
     return $this->key;
   }
-  
+
   function add($item, $offset = NULL)
   {
     if(NULL !== $offset)
@@ -86,18 +86,18 @@ class lmbCollection implements lmbCollectionInterface
 
     $this->iteratedDataset = null;
   }
-  
+
   function at($pos)
   {
     if(isset($this->dataset[$pos]))
       return $this->dataset[$pos];
   }
-  
+
   function remove($pos)
-  {    
+  {
     unset($this->dataset[$pos]);
   }
-  
+
   function sort($params)
   {
     if(count($this->dataset))
@@ -112,7 +112,7 @@ class lmbCollection implements lmbCollectionInterface
   {
     if(is_array($this->dataset))
       ksort($this->dataset, $sort_type);
-  }  
+  }
 
   static function concat()
   {
@@ -125,7 +125,15 @@ class lmbCollection implements lmbCollectionInterface
     }
     return new lmbCollection($result);
   }
-  
+
+  function join($another_collection)
+  {
+    lmb_assert_type($another_collection, 'array');
+    foreach($another_collection as $item)
+      $this->add($item);
+    return $this;
+  }
+
   function paginate($offset, $limit)
   {
     lmb_assert_type($offset, 'integer');
@@ -135,7 +143,7 @@ class lmbCollection implements lmbCollectionInterface
     $this->limit = $limit;
     return $this;
   }
-  
+
   function getOffset()
   {
     return $this->offset;
@@ -176,7 +184,7 @@ class lmbCollection implements lmbCollectionInterface
   function export()
   {
     return $this->dataset;
-  }  
+  }
 
   //Countable interface
   function count()
@@ -212,7 +220,7 @@ class lmbCollection implements lmbCollectionInterface
     $this->remove($offset);
   }
   //end
-  
+
   protected function _getCurrent($values)
   {
     if(is_object($values))
@@ -225,7 +233,7 @@ class lmbCollection implements lmbCollectionInterface
   {
     return (is_array($values) || is_object($values));
   }
-  
+
   protected function _setupIteratedDataset()
   {
     if(!is_null($this->iteratedDataset))

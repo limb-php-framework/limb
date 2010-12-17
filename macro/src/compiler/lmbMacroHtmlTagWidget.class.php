@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -17,16 +17,16 @@ class lmbMacroHtmlTagWidget
   protected $attributes = array();
 
   protected $runtime_id;
-  
+
   protected $skip_render = array();
-  
+
   function __construct($id)
   {
     $this->runtime_id = $id;
 
     $this->skip_render = array_merge($this->skip_render, array('runtime_id'));
   }
-  
+
   function getRuntimeId()
   {
     return $this->runtime_id;
@@ -34,7 +34,7 @@ class lmbMacroHtmlTagWidget
 
   function setAttributes($attributes)
   {
-    if(is_array($attributes))    
+    if(is_array($attributes))
       $this->attributes = $attributes;
   }
 
