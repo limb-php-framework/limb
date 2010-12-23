@@ -12,6 +12,7 @@ lmb_require('limb/macro/src/tags/form/lmbMacroFormElementTag.class.php');
 /**
  * Macro analog for html <select> tag
  * @tag select
+ * @aliases form:select
  * @package macro
  * @version $Id$
  */
