@@ -53,11 +53,7 @@ class lmbViewTools extends lmbAbstractTools
   {
     $class = $this->_findViewClassByTemplate($alias);
     lmb_require("limb/view/src/$class.class.php");
-    if($class instanceof lmbTemplateLocatorInterface)    
-      return call_user_func(array($class, 'locateTemplateByAlias'), $alias);
-    else
-      return 
-      
+    return call_user_func(array($class, 'locateTemplateByAlias'), $alias);
   }
 
   /**
