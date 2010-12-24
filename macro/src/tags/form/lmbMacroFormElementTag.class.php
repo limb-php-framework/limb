@@ -29,7 +29,8 @@ class lmbMacroFormElementTag extends lmbMacroRuntimeWidgetHtmlTag
     if($this->runtime_var)
       return $this->runtime_var;
 
-    $this->runtime_var = '$this->' . $this->tag . '_' . self :: generateNewRuntimeId();
+    $tag = str_replace(':', '_', $this->tag);
+    $this->runtime_var = '$this->' . $tag . '_' . self :: generateNewRuntimeId();
     return $this->runtime_var;
   }
 }

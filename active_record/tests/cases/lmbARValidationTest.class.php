@@ -12,37 +12,10 @@ require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOn
 Mock :: generate('lmbValidator', 'MockValidator');
 Mock :: generate('lmbErrorList', 'MockErrorList');
 
-class lmbActiveRecordValidationStub extends lmbActiveRecord
-{
-  protected $_db_table_name = 'test_one_table_object';
-  protected $_insert_validator;
-  protected $_update_validator;
-
-  function setInsertValidator($validator)
-  {
-    $this->_insert_validator = $validator;
-  }
-
-  function setUpdateValidator($validator)
-  {
-    $this->_update_validator = $validator;
-  }
-
-  protected function _createInsertValidator()
-  {
-    return is_object($this->_insert_validator) ? $this->_insert_validator : new lmbValidator();
-  }
-
-  protected function _createUpdateValidator()
-  {
-    return is_object($this->_update_validator) ? $this->_update_validator : new lmbValidator();
-  }
-}
-
 class lmbARValidationTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('test_one_table_object');
-  
+
   function testGetErrorListReturnDefaultErrorList()
   {
     $object = $this->_createActiveRecord();
@@ -199,7 +172,7 @@ class lmbARValidationTest extends lmbARBaseTestCase
     $error_list = new MockErrorList();
     $error_list->setReturnValueAt(0, 'isValid', false);
     $error_list->setReturnValueAt(1, 'isValid', true);
-    
+
     try
     {
       $object->save($error_list);
@@ -211,12 +184,12 @@ class lmbARValidationTest extends lmbARBaseTestCase
     }
 
     $this->assertEqual($this->db->count('test_one_table_object'), 0);
-    
+
     $object->save($error_list);
 
     $this->assertEqual($this->db->count('test_one_table_object'), 1);
   }
-  
+
   function testDontUpdateOnValidationError()
   {
     $object = $this->_createActiveRecordWithDataAndSave();
@@ -267,7 +240,7 @@ class lmbARValidationTest extends lmbARBaseTestCase
     $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $annotation);
   }
-  
+
   function testDoubleUpdate_FirstSaveValidationError_But_SecondSaveIsOk()
   {
     $object = $this->_createActiveRecordWithDataAndSave();
@@ -280,7 +253,7 @@ class lmbARValidationTest extends lmbARBaseTestCase
     $error_list = new MockErrorList();
     $error_list->setReturnValueAt(0, 'isValid', false);
     $error_list->setReturnValueAt(1, 'isValid', true);
-    
+
     try
     {
       $object->save($error_list);
@@ -293,12 +266,12 @@ class lmbARValidationTest extends lmbARBaseTestCase
 
     $record = $this->db->selectRecord('test_one_table_object');
     $this->assertNotEqual($record->get('annotation'), $annotation);
-    
+
     $object->save($error_list);
 
     $record = $this->db->selectRecord('test_one_table_object');
     $this->assertEqual($record->get('annotation'), $annotation);
-  }  
+  }
 
   function testSaveSkipValidation()
   {
@@ -379,3 +352,29 @@ class lmbARValidationTest extends lmbARBaseTestCase
   }
 }
 
+class lmbActiveRecordValidationStub extends lmbActiveRecord
+{
+  protected $_db_table_name = 'test_one_table_object';
+  protected $_insert_validator;
+  protected $_update_validator;
+
+  function setInsertValidator($validator)
+  {
+    $this->_insert_validator = $validator;
+  }
+
+  function setUpdateValidator($validator)
+  {
+    $this->_update_validator = $validator;
+  }
+
+  protected function _createInsertValidator()
+  {
+    return is_object($this->_insert_validator) ? $this->_insert_validator : new lmbValidator();
+  }
+
+  protected function _createUpdateValidator()
+  {
+    return is_object($this->_update_validator) ? $this->_update_validator : new lmbValidator();
+  }
+}
