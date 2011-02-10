@@ -1,0 +1,9 @@
+====== Системные требования ======
+
+  * Операционная система: *nix, Windows 98/ME/2000/XP
+  * Веб-сервер: Apache 1.3+ (с подключенным модулем mod_rewrite), nginx (в связке с php-fpm)
+  * PHP: PHP 5.1.4+
+  * Поддерживаемые базы данных: [[http://mysql.com/|MySQL]] 4.1+, [[http://sqlite.org/|SQLite]], [[http://www.oracle.com/|Oracle]] (OCI8), [[http://www.postgresql.org/|PostgreSQL]] 8.2+, [[http://www.linter.ru/|Linter]]
+
+===== Настройки РНР =====
+  * zend.ze1_compatibility_mode = off

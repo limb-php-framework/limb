@@ -1,0 +1,38 @@
+====== Ручная установка пакета CMS ======
+===== Установка каркаса приложения =====
+Для начала необходимо выполнить [[limb3:ru:packages:web_app:app_installation|установку каркасного веб-приложения]].
+
+===== Настройка БД =====
+Для начала создадим базу данных:
+<code bash>
+$mysql -uroot -p
+> create database limb_site default charset=utf8;
+</code>
+
+Создадим файл с настройками БД (файл будет расположен **/work/limb_site/settings/db.conf.php**):
+<code php>
+<?php
+  $conf = array('dsn' => 'mysql://root:test@localhost/shop?charset=utf8');
+</code>
+
+Теперь загрузим в базу таблицы, необходимые в работе пакета CMS:
+<code bash>
+mysql -uroot -p shop < /work/limb/cms/init/db/mysql
+</code>
+
+===== Правка файлов скелета =====
+Изменим **src/LimbApplication.class.php**
+<code php>
+lmb_require('limb/cms/src/lmbCmsApplication.class.php');
+
+class LimbApplication extends lmbCmsApplication {}
+</code>
+
+Так же изменим **setup.php**:
+<code php>
+...
+lmb_package_require('cms'); //вместо lmb_package_require('web_app');
+...
+</code>
+
+Теперь вы можете управлять вашим сайтом [[http://localhost/admin]]. Логин: admin, пароль: secret.

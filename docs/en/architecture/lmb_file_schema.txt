@@ -1,0 +1,71 @@
+====== lmbFileSchema ======
+
+===== Description =====
+
+lmbFileSchema is a mechanism used in Limb to find full file paths by short aliases. lmbFileSchema is used by different class factories, template engine, etc.
+
+===== UML Static structure =====
+
+{{{ limb:architecture:limb3.0_file_schema.png }}}
+
+===== Comments =====
+
+Here is the sample code that uses lmbToolkit to get access to lmbFileSchema in order to locate full file path of a command:
+<code php>
+  $file_schema = lmbToolkit :: instance()->getFileSchema();
+  $command_full_path = $file_schema->locateCommand($alias = 'Set404ErrorCommand');
+  require_once($command_full_path);
+</code>
+
+lmbFileSchema delegates file name resolving to different file locators. [[lmbFileLocator]] implements the following interface:
+
+<code php>
+interface FileLocatorInterface
+{
+  function locate($alias, $params);
+  function getLocations();
+}
+</code>
+
+The delegation looks like this:
+<code php>
+class lmbFileSchema
+{ 
+  protected $command_locator; 
+  [...]
+  function locateCommand($alias)
+  {
+    return $this->command_locator->locate($alias);
+  }
+}
+</code>
+
+File locators look for files in different locations(folders) which they receive from [[lmbFileLocations]]. lmbFileLocations interface consists of the only getLocations method returning an array of folders where file should be searched:
+<code php>
+interface lmbFileLocations
+{
+  function getLocations();
+}
+</code>
+
+lmbFileSchema has factory methods to create FileLocators so you can extend lmbFileSchema and create concrete FileLocators you need:
+
+<code php>
+class MyLimbFileSchema extends lmbFileSchema
+{ 
+  [...]
+  protected function _createCommandLocator()
+  {
+    $locations = new lmbAndPackagesFileLocations();
+    return new lmbCachingFileLocator(new lmbFileLocator($locations, '/command/%s.class.php'));
+  } 
+</code>
+
+In this example we create caching CommandLocator that will look for files in LPKG_CORE_DIR and in packages applying '/command/%s.class.php' pattern. For example if asked to locate "lmbBaseCommand" alias, it will return 'LPKG_CORE_DIR/src/command/lmbBaseCommand.class.php'
+
+===== Frequently used classes =====
+
+^Class name^Description^
+|[[lmbFileLocationsList]]|Allows you to create compound lmbFileLocations.|
+|[[lmbPackagesFileLocations]]|Returns paths to packages install for a Limb-based application. Uses [[lmbPackagesInfo]] to get information about installed packages.|
+|[[TemplateFileLocations]]|Returns paths where template files should be looked for. Takes into account current locale and common.ini file setting: templates_path and shared_templates_path.|

@@ -1,0 +1,37 @@
+====== Criteria ======
+
+Criteria is a group of classes that allows you to build complex conditions for SQL queries using nice OO interface. The initial conception was adopted from [[http://propel.phpdb.org|Propel]] and later was a bit simplified.
+
+==== UML Static Structure ====
+
+{{{ limb:architecture:limb3.0_dbal_criteria.png }}}
+
+==== Criteria classes ====
+
+All criteria classes are children of lmbSQLBaseCriteria class that implements basic functionality to allow a composition of criteria.
+
+^Class name^Description^
+|[[lmbSQLRawCriteria]]|Allows to insert a condition into SQL query as is.|
+|[[lmbSQLFieldCriteria]]|Allows to insert a condition on some field.|
+|[[lmbSQLTableFieldCriteria]]|A child class of lmbSQLFieldCriteria. Requeres explicit table name.|
+|[[SQLFielBetweenCriteria]]|Allows to insert between conditions into SQL query.|
+|[[lmbSQLFalseCriteria]]|Critetia that is never passed.|
+|[[lmbSQLTrueCriteria]]|Criteria that is always passed.|
+
+==== Criteria usage ====
+
+Criteria are commonly used with [[lmbSelectQuery]] class to insert conditions into %where% and %having% placeholders. 
+
+Here is how [[lmbSQLFieldCriteria]] is used:
+<code php>
+$query->addCondition(newSQLFieldCriteria('name', '%'.$name.'%', lmbSQLFieldCriteria :: LIKE));
+</code>
+
+It's possible to combine criteria objects:
+<code php>
+    $criteria = new lmbSQLTableFieldCriteria('ingredient.name', '%'.$name.'%', lmbSQLFieldCriteria :: LIKE);
+    $new_criteria = new lmbSQLTableFieldCriteria('ingredient.name', '%'.$name.'%', lmbSQLFieldCriteria :: LIKE);
+    $criteria->addOr($new_criteria);
+    $criteria->addAnd(new SQLFielBetweenCriteria('value', 10, 20));
+    $query->addCondition($criteria);
+</code>

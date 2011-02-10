@@ -1,0 +1,294 @@
+====== {{macro}} compiler ======
+
+This page is essential for developers who want to create their own %%{{macro}}%% tags or filters. After reading this page you will have a better understanding of the %%{{macro}}%% templates compilation process. 
+
+It is considered that you have already read the [[important_details|"{{macro}} compilation and rendering. How to run {{macro}} template."]] page.
+
+===== Compile time VS Run time =====
+
+%%{{macro}}%% processes templates in two stages:
+
+  * **Compilation phase (Compile time)** and
+  * **Execution phase (Run time)**.
+
+At compile time %%{{macro}}%%:
+  - builds a composite template by processing all %%tags(e.g {{wrap}}, {{include}}, etc),%%
+  - then creates a compile time tree, 
+  - walks through this tree in order to generate PHP code with unique class that contains public **render()** method capable of executing this generated code. Apart from **render()** method, this class has protected **_init()** method that is a good place for any arbitrary initialization code for helper objects. Tags are also capable of adding any amount of additional helper methods into this class which can be really handy(as you will see below).
+
+The nodes of the compile time tree are objects of lmbMacroNode class or his descendants. While walking this tree, %%{{macro}}%% compiler calls **generate(lmbMacroCodeWriter $code_writer)** method for each node. This method accepts $code_writer argument which is an object of lmbMacroCodeWriter class. lmbMacroCodeWriter is responsible for accumulating all generated PHP code and in the end of the compilation process it simply writes the result into file. This file is a PHP version of the original template.
+
+When you call lmbMacroTemplate :: render($var = array()) %%{{macro}}%% first searches for the compiled version of the template. If it exists and **force compile** setting is OFF then %%{{macro}}%% runs render() method of the generated PHP class described above without template recompilation. This speeds up things dramatically. **_init()** method is invoked before render() executes the rest of the generated code. Think of **_init()** method as of a kind of constructor for the compiled%% {{macro}}%% template. For example, _init() is used by form and %%{{pager}%%} tags.
+
+Let's get into some dirty details of %%{{macro}}%% PHP code generation process using [[limb3:en:packages:macro:tags:pager_tags:paginate_tag|tag {{paginate}}]] as an example.
+
+===== Compilation process in details =====
+
+==== {{macro}} template example ====
+
+Here is a %%{{macro}}%% template:
+<code xml>
+<html>
+<body>
+<h1>List example</h1>
+
+{{paginate iterator='$#items' pager='my_pager'}}
+ 
+{{pager id="my_pager" items="5"}}
+{{pager:prev}}<a href="{$href}">Prev page</a>{{pager:prev}}
+{{pager:next}}<a href="{$href}">Next page</a>{{pager:next}}
+{{/pager}}
+ 
+{{list using="$#items"}}
+  <table border="0">
+  {{list:item}}
+  <tr>
+    <td>{$item.title}</td>
+  </tr>
+  {{/list:item}}
+  </table>
+{{/list}}
+</body>
+</html>
+</code>
+
+**lmbMacroCompiler** class is responsible for template compilation process(limb/macro/src/compiler/lmbMacroCompiler.class.php).
+
+==== Creating compile time tree ====
+
+As we already mentioned above, compile time tree consists of **nodes**. The nodes are objects of **lmbMacroNode** class that can be found in limb/macro/src/compiler/lmbMacroNode.class.php.
+
+The tree may contain the following types of nodes:
+  * Regular text, HTML code, PHP raw code is a node of **lmbMacroTextNode** class (limb/macro/src/compiler/lmbMacroTextNode.class.php)
+  * %%{{macro}} custom tag. Base class for {{macro}}%% tags is **lmbMacroTag** (limb/macro/src/compiler/lmbMacroTag.class.php)
+  * Output expressions like {$title} with filters as nodes of **lmbMacroOutputExpressionNode** class (limb/macro/src/compiler/lmbMacroOutputExpressionNode.class.php)
+
+In the example below the following compile time tree will be built:
+<code>
+  Root
+   |
+   |-lmbMacroTextNode
+   |
+   |-lmbMacroPaginateTag
+   |
+   |-lmbMacroPagerTag
+   |     |
+   |     |-lmbMacroPagerPrevTag
+   |     |   |
+   |     |   |-lmbMacroTextNode
+   |     |
+   |     |-lmbMacroPagerNextTag
+   |         |
+   |         |-lmbMacroTextNode
+   |
+   |-lmbMacroListTag
+   |     |
+   |     |-lmbMacroTextNode
+   |     |
+   |     |-lmbMacroListItemTag
+   |     |   |
+   |     |   |-lmbMacroTextNode
+   |     |   |
+   |     |   |-lmbMacroOutputExpressionNode
+   |     |   |
+   |     |   |-lmbMacroTextNode
+   |     |
+   |     |-lmbMacroTextNode
+   |
+   |-lmbMacroTextNode
+</code>
+
+==== lmbMacroNode class ====
+
+lmbMacroNode - is a core class for all compile time tree nodes. 
+
+lmbMacroNode class has the following attributes:
+  * **children** - array of child nodes
+  * **parent** - reference to parent node. Has null value for root node.
+  * **node_id** - identifier of node. Must be unique for children of one node. Usually has value of **id** attribute for tag-nodes. Created automatically in other cases.
+  * **location_in_template** - object of lmbMacroSourceLocation that contains template file and line number where this node is located in source template.
+
+lmbMacroNode has the following methods for tree browsing and searching:
+  * **findChild($node_id)** - finds a child node by node_id. The search is performed down by hierarchy.
+  * **findUpChild($node_id)** - finds a child node starting from immediate children and moving up until the root. Calls findChild() starting from itself and goes up to the root until the required node is found.
+  * **findChildByClass($class)** - same as findChild() but searches node by class. Returns first found node of the specified class.
+  * **findChildrenByClass($class)** - the same as findChildByClass but returns all children of the specified class.
+  * **findImmediateChildByClass($class)** - the same as findChildByClass() but searches non-recursively among immediate children only.
+  * **findImmediateChildrenByClass($class)** - the same as findChildrenByClass() but searches among immediate children only.
+  * **findRoot()** - returns the root node of the tree.
+  * **getChildren()** - returns array of child nodes of the node.
+  * **getParent()** - returns a reference to the parent node.
+
+lmbMacroNode also has a method executed in order to generate code of the compiled template:
+  * **generate(lmbMacroCodeWriter $code_writer)** - very generic method for generating code of the compiled template. Child classes rarely override this method.
+
+
+==== lmbMacroCodeWriter class ====
+
+**lmbMacroCodeWriter** class can be found in limb/macro/src/compiler/lmbMacroCodeWriter .class.php
+
+lmbMacroCodeWriter has the following most frequently used methods:
+  * **writePHP($php)** - adds a portion of PHP code to the compiled template
+  * **writePHPLiteral($php)** - the same as writePHP($php) but escapes literals.
+  * **writeHTML($text)** - adds a portion of HTML code or regular text to the compiled template
+  * **beginMethod($name, $param_list = array()) ** - registers a method in generated PHP class. Pushes the write cursor position onto this method, i.e once this method is called all the subsequent invocations of the previous methods affect the body of this method only.
+  * **endMethod()** - finishes the last started method with **beginMethod** and pops the internal write cursor position.
+  * **registerInclude($include_file)** - registers a PHP file that should be required for correct template execution.
+  * **writeToInit($php_code)** - adds PHP code to **_init()** method of generated php-class.
+  * **generateVar()**- generates a unique variable with **$** symbol ahead(e.g $A0001).
+
+lmbMacroCodeWriter takes care of proper switching of the write mode from HTML to PHP(and back) so you can call writeHTML() and writePHP() in any order.
+
+
+==== lmbMacroTag class ====
+
+lmbMacroTag class - is a base class for%% {{macro}}%% tags. lmbMacroTag is a descendant of lmbMacroNode and also contains functionality required to work with attributes.
+
+Here is the list of method you will probably want to use the most:
+  * **get($name)** - returns value of the attribute. 
+  * **getEscaped($name)** - returns value of the attribute but escapes literal values (for example%% {{my_tag attr1='text' attr2="$var"}}%%, attr1 attribute value will be escaped but attr2 attribute value will be not). This method is used when you need to write a value of some attribute into compiled template but you don't know whether the value is a literal or a variable reference.
+  * **has($name)** - returns true is the tag has an attribute with specified name.
+  * **getBool($name, $default = FALSE)** - returns boolean value of attribute. Returns false if attribute has one of the following values:атрибут FALSE, F, N, No, NONE, 0.
+  * **remove($name)** - removes the attribute from tag.
+  * **set($name, $value)** - sets the attribute value.
+
+lmbMacroTag also has a bunch of methods that child classes should override in order to generate compiled template code:
+  *  **_generateBeforeContent($code_writer)** - used to generate code before the contents of the tag.
+  *  **_generateContent($code_writer)** - used to generate the contents of the tag. By default calls **generate()** for child nodes.
+  *  **_generateAfterContent($code_writer)** - used to generate code after the contents of the tag.
+
+We strongly recommend **not** to override **generate($code)** method in descendants of lmbMacroTag since lmbMacroTag :: generate($code) contains essential functionality required for correct processing of complex attributes (call called attributes pre-generation).
+
+
+==== How {{macro}} tags generates code for compiled templates? ====
+
+Let's examine [[limb3:en:packages:macro:tags:pager_tags:paginate_tag|tag {{paginate}}]] class and see how %%{{macro}}%% tags generate PHP code.
+
+Tag %%{{paginate}}%% is implemented as lmbMacroPaginateTag class that can be found in limb/macro/src/tags/pager/paginate.tag.php:
+
+<code php>
+<?php
+/**
+ * Applies pager to iterator (so called "pagination")
+ * @tag paginate
+ * @req_attributes iterator
+ * @package macro
+ * @version $Id$
+ */
+class lmbMacroPaginateTag extends lmbMacroTag
+{
+  protected function _generateContent($code)
+  {
+    $iterator = $this->get('iterator');
+    
+    if($this->has('pager'))
+    {
+      if(!$pager_tag = $this->parent->findUpChild($this->get('pager')))
+        $this->raise('Can\'t find pager by "pager" attribute in {{paginate}} tag');
+      
+      $pager = $pager_tag->getRuntimeVar();
+      
+      if($this->has('limit'))
+        $code->writePhp("{$pager}->setItemsPerPage({$this->get('limit')});\n");
+      
+      $code->writePhp("{$pager}->setTotalItems({$iterator}->count());\n");
+      $code->writePhp("{$pager}->prepare();\n");
+      $offset = $code->generateVar();
+      $code->writePhp("{$offset} = {$pager}->getCurrentPageBeginItem();\n");
+      $code->writePhp("if({$offset} > 0) {$offset} = {$offset} - 1;\n");
+      $code->writePhp("{$iterator}->paginate({$offset}, {$pager}->getItemsPerPage());\n");
+      return;
+    }
+    elseif($this->has('offset'))
+    {
+      if(!$this->has('limit'))
+        $this->raise('"limit" attribute for {{paginate}} is required if "offset" is given');
+      
+      $code->writePhp("{$iterator}->paginate({$this->get('offset')},{$this->get('limit')});\n");
+      return;
+    }
+    elseif($this->has('limit'))
+    {
+      $code->writePhp("{$iterator}->paginate(0,{$this->get('limit')});\n");
+      return;
+    }
+  }
+} 
+</code>
+
+lmbMacroPaginateTag is a descendant of lmbMacroTag, so%% {{paginate}} is just a regular tag (unlike, for example, {{form}} or {{pager}}%% that create runtime helpers).
+
+Code generation happens in **_generateContent($code_writer)** method which was mentioned above.
+
+Take a look at these lines:
+<code php>
+    if($this->has('pager'))
+    {
+      if(!$pager_tag = $this->parent->findUpChild($this->get('pager')))
+        $this->raise('Can\'t find pager by "pager" attribute in {{paginate}} tag');
+      
+      $pager = $pager_tag->getRuntimeVar();
+     [..]
+</code>
+
+If tag has **pager** attribute then it tries to find an appropriate pager node by calling findUpChild() for his parent. lmbMacroTag :: **raise($message)** used to throw exceptions of lmbMacroException class with meta-info from $location ($location is object of lmbMacroTemplateLocation, see lmbMacroNode description above).
+
+Let's go further:
+<code php>
+      $pager = $pager_tag->getRuntimeVar();
+      
+      if($this->has('limit'))
+        $code->writePhp("{$pager}->setItemsPerPage({$this->get('limit')});\n");
+</code>
+
+The first line returns a name of the variable that will point at pager helper object at runtime.
+
+The second line writes a line of PHP code that will set pager items limit for one page at runtime. Since **limit** attribute value will be a number or a variable in most cases, we don't need to use **getEscaped($attr_name)** for it.
+
+<code>
+      $code->writePhp("{$pager}->setTotalItems({$iterator}->count());\n");
+      $code->writePhp("{$pager}->prepare();\n");
+      $offset = $code->generateVar();
+      $code->writePhp("{$offset} = {$pager}->getCurrentPageBeginItem();\n");
+      $code->writePhp("if({$offset} > 0) {$offset} = {$offset} - 1;\n");
+      $code->writePhp("{$iterator}->paginate({$offset}, {$pager}->getItemsPerPage());\n");
+      return;
+</code>
+
+An interesting moment here is the usage of lmbMacroCodeWriter :: **generateVar()** which generates a unique temporary variable for $offset.
+
+The compiled code should look something like this:
+<code php>
+<?php 
+$this->pager_pager->setTotalItems($this->photos->count());
+$this->pager_pager->prepare();
+
+$EX = $this->pager_pager->getCurrentPageBeginItem();
+if($EX > 0) $EX = $EX - 1;
+
+$this->photos->paginate($EX, $this->pager_pager->getItemsPerPage());
+?>
+</code>
+
+==== How other {{macro}} elements generate PHP code? ====
+
+=== Regular text of html-code ===
+
+Any element of %%{{macro}}%% template that is not a tag and not an output expression is considered to be a node of lmbMacroTextNode class. lmbMacroTextNode generates contents "as is". Basically, lmbMacroTextNode does the following:
+<code php>
+  function generate($code_writer)
+  {
+    $code_writer->writeHTML($this->contents);
+
+    parent :: generate($code_writer);
+  }
+}
+?>
+</code>
+
+=== Output expressions ===
+
+Output expressions generate a PHP block with **echo** operation: <?php echo ...; ?>. The rest depends on filters usage and on the complexity of the expression. For example, the expression {$title|html} will generate the following code:
+<code php>
+<?php echo htmlspecialchars($title, ENT_QUOTES); ?>
+</code>

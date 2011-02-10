@@ -1,0 +1,117 @@
+====== Вывод списков ======
+===== MACRO-теги для вывода списков =====
+
+Для вывода списков в шаблонах используется группа тегов [[tags#списки_list_tags|для работы со списками]]. 
+
+<code xml>
+ <table border="1">
+   <tr>
+    <th>№</th>
+    <th>Название</th>
+    <th>Объем, л</th>
+    <th>Вес, кг</th>
+   </tr>
+ {{list using="$#tanks" as="$tank" counter="$number"}}
+   {{list:item}}
+   <tr>
+    <td>{$number}</td>
+    <td>{$tank.name}</td>
+    <td>{$tank.volume}</td>
+    <td>{$tank.weight}</td>
+   </tr>
+   {{/list:item}}
+  {{list:empty}}
+  <tr><td colspan='4'>Список пуст!</td></tr>
+  {{/list:empty}}
+ {{/list}}
+</table>
+</code>
+
+  * [[limb3:ru:packages:macro:tags:list_tags:list_tag|Тег {{list}}]] - основной тег, который выводит свое содержимое, если переменная, указанная в атрибуте **using** содержит непустой список (массив или итератор). Атрибут **as** указывает на имя переменной, которая должна содержать очередной элемент списка. По-умолчанию, в качестве **as** используется значение $item.
+  * [[limb3:ru:packages:macro:tags:list_tags:list_item_tag|Тег {{list:item}}]] - повторяет определенную порцию шаблона по количеству элементов в итераторе тега %%{{list}}%%.
+  * [[limb3:ru:packages:macro:tags:list_tags:list_empty_tag|Тег {{list:empty}}]] - выводит свое содержимое только в том случае, если список не содержит ни одного элемента.
+  * [[limb3:ru:packages:macro:tags:list_tags:list_glue_tag|Тег {{list:glue}}]] - используется для разделения одного или группы элементов в списке.
+  * Переменная $number, она содержит номер элемента в списке. Эта переменная генерится, так как мы указали атрибут **counter** для тега %%{{list}}%%.
+
+В результате мы можем получить несколько результатов. Например, такой:
+
+^№^Название^Объем, л^Вес, кг^
+| 1 | Цистерна АБ-102 | 2400 | 340 |
+| 2 | Цистерна АБ-103 | 2000 | 300 |
+
+Или такой:
+
+^№^Название^Объем, л^Вес, кг^
+| Список пуст! ||||
+
+===== Вывод данных в несколько столбцов =====
+
+Для вывода данных в несколько столбцов можно применять [[limb3:ru:packages:macro:tags:list_tags:list_glue_tag|тег {{list:glue}}]], который выводит определенный кусок кода раз в несколько элементов списка.
+
+Например:
+<code xml>
+{{list using="$#images"}}
+<table>
+<tr>
+   {{list:item}}
+   <td>
+    <img src='{$item.path}' border='0' /><br />{$item.title}
+   </td>
+   {{list:glue step="3"}}</tr><tr>{{/list:glue}}
+   {{/list:item}}
+</tr>
+</table>
+{{/list}}
+</code>
+
+Позволит вывести изображения в 3 колонки.
+
+Если вы заметили, то выбранный нами способ для списков, например, с 10 элементами сгенерирует невалидную верстку, поэтому примеры необходимо немного доработать:
+
+<code xml>
+{{list using="$#images"}}
+<table>
+<tr>
+  {{list:item}}
+    <td>
+     <img src='{$item.path}' border='0' /><br />{$item.title}
+    </td>
+   {{list:glue step="3"}}</tr><tr>{{/list:glue}}
+ {{/list:item}}
+ {{list:fill upto='3' items_left='$items_left'}}
+  <td colspan='{$items_left}'>&nbsp;</td>
+ {{/list:fill}}
+</tr>
+</table>
+{{/list}}
+</code>
+
+Здесь мы использовали [[limb3:ru:packages:macro:tags:list_tags:list_fill_tag|тег {{list:fill}}]], который выполняет код шаблона, только если список не содержал количество элементов, кратное числу **upto**. При этом тег %%{{list:fill}}%% заполняет переменную с именем **items_left**.
+
+В нашем случае мы просто предпочли вывести заглушку в виде <td colspan='2'>. Мы могли бы также воспользоваться [[limb3:ru:packages:macro:tags:core_tags:repeat_tag|тегом {{repeat}}]] для генерации недостающих ячеек:
+
+<code xml>
+{{list using="$#images"}}
+<table>
+<tr>
+ {{list:item}}
+    <td>
+     <img src='{$item.path}' border='0' /><br />{$item.title}
+    </td>
+   {{list:glue step="3"}}</tr><tr>{{/list:glue}}
+ {{/list:item}}
+ {{list:fill upto='3' items_left='$some_var'}}
+   {{repeat times='{$some_var}'}}
+   <td>
+    <img src='/images/no_image.gif' alt='sorry, no image' />
+   </td>
+   {{repeat}}
+ {{/list:fill}}
+</tr>
+</table>
+{{/list}}
+</code>
+===== Дополнительные примеры =====
+
+  * см. примеры для [[limb3:ru:packages:macro:tags:list_tags:list_tag|тега {{list}}]]
+  * см. примеры для [[limb3:ru:packages:macro:tags:list_tags:list_glue_tag|тега {{list:glue}}]]

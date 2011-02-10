@@ -1,0 +1,77 @@
+====== How to create your own {{macro}} tags ======
+
+It is considered that you have already read this two pages:
+  * [[limb3:en:packages:macro:important_details|"{{macro}} compilation and rendering. How to run {{macro}} template."]],
+  * [[limb3:en:packages:macro:compiler|{{macro}} compiler]],
+
+%%{{macro}}%% tags are stored in files with **.tag.php** suffix in file name. Tags files can be found in limb/macro/src/tags/ folder and also in src/macro folders of Limb3 packages and Limb-based applications.
+
+===== Tag annotations =====
+
+In the head of every tag file there is a section for tag annotations. Here is annotation section of %%{{apply}}%% tag for example:
+<code php>
+<?php
+/**
+ * @tag apply
+ * @req_attributes template
+ */
+class lmbMacroApplyTag extends lmbMacroTag
+{ 
+[...]
+}
+?>
+</code>
+
+The complete list of possible tag annotations is the following:
+  * **tag** - main tag name.
+  * **aliases** - other tag names that are possible to use in templates instead of main tag name. In most cases aliases are used to keep BC. There can be several aliases separated with commas, e.g.: @aliases params,param.
+  * **req_attributes** - the list of required attributes for the tag.%% {{macro}} %%compiler throws an exception in case of missing such attribute.
+  * **parent_tag_class** - class name of the parent tag that must enclose the tag in template. If %%{{macro}}%% compiler can find such parent for the tag an exception will be thrown.
+  * **restrict_self_nesting** - forbids the tag to have the same tag as enclosing parent in template.
+  * **forbid_end_tag** - forbids the tag to have opening and closing tags. For example, %%{{input}} or {{input/}}, but not {{input}}[...]{{/input}}%%
+
+===== Base classes for tags =====
+
+  * **lmbMacroTag** - used as a parent class in most cases. Examples of lmbMacroTag descendants are %%{{include}}, {{list}}, {{list:item}} etc.%%
+
+  * **lmbMacroPassiveTag** - used as a parent class in cases when a tag should generate its code on demand only. The descendants of lmbMacroPassiveTag don't generate any code by default and only go some generation on **generateNow($code_writer)** call. An example of  lmbMacroPassiveTag in %%{{pager:separator}}%%.
+
+  * **lmbMacroRuntimeWidgetTag** - used as a parent class in case if a tag requires a helper object (runtime widget) for correct work at runtime. An example of such tag is %%{{pager}}%% tag. 
+
+You need to define the following attributes when you use lmbMacroRuntimeWidgetTag as parent tag:
+  * **$widget_class_name** - class name of widget
+  * **$widget_include_file** - PHP file with widget class declaration
+
+These two attributes can also be defined in **preParse(lmbMacroCompiler $compiler)**, see %%{{input}}%% tag in limb/macro/src/tags/form/input.tag.php
+
+lmbMacroRuntimeWidgetTag uses lmbMacroCodeWriter :: **writeToInit($php_code)** method for writing initialization PHP code. lmbMacroRuntimeWidgetTag writes a PHP code that created an object of $widget_class_name class. You can access widget object variable using lmbMacroRuntimeWidgetTag  :: **getRuntimeVar()** method (we already mentioned about getRuntimeVar() as [[limb3:en:packages:macro:compiler|"{{macro}} compiler"]] page).
+
+  * **lmbMacroRuntimeWidgetHtmlTag** - a descendant of lmbMacroRuntimeWidgetTag. This tag can be used as a parent class for tag that generate some HTML tag at runtime.
+
+lmbMacroRuntimeWidgetHtmlTag requires **$html_tag** class attribute to be redeclared.
+
+**$widget_class_name** class attribute should point at a class that extends **lmbMacroHtmlTagWidget** for correct work of lmbMacroRuntimeWidgetHtmlTag.
+
+The example of lmbMacroRuntimeWidgetHtmlTag child classes are %%{{form}}%% tag class and lmbMacroFormElementTag (see below).
+
+  * **lmbMacroFormElementTag** - used as a parent class for most of form elements tags in limb/macro/src/tags/form/ folder.
+
+===== Method that should be overridden =====
+
+If you create a regular tag you will probably inherit from lmbMacroTag or lmbMacroRuntimeWidgetTag. In such cases you'd better to override the following methods:
+  * **_generateBeforeContent($code_writer)**
+  * **_generateContent($code_writer)**
+  * **_generateTagContent($code_writer)**
+
+Don't forget to call parent _generateContent($code_writer) otherwise child nodes will not have a change to generate their contents.
+
+If you create a tag with html-analog you will probably inherit your tag from lmbMacroRuntimeWidgetHtmlTag or lmbMacroFormElementTag and override the following methods:
+  * _generateBeforeOpeningTag($code_writer)
+  * _generateAfterOpeningTag($code_writer)
+  * _generateContent($code_writer)
+  * _generateBeforeClosingTag($code_writer)
+  * _generateAfterClosingTag($code_writer)
+
+===== preParse() method =====
+
+lmbMacroNode :: preParse(lmbMacroCompiler $compiler) usually used for preliminary analysis of tags attributes, enclosing parent tags, etc. This method is called **before** generation process is started. See examples tags classes such as %%{{input}}, {{include}}, etc.%%

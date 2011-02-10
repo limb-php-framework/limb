@@ -1,0 +1,5 @@
+====== Step7. Further readings ======
+
+  * [[limb3:en:packages:active_record|ACTIVE_RECORD package]] - CRUD tutorial simply can't give you the full idea of the capabilities of Limb3 ACTIVE_RECORD package. This section is aimed to fill this gap.
+  * [[limb3:en:packages:wact|WACT package]] - WACT section should help you understand the principles of how WACT template engine works. This section is essential for anyone who would like to use WACT effectively.
+  * [[limb3:en:tutorials:shop|Tutorial2. Creating e-shop with Limb3 from the scratch]] - in this second tutorial you will proceed to creating more complex application with Limb3. Furthermore, this tutorial gives you a lot of architectural information about Limb3. After completing this tutorial you will understand how a typical Limb3 based application ticks and will be ready to use Limb3 for the real projects.

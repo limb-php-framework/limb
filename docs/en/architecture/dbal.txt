@@ -1,0 +1,14 @@
+====== Limb DBAL structure ======
+
+===== Limb DBAL structure =====
+
+{{{ limb:architecture:limb3.0_limb_dbal.png }}}
+
+===== Description =====
+
+^Package^Description^
+|[[WACT DBAL]]|WACT Data Base Abstraction Layer. Limb DBAL is build around WACT   DBAL.|
+|[[Query]]|A group of classes that allows partially encapsulate SQL queries. [[lmbSelectQuery]] is most commonly used class from this package.|
+|[[Criteria]]|A group of classes that allows to create conditional statements for encapsulated SQL queries.|
+|[[Connection]]|A group of classes that is used to create and keep db connections.|
+|[[DAO]]|Clients uses DAO classes to perform low level db queries.|

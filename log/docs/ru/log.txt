@@ -1,0 +1,49 @@
+====== Пакет LOG ======
+
+Получение объекта для логирования
+
+<code php>
+$log = lmbToolkit::instance()->getLog();
+</code>
+
+Запись сообщения в лог
+
+<code php>
+$log->log($message, $level = LOG_INFO, $params = array(), $backtrace = null);
+</code>
+
+В качестве уровня важности (''$level'') сообщений используются стандартные константы
+
+  * LOG_NOTICE
+  * LOG_WARNING
+  * LOG_INFO
+  * LOG_ERR
+
+
+Список доступных средств для логирования
+
+^Writer ^Описание ^dsn ^
+|%%EchoWriter%%|Вывод в stdout| echo: |
+|%%FileWriter%% | Запись в файл, по умолчанию это LIMB_VAR_DIR/error.log | %%file://path/log/error.log%% |
+|%%FirePHPWriter%% | Вывод в консоль [[http://www.firephp.org/|FirePHP]] | %%firePHP://localhost/?check_extension=0%% |
+|%%PHPLogWriter%% | Вывод в PHP лог | PHPLog: |
+|%%SyslogWriter%% | Вывод в syslog | syslog: |
+
+
+===== Конфигурирование =====
+
+**common.conf.php**
+<code php>
+$conf = array(
+
+	'logs' => array (
+		'firePHP://localhost/?check_extension=0',
+		'file://'.lmb_env_get('LIMB_VAR_DIR').'/log/error.log'
+	)
+);
+</code>
+
+Константы
+
+^ Константа ^ Значение по умолчанию ^ Описание ^
+| LIMB_LOG_ENABLE | true | Выключение логирования |

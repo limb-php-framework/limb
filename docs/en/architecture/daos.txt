@@ -1,0 +1,29 @@
+====== DAO - Data Access lmbObject======
+ 
+
+===== Description =====
+
+DAO classes are used to unify the process of getting raw data from the persistence layer(it's on the TODO list to rename current DAO implementation into RecordSet).
+
+DAO classes can have two methods:
+  * **fetch()** that returns **Iterator**
+  * **fetchById($id)** that returns DataSpace. This method is used in [[lmbDataMapper]].
+
+To create a DAO object you can use this code:
+<code php>
+ $toolkit = lmbToolkit :: instance();
+ $mapper = $toolkit->createDAO('ArticleDAO');
+</code>
+
+DAO class file will be automatically found with [[lmbFileSchema]].
+
+===== UML Static structure =====
+
+{{{ limb:architecture:limb3.0_dao.png }}}
+
+===== Core DAO classes =====
+
+^Class name^Description^
+|[[TableGatewayDAO]]|Allows to make requests to a db table with [[lmbTableGateway]]|
+|[[QueryBasedDAO]]|Allows to make complex select quesries.QueryBasedDAO is a decorator for [[lmbSelectQuery]].|
+|[[ServicesListDAO]]|Returns a list of Services can be used with Limb-based project.|

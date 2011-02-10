@@ -1,0 +1,27 @@
+====== Работа с cookies ======
+
+Для считывания/записи cookies в Limb3 существуют следующие средства:
+
+  * В классе [[limb3:ru:packages:net:lmb_http_request|lmbHttpRequest]] есть метод: **lmbHttpRequest :: getCookie($cookie)**.
+  * В класс [[limb3:ru:packages:net:lmb_http_response|lmbHttpResponse]] есть метод: **lmbHttpResponse :: setCookie($name, $value, $expire = 0, $path = '/', $domain = ' ', $secure = false)**.
+
+Объект $request класса lmbHttpRequest можно получить из тулкита при помощи метода getRequest(). Объект $response класса lmbHttpResponse можно получить из тулкита при помощи метода getResponse():
+
+<code php>
+  $request = lmbToolkit :: instance()->getRequest();
+  $response = lmbToolkit :: instance()->getResponse();
+</code>
+
+Например, код, который сохраняет выбранные элементы каталога, которые пользователь положил в корзину:
+
+<code php>
+  function saveCart($cart)
+  {
+    $item_ids = array();
+    foreach($cart->getItems() as $item)
+      $item_ids[] = $item->getId();
+
+    $response = lmbToolkit :: instance()->getResponse();
+    $response->setCookie('CartItems', implode(',', $item_ids));
+  }
+</code>

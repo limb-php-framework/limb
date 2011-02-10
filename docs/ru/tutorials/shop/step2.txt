@@ -1,0 +1,194 @@
+====== Шаг2. Запуск приложения. База данных. Базовые шаблоны ======
+===== Создание проекта =====
+Наше приложение будет базироваться на базе пакета [[limb3:ru:packages:cms|CMS]]. Создать приложение можно двумя способами:
+  * автоматическим, при помощи задачи **project_create** утилиты [[limb3:ru:packages:taskman:limb.php|limb.php]]
+  * вручную, следуя [[limb3:ru:cms:cms_manual_setup|инструкции]]
+
+
+===== Файл setup.php проекта =====
+
+Модифицируем немного файл shop/setup.php:
+<code php>
+<?php
+[...]
+//Подключим наиболее популярные файлы
+lmb_require('limb/web_app/src/controller/lmbController.class.php');
+lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
+</code>
+lmbController и lmbActiveRecord самые часто используемые классы в нашем приложении. lmb_require() использует отложенную загрузку классов, так что сильного влияния на производительность эти две строки не будут иметь.
+
+А так же создадим файл setup.override.php, для упрощения разработки и отладки:
+<code php>
+lmb_env_setor('LIMB_APP_MODE', 'devel');
+</code>
+===== База данных =====
+
+Проанализировав требования к нашему приложению, можно сделать вывод, что нам потребуется хранить в базе данных следующие сущности:
+
+  * Товары - таблица **product**.
+  * Зарегистрированные пользователи - таблица **user**.
+  * Заказы - таблица **order**.
+  * Позиции заказов - таблица **order_line**.
+
+Все сущности мы будем реализовывать при помощи класса lmbActiveRecord пакета ACTIVE_RECORD. Напомним, что условием использования ACTIVE_RECORD является наличие автоинкременстного поля **id** в таблице.
+
+Таблица **product**:
+<code sql>
+CREATE TABLE `product` (                    
+ `id` int(11) NOT NULL auto_increment,  
+ `title` varchar(255) default NULL,        
+ `description` text,                       
+ `is_available` tinyint(1) default NULL,   
+ `price` float default NULL,               
+ `image_name` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)                       
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user` (                            
+ `id` int(11) NOT NULL auto_increment,       
+ `name` varchar(255) default NULL,              
+ `login` varchar(30) default NULL,              
+ `hashed_password` varchar(32) default NULL,  
+ `email` varchar(255) default NULL,
+ `address` text,           
+  PRIMARY KEY  (`id`)                            
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;   
+
+CREATE TABLE `order` (                        
+ `id` int(11) NOT NULL auto_increment,    
+ `user_id` int(11) NOT NULL default '0',  
+ `date` int(11) NOT NULL default '0',     
+ `summ` float default NULL,                  
+ `status` int(11) default NULL,              
+ `address` varchar(255) default NULL,           
+ PRIMARY KEY  (`id`),                        
+ KEY `user_id` (`user_id`)                   
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;  
+
+CREATE TABLE `order_line` (                    
+ `id` int(11) NOT NULL auto_increment,     
+ `order_id` int(11) NOT NULL default '0',  
+ `product_id` int(11) default NULL,        
+ `quantity` int(11) default NULL,                
+ `price` int(11) default NULL,                
+ PRIMARY KEY  (`id`),                         
+ KEY `order_id` (`order_id`),                 
+ KEY `product_id` (`product_id`)              
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;    
+</code>
+
+Нам необходимо сохранить цену товара на момент покупки, поэтому таблица order_line имеет поле **price**.
+
+Если вы выбрали копию готового примера магазина, то SQL-код структуры базы данных можно найти в файле **shop/init/db.mysql**.
+
+:!: Не забудьте настроить параметры подключения к БД в файле **shop/settings/db.conf.php**.
+
+===== Папка для хранения изображений товаров =====
+
+Создайте папку shop/www/product_images/. В этой папке мы будем хранить изображения для наших товаров.
+
+Убедитесь, что веб-сервер имеет права на чтение и запись в эту папку. 
+
+Также скопируйте файл shop/www/images/no_image.gif в соответствующую папку своего проекта. Это изображение будет использоваться для товаров, у которых не будет изображения.
+
+Теперь добавим в shop/setup.php переменную окружения PRODUCT_IMAGES_DIR, в которой будем хранить абсолютный путь до папки с изображениями:
+<code php>
+[...]
+lmb_env_setor('PRODUCT_IMAGES_DIR', dirname(__FILE__) . '/www/product_images/');
+[...]
+</code>
+===== Базовые шаблоны =====
+
+Мы начнем наше приложение с панели управления на базе пакета CMS. Для панели управления все базовые шаблоны и контроллеры уже созданы при создании базового приложения.
+
+  * Основной контроллер панели управления: **limb/cms/src/controller/AdminController.class.php**
+  * Шаблоны для главной страницы панели управления: **limb/cms/template/admin/display.phtml**
+  * Основной шаблон, который будет базой (базовый шаблон - враппер) для всех страниц панели управления: **limb/cms/template/admin_page_layout.phtml**
+
+Надеемся, что MACRO-теги [[limb3:ru:packages:macro:tags:core_tags:wrap_tag| {{wrap}}]] и [[limb3:ru:packages:macro:tags:core_tags:slot_tag| {{slot}}]] вам уже знакомы по первому примеру. Вы также можете подробнее прочитать [[limb3:ru:packages:macro:template_composition|про композицию MACRO-шаблонов]] чтобы вспомнить, как в MACRO шаблоны собираются в единое целое из различных частей.
+
+Теперь создадим шаблон для главной фронтальной страницы нашего приложения.
+
+Файл shop/template/main_page/display.phtml:
+<code xml>
+<? $this->title = 'Main page'; ?>
+{{wrap with="front_page_layout.phtml" into="content_zone"}}
+Welcome to our bookstore!
+{{/wrap}}
+</code>
+
+И основной шаблон, который будет базой для всех страниц магазина.
+
+Файл shop/template/front_page_layout.phtml:
+<code xml>
+<html>
+<head>
+  <title>{$#title} :: Limb3 shop example application on &#123;&#123;macro&#125;&#125;</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+  <link rel=stylesheet type="text/css" href="http://bits.limb-project.com/shop/styles/main.css"/>
+</head>
+<body>
+
+<div id="header">
+  <div class="center">
+    <img src="http://bits.limb-project.com/shop/images/logo.limb.gif"  width='384' height='46' alt='logo.limb' id='logo'/>
+    <div id="limb_links"><a href="http://limb-project.com">limb-project.com</a>&nbsp;|&nbsp;<a href="http://bits.limb-project.com">bits.limb-project.com</a></div>
+  </div>
+</div>
+
+ <div id="center">
+  <div id="wrapper" >
+    <div id="container">
+      <div id="content">
+        <h1>{$#title}</h1>
+        {{slot id='content_zone'/}}
+      </div>
+    </div>
+
+    <div id="sidebar">
+      <div id="navigation">
+        <ul>
+          <li><a href="/product/">Products</a></li>
+          <li><a href="/cart/">Your Cart</a></li>
+          <li><a href="/user/login">Login</a></li>
+        </ul>
+      </div>
+
+      <dl id="profile">
+        <dt>Profile</dt>
+        <dd>
+          Not yet implemented.
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+</code>
+Область, которая лежит в <dl id='profile'> мы пока оставили пустой. Профилем пользователя мы займемся на шаге 4.
+
+===== Первый взгляд на проект =====
+
+Далее мы очищаем кеш в папке shop/var/ и пробуем зайти на страницу http://your_shop_example_domain/admin/ (логин admin, пароль secret) и http://your_shop_example_domain/.
+===== Шаблон для 404 ошибки =====
+
+Создадим также шаблон красиво отображающий 404 ошибку (страница не найдена):
+
+Файл shop/template/not_found.phtml:
+<code xml>
+<? $this->title = 'Not found'; ?>
+{{wrap with="front_page_layout.phtml" in="content_zone"}}
+<b>Error 404.</b>
+<p>Page not found.</p>
+{{/wrap}}
+</code>
+
+Шаблон not_found.phtml используется по-умолчанию контроллером %%NotFoundController%% (который можно найти в папке limb/web_app/src/controller/).
+
+Попробуйте зайти на несущесвующую страницу, например /no_such_page, и вы увидите как отработает именно этот шаблон (возможно вам придется еще раз почистить кеш shop/var/).
+
+
+===== Далее =====
+
+Следующий шаг - [[.step3|Шаг3. Пользователи, и все, что с ними связано]].

@@ -1,0 +1,22 @@
+====== Поддержка ValueObjects ======
+
+В lmbActiveRecord также встроена первоначальная поддержка так называемых [[wp>Value_Objects|ValueObjects]]. Это объекты каких-либо классов, которые хранятся lmbActiveRecord, однако в базе данных они не представлены отдельными таблицами и хранятся в виде одного или нескольких полей в тех же таблицах, что и сами активные записи.
+
+В настоящее время lmbActiveRecord поддерживает %%ValueObjects%%, состоящие только из одного поля.
+
+%%ValueObjects%% описываются посредством атрибута **_composed_of**:
+
+<code php>
+class Lesson extends lmbActiveRecord
+{
+  protected $_composed_of = array('date_start' => array('field' => 'date_start',
+                                                        'class' => 'lmbDate',
+                                                        'getter' => 'getStamp'),
+                                  'date_end' => array('field' => 'date_end',
+                                                      'class' => 'lmbDate',
+                                                      'getter' => 'getStamp'));
+}
+</code>
+
+Немного поясним то, как описывается этот атрибут. _composed_of - это массив, в котором ключом является название поля, по которому можно получить %%ValueObjects%%. Значение поля массива _composed_of - это другой массив, в котором присутствуют поля //field// - название поля в таблице базы данных, где хранится значение для %%ValueObjects%%, //class// - название класса %%ValueObjects%% и //getter// - метод класса //class// по которому можно получить значение, которое будет сохранено в //field//.
+

@@ -1,0 +1,109 @@
+====== Limb CodeBits ======
+
+===== Примеры использования Limb =====
+
+==== Простейшее CRUD-приложение ====
+
+{{http://bits.limb-project.com/images/examples/crud.png}}
+
+  * [[http://bits.limb-project.com/crud|Демонстрация]]
+  * Shows how to create a simple Limb3 based project from the scratch.
+  * Demonstrates how to create, read, update and delete table records using WEB_APP package in Rails like way.
+  * Introduces powerful [[limb3:ru:packages:macro|MACRO]] template engine and shows how to use the most useful template tags.
+  * [[limb3:ru:tutorials:basic|Пошаговые инструкции по созданию приложения]]
+  * [[http://github.com/limb-php-framework/limb-example-crud|Browse source in repository]]
+  * [[http://github.com/limb-php-framework/limb-example-crud/downloads| Download source]]
+
+==== Электронный магазин ====
+
+{{http://bits.limb-project.com/images/examples/shop.png}}
+
+  * [[http://bits.limb-project.com/shop|Демонстрация]]
+  * The idea of this example is based on Depot application from "Agile Web Development with Ruby on Rails" book but was slightly modified to reveal some Limb3 specific features.
+Shows many architectural aspects of Limb3: filter chain, toolkit, session handling, controllers, commands, etc.
+  * Demonstrates how ACTIVE_RECORD handles different relations between objects(one-to-many, one-to-one, many-to-many).
+  * Integration of several main Limb3 packages like [[limb3:ru:packages:web_app|WEB_APP]], [[limb3:ru:packages:ACTIVE_RECORD|ACTIVE_RECORD]] and [[limb3:ru:packages:macro|MACRO]].
+  * [[limb3:ru:tutorials:shop| Пошаговая инструкция по созданию приложения]]
+  * [[http://github.com/limb-php-framework/limb-example-shop|Browse source in repository]]
+  * [[http://github.com/limb-php-framework/limb-example-shop/downloads/|Download source]]
+
+==== {{macro}} template engine usage examples ====
+
+{{http://bits.limb-project.com/images/examples/macro.png}}
+
+  * [[http://bits.limb-project.com/macro|Browse online]]
+  * Runnable examples for mostly all core [[limb3:ru:packages:macro|MACRO]] tags.
+  * Templates source code, PHP script code and result page are available for every example.
+  * [[http://github.com/limb-php-framework/limb-example-macro|Browse source in repository]]
+  * [[http://github.com/limb-php-framework/limb-example-macro/downloads|Download source]]
+==== Old limb-project.com site source ====
+
+{{http://bits.limb-project.com/images/examples/limb_project.png}}
+
+  * limb-project.com old site source
+  * [[http://github.com/limb-php-framework/limb-example-site|Browse source in repository]]
+
+
+
+===== Limb3 Based Applications =====
+==== limb_unit - advanced SimpleTest tests runner utility ====
+
+{{http://bits.limb-project.com/images/apps/limb_unit.jpg}}
+
+[[limb3:ru:packages:tests_runner:limb_unit|limb_unit]] is similar in some ways to phpunit utility from PHPUnit library, yet more powerful we believe.
+
+The main features of limb_unit are:
+
+  * Can run single tests as well as tests under specified directory recursively
+  * Hierarchical tests fixtures
+  * Conditional tests execution
+  * Tests code coverage
+
+Полезные ссылки:
+  * [[limb3:ru:packages:tests_runner:limb_unit|Документация]]
+  * [[http://github.com/limb-php-framework/limb-app-testman|Исходный код]]
+  * [[http://bugs.limb-project.com/browse/TST|Трекер]]
+
+
+==== taskman - утилита для запуска связанных задач ====
+
+Пакет является аналогом ant, pake, etc и предназначен для выполнения абстрактных “задач”, с учетом их взаимосвязей.
+
+  * [[taskman:ru| Документация]]
+  * [[limb3:ru:tutorials:basic|Пошаговые инструкции по созданию приложения]]
+  * [[http://github.com/limb-php-framework/limb-app-taskman|Исходный код в репозитории]]
+  * [[http://bugs.limb-project.com/browse/TSM|Трекер]]
+
+==== Syncman - painless remote projects synchronization utility ====
+:!: Совместимость с Limb2010.1 не гарантируется
+
+{{http://syncman.limb-project.com/_media/logo.syncman.gif}}
+
+[[http://syncman.limb-project.com/|Syncman]] is an application which simplifies projects remote deployment and synchronization by providing both nice web UI(great for managers and other non-technical personnel) and basic shell interface.
+
+Features:
+
+  * Nice web UI for non-technical personnel
+  * Simple file based projects configuration
+  * Public keys infrastructure for secure passwordless authentication
+  * Efficient rsync based synchronization(but not limited to rsync)
+  * Subversion integration
+  * Pre- and Post-syncing hooks support
+  * Shell based interface
+
+==== Buildman - simplistic Continuous Integration tool ====
+:!: Совместимость с Limb2010.1 не гарантируется
+
+{{http://buildman.limb-project.com/_media/logo.buildman.gif}}
+
+[[http://buildman.limb-project.com/|Buildman]] is a simple tool which helps to easily establish a Continuous Integration process for your applications.
+
+Features:
+
+  * Simple file based configuration for CI projects(no XML)
+  * Shell based build process invocation
+  * Build errors mail notifications
+  * Subversion repository support
+  * Customizable layout templates
+
+Both applications are in alpha state and there are no file releases yet. You can download the source code for both applications only via svn. However we have been using these applications for quite some time and they proved to be quite useful and stable.

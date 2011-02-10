@@ -1,0 +1,35 @@
+====== Где и как скачать Limb3 ======
+
+===== Версии =====
+Начиная с релиза 2010.1, все версии располагаются на сайте github, в [[http://github.com/limb-php-framework/limb/downloads| разделе Downloads]].
+
+===== Разрабатываемая ветка =====
+:!: Если вы хотите принять участие в разработке, то советуем прочитать об [[limb3:ru:svn| используемом нами workflow]]. 
+
+Самые нетерпеливые любители bleeding edge могут выбирать пакеты непосредственно из [[http://github.com/limb-php-framework/limb|репозитория на GitHub]]. Подробнее о работе с репозиторием можно прочитать в на [[http://help.github.com/|разделе помощи]]. Команда для выборки репозитория:
+
+Git
+  git clone git://github.com/limb-php-framework/limb.git
+  
+
+SVN
+  svn checkout http://svn.github.com/limb-php-framework/limb.git
+  
+  
+Mercurial ([[http://hg-git.github.com/|Инструкция]] по установке расширения hg-git)
+  hg clone git://github.com/limb-php-framework/limb.git
+  
+Мы рекомендуем этот способ для тех, кто внимательно следит за развитием Limb3 или сам принимает участие в этом развитии. 
+
+:!: При реализации (выпуске) готовых проектов на базе Limb3 из разрабатываемой ветки, мы рекомендуем фиксироваться на какой-либо определенной ревизии.
+
+===== Что скачать =====
+Список репозиториев Limb:
+  * [[http://github.com/limb-php-framework/limb| limb]] - сама библиотека
+  * [[http://github.com/limb-php-framework/limb-incubator| limb-incubator]] - инкубатор(пакеты не готовые к релизу)
+  * [[http://github.com/limb-php-framework/limb-example-crud| limb-example-crud]] - исходный код [[http://wiki.limb-project.com/doku.php?id=limb3:ru:tutorials:basic| простейшего CRUD-приложения]]
+  * [[http://github.com/limb-php-framework/limb-example-shop| limb-example-shop]] - исходный код [[http://wiki.limb-project.com/doku.php?id=limb3:ru:tutorials:shop| электронного магазина]]
+  * [[http://github.com/limb-php-framework/limb-tools| limb-tools]] - утилиты, связанные с Limb
+
+===== Старые стабильные релизы =====
+Официальные релизы Limb3 расположены в [[http://sourceforge.net/project/showfiles.php?group_id=109345|релиз-разделе на SourceForge.net]]. Там можно найти архив, содержащий стабильный набор пакетов Limb3, упакованных вместе. Обратите внимание, что в данный момент стабильная версия очень сильно отстает от разрабатываемой.
