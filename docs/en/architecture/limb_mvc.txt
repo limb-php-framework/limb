@@ -1,0 +1,32 @@
+====== MVC pattern ======
+
+Limb is built around MVC pattern also known as Model2. On the diagram below you can see the core Limb class packages.
+
+===== Limb3 structure =====
+
+{{{ limb:architecture:limb3.0_structure.png }}}
+
+  * RequestDispatching, Filters, Commands - are the components of Controller.
+  * DBAL, DAO, ORM, DomainObjects - are the components of Model.
+
+===== View =====
+
+Limb3 uses WACT template engine with additional tags as a View component. Limb supports both Push View and Pull View methods.   For example, Limb has <limb:DAO> tag that permits you to make requests to database right from a WACT template. Limb also has a number of [[View]] classes that act as mediators between Controller and templates.
+
+===== Controller =====
+
+[[Controller]] handles application logic. Limb3 Controller consists of the following components:
+  - [[Filter|Intercepting Filters]] acting as Front Controller.
+  - [[lmbCommand|Commands]] performing domain specific application logic such as data modifications and validation, view selecting, etc.
+  - [[RequestDispatching]].
+  - [[Validation]].
+
+===== Model =====
+
+[[Model]] deals with business rules and domain logic.
+
+Limb Model consists of the following components:
+  * [[DataContainers]] - classes that hold data. There are two groups of data containers: iterators and datasources.
+  * [[ORM]]  - lmbObject/Relational Mapping. ORM provides transparent reading and writing of domain objects from/to relational database. ORM makes it possible to create rich domain models where domain objects are unaware of persistence layer. Limb ORM is very simple at the moment.
+  * [[DBAL]] - DataBase Abstraction Layer. Limb DBAL is based on WACT DBAL with some important add-ins.
+  * [[DAO]]. Clients use DAO classes to fetch raw data from the persistence layer. The term DAO has a bit different meaning in Limb compared to other frameworks. DAO doesn't operate with domain objects, it is more correct to treat Limb DAO as a DataSource(thus it's very likely that in the nearest future DAO will be renamed to RecordSet). DAO classes can be used in templates to query DB right from the template. DAO classes are also used in DataMappers to retrieve information about domain objects.

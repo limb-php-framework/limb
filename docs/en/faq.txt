@@ -1,0 +1,138 @@
+====== Frequently Asked Question on Limb3 (FAQ) ======
+
+===== What is Limb3? =====
+Limb3 - is a Web Application Framework which consists of several packages, where each package usually performs some special functions. Each package is more or less independent from others, and to solve the dependencies between them standard [[http://pear.php.net|PEAR]] methods are used. You could learn more about that in the [[limb3:en::for_beginners|New to LIMB section]].
+
+
+
+===== Aren't there enough frameworks? Are you re-inventing one more "wheel"? Is it a Rails clone? =====
+
+Limb project is more than 4 years old (by 2007). When we started, there were no other decent PHP frameworks. First official release of Limb2 took place in the spring 2004 (though the work was being carried on during a year before that), and at those times we were not satisfied with any of existing PHP solutions for building CMS (Content Management Systems). Two years of using Limb2 revealed its pros and cons, so about the end of 2005 we started to fraction the code base into more specialized packages. It would have been be a complete insanity to drop Limb2 as well as introduce such drastic changes into the existing code base at that moment, so we decided to start a separate branch of Limb3.
+
+Besides, we demand high code quality based on unit tests. Almost 90% of the Limb3 code base is covered with unit tests, not every existing PHP framework has anywhere similar tests coverage. We also apply agile development techniques: TDD, pair programming, Continuous Integration, etc.
+
+As for [[http://rubyonrails.com/|Rails]] - yes, let us be frank, this library had very big impact on us and some Limb3 code was inspired by Rails, for example, ActiveRecord and Controller implementations. However, we can assure you that Limb3 has its own unique solutions: code lazy loading, dependency injection management, advanced unit tests runner, forked version of WACT templating subsystem and many more. And we do think that Limb3 is a more general and universal library than Rails, at least this is our primary goal.
+
+Furthermore, regardless of all latest attacks at PHP as being an ugly language(OK, we admit, some things are really ugly) this is our favorite web application development platform. We incline to believe that one can and **must** write beautiful code with PHP which is easy to maintain and extend. At least Limb3 is a demonstrative example of this.
+
+
+===== I can't launch Limb, what should I do? =====
+
+The way of stating the problem itself is incorrect. Limb3 isn't a complete application, it's more like a library using which you can build your own applications. What should you do? Study the documentation, demo applications and examples built with Limb3!
+
+
+
+
+===== Where can I get example applications built with Limb3? =====
+
+We gradually fill our repository with new examples. E.g., we made the code of limb-project.com open, you can find it in SVN (https://svn.limb-project.com/3.x/examples). If you're new to Subversion, you can read the section about [[http://limb-project.com/svn | working with Limb3 repository]].
+
+There's also a site section of working [[http://examples.limb-project.com|example applications built with limb3]] which you can download.
+
+===== Isn't Limb3 a CMF (Content Management Framework)? =====
+
+No, Limb3 is a Web Application Framework. We have enough projects fulfilled which had no direct connection to the content management. We suppose this association was inherited from Limb2, which was a CMF. By now Limb2 is intended to become just one more package of Limb3. 
+
+
+===== Is Limb3 a new version of Limb2? =====
+No, Limb3 is not a logical sequel of Limb2. These are conceptually different systems: Limb2 is a solid system for building CMS whereas Limb3 is more general library with a number of packages specializing in solving concrete problems. Though Limb2 is, to a certain extent, a finished product with a number of interesting solutions for comfortable content management, at the moment our development team is concentrated on Limb3 and the Limb2 branch isn't being developed. We're also working on porting all the Limb2 features into one of the Limb3 packages.
+===== What is WACT? =====
+
+WACT stands for Web Application Components Toolkit (http://phpwact.org), but in the terms of Limb3, we use WACT as a brilliant and powerful templating system. We became acquainted with WACT in 2004 when there wasn't a single public release and the whole code was in the CVS repository. Because of feedback problems with the main developer of WACT, we had fork into Limb. From those times on WACT underwent a lot of positive changes but the feedback problem still remains. From time to time we synchronize our fork with the most useful (in our view) changes in original WACT, but switching back to the original version of WACT is impossible. By now WACT is moving into the direction that we don't share...still who knows what may happen in the future :)
+
+You can read more about Limb3 WACT package in the [[.packages:wact|corresponding section]].
+
+
+===== Where can I download Limb3 packages? =====
+Packages are distributed via our [[http://pear.limb-project.com|Limb3 PEAR Channel]] or in the form of separate bundled archive of all packages via [[http://sourceforge.net/project/showfiles.php?group_id=109345|SourceForge release section of Limb3]], or via [[http://snaps.limb-project.com|nightly snapshots server]]. 
+
+
+===== What is the difference between download sources? =====
+
+Periodicity and releasing rules of official Limb3 releases are as follows:
+
+  * At the SourceForge we make the releases of the most stable packages bundled in one archive formatted limb3-YYYY.N, e.g. limb3-2007.1. These releases happen not very often (about once a month or two) - usually as soon as quantity and quality of changes in packages reaches some critical mass threshold. 
+  * Each new version of packages is released at the PEAR channel depending on the inner feelings of "readiness" of the developer responsible for the package. That's why releases at the PEAR channel are spontaneous. There can be situations when some package had several releases at the PEAR channel but not a single release yet on the SF.
+  * Each night the nightly snapshot server builds and tests all the packages (so they can contain errors, experimental and ugly code). This snapshot server is of more use for the developers because it gives a possibility to see all the mistakes which slipped into releases. 
+
+
+===== How can I use Limb3 in my project? =====
+
+  * Firstly, the most important thing is configuring include_path correctly. If you retrieved Limb3 packages using PEAR, most probably you don't have to do it, because normally the proper path to the PEAR directory is already set for you in php.ini. 
+  * Secondly, we have a standard practice of including **common.inc.php** file from the package that you are going to use. 
+  * Thirdly, it's worth looking through the documentation of the package to see some specific features of its usage. 
+
+Here is a basic example how to use the [[limb3:en::packages:active_record|ACTIVE_RECORD]] package:
+
+<code php>
+<?php
+ set_include_path('d:/var/dev/limb3/' . PATH_SEPARATOR .
+                  get_include_path());
+
+ require_once('limb/active_record/common.inc.php');
+
+ lmbActiveRecord :: setDefaultDSN(array('driver' => 'mysql',
+                                       'host' => 'localhost',
+                                       'database' => 'ar_test',
+                                       'user' => 'user',
+                                       'password' => 'secret'));
+ class News extends lmbActiveRecord{}
+
+ $news = new News();
+ $news->setTitle('Test');
+ $news->save();
+
+ $all_news = lmbActiveRecord :: find('News');
+ foreach($all_news as $news)
+   echo $news->getTitle() . "\n";
+?>
+</code>
+
+
+===== What are all these magic LIMB_* constants in Limb3? =====
+We have worked out the practice when low-level configuration is performed by constants. We suppose that this is the most simple way to set global parameters. All system constants of Limb3 start with "LIMB_".
+
+More about common constants can be found on [[limb3:en::constants|Limb3 constants]] section.
+
+
+===== What is setup.override.php used for? =====
+To be short, it's used to override system parameters in applications. If you want more, see [[limb3:ru::setup_files|the section about config scripts in LIMB]]
+
+===== Why don't you follow PEAR naming standards for classes? =====
+We simply think that naming convention when a class name contains the path to its file isn't effective:
+  * Awkward class name with explicit dependency on the file system.
+  * Renaming one class (e.g. its name's middle part) can result in cascade renaming of many files and classes. 
+  * We are not adherent of such long names e.g. Zend_Search_Lucene_Search_Weight_Boolean(**disclaimer:** we have nothing against ZendFramework, furthermore we believe its search module is one of the best existing for PHP).
+
+
+===== Why do you use some strange lmb_require function instead of require_once? =====
+
+Limb3 uses a special version of require_once called lmb_require from the [[limb3:en::packages:core|CORE]] package, which takes into account Limb3 "one class = one file" convention and allows to load class code lazily through _autoload. Using lmb_require in your code isn't necessary, this function is transparent and similar to require_once, include_once PHP analogues. However, in case you're interested in lazy code loading, you might want to have better look at this function. By the way, it also supports glob modificators, e.g.: 
+
+<code php>
+lmb_require('src/model/*.class.php');
+</code>
+
+
+===== Are there any means of code lazy loading through _autoload  =====
+
+Yes, there are. They are provided by [[limb3:en::packages:core|CORE]] package, specifically with lmb_require() function. Some time ago we wanted to completely refuse from explicit code loading and switch to _autoload, but we quickly found a lot of disadvantages:
+
+  * It became unclear, from which package this or that class is loaded. 
+  * We don't use the class storage technique similar to that of PEAR, where the path to the file is reflected in its name, so we had to develop a very inflexible class indexing technique. 
+  * A framework should not impose any obligatory dependency on _autoload, each developer may have their reason for not using it or some personal preferences about it.
+  * Some developers might prefer another class storing technique than "one class = one file", using modules, for example. In this case using _autoload only for all code inclusion is really difficult.
+
+That's why having considered all pros and cons we found, as we believe, some compromise variant - the lmb_require() function. This function when loading classes/interfaces doesn't actually include their PHP code, but it marks internally that this class can be found in this file. Then this information is used in __autoload handler lmb_autoload, as soon as this class is needed. When including PHP modules this function works similar to include_once(). 
+
+
+===== How can I run tests for Limb3 packages? =====
+There is a special package [[limb3:en::packages:tests_runner|TESTS_RUNNER]] to accomplish this task. Its basic utility is [[limb3:en::packages:tests_runner:limb_unit|limb_unit]], which allows to run the tests directly from the file system using shell console.
+
+
+
+===== I'd like to contribute, how can I do that the best way? =====
+
+The best way is to share your ideas wth the community. You can do that using the [[http://forum.limb-project.com|forum]] or one of the [[http://lists.limb-project.com/mailman/listinfo|mailing lists]] (probaly [[http://lists.limb-project.com/mailman/listinfo/limb-dev|limb-dev]] is best suited). 
+
+If you have some patch you'd like to commit, or idea how to improve Limb3 or a bug fix, don't hesitate contacting us. You may rest assured it will attract our attention, and we'll offer you a [[http://limb-project.com/svn|Subversion]] account with pleasure. 

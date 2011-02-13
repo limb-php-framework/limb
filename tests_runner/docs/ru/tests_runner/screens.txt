@@ -1,0 +1,19 @@
+====== Скриншоты WEB интерфейса пакета TESTS_RUNNER ======
+
+===== Список доступных групп =====
+
+{{{limb3:ru:packages:tests_runner:web_runner_tests.png}}}
+
+===== Внутренние группы =====
+
+{{{limb3:ru:packages:tests_runner:web_runner_tests.png}}}
+
+===== Результат выполнения тестов =====
+
+{{{limb3:ru:packages:tests_runner:web_runner_green_result.png}}}
+
+===== Результат выполнения нескольких выбранных тестов =====
+
+{{{limb3:ru:packages:tests_runner:web_runner_several_runned.png}}}
+
+

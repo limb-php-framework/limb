@@ -1,0 +1,34 @@
+====== Тег {{textarea}} ======
+===== Описание =====
+
+Расширенная форма html тега <textarea>. 
+
+Является потомком [[lmb_macro_form_element_tag]], и наследует его атрибуты.
+
+При выводе значения применяет htmlspecialchars для этого значения.
+
+===== Синтаксис =====
+
+<code xml>
+{{textarea id='id' name='name'[...]/}}
+</code>
+===== Содержимое =====
+
+Нет.
+
+===== Атрибуты ======
+
+См. атрибуты [[limb3:ru:packages:macro:tags:form_tags:lmb_macro_form_element_tag#атрибуты|lmbMacroFormElementTag]].
+
+===== Пример использования =====
+
+<code php>
+<? $value = "<< super >>"; ?>
+{{textarea name="my_textarea" value="$#value" /}}
+</code>
+
+Получим:
+
+<code xml>
+<textarea name="my_textarea">&lt;&lt; super &gt;&gt;</textarea>
+</code>

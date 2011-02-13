@@ -1,0 +1,42 @@
+====== Объектные формы call_back вызовов ======
+
+Пакет CORE представляет базовые средства для реализации паттерна OBSERVER. Примеры использования этих средств см. в пакете ACTIVE_RECORD ([[http://wiki.limb-project.com/doku.php?id=limb3:ru:packages:active_record:enhancement#регистрация_слушателей_на_объекты|Регистрация слушателей на объекты]]) и в пакете WEB_APP (см. [[http://wiki.limb-project.com/doku.php?id=limb3:ru:packages:web_app:lmb_form_command|класс lmbFormCommand]])
+
+В реализации Observer различают 2 роли: 
+  * Сервер (Observable), который генерит сообщения
+  * Слушатели или подписчики(Observer), которые подписываются на события сервера.
+
+За реализацию этих средств отвечает класс **lmbDelegate**. Класс lmbDelegate - это по сути объектная форма вызова метода какого-либо объекта.
+
+Пример использования класса **lmbDelegate для подписки на события** класса lmbActiveRecord
+<code php>
+  $callback = new lmbDelegate($this, 'clearCache');
+  lmbActiveRecord :: registerGlobalOnAfterSaveCallback($callback);
+  lmbActiveRecord :: registerGlobalOnAfterDestroyCallback($callback);
+</code>
+
+Здесь мы подписались методом clearCache какого-го объекта на события on_after_save и on_after_destroy класса lmbActiveRecord. 
+
+lmbDelegate может принимать различные параметры в конструктор:
+<code php>
+  $callback1 = new lmbDelegate($this, 'someMethod'); // метод объекта
+  $callback2 = new lmbDelegate('someGlobalFunction'); // глобальная функция
+  $callback3 = new lmbDelegate(array($this, 'someMethod')); // callback в виде массива
+  $callback3 = new lmbDelegate('MyClass', 'someStaticMethod'); // статический метод класса
+</code>
+
+Также есть метод lmbDelegate :: **objectify($callback)**, который автоматически распознает, пришел ли ему объект класса lmbDeledate или же один из вариантов, которые можно передать в конструктор.
+
+Подписка на сообщения - это еще не все: необходимо предусмотреть средства **оповещения** слушателей. Для этого в классе lmbDelegate есть методы:
+  * **invoke()** - вызывает call_user_func_array для данных, переданных в конструктор lmbDelegate, а в качестве параметров вызова - все, что были переданы в invoke.
+  * **invokeArray($args = array())** - аналог invoke, только в качестве параметров вызова передаются $args.
+  * **invokeAll($list, $args = array())** - статический метод. Вызывает invokeArray для всех объектов в списке $list
+  * **invokeChain($list, $args = array())** - статический метод. Вызывает invokeArray для всех объектов в списке $list, однако в отличие от invokeAll цепочка прерывается, как только хоть один из callback-ов ворачивает не-NULL значение
+
+Например:
+<code php>
+   if(count($this->_listeners))
+     lmbDelegate :: invokeAll($this->_listeners, array($this));
+</code>
+
+Здесь для каждого случашате из $this->_listeners будет вызван соответствующий callback и в качестве параметра будет передан сам оповещающий объект ($this).

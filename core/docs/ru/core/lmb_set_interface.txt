@@ -1,0 +1,21 @@
+====== lmbSetInterface ======
+
+**lmbSetInterface** - интерфейс единичных контейнеров данных в Limb3. см. также [[data_containers|Контейнеры данных в Limb3]]
+
+lmbSetInterface расширяет стандартный SPL интерфейс [[http://php.net/ArrayAccess|ArrayAccess]]:
+
+<code php>
+interface lmbSetInterface extends ArrayAccess
+{
+  function get($name);
+  function set($name, $value);
+  function remove($name);
+  function reset();
+  function export();
+  function import($values);
+  function has($name);
+}
+</code>
+
+lmbSetInterface используется в [[lmb_object|lmbObject]], [[lmb_set|lmbSet]], а также в пакете DBAL (lmbDBRecord)
+

@@ -1,0 +1,69 @@
+====== How {{macro}} template gets data for displaying? ======
+
+%%{{macro}} usually works with plain PHP scalar values or arrays. However, if you want your objects to be fully supported in {{macro}}%% as well, make sure that your object supports [[http://www.php.net/~helly/php/ext/spl/interfaceArrayAccess.html|ArrayAccess]](in case of accessing attributes using dotted syntax) or [[http://www.php.net/~helly/php/ext/spl/interfaceIterator.html|Iterator]](in case of iteration).
+
+There are two common ways to make some data appear inside a template:
+  * **push** - data is pushed into template externally with some simple interface like **set($var, $name)** or **assign($var, $name)**. 
+  * **pull** - template code fetches required data internally by using helpers or callbacks.
+
+%%{{macro}}%% supports both of these approaches.
+
+
+===== Push approach =====
+
+lmbMacroTemplate has **set($variable_name, $value)** method that sets global variable $variable_name in the template. This variable will be available in template as {$#variable_name} or {$this->variable_name} expressions.
+
+For example:
+<code php>
+$macro = new lmbMacroTemplate('page.phtml');
+$macro->set('title', 'Hello');
+</code>
+To render 'title' in%% {{macro}}%% template we can use the following expression:
+<code php>
+{$#title}
+</code>
+
+There is also lmbMacroTemplate :: **setVars($associative_array)** that is equal to several set() method calls for every element of $associative_array. Note: setVars() removes previously assigned variables.
+
+===== Pull approach =====
+
+You can also use arbitrary PHP blocks right in %%{{macro}}%% templates to fetch data, e.g.:
+<code xml>
+<? $products = lmbActiveRecord :: find('Product'); ?>
+{{list using='$products' as="$product"}}
+<ul>
+  {{list:item}}
+    <li>{$product.title}</li>
+  {{list:item}}
+</ul>
+{{/list}}
+</code>
+
+==== Data from lmbController ====
+
+If you create an application based on WEB_APP package of Limb3, you may be interested to know that template can access all attributes of the currently executed controller(just like you called lmbMacroTemplate :: set() for every controller attribute).
+
+For example:
+<code php>
+class MyController extends lmbController
+{
+  function doDisplay()
+  {
+    $this->title = 'Hello';
+  }
+}
+</code>
+In the corresponding %%{{macro}}%% template $title attribute will be available as:
+<code php>
+{$#title}
+</code>
+
+===== Contexts in {{macro}} =====
+
+%%{{macro}}%% has only 2 contexts or data scopes:
+  * **global** - scope of the generated PHP class of template
+  * **local** - scope of one method of this class. 
+
+Rendering always starts with render() method of the generated PHP class. Some tags like [[limb3:en:packages:macro:tags:core_tags:include_tag|{{include}}]] or [[limb3:en:packages:macro:tags:core_tags:apply_tag|{{apply}}]] generate their code into separate methods and thus create other local scopes. %%{{include}} and {{apply}}%% allow to pass any variables into their local scopes with any number of extra attributes (see descriptions of these tags).
+
+See also [[expressions|output expressions]].

@@ -1,0 +1,120 @@
+====== Rendering lists or tables ======
+
+===== {{macro}} tags for lists rendering =====
+
+Let's consider the following example:
+
+<code xml>
+ <table border="1">
+   <tr>
+    <th>№</th>
+    <th>Title</th>
+    <th>Volume, liters</th>
+    <th>Weight, kg</th>
+   </tr>
+ {{list using="$#tanks" as="$tank" counter="$number"}}
+   {{list:item}}
+   <tr>
+    <td>{$number}</td>
+    <td>{$tank.name}</td>
+    <td>{$tank.volume}</td>
+    <td>{$tank.weight}</td>
+   </tr>
+   {{/list:item}}
+  {{list:empty}}
+  <tr><td colspan='4'>List is empty!</td></tr>
+  {{/list:default}}
+ {{/list}}
+</table>
+</code>
+
+To render a list or a table with %%{{macro}}%% you will need a group of ListTags: 
+  *  [[limb3:en:packages:macro:tags:ListTags:ListTag|Tag {{list}}]] - main tag that renders its content if a variable named by **using** attribute is a non empty array or Iterator. **as** attribute tells %%{{list}}%% tag name of the temporary variable that will contain a reference to every next element of the list. By default **as** attribute has **$item** value.
+  * [[limb3:en:packages:macro:tags:ListTags:ListItemTag|Tag {{list:item}}]] - repeats its content for every element of the list.
+  * [[limb3:en:packages:macro:tags:ListTags:ListEmptyTag|Tag {{list:empty}}]] - renders its content in case the list is empty.
+  * [[limb3:en:packages:macro:tags:ListTags:ListGlueTag|Tag {{list:glue}}]] - used to render a portion of the template to separate elements in the list. 
+  * **$number** variable that contains row number of the list. $number variable can be changed using **counter** attribute for %%{{list}}%% tag.
+
+There can be two different kinds of rendering results: for non empty lists and for empty lists:
+
+Non empty:
+^№^Title^Volume, liters^Weight, kg^
+| 1 | Tank AB-102 | 2400 | 340 |
+| 2 | Tank AB-103 | 2000 | 300 |
+
+Empty:
+^№^Title^Volume, liters^Weight, kg^
+| List is empty! ||||
+
+
+===== Rendering multi-column lists =====
+
+To render a multi-column list (for example 3 items in a row) [[limb3:en:packages:macro:tags:ListTags:ListGlueTag|tag {{list:glue}}]] is used that can render its content once per several steps. The value of step can be set by a **step** attribute of the %%{{list:glue}}%% tag.
+
+For example:
+<code xml>
+{{list using="$#images"}}
+<table>
+<tr>
+   {{list:item}}
+   <td>
+    <img src='{$item.path}' border='0' /><br />{$item.title}
+   </td>
+   {{list:glue step="3"}}</tr><tr>{{/list:glue}}
+   {{/list:item}}
+</tr>
+</table>
+{{/list}}
+</code>
+
+This template will output images in 3 columns.
+
+As you may have noticed the example above will produce invalid HTML layout for lists with number of elements not evenly divisible by 3. Let's fix this by applying [[limb3:en:packages:macro:tags:ListTags:ListFillTag|tag {{list:fill}}]]:
+
+<code xml>
+{{list using="$#images"}}
+<table>
+<tr>
+  {{list:item}}
+    <td>
+     <img src='{$item.path}' border='0' /><br />{$item.title}
+    </td>
+   {{list:glue step="3"}}</tr><tr>{{/list:glue}}
+ </list:item>
+ {{list:fill upto='3' items_left='$items_left'}}
+  <td colspan='{$items_left}'>&nbsp;</td>
+ {{/list:fill}}
+</tr>
+</table>
+{{/list}}
+</code>
+
+Tag%% {{list:fill}}%% outputs its contents only if list has a number of elements more than zero but up to some value that is specified by **upto** attribute. %%{{list:fill}}%% also fills a variable named according to **items_left** attribute that holds a number of items required to produce a valid layout.
+
+You can also consider using [[limb3:en:packages:macro:tags:core_tags:repeat_tag|tag {{repeat}}]] with %%{{list:fill}}%% to render missing items:
+<code xml>
+{{list using="$#images"}}
+<table>
+<tr>
+ {{list:item}}
+    <td>
+     <img src='{$item.path}' border='0' /><br />{$item.title}
+    </td>
+   {{list:glue step="3"}}</tr><tr>{{/list:glue}}
+ {{/list:item}}
+ {{list:fill upto='3' items_left='$some_var'}}
+   {{repeat times='{$some_var}'}}
+   <td>
+    <img src='/images/no_image.gif' alt='sorry, no image' />
+   </td>
+   {{repeat}}
+ {{/list:fill}}
+</tr>
+</table>
+{{/list}}
+</code>
+
+===== More examples =====
+
+  * See examples for [[limb3:en:packages:macro:tags:ListTags:ListTag|tag {{list}}]]
+  * See examples for [[limb3:en:packages:macro:tags:ListTags:ListGlueTag|tag {{list:glue}}]]

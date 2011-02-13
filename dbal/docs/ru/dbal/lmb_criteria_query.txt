@@ -1,0 +1,19 @@
+====== lmbCriteriaQuery ======
+
+**lmbCriteriaQuery** - это абстрактный класс, который позволяет добавлять сложные условия в SQL-запросы. Наследуется от класса [[lmb_template_query]]. lmbCriteriaQuery добавляет поддержку метки вида %where% в SQL-шаблон. Условия, добавляемые в запрос, реализуются в виде классов подсистемы [[Criteria]].
+
+Для добавления новых условий в запрос, используется метод lmbCriteriaQuery  :: **addCriteria($criteria)**, например:
+<code php>
+  $query->addCriteria(new lmbSQLRawCriteria('recipe_item.cocktail_id = cocktail.id'));
+  $criteria = new lmbSQLFieldCriteria('ingredient.name', '%'.$name.'%', lmbSQLFieldCriteria :: LIKE);
+  $query->addCriteria($criteria);
+</code>
+
+Для addCriteria() есть алиас **where($criteria)**.
+
+Если в качестве $criteria пришла обычная строка, то она будет автоматически обвернута в объект класса lmbSQLCriteria():
+<code php>
+  $query->where('recipe_item.cocktail_id = cocktail.id');
+</code>
+
+[[lmb_select_query]], [[lmb_update_query]] и [[lmb_delete_query]] наследуются от lmbCriteriaQuery.

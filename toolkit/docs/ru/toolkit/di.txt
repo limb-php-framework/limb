@@ -1,0 +1,20 @@
+====== Зачем нужен пакет Toolkit ======
+
+Некоторые объекты являются особо популярными, и зачастую требуется иметь глобальный доступ к таким объектам в рамках всей системы. К таким объектам можно отнести Запрос, Ответ, Пользователь, различные фабрики и т.д. 
+
+Некоторые разработчики реализуют такие классы в виде одиночек (**Singleton**). Но паттерн одиночки в последнее время воспринимается двояко, некоторые признают в нем anti-pattern, то есть как неверное решение, использование которого может повредить проекту.
+
+Другая альтернатива - это воспользоваться методиками для инверсии зависимостей и применить принципы **Dependency Injection** или **Service Locator**.
+
+
+===== Что такое Dependency Injection? =====
+
+Принципы Dependency Injection и Dependency Pullup хорошо описаны в статье [[http://wiki.agiledev.ru/doku.php?id=ooad:dependency_injection|Инверсия зависимостей при проектировании Объектно-Ориентированных систем]]. 
+
+Подробнее о инверсии зависимостей можно узнать из статьи Мартина Фаулера  [[http://martinfowler.com/articles/injection.html|Inversion of Control Containers and the Dependency Injection pattern]] 
+
+Также можно почитать о паттерне [[http://java.sun.com/blueprints/corej2eepatterns/Patterns/ServiceLocator.html|ServiceLocator в статье Java J2EE]] 
+
+===== Service Locator =====
+
+Service Locator - это активная форма получения зависимых объектов, относится к Dependency Pullup. Нам этот способ показался более удобным и наглядным, чем классический Dependency Injection. Пакет TOOLKIT - это реализация расширенной версии этого паттерна Dynamic Service Locator.

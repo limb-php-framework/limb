@@ -1,0 +1,37 @@
+====== Пакет TREE - работа с иерархической информацией(деревья) в БД ======
+
+
+===== Основные возможности =====
+  - Хранение иерархической информации в БД.
+  - Манипуляции с иерархией.
+  - Вывод иерархической информации.
+===== Классы, используемые для работы с деревьями =====
+
+{{ limb:architecture:limb3.0_tree.png }}
+
+
+==== lmbMaterializedPathTree ====
+
+**lmbMaterializedPathTree** - класс, который инкапсулирует операции по хранению, изменению и получению информации об иерархических конструкциях, хранящихся в одной таблице базы данных. По умолчанию для хранения дерева используется таблица sys_tree со следующей структурой:
+
+<code sql>
+CREATE TABLE `sys_tree` (                         
+            `id` int(11) NOT NULL auto_increment,           
+            `root_id` int(11) NOT NULL default '0',         
+            `parent_id` int(11) NOT NULL default '0',       
+            `priority` int(11) NOT NULL default '0',        
+            `level` int(11) NOT NULL default '0',           
+            `identifier` varchar(128) NOT NULL default '',  
+            `path` varchar(255) NOT NULL default '',        
+            `children` int(11) NOT NULL default '0',        
+            PRIMARY KEY  (`id`),                            
+            KEY `root_id` (`root_id`),                      
+            KEY `identifier` (`identifier`),                
+            KEY `level` (`level`),                          
+            KEY `rlr` (`root_id`),                          
+            KEY `parent_id` (`parent_id`),                  
+            KEY `id` (`id`,`parent_id`)                     
+          ) TYPE=InnoDB
+</code>
+
+lmbMaterializedPathTree работает с базой данных через пакет Limb3 [[limb3:ru:packages:dbal|DBAL]].

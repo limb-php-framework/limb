@@ -1,0 +1,25 @@
+====== New Limb3 DB Schema ======
+
+===== DB Schema example =====
+
+This example shows typical DB structure of Limb3 based project. To simplify the example we removed all tables that related to statistics, access policy, all domain objects except articles.
+
+{{ limb:limb3.0_simple_db_schema.gif }}
+
+===== Required tables =====
+
+  * **sys_uid** contains only one integer field that used to generate unique identifiers. We recomment use this identifier everythere in Limb based project. To get next identifier please use **nextUID()** method from lmbBaseToolkit() class.
+  * The list of all limb-objects is stored in **sys_object** table. Every limb-object has unique identifier. [[objects|See limb objects page for more details about this]].
+  * **sys_class** table contains all class names of all stored limb-objects. We can get information what kind of object is stored at particular oid in sys_object table.
+
+===== Other tables on the schema =====
+
+The other tables are optional. The example DB schema contains several other tables to deal with hierarhies, services, versions of objects and versioned articles:
+
+^Table^Description^
+|sys_session|Stores session data. This table is required if you want to keep your session data in DB|
+|sys_tree|Stores data about tree structure (materialized path algorithm). This table contains also hierarhies and has no idea how these hierarhies are used. You can remove this table for simple projects e.g. file-based wiki or simple news project.|
+|sys_object_to_node|Contains information how limb-object's are connected to tree nodes|
+|sys_service|Contains list of Services. sys_service and sys_object_to_service tables are required only if some of your limb-objects will be connected to Services.|
+|sys_object_to_service|Contains list of points there limb-object connects to lmbService (we called these points **ServiceLocation**). It possible to have many ServiceLocations for one lmbService.|
+|sys_version_history \\ sys_current_version|Demonstates methods how to create fully independent sub-systems. As you can see object versioning is applied here to articles only. You can use any field as **revision_object_id** so if we choose oid from sys_object as **revision_object_id** it will be possible to save versiones of any objects.|

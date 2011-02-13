@@ -1,0 +1,62 @@
+====== Документация Limb3 ======
+===== Введение =====
+
+  * [[.ru:for_beginners|Если вы новичок в Limb3...]] (основные моменты, советы, где искать описания и примеры).
+
+  * [[.ru:faq|Часто задаваемые вопросы (FAQ)]]
+
+  * [[.ru:how_to_download|Где и как скачать Limb3?]]
+
+  * [[.ru:packages_architecture|Разделение Limb3 на пакеты. Что такое пакеты в Limb3?]]
+
+  * [[.ru:packages|Полный список пакетов Limb3 с описаниями]]
+
+  * [[.ru:how_to_run_tests|Как запустить тесты на пакеты Limb3]]
+
+  * [[.ru:setup_files|Конфигурационные файлы в Limb3]]
+
+  * [[.ru:constants|Конфигурационные переменные используемые в Limb3]]
+
+  * [[.ru:coding_standards|Стандарты кодирования Limb3]]
+
+  * [[.ru:svn|Работа с репозиторием Limb3]]
+
+  * [[.ru:index|Инструкция пользователя]] (пишется в данный момент)
+===== Основные пакеты =====
+
+[[.ru:packages|Полный список пакетов Limb3 с описаниями]]
+
+[[.ru:packages:taskman:limb.php| Утилита limb.php]]
+
+  * [[.ru:packages:core|Пакет CORE]]
+
+  * [[.ru:packages:toolkit|Пакет TOOLKIT]]
+
+  * [[.ru:packages:dbal|Пакет DBAL]]
+    * [[.ru:packages:dbal:intro_to_query_and_criteria|Использование классов из подсистем Query и Criteria]]
+
+  * [[.ru:packages:active_record|Пакет ACTIVE_RECORD]]
+    * [[.ru:packages:.active_record:crud|Создание, сохранение, загрузка и удаление объектов]]
+    * [[.ru:packages:active_record:find|Поиск и сортировка объектов. find()-методы lmbActiveRecord]]
+    * [[.ru:packages:active_record:one_to_one|Отношение один-к-одному]]
+    * [[.ru:packages:active_record:one_to_many|Отношение один-ко-многим]]
+    * [[.ru:packages:active_record:many_to_many|Отношение много-ко-многим]]
+
+  * [[.ru:packages:macro|Пакет MACRO]]
+    * [[.ru:packages:macro:tags|Словарь MACRO-тегов]]
+    * [[.ru:packages:macro:filters|Словарь MACRO-фильтров]]     
+
+  * [[.ru:packages:web_app|Пакет WEB_APP]]
+    * [[.ru:packages:web_app:app_installation|Пример установки каркасного приложения для работы с WEB_APP пакетом]]
+
+
+  * [[.ru:packages:tests_runner|Пакет TESTS_RUNNER]]
+    * [[.ru:packages:tests_runner:limb_unit|limb_unit - консольный инструмент для выполнения SimpleTest тестов]]
+
+===== Подробные примеры реализации готовых решений с помощью Limb3 =====
+
+  * [[.ru:tutorials:basic|Как создать простейшее CRUD-приложение]]
+
+  * [[.ru:tutorials:shop|Как создать электронный магазин при помощи Limb3]]
+
+  * [[.ru:tutorials:zend_search|Как интегрировать Zend_Search с Limb3]]

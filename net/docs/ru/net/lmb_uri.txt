@@ -1,0 +1,27 @@
+====== lmbUri ======
+
+Используется для разбора URL-ов и других связанных с ними операций. 
+
+Инициализация происходит через конструктор:
+
+<code php>
+$uri = new lmbUri('http://admin:test@localhost:81/test.php/test?foo=bar#23');
+</code>
+
+или parse метод:
+
+<code php>
+$uri = new lmbUri();
+$uri->parse('http://admin:test@localhost:81/test.php/test?foo=bar#23');
+</code>
+
+с полученным объектом можно проводить различные манипуляции, вот некоторые из них:
+<code php>
+$uri = new lmbUri('http://admin:test@localhost:81/test.php/test?foo=bar#23');
+$uri->setProtocol('ftp://');
+$uri->setPort('80');
+$string = $uri->toString(array('protocol', 'host', 'port', 'path'));
+</code>
+и т.д.
+
+см. также тест lmbUriTest.class.php

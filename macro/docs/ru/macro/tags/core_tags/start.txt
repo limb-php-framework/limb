@@ -1,0 +1,19 @@
+===== Базовые теги (Core Tags)=====
+==== Управление шаблонами ====
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/core/**||
+|[[limb3:ru:packages:macro:tags:core_tags::include_tag|include]]|Вставляет содержимое другого шаблона или иного файла в текущий шаблон.|
+|[[limb3:ru:packages:macro:tags:core_tags::slot_tag|slot]]|Представляет из себя место в шаблоне куда может быть вставлен другой шаблон или часть другого шаблона.|
+|[[limb3:ru:packages:macro:tags:core_tags::wrap_tag|wrap]]| Вставляет часть шаблона в определенное место другого шаблона. Делает из этих двух шаблонов один - единый шаблон. В случае использования совместо с тегами [[limb3:ru:packages:macro:tags:core_tags::into_tag| {{into}}]] просто указывает на имя шаблона, куда будет вставляться содержимое тегов [[limb3:ru:packages:macro:tags:core_tags::into_tag| {{into}}]].|
+|[[limb3:ru:packages:macro:tags:core_tags::template_tag|template]]| Определяет часть шаблона, которая может быть многократно использована при помощи тега [[limb3:ru:packages:macro:tags:core_tags::apply_tag| {{apply}}]]. Комбинация [[limb3:ru:packages:macro:tags:core_tags::template_tag| {{template}}]] и [[limb3:ru:packages:macro:tags:core_tags::apply_tag| {{apply}}]] позволяет делать аналог [[limb3:ru:packages:macro:tags:core_tags::include_tag| {{include}}]], но только в рамках одного шаблона. Тег [[limb3:ru:packages:macro:tags:core_tags::template_tag| {{template}}]] без применения тега [[limb3:ru:packages:macro:tags:core_tags::apply_tag| {{apply}}]] не генерирует код.|
+
+==== Прочие ====
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/core/**||
+|[[limb3:ru:packages:macro:tags:core_tags:apply_tag|apply]]| Вставляет часть шаблона, указанное в рамках какого-то тега [[limb3:ru:packages:macro:tags:core_tags:template_tag| {{template}}]]. По сути это тот же [[limb3:ru:packages:macro:tags:core_tags:include_tag| {{include}}]], только включаемый шаблон находится в текущем шаблоне|
+|[[limb3:ru:packages:macro:tags:core_tags:into_tag|into]]| Вставляет часть шаблона в определенное место другого шаблона, отмеченное тегом [[limb3:ru:packages:macro:tags:core_tags:slot_tag| {{slot}}]] Используется внутри тега [[limb3:ru:packages:macro:tags:core_tags:wrap_tag| {{wrap}}]]|
+|[[limb3:ru:packages:macro:tags:core_tags:copy_and_cut_tags|Теги copy и cut]]| [[http://fisheye.limb-project.com/browse/~raw,r=7486/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroCopyAndCutTagsTest.class.php| пример в тесте]]|
+|[[limb3:ru:packages:macro:tags:core_tags:spaces_and_lines_tags| Теги newline, nospace, space, tab, trim]]| [[http://fisheye.limb-project.com/browse/~raw,r=7486/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroNospaceTagTest.class.php| пример в тесте]]|
+|[[limb3:ru:packages:macro:tags:core_tags:repeat_tag|repeat]]| [[http://fisheye.limb-project.com/browse/~raw,r=7486/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroRepeatTagTest.class.php| пример в тесте]]|
+|[[limb3:ru:packages:macro:tags:core_tags:assign_tag|assign]]| [[http://fisheye.limb-project.com/browse/~raw,r=8102/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroAssignTagTest.class.php| пример в тесте]]|
+|[[limb3:ru:packages:macro:tags:core_tags:if_ifelse_else_tags|Тэги if, elseif, else]]| [[http://fisheye.limb-project.com/browse/~raw,r=8106/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroIfAndElseIfAndElseTagsTest.class.php| пример в тесте]]|

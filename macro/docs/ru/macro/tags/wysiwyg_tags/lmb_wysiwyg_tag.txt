@@ -1,0 +1,21 @@
+====== Тег {{wysiwyg}} ======
+===== Описание =====
+
+Предназначен для вывода WYSIWYG-редактора из пакета [[limb3:ru:packages:wysiwyg|WYSIWYG]]. 
+
+Является потомком [[..form_tags:text_area_tag]], и наследует его атрибуты.
+
+===== Синтаксис =====
+
+<code xml>
+{{wysiwyg id='id' name='name' profile='myTinyMCE' [...]/}}
+</code>
+===== Содержимое =====
+
+Нет.
+
+===== Атрибуты ======
+
+См. атрибуты [[limb3:ru:packages:macro:tags:form_tags:lmb_macro_form_element_tag#атрибуты|lmbMacroFormElementTag]].
+
+  * **profile** - имя профиля wysiwyg из wysiwyg.conf.php
