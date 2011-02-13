@@ -1,6 +1,6 @@
 ====== Функции для проверки данных =====
 Все функции бросают исключение **lmbInvalidArgumentException**, если переданный параметр не удовлетворяет условию.
-==== lmb_assert_true( $value ) ====
+==== lmb_assert_true( $value, [$message, [$exception_class]] ) ====
 Проверка на "положительность" параметра.
 <code php>
 lmb_assert_true(true);
@@ -22,7 +22,7 @@ lmb_assert_true(array()); //исключение
 lmb_assert_true(new stdClass()); // все верно, нет исключения
 </code>
 
-===== lmb_assert_type ($value, $expected_type )=====
+===== lmb_assert_type ($value, $expected_type, [$message, [$exception_class]] ) =====
 Проверка параметра на принадлежность определенному типу.
 <code php>
 //Простые типы
@@ -56,7 +56,7 @@ lmb_assert_type(new ArrayObject, 'SomeClass') //исключение
 </code>
 
 
-===== lmb_assert_reg_exp ( $string, $pattern )=====
+===== lmb_assert_reg_exp ( $string, $pattern, [$message, [$exception_class]] )=====
 Проверка строки на совпадение с регулярным выражением.
 <code php>
 //простой поиск подстроки
@@ -72,7 +72,7 @@ lmb_assert_reg_exp('abc', '/x/'); //исключение
 </code>
 
 
-===== lmb_assert_array_with_key ( $array, $key )=====
+===== lmb_assert_array_with_key ( $array, $key, [$message, [$exception_class]] )=====
 Проверка наличия ключа в массиве.
 <code php>
 lmb_assert_array_with_key(1, 'foo'); //исключение, т.к. не массив

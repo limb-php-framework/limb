@@ -74,7 +74,7 @@
 {{input type="text" name="name" id="name" title="Имя и фамилия"/}}
 
 {{form:field_errors to='$name_errors' for="name"/}}
-{{list using='$fields_errors' as="$error"}}
+{{list using='$name_errors' as="$error"}}
 <ol>
   {{list:item}}
     <li><span style="color:red">{$error.message}</span></li>

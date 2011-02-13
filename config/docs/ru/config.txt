@@ -39,7 +39,7 @@
 
 Пример использования:
 <code php>
-@define('LIMB_INI_INCLUDE_PATH', 'tests/settings;settings');
+@define('LIMB_CONF_INCLUDE_PATH', 'tests/settings;settings');
 </code>
 
 Подробнее [[http://wiki.limb-project.com/doku.php?id=limb3:ru:constants|о константах в Limb3]]

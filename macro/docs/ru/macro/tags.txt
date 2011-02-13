@@ -21,11 +21,13 @@
 |Расположение: **limb/macro/src/tags/core/**||
 |[[.tags:core_tags:apply_tag|apply]]| Вставляет часть шаблона, указанное в рамках какого-то тега [[.tags:core_tags:template_tag| {{template}}]]. По сути это тот же [[.tags:core_tags:include_tag| {{include}}]], только включаемый шаблон находится в текущем шаблоне|
 |[[.tags:core_tags:into_tag|into]]| Вставляет часть шаблона в определенное место другого шаблона, отмеченное тегом [[.tags:core_tags:slot_tag| {{slot}}]] Используется внутри тега [[.tags:core_tags:wrap_tag| {{wrap}}]]|
-|[[tag:core_tags:copy_and_cut_tags|Теги copy и cut]]| [[http://fisheye.limb-project.com/browse/~raw,r=7486/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroCopyAndCutTagsTest.class.php| пример в тесте]]|
-|[[.tags:core_tags:spaces_and_lines_tags| Теги newline, nospace, space, tab, trim]]| [[http://fisheye.limb-project.com/browse/~raw,r=7486/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroNospaceTagTest.class.php| пример в тесте]]|
-|[[.tags:core_tags:repeat_tag|repeat]]| [[http://fisheye.limb-project.com/browse/~raw,r=7486/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroRepeatTagTest.class.php| пример в тесте]]|
-|[[.tags:core_tags:assign_tag|assign]]| [[http://fisheye.limb-project.com/browse/~raw,r=8102/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroAssignTagTest.class.php| пример в тесте]]|
-|[[.tags:core_tags:if_ifelse_else_tags|Тэги if, elseif, else]]| [[http://fisheye.limb-project.com/browse/~raw,r=8106/limb/3.x/trunk/limb/macro/tests/cases/tags/core/lmbMacroIfAndElseIfAndElseTagsTest.class.php| пример в тесте]]|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroCopyAndCutTagsTest.class.php#L12|copy]]| Копирует содержимое в переменную-буффер|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroCopyAndCutTagsTest.class.php#L21|cut]]| Перемещает содержимое в переменную-буффер|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroNospaceTagTest.class.php#L11| nospace, trim, space, tab]]| Позволяют вырезать пробельные символы сохраняя наглядность разметки|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroRepeatTagTest.class.php#L1|repeat]]| Повторяет свое содержимое, указанное количество раз|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroAssignTagTest.class.php#L1|assign]]| Копирует содержимое одной переменной в другую |
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroIfAndElseIfAndElseTagsTest.class.php#L1|Тэги if, elseif, else]]| Ветвление тэгами |
+
 ===== Списки (List Tags) =====
 
 ^Тег^Описание^
@@ -97,9 +99,8 @@
 |[[.tags:wysiwyg_tags:lmb_wysiwyg_tag|wysiwyg]] | Отображает wysiwyg-редактор|
 ===== Кеширование (пакет CACHE2) =====
 
-^Тег^Описание^
-|Расположение: **limb/cache2/src/macro/**||
-|[[.tags:cache2_tags:cache_tag|cache]] | Частичное кеширование страницы |
+{{section>limb3:ru:packages:macro:tags:cache2_tags:start&noheader&nofooter}}
+
 
 ===== Права доступа (пакет ACL) =====
 

@@ -26,4 +26,6 @@
 Нет.
 ===== Пример использования =====
 
-FIXME
+<code xml>
+  {{datetime id="date" name="date" title="Дата" lang="ru" format="%d-%m-%Y" disabled="disabled"/}}
+</code>
