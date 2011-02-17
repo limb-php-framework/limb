@@ -26,8 +26,5 @@
     * [[limb3:en:packages:macro:tags|MACRO tags dictionary]]
     * [[limb3:en:packages:macro:filters|MACRO filters dictionary]]
 
-  * WACT package
-    * [[limb3:en:packages:wact|WACT - A fork of template engine taken from WACT PHP framework]]
-
   * TESTS_RUNNER package
     * [[limb3:en:packages:tests_runner:limb_unit|limb_unit - SimpleTest advanced tests runner]]
