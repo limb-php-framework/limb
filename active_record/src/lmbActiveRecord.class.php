@@ -234,7 +234,7 @@ class lmbActiveRecord extends lmbObject
     // For optimization purposes
     $this->_relations = $this->_getAllRelations();
     $this->_single_object_relations = $this->_getSingleObjectRelations();
-	
+
     if($magic_params)
     {
       if(is_int($magic_params))
@@ -738,6 +738,7 @@ class lmbActiveRecord extends lmbObject
     return $this->_hasOneToManyRelation($relation) ||
            $this->_hasManyToManyRelation($relation);
   }
+
   /**
    *  Generic magic setter for any attribute
    *  @param string property name
@@ -784,7 +785,7 @@ class lmbActiveRecord extends lmbObject
   {
     if($this->_db_meta_info->hasColumn($property))
       return true;
-      
+
     if($this->_isAggregatedObjectProperty($property))
       return true;
 
@@ -951,7 +952,7 @@ class lmbActiveRecord extends lmbObject
       $throw_exception = $this->_has_one[$property]['throw_exception_on_not_found'];
     else
       $throw_exception = true;
-          
+
     return self :: findById($this->_has_one[$property]['class'],
                             $this->get($this->_has_one[$property]['field']),
                             $throw_exception,
@@ -970,12 +971,12 @@ class lmbActiveRecord extends lmbObject
            $this->_many_belongs_to[$property]['can_be_null'];
   }
 
-  
+
 
   protected function _mapMethodToClass($method)
   {
     return substr($method, 3);
-  }  
+  }
 
   protected function _doSave($need_validation)
   {
@@ -1086,7 +1087,7 @@ class lmbActiveRecord extends lmbObject
   protected function _insertDbRecord($values)
   {
     return $this->_db_table->insert($values);
-  }  
+  }
 
   protected function _mapPropertiesToDbFields($only_dirty_properties = false)
   {
@@ -1100,11 +1101,14 @@ class lmbActiveRecord extends lmbObject
           unset($fields[$field]);
       }
     }
-    
+
     foreach($fields as $field => $value)
     {
       if($this->_isAggregatedObjectProperty($field))
+      {
+        unset($fields[$field]);
         $fields = array_merge($fields, $this->_getDbFieldsFromAggregatedObject($field, $value));
+      }
     }
 
     if($this->isNew() && $this->_isInheritable())
@@ -1112,18 +1116,18 @@ class lmbActiveRecord extends lmbObject
 
     return $fields;
   }
-  
+
   function _isAggregatedObjectProperty($property)
   {
     return array_key_exists($property, $this->_composed_of);
   }
-  
+
   function _getDbFieldsFromAggregatedObject($property, $object)
   {
     $info = $this->_composed_of[$property];
-    
+
     if(!is_object($object))
-      continue;
+      return array();
 
     // for bc
     if(isset($info['getter']))
@@ -1147,18 +1151,18 @@ class lmbActiveRecord extends lmbObject
     }
     return $fields;
   }
-  
+
   protected function _checkDirtinessOfAggregatedObjectsFields()
   {
-    foreach($this->_composed_of as $property => $info)  
+    foreach($this->_composed_of as $property => $info)
       if(isset($info['mapping']))
       {
         $this->_markDirtyProperty($property);
       }
   }
-  
+
   protected function _loadAggregatedObject($property, $value = LIMB_UNDEFINED)
-  {    
+  {
     // for BC
     if(isset($this->_composed_of[$property]['getter']))
     {
@@ -1172,7 +1176,7 @@ class lmbActiveRecord extends lmbObject
       $object = new $class($value);
       return $object;
     }
-    
+
     $class = $this->_composed_of[$property]['class'];
     $object = new $class();
 
@@ -1194,14 +1198,14 @@ class lmbActiveRecord extends lmbObject
   }
 
   protected function _getAggregatedObject($property)
-  {    
+  {
     if(parent :: has($property))
     {
-      $value = $this->_getRaw($property);          
+      $value = $this->_getRaw($property);
 
       if(is_object($value))
         return $value;
-    }    
+    }
 
     $object = $this->_loadAggregatedObject($property);
     $this->_setRaw($property, $object);
@@ -1370,6 +1374,8 @@ class lmbActiveRecord extends lmbObject
 
   protected function _validate($validator)
   {
+    if($old_error_list = $validator->getErrorList())
+      $this->_error_list->join($old_error_list);
     $validator->setErrorList($this->_error_list);
     $validator->validate($this);
 
@@ -1615,7 +1621,7 @@ class lmbActiveRecord extends lmbObject
     }
   }
   /**
-   *  Implements WACT template datasource component interface, this method simply calls find()
+   *  Implements datasource interface, this method simply calls find()
    *  @see find()
    *  @param mixed misc magic params
    *  @return iterator

@@ -1,0 +1,8 @@
+====== lmbDispatchedRequest ======
+
+lmbDispatchedRequest contains requested [[lmbService]] and [[Action]]. lmbDispatchedRequest is created in [[lmbRequestDispatcher]] and passed to [[lmbToolkit]] in [[lmbRequestDispatchingFilter]] so that other classes can use lmbDispatchedRequest for their needs.
+
+Some filters where lmbDispatchedRequest is used:
+  * [[lmbCommandProcessingFilter]] - executes a command that matches the requested lmbService and Action.
+  * [[ServiceActionExtraFilterChainFilter]] - creates an extra filter chain according to the requested lmbService and Action.
+  * lmbSimpleACLAccessFilter from SimpleACL package - checks if the user has access to perform requested Action.

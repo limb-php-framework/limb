@@ -106,39 +106,39 @@ class lmbCollectionTest extends UnitTestCase
     $iterator->next();
     $this->assertEqual($iterator->current(), $item2);
   }
-  
+
   function testAddToPosition()
   {
     $item1 = new lmbSet(array(1));
-    $item2 = new lmbSet(array(2));        
+    $item2 = new lmbSet(array(2));
     $iterator = new lmbCollection();
     $iterator->add($item1, 1);
     $iterator->add($item2, 0);
-    
+
     $iterator->rewind();
     $this->assertEqual($iterator->current(), $item2);
     $iterator->next();
-    $this->assertEqual($iterator->current(), $item1);        
+    $this->assertEqual($iterator->current(), $item1);
   }
-  
+
   function testAt()
   {
     $item1 = new lmbSet(array(1));
-    $item2 = new lmbSet(array(2));        
+    $item2 = new lmbSet(array(2));
     $iterator = new lmbCollection();
     $iterator->add($item1, 1);
     $iterator->add($item2, 0);
-    
+
     $this->assertEqual($iterator->at(0), $item2);
     $this->assertEqual($iterator->at(1), $item1);
   }
-  
+
   function testRemove()
   {
-    $item1 = new lmbSet(array(1));      
+    $item1 = new lmbSet(array(1));
     $iterator = new lmbCollection();
     $iterator->add($item1, 1);
-    
+
     $iterator->remove(1);
     $this->assertNull($iterator->at(1));
   }
@@ -199,6 +199,21 @@ class lmbCollectionTest extends UnitTestCase
     $this->assertEqual($iterator->getArray(), array());
   }
 
+  function testJoin()
+  {
+    $item1 = new lmbSet(array('x' => 'C'));
+    $item2 = new lmbSet(array('x' => 'A'));
+    $item3 = new lmbSet(array('x' => 'B'));
+    $item4 = new lmbSet(array('x' => 'D'));
+
+    $col1 = new lmbCollection(array($item1, $item2));
+    $col2 = new lmbCollection(array($item3));
+    $col3 = array($item4);
+
+    $this->assertEqual($col1->join($col2)->join($col3),
+      new lmbCollection(array($item1, $item2, $item3, $item4)));
+  }
+
   function testConcat()
   {
     $item1 = new lmbSet(array('x' => 'C'));
@@ -232,20 +247,20 @@ class lmbCollectionTest extends UnitTestCase
     $this->assertTrue(isset($arr['C']));
     $this->assertEqual($arr['C'], array('x' => 'C'));
   }
-  
+
   function testInterfaceArrayAccess()
   {
     $offset = 42;
-    $value = 'foo';    
+    $value = 'foo';
     $collection = new lmbCollection();
-    
+
     $this->assertFalse($collection->offsetExists($offset));
-    
+
     $collection->offsetSet($offset, $value);
     $this->assertTrue($collection->offsetExists($offset));
-    
+
     $this->assertEqual($value, $collection->offsetGet($offset));
-    
+
     $collection->offsetUnset($offset);
     $this->assertFalse($collection->offsetExists($offset));
     $this->assertNull($collection->offsetGet($offset));

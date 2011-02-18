@@ -1,0 +1,118 @@
+====== Валидация данных ======
+
+:!: Прежде чем разбираться с особенностями валидации в веб-приложениях, рекомендую познакомиться с [[..:validation| общей схемой валидации]], принятой в Limb.
+
+Обратим также внимание, что здесь описывается валидация данных на стороне сервера. Limb3 в настоящее время не предоставляет средств для создания валидаторов на стороне клиента, поэтому в этоп вопросе вы можете действовать по своему разумению. Справедливости ради отметим, что надеяться только на валидацию на стороне клиента не стоит, так как ее всегда можно попробовать обойти. Ваше приложение должно быть готовым к этому.
+
+===== Отображение ошибок валидации =====
+
+Основная идея валидации состоит в том, чтобы наполнить единый список ошибок (конечно, если есть ошибки), проверяя данные различными средствами (валидатором или простым кодом) и передать этот список ошибок в шаблон.
+
+==== Список ошибок валидации формы ====
+FIXME
+
+Если вы используете WACT-шаблонизатор (в качестве View в WEB_APP по-умолчанию используется именно класс lmbWACTView) и пакет WEB_APP, тогда для передачи списка ошибок можно использовать метод lmbWactView :: **setFormErrors($form_name, $error_list)**. Обычно это происходит автоматически, если вы вызываете метод lmbController :: useForm($form_name);
+
+Если же вы работаете просто с шаблоном напрямую и используете класс lmbErrorList, тогда вам потребуется написать следующие строки:
+
+<code php>
+$error_list = new lmbErrorList();
+//... заполнение $error_list
+$template = new WactTemplate('my_template.html');
+$form = $template->findChild('my_form');
+$error_list->setFieldNameDictionary(new WactFormFieldNameDictionary($form));
+$form->setErrors($error_list->getReadable());
+</code>
+
+Обратите внимание на метод lmbErrorList :: **getReadable()**. В этом методе создается новый экземпляр класса lmbErrorList, однако сообщения об ошибках там уже полностью отформатированные, где все специальные места вида {Field}заменены на "человеко-понятные" значения, основанные на данных, полученных из полей формы.
+
+Если же вы используете класс %%WactErrorList%% (например, при использовании WACT-а отдельно от других пакетов Limb3), который поддерживает схожий интерфейс, когда:
+
+<code php>
+$error_list = new WactErrorList();
+//... заполнение $error_list
+$template = new WactTemplate('my_template.html');
+$form = $template->findChild('my_form');
+$error_list->bindToForm($form);
+</code>
+
+В этом случае, если у вас в шаблоне есть тег формы с атрибутом runat='server', список ошибок будет передан в активный компонент формы.
+
+После этого мы сможете использовать следующие WACT-теги для отображения списка ошибок:
+  * [[limb3:ru:packages:wact:tags:form_tags:form_errors_tag|<form:errors>]] - передает список ошибок валидации в тег <list:list>, который найдет внутри себя (поведение начиная с версии WACT 0.3)
+  * [[limb3:ru:packages:wact:tags:form_tags:form_field_errors_tag|<form:field_errors>]] - передает список ошибок валидации для всех полей или только для конкретного поля в тег <list:list>, который найдет внутри себя (доступен начиная с версии WACT 0.3). 
+
+Пример:
+<code xml>
+<form name='my_form' runat='server' method='POST'>
+
+<form:errors>
+<list:list>
+Form errors:
+<ul>
+ <list:item>
+  <li><b>{$message}</b></li>
+ </list:item>
+</ul>
+</list:list>
+</form:errors>
+
+</form>
+</code>
+
+Сообщение об ошибке - {$message}.
+
+Список ошибок всех полей формы обычно шире, чем просто список ошибок, так как некоторые ошибки относятся к нескольким полям. Если вы выводите только общий список ошибок для всей формы - используйте тег <form:errors>, если же вы выводите ошибки рядом с полями ввода - тогда используйте тег <form:field_errors>.
+
+
+==== Общий список ошибок ====
+
+см. описание [[.flash_box|Flash_box - средство для отображения сообщений на страницах]]
+
+===== Локализация ошибок валидации =====
+
+Сообщения об ошибках валидации переводятся сразу при помощи глобальной функции lmb_i18n(). Эта функция определена в пакете [[limb3:ru:packages:i18n|I18N]], и таким образом обеспечивается перевод ошибок валидации.
+
+Переводы сообщений находятся в файлах limb/validation/i18n/translations/validation.___.ts
+
+
+
+===== Валидация данных в классе lmbController =====
+
+Класс **lmbController** по-умолчанию содержит у себя 2 атрибута:
+  * **$validator** - пустой валидатор, объект класса lmbValidator
+  * **$error_list** - список ошибок, объект класса lmbErrorList
+
+Для передачи ошибок валидации в форму обычно используется метод **useForm($form_id)**, но можно написать и $this->view->setFormErrorList($this->error_list). 
+
+Небольшой пример:
+<code php>
+<?php
+lmb_require('src/model/User.class.php');
+
+class LoginController extends lmbController
+{
+  function doDisplay()
+  {
+    if(!$this->request->hasPost())
+      return;
+
+    $this->useForm('login_form');
+
+    $this->validator->addRequiredRule('login');
+    $this->validator->addRequiredRule('password');
+
+    $this->validator->validate($this->request);
+
+    if($this->validator->isValid()) // можно было написать $this->error_list->isEmpty()
+    {
+      if(!$this->_loginAndPasswordCorrect())
+       $this->error_list->addError('Сочетание логина и пароля неверное');
+      else
+       $this->_doReallyLoginUser();
+    }
+  }
+  [...]
+}
+?>
+</code>

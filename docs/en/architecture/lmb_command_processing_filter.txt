@@ -1,0 +1,28 @@
+====== lmbCommandProcessingFilter ======
+
+lmbCommandProcessingFilter executes a [[lmbCommand]] according to the requested lmbService and Action.
+
+<code php>
+class lmbCommandProcessingFilter implements lmbInterceptingFilter
+{
+  public function run($filter_chain)
+  {
+    $dispatched = lmbToolkit :: instance()->getDispatchedRequest();
+    if(!is_object($dispatched))
+      throw new lmbException('Request is not dispatched yet! lmbDispatchedRequest not found in lmbToolkit!');
+
+    $command = $dispatched->getActionCommand();
+    $command->perform();
+
+    $filter_chain->next();
+  }
+}
+</code>
+
+===== UML Static structure =====
+
+{{{ limb:architecture:limb3.0_command_proc_filter.png }}}
+
+===== lmbDispatchedRequest  =====
+
+[[lmbDispatchedRequest]] is stored in [[lmbToolkit]]. [[lmbDispatchedRequest]] is created by [[lmbRequestDispatcher]] in [[lmbRequestDispatchingFilter]].

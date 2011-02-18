@@ -1,0 +1,73 @@
+====== Краткое описание пакета ACTIVE_RECORD ======
+
+Пакет ACTIVE_RECORD представляет средства для удобного отображения доменной логики в реляционную модель базы данных(ORM - Object to Relational Mapping). Пакет реализует [[wp>ActiveRecord|паттерн ActiveRecord]] и значительно расширяет его, добавляя функционал, встречаемый в более сложных ORM решениях, например, средства по управлению связями, коллециями, value objects и проч. За реализацию паттерна в пакете отвечает класс **lmbActiveRecord**.
+
+Первоначальная идея пакета ACTIVE_RECORD взята из фреймворка [[http://rubyonrails.com|Ruby-On-Rails]]. Rails в данном случае выступали в качестве функционального ориентира, но мы не копировали полностью его API и функционал, а реализовывали только то, что было необходимо в текущий момент.
+
+При реализации паттерна %%ActiveRecord%%, как правило, объекты хранятся в одной таблице базы данных. По-сути, lmbActiveRecord - это посредник между клиентским кодом и одной записью в одной таблице базы данных. В простейших случах, lmbActiveRecord позволяет полностью избавить разработчика от работы с SQL-кодом.
+
+Основные характеристики пакета ACTIVE_RECORD:
+  * Автоматическое определение наименований и типов полей таблицы, с которой работает lmbActiveRecord.
+  * Поддержка отношений один-к-одному, один-ко-многим и много-ко-многим.
+  * Поддержка %%ValueObjects%%
+  * Поддержка наследования в рамках одной таблицы (Single Table Inheritance).
+  * Поддержка "отложенной загрузки" (%%LazyLoading%%) для коллекций.
+  * Тесная интеграция с шаблонными системами WACT и MACRO.
+
+Пакет ACTIVE_RECORD отлично подходит для быстрой разработки приложений, особенно административной части. В случае, если необходима лучшая скорость, пакет легко представляет возможность ручного формирования SQL-запросов.
+===== Пример работы с классом lmbActiveRecord =====
+
+Основной класс пакета ACTIVE_RECORD - это класс lmbActiveRecord.
+
+Рассмотрим небольшой пример работы с этим классом. 
+
+Предложим, что у нас есть таблица **user** в базе данных, созданная при помощи такого SQL-кода:
+
+<code sql>
+CREATE TABLE `user` (                         
+ `id` bigint(20) NOT NULL auto_increment,         
+ `name` varchar(255) default NULL,          
+ `last_name` varchar(255) default NULL,         
+  PRIMARY KEY  (`id`)                              
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;  
+</code>
+
+Тогда работать с ней при помощи пакета ACTIVE_RECORD можно так:
+<code php>
+<?php
+//если требуется, добавьте путь до директории с Limb3 пакетами
+//set_include_path('/path/to/dir/with/limb'. PATH_SEPARATOR . get_include_path());
+require_once('limb/active_record/common.inc.php');
+
+lmbActiveRecord :: setDefaultDSN(array('driver' => 'mysql',
+                                      'host' => 'localhost',
+                                      'database' => 'ar_tests',
+                                      'user' => 'root',
+                                      'password' => 'secret'));
+
+class User extends lmbActiveRecord{}
+
+$user = new User();
+$user->setName('Vasa');
+$user->setLastName('Pupkin');
+$user->save();
+
+$user_loaded = new User($user->getId());
+echo $user_loaded->getName() . ' ' . $user_loaded->getLastName(); // Выведет Vasa Pupkin
+
+//альтернативный способ загрузки
+$user_loaded = lmbActiveRecord :: findById('User', $user->getId());
+?>
+</code>
+
+Для работы этого скрипта убедитесь, что в include_path содержится путь до вашей инсталляции Limb, а также, что база данных 'ar_test' содержит таблицу user.
+
+Класс lmbActiveRecord является дочерним классом от [[limb3:ru:packages:core:lmb_object|lmbObject]], поэтому он автоматически поддерживает методы вида setName($value) или getLastName(). Можно также использовать обычные set/get методы, например, set('name', $value);
+
+Метод **save()** - создает новую или сохраняет существующую запись в таблице базы данных. В нашем случае это будет таблица **user**. Каждый объект lmbActiveRecord после сохранения имеет свой уникальный идентификатор, который можно получить при помощи метода getId().
+
+Если в конструктор lmbActiveRecord передается int значение, то по-умолчанию, lmbActiveRecord пытается загрузить объект, первичным ключом которого является переданное значение.
+
+Альтернативно, объекты можно загружать из БД по первичному ключу при помощи метода findById($id).
+
+Это был самый простейший пример работы с классом lmbActiveRecord, теперь рассмотрим принципы работы с ним по-подробнее.

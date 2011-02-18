@@ -9,10 +9,7 @@
 lmb_require('limb/core/src/lmbCollectionInterface.interface.php');
 
 /**
- * class WactArrayIterator.
- *
- * @package wact
- * @version $Id: WactArrayIterator.class.php 6386 2007-10-05 14:22:21Z serega $
+ * class lmbArrayIterator
  */
 class lmbArrayIterator extends ArrayIterator implements lmbCollectionInterface
 {
@@ -25,7 +22,7 @@ class lmbArrayIterator extends ArrayIterator implements lmbCollectionInterface
   {
     $this->position = 0;
     parent :: rewind();
-    
+
     // goto offset item if possible
     if($this->offset)
     {
@@ -70,12 +67,12 @@ class lmbArrayIterator extends ArrayIterator implements lmbCollectionInterface
     $this->limit = $limit;
     $this->paginated = true;
   }
-  
+
   function getArray()
   {
     return $this->getArrayCopy();
   }
-  
+
   function at($pos)
   {
     try
@@ -89,7 +86,7 @@ class lmbArrayIterator extends ArrayIterator implements lmbCollectionInterface
       return null;
     }
   }
-  
+
   function sort($params)
   {
     throw new lmbException('Doesn\'t support sorting since ArrayIterator is immutable object');
@@ -101,10 +98,10 @@ class lmbArrayIterator extends ArrayIterator implements lmbCollectionInterface
       return $this->count();
 
     $total = $this->count();
-    
+
     if($total <= $this->offset || $this->offset < 0)
       return 0;
-    
+
     if(($this->offset + $this->limit) < $total)
       return $this->limit;
     else

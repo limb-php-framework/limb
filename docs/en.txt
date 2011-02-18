@@ -1,0 +1,30 @@
+====== Limb3 Documentation ======
+
+===== Limb3 Intro =====  
+
+  * [[.en:for_beginners|If you're new to Limb3]]
+
+  * [[.en:faq|Limb3 FAQ]]
+
+  * [[.en:how_to_download|Getting Limb3]]
+
+  * [[.en:packages_architecture|Limb3 packages - what's a package?]]
+
+  * [[.en:installation|WEB_APP package installation example]]
+
+  * [[limb3:en:tutorials:basic|CRUD example]]
+
+===== Limb3 main packages =====  
+
+  * CORE package 
+    * TODO
+
+  * ACTIVE_RECORD package
+    * TODO
+
+  * [[limb3:en:packages:macro|MACRO - very flexible and fast template engine]].
+    * [[limb3:en:packages:macro:tags|MACRO tags dictionary]]
+    * [[limb3:en:packages:macro:filters|MACRO filters dictionary]]
+
+  * TESTS_RUNNER package
+    * [[limb3:en:packages:tests_runner:limb_unit|limb_unit - SimpleTest advanced tests runner]]

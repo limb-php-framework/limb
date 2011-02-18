@@ -1,0 +1,28 @@
+====== {{macro}} tags ======
+
+**Tags** - are the main control elements of %%{{macro}}%% templates. 
+
+Tags commonly have a closing tag (e.g **list** or **wrap**), but there also tags that don't have a closing tag(e.g **slot**).
+
+===== Tags annotations =====
+
+Tags can be found in *.tag.php files in limb/macro/src/tags and in /src/macro folders of your packages. In the header of each tag file there are **annotations** that specify some meta %%{{macro}}%% information(e.g tag name, restrictions applied, etc).
+
+Here is the complete list of supported tags annotations:
+  * **tag** - main tag name.
+  * **aliases** - other tag names that are possible to use in templates instead of the main tag name. In most cases aliases are used to keep BC. There can be several aliases separated with commas, e.g.: @aliases params,param.
+  * **req_attributes** - the list of required attributes for the tag. %%{{macro}}%% compiler throws an exception in case of missing of such an attribute.
+  * **parent_tag_class** - class name of the parent tag that must enclose the tag in template. If %%{{macro}}%% compiler can't find such a parent for the tag an exception will be thrown.
+  * **restrict_self_nesting** - forbids the tag to have itself as enclosing parent in template.
+  * **forbid_end_tag** - forbids the tag to have opening and closing tags. For example, %%{{input}} or {{input/}}, but not {{input}}[...]{{/input}}%%
+
+
+===== Tags attributes =====
+
+Tags can have one or more **attributes**. 
+
+Attributes of %%{{macro}}%% tags can have two types of values:
+  * simple, e.g. %%{{input id=“title”}} or {{input id=“$title”}}%%
+  * composite, e.g. %%{{input id=“title_{$index}”}} or {{input id=“title_{$#author.index}”}}%%
+
+Note that %%{{input id=“$title”}} and {{input id=“{$title}”}} have the same meaning while {{input id=“$author.title”}} and {{input id=“{$author.title}”}} not. That is because {{macro}} %%renders simple attribute values "as is" while processes complex attributes with expressions.

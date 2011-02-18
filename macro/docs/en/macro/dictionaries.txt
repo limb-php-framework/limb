@@ -1,0 +1,50 @@
+====== Where {{macro}} looks for tags and filters ======
+
+===== Dictionaries =====
+
+{{macro}} supports only tags and filters that are registered in special **dictionaries**:
+  * **tags dictionary**,
+  * **filters dictionary**
+
+{{macro}} searches tags in:
+  * limb/macro/src/tags - by default
+  * limb/*/src/macro and src/macro of your Limb3-based application in case of using VIEW package.
+
+{{macro}} searches filters in:
+  * limb/macro/src/filters - by default
+  * limb/*/src/macro and src/macro of your Limb3-based application in case of using VIEW package.
+
+{{macro}} processes only the certain kind of files:
+  * ***.tag.php** - as tag files.
+  * ***.filter.php** - as filter files.
+  * all other files are skipped.
+
+As a rule, dictionaries are filled once only and then cached. Dictionaries cache files can be found in **var/compiled ** folder of your application. If you create a new {{macro}} tag, just remove dictionaries cache files and {{macro}} will find your new tag on next template compilation.
+
+===== Annotations =====
+
+In the head of each {{macro}} tag or filter file there is an **annotation block** that hold some essential meta information, like tag or filter name or aliases, required attributes, etc. Let's take a look at {{list:empty}} tag file (limb/macro/src/tags/list/list_empty.tag.php):
+
+<code php>
+/**
+ * Empty List tag for a list which failed to have any contents
+ * @tag list:empty
+ * @aliases list:default 
+ * @parent_tag_class lmbMacroListTag
+ * @package macro
+ * @version $Id$
+ */
+class lmbMacroListEmptyTag extends lmbMacroTag
+{
+}
+
+</code>
+
+@tag, @req_attributes, @forbig_end_tag - are annotations:
+  * **@tag** - default name of the tag
+  * **@req_attributes** - required attributes
+  * **@aliases** - other names of the tag
+  * **@parent_tag_class** - class name of a tag that must be a parent for the tag.
+  * **@forbig_end_tag** - tells that the tag does not required a closing tag.
+
+The complete list of annotations for tags and filters see at [[how_to_create_new_tag|How to create your own tags]] and [[how_to_create_new_filter|How to create your own filters]].

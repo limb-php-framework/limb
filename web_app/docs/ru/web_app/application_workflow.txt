@@ -1,0 +1,5 @@
+====== Схема типичного Limb3 web-приложения, выполненого при помощи пакета WEB_APP ======
+
+{{:limb3:ru:usage:web_app:applicationschema.png}}
+
+см. также [[filter_chain|Использование цепочки фильтров для организации Front-Controller]].

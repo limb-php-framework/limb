@@ -1,0 +1,31 @@
+====== Тег {{js_checkbox}} ======
+
+
+===== Описание =====
+
+Вставляет DHTML checkbox и скрытое поле <input type='hidden'/>. Именно значение этого hidden поля отсылается при отправке формы. В результате получаем checkbox, который всегда возвращает значение: 0 , если флаг снят и **value**, если флаг установлен.
+===== Синтаксис =====
+
+<code>
+  {{js_checkbox id='id' name='name' [value='some_value'] [checked_value='some_checked_value'] [checked='checked']/}}
+</code>
+
+===== Область применения =====
+
+Обычно внутри [[form_tag|тег {{form}}]].
+
+===== Атрибуты =====
+
+Любые атрибуты, которые относятся к обычным [[input_tag|тегам {{input}}]] (см. также [[lmb_macro_form_element_tag|lmbMacroFormElementTag]]).
+
+===== Содержимое =====
+
+Нет.
+
+===== Пример использования =====
+
+<code xml>
+ {{form name='my_form'}}
+   <label for='is_special'>Mark as special:</label>  {{js_checkbox name='is_special' id='is_special'/}}
+ {{/form}}
+</code>

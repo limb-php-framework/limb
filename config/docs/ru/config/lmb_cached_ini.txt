@@ -1,0 +1,9 @@
+====== lmbCachedIni ======
+
+lmbCachedIni - дочерний класс от [[lmbIni|lmbIni]], позволяет кешировать результаты парсинга ini-файлов. Хранит кеш в папке VAR_DIR/ini/. Кеширование может быть отключено посредство определения константы INI_CACHE_ENABLED (по-умолчанию, кеширование включено):
+
+<code php>
+define('INI_CACHE_ENABLED', false);
+</code>
+
+

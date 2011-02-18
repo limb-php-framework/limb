@@ -1,0 +1,36 @@
+====== Пакет ACTIVE_RECORD ======
+
+Пакет ACTIVE_RECORD - реализация паттерна [[wp>ActiveRecord]] отчасти схожего с реализацией подобного паттерна в [[http://rubyonrails.org/|RubyOnRails]].
+===== Использование пакета ACTIVE_RECORD =====
+
+Если вы только начинаете работать с Limb и приступаете к изучению пакета ACTIVE_RECORD мы советуем читать страницы подряд, сверху вниз. Если вы уже разбираетесь в работе пакета, то можете пользоваться этим разделом, как руководством или справочником. Мы также настоятельно советуем просмотреть тесты на пакет ACTIVE_RECORD, так как тесты содержат исчерпывающую информацию по использованию lmbActiveRecord и других классов пакета.
+
+  * [[.active_record:intro|Краткое описание (небольшой пример)]]
+  * **Базовые возможности ActiveRecord**
+    * [[.active_record:crud|Создание, сохранение, загрузка и удаление объектов]]
+    * [[.active_record:find|Поиск и сортировка объектов. find()-методы lmbActiveRecord]]
+    * [[.active_record:validation|Валидация данных в объектах]]
+  * **Отношения между классами**
+    * [[.active_record:one_to_one|Один-к-одному]]
+    * [[.active_record:one_to_many|Один-ко-многим]]
+    * [[.active_record:many_to_many|Много-ко-многим]]
+    * [[.active_record:eager_fetching|Жадная загрузка или Eager fetching]]
+    * [[.active_record:more_on_relations|Дополнительная информация по отношениям]] 
+  * **Дополнительные возможности**
+    * [[.active_record:inheritance|Поддержка наследования.]]
+    * [[.active_record:sql_exec|Загрузка объектов.]]
+    * [[.active_record:enhancement|События в ActiveRecord. Расширение поведения базового класса lmbActiveRecord при сохранении и удалении. ]]
+    * [[.active_record:connection|Использование своего подключение к базе данных (connection) при работе с ActiveRecord]]
+    * [[.active_record:lazy_attributes|Отложенная загрузка некоторых атрибутов. Lazy Attributes]]
+    * [[.active_record:value_objects|Поддержка ValueObjects.]]
+    * [[.active_record:how_to_extend_collections|Расширение классов коллекций связей вида один-ко-многим и много-ко-многим.]]
+    * [[.active_record:ctime_utime|Автоматическое сохранение даты создания и обновления объекта ActiveRecord]]
+  * **ACTIVE_RECORD и шаблонизаторы**
+    * [[.active_record:in_macro_templates|Использование ACTIVE_RECORD в шаблонах MACRO.]]
+    * [[.active_record:in_wact_templates|Использование ACTIVE_RECORD в шаблонах WACT.]]
+  * **Дополнительные примеры**
+    * Создание древовидных структур на основе алгоритма materialized path.
+    * Редактирование нескольких объектов при помощи одной формы.
+    * [[.active_record:datetime_processing|Обработка даты в объектах Active Record]]
+  * Прочее
+    * [[.active_record:doctrine|Сравнение с Doctrine]]

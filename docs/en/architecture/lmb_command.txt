@@ -1,0 +1,19 @@
+====== Limb3 Commands ======
+
+===== Short description =====
+
+Limb Commands implement a very simple interface which consists of the only **perform()** method. Commands are the main containers of an application specific logic.
+
+
+===== UML Static Structure =====
+
+{{{ limb:architecture:limb3.0_commands.png }}}
+
+===== Frequently used generic commands =====
+
+^Class name^Desription^
+|lmbBaseCommand|Holdes cached Request, Response and [[lmbToolkit]] objects and allows to perform other commands via performCommand() method.|
+|[[lmbSetViewCommand]]|Sets current view([[lmbSimpleView]] object) into [[lmbToolkit]].|
+|[[lmbObservableCommand]]|Allows to register onPerform event listeners(when command is performed listeners are notified)|
+|[[lmbPropertyOptionalCommand]]|Is a child of [[lmbObservableCommand]] which notify listeners if a dataspace contains a specified property. It accepts dataspace and property name in constructor. This class is mostly used in multi-action forms. See [[lmbFormCommand]] description page for a usage example.|
+|[[lmbFormCommand]]|Processes forms, allows to register onPerform, onInit, onValid and onNotValid listeners, validates user input and holds a dataspace with data received from user. Used jointly with [[lmbFormView]].|

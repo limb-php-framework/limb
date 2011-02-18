@@ -1,0 +1,5 @@
+====== lmbRoutesRequestDispatcher ======
+
+lmbRoutesRequestDispatcher - разборщик Запроса, реализует интерфейс [[lmb_request_dispatcher|lmbRequestDispatcher]]. lmbRoutesRequestDispatcher опирается на работу класса [[lmb_routes|lmbRoutes]], объект которого разборщик берет из тулкина (метод getRoutes() доступен через lmbWebAppTools).
+
+По-сути lmbRoutesRequestDispatcher лишь вызывает lmbRoutes и передает ему путь из lmbUri. Если lmbRoutes не возвращает параметра "action" из своего метода dispatch($url), когда lmbRoutesRequestDispatcher попытается использовать параметр action из Запроса. Полученный результат (массив параметров) возвращается.

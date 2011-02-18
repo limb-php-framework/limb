@@ -227,13 +227,7 @@ EOD;
 
   protected function _extractExceptionFileAndLine($e)
   {
-    if($e instanceof WactException)
-    {
-      $params = $e->getParams();
-      if(isset($params['file']))
-        return array($params['file'], $params['line']);
-    }
-    elseif($e instanceof lmbException)
+    if($e instanceof lmbException)
     {
       return array($e->getRealFile(), $e->getRealLine());
     }

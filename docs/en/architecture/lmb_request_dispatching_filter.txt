@@ -1,0 +1,41 @@
+====== lmbRequestDispatchingFilter ======
+
+lmbRequestDispatchingFilter implements lmbInterceptingFilter interface and performs [[RequestDispatching]] using some concrete [[lmbRequestDispatcher]].
+
+[[lmbRequestDispatchingFilter]] has a factory method to create lmbRequestDispatcher object, as well as factory methods to create ServiceRequestExtractor and lmbActionRequestExtractor.
+
+<code php>
+class lmbRequestDispatchingFilter implements lmbInterceptingFilter
+{
+  function run($filter_chain)
+  {
+    $toolkit = lmbToolkit :: instance();
+    $request = $toolkit->getRequest();
+
+    $dispatcher = $this->_createRequestDispatcher();
+    if(!$dispatched_request = $dispatcher->dispatch($request))
+      return;
+
+    $toolkit->setDispatchedRequest($dispatched_request);
+
+    $filter_chain->next();
+  }
+
+  protected function _createRequestDispatcher()
+  {
+    $service_extractor = $this->_createServiceExtractor();
+    $action_extractor = $this->_createActionExtractor();
+    include_once(LPKG_CORE_DIR . '/src/request/lmbRequestDispatcher.class.php');
+    return new lmbRequestDispatcher($service_extractor, $action_extractor);
+  } 
+
+  protected function _createServiceExtractor() {...}
+
+  protected function _createActionExtractor() {...}
+  [...]
+}
+</code>
+
+You can create your own child lmbRequestDispatchingFilter for your application and pass any special [[RequestExctrator]]s into [[lmbRequestDispatcher]].
+
+lmbRequestDispatchingFilter puts [[lmbDispatchedRequest]] into [[lmbToolkit]] in order to make it available for other components of an application.
