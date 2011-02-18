@@ -32,7 +32,6 @@
 |[[.packages:TREE|TREE]]|CORE, TOOLKIT, DBAL, VALIDATION, CACHE|Пакет для организации хранения деревьев в БД(пока поддерживается только materialized path)|
 |[[.packages:VALIDATION|VALIDATION]]|CORE|Пакет, предоставляющий различные средства валидации данных|
 |[[.packages:VIEW|VIEW]]|WACT[опционально], MACRO[опционально]|Пакет, содержащий средства для работы с представлением |
-|[[.packages:WACT|WACT]]|-|Шаблонизатор WACT.|
 |[[.packages:WEB_APP|WEB_APP]]|CORE, CONFIG, FILE_SCHEMA, TOOLKIT, I18N, WACT, CLI, CACHE, DBAL, VALIDATION, ACTIVE_RECORD, SESSION, MAIL, DATETIME, FILTER_CHAIN, NET|Набор различных средств для построения web ориентированных приложений|
 |[[.packages:WEB_CACHE|WEB_CACHE]]|CORE, WEB_APP|Средства для полностраничного кеширования в web приложении(пакет длительное время не находится в разработке, скорее всего, будет объединен с пакетом CACHE)|
 |WEB_SPIDER|CORE, NET|Средства для организации обхода web контента по ссылкам(пакет длительное время не находится в разработке)|
