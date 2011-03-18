@@ -1,0 +1,94 @@
+====== Introduction to {{macro}}. {{macro}} templates syntax and entities. ======
+
+This page demonstrates a simple example of %%{{macro}} template and covers briefly {{macro}}%% syntax and template entities like tags, output expressions and filters.
+
+===== {{macro}} template example =====
+
+<code xml>
+{{wrap with="page.phtml" in="content_zone"}}
+<img src={$#photo.largeFileUrl} />
+<dl>
+<dt>Author:</dt><dd>{$#photo.member.name}</dd>
+<dt>Category:</dt><dd>{$#photo.category.title}</dd>
+<dt>Title:</dt><dd>{$#photo.title}</dd>
+<dt>Tags:</dt>
+<dd>
+{{list using='{$#photo.tags}' as='$tag'}}
+  <ul>
+  {{list:item}}
+    <li>{$tag.title|uppercase}</li>
+  {{/list:item}}
+  </ul>
+  {{list:default}}
+  No tags.
+  {{/list:default}}  
+{{/list}}
+</dd>
+{{include file="photo/marks.phtml"}}
+</dl>
+{{/wrap}}
+</code>
+
+===== {{macro}} template entities =====
+
+
+==== Tags ====
+
+There are several **tags** in our example:
+<code xml>
+{{wrap with="page.phtml" in="content_zone"}}...{{/wrap}}
+
+{{list using='{$#photo.tags}' as='$tag'}}...{{/list}}
+
+{{include file="photo/marks.phtml"/}}
+</code>
+
+Tags usually have a closing tag (e.g **list** or **wrap**), but there also tags that don't have a closing tag like **slot**.
+
+Tags can have several **attributes**. In our example tag **list** has **using** and **as** attributes.
+
+There are rules that are applied to tags. For example, some tags should be used inside another particular tag in the template, some tags have required attributes, etc. In most cases {{macro}} compiler will warn you about such errors and will display template file path and line number where error has appeared.
+
+%%{{macro}}%% already has a [[tags|lot of tags]] for most every-day tasks like rendering lists or tables, working with forms and form elements, any kind of templates composition, lists pagination etc.
+
+[[.tags_intro|More about tags]].
+
+==== Output expressions ====
+
+Output expressions (or just expressions) are used to output variable values.
+
+In our example expressions are:
+<code xml>
+  {$tag.title|uppercase}
+  {$#photo.largeFileUrl}
+</code>
+
+You can think about output expression as of PHP "echo" operator since%% {{macro}}%% actually compiles output expressions into <? echo $variable_name; ?> constructions. 
+
+The symbol of grid(which means global) before variable name tells %%{{macro}}%% to convert {$#var_name} into {$this->var_name}. %%{{macro}}%% compiles template into the unique PHP class(more about this you can read at [[important_details|{{macro}} compilation and rendering. How to run {{macro}} template]]) Thus expression {$#var_name} simply echos some attribute of the generated class.
+
+Expressions can also be used as tag attributes values in some cases. In such cases expressions just reference variables and not rendered.
+
+There are also so called "dotted" expressions with dots between elements. For example, {$tag.title} expression will be actually rendered into something like <?php if(isset($tag['title'])) echo $tag['title']; ?>
+
+[[.expressions|See more about expressions]].
+
+==== Filters or formatters ====
+
+Filters (sometimes called formatters) are used to modify/format variables during rendering. Filters are applied to output expressions. 
+
+In our example:
+<code xml>
+  {$tag.title|uppercase}
+</code>
+
+  * uppercase - is a simple filter for rendering variable value in UPPERCASE. You can think about this filter as of an alias for PHP function strtoupper(), that is applied to $tag.title value.
+
+In most cases filters are just wrappers for commonly used PHP functions.
+
+[[.filters_intro|More about filters]].
+
+==== Further reading ====
+
+  * [[.important_details|{{macro}} compilation and rendering. How to run {{macro}} template.]] - you will know how %%{{macro}}%% actually ticks. This page is a key for effective %%{{macro}}%% usage.
+  * [[.data_sources|How {{macro}} template gets data for displaying?]]

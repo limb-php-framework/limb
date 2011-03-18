@@ -1,0 +1,166 @@
+====== Теги форм и элементов форм ======
+
+MACRO содержит средства для решения проблемы автозаполнения полей формы после submit-а в том случае, если отправленные данные содержали ошибки (ошибки валидации). Стоит, правда, отметить, что в последнее время все большую популярность набирают различные средства для проведения валидации на стороне клиента или при помощи Ajax-запросов. Тем не менее, в данном разделе мы осветим некоторые моменты использования тегов группы FormTags, которые умеют генерить html-аналоги тегов форм и элементов форм.
+
+Итак, группа тегов FormTags используется для следующих целей:
+  * для повторного заполнения полей формы после отправки и ее повторном отображении
+  * для отображения ошибок валидации
+  * в качестве helper-ов для генерации html-кода, например, тег %%{{select}}%% и %%{{select_options_export}}%%
+
+Какие наиболее важные теги из группы FormTags существуют:
+  * [[limb3:ru:packages:macro:tags:form_tags:form_tag|Тег {{form}}]] - аналог тега <form>. Основная функция - выступать в качестве контейнера данных для дочерних элементов форм, а также в качестве контейнера ошибок валидации.
+  * [[limb3:ru:packages:macro:tags:form_tags:form_errors_tag|Тег {{form:errors}}]] - используется для того, чтобы "вытащить" ошибки валидации из формы в локальную переменную, которую затем можно будет использовать в теге %%{{list}}%% для вывода ошибок валидации.
+  * [[limb3:ru:packages:macro:tags:form_tags:input_tag|Тег {{input}}]] - аналог тега <input>. Поддерживает различные типы и исходя из типа меняет свою логику работы.
+  * [[limb3:ru:packages:macro:tags:form_tags:select_tag|Тег {{select}}]] - аналог тега <select>. Ценен тем, что генерит список опций и помечает выбранные опции как selected (в зависимости от использования multiple).
+
+
+
+
+
+===== Пример использования MACRO-тегов элементов форм =====
+
+Рассмотрим небольшой пример, в котором мы соберем сразу все:
+  * Смесь MACRO-тегов элементов форм и обычных html-тегов
+  * Автозаполнение полей формы, если они реализованы через MACRO-теги
+  * Вывод ошибок валидации
+  * Использование MACRO-тегов для генерации <select> тегов
+
+Предположим, что у нас есть вот такой MACRO-шаблон:
+
+<code xml>
+{{form name="my_form" method="POST"}}
+
+{{form:errors to='$fields_errors'/}}
+
+{{list using='$fields_errors'}}
+Errors:
+<ol class="form_errors">
+  {{list:item}}
+    <li>{$item.message}</li>
+  {{/list:item}}
+</ol>
+{{/list}}
+
+<table>
+<tr>
+<td>{{label for="title" error_class="error"}}Title{{/label}}</td>
+<td>{{input type="text" id="title" name="title" title="Title" error_class="error"/}}</td>
+
+<?php $types = array(array('id' => 10, 'name' => 'TypeA'), array('id' => 20, 'name' => 'TypeB')); ?>
+
+{{select_options_export from="$types" to="$types_as_options" key_field="id" text_field="name"/}}
+
+<td><label for="type">Select type</label></td>
+<td>{{select name="type" id="type" title="Type" options="$types_as_options" error_style="style_of_error"/}}</td>
+
+<tr>
+  <td colspan='2'><input type="submit" value='Run' /></td>
+</tr>
+</table>
+<input type="hidden" name="action" value='create'/>
+{{/form}}
+</code>
+
+Пусть у нас где-то есть php-скрипт, который используется этот шаблон. При помощи этого скрипта мы продемонстрируем, как формы повторно получают данные:
+<code php>
+<?php
+set_include_path(dirname(__FILE__) . '/' . PATH_SEPARATOR .
+                'path/to/limb/' . PATH_SEPARATOR .
+                get_include_path());
+
+require_once('limb/macro/common.inc.php');
+
+$config = new lmbMacroConfig($cache_dir = dirname(__FILE__ ) . '/cache/',
+                             $is_force_compile = false,
+                             $is_force_scan = false);
+
+$macro = new lmbMacroTemplate('form.phtml', $config);
+
+if(count($_POST))
+{
+  $error_list = array();
+  $error_list[] = array('message' => 'Error in {field}', 'fields' => array('field' => 'title'));
+  $error_list[] = array('message' => 'Other error in {field}', 'fields' => array('field' => 'type'));
+  
+  $macro->set('form_my_form_error_list', $error_list); 
+  $macro->set('form_my_form_datasource', $_POST); 
+}
+
+echo $macro->render();
+?>
+</code>
+
+При первом запуске этого скрипта мы получим:
+<code xml>
+<form name="my_form" method="POST">
+
+<table>
+<tr>
+<td><label for="title">Title</label></td>
+<td><input type="text" id="title" name="title" title="Title" value="" /></td>
+
+<td><label for="type">Select type</label></td>
+<td><select name="type" id="type" title="Type"><option value="10">TypeA</option><option value="20">TypeB</option></select></td>
+
+<tr>
+  <td colspan='2'><input type="submit" value='Run' /></td>
+</tr>
+</table>
+<input type="hidden" name="action" value='create'/>
+</form>
+</code>
+
+Теперь попробуем заполнить поля и отправить форму. Мы должны получить нечто подобное:
+
+<code xml>
+<form name="my_form" method="POST">
+
+Errors:
+<ol class="form_errors">
+    <li>Error in Title</li>
+    <li>Other error in Type</li>
+</ol>
+
+<table>
+<tr>
+<td><label for="title" class="error">Title</label></td>
+<td><input type="text" id="title" name="title" title="Title" class="error" value="fds" /></td>
+
+<td><label for="type">Select type</label></td>
+<td><select name="type" id="type" title="Type" style="style_of_error"><option value="10">TypeA</option><option value="20" selected="true">TypeB</option></select></td>
+
+<tr>
+  <td colspan='2'><input type="submit" value='Run' /></td>
+</tr>
+</table>
+<input type="hidden" name="action" value='create'/>
+</form>
+</code>
+
+Обратите внимание, что [[limb3:ru:packages:macro:tags:form_tags:label_tag|тег {{label}}]] для первого поля ввода сгенерил <label> с классом "error", так как для поля была указана ошибка валидации (см. [fields => array('field' => 'title')]), а в теге %%{{label}}%% был указан атрибут **error_class** Такой же способ пометки ошибочного поля мы использовали для %%{{input}}%%-а.
+
+Для передачи данных в форму мы использовать 2 переменные:
+
+<code php>
+  $macro->set('form_my_form_error_list', $error_list); 
+  $macro->set('form_my_form_datasource', $_POST); 
+</code>
+
+  * form_xxx_datasource - указывает на данные, которые поля формы могут использовать для автозаполнения.
+  * form_xxx_error_list - указывает на список ошибок валидации (это может быть определенным образом заполненый массив или же объект класса lmbMacroFormErrorList).
+
+В качестве xxx указывается идентификатор (id) формы или ее name (в зависимости от того, что указано). При использовании пакета VIEW и класса lmbMacroView передача данных в форму производится автоматически.
+===== Некоторые замечания =====
+
+  * Никто не заставляет вас использовать MACRO-теги в простейших случаях. Ведь всегда можно написать <input type='text' name="title" value="{$object.title}"> в качестве простейшей реализации повторного заполнения формы.
+  * Мы постоянно используем [[limb3:ru:packages:macro:tags:form_tags:select_tag| {{select}}]], [[limb3:ru:packages:macro:tags:form_tags:option_tag| {{option}}]] и [[limb3:ru:packages:macro:tags:form_tags:select_options_export_tag| {{select_options_source}}]] теги, потому что это действительно удобно.
+  * Параметр **name** можно опускать, если он совпадает с **id**
+<code php>
+{{label for="title"}}Title{{/label}}
+{{input type="text" id="title"}}
+</code>
+Результат:
+<code php>
+<label for="title">Title</label>
+<input type="text" id="title" name="title">
+</code>

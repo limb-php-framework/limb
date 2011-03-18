@@ -1,0 +1,13 @@
+====== The key conceptions of Limb3 Controller ======
+
+Controller handles application logic. 
+
+Here is the list of the key conceptions of Limb3 Controller:
+  * [[Request]] - contains request information. [[lmbHttpRequest]] contains POST, GET and FILES.
+  * [[Response]] - contains response information from application once Request is processed.
+  * [[lmbService]] - is a group of actions representing some particular domain or functional area. For example, AdminNews lmbService can contain all actions to display, create, edit and delete news.
+  * [[Action]] - is a functional unit of a Limb-based application. It's ok to think about Action as a page or as a page type. Action always belongs to a lmbService.
+  * [[lmbRequestDispatcher]] - determines what exactly application should do. lmbRequestDispatcher maps Request to [[lmbDispatchedRequest]] which encapsulates a system request as a whole and contains specific lmbService and Action.
+  * [[filter|FiltersChain]]. Filters act as Front Controller for a Limb-based application. Filters perform misc system operations that are common for the majority of applications and usually have no relationship to domain logic of application. For example, it's common for intercepting filters to run and close http session, check user access rights, log request for statistics, etc.
+  * [[lmbCommand]] - performs all application specific logic.
+  * [[Validation]] used in [[lmbFormCommand]] to check data received from user. Limb uses WACT validation sub-system.

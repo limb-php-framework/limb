@@ -1,0 +1,15 @@
+====== Criteria ======
+
+**Criteria** - это набор классов, которые используются для инкапсуляции условий в SQL запросах в конструкциях WHERE и HAVING. см. страницу [[intro_to_query_and_criteria|Использование классов из подсистем Query и Criteria]].
+
+===== Диаграмма классов =====
+
+{{{limb3:ru:packages:dbal:limb3_dbal_criteria.png|}}}
+
+Все критерии наследуются от базового lmbSQLBaseCriteria, которые реализует необходимую функциональность логических операций  (AND и OR) и по парсингу критерий.
+===== Список классов =====
+
+^Критерий^Назначение^
+|[[lmbsql_criteria|lmbSQLCriteria]]|Класс-фасад подсистемы Criteria. Позволяет также вставлять условия "как есть (as is)"|
+|[[lmbsql_field_criteria|lmbSQLFieldCriteria]]|Позволяет вставлять условия на какое-либо поле выборки.|
+|[[lmbsql_field_between_criteria|lmbSQLFielBetweenCriteria]]|Позволяет вставлять BETWEEN условия для полей выборки.|

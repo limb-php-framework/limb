@@ -1,0 +1,17 @@
+====== lmbFileLocationsList ======
+
+**lmbFileLocationsList** - используется для составления списка локаций, где следует искать файл файловому локатору [[lmb_file_locator]]. lmbFileLocationsList реализует интерфейс [[lmb_file_locations]].
+
+В конструктор lmbFileLocationsList можно передать один или несколько строк или объектов, реализующих интерфейс lmbFileLocations. lmbFileLocationsList объединяет их всех в единый список. 
+
+Пример использования lmbFileLocationsList:
+
+<code php>
+$locations1 = new lmbFileLocationsList('/path/to/dir1/', 
+                                      '/path/to/dir2/', 
+                                       new lmbIncludePathLocations(array('/path/to/other/dir1', '/path/to/other/dir2/'))); 
+
+$locations2 = new lmbFileLocationsList(array('path0', 'path1', new lmbIncludePathLocations(array(...)))); 
+</code>
+
+см. также тест limb/fs/tests/cases/lmbFileLocationsListTest.class.php

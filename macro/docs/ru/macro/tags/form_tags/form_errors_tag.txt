@@ -1,0 +1,88 @@
+====== Теги {{form:errors}} и {{form:field_errors}}======
+
+===== Тэг {{form:errors}} =====
+==== Описание ====
+
+Передает список ошибок с формы в переменную, которая обычно выводится при помощи [[..:list_tags:list_tag| {{list}} ]]-тегов. Ошибка валидации формы - это обычный итератор (массив), где каждый элемент имеет поле {$message}.
+
+==== Синтаксис ====
+
+<code xml>
+ {{form:errors to='$some_var' /}}
+</code>
+==== Область применения ====
+
+Внутри [[form_tag|тега {{form}}]].
+
+==== Атрибуты ====
+
+  * **to** - название переменной, которая получит список ошибок.
+
+==== Содержимое ====
+
+Нет.
+
+==== Пример использования ====
+
+<code xml>
+{{form id="simpleform" method="post"}}
+
+{{form:errors to='$fields_errors'/}}
+
+{{list using='$fields_errors' as="$error"}}
+<ol>
+  {{list:item}}
+    <li><span style="color:red">{$error.message}</span></li>
+  {{/list:item}}
+</ol>
+{{/list}}
+
+[... поля формы ...]
+
+{{/form}}
+</code>
+
+В результате будет выведен список ошибок для всей формы.
+
+===== Тэг {{form:field_errors}} =====
+==== Описание ====
+Аналогичен **%%{{form:errors}}%%**, с той лишь разницей, что предназначен для отдельного поля. 
+
+==== Синтаксис ====
+
+<code xml>
+ {{form:field_errors to='$some_var' for='some_field'/}}
+</code>
+==== Область применения ====
+
+Внутри [[form_tag|тега {{form}}]].
+
+==== Атрибуты ====
+
+  * **to** - название переменной, которая получит список ошибок.
+  * **for** - название поля, ошибки которого надо получить.
+
+==== Содержимое ====
+
+Нет.
+
+==== Пример использования ====
+
+<code xml>
+{{form id="simpleform" method="post"}}
+
+{{input type="text" name="name" id="name" title="Имя и фамилия"/}}
+
+{{form:field_errors to='$name_errors' for="name"/}}
+{{list using='$name_errors' as="$error"}}
+<ol>
+  {{list:item}}
+    <li><span style="color:red">{$error.message}</span></li>
+  {{/list:item}}
+</ol>
+{{/list}}
+
+{{/form}}
+</code>
+
+В результате будет выведен список ошибок для всей формы.

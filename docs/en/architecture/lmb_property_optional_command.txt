@@ -1,0 +1,5 @@
+====== lmbPropertyOptionalCommand ======
+
+lmbPropertyOptionalCommand is a child class of [[lmbObservableCommand]] and allows you to insert "if" conditional logic into the command chain. lmbPropertyOptionalCommand accepts dataspace object and property name in constructor.
+
+lmbPropertyOptionalCommand triggers onPerform event only if the dataspace has not null specified property. lmbPropertyOptionalCommand is mostly used with [[lmbFormCommand]] to support multi-action forms. See [[lmbFormCommand]] description page for example of lmbPropertyOptionalCommand usage.

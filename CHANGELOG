@@ -3,6 +3,27 @@ This is a general CHANGELOG, if you need more detailed changes
 consider viewing CHANGELOG files for each package.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+===== Limb2011.1 =====
+
+ * CMS package #CMS-5
+ * new form tags: form:submit, form:checkbox, form:textarea, etc  #LMB-89
+ * WACT removed #LMB-87
+ * new app mode check
+ * better ValueObjects support  
+ * removed many uselless constants
+ * many fixes in PostgreSQL support
+ * fixed security bug in WYSIWYG package
+ * added implementation of REST interface
+ * added ACL config support
+ * reanimated web_cache package, added web_cache.conf.php
+ * PHPUnit adapter #LMB-19
+ * now lmbSQLCriteria supports fast creation for all kind of criterias
+ * changed file mask for files with tasks
+ * added CKEditor support in WYSIWYG with KCFinder as file manager
+
+===== Limb2010.1 =====
+3 years is a long time ;)
+
 ===== Limb3-2007.4 (Frozzy) =====
 
   * ACTIVE_RECORD package better error and invalid fields handling using exceptions, support for different names of primary keys added

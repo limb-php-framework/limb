@@ -1,0 +1,57 @@
+====== MACRO package ( {{macro}} template engine )======
+
+We have been using and developing our own forked version of [[http://phpwact.org|WACT-а]] template engine for 5+ years and been pretty happy about it. However, WACT was built on two core principles which appeared to be problematic for templates with complex visualization logic. These principles are:
+  * XML-alike syntax.
+  * Data contexts (data sources or scopes) that are used to display data from.
+
+An essential part of WACT documentation is dedicated to contexts. XML-like syntax does not allow you to use WACT tags as values of regular tags attributes and also makes internal WACT architecture very complex that is hard to support and extend.
+
+Thus the idea of %%{{macro}}%% appeared.
+
+%%{{macro}}%% is built on the following principles:
+  * No more XML-like syntax. Tags are marked with two curly brackets on both sides, e.g. %%{{include}}%%. 
+  * There are two data scopes only: global and local.
+  * No more data sources - all data is fetched from plain PHP variables.  
+  * Keep it as simple as possible
+  * Support all WACT features like templates wrapping, including
+
+Just like WACT, %%{{macro}}%% compiles initial templates into an executable PHP-script with very clean syntax (much cleaner than WACT or Smarty) and executes them very fast (we will publish benchmark results later).
+
+Our forked version of WACT will be supported by our team for a while but it's going to be replaced by %%{{macro}}%% eventually.
+
+For those who worked with WACT templates before there should be no problem switching to %%{{macro}}%%. If you are new to %%{{macro}}%% we recommend you to read all pages in this section marked "For %%{{macro}}%% beginners".
+
+
+===== For {{macro}} template authors =====
+
+  * [[.macro:tags|Tags dictionary]]
+  * [[.macro:filters|Filters dictionary]]
+
+===== For {{macro}} beginners  =====
+
+  * **Intro**
+    * [[.macro:pros_and_cons|Pros and cons of {{macro}}]]
+    * [[.macro:intro|Introduction to {{macro}}. {{macro}} templates syntax and entities]]
+    * [[.macro:important_details|{{macro}} compilation and rendering. How to run {{macro}} template]]
+    * [[.macro:data_sources|How {{macro}} template gets data for displaying?]]
+    * **The main elements of %%{{macro}}%% templates**
+      * [[.macro:tags_info|Tags]]
+      * [[.macro:expressions|Expressions. How to render variable values in templates]]
+      * [[.macro:filters_intro|Filters (or formatters). How to modify or format data on rendering]]
+      * [[.macro:php_code_in_templates|PHP code in {{macro}} templates]]
+  * **Basic %%{{macro}}%% use cases**
+    * [[.macro:list_tags|Rendering lists or tables]]
+    * [[.macro:pagination|Rendering lists with pagers. Pagination]]
+    * [[.macro:form_tags|Forms and form elements]]
+    * [[.macro:template_composition|Templates composition (including, wrapping and reusing)]]
+  * **Some %%{{macro}}%% internals**
+    * [[.macro:dictionaries|{{macro}} dictionaries (supported tags and filters. Where {{macro}} looks for tags and filters)]]
+    * [[.macro:template_file_name_resolving|How {{macro}} searches templates by aliases]]
+    * [[.macro:errors_and_debug|{{macro}} error messages and templates debugging]]
+
+
+===== For {{macro}} developers =====
+
+  * [[.macro:compiler|{{macro}} compiler]]
+  * [[.macro:how_to_create_new_tag|How to create your own tags]]
+  * [[.macro:how_to_create_new_filter|How to create your own filters]]

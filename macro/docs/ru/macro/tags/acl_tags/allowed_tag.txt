@@ -1,0 +1,30 @@
+====== Тег {{allowed}} ======
+
+===== Описание =====
+Используется для контроля вывода элементов, основанного на правах [[limb3:ru:packages:acl|ACL]].
+
+===== Область использования =====
+
+В любом месте MACRO шаблона.
+
+===== Синтаксис =====
+
+<code xml>
+ {{allowed role='<role>' resource='<resource>' privelege='privilege'}}protected content{{/allowed}}
+</code>
+
+===== Атрибуты =====
+
+  - **role** (//string|lmbRoleProviderInterface//) - имя роли, либо [[limb3:ru:packages:acl#объекты_как_носители_роли_или_ресурса| объект - носитель роли]]
+  - **resource** (//string|lmbResourceProviderInterface//) - имя ресурса, либо [[limb3:ru:packages:acl#объекты_как_носители_роли_или_ресурса| объект - носитель ресурса]]
+  - **privilege** (//string//) - имя привилегии
+
+===== Содержимое =====
+Любое.
+
+===== Пример использования =====
+Для [[limb3:ru:packages:acl#определение_роли_объекта_в_контексте_объекта-ресурса| схемы]] из документации на пакет ACL:
+<code xml>
+{{allowed role="member" resource="article" privelege="create" }}<a href="/article/create">create</a>{{/allowed}}
+{{allowed role="$member" resource="$article" privelege="edit" }}<a href="/article/edit/3">edit</a>{{/allowed}}
+</code>

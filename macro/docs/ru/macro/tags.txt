@@ -1,0 +1,109 @@
+====== Теги шаблонной системы MACRO ======
+
+//Большинство тегов имеет примеры использования. Если целая группа тегов содержит только один пример, то страница этого тега указана особо: "Пример использования здесь!"//
+
+Также примеры можно найти в репозитории по адресу: https://svn.limb-project.com/3.x/examples/macro/examples/. 
+
+Со страницы примеров можно скачать исходные коды примеров: http://projects.limb-project.com/
+
+Рабочие примеры можно посмотреть на странице примеров Limb3: http://projects.limb-project.com/macro
+===== Базовые теги (Core Tags)=====
+
+==== Управление шаблонами ====
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/core/**||
+|[[.tags:core_tags:include_tag|include]]|Вставляет содержимое другого шаблона или иного файла в текущий шаблон.|
+|[[.tags:core_tags:slot_tag|slot]]|Представляет из себя место в шаблоне куда может быть вставлен другой шаблон или часть другого шаблона.|
+|[[.tags:core_tags:wrap_tag|wrap]]| Вставляет часть шаблона в определенное место другого шаблона. Делает из этих двух шаблонов один - единый шаблон. В случае использования совместо с тегами [[.tags:core_tags:into_tag| {{into}}]] просто указывает на имя шаблона, куда будет вставляться содержимое тегов [[.tags:core_tags:into_tag| {{into}}]].|
+|[[.tags:core_tags:template_tag|template]]| Определяет часть шаблона, которая может быть многократно использована при помощи тега [[.tags:core_tags:apply_tag| {{apply}}]]. Комбинация [[.tags:core_tags:template_tag| {{template}}]] и [[.tags:core_tags:apply_tag| {{apply}}]] позволяет делать аналог [[.tags:core_tags:include_tag| {{include}}]], но только в рамках одного шаблона. Тег [[.tags:core_tags:template_tag| {{template}}]] без применения тега [[.tags:core_tags:apply_tag| {{apply}}]] не генерирует код.|
+==== Прочие ====
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/core/**||
+|[[.tags:core_tags:apply_tag|apply]]| Вставляет часть шаблона, указанное в рамках какого-то тега [[.tags:core_tags:template_tag| {{template}}]]. По сути это тот же [[.tags:core_tags:include_tag| {{include}}]], только включаемый шаблон находится в текущем шаблоне|
+|[[.tags:core_tags:into_tag|into]]| Вставляет часть шаблона в определенное место другого шаблона, отмеченное тегом [[.tags:core_tags:slot_tag| {{slot}}]] Используется внутри тега [[.tags:core_tags:wrap_tag| {{wrap}}]]|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroCopyAndCutTagsTest.class.php#L12|copy]]| Копирует содержимое в переменную-буффер|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroCopyAndCutTagsTest.class.php#L21|cut]]| Перемещает содержимое в переменную-буффер|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroNospaceTagTest.class.php#L11| nospace, trim, space, tab]]| Позволяют вырезать пробельные символы сохраняя наглядность разметки|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroRepeatTagTest.class.php#L1|repeat]]| Повторяет свое содержимое, указанное количество раз|
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroAssignTagTest.class.php#L1|assign]]| Копирует содержимое одной переменной в другую |
+|[[https://github.com/limb-php-framework/limb/blob/Limb2010.1/macro/tests/cases/tags/core/lmbMacroIfAndElseIfAndElseTagsTest.class.php#L1|Тэги if, elseif, else]]| Ветвление тэгами |
+
+===== Списки (List Tags) =====
+
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/list/**|||
+|[[.tags:list_tags:list_tag|list]]| Основной тег для вывода списков. **Пример использования здесь!**|
+|[[.tags:list_tags:list_item_tag|list:item]]|Повторяет определенный кусок шаблона по количеству элементов в переменной (размер массива или количество элементов в итераторе), указанной для %%{{list}}%% тега|
+|[[.tags:list_tags:list_empty_tag|list:empty]]|Отображает свое содержимое, если список пуст|
+|[[.tags:list_tags:list_glue_tag|list:glue]]|Используется для разделения строк списка друг от друга|
+|[[.tags:list_tags:list_fill_tag|list:fill]]|Используется, если количество элементов в списке некратное какому-то числу. Используется, например, для генерации валидной табличной верстки.|
+===== Деревья (Tree Tags) =====
+
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/tree/**|||
+|[[.tags:tree_tags:tree_tag|tree]]| Основной тег для вывода деревьев. **Пример использования здесь!**|
+|[[.tags:tree_tags:tree_node_tag|tree:node]]|Шаблон узла дерева для %%{{list}}%% тега|
+|[[.tags:tree_tags:tree_nextlevel_tag|tree:nextlevel]]|На место данного тэга вставляется html дочерних узлов|
+|[[.tags:tree_tags:tree_empty_tag|tree:empty]]|Отображает свое содержимое, если в дереве нет узлов|
+===== Формы и поля форм (Form tags) =====
+[[.tags:form_tags:lmb_macro_form_element_tag|lmbMacroFormElementTag]] - базовый класс для всех элементов формы.
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/form/**|||
+|[[.tags:form_tags:form_tag|form]]|Расширенная форма html-тега <form>|
+|[[.tags:form_tags:form_errors_tag|form:errors]]|Используется для отображения списка ошибок валидации формы.|
+|[[.tags:form_tags:form_errors_tag|form:field_errors]]|Используется для управления списком ошибок валидации формы.|
+|[[.tags:form_tags:form_referer|form:referer]]|Добавляет скрытое поле (<input type="hidden">) URL источника запроса|
+|[[.tags:form_tags:input_tag|input]]|Расширеная форма html-тега <input>.|
+|[[.tags:form_tags:text_area_tag|textarea]]|Расширенная форма html-тега <textarea>.|
+|[[.tags:form_tags:label_tag|label]] |Расширенная форма тега <label>.|
+|[[.tags:form_tags:js_checkbox_tag|js_checkbox]]| Вставляет DHML checkbox, а также hidden поле, которое всегда возвращает какое-либо значение ('0' или '1').|
+|[[.tags:form_tags:select_tag|select]] |Расширенная форма html-тега <select>.|
+|[[.tags:form_tags:option_tag|option]] | Тег опции выбора для тега %%{{select}}%%.|
+|[[.tags:form_tags:select_options_export_tag|select_options_export]] |Позволяет преобразовывать контейнеры данных в виде итераторов или обычные массивы в такую форму, которая понятна тегу %%{{select}}%% для построения списка тегов <option>.|
+
+===== Пейджинация (теги для разбиения большого набора данных на страницы) =====
+
+^Тег^Описание^
+|Расположение **limb/macro/src/tags/pager/**|||
+|[[.tags:pager_tags:pager_tag|pager]] | Основной тег для лимитирования итератора и вывода списка страниц. **Пример использования здесь!**|
+|[[.tags:pager_tags:paginate_tag|paginate]] | Позволяет связывать pager со списком прямо в шаблоне.|
+|[[.tags:pager_tags:pager_frontier_tag|Теги pager:prev, pager:first, pager:next, pager:last ]] | Позволяет вывести ссылку на предыдущую, первую, следующую и последнуюю страницы списка страниц.|
+|[[.tags:pager_tags:pager_disabled_frontier_tag|Теги pager:prev:disabled, pager:first:disabled, pager:next:disabled, pager:last:disabled ]] | Позволяет вывести какой-либо текст если переход на соответствующую страницу невозможен. **Пример использования здесь!**|
+|[[.tags:pager_tags:pager_list_tag|pager:list]] | Выводит список страниц. |
+|[[.tags:pager_tags:pager_number_tag|pager:number]] | Позволяет вывести ссылку на страницу списка страниц.|
+|[[.tags:pager_tags:pager_current_tag|pager:current]] | Позволяет вывести ссылку на текущую страницу |
+|[[.tags:pager_tags:pager_separator_tag|pager:separator]] | Выводит разделитель между страницами списка страниц.|
+|[[.tags:pager_tags:pager_section_tag|pager:section]] | Позволяет вывести ссылку на группу страниц списка страниц.|
+|[[.tags:pager_tags:pager_elipses_tag|pager:elipses]] | Позволяет вывести разделитель между группами ссылок на страницы в начале списка страниц, в середине и в конце pager-а.|
+
+===== Ссылки =====
+
+^Тег^Описание^
+|Расположение: **limb/web_app/src/macro/**||
+|[[.tags:lmb_request_tags:lmb_route_url_tag|route_url]] | Формирует и выводит путь (URL), составленный при помощи при помощи класса [[limb3:ru:packages:web_app:lmb_routes|lmbRoutes]].|
+===== Интернационализация (пакет I18N ) =====
+
+^Тег^Описание^
+|Расположение: **limb/i18n/src/macro/**||
+|[[.tags:i18n_tags:lmbI18n_tag|i18n]] | Переводит строку текста при помощи функции lmb_i18n.|
+===== Календарь (пакет CALENDAR) =====
+
+^Тег^Описание^
+|Расположение: **limb/calendar/src/macro/**||
+|[[.tags:calendar_tags:date3select|date3select]] | Выводит 3 выпадающих списка|
+|[[.tags:calendar_tags:datetime|datetime]] | Выводит JavaScript-календарь|
+===== WYSIWYG (пакет WYSIWYG) =====
+
+^Тег^Описание^
+|Расположение: **limb/wysiwyg/src/macro/**||
+|[[.tags:wysiwyg_tags:lmb_wysiwyg_tag|wysiwyg]] | Отображает wysiwyg-редактор|
+===== Кеширование (пакет CACHE2) =====
+
+{{section>limb3:ru:packages:macro:tags:cache2_tags:start&noheader&nofooter}}
+
+
+===== Права доступа (пакет ACL) =====
+
+^Тег^Описание^
+|Расположение: **limb/acl/src/macro/**||
+|[[.tags:acl_tags:allowed_tag|allowed]] | Проверка доступа |

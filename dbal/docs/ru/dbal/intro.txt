@@ -1,0 +1,232 @@
+====== Введение в пакет DBAL ======
+===== Ключевые понятия =====
+
+Разберемся с ключевыми понятиями пакета:
+
+  * **Объект подключения** к базе данных (**connection**). Он определяет тип базы данных, к которому мы в настоящий момент подключены. Connection ккак правило получает в конструктор набор параметров для подключения. Пример такого класса lmbMysqlConnection.
+  * При помощи объекта подключения вы создаем так называемые **утверждения** (**statement**) на основе того или иного sql-кода. В зависимости от типа sql-запрос создаются объекты различных классов, например, lmbMysqlQueryStatement, lmbMysqlInsertStatement и т.д.
+  * Утверждения с SELECT запросами на выходе создают объекты **"набор данных"** (**record set**), который реализует интерфейс итератора (точнее интерфейс [[limb3:ru:packages:core:lmb_collection_interface|lmbCollectionInterface]]. Пример такого класса: lmbMysqlRecordSet.
+===== Работа с DBAL напрямую =====
+
+Пакет DBAL содержит различные средства для упрощения работы с ним, но чтобы понимать, как он работает внутри, мы рассмотрим серию небольших примеров работы с DBAL, что называется "в лоб".
+
+Пример использования пакета DBAL **для выборки данных**:
+
+<code php>
+  lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlConnection.class.php');
+
+  $config = array('host' => 'localhost',
+                  'user' => 'root',
+                  'password' => 'secret',
+                  'database' => 'my_datatase',
+                  'charset' => 'utf8');
+
+  $connection = new lmbMysqlConnection($config);
+
+  $sql = 'SELECT * FROM news';
+  $statement = $connection->newStatement($sql); // вернет объект класса lmbMysqlQueryStatement
+
+  $record_set = $statement->getRecordSet(); //вернет объект класса lmbMysqlRecordSet
+</code>
+
+Каждый элемент итератора $record_set (в нашем случае это объект класса lmbMysqlRecordSet) - это объект класса lmbMysqlRecord, который реализует интерфейс [[..:core:lmb_set_interface|lmbSetInterface]], поэтому можно использовать различные способы для получения данных:
+
+<code php>
+  foreach($record_set as $record)
+  {
+    echo $record->get('title') . "<br>";
+    echo $record['annotation'] . "<br>";
+  }
+</code>
+
+Обратите внимание, что реальный запрос к базе данных происходит в самый последний момент (при вызове метода rewind() у итератора):
+
+<code php>
+  [...]
+  $record_set = $statement->getRecordSet(); //возвратит объект класса lmbMysqlRecordSet.
+  // Реально запроса к базе данных еще не было!
+  $record_set->paginate(10, 10); // указывает, что нужно сделать выборку 10 элементов, начиная с 11-го.
+  $record_set->sort('date' => 'DESC'); // задаем способ сортировки по убыванию даты
+  
+  // И вот только сейчас произошел запрос к базе данных!!!
+  foreach($record_set as $record)
+  {
+    [...]
+  }
+</code>
+
+Теперь покажем, как "в лоб" осуществляются **INSERT-запросы**:
+
+<code php>
+  lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlConnection.class.php');
+  $connection = ...;
+  $sql = "INSERT INTO founding_fathers (first_name, last_name) VALUES (:first_name:, :last_name:)";
+  $statement = $connection->newStatement($sql); // вернет объект класса lmbMysqlInsertStatement
+  $statement->setVarChar('first_name', 'Richard'); // Заполнит placeholder :first_name:, применив фунцию mysql_escape_string
+  $statement->setVarChar('last_name', 'Nixon');
+  $statement->execute(); // выполнит запрос.
+  echo $stmt->getAffectedRowCount(); // выведет 1
+</code>
+
+Если при вставке записи в таблицу первичный ключ генерится автоматически, то можно использовать метод **insertId($primary_key_name)** вместо **execute()**, который вернет значение этого поля новой записи:
+<code php>
+  lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlConnection.class.php');
+  $connection = ...;
+  $sql = "INSERT INTO founding_fathers (first_name, last_name) VALUES (:first_name:, :last_name:)";
+  $statement = $this->connection->newStatement($sql); // вернет объект класса lmbMysqlInsertStatement
+  [...]
+  $statement->insertId('id'); // вернет значение поля id только что вставленной записи.
+</code>
+
+Выполнение **update и delete-запросов** выполняется схожим образом с insert-запросами:
+
+<code php>
+  lmb_require('limb/dbal/src/drivers/mysql/lmbMysqlConnection.class.php');
+  $connection = ...;
+
+  $sql = "UPDATE founding_fathers SET first_name = :first_name:, last_name = :last_name: WHERE id = :id:";
+  $stmt = $this->connection->newStatement($sql);
+
+  $stmt->setVarChar('first_name', 'Richard');
+  $stmt->setVarChar('last_name', 'Nixon');
+  $stmt->setInteger('id', 3); // Заполнит placeholder :id:, сделав cast-to-integer
+
+  $stmt->execute(); // выполнит запрос.
+  echo $stmt->getAffectedRowCount();// выведет 1
+</code>
+
+Более [[driver|подробно о внутренней архитектуре пакета DBAL]].
+===== Работа с DBAL через фасады =====
+
+Работа "в лоб" с DBAL не слишком удобна, так как требует написания большого объема кода. Поэтому пакет DBAL содержит набор классов, которые позволяют значительно упростить рутину, зачастую до одной строки.
+
+Самым полезным, пожалуй, здесь будет [[lmbDbal|класс lmbDBAL]], который является фасадом для всего пакета.
+
+Класс lmbDBAL заботится о создании объекта подключения на основе параметров, взятых из db.conf.php-файла, который обычно лежит в папке /settings проекта. Содержимое **db.conf.php** описывает параметры соединения с базой данных в виде переменной $conf, которая является массивом с одним параметром - dsn, например:
+
+<code php>
+<?php
+$conf = array('dsn' => 'mysql://root:test@localhost/my_project?charset=utf8');
+?>
+</code>
+
+Класс lmbDBAL содержит набор методов для быстрого выполнения запросов или же для получения других helper-объектов для более эффективной работы с базой данных.
+
+Например, вот как может выглядеть SELECT-запрос:
+
+<code php>
+  $sql = 'SELECT * FROM news';
+  $rs = lmbDBAL :: fetch($sql);
+  foreach($rs as $record)
+  {
+    [...]
+  }
+</code>
+В этом случае lmbDBAL получит объект подключения, создаст нужный statement и вызовет у него необходимый метод.
+
+Однако выборку, аналогичную этой, можно сделать еще проще:
+<code php>
+  $rs = lmbDBAL :: db()->select('news');
+  foreach($rs as $record)
+  {
+    [...]
+  }
+</code>
+
+Метод **lmbDBAL :: db()** возвращает объект [[lmb_simple_db|класса lmbSimpleDb]], который предназначен для выполнения достаточно простых запросов без написания всего sql-кода запроса.
+
+Например, вот как можно выполнить insert-запрос:
+<code php>
+  $id = lmbDBAL :: db()->insert('founding_fathers', array('first_name' => 'Richard', 'last_name' => 'Nixon'));
+</code>
+
+Или update-запрос:
+<code php>
+  $id = lmbDBAL :: db()->update('founding_fathers', array('first_name' => 'Richard', 'last_name' => 'Nixon'), 'id = ' . (int)$record_id );
+</code>
+
+Кроме метода lmbDBAL :: do() есть похожий метод **lmbDBAL :: table($table_name)**, который возвращает объект [[lmb_table_gateway|класса lmbTableGateway]], который предоставляет средства для работы с одной таблицей базы данных. Отличительной особенностью работы с классом lmbTableGateway заключается в том, что он автоматически осуществляет cast-полей до нужного типа на основе meta-информации из базы данных, которую он оттуда считывает автоматически. В остальном работа с lmbTableGateway похожа на работу с lmbSimpleDb с тем отличием, что вся работа ведется только с одной таблицей:
+
+<code php>
+  $id = lmbDBAL :: table('founding_fathers')->insert(array('first_name' => 'Richard', 'last_name' => 'Nixon'));
+</code>
+
+
+
+
+===== Модификация sql-запросов и наложение критерий на запросы =====
+
+Пакет DBAL содержит набор средств для формирования sql-запросов. Скажем сказу, эти средства не предназначены для формирования sql-запросов полностью и следовательно не обеспечивают полной переносимости между базами данных. Они лишь направлены на повышение повторного использования кода и удобства в работе.
+
+Допустим, нам нужно выполнить select запрос, однако набор ограничений может быть динамическим. Для этого можно воспользоваться группами классов [[query|Query]] и [[criteria|Criteria]] пакета DBAL.
+
+Покажем все это на примере:
+<code php>
+  lmb_require('limb/dbal/src/query/lmbSelectQuery.class.php');
+  lmb_require('limb/dbal/src/criteria/lmbSqlCriteria.class.php');
+  lmb_require('limb/dbal/src/criteria/lmbSQLFieldBetweenCriteria.class.php');
+
+  $query = new lmbSelectQuery('news');
+
+  $criteria = new lmbSqlCriteria();
+   // явное условие - будет вставлено в sql-код "как есть" (as is)
+  $criteria->addAnd('news.is_approved = 1');
+  $criteria->addAnd(new lmbSQLFieldBetweenCriteria('date', $start_date, $finish_date));
+  
+  $query->addCriteria($criteria);
+  $record_set = $query->getRecordSet();
+</code>
+
+Из объекта $query всегда можно получить statement (для ручного вызова методов, заполняющих placeholder-ы) или sql-код:
+
+<code php>
+  $query = ...
+  $statement = $query->getStatement();
+  [...]
+  $sql = $query->toString();
+</code>
+===== Syntax-sugar, chain-операции или как сделать все компактнее =====
+
+Если пример выше показался вам несколько сложным и громоздким, то вот так его можно упростить при помощи классов lmbDBAL и lmbSQLCriteria, а также при помощи chain-операций:
+
+<code php>
+ $query = lmbDBAL :: selectQuery('news'); // вернет объект класса lmbSelectQuery
+
+ $criteria = new lmbSqlCriteria('news.is_approved = 1'); // явное условие - будет вставлено в sql-код "как есть" (as is)
+ $criteria->addAnd(lmbSqlCriteria :: between('date', $start_date, $finish_date)); 
+
+ $record_set = $query->where($criteria)->fetch();  // where() - это алиас для addCriteria(), а fetch() - алиас для getRecordSet()
+</code>
+
+Здесь мы возпользовались фабричным методом lmbDBAL :: **selectQuery($table_name)**, который создает объект класса lmbSelectQuery. Аналогичные методы есть для lmbUpdateQuery и lmbDeleteQuery.
+
+Также нам на помощь пришел фабричный метод [[lmbsql_criteria|lmbSQLCriteria]] :: **between($field, $from, $to)**, который создает экземпляры lmbSQLFieldBetweenCriteria класса.
+
+При помощи метода lmbSelectQuery :: **where($criteria)** мы добавили условие в выборку. Метод where является алиасом для метода lmbSelectQuery :: **addCriteria($criteria)**.
+
+Метод lmbSelectQuery :: fetch() возвращает record_set с результатом запроса.
+
+Так как и объекты Query и record_set-ы поддерживают **chaining**, можно иногда сильно сократить размер записи, например, вместо:
+<code php>
+  $query = lmbDBA :: selectQuery('news'); // создали объект класса lmbSelectQuery
+  $query->addCriteria(lmbSQLField :: between('date', $date_start, $date_end)); // Применили условие
+  $rs = $query->fetch(); // Создали объект record_set, поддерживающий интерфейс lmbDbRecordSet
+  $rs->sort(array('date' => 'DESC')); // применили к record_set-у сортировку
+  $rs->paginate(0, 5); // применили к record_set-у ограничения
+  $rs->rewind(); // начали работать с record_set-ом 
+</code>
+
+...можно все это сделать в одну строку:
+
+<code php>
+  $rs = lmbDBAL :: selectQuery('news')->where(lmbSQLField :: between('date', $date_start, $date_end))->fetch()->sort('date' => 'desc')->paginate(0, 5);
+</code>
+
+Таким чудесным способом мы выбрали первые 5 записей из таблицы news, где поле date находится между $date_start и $date_end, отсортировав данные по убыванию значения поля date.
+
+===== Дальнейшее изучение =====
+
+Более подробно об использовании пакета DBAL:
+  * [[intro_to_query_and_criteria|Использование классов из подсистем Query и Criteria]]
+  * [[driver|Архитектура DBAL пакета]]
+  * [[connection|Подключение к базе данных]] (в том числе и поддержка нескольких подключений одновременно).

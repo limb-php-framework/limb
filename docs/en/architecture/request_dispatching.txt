@@ -1,0 +1,17 @@
+====== Request Dispatching ======
+
+Request Dispatching is a process of determination of the requested [[lmbService]] and requested [[Action]].
+
+There is the list of classes that play important roles in Request Dispatching process:
+  * [[lmbRequestDispatcher]] that accepts ServiceRequestExtractor and lmbActionRequestExtractor in constructor (see [[lmbRequestExtractor]]).
+  * [[lmbDispatchedRequest]] that is created by [[lmbRequestDispatcher]].
+  * [[lmbRequestDispatchingFilter]] that starts the whole process.
+
+===== UML charts =====
+
+==== Static structure ====
+{{{ limb:architecture:limb3.0_request_dispatch.png }}}
+
+==== Sequence diagram ====
+
+{{{ limb:architecture:limb3.0_rdispatch_sequence.png }}}

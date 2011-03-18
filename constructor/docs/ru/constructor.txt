@@ -1,0 +1,173 @@
+====== Пакет Сonstructor ======
+
+Пакет конструктор предназначен для генерации кода. 
+
+В состав пакета входят классы различных конструкторов (для шаблонов, моделей и т.д.), а так же набор задач для [[limb3:ru:packages:taskman:limb.php|limb.php]], для установки и настройки веб-приложения.
+
+===== Создание проекта =====
+На этой странице будет описан процесс создания проекта средствами [[limb3:ru:packages:taskman:limb.php|limb.php]].\\
+Для ознакомления с старым способом установки посетите страницу [[limb3:ru:cms_manual_setup|Установка пакета CMS]] 
+
+==== Задачи создания проекта пакета CONSTRUCTOR ====
+
+^Тег^Описание^Зависимости^
+|||Расположение: **limb/constuctor/cli/project.inc.php/** |||
+| **project_create** | Init project meta task | project_files, project_shares, project_var_dir, project_init_cms, project_db_load |
+| **project_db_create** | Create db by specified DSN | project_db_init_config |
+| **project_db_init_config** | Init db config by given DSN param |  |
+| **project_db_load** | Init db | project_db_create |
+| **project_files** | Create new project in specified path |  |
+| **project_init_cms** | init cms installation |  |
+| **project_shares** | Create folders in /www/shared for all packages |  |
+| **project_var_dir** | Create var folder |  |
+
+==== Создание проекта ====
+
+Для создания скелета проекта достаточно выполнить 1 процедуру project_create:
+<code>php limb.php project_create</code>
+Вам будет предложено ввести все необходимые параметры интерактивно.
+
+Процедура последовательно запустит все задачи необходимые для функционирования limb-приложения:
+
+  * **project_create**
+    * **project_files** - создает структуру каталогов limb-приложения, устанавливает копию limb (по желанию с пакетами из incubator'а)  и загружает скелет веб приложения из пакета web_app
+    * **project_shares** - создает символические ссылки на shared ресурсы пакетов, если невозможно создать символические ссылки - копирует данные.
+    * **project_var_dir** - создает в проекте папку var/ в которой будут хранится скомпилированные шаблоны, кеш приложения и прочие генерируемые данные.
+    * **project_init_cms** - создает настроечный файл /setup.php и файл класса CMS приложения /src/LimbApplication.class.php
+    * **project_db_init_config** - создает конфигурационный файл подключения к БД. Запрашивает DSN в интерактивном режиме.
+      * **project_db_create** - создает базу данных.
+        * **project_db_load** - загружает в базу данных служебные таблицы CMS приложения.
+ 
+Вы можете запустить любую процедуру индивидуально.
+ 
+===== Генерация сущностей приложения =====
+
+==== Задачи создания сущностей проекта пакета CONSTRUCTOR ====
+
+^Тег^Описание^Зависимости^
+|||Расположение: **limb/constuctor/cli/entity.inc.php/** |||
+| **entity_create** | create model, front and admin controllers, front and admin templates for entity specified by table name | entity_create_model entity_create_front entity_create_admin |
+| **entity_create_model** | create model specified by table name |  |
+| **entity_create_front** | create front controller and front templates for entity specified by table name |  |
+| **entity_create_admin** | create admin controller and admin templates for entity specified by table name |  |
+| **entity_create_tree** | create model, front and admin controllers, front and admin templates for tree entity specified by table name |  |
+
+
+==== Cоздание сущностей проекта ====
+
+Создадим список ссылок на друзей сайта.
+<code sql>
+CREATE TABLE link (
+  id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(150),
+  url VARCHAR(150),
+  DESCRIPTION text
+) DEFAULT CHARSET=utf8 ENGINE=InnoDB;
+</code>
+
+Обычная задача, при работе с подобными списками - отображение самого списка, отображение отдельного элемента, а так же CRUD-часть приложения в административном разделе сайта. Для этого потребуется создать модель Link, контроллеры публичного и административного разделов, а так же шаблоны для каждого из Action'ов этих контроллеров. 
+
+Посмотрим как LIMB3 сделает все это за нас:
+<code bash>
+php limb.php entity_create link
+</code>
+
+Все, что нужно сделать руками - только добавить пункт меню в settings/navigation.conf.php
+
+Для начала скопируем navigation.conf.php в папку settings в корне проекта
+<code bash>
+cp lib/limb/cms/settings/navigation.conf.php settings/
+</code>
+Затем добавим туда пункт для нашей модели.
+<code php>
+<?php
+lmb_require('limb/cms/src/model/lmbCmsUserRoles.class.php');
+
+$editor = array(array('title' => 'Контент', 'icon' => '/shared/cms/images/icons/menu_content.png',  'children' => array(
+  array(
+    'title' => 'Текстовые страницы',
+    'url' => '/admin_document',
+    'icon' => '/shared/cms/images/icons/page.png',
+  ),
+  array(
+    'title' => 'Текстовые блоки',
+    'url' => '/admin_text_block',
+    'icon' => '/shared/cms/images/icons/layout.png',
+  ),
+  array(
+    'title' => 'Мета-данные (SEO)',
+    'url' => '/admin_seo',
+    'icon' => '/shared/cms/images/icons/page_white_stack.png',
+  ),
+  /** Добавим пункт для друзей сайта **/
+  array(
+    'title' => 'Друзья',
+    'url' => '/admin_link',
+    'icon' => '/shared/cms/images/icons/pictures.png',
+  ), /** вот и все **/
+
+)));
+
+$only_admin = array(array('title' => 'Администрирование', 'icon' => '/shared/cms/images/icons/menu_service.png','children' => array(
+  array(
+    'title' => 'Пользователи',
+    'url' => '/admin_user',
+    'icon' => '/shared/cms/images/icons/user.png',
+  ),
+)));
+
+$conf = array(
+  lmbCmsUserRoles :: EDITOR  => $editor,
+  lmbCmsUserRoles :: ADMIN  => array_merge_recursive($editor, $only_admin)
+);
+
+
+</code>
+
+Прежде, чем проверить на работоспособность наше творчество не забываем чистить кэш.
+<code bash>
+rm -rf ./var/* # внимание, это папка var внутри проекта, и ни в коем случае не системная /var !!! Будьте внимательны!!!
+</code>
+
+Заходим в админку, видим новый пункт в навигации и CRUD для таблицы link. http://localhost/link - и видим список, созданных нами ссылок, при клике на id у видим подробную информацию о записи. Осталось лишь отредактировать шаблоны.
+
+
+Давайте разберемся, что же на самом деле произошло при выполнении процедуры limb.php entity_create (см. выше)? Скрипт сгенерировал классы модели, контроллера, контроллера админки, а так же шаблоны для административной и публичной частей сайта.
+
+Вот файлы, которые были добавлены скриптом конструктора:
+<code bash>
+template/link/display.phtml  # шаблон для отображения списка ссылок в публичной части
+template/link/item.phtml     # шаблон для подробного просмотра информации о ссылке 
+
+template/admin_link/form_fields.phtml  #  Поля формы для добавления/редактирования ссылки
+template/admin_link/display.phtml      #  Шаблон отображения списка ссылок в административной части
+template/admin_link/edit.phtml         #  Шаблон редактирования ссылки
+template/admin_link/delete.phtml       #  Шаблон удаления одной или нескольких ссылок
+template/admin_link/create.phtml       #  Шаблон создания новой ссылки
+
+
+src/model/Link.class.php             # Класс модели (Active Record) ссылки. Сюда мы можем дописывать свой функционал
+                                             
+src/controller/AdminLinkController.class.php # Класс контроллера административной части сайта.
+src/controller/LinkController.class.php      # Класс контроллера публичной части сайта.
+
+
+</code>
+
+Для того чтобы оформить шаблоны по своему вкусу вам понадобятся некоторые знания о шаблонизаторе [[limb3:ru:packages:macro|macro]].
+
+===== Генерация кода из собственных шаблонов =====
+
+Пакет конструктора создан, чтобы избавить разработчика от рутинного написания базовых классов, однако вы сами можете определить как конструктор будет оформлять ваши базовые классы и какой функционал будет в них присутствовать. Для этого нужно создать конфигурационный файл settings/constructor.conf.php приблизительно следующего содержания:
+
+<code php>
+<?php
+
+ $conf = array(
+      'templates_dir' => '_constructor/'
+    );
+</code>
+
+Cкопируйте каталог lib/limb/constructor/template в template/_constructor
+<code bash> cp lib/limb/constructor/template template/_constructor</code>
+Теперь вы можете изменять шаблоны, по которым Constructor будет генерировать для вас код.

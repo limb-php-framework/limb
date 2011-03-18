@@ -1,0 +1,15 @@
+==== Формы и поля форм (Form tags) =====
+[[limb3:ru:packages:macro:tags:form_tags:lmb_macro_form_element_tag|lmbMacroFormElementTag]] - базовый класс для всех элементов формы.
+^Тег^Описание^
+|Расположение: **limb/macro/src/tags/form/**|||
+|[[limb3:ru:packages:macro:tags:form_tags:form_tag|form]]|Расширенная форма html-тега <form>|
+|[[limb3:ru:packages:macro:tags:form_tags:form_errors_tag|form:errors]]|Используется для отображения списка ошибок валидации формы.|
+|[[limb3:ru:packages:macro:tags:form_tags:form_errors_tag|form:field_errors]]|Используется для управления списком ошибок валидации формы.|
+|[[limb3:ru:packages:macro:tags:form_tags:form_referer|form:referer]]|Добавляет скрытое поле (<input type="hidden">) URL источника запроса|
+|[[limb3:ru:packages:macro:tags:form_tags:input_tag|input]]|Расширеная форма html-тега <input>.|
+|[[limb3:ru:packages:macro:tags:form_tags:text_area_tag|textarea]]|Расширенная форма html-тега <textarea>.|
+|[[limb3:ru:packages:macro:tags:form_tags:label_tag|label]] |Расширенная форма тега <label>.|
+|[[limb3:ru:packages:macro:tags:form_tags:js_checkbox_tag|js_checkbox]]| Вставляет DHML checkbox, а также hidden поле, которое всегда возвращает какое-либо значение ('0' или '1').|
+|[[limb3:ru:packages:macro:tags:form_tags:select_tag|select]] |Расширенная форма html-тега <select>.|
+|[[limb3:ru:packages:macro:tags:form_tags:option_tag|option]] | Тег опции выбора для тега %%{{select}}%%.|
+|[[limb3:ru:packages:macro:tags:form_tags:select_options_export_tag|select_options_export]] |Позволяет преобразовывать контейнеры данных в виде итераторов или обычные массивы в такую форму, которая понятна тегу %%{{select}}%% для построения списка тегов <option>.|

@@ -1,0 +1,118 @@
+====== Инструкция пользователя ======
+
+===== Введение =====
+
+  * [[.for_beginners|Если вы новичок в Limb3...]] (основные моменты, советы, где искать описания и примеры).
+
+  * [[.faq|Часто задаваемые вопросы (FAQ)]]
+
+  * [[.how_to_download|Где и как скачать Limb3?]]
+
+  * [[.packages_architecture|Разделение Limb3 на пакеты. Что такое пакеты в Limb3?]]
+
+===== Создание проекта =====
+
+===== Типичный проект веб-приложения =====
+  * [[.packages:WEB_APP|WEB_APP]] - набор различных средств для построения web ориентированных приложений
+  * [[.packages:web_app:app_installation|Пример установки каркасного приложения для работы с WEB_APP пакетом]]
+  * [[.packages:FILTER_CHAIN|FILTER_CHAIN]] - имплементация паттерна Intercepring Filter.
+  * [[.packages:CORE|CORE]] - пакет, отвечающий за поддержку подключения других пакетов. Содержит базовые классы для работы с различными контейнерами данных и коллекциями
+  * [[.setup_files|Конфигурационные скрипты в Limb3]]
+===== Типы данных и работа с ними =====  
+  * [[.packages:core:data_containers|Контейнеры данных]]
+    * коллекции (итераторы, или списковые контейнеры данных) 
+    * едининичные (несписковые контейнеры данных)
+  * Различные утилититарные классы
+    * [[.packages:core:lmb_serializable|для сериализации. Класс lmbSerializable]], 
+    * [[.packages:core:decorators|для создания декораторов на лету]], 
+    * [[.packages:core:lmb_array_helper|хелпер по работе с массивами (lmbArrayHelper)]]
+    * [[.packages:core:handles|для отложенной инициализации объектов (Хендлы). Класс lmbHandle]] 
+    * [[.packages:core:delegates|Объектные формы call_back вызовов. Класс lmbDelegate]]
+  * [[.packages:DATETIME|DATETIME]] - работа с временем, датой, временными периодами
+
+===== Конфигурирование =====
+* [[.packages:CONFIG|CONFIG]] - работа с конфигурационными файлами
+* [[.packages:TOOLKIT|TOOLKIT]] - средства для организации Dependency Injection(реализация Dynamic Service Locator)
+===== Модели данных (Mvc)=====
+[[.packages:active_record|ACTIVE_RECORD]] - реализация паттерна [[wp>ActiveRecord]]
+    * [[.packages:active_record:intro|Краткое описание (небольшой пример)]]
+    * базовые возможности
+      * [[.packages:active_record:crud|Создание, сохранение, загрузка и удаление объектов]]
+      * [[.packages:active_record:find|Поиск и сортировка объектов. find()-методы lmbActiveRecord]]
+      * [[.packages:active_record:validation|Валидация данных в объектах]]
+    * отношения между классами
+      * [[.packages:active_record:one_to_one|Один-к-одному]]
+      * [[.packages:active_record:one_to_many|Один-ко-многим]]
+      * [[.packages:active_record:many_to_many|Много-ко-многим]]
+      * [[.packages:active_record:more_on_relations|Дополнительная информация по отношениям]] 
+    * дополнительные возможности
+      * [[.packages:active_record:eager_fetching|Жадная загрузка или Eager fetching]]
+      * [[.packages:active_record:inheritance|Поддержка наследования.]]
+      * [[.packages:active_record:enhancement|События в ActiveRecord. Расширение поведения базового класса lmbActiveRecord при сохранении и удалении. ]]
+      * [[.packages:active_record:sql_exec|Создание новых find() методов. Выполнение своих sql-запросов.]]
+      * [[.packages:active_record:connection|Использование своего подключение к базе данных (connection) при работе с ActiveRecord]]
+      * [[.packages:active_record:lazy_attributes|Отложенная загрузка некоторых атрибутов. Lazy Attributes]]
+      * [[.packages:active_record:value_objects|ValueObjects]]
+      * [[.packages:active_record:how_to_extend_collections|Расширение классов коллекций связей вида один-ко-многим и много-ко-многим.]]
+      * [[.packages:active_record:ctime_utime|Автоматическое сохранение даты создания и обновления объекта ActiveRecord]]
+      * [[.packages:active_record:in_macro_templates|Использование ACTIVE_RECORD в шаблонах MACRO.]]
+      * [[.packages:active_record:in_wact_templates|Использование ACTIVE_RECORD в шаблонах WACT.]]    
+      * [[.packages:active_record:datetime_processing|Обработка даты в объектах Active Record]]
+[[.packages:VALIDATION|VALIDATION]] - средства валидации данных
+
+===== Контроллеры, экшены и роутинг (mvC) =====
+  * [[.packages:VIEW|VIEW]] - работа с представлением, компонентом MVC
+
+===== Шаблоны (mVc) =====
+  * [[.packages:macro|MACRO]] - шаблонизатор MACRO
+    * Основные элементы шаблона
+      * [[.packages:macro:expressions|Выражения. Вывод значений переменных в шаблоне]]
+      * [[.packages:macro:filters_intro|Фильтры. Модификация значений при выводе]]
+      * [[.packages:macro:php_code_in_templates|Использование php-кода в шаблонах]]
+    * Базовые средства шаблонизации MACRO
+      * [[.packages:macro:list_tags|Вывод списков]]
+      * [[.packages:macro:pagination|Постраничный вывод списков]]
+      * [[.packages:macro:form_tags|Теги форм и элементов форм]]
+      * [[.packages:macro:template_composition|Композиция шаблонов (включение, обворачивание и переиспользование шаблонов)]]
+    * [[.packages:macro:tags|Полный словарь MACRO-тегов]]
+    * [[.packages:macro:filters|Полный словарь MACRO-фильтров]]
+
+===== Логгирование =====
+
+===== Разделение прав =====
+[[.packages:acl|ACL]] - функционал [[http://ru.wikipedia.org/wiki/ACL|ACL]]
+
+===== Низкоуровневая работа с БД =====
+  * [[.packages:DBAL|DBAL(database abstraction layer)]] - пакет, абстрагирующий работу с БД
+    * [[.packages:dbal:intro|Введение в пакет DBAL]]
+    * [[.packages:dbal:connection|Подключение к базе данных]]
+    * [[.packages:dbal:intro_to_query_and_criteria|Использование классов из подсистем Query и Criteria]]
+    * [[.packages:dbal:transactions|Поддержка транзакций]]
+    * [[.packages:dbal:dump_load|Загрузка sql-дампа базы данных]]
+
+===== Тестирование =====
+  * [[.packages:TESTS_RUNNER|TESTS_RUNNER]] - тестовая оболочка, основанная на SimpleTest, позволяющая организовать группы тестов, используя расположение тестов в файловой системе
+    * [[.packages:tests_runner:limb_unit|limb_unit - консольный инструмент для выполнения SimpleTest тестов]]
+
+===== Оптимизация производительности =====
+[[.packages:cache2|CACHE2]] - обобщение различных техник кеширования
+
+===== Дополнительные возможности =====
+  * [[.packages:IMAGEKIT|IMAGEKIT]] - работа с графическими библиотеками (imagick, gd).
+  * [[.packages:FS|FS]] - работа с файловой системой: базовые файловые операции, нахождения файлов по алиасам и др.
+  * [[.packages:I18N|I18N]] - интернационализация приложений
+  * [[.packages:JS|JS]] - %%JavaScript%% средства для модульной загрузки кода и набор базовых %%JavaScript%% классов
+  * [[.packages:CALENDAR|CALENDAR]] - %%JavaScript%% календарь
+  * [[.packages:MAIL|MAIL]] - отправка почты
+  * [[.packages:NET|NET]] - работа с сетевыми протоколами(в основном с HTTP)
+  * [[.packages:SESSION|SESSION]] - cредства для работы с PHP сессиями и абстрагирования от источника хранения сессионных данных
+  * [[.packages:TREE|TREE]] - организации хранения деревьев в БД
+  * [[.packages:WYSIWYG|WYSIWYG]] - расширенный текстовый редактор для ввода гипертекста (fckeditor, tinymce)
+
+===== Заключение =====
+  * [[.constants|Основные конфигурационные константы используемые в Limb3]]
+  * [[.coding_standards|Стандарты кодирования Limb3]]
+  * [[.svn|Работа с репозиторием Limb3]]
+  * [[.how_to_run_tests|Как запустить тесты на пакеты Limb3]]
+  * [[.packages:core:global_functions#функции_для_подключения_пакетов|для работы с пакетами (lmb_package_*)]]
+  * [[.packages:core:global_functions#функции_для_работы_с_переменными_окружения_lmb_env|для работы с переменными окружения (lmb_env_*)]]

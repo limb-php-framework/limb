@@ -1,0 +1,167 @@
+====== Шаг1. Создание каркаса проекта и запуск приложения ======
+===== Структура папок и файлов =====
+
+Рекомендуем для начала ознакомиться с подробными [[limb3:ru:packages:web_app:app_installation|инструкциями по установке]] проекта на базе Limb3.
+Скопируйте все содержимое из папки /skel пакета WEB_APP в директорию с вашим приложением, например my_app.
+
+Итак, внутри папки вашего приложения будут следующие файлы и директории:
+<code>
+my_app
+|-- cli       - здесь удобно хранить различные вспомогательные скрипты (скрипты сборки, крон-скрипты и т.п.)
+|-- init      - здесь можно хранить данные, требуемые при разворачивании вашего приложения, например схему базы данных
+|-- lib       - здесь хранятся все подключаемые библиотеки, в том числе и саму папку limb следует положить сюда, если php еще не находит ее автоматически
+|-- settings  - здесь располагаются конфигурационные файлы
+|   |-- common.conf.php - общие настройки
+|   |-- db.conf.php     - подключение базы данных
+|   |-- macro.conf.php  - шаблонизатор MACRO
+|   |-- routes.conf.php - правила генерации ссылок (url-rewrite)
+|   `-- wact.conf.php   - шаблонизатор WACT
+|-- src       - здесь мы разместим собственно код приложения
+|-- template  - папка, где находятся шаблоны приложения
+|-- tests     - папка с тестами приложения
+`-- www       - сюда должен указывать корень веб-сервера (DocumentRoot приложения)
+|   |-- .htaccess
+|   |-- favicon.ico
+|   `-- index.php
+|-- setup.override.php.tpl
+|-- setup.php
+</code>
+
+Убедитесь, что веб-сервер имеет права на запись в папку var, которая находится в корне вашего приложения. 
+
+===== Настройка приложения. =====
+==== Файл setup.php ====
+
+Для инициализации приложения используется скрипт my_app/setup.php, в котором содержится различная конфигурационная информация.
+
+<code php>
+<?php
+// Дополняем include_path директорией проекта и директорией с Limb3 пакетами (по умолчанию это my_app/lib)
+set_include_path(implode(PATH_SEPARATOR,
+  array(
+    dirname(__FILE__),
+    dirname(__FILE__) . '/lib/',
+    get_include_path()
+  )
+));
+
+// здесь подключается файл setup.override.php, перекрывающий настройки в этом (setup.php) файле
+// это может быть использовано для различных настроек в режиме разработки и боевом режиме
+// по умолчанию файл не существует, однако, его шаблон можно посмотреть в файле setup.override.php.tpl
+if(file_exists(dirname(__FILE__) . '/setup.override.php'))
+  require_once(dirname(__FILE__) . '/setup.override.php');
+
+// подключим наиболее часто используемые составляющие пакетов core и web_app
+require_once('limb/core/common.inc.php');
+lmb_package_require('web_app');
+
+// Служебная переменная окружения LIMB_VAR_DIR указывает на расположение временных/изменяемых файлов(различные кеши, компилированные шаблоны, временные файлы и т.д).
+lmb_env_setor('LIMB_VAR_DIR', dirname(__FILE__) . '/var/');
+if(!is_dir(lmb_env_get('LIMB_VAR_DIR')))
+  throw new Exception('Limb var dir defined but no directory really exists at "' . lmb_env_get('LIMB_VAR_DIR'). '"');
+
+lmb_require('src/model/*.class.php')
+?>
+</code>
+
+==== Файл settings/common.conf.php ====
+
+common.conf.php используется для хранения каких-либо общих параметров, а также для включения режима отладки. Режим отладки используется в macro.conf.php (см. ниже).
+<code php>
+<?php
+
+$conf = array(
+  'debug_enabled' => true
+);
+</code>
+
+==== Файл settings/db.conf.php ====
+
+db.conf.php используется для хранения параметров подключения к базе данных. Для MySQL он будет выглядеть следующим образом:  
+<code php>
+<?php
+
+$conf = array('dsn' => 'mysql://root:secret@localhost/limb_crud?charset=utf8');
+</code>
+
+Для SQLite:  
+<code php>
+<?php
+
+$conf = array('dsn' => 'sqlite://localhost/path/to/sqlite.db?charset=utf8');
+</code>
+==== Файл settings/routes.conf.php ====
+routes.conf.php используется для хранения правил отображения запросов к страницам на конкретные действия контроллеров. Такие правила называются //маршрутами// (routes).
+<code php>
+<?php
+$conf = array(
+   'main' => array(
+      'path' => '/',
+      'defaults' => array(
+         'controller' => 'main_page',
+      )
+   )
+);
+
+// Common routes, should be included AFTER yours
+include_once('limb/web_app/settings/routes.conf.php');
+</code>
+По умолчанию, routes.conf.php определяет только 1 пользовательский маршрут, указывающий на главную страницу. В данном случае //main// - это опциональное имя маршрута, //path// указывает на используемый запрос ( / (слэш) означает главную страницу), //defaults// содержит список параметров по умолчанию, которые следует переопределить. В данном случае переопределяется только контроллер - main_page, //action// по умолчанию считается display.
+
+**Важно**: порядок маршрутов имеет значение - при переборе маршрутов будет использован первый подходящий маршрут, поэтому наиболее общие маршруты следует размещать в конце, а более специфичные в начале.
+
+После пользовательских настроек, для удобства, подключаются маршруты Limb, содержащие правила для запросов вида ///controller/action/id//, ///controller/action// и ///controller//.
+
+==== Файл settings/macro.conf.php ====
+
+Это файл настройки шаблонной системы MACRO, которую мы будем использовать для вывода данных.
+
+<code php>
+<?php
+include_once('limb/view/settings/macro.conf.php');
+
+// Recompiling templates is enabled only in debug mode.
+$conf['forcecompile'] = lmbToolkit::instance()->isWebAppDebugEnabled();
+
+</code>
+Наиболее общие настройки MACRO наследуются из пакета VIEW. Для удобства разработки переопределяется лишь параметр **forcecompile**, который указывает, нужно ли заново компилировать шаблон при каждом обращении. В данном случае шаблоны будут перекомпилироваться лишь в режиме отладки, тогда как в боевом режиме на сервере этот параметр будет отключен.
+
+===== Запуск проекта =====
+
+Попробуйте зайти на страницу проекта. Вы должны увидеть страницу с надписью "Default main page." Если это так, значит все пока нормально.
+===== Как работает приложение =====
+
+%%DocumentRoot%% нашего приложения - это папка www. 
+
+==== Файл .htaccess ====
+
+В папке www лежит файл **.htaccess** (см. ниже), который перенаправляет все запросы к index.php скрипту, если запрос не касается статичного контента (файла, директории и символической ссылки):
+
+<code>
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-s
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.+)$ index.php [L,QSA]
+</code>
+==== Файл index.php ====
+
+Cкрипт **www/index.php**, является единственной точкой входа в приложение:
+<code php>
+<?php
+require_once(dirname(__FILE__) . '/../setup.php');
+require_once('src/LimbApplication.class.php');
+
+$application = new LimbApplication();
+$application->process();
+
+</code>
+
+По сути все приложение - это один единственный класс.
+
+
+===== Что дальше? =====
+
+Следующая страница: [[step2|Шаг2. Вывод новостей через шаблон]]

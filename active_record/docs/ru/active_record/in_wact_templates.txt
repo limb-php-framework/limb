@@ -1,0 +1,575 @@
+====== Использование ACTIVE_RECORD в шаблонах WACT  ======
+
+Мы предполагаем, что вы используете пакет WEB_APP при работе с шаблонизатором WACT, так как именно пакет WEB_APP содержит необходимые теги, которые делают возможным тесную интерграция шаблонов и ActiveRecord. Мы также предполагаем, что вы немного разбираетесь в синтаксисе WACT-шаблонов и знаете назначение базовых тегов: для этого вполне достаточно выполнить [[limb3:ru:tutorials:basic|базовый туториал]] (некоторый материал здесь и в туториале пересекается).
+
+Большое количество информации о WACT доступно в разделе [[limb3:ru:packages:wact|"Использование шаблонной системы WACT"]]. Некоторая информация на этой странице и в разделе о WACT пересекается, но это сделано специально. Нам кажется, что так получилось нагляднее.
+
+В Limb3 существует 2 способа передачи данных в шаблон:
+  - получение данных в контроллере и ручная передача его в шаблон через View-объект,
+  - получение данных непосредственно в шаблоне.
+
+Наша точка зрения состоит в том, что для большинства web-приложений второй способ предпочтительнее, так как в этом случае нам не приходится усложнять наши контроллеры или создавать дополнительну иерархию классов, которые бы занимались получением нужных данных и передачей этих данных в шаблон.
+
+Итак, в Limb3 шаблон (WACT-шаблон если быть точнее) имеет средства для получения данных непосредственно из шаблона. 
+
+===== Как шаблон отображает данные из lmbActiveRecord. Для чего нужны getter-ы =====
+
+Для начала немного информации, как WACT шаблоны работают с источниками данных и как это связано с lmbActiveRecord.
+
+При использовании конструкций вида {$title} или {$^title и т.д.} шаблон обращается к текущему (или к родительскому) контейнеру данных с запросом вида $datasource->get('title'), если он поддерживает такой интерфейс доступа к данным или просто datasource['title'], если контейнер данных поддерживает только **ArrayAccess**. В качестве источника данных, таким образом, может выступать любой массив, объект, поддерживающий ArrayAccess или объект, поддерживащий метод **get()**.
+
+lmbActiveRecord реализован таким образом, что он поддерживает и get() для:
+  * для тех полей, которые определены в его таблице,
+  * для всех полей, которые определены в классе и которые НЕ содержат в названии подчеркивание, например ($_table)
+  * для всех отношений вида has_one, has_many, has_many_to_many, belongs_to, many_belongs_to.
+  * для всех дополнительных getter-ов, реализованных в классе, например, getFullName() при запросе get('full_name')
+
+Обратите внимание на последний пункт. Он позволяет создавать свои собственные методы для получения данных, в которых можно учитывать различные параметры, дополнительно обрабатывать данные и т.д. Пока приведем простейший пример:
+
+<code php>
+class User extends lmbActiveRecord
+{
+  function getFullName()
+  {
+    return $this->getLastName() . ' ' . $this->getName();
+  }
+}
+</code>
+
+Теперь если в шаблоне написать:
+<code xml>
+Ваше полное имя: {$full_name}
+</code>
+
+Будет вызван метод getFullName(). Естественно, контейнером данных в данном куске шаблона должен быть объект класса User.
+
+И еще один момент: такие конструкции как {$course.title} приводят к цепочке "разыменований", когда сначала вызывается get('course'), а потом к полученному объекты вызывается еще get('title').
+
+===== Получение данных при помощи тега <active_record:fetch> =====
+
+При использовании пакета ACTIVE_RECORD для реализации модели самый очевидный способ для получения - это использование тега **<active_record:fetch>**. Этот тег используется для вызовов статических методов ActiveRecord-ов и для передачи полученной информации в контейнеры данных WACT шаблона. Попробуем пояснить это на примере.
+
+Допустим у нас есть классы Course и Lecture, которые мы использовани в разделе [[one_to_many|"Поддержка отношений вида один-ко-многим"]]:
+<code php>
+class Course extends lmbActiveRecord
+{
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'Lecture'));
+}
+ 
+class Lecture extends lmbActiveRecord
+{
+  protected $_many_belongs_to = array('course' => array('field' => 'course_id',
+                                                        'class' => 'Course'));
+}
+</code>
+
+Пока нам этого описания хватит.
+
+
+==== Вывод списка объектов ====
+
+Пусть нам необходимо вывести список заголовков всех курсов, тогда наш шаблон будет выглядеть следующим образом:
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses' />
+
+<list:list id='courses'>
+<table>
+  <list:item>
+  <tr><td>{$title}<td></tr>
+  </list:item>
+</table>
+</list:list>
+</code>
+
+Атрибут тега **using** указывает на путь до класса Course(обычно такие классы кладутся в папку src/model/ проекта). 
+
+До версии WEB_APP 0.2 вместо using использовался атрибут **class_path**, например:
+
+<code xml>
+<active_record:fetch class_path='src/model/Course' target='courses' />
+[...]
+</code>
+
+Атрибут **target** указывает, куда необходимо передать данные; в нашем случае это будет тег <list:list>, который занимается отображением данных.
+
+При выполнении тега <active_record:fetch> на самом деле производится вызов метода lmbActiveRecord :: find($class_name). Рекомендуем вам просмотреть раздел [[find|"Поиск и сортировка объектов"]] еще раз чтобы лучше разбираться в механизмах взаимодействия шаблона и ActiveRecord-ов.
+
+
+==== Вывод единичного объекта ====
+
+Пусть теперь нам необходимо отобразить только один курс, идентификатор которого нам доступен из запроса (request):
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='current_course' first='true'>
+ <fetch:param record_id='{$#request.id}'>
+</active_record:fetch>
+
+<core:datasource id='current_course'>
+Текущий курс:  {$title}
+</core:datasource>
+</code>
+
+Обратите внимание на атрибут тега **first**, который говорит тегу, что нужно передать не весь список данных, а только первый полученный объект из списка. Начиная с версии пакета WEB_APP 0.2 можно использовать также атрибут **one** вместо first.
+
+Использование параметра **record_id** приводит к тому, что будет использован метод lmbActiveRecord :: findById();
+
+Если бы мы не использовали параметр record_id, но все равно указали first='true', тогда это бы означало вызов метода find() вместо findById(), а затем paginate(0,1) у итератора, который был получен из метода lmbActiveRecord :: find().
+
+В атрибуте **target** мы указали идентификатор тега <core:datasource> - это так называемый единичный контейнер данных, в отличие от <list:list> тега. Если вы забудете указать **first**, тогда шаблонизатор предпримет попытку передать весь итератор (даже если в нем будет всего 1 элемент) в <core:datasource> и будет сгенерировано исключение во время работы шаблона.
+
+Еще один момент важный момент, на который нужно обратить внимание. <list:list> не выводит ничего из того, что находится у него внутри, если итератор был пуст. <core:datasource> выводит свое содержимое в любом случае. В будущих версиях мы исправим это поведение или введем новый тег, который будет работать в этом отношении аналогично <list:list>. А пока, если вы не уверены в том, что данные действительно придут, вставляйте в шаблон условие, например, так:
+
+<code xml>
+<core:datasource id='current_course'>
+<core:optional for='id'>
+Текущий курс:  {$title}
+</core:optional>
+</core:datasource>
+</code>
+
+То есть, если контейнер с данными (<core:datasource>) содержит идентификатор, можно выводить содержимое внутри <core:optional>.
+
+==== Задание сортировки данных ====
+
+Допустим, нам необходимо вывести все курсы отсортировав их по заголовку. Если по-умолчанию курсы сортируются по идентификатору, есть способ изменить способ сортировки прямо из шаблона. Для этого можно использовать атрибут **order**. Это можно сделать так:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses' order='title=ASC'/>
+[...]
+</code>
+
+Или так:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses'>
+  <fetch:param order='title=ASC'/>
+</active_record:fetch>
+[...]
+</code>
+
+Можно указать несколько сортировок, разделяя их запятыми:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses'>
+  <fetch:param order='title=ASC,id=DESC'/>
+</active_record:fetch>
+[...]
+</code>
+
+Использование **order** на самом деле приводит к вызову метода sort() для итератора полученного из find()-метода, для последнего примера это будет $dataset->sort(array('title' => 'ASC', 'id' => 'DESC'));
+
+Можно также указать "отсутствие" сортировки, то есть вывести записи в случайном порядке. Для этого (в MySQL) можно использовать значение **rand()** без указания поля сортировки, то есть:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses'>
+  <fetch:param order='=rand()'/>
+</active_record:fetch>
+[...]
+</code>
+
+==== Ограничение размеры выборки ====
+
+Иногда перед нами стоит задача вывести только некоторое количество объектов в шаблоне, например, только 3 последние новости (News) (мы не будем приводить модель - покажем только шаблоны). Для этого мы можем использовать атрибуты **offset** и **limit**, например, давайте выведем только 3 новости, отсортировав их при этом по дате:
+
+<code xml>
+<active_record:fetch using='src/model/News' target='last_news' limit='3' order='date=DESC'/>
+[...]
+</code>
+
+Это можно сделать и так:
+<code xml>
+<active_record:fetch using='src/model/News' target='last_news'>
+  <fetch:param limit='3' order='date=DESC'/>
+</active_record:fetch>
+[...]
+</code>
+
+Допустим нам нужно вывести 3 курса, начиная с 3-го:
+<code xml>
+<active_record:fetch using='src/model/News' target='last_news'>
+  <fetch:param offset='2' limit='3' order='date=DESC'/>
+</active_record:fetch>
+[...]
+</code>
+
+Параметр offset нам,например, реально пригодился при выводе новостей из различных разделов, когда первые два раздела выводили новости одним способом, а остальные все - другим.
+
+
+==== Использование своих find()-методов при помощи тега <active_record:fetch>  ====
+
+Допустим, что заказчик ввел требование - на фронтовой части сайта нужно выводить только опубликованные курсы. Для этого мы введем статический метод Couse :: findPublished():
+
+<code php>
+class Course extends lmbActiveRecord
+{
+  protected $_has_many = array('lectures' => array('field' => 'course_id',
+                                                   'class' => 'Lecture'));
+
+  static function findPublished()
+  {
+    return lmbActiveRecord :: find('Course', 'is_published = 1');
+  }
+}
+</code>
+
+Теперь нам нужно модифицировать шаблон, чтобы он использовал именно этот метод findPublished(), а не стандартный find(). Для этого мы воспользуемся атрибутом **find**, в который передается "вторая" составляющая названия нужного нам метода в under_scores:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses' find='published'/>
+[...]
+</code>
+
+Параметр find можно также указывать при помощи <fetch:param> тега.
+
+==== Использование find()-методов с параметрами. Тег <find:params>  ====
+
+Допустим у нас есть класс Node с таким статическим find()-методом findForParent($parent_id).
+
+<code php>
+class Node extends lmbActiveRecord
+{
+  static function findForParent($parent_id)
+  {
+    return lmbActiveRecord :: find('Node', 'parent_id = ' . (int)$parent_id);
+  }
+}
+</code>
+
+То есть find()-метод требует дополнительного параметра. Чтобы передать параметр в find()-метод используется тег [[limb3:ru:packages:wact:tags:lmb_fetch_tags:lmb_find_params_tag|<find:params>]].
+
+Вот как будет выглядеть шаблон при вызове методе Node :: findForParent($parent_id):
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses' find='for_parent'>
+  <find:params parent_id='$#request.id'/>
+</active_record:fetch>
+[...]
+</code>
+
+Значение каждого атрибута тега <find:params> передается в качестве параметра в find()-метод. Названия параметров не имею значения - важен только порядок их следования в шаблоне. Именно в этом порядке параметры и передаются.
+
+===== Передача данных внутри шаблонов =====
+
+Продолжим разбирать нам пример с курсами и лекциями. Допустим теперь у нас есть задача отобразить список лекций выбранного курса. Как получить в шаблон выбранный курс мы уже знаем, но как обратиться к лекциям которые к нему относятся.
+
+
+==== Использование from атрибута ====
+
+Самый простой способ - это использование атрибута **from** тега <list:list> или <core:datasource>, в зависимости от того, что нам необходимо - список объектов или только 1. Итак, вот как будет выглядеть шаблон, который отобразить выбранный курс и лекции по нему:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='current_course' first='true'>
+ <fetch:param record_id='{$#request.id}'>
+</active_record:fetch>
+
+<core:datasource id='current_course'>
+Текущий курс:  {$title}
+
+ <list:list from='lectures'>
+  Лекции курса:<br/>
+  <ul>
+  <list:item>
+   <li>{$title}</li>
+  </list:item>
+  </ul>
+ </list:list>
+</core:datasource>
+</code>
+
+Обратите внимание на конструкцию <list:list from='lectures'>. Эта конструкция приводит к вызову метода Course :: get('lectures'), который вернет коллекцию (итератор) лекций, так как именно так называется отношение один-ко-многим в классе Course.
+
+Атрибут from можно использовать и в <core:datasource> теге, например:
+
+<code xml>
+<active_record:fetch using='src/model/Lecture' target='current_lecture' first='true'>
+ <fetch:param record_id='{$#request.id}'>
+</active_record:fetch>
+
+<core:datasource id='current_lecture'>
+Текущая лекция:  {$title}<br/>
+
+ <core:datasource from='course'>
+  Лекция курса: {$title}<br/>
+ </core:datasource>
+</core:datasource>
+</code>
+
+Правда мы могли бы написать данный пример немного короче:
+
+<code xml>
+<active_record:fetch using='src/model/Lecture' target='current_lecture' first='true'>
+ <fetch:param record_id='{$#request.id}'>
+</active_record:fetch>
+
+<core:datasource id='current_lecture'>
+Текущая лекция:  {$title}<br/>
+
+Лекция курса: {$course.title}<br/>
+</core:datasource>
+</code>
+
+Второй вариант, возможно, более наглядный, а с точки зрения скорости выполнения они приблизительно равны, поэтому мы предпочитаем именно второй метод.
+
+==== Использование тега <iterator:transfer> ====
+
+Если вам необходимо отобразить, например, только 3 первые лекции курса, отсортировав их, например, по заголовку, тогда простое использование from уже не достаточно. Для таких целей можно использовать тег <iterator:transfer>, например, так:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='current_course' first='true'>
+ <fetch:param record_id='{$#request.id}'>
+</active_record:fetch>
+
+<core:datasource id='current_course'>
+Текущий курс:  {$title}
+
+ <iterator:transfer from='lectures' target='course_lectures' order='title=ASC' limit='3'/>
+
+ <list:list id='course_lectures'>
+  Лекции курса:<br/>
+  <ul>
+  <list:item>
+   <li>{$title}</li>
+  </list:item>
+  </ul>
+ </list:list>
+</core:datasource>
+</code>
+
+Источник данных указывается атрибутом **from**, тег, где будут отображаться данные, атрибутом **target**, остальные параметры, как нам кажется, обяснений не требуют.
+
+Добавим еще, что в качестве значения from можно использовать составные конструкции, например, from='course.lectures' в случае, если вам необходимо вывести, какие еще есть лекции у курса, если вы отображаете выбранную лекцию.
+
+
+===== Постраничный вывод данных в WACT-шаблонах =====
+
+Если вы уже прошли [[limb3:ru:tutorials:basic|базовый туториал]], тогда вам должен быть знаком набор тегов <limb:pager> и атрибут тега <active_record:fetch> **navigator**, который указывает на то, какой тег <pager:navigator> связан с данными и разбивает их на страницы, например:
+
+<code xml>
+<active_record:fetch using='src/model/Course' target='courses' navigator='course_pager'/>
+
+<limb:pager:NAVIGATOR id="course_pager" items="10">
+ 
+Показаны курсы: с <b>{$BeginItemNumber}</b> по <b>{$EndItemNumber}</b>
+ 
+<limb:pager:FIRST><a href="{$href}">Первая страница </a></limb:pager:FIRST>
+ 
+<limb:pager:LIST>
+ 
+<limb:pager:CURRENT><b><a href="{$href}">{$number}</a></b></limb:pager:CURRENT>
+<limb:pager:NUMBER><a href="{$href}">{$number}</a></limb:pager:NUMBER>
+ 
+</limb:pager:LIST>
+ 
+<limb:pager:LAST><a href="{$href}">Последняя страница</a></limb:pager:LAST>
+ 
+Всего курсов: <b>{$TotalItems}</b>
+</limb:pager:NAVIGATOR>
+
+<list:list id='courses'>
+<table>
+  <list:item>
+  <tr><td>{$title}<td></tr>
+  </list:item>
+</table>
+</list:list>
+</code>
+
+Здесь мы дополнительно укажем, лишь что атрибут **navigator** также поддерживается тегами <fetch> и <iterator:transfer>.
+
+Подробнее о постраничном выводе в разделе [[limb3:ru:packages:wact:pagination|"Постраничный вывод данных в WACT-шаблонах"]].
+
+===== Использование fetcher-ов. =====
+
+==== Что такое fetcher-ы ====
+
+В отдельных случаях простые find()-методы и тег <active_record:fetch> без дополнительных параметров уже не справляются со своей работой. Например, у нас был класс Node, который использовался для реализации хранения дерева по алгоритму matherialized_path и для огранизации так называемых ЧПУ, а также являтся ActiveRecord-ом. У появилась необходимость выводить в шаблонах дочерние элементы какого-то родителя по определенному пути, по идентификатору, ограничивая выборки в некоторых случаях типом дочерних элементов и т.д. Все это привело к тому, что обычных find() и get() методов стало недостаточно и мы решили создать новый класс, который бы занимался подобными выборками и которому можно было бы передавать параметры выборки прямо из шаблона.
+
+Для подобных задач в пакете **WEB_APP** существует такое понятие, как **fetcher**, которыми можно пользоваться к шаблонах через тег **<fetch>**. 
+
+Два слова о том, что такое fetcher-ы. Это такие классы, наследники от lmbFetcher класса, которые поддерживают метод **getDataset()**. Этот метод всегда должен возвращать итератор. 
+
+В шаблонах fetcher-ы используются для получения данных через тег <fetch>. Скажем сразу, что тег **<active_record:fetch>** является аналогом тега <fetch> (класс тега <active_record:fetch> наследуется от класса тега <fetch>), просто он по-умолчанию использует класс limb/web_app/src/fetcher/lmbActiveRecordFetcher класс для получения данных.
+
+fetcher-ы могут содержать различные методы, которыми их можно параметрировать. Эти методы имеют вид setSomeParam($value). По-умолчанию fetcher-ы  поддерживают методы setOrder(), setLimit(), setOffset(). Различные fetcher-ы поддерживают другие методы для задания параметров, например, класс lmbActiveRecordFetcher поддерживает методы setRecordId(), setRecordIds, setFind().
+
+В шаблонах для задания параметров fetcher-ов используется тег <fetch:param>, каждый атрибут которого преобразуется в вызов метода вида setParamName($param_value). Мы его уже использовали часто в примерах, приводимых выше.
+
+
+
+==== Создание своих fetcher-ов. ====
+Итак, у нас есть задача - сделать свой fetcher для выборки объектов класса Node по своим параметрам. Приведем класс этого fetcher-а, который мы назвали NodeKidsFetcher:
+
+<code php>
+<?php
+lmb_require('limb/web_app/src/fetcher/lmbFetcher.class.php');
+lmb_require('limb/active_record/src/lmbActiveRecord.class.php');
+lmb_require('limb/dbal/src/criteria/lmbSQLRawCriteria.class.php');
+lmb_require('src/model/ClassName.class.php');
+
+class NodeKidsFetcher extends lmbFetcher
+{
+  protected $type;
+  protected $parent_id = 0;
+  protected $path;
+
+  function setType($type)
+  {
+    $this->type = $type;
+  }
+
+  function setParentId($parent_id)
+  {
+    if($parent_id)
+      $this->parent_id = $parent_id;
+  }
+
+  function setParentPath($path)
+  {
+    $this->path = $path;
+  }
+
+  protected function _createDataSet()
+  {
+    $toolkit = lmbToolkit :: instance();
+
+    if($this->path && !$this->parent_id)
+    {
+      if($node = Node :: findByPath('Node', $path))
+        $this->parent_id = $node->id;
+    }
+
+    $criteria = new lmbSQLRawCriteria("parent_id = " . (int)$this->parent_id);
+    if($this->type)
+    {
+      $type_id = NodeType :: generateIdFor($this->type);
+      $criteria->addAnd(new lmbSQLRawCriteria('type_id ='. $type_id));
+    }
+
+    return lmbActiveRecord :: find('Node', $criteria);
+  }
+}
+?>
+</code>
+
+Обратите внимание, что дочерние классы должны расширять защищенный метод **_createDataset()**. Это реализовано исходя из того, что родительский класс lmbFetcher содержит функционал по ограничению (offset, limit), по сортировке (order) полученного итератора и этот функционал должен быть всегда доступен клиентам fetcher-ов. Поэтому дочерние классы не перекрывают метод getDataset().
+
+Итак, гляда на класс NodeKidsFetcher, можно сделать вывод, что в шаблонах мы можем использовать параметры parent_path, parent_id и type, например:
+
+<code xml>
+<fetch using='src/fetcher/NodeKidsFetcher' target='kids'>
+<fetch:param parent_id='{$#request.id}'>
+</fetch>
+</code>
+
+<code xml>
+<fetch using='src/fetcher/NodeKidsFetcher' target='kids'>
+<fetch:param parent_id='{$#request.id}' type='File'>
+</fetch>
+</code>
+
+<code xml>
+<fetch using='src/fetcher/NodeKidsFetcher' target='kids'>
+<fetch:param parent_id='{$#request.id}' parent_path='/files'>
+</fetch>
+</code>
+
+Атрибут **using** указывает на класс fetcher-а, при помощи которого будут получены данные.
+
+В последнем примере, если в запросе ничего не придет, будут выбраны дочерние элементы родителя по пути /files.
+
+Получается достаточно удобно, не так ли??
+
+Справедливости ради отметим, что в последнее время мы предпочитаем как можно больше использовать finder-ы и getter-ы, а создавать fetcher-ы только в необходимых случаях.
+
+Дополнительная информация о fetcher-ах в разделе [[limb3:ru:packages:wact:fetch_tags|"Использование fetcher-ов в WACT-шаблонах"]].
+
+
+===== Декорирование данных в WACT-шаблонах. =====
+
+Последний раздел, который мы разбирем в данном разделе - это декорирование. Под декорированием мы подразумеваем применение шаблона декоратор (Decorator или Wrapper) для данных, которые мы получили из какого-то источника данных. 
+
+Декораторы используются в тех случах, когда нужно к классу добавить поведение, незаметно для его клиентов и не изменяя самого класса. 
+
+==== Декораторы итераторов ====
+
+Разбирем небольшой пример, где мы будем использовать декоратор итератора. Например, у нас есть объект навигации (Navigation), наследник lmbActiveRecord, содержащий поле с адресом страницы page_url. При выводе навигации на странице нам необходимо подсвечивать текущую страницу. Здесь можно применить декоратор (хотя есть и другие способы это реализовать).
+
+Создадим класс HighLightDatasetDecorator:
+
+<code php>
+lmb_require('limb/net/src/lmbUri.class.php');
+lmb_require('limb/datasource/src/lmbPagedDatasetDecorator.class.php');
+
+class HighLightDatasetDecorator extends lmbPagedDatasetDecorator
+{
+  protected $path_field = 'url';
+
+  function setPathField($path_field)
+  {
+    $this->path_field = $path_field;
+  }
+
+  function current()
+  {
+    $record = parent :: current();
+
+    $this->_assignHighlight($record);
+
+    return $record;
+  }
+
+  protected function _assignHighlight($record)
+  {
+    $path = $record->get($this->path_field);
+
+    if(!$path)
+      return;
+
+    $compare = $this->_compareRequestUriWithRecordUri(new lmbUri($path));
+
+    if($compare === false || $compare < 0)
+      return;
+
+    $record->set('hightlight', 1);
+  }
+
+  protected function _compareRequestUriWithRecordUri($record_uri)
+  {
+    if($record_uri->getHost())
+      return -1;
+
+    $uri = lmbToolkit :: instance()->getRequest()->getUri();
+    return $uri->comparePath($record_uri);
+  }
+}
+?>
+</code>
+
+Этот класс можно параметрировать при помощи метода setPathField(). HighLightDatasetDecorator сравнивает url-ы (вернее пути) при помощи метода comparePath класса lmbUri() и при необходимости ставит в запись поле 'hightlight' со значением 1. Чуть ниже мы покажем, как это можно использовать в шаблоне.
+
+Базовые классы для декоторов итераторов можно найти в пакете DATASOURCE.
+
+==== Применение тегов <fetch:decorate> и <iterator:decorate> ====
+
+При помощи тегов **<fetch:decorate>** можно применять декораторы прямо в шаблоне, например:
+<code xml>
+<active_record:fetch using='src/model/Navigation' target='navigation'>
+  <fetch:decorate using='src/dataset/HighLightDatasetDecorator' path_field='page_url'/>
+</active_record:fetch>
+
+<list:list id='navigation'>
+  <list:item>
+    <core:optional for='hightlight'>{$page_title}</core:optional>
+    <core:default for='hightlight'><a href='{$page_url}'>{$page_title}</a></core:default>
+    <br/>
+  </list:item>
+</list:list>
+</code>
+
+Атрибут тега **using** указывает на класс декоратора, который будет применен к списку объектов класса Navigation. 
+
+Тег <fetch:decorate> работает таким образом, что он вызывает метод setParamName($param_value) для всех агрументов тега, кроме using. В нашем случае, это приведет к вызову метода setPathField('page_url') и наш объект класса HighLightDatasetDecorator сможет использовать именно поле page_url из объектов Navigation для сравнения.
+
+Тег **<iterator:decorate>** работает аналогично тегу <fetch:decorate>, с тем отличием, что он применяется внутри <iterator:transfer> тега. 
+
+Дополнительно о декорировании см. раздел [[limb3:ru:packages:decorators_in_wact_templates|"Декорирование итераторов в WACT-шаблонах"]].
