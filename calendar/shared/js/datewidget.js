@@ -208,7 +208,11 @@ DateWidget.prototype.setup_options = function(elem, opts, v)
     elem.options.add(opt);
   }
   var obj = this;
-  setTimeout(function(){elem.selectedIndex=ind;obj.setValue();}, 1);
+  setTimeout(function(){
+    elem.selectedIndex=ind;
+    obj.day = obj.day_select.value;
+    obj.setValue();
+  }, 1);
 }
 
 DateWidget.prototype.remove_options = function(elem)
