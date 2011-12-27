@@ -25,7 +25,7 @@ class lmbMacroJSCheckboxWidget extends lmbMacroCheckableInputWidget
     parent :: renderAttributes();
 
     $this->hidden_id = uniqid('js_checkbox_');
-    echo " onchange=\"var el = (this.form != undefined) ? this.form.elements['{$this->hidden_id}'] : document.getElementById('{$this->hidden_id}'); el.value = (isNaN(this.checked) ? 0 : 1) * (isNaN(this.value) ? 1 : this.value);\"";
+    echo " onchange=\"var el = (this.form != undefined) ? this.form.elements['{$this->hidden_id}'] : document.getElementById('{$this->hidden_id}'); el.value = this.checked * ((!isNaN(this.value*this.checked)) ? this.value : 1)\"";
   }
 
   function renderHidden()
