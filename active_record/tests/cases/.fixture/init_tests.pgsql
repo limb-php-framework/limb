@@ -154,5 +154,6 @@ CREATE TABLE photo_for_test (
   "id" SERIAL,
   "image_extension" varchar(6)  default NULL,
   "extra" varchar(50)  default NULL,
+  "coords" varchar(50)  default NULL,
   PRIMARY KEY  (id)
 )  ;
