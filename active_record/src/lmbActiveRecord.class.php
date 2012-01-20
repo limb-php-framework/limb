@@ -1133,7 +1133,10 @@ class lmbActiveRecord extends lmbObject
     if(isset($info['getter']))
     {
       $method = $info['getter'];
-      return array($property => $object->$method());
+      if(array_key_exists('field',$info))
+        return array($info['field'] => $object->$method());
+      else
+        return array($property => $object->$method());
     }
 
     if(!isset($info['mapping']))
@@ -1163,11 +1166,17 @@ class lmbActiveRecord extends lmbObject
 
   protected function _loadAggregatedObject($property, $value = LIMB_UNDEFINED)
   {
+    if(isset($this->_composed_of[$property]['field']))
+      $field = $this->_composed_of[$property]['field'];
+    else
+      $field = $property;
+    
     // for BC
     if(isset($this->_composed_of[$property]['getter']))
     {
       if ($value === LIMB_UNDEFINED)
       {
+        if(!$value = $this->_getRaw($field))
         if(!$value = $this->_getRaw($property))
           return $value;
       }

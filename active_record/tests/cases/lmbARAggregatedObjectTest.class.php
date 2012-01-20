@@ -65,13 +65,41 @@ class ExtraForAggregateTest extends lmbObject
   }
 }
 
+class GeoCoordinate extends lmbObject
+{
+  const DELIMITER = ':';
+  
+  protected $latitude;
+  protected $longitude;  
+ 
+  function __construct($value = null)
+  {
+    if (!$value)
+      return;
+    
+    list($_latitude, $_longitude) = @explode(self::DELIMITER, $value);
+    $this->latitude = $_latitude;
+    $this->longitude = $_longitude;
+  }
+ 
+  function getDbValue()
+  {
+    $return = $this->latitude . self::DELIMITER . $this->longitude;
+    return $return;
+  }
+}
+
 class PhotoForTest extends lmbActiveRecord
 {
   protected $_composed_of = array('image' => array('class' => 'ImageForAggregateTest',
                                                    'mapping' => array('photo_id' => 'id',
                                                                       'extension' => 'image_extension')),
 
-                                  'extra' => array('class' =>'ExtraForAggregateTest'));
+                                  'extra' => array('class' =>'ExtraForAggregateTest'),
+  
+                                  'place' => array('field' => 'coords',
+                                                   'class' => 'GeoCoordinate',
+                                                   'getter' => 'getDbValue'));
   function _createValidator()
   {
     $validator = new lmbValidator();
@@ -222,5 +250,29 @@ class lmbARAggregatedObjectTest extends lmbARBaseTestCase
 
     $this->assertEqual($member->getName()->getFirst(), $first);
     $this->assertEqual($member->getName()->getLast(), $last);
+  }
+  
+  function testNewObjectReturnsEmptyAggrigatedObjectByGetter()
+  {
+    $photo = new PhotoForTest();
+
+    $this->assertNull($photo->getPlace());
+  }
+
+  function testSaveLoadAggrigatedObjectByGetter()
+  {
+    $place = new GeoCoordinate();
+    $place->setLatitude($latitude = 'latitude');
+    $place->setLongitude($longitude = 'longitude');
+
+    $photo = new PhotoForTest();
+    $photo->setPlace($place);
+    $photo->save();
+
+    $photo2 = lmbActiveRecord :: findById('PhotoForTest', $photo->getId());
+
+    $this->assertIsA($photo2->getPlace(), 'GeoCoordinate');
+    $this->assertEqual($photo2->getPlace()->getLatitude(), $latitude);
+    $this->assertEqual($photo2->getPlace()->getLongitude(), $longitude);
   }
 }
