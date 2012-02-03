@@ -1,9 +1,9 @@
 <?php
-lmb_require('limb/log/lib/FirePHPCore/FirePHP.class.php');
 lmb_require('limb/log/src/lmbLogWriter.interface.php');
 lmb_require('limb/net/src/lmbHttpResponse.class.php');
+lmb_require('limb/net/src/lmbFirePHP.class.php');
 
-class lmbLogFirePHPWriter extends FirePHP implements lmbLogWriter
+class lmbLogFirePHPWriter extends lmbFirePHP implements lmbLogWriter
 {
   protected $check_client_extension;
   protected $_log_level;
