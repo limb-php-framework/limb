@@ -9,7 +9,7 @@ $log = lmbToolkit::instance()->getLog();
 Запись сообщения в лог
 
 <code php>
-$log->log($message, $level = LOG_INFO, $params = array(), $backtrace = null);
+$log->log($message, $level = LOG_INFO, $params = array(), $backtrace = null, $entry_title = null);
 </code>
 
 В качестве уровня важности (''$level'') сообщений используются стандартные константы
@@ -32,14 +32,21 @@ $log->log($message, $level = LOG_INFO, $params = array(), $backtrace = null);
 
 ===== Конфигурирование =====
 
-**common.conf.php**
+**log.conf.php**
 <code php>
 $conf = array(
 
-	'logs' => array (
-		'firePHP://localhost/?check_extension=0',
-		'file://'.lmb_env_get('LIMB_VAR_DIR').'/log/error.log'
-	)
+	'default' => array (
+		'logs' => array (
+			'file://'.lmb_env_get('LIMB_VAR_DIR').'/log/error.log',
+		),
+	),
+	'debug' => array (
+		'logs' => array (
+			'firePHP://localhost/?check_extension=0',
+		),
+	),
+
 );
 </code>
 
