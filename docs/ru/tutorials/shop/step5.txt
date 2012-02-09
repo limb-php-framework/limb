@@ -133,6 +133,11 @@ class AlphabetHelper
   {
     return $this->_current_letter;
   }
+  
+  function getRequestParamName()
+  {
+    return $this->_request_param_name;
+  }
 }
 </code>
 
@@ -174,7 +179,7 @@ class ProductController extends lmbObjectController
     <? if ($this->helper->getCurrentLetter() == $item) { ?>
     <b>{$item|uppercase}</b>
     <? } else { ?>
-    <?php $letter_param = AlphabetHelper :: REQUEST_PARAM_NAME; ?>
+    <?php $letter_param = $this->helper->getRequestParamName(); ?>
     <a href='/product?{$letter_param}={$item}'>{$item|uppercase}</a>
     <? } ?>
     {{/list:item}}
@@ -294,7 +299,7 @@ class Product extends lmbActiveRecord
 [...]
 </code>
 
-Поиск по первой букве является по сути частным случаем поиска по названию. Поэтому мы можем изменить значение константы AlphabetHelper :: REQUEST_PARAM_NAME на 'title', и нам не придется делать еще один передаваемый параметр.
+Поиск по первой букве является по сути частным случаем поиска по названию. Поэтому мы можем изменить значение перемнной $_request_param_name класса AlphabetHelper на 'title', и нам не придется делать еще один передаваемый параметр.
 
 Надеемся, что наши последние действия в комментариях не требуются, и все понятно.
 

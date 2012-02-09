@@ -32,9 +32,9 @@ class Product extends lmbActiveRecord
   function getImagePath()
   {
     if(($image_name = $this->getImageName()) && file_exists(lmb_env_get('PRODUCT_IMAGES_DIR') . $image_name))
-      return LIMB_HTTP_BASE_PATH . 'product_images/' . $image_name;
+      return lmb_env_get('LIMB_HTTP_BASE_PATH') . 'product_images/' . $image_name;
     else
-      return LIMB_HTTP_BASE_PATH . '/shared/cms/images/icons/cancel.png';
+      return lmb_env_get('LIMB_HTTP_BASE_PATH') . '/shared/cms/images/icons/cancel.png';
   }
 }
 </code>
