@@ -35,8 +35,12 @@ class UserController extends lmbController
 
       if($this->error_list->isValid())
       {
-        $this->toolkit->getUser()->login($login, $password);
-        $this->toolkit->getSession()->set('user_id', $user->getId());
+        /*
+          Авторизация нового пользователя. 
+          О работе с объектом Toolkit будет более подробно рассказано дальше.
+        */
+        // $this->toolkit->getUser()->login($login, $password);
+        // $this->toolkit->getSession()->set('user_id', $user->getId());
 
         $this->flashMessage('Thank you for your registration!');
         $this->toolkit->redirect('/');
