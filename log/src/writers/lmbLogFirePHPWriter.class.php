@@ -1,9 +1,9 @@
 <?php
-lmb_require('limb/log/lib/FirePHPCore/FirePHP.class.php');
+lmb_require('limb/log/src/lmbFirePHP.class.php');
 lmb_require('limb/log/src/lmbLogWriter.interface.php');
 lmb_require('limb/net/src/lmbHttpResponse.class.php');
 
-class lmbLogFirePHPWriter extends FirePHP implements lmbLogWriter
+class lmbLogFirePHPWriter extends lmbFirePHP implements lmbLogWriter
 {
   protected $check_client_extension;
   protected $_log_level;
@@ -52,7 +52,14 @@ class lmbLogFirePHPWriter extends FirePHP implements lmbLogWriter
    */
   protected function _write(lmbLogEntry $entry)
   {
-    return $this->fb($entry->asText());
+    return $this->fb(
+       array(
+         'Log level' => $entry->getLevelForHuman(),
+         'Message' => $entry->getMessage(),
+         'Additional attributes' => $entry->getParams(),
+         'Back trace' => $entry->getBacktrace()->toString(),
+         )
+       );
   }
 
   function disableCheckClientExtension()
