@@ -89,6 +89,8 @@ Calendar.is_ie = ( /msie/i.test(navigator.userAgent) &&
 
 Calendar.is_ie5 = ( Calendar.is_ie && /msie 5\.0/i.test(navigator.userAgent) );
 
+Calendar.is_ie6 = ( Calendar.is_ie && /msie 6\.0/i.test(navigator.userAgent) );
+
 /// detect Opera browser
 Calendar.is_opera = /opera/i.test(navigator.userAgent);
 
@@ -471,7 +473,7 @@ Calendar.calDragIt = function (ev) {
   }
   var posX;
   var posY;
-  if (Calendar.is_ie) {
+  if (Calendar.is_ie6 || Calendar.is_ie5) {
     posY = window.event.clientY + document.body.scrollTop;
     posX = window.event.clientX + document.body.scrollLeft;
   } else {
@@ -1389,7 +1391,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
     document.body.appendChild(cp);
     var br = Calendar.getAbsolutePos(cp);
     document.body.removeChild(cp);
-    if (Calendar.is_ie) {
+    if (Calendar.is_ie6 || Calendar.is_ie5) {
       br.y += document.body.scrollTop;
       br.x += document.body.scrollLeft;
     } else {
@@ -1553,7 +1555,7 @@ Calendar.prototype._dragStart = function (ev) {
   this.dragging = true;
   var posX;
   var posY;
-  if (Calendar.is_ie) {
+  if (Calendar.is_ie6 || Calendar.is_ie5) {
     posY = window.event.clientY + document.body.scrollTop;
     posX = window.event.clientX + document.body.scrollLeft;
   } else {

@@ -1,0 +1,31 @@
+====== lmbSQLFieldCriteria ======
+
+**lmbSQLFieldCriteria** - используется для вставки критерия на поле выборки. Входит в подситему [[Criteria]].
+
+lmbSQLFieldCriteria получает в конструкторе название поля, значение и условие, например:
+
+<code php>
+$criteria = new lmbSQLFieldCriteria('contract.start_date', $date_str, lmbSQLFieldCriteria:: LESS);
+$criteria = new lmbSQLFieldCriteria('contract.end_date', $date_str, '>');
+</code>
+
+Список доступных условий:
+  * EQUAL = " = ";
+  * NOT_EQUAL = " <> ";
+  * GREATER = " > ";
+  * LESS = " < ";
+  * GREATER_EQUAL = " >= ";
+  * LESS_EQUAL = " < = ";
+  * LIKE = " LIKE ";
+  * NOT_LIKE = " NOT LIKE ";
+  * IN = " IN ";
+  * NOT_IN = " NOT IN ";
+  * ISNULL = " IS NULL";
+  * ISNOTNULL = " IS NOT NULL";
+
+Вместо константы вполне можно использовать явные символы.
+
+В классе [[lmbsql_criteria|lmbSQLCriteria]] есть набор фабричных методов для создания экземляров класса lmbSQLFieldCriteria в более лаконичной форме, например:
+<code php>
+  $criteria = lmbSQLCriteria :: equal('is_approved', 1);
+</code>

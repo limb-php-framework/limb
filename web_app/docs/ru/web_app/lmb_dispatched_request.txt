@@ -1,0 +1,7 @@
+====== lmbDispatchedRequest ======
+
+**lmbDispatchedRequest** - содержит текущий сервис и текущее действие и  является частью процесса под названием [[request_dispatching|Разбор Запроса]]. lmbDispatchedRequest создается в [[lmbRequestDispatchingFilter]]-ом на основе параметров, определенных при помощи [[lmbRequestDispatcher]], и передается в тулкит, для того, чтобы остальные фильтры или иные классы могли использовать информацию из lmbDispatchedRequest.
+
+lmbDispatchedRequest используется в последующих фильтрах для различных целей, например:
+  * [[lmbCommandProcessingFilter]] - запускает команду, которая соответствует сервису и действию.
+  * [[limb3:ru:packages:simple_acl:lmbSimpleACLAccessFilter|lmbSimpleACLAccessFilter]] пакета [[limb3:ru:packages:simple_acl|SimpleACL]] - проверяет права доступа пользователя к текущему сервису и действию.

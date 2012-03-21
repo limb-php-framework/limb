@@ -1,0 +1,245 @@
+====== Шаг3.1 Регистрация пользователей ======
+===== План действий =====
+
+  * Мы создадим контроллер **%%UserController%%**, который будет содержать действия **register** для самостоятельной регистрации покупателей и **edit** для просмотра и редактирования своего профайла.
+  * Для хранение данных покупателей мы будем использвать уже готовый класса User.
+  * Мы поправим шаблон front_page_layout.phtml для отображения данных уже залогиненного пользователя и форму для аутентфикации, если пользователь еще не определен.
+
+===== Регистрация пользователей =====
+==== Контроллер UserController ====
+
+Создадим класс %%UserController%% и добавим в него действие register.
+
+Файл %%shop/src/controller/UserController.class.php%%:
+<code php>
+<?php
+
+class UserController extends lmbController
+{
+  function doRegister()
+  {
+    $this->useForm('register_form');
+    $this->setFormDatasource($this->request);
+
+    if($this->request->hasPost())
+    {
+    
+    	$user_properties = $this->request->getPost(
+    	  array('login', 'name', 'email', 'password', 'address')
+    	);
+
+    	$user = new User($user_properties);
+    	$user->trySave($this->error_list);
+
+      $this->_validatePasswordField();
+
+      if($this->error_list->isValid())
+      {
+        /*
+          Авторизация нового пользователя. 
+          О работе с объектом Toolkit будет более подробно рассказано дальше.
+        */
+        // $this->toolkit->getUser()->login($login, $password);
+        // $this->toolkit->getSession()->set('user_id', $user->getId());
+
+        $this->flashMessage('Thank you for your registration!');
+        $this->toolkit->redirect('/');
+      }
+    }
+  }
+
+  function _validatePasswordField()
+  {
+    $this->validator->addRequiredRule('password');
+    $this->validator->addRequiredRule('repeat_password');
+    lmb_require('limb/validation/src/rule/lmbMatchRule.class.php');
+    $this->validator->addRule(new lmbMatchRule('password', 'repeat_password'));
+    $this->validator->validate($this->request);
+  }
+}
+?>
+</code>
+Напомним наиболее важные моменты работы lmbController:
+  * Объекты **$request**, **$response**, **$error_list**, **$view** доступны в контроллере как атрибуты класса lmbController.
+  * Метод lmbController :: **useForm($form_id)** необходим чтобы передать список ошибок валидации ($error_list) в активный компонент формы в MACRO-шаблоне. В шаблонах admin_product/create.html и admin_product/edit.html мы использовали тег %%{{form id='object_form' name='object_form' method='post' enctype="multipart/form-data"}}%%, который будет преобразован MACRO в активный компонент времени исполнения.
+  * Метод lmbController :: **setFormDatasource($datasource)** передает в выбранную форму контейнер с данными. Это позволяет не терять данные в полях при ошибках валидации.
+  * Метод lmbActiveRecord :: **trySave($error_list)** - проверяет данные и сохраняет объект, если все данные введены верно. Возращает true, если все прошло успешно. Если некоторые поля содержали ошибки, то ошибки будут помешены в объект $error_list.
+
+Метод **addError($message)** и **flashMessage($message)** класса lmbController для вас новые. Первый необходим для добавления ошибки в error_list контроллера, чтобы потом отобразить его в форме. Нам он необходим для того чтобы валидация формы и валидация самой модели выглядели для пользователя одинаково. Методы lmbController :: flashError($message), lmbController :: flashMessage($message) и lmbController :: flashAndRedirect($message, $url) предназначены для передачи ошибок или других сообщения в шаблон, наподобие того, как это происходит в Rails (конечно, если вы в курсе). Эти методы на самом деле делегируют запросы в тулкит. Поэтому мы могли бы написать, например, $this->toolkit->flashError($message) и результат был бы тот же. Сообщения, выводимые через flashError() и flashMessage() хранятся в сесии и удаляются из нее в момент их отображения в шаблоне. Для отображения ошибок нам придется модифицировать шаблон frint_page_layout.html, о чем мы расскажем ниже. 
+
+После регистрации пользователь уже считается прошедшим процедуру аутентификации, и мы перебрасываем его на главную страницу при помощи метода redirect(), а также выводим ему сообщение об успешной регистрации при помощи метода flashMessage().
+
+Обратите внимание на проверку 
+<code php>
+if($this->error_list->isValid())
+{
+[...]
+}
+</code>
+
+Мы должны обязательно проверить, нет ли ошибок в списке ошибок, так как процесс валидации данных разбит на 2 составляющие - одна из которых производится в контроллере в методе _validatePasswordField(), а вторая - в классе User. 
+
+Аналогом метода $error_list->isValid() может выступат просто $error_list->isEmpty().
+
+==== Шаблон flash_box.phtml и вывод произвольных сообщений для пользователя ====
+
+Создадим также шаблон flash_box.phtml, который будет использовать для вывода дополнительных ошибок, тех которые, например добавляются при помощи методов lmbController :: flashMessage() или lmbController :: flashError().
+
+Файл shop/template/flash_box.phtml:
+<code xml>
+<? $flash_messages = $this->toolkit->getFlashBox()->getUnifiedList(); ?>
+{{list using='$flash_messages'}}
+{{list:item}}
+<? if($item['is_error']){ ?><div class="error_border"><b>{$item.message}</b></div><? } ?>
+<? if($item['is_message']){ ?><div class="border"><b>{$item.message}</b></div><? } ?>
+{{/list:item}}
+{{/list}}
+</code>
+
+Для получения сообщений мы использовали пакет [[limb3:ru:packages:toolkit| toolkit]] в качестве источника данных. Каждое полученное сообщение в коллекции содержит поля is_error, is_message и message.
+
+Внесем также минимальные изменения в front_page_layout.phtml, где мы подключим новый шаблон flash_box.phtml:
+
+<code xml>
+[...]
+ <div id="center">
+
+  <div id="wrapper" >
+      
+    <div id="container">
+      <div id="content">
+        <h1>{$#title}</h1>
+
+        {{include file='flash_box.phtml'/}}
+
+        {{slot id='content_zone'/}}
+      </div>
+    </div>
+    [...]
+</code>
+
+==== Шаблон profile/register.phtml ====
+
+Теперь можно будет создать шаблон для действия register.
+
+Файл shop/template/user/register.phtml:
+<code xml>
+<? $this->title = 'Registration'; ?>
+{{wrap with="front_page_layout.phtml" in="content_zone"}}
+
+{{form id='register_form' name='register_form' method='post'}}
+
+  {{include file='_admin/form_errors.phtml'/}}
+
+  <dl class="required field">
+    <dt><label for="title">Login:</label></dt>
+    <dd>{{input name='login' type='text' title='Login'/}}</dd>
+  </dl>
+
+  <dl class="required field">
+    <dt><label for="name">Name:</label></dt>
+    <dd>{{input name='name' type='text' title='Name'/}}</dd>
+  </dl>
+
+  <dl class="required field">
+    <dt><label for="email">Email:</label></dt>
+    <dd>{{input name='email' type='text' title='Email' error_class='error'/}}</dd>
+  </dl>
+
+  <dl class="required field">
+    <dt><label for="password">Password:</label></dt>
+    <dd>{{input name='password' type='text' title='Password' error_class='error'/}}</dd>
+  </dl>
+
+  <dl class="required field">
+    <dt><label for="repeat_password">Repeat password:</label></dt>
+    <dd>{{input name='repeat_password' type='text' title='Repeat password' error_class='error'/}}</dd>
+  </dl>
+
+  <dl class="field">
+    <dt><label for="address">Delivery address:</label></dt>
+    <dd>
+      {{textarea name="address" id='address' type="text" title="Delivery address"/}}
+    </dd>
+  </dl>
+
+  <hr/>
+   <input id='register' type='submit' value='Register'/>
+{{/form}}
+{{/wrap}}
+</code>
+
+Здесь мы использовали одну интересную особенность MACRO-тегов для форм. Они позволяют указать атрибутом **error_class** название CSS-класса, который будет применен к ним, если поля содержат ошибки валидации. Мы решили назвать этот класс error.
+
+===== Проверка на уникальность полей пользователя =====
+
+Мы забыли про одно из требования к валидации пользователей - в системе не должно быть пользователей с одинаковыми логинами и email-адресами.
+
+При помощи класса **%%UserUniqueFieldRule%%** мы будем проверять наличие одного уникального пользователя со значением какого-либо поля. Это правило валидации потом будет использоваться в классе **User**.
+
+Файл %%shop/src/validation/UserUniqueFieldRule.class.php%%:
+<code php>
+<?php
+lmb_require('limb/validation/src/rule/lmbSingleFieldRule.class.php');
+lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
+
+class UserUniqueFieldRule extends lmbSingleFieldRule
+{
+  protected $current_user;
+
+  function __construct($field, $current_user)
+  {
+    $this->current_user = $current_user;
+    parent :: __construct($field);
+  }
+
+  function check($value)
+  {
+    $criteria = new lmbSQLFieldCriteria($this->field_name, $value);
+    if(!$this->current_user->isNew())
+      $criteria->addAnd(lmbSQLCriteria::notEqual('id', $this->current_user->getId()));
+
+    if(User :: findOne($criteria))
+      $this->error('Пользователь со значением поля {Field} уже существует');
+  }
+}
+</code>
+
+Класс %%UserUniqueFieldRule%% получает в конструкторе название поля, которое должно быть уникальным, и ссылку на текущего пользователя. Текущий пользователь понадобится нам при редактировании.
+
+Класс **%%lmbSingleFieldRule%%** является базовым для правил валидации одного поля. Файл класса можно найти по пути limb/validation/src/rule/lmbSingleFieldRule.class.php Дочерние классы должны перекрывать метод **check($value)**, где $value - значение поля, которое необходимо проверить. Следует отметить, что check($value) не вызывается, если $value не содержит значимого значения. Поэтому совместно с этим правилом (его дочерними) рекомендуется использовать также правило **lmbRequiredFieldRule**. Об этом ты также упомянем чуть ниже при описании кода класса User.
+
+При помощи [[limb3:ru:packages:active_record:find|find-метода класса lmbActiveRecord]] делается запрос к базе данных. В качестве второго параметра вместо $params можно передавать объект критерии, которая будет накладываться на выборку. Критерия - это объектная форма условия. В нашем случае использовался класс **lmbSQLFieldCriteria**, который принимает в конструкторе название поля и значение (по-умолчанию для этой пары формируется условие равенства). Использование критериев позволяет не думать о экранировании данных в SQL-запросах. Класс **lmbSQLCriteria** является фабрикой для критерий. Вы можете подробнее ознакомиться с классами [[limb3:ru:packages:dbal:criteria|Criteria]], однако это необязательно для понимания данного примера.
+
+Метод lmbSingleFieldRule :: **error($error_string, $values = array())** добавляет ошибку в список ошибок валидации. Выражения вида {Field} будут заменены в процессе работы на реальные имена полей формы, с которой производится создание/редактирование пользователя.
+
+Теперь можно дописать код класса User (shop/src/model/User.class.php):
+
+<code php>
+  [...]
+  protected function _createValidator()
+  {
+    [...]
+    lmb_require('src/validation/UserUniqueFieldRule.class.php');
+    $validator->addRule(new UserUniqueFieldRule('login', $this));
+    $validator->addRule(new UserUniqueFieldRule('email', $this));    
+    [...]
+  }  
+  [...]
+</code>
+
+Создаваемый в методе _createValidator() валидатор проверяет, что поля email и login должны быть заполнены и иметь уникальные значения. Последнее обеспечивается за счет использования правила %%UserUniqueFieldRule%%. Правило lmbEmailRule удостоверяется, что введенное в поле значение является электронным адресом.
+
+
+==== Предварительные результаты ====
+
+Попробуйте зайти на страницу /user/register. Наша форма регистрации c ошибками валидации будет выглядеть следующим образом:
+
+{{limb3:ru:tutorials:shop:register_form.png|}}
+
+===== Далее =====
+
+Ну что же. Пользователь уже может зарегистироваться на сайте. Теперь добавим атентификацию.
+
+Итак, следующий шаг: [[step3-2|Шаг3.2 Аутентификация пользователей]].
+

@@ -1,0 +1,13 @@
+===== Model =====
+
+[[Model]] classes holds data, stores them in persistence layer, deals with business rules and domain logic.
+
+Limb Model consists of the following components:
+  * [[DataContainers]] - classes that holds data. There are two groups of data containers: iterators and datasources.
+  * [[ORM]]  - lmbObject/Relational Mapping. ORM implements reading and saving domain objects from database (or any other persistence layer). ORM makes it possible to create rich domain models where domain objects are unaware of persistence layer. Limb ORM is very simple at the moment.
+  * [[DBAL]] - **DataBase Abstraction Layer**. Limb DBAL is based on great WACT DBAL with some important add-ins. WACT DBAL allows you to use any other library as DBAL such as ADODB.
+  * [[DAO]]. Clients ask DAO classes to get information from persistence layers. The term DAO has in Limb different meaning compare to other frameworks. DAO doesn't load domain objects, it is more correct to treat Limb DAO as a DataSource. DAO classes can be used in templates to perform DB queries right from template. DAO classes also used in DataMappers to load information about one or several domain objects. DAO classes use DBAL classes to perform database queries.
+
+==== UML Model Packages Structure ====
+
+{{  limb:architecture:limb3.0_model.gif }}

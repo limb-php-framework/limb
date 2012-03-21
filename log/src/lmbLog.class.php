@@ -69,6 +69,15 @@ class lmbLog
     $this->backtrace_depth[$log_level] = $depth;
   }
 
+  /**
+   * Write message in log
+   * 
+   * @param string $message log message
+   * @param int $level
+   * @param array $params log additional params
+   * @param lmbBacktrace $backtrace log backtrace, creating new if not assigned 
+   * @param string $entry_title log entry title
+   */
   function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null, $entry_title = null)
   {
     lmb_assert_type($level, 'integer');

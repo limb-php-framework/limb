@@ -1,0 +1,120 @@
+====== Загрузка объектов ======
+===== Свои find() и get()-методы =====
+
+В процесс работы вам немременно необходимо будет создавать новые find() и get() методы в ваших ActiveRecord-ах. 
+
+Мы для себя уславливаемся обычно, что find()-методы это статические методы, а getter-ы - это instance-методы, например:
+
+<code php>
+class Document extends lmbActiveRecord
+{
+  static function findPublished()
+  {
+    $time = time();
+    return lmbActiveRecord :: find('Document', "is_published = 1 AND (date_start <= {$time} AND date_end >= {$time})");
+  }
+
+  static function findOlderThan($time)
+  {
+    $criteria = lmbSQLCriteria::less('date_start', $time);
+    return lmbActiveRecord :: find('Document', $criteria);
+  }
+  
+  static function findYoungerThan($time)
+  {
+    return lmbARQuery::create('Document')
+      ->where(lmbSQLCriteria::great('date_start', $time))
+      ->fetch();
+  }
+
+  function getPublishedKids()
+  {
+    $sql = 'SELECT document.* '.
+           ' FROM document LEFT JOIN node ON node.object_id = document.id '.
+           ' WHERE node.parent_id = '. $this->getNode()->getId() .
+           ' AND document.date_start <= :time: AND document.date_end >= :time:'.
+           ' AND document.is_published = 1 ' .
+           ' ORDER BY node.priority ASC,document.date DESC';
+
+    return lmbActiveRecord :: findBySql('Document', $sql);
+  }
+}
+</code>
+
+===== lmbARQuery =====
+lmbARQuery является аналогом lmbSelectQuery, но предназначенным для работы с объектами ACTIVE_RECORD. Воспользовавшись им можно переписать функцию getPublishedKids, из первого примера, c использованием [[limb3:ru:packages:active_record:eager_fetching|жадной загрузки]]:
+<code php>
+function getPublishedKids()
+{
+  $criteria = lmbSQLCriteria :: equal('node.parent_id', $this->getNode()->getId());
+  $criteria->add(lmbSQLCriteria :: greater('document.date_start', time()));
+  $criteria->add(lmbSQLCriteria :: less('document.date_end', time()));
+  $criteria->add(lmbSQLCriteria :: equal('document.is_published', 1));
+  $query = lmbARQuery :: create('Document')->eagerJoin('Node');
+  $query->where($criteria);
+  $query->sort(array('node.priority' => 'ASC' , 'document.date' => 'DESC'));
+  return $query->fetch();
+}
+</code>
+
+===== findBySql() - методы lmbActiveRecord =====
+
+Как вы уже заметили, для выполнения своих sql-запросов и получения объектов ActiveRecord при этом, мы использовали метод findBySql.
+
+Рассмотрим, какие методы класса lmbActiveRecord могут быть полезными для выполнения своих sql-запросов:
+  * **findBySql($class_name, $sql)**- возвращает набор объектов ActiveRecord класса $class_name, полученный в результате $sql-запроса 
+  * **findFirstBySql($class_name, $sql)** - возвращает первый объект ActiveRecord класса $class_name, полученный в результате $sql-запроса 
+  * **findOneBySql($class_name, $sql)** - алиас для findFirstBySql()
+
+Стоит отметить, что в создаваемый ActiveRecord из результата выборки передаются **все поля**, даже если они не относятся непосредственно к ActiveRecord, поэтому иногда можно указывать дополнительное количество полей в выборках, например:
+
+<code php>
+class Document extends lmbActiveRecord
+{
+  [...]
+  static function findKidsForParent($parent_id)
+  {
+    $sql = 'SELECT document.*, node.identifier as node_identifier, node.title as node_title '.
+           ' FROM document LEFT JOIN node ON node.object_id = document.id '.
+           ' WHERE node.parent_id = '. $parent_id;
+
+    return lmbActiveRecord :: findBySql($sql, 'Document');
+  }
+  [...]
+}
+
+....
+$documents = Document :: findKidsForParent($parent_id);
+$document = $documents->at(0);
+echo $document->get('node_identifier');
+echo $document->get('node_title');
+</code>
+
+Это может позволить увеличить скорость приложений.
+
+===== Более "низкоуровненые" возможности =====
+
+Если вам нужны **более низкоуровневые операции**, когда есть набор методов, которые позволяют выполнить аналогичные вещи, но явно:
+  * **_query($sql)** - это аналог вызова метода [[limb3:ru:packages:dbal:lmbDBAL|lmbDBAL]] :: fetch($sql, $conn = null), с тем отличием, что будет испольван именно тот connection к базе данных, который сейчас установлен для ActiveRecord (об это читайте на странице [[connection|Использование своего подключение к базе данных вместе с lmbActiveRecord]].
+  * **_createSQLStatement($sql)** - это аналог вызова метода [[limb3:ru:packages:dbal:lmbDBAL|lmbDBAL]] :: **newStatement($sql, $conn = null)**.
+  * **decorateRecordSet($iterator, $class_name)** - статический метод класса lmbActiveRecord, который обворачивает итератор $iterator декоратором класса lmbARRecordSetDecorator, который создает объект ActiveRecord из каждого элемента итератора.
+
+Рекомендуем вам здесь ознакомиться c [[limb3:ru:packages:dbal|пакетов DBAL]], чтобы полностью понимать назначение этих методов.
+
+Например:
+<code php>
+  $sql = 'SELECT document.* FROM document WHERE ...';
+  $rs = $this->_query($sql);
+  return lmbActiveRecord :: decorateRecordSet($rs, 'Document');
+</code>
+
+или при помощи statement:
+
+<code php>
+  $sql = 'SELECT document.* FROM document WHERE section_id = :section_id:';
+  $stmt = $this->_createSQLStatement($sql);
+  $stmt->setInteger('section_id', $section_id);
+  return lmbActiveRecord :: decorateRecordSet($stmt->getRecordSet(), 'Document');
+</code>
+
+Как вы наверное поняли, find()-методы класса lmbActiveRecord применяют этот декоратор lmbARRecordSetDecorator по-умолчанию.

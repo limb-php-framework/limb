@@ -1,0 +1,45 @@
+====== Список пакетов Limb3 ======
+
+Важно: [[limb3:ru:packages_architecture|Что такое пакеты Limb3 и как с ними работать.]]
+
+^Название пакета^Зависимости^Назначение^
+|[[.packages:ACL|ACL]]|CORE|Пакет реализует функционал [[http://ru.wikipedia.org/wiki/ACL|ACL]]|
+|[[.packages:ACTIVE_RECORD|ACTIVE_RECORD]]|CORE, DBAL, VALIDATION|Реализация [[http://en.wikipedia.org/wiki/Active_record_pattern| паттерна ActiveRecord]]. В конечном итоге планируется получить некий аналог %%ActiveRecord%% из [[http://rubyonrails.org/|Ruby on Rails]].|
+|[[.packages:CACHE|CACHE]]|CORE|Набор классов, предназначенных для обобщения различных техник кеширования(пока в зачаточном состоянии, пакет явно напрашивается на объединение с WEB_CACHE пакетом)|
+|[[.packages:CACHE2|CACHE2]]|CORE|Набор классов, предназначенных для обобщения различных техник кеширования|
+|[[.packages:CALENDAR|CALENDAR]]|WACT(опционально)|%%JavaScript%% календарь + использующий его WACT тег|
+|CLI|CORE|Различные средства, упрощающие разработку CLI интерфейса|
+|[[.packages:CMS|CMS]]|WEB_APP|Пакет предназначен для быстрой разработки административного интерфейса сайта]]|
+|[[.packages:CONFIG|CONFIG]]|CORE|Различные средства для работы с конфигурационными файлами|
+|[[.packages:CONSTRUCTOR|CONSTRUCTOR]]| |Генератор кода|
+|[[.packages:CORE|CORE]]|-|Пакет, отвечающий за поддержку подключения других пакетов. Содержит базовые классы для работы с различными контейнерами данных и коллекциями. Практически все остальные пакеты зависят от него.|
+|[[.packages:DATETIME|DATETIME]]|CORE|Пакет для работы с временем, датой, временными периодами и проч.|
+|[[.packages:DBAL|DBAL(database abstraction layer)]]|CORE, TOOLKIT, NET|Пакет, абстрагирующий работу с БД |
+|[[.packages:FS|FS]]|CORE|Различные срества для работы с файловой системой: базовые файловые операции, нахождения файлов по алиасам и др.|
+|[[.packages:FILTER_CHAIN|FILTER_CHAIN]]|CORE|Имплементация паттерна Intercepring Filter.|
+|[[.packages:I18N|I18N]]|CORE, TOOLKIT, VALIDATION, CONFIG, UTIL, CLI, DATETIME|Пакет, упрощающий процесс интернационализации приложений|
+||[[.packages:IMAGEKIT|IMAGEKIT]]|CORE|Примитивные средства, абстрагирующие работу с графической библиотекой.|
+|JS|-|Пакет, содержащий %%JavaScript%% средства для модульной загрузки кода и набор базовых %%JavaScript%% классов|
+|[[.packages:log|LOG]]|CORE|Средства логирования|
+|[[.packages:macro|MACRO]]|CORE, FS|Шаблонизатор MACRO|
+|[[.packages:MAIL|MAIL]]|CORE, VIEW[опционально]|Обертка PHPMailer библиотеки, предназначенной для отсылки почты|
+|[[.packages:NET|NET]]|CORE, UTIL|Набор классов в для работы с сетевыми протоколами(в основном с HTTP)|
+|SEARCH|CORE, DBAL, I18N|Средства для организации индексирования и поиска(пакет длительное время не находится в разработке)|
+|[[.packages:SESSION|SESSION]]|CORE, DBAL |Средства для работы с PHP сессиями и абстрагирования источника хранения сессионных данных(пока только ДБ).|
+|[[.packages:TASKMAN|TASKMAN]]|-|Программная оболочка для выполнения связанных между собой задач|
+|[[.packages:TESTS_RUNNER|TESTS_RUNNER]]|-|Тестовая оболочка, основанная на [[http://www.simpletest.org/|SimpleTest]], позволяющая организовать группы тестов, используя расположение тестов в файловой системе|
+|[[.packages:TOOLKIT|TOOLKIT]]|CORE|Средства для организации Dependency Injection(реализация Dynamic Service Locator)|
+|[[.packages:TREE|TREE]]|CORE, TOOLKIT, DBAL, VALIDATION, CACHE|Пакет для организации хранения деревьев в БД(пока поддерживается только materialized path)|
+|[[.packages:VALIDATION|VALIDATION]]|CORE|Пакет, предоставляющий различные средства валидации данных|
+|[[.packages:VIEW|VIEW]]|WACT[опционально], MACRO[опционально]|Пакет, содержащий средства для работы с представлением |
+|[[.packages:WEB_APP|WEB_APP]]|CORE, CONFIG, FILE_SCHEMA, TOOLKIT, I18N, WACT, CLI, CACHE, DBAL, VALIDATION, ACTIVE_RECORD, SESSION, MAIL, DATETIME, FILTER_CHAIN, NET|Набор различных средств для построения web ориентированных приложений|
+|[[.packages:WEB_CACHE|WEB_CACHE]]|CORE, WEB_APP|Средства для полностраничного кеширования в web приложении(пакет длительное время не находится в разработке, скорее всего, будет объединен с пакетом CACHE)|
+|WEB_SPIDER|CORE, NET|Средства для организации обхода web контента по ссылкам(пакет длительное время не находится в разработке)|
+|[[.packages:WYSIWYG|WYSIWYG]]|CORE, WEB_APP, WACT|Расширенный текстовый редактор для ввода гипертекста.|
+====== Инкубатор ======
+"Инкубатором" в Limb3 называется отдельный репозиторий, в который помещаются пакеты, которые пока не "доросли" до релиза. Получить содержимое инкубатора можно через SVN:
+<code>git clone git://github.com/limb-php-framework/limb-incubator.git</code>
+^Название пакета^Зависимости^Назначение^
+|[[.packages:PROFILE|PROFILE]]| |Пакет содержит утилиты для профайлинга приложения|
+|[[.packages:MIGRATE|MIGRATE]]| |Пакет для контроля версий Схемы Базы Данных и миграций между ними|
+|[[limb3:ru:tutorials:zend_search|ZFSEARCH]]| |Интеграция Zend_Search с Limb3|

@@ -132,5 +132,6 @@ CREATE OR REPLACE TABLE "photo_for_test" (
   "id" INT NOT NULL AUTOINC,
   "image_extension" varchar(6)  default NULL,
   "extra" varchar(50)  default NULL,
+  "coords" varchar(50)  default NULL,
   PRIMARY KEY  ("id")
 )  ;

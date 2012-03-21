@@ -26,7 +26,15 @@ class lmbLogTools extends lmbAbstractTools
   {
     return (bool) lmb_env_get('LIMB_LOG_ENABLE', true);
   }
-
+  /**
+   * Write message in log
+   * 
+   * @param string $message log message
+   * @param int $level
+   * @param array $params log additional params
+   * @param lmbBacktrace $backtrace log backtrace, creating new if not assigned 
+   * @param string $log_name log setting section name
+   */
   function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null, $log_name = 'default')
   {
     if(!$this->isLogEnabled())

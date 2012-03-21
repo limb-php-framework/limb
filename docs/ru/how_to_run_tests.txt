@@ -1,0 +1,20 @@
+====== Как запустить тесты на пакеты Limb3 ======
+
+  * Почти все пакеты Limb3 имеют модульные тесты, которые располагаются в папке tests каждого пакета. 
+  * Отдельные тесты лежат в папке **tests/cases** каждого из пакетов. 
+  * Расположение тестов имеет параллельную структуру относительно рабочего кода, например: класс **lmbActiveRecord** пакета ACTIVE_RECORD **limb/active_record/src/lmbActiveRecord.class.php** имеет соответствующий тест **limb/active_record/tests/cases/lmbActiveRecordTest.class.php**
+  * Для выполнения тестов Limb3 используется специальный [[limb3:ru:packages:tests_runner|пакет TESTS_RUNNER]] и утилита [[limb3:ru:packages:tests_runner:limb_unit|limb_unit]] из этого пакета.
+
+===== Упрощенный спсоб выполнения тестов =====
+
+Начиная с релиза 2008.1, можно выполнять тесты на пакеты без необходимости установки утилиты limb_unit. В корневой директории limb расположен скрипт **runtests.php**, который позволяет выполнять тесты на пакеты, используя возможности TESTS_RUNNER пакета. Примеры использования:
+
+  $ cd limb
+  $ php runtests.php #выполнить все тесты для всех пакетов
+  $ php runtests.php core/tests dbal/tests #выполнить тесты из указанных директорий
+  $ php runtests.php --fork #выполнить все тесты, запуская каждый тесты отдельным процессом
+  $ php runtests.php --fork macro/tests active_record/tests #выполнить тесты из директорий в отдельных процессах
+
+
+
+

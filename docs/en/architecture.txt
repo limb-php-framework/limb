@@ -1,0 +1,35 @@
+====== Limb3 Architecture ======
+
+===== Overview =====
+
+  * [[.architecture:limb_mvc|MVC]] - Limb and MVC pattern.
+
+===== Controller =====
+
+  * [[.architecture:controller|Controller]] - The key concepts of Limb Controller
+  * [[.architecture:filters|Intercepting Filters Chain]]
+  * [[.architecture:service|lmbService]] - What is lmbService, what is the purpose of Services and where do I define Services.
+  * [[.architecture:RequestDispatching|RequestDispatching]] - How do we dispatch request and determine requested lmbService and Action.
+  * [[.architecture:lmbCommand|lmbCommand]]
+  * [[.architecture:validation|Validation]]
+
+===== Model =====
+  * [[.architecture:model_schema|Model]]
+  * [[.architecture:DataContainer|DataContainer]]
+  * [[.architecture:DBAL|DBAL]]
+  * [[.architecture:orm|ORM]] - lmbObject/Relational Mapping
+    * [[.architecture:lmbDataMapper|lmbDataMapper]]
+    * [[.architecture:lmbUnitOfWork|lmbUnitOfWork]]
+    * [[.architecture:lmbProxy|lmbProxy]]
+  * [[.architecture:DAO|DAO]] - Data Access lmbObject
+  * [[.architecture:DataFlow|DataFlow]]
+
+===== View =====
+  * [[.architecture:View|View]]
+  * [[.architecture:lmbSimpleView|lmbSimpleView]]
+  * [[.architecture:lmbFormView|lmbFormView]]
+
+===== Other aspects of Limb architecture =====
+
+  * [[.architecture:lmbFileSchema|lmbFileSchema]]
+  * [[.architecture:lmbToolkit|lmbToolkit]]

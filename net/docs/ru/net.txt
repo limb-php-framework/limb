@@ -1,0 +1,11 @@
+====== Пакет NET ======
+
+Пакет NET - набор классов в для работы с сетевыми протоколами(в основном с HTTP)
+===== Классы пакета =====
+
+^Класс^Назначение^
+|[[.net:lmb_http_request|lmbHttpRequest]]|Инкапсулирует HTTP Запрос к приложению.|
+|[[.net:lmb_uri|lmbUri]]|Используются для работы с URL-ами.|
+|[[.net:lmb_http_response|lmbHttpResponse]]|Инкапсулирует HTTP Ответ от системы.|
+|[[.net:lmb_http_cache|lmbHttpCache]]|Используется для выдачи правильного HTTP Ответа системы пользователю в случае, если можно использовать кеш, хранимый в браузере, например, когда данные не изменялись.|
+|[[.net:lmb_uploaded_files_parser|lmbUploadedFilesParser]]|Утилитарный класс. Используется внутри [[.net:lmb_http_request|lmbHttpRequest]] для обработка переменной $_FILES.|

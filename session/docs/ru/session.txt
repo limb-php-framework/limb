@@ -1,0 +1,42 @@
+====== Пакет SESSION - средства для прозрачной работы с сессиями ======
+
+
+===== Основные классы =====
+
+  * **lmbSessionStorage** - интерфейс для хранителей данных сессии.
+  * **lmbSessionDbStorage** - хранитель сессии в базе данных.
+  * **lmbSession** - класс для работы с сессионными данными. Классы приложений, построенных на базе Limb не должны работать с глобальной переменной $_SESSION, только через класс lmbSession. 
+  * **lmbSessionNativeStorage ** - базовый драйвер хранилища сессионных данных на основе PHP-файлов. По сути, это простая заглушка.
+  * **lmbSessionDBStorage** - драйвер хранилища сессионных данных на основе таблицы базы данных.
+
+===== Инициализация сессии =====
+
+Порядок работы с пакетом SESSION таков:
+  - Создается объект lmbSession.
+  - Создается объект, реализующий интерфейс lmbSessionStorage, например, lmbSessionDbStorage.
+  - Вызывается инстанс-метод lmbSession :: start($storage = null), куда передается драйвер хранилища сессионных данных. Если драйвер не передается - используется обычный для PHP способ хранения сессионных данных в файлах.
+  - Далее объект сессии используется глобально или каким-либо еще способом передается клиентам.
+
+===== Где используется пакет SESSION =====
+
+Пакет SESSION используется пакетом WEB_APP. см. раздел [[limb3:ru:packages:web_app:session|Работа с сессий в пакете WEB_APP]].
+
+===== Класс lmbSessionDbStorage =====
+
+lmbSessionDbStorage - класс, который позволяет хранить сессионные данные в базе данных. Так как lmbSessionDbStorage работает с базой данных, при использовании этого драйвера сессии, появляется зависимость от [[limb3:ru:packages:dbal|пакета DBAL]].
+
+SQL-код структуры таблицы, где хранятся сессионные данные показан ниже:
+<code sql>
+CREATE TABLE `sys_session` (                              
+  `session_id` varchar(50) NOT NULL default '',           
+  `session_data` blob NOT NULL,                           
+  `last_activity_time` bigint(11) unsigned default NULL,  
+  PRIMARY KEY  (`session_id`)                            
+) ENGINE=MyISAM DEFAULT CHARSET=utf8  
+</code>
+
+lmbSessionDbStorage в методе installStorage() регистрирует в качестве обработчиков сессионных сообщений свои методы, такие как sessionStart(), sessionRead(), sessionWrite() и т.д.
+
+===== Класс lmbSessionNativeStorage =====
+
+lmbSessionNativeStorage - класс, который используется, если вы желаете использовать стандартную функциональность PHP по хранению сессионных данных в файлах. По сути lmbSessionNativeStorage - это заглушка.

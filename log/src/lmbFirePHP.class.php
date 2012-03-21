@@ -1,5 +1,5 @@
 <?php
-lmb_require('limb/log/lib/FirePHPCore/FirePHP.class.php');
+lmb_require('limb/log/lib/FirePHP/packages/core/lib/FirePHPCore/FirePHP.class.php');
 
 class lmbFirePHP extends FirePHP
 {

@@ -1,0 +1,31 @@
+====== Тег {{datetime}} ======
+===== Описание =====
+
+Выводит JavaScript-календарь.
+
+Является потомком [[limb3:ru:packages:macro:tags:form_tags:lmb_macro_form_element_tag#атрибуты|lmbMacroFormElementTag]], и наследует его атрибуты.
+
+===== Синтаксис =====
+
+<code xml>
+ {{datetime id="<id>" name="<date_field_name>"/}}
+</code>
+
+===== Область применения =====
+
+Внутри формы.
+===== Атрибуты =====
+См. атрибуты [[limb3:ru:packages:macro:tags:form_tags:lmb_macro_form_element_tag#атрибуты|lmbMacroFormElementTag]].
+
+  * **format** - выходной формат, в котором придет значение
+  * **striped** - ???
+  * **lang** - язык (названия месяцев)
+
+===== Содержимое =====
+
+Нет.
+===== Пример использования =====
+
+<code xml>
+  {{datetime id="date" name="date" title="Дата" lang="ru" format="%d-%m-%Y" disabled="disabled"/}}
+</code>

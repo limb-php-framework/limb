@@ -1,0 +1,45 @@
+====== lmbFileLocator ======
+
+**Класс lmbFileLocator** - основной класс пакета FS, который ищет файлы по алиасам при помощи "списка локаций". Список локаций - это объект, реализующего интерфейс [[lmb_file_locations]]. 
+
+**Алиас** - это укороченное название файла, например news/index.html. Полный путь до файла (резолвинг алиаса) будет определен объектом класса lmbFileLocator. В результате резолвинга алиса мы можем получить что-то наподобие /var/dev/project/my_project/templates/ru/news/index.html.
+
+Общая схема реализации этой подсистемы выглядит следующим образом:
+
+{{{limb3:ru:packages:fs:limb3_file_schema.png| }}}
+
+
+Итак, lmbFileLocator принимает объект, реализующий lmbFileLocations:
+
+<code php>
+  $locator = new lmbFileLocator(new lmbFileLocationsList(array('/dir1', '/dir2', '/dir3')));
+</code>
+
+Для поиска файлов lmbFileLocator содержит два метода:
+  * **locate($alias, $params = array())** 
+  * **locateAll($prefix = '')**.
+
+  * $alias - это укороченное название файла, который нужно найти. 
+  * $params - список дополнительных параметров для поиска, передаются в список локаций.
+
+Например:
+
+<code php>
+  $locator->locate('news/news.html', array('lan' => 'ru'));
+</code>
+
+[[lmb_file_locator]] часто используется в наборах инструметов (tools), например, в пакете [[limb3:ru:packages:web_app|WEB_APP]] в классе [[limb3:ru:packages:web_app:lmb_web_app_tools|lmbWebAppTools]] :: createController($controller_name) или в пакете VIEW в методе lmbViewTools :: getWactLocator().
+
+Пример создания локатора:
+
+<code php>
+  $locations = new lmbIncludePathFileLocations('/settings/');
+  $locator = new lmbCachingFileLocator(new lmbFileLocator($locations)); 
+</code>
+
+Здесь будет создан кеширующий [[lmb_caching_file_locator|lmbCachingFileLocator]], который будет искать любые файлы файлы в папках /setting/ в папках, указанных в include_path. Например, при поиске conf-файла routes.conf.php он может вернуть var/dev/limb/web_app/settings/routes.conf.php
+
+Пример инициализации локатора можно также увидеть в методе lmbFsTools :: getFileLocator().
+
+
+

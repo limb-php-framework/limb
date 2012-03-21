@@ -1,0 +1,16 @@
+====== Класс lmbArrayHelper. Хелпер по работе с массивами ======
+
+lmbArrayHelper используется для выполнения различных операций с массивами. Полностью статический класс, то есть содержит только статические методы.
+
+^Метод^Назначение^Пример^
+|**arrayMerge**($a1, $a2, [$a3, $a4, $aN...])|Объединяет два и больше массивов в один. Поведение немного отличается от стандартной array_merge_recursive(), например, тем что если во втором массиве есть такое же поле, как и в первом, и это поле не является массив, второе значение полностью затрет первое.| |
+|**map**($map_array, $src_array, &$dest_array)|Находит пересечение между массивами. Поведение немного отличается от стандартной array_intersect()||
+|**explode**($pairs_delim, $values_delim, $string)|Производить разбиение строки вида param1=value1;param2=value2 на наборы параметров. $pairs_delim - разделитель между парами ключ-значение, $values_delim - разделитель между ключем и значением.|<code php>$string = 'man:bob,dog:willy';
+$res = lmbArrayHelper :: explode(',', ':', $string);</code>|
+|**getColumnValues**($column_name, $array)|Возвращает значения определенного поля массива||
+|**getMaxColumnValue**($column_name, $array, &$index)|Возвращает максимальное значение определенного поля массива. $index содержит номер позиции (вернее, позицию элемента массива) этого максимального значения в массиве||
+|**getMinColumnValue**($column_name, $array, &$index)|Возвращает минимальное значение определенного поля массива. $index содержит номер позиции (вернее, позицию элемента массива) этого минимального значения в массиве||
+|**toFlatArray**($array, &$result, $prefix='')|Возвращает содержимое массива в виде строки |<code php>lmbArrayHelper :: toFlatArray(array(1, 'apple' => 2, 'basket' => array('chips' => 3, 'nachoes' => 4)), $result)</code> вернет array(1, 'apple' => 2, 'basket[chips]' => 3, 'basket[nachoes]' => 4)|
+|**sortArray**($array, $sort_params, $preserve_keys = true)|Позволяет сортировать массив сразу по нескольким колонкам. Правила сортировки передаются в параметр $sort_params, например $sort_params = array('field1' => 'DESC', 'field2' => 'ASC')||
+
+см. также тесты limb/core/tests/cases/lmbArrayHelperTest.class.php

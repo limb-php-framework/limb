@@ -1,0 +1,30 @@
+====== Обзор предустановленных средств для отображения ======
+
+^Название^Описание^Расширение шаблона^
+|lmbMacroView|Использует [[limb3:ru:packages:macro|macro]] шаблоны|.phtml|
+|lmbBlitzView|Использует [[http://alexeyrybak.com/blitz/blitz_ru.html|blitz]] шаблоны|.bhtml|
+|lmbDummyView|Заглушка для тестов||
+|lmbJsonView|Отображение в [[http://www.json.org/json-ru.html|JSON]] формате||
+|lmbPHPView|Использование чистого PHP в качестве шаблонов|.php|
+|lmbWactView|Устаревший предшественник LIMB MACRO|.html|
+
+Некоторые средства отображения, такие как lmbDummyView и lmbJsonView работают без шаблонной подсистемы, по этому расширения для шаблонов опущены.
+
+===== Задание поддерживаемых средств отображения =====
+
+<code php>lmb_env_setor('LIMB_SUPPORTED_VIEW_TYPES', '.phtml=lmbMacroView;.html=lmbWactView');</code>
+
+===== Ручное использование средства отображения =====
+
+<code php>
+//код
+$view = new lmbBlitzView(dirname(__FILE__).'/../../template/test/display.tpl');
+$view->set('foo', 'bar');
+return $view->render();
+
+//шаблон
+{{ $foo }}_baz
+
+//результат
+bar_baz
+</code>

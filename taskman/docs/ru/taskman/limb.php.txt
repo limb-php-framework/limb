@@ -1,0 +1,52 @@
+====== Утилита limb.php ======
+Утилита limb.php предназначена для поиска и исполнения taskman-задач. Файл limb.php находится в корне фреймворка.
+
+===== Установка ======
+==== Windows ====
+В корне фреймворка находится файл limb.bat, который необходимо скопировать в одну из папок переменной окружения PATH.
+При необходимости, в нем нужно изменить значение переменной PHP_COMMAND, на путь до файла php.exe.
+
+==== Unix ====
+Предпочтительный способ - использование символической ссылки:
+<code>
+$ sudo ln -s /<limb_path>/limb /usr/bin/limb
+$ sudo chmod 755 /usr/bin/limb
+</code>
+===== Использование =====
+
+Пример работы limb.php:
+<code>
+$ limb project
+Project directory [/www/limb]: /www/new-limb-app
+Limb directory [.]: 
+...
+</code>
+В первых двух строчках limb.php пытается определить директории проекта и limb.
+
+Если вас утомляет ввод этих директорий при каждом запуске скрипта, то вы можете задать их в опциях вызова PHP:
+<code>
+$ php -d limb.dir=/www/limb -d limb.project_dir=/www/new-limb-app /www/limb/limb.php
+</code>
+или дописать их в **php.ini**
+<code>
+limb.dir = /www/limb 
+limb.project_dir = /www/new-limb-app
+</code>
+
+==== Запуск задания ====
+
+Утилита ''limb.php'', сканирует все пакеты на наличие заданий, по этому их запуск не требует указания пути к файлу, где они находятся. Достаточно указать только название задания. Такой вызов в командной строке запустит задание //entity_create// из пакета //constructor// <code>$php limb.php entity_create</code>
+
+===== Список тасков =====
+{{section>:limb3:ru:packages:taskman#задачи_пакета_taskman}}
+
+===== Пакет CONSTRUCTOR =====
+
+{{section>:limb3:ru:packages:constructor#задачи_создания_проекта_пакета_constructor}}
+
+{{section>:limb3:ru:packages:constructor#задачи_создания_сущностей_проекта_пакета_constructor}}
+
+==== Пакет MIGRATE ====
+:!: Пакет находится в инкубаторе. Для использования его функционала необходимо перенести содержимое папки migrate в папку с пакетами limb.
+
+{{section>:limb3:ru:packages:migrate#задачи_пакета_migrate}}

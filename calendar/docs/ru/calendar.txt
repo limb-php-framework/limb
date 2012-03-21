@@ -1,0 +1,36 @@
+====== Пакет CALENDAR ======
+
+Пакет CALENDAR содержит поддержку тега WACT-<datetime>, который можно использовать в своих шаблонах для ввода дат.
+
+Тег <datetime> работает на базе JS-календаря "The DHTML Calendar " (http://www.dynarch.com/projects/calendar/).
+
+Использование <datetime> в шаблонах выглядит следующим образом:
+
+<code xml>
+   <datetime id="iso_date" name="iso_date" size="20" title='Дата начала недели' src='/images/_cp/icon/calendar.gif'/>
+</code>
+
+Тег генерит <input type='text'> и изображение для показа/сокрытия js-календаря. 
+
+По-умолчанию календарь формирует дату в формате: %Y-%m-%d (2007-02-12). Формат можно изменить при помощи атрибута тега **format**:
+
+<code xml>
+   <datetime id="iso_date" name="iso_date" size="20" title='Дата начала недели' format='%Y-%m' src='/images/_cp/icon/calendar.gif'/>
+</code>
+
+Язык, на котором выводятся надписи календаря, можно задать при помощи атрибута **lang**. По-умолчанию использует 'en' (english).
+
+Для работы тега, необходимо чтобы папка shared/calendar/js была доступна из-под веб-браузера. Это можно реализовать, скопировав в %%DocumentRoot%% папку limb/calendar/shared или же настроить алиас в разделе virtual-hosts:
+<code>
+#my_project
+<VirtualHost 192.168.0.8>
+    DocumentRoot /var/dev/my_project/www
+    ServerName my_project
+    ErrorLog logs/my_project-error_log
+    CustomLog logs/my_project-access_log common
+    Alias /shared/calendar  /var/dev/limb/calendar/shared
+    Alias /shared/js        /var/dev/limb/js/shared
+    Alias /shared/wysiwyg        /var/dev/limb/wysiwyg/shared
+</VirtualHost>
+</code>
+
