@@ -13,6 +13,6 @@
   $uri->addQueryItem('direction','desc');
   $title = lmb_i18n('Sort descending', 'cms');
 ?>
-<a href=" echo $uri->toString();  ?>" title="{$title}">
+<a href="<?php echo $uri->toString();  ?>" title="{$title}">
   <img src="/shared/cms/images/icons/arrow_up.png" alt="{$title}"/>
 </a>
