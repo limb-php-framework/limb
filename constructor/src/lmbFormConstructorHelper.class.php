@@ -20,9 +20,13 @@ class lmbFormConstructorHelper
   function getColumnsNames()
   {
     $names = array();
-    foreach($this->columns as $column)
-      $names[] = $column->getName();
-
+    if(count($this->columns))
+    {
+      foreach($this->columns as $column)
+      {
+        $names[] = $column->getName();
+      }
+    }
     return $names;
   }
 
@@ -97,9 +101,12 @@ class lmbFormConstructorHelper
   function createFormFields()
   {
     $fields = array();
-    foreach($this->columns as $column)
-      $fields[$column->getName()] = $this->_createFormFieldHtml($column);
-
+    if($this->columns)
+    {
+      foreach($this->columns as $column)
+        $fields[$column->getName()] = $this->_createFormFieldHtml($column);
+    }
+    
     return $fields;
   }
 }
