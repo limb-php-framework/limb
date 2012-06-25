@@ -127,6 +127,25 @@ class lmbRequireTest extends lmbRequireBaseTest
     $this->assertTrue(in_array($name, get_declared_classes()));
   }
 
+	function testGlobRequireWithoutStar()
+	{
+		// creating new unique directory
+		$old_dir = $this->tmp_dir;
+		$this->tmp_dir = $this->tmp_dir . $this->_rndName() . '/';
+		mkdir($this->tmp_dir);
+
+		// creating inique file/class name
+		$fileName = $this->_rndName();
+
+		// writing empty class to this file
+		$this->_writeClassFile($fileName);
+
+		lmb_require_glob($this->tmp_dir . "/{$fileName}.class.php");
+
+		$this->assertFalse(in_array($fileName, get_declared_interfaces()));
+		$this->assertTrue(class_exists($fileName, true));
+	}
+
   function testGlobRequireWithAutoload()
   {
     //creating new unique directory
