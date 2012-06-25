@@ -148,7 +148,7 @@ function lmb_require_glob($file_path)
       lmb_require($path);
   }
   else
-    lmb_require($path);
+    lmb_require($file_path);
 }
 
 function lmb_require_optional($file_path)
