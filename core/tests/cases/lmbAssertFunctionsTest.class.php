@@ -191,7 +191,9 @@ class lmbAssertFunctionsTest extends UnitTestCase
 
   function testAssertRegExp()
   {
-    $this->_checkNegative('lmb_assert_reg_exp', array(array(), 'foo'));
+    $array = array();
+    $exception = $this->_checkNegative('lmb_assert_reg_exp', array($array, 'foo'));
+    $this->assertEqual($exception->getParam('value type'), gettype($array));
 
     $this->_checkPositive('lmb_assert_reg_exp', array('foomatic', 'foo'));
     $this->_checkNegative('lmb_assert_reg_exp', array('bar', 'foo'));
