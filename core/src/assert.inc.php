@@ -115,7 +115,7 @@ function lmb_assert_reg_exp(
   if ($exception_class instanceof lmbException)
   {
   	$params = array(
-      'value type' => gettype($array),
+      'value type' => gettype($string),
       'pattern' => $pattern,
   	  'string' => $string,
     );
