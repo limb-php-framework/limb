@@ -23,12 +23,12 @@ class lmbDecoratorGeneratorDefaultEventsHandler
 
   function onConstructor()
   {
-    return "\$this->original = \$args[0];\n";
+    return "\$this->original = \$args[0];". PHP_EOL;
   }
 
   function onMethod($method)
   {
-    return "return call_user_func_array(array(\$this->original, '$method'), \$args);\n";
+    return "return call_user_func_array(array(\$this->original, '$method'), \$args);". PHP_EOL;
   }
 
   function onExtra()
@@ -75,23 +75,23 @@ class lmbDecorator
     else
       $relation = "extends";
 
-    $code = "class $decorator_class $relation $decoratee_class {\n";
+    $code = "class $decorator_class $relation $decoratee_class {". PHP_EOL;
 
-    $code .= $events_handler->onDeclareProperties() . "\n";
-    $code .= "    function __construct() {\n";
+    $code .= $events_handler->onDeclareProperties() . PHP_EOL;
+    $code .= "    function __construct() {". PHP_EOL;
 
     //dealing with proxied class' public properties
     foreach($reflection->getProperties() as $property)
     {
       if($property->isPublic())
-        $code .= 'unset($this->' . $property->getName() . ");\n";
+        $code .= 'unset($this->' . $property->getName() . ");". PHP_EOL;
     }
 
-    $code .= "        \$args = func_get_args();\n";
-    $code .= $events_handler->onConstructor() . "\n";
-    $code .= "    }\n";
-    $code .= self :: _createHandlerCode($decoratee_class, $decorator_class, $events_handler) . "\n";
-    $code .= "}\n";
+    $code .= "        \$args = func_get_args();". PHP_EOL;
+    $code .= $events_handler->onConstructor() . PHP_EOL;
+    $code .= "    }". PHP_EOL;
+    $code .= self :: _createHandlerCode($decoratee_class, $decorator_class, $events_handler) . PHP_EOL;
+    $code .= "}". PHP_EOL;
     //var_dump($code);
     return $code;
   }
@@ -105,10 +105,10 @@ class lmbDecorator
       if(self :: _isSkipMethod($method))
         continue;
 
-      $code .= "    " . lmbReflectionHelper :: getSignature($decoratee_class, $method) . " {\n";
-      $code .= "        \$args = func_get_args();\n";
-      $code .= $events_handler->onMethod($method) . "\n";
-      $code .= "    }\n\n";
+      $code .= "    " . lmbReflectionHelper :: getSignature($decoratee_class, $method) . " {". PHP_EOL;
+      $code .= "        \$args = func_get_args();". PHP_EOL;
+      $code .= $events_handler->onMethod($method) . PHP_EOL;
+      $code .= "    }". PHP_EOL. PHP_EOL;
     }
     $code .= $events_handler->onExtra();
     return $code;

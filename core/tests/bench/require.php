@@ -12,7 +12,7 @@ for($i=0;$i<1000;$i++)
   lmb_require('Boo.class.php');
 }
 
-echo "lmb_require same class, no autoload: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require same class, no autoload: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -21,7 +21,7 @@ for($i=0;$i<1000;$i++)
   lmb_require('Boo' . $i . '.class.php');
 }
 
-echo "lmb_require unique class, no autoload: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require unique class, no autoload: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -31,7 +31,7 @@ for($i=0;$i<1000;$i++)
 }
 $object = new MyClass();
 
-echo "lmb_require absolute, same class, autoload: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require absolute, same class, autoload: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -41,7 +41,7 @@ for($i=0;$i<1000;$i++)
 }
 $object = new MyClass();
 
-echo "lmb_require relative, same class, autoload: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require relative, same class, autoload: " . (microtime(true) - $mark) . PHP_EOL;
 
 for($i=0;$i<1000;$i++)
 {
@@ -57,7 +57,7 @@ for($i=0;$i<1000;$i++)
   $object = new $class;
 }
 
-echo "lmb_require absolute, unique class, autoload: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require absolute, unique class, autoload: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -68,7 +68,7 @@ for($i=0;$i<1000;$i++)
   $object = new $class;
 }
 
-echo "lmb_require absolute, again: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require absolute, again: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -78,7 +78,7 @@ for($i=0;$i<1000;$i++)
 }
 $object = new MyClass();
 
-echo "require_once absolute, same class: " . (microtime(true) - $mark) . "\n";
+echo "require_once absolute, same class: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -88,7 +88,7 @@ for($i=0;$i<1000;$i++)
 }
 $object = new MyClass();
 
-echo "require_once relative, same class: " . (microtime(true) - $mark) . "\n";
+echo "require_once relative, same class: " . (microtime(true) - $mark) . PHP_EOL;
 
 for($i=0;$i<1000;$i++)
 {
@@ -104,7 +104,7 @@ for($i=0;$i<1000;$i++)
   $object = new $class();
 }
 
-echo "require_once absolute, unique class: " . (microtime(true) - $mark) . "\n";
+echo "require_once absolute, unique class: " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
@@ -115,7 +115,7 @@ for($i=0;$i<1000;$i++)
   $object = new $class();
 }
 
-echo "require_once absolute, again: " . (microtime(true) - $mark) . "\n";
+echo "require_once absolute, again: " . (microtime(true) - $mark) . PHP_EOL;
 
 `rm -rf ./tmp`;
 

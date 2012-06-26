@@ -19,7 +19,7 @@ for($i=0;$i<300;$i++)
   $object = new $class_name();
 }
 
-echo "require_once absolute: " . (microtime(true) - $mark) . "\n";
+echo "require_once absolute: " . (microtime(true) - $mark) . PHP_EOL;
 
 /*--------------------------------------*/
 generateFiles('aa');
@@ -34,7 +34,7 @@ for($i=0;$i<300;$i++)
   $object = new $class_name();
 }
 
-echo "lmb_require $i files: " . (microtime(true) - $mark) . "\n";
+echo "lmb_require $i files: " . (microtime(true) - $mark) . PHP_EOL;
 
 lmbFs :: rm(dirname(__FILE__) . '/temp/');
 

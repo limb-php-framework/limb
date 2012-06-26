@@ -22,32 +22,32 @@ $mark = microtime(true);
 for($i=0;$i<1000;$i++)
   $object->get('foo');
 
-echo "get('foo'): " . (microtime(true) - $mark) . "\n";
+echo "get('foo'): " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->get('bar');
 
-echo "get('bar') => getBar(): " . (microtime(true) - $mark) . "\n";
+echo "get('bar') => getBar(): " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->getBar();
 
-echo "instance getBar(): " . (microtime(true) - $mark) . "\n";
+echo "instance getBar(): " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->getFoo();
 
-echo "dynamic getFoo(): " . (microtime(true) - $mark) . "\n";
+echo "dynamic getFoo(): " . (microtime(true) - $mark) . PHP_EOL;
 
 $mark = microtime(true);
 
 for($i=0;$i<1000;$i++)
   $object->foo;
 
-echo "->foo: " . (microtime(true) - $mark) . "\n";
+echo "->foo: " . (microtime(true) - $mark) . PHP_EOL;

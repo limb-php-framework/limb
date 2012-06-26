@@ -112,7 +112,7 @@ class lmbSerializableTest extends UnitTestCase
     {
       $std_class = 'stdClass';
     } else {
-      echo "Notice: Could not check internal class serializing \n";
+      echo "Notice: Could not check internal class serializing". PHP_EOL;
       return;
     }
 
