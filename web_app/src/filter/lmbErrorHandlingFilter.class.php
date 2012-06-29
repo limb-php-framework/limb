@@ -27,7 +27,7 @@ class lmbErrorHandlingFilter implements lmbInterceptingFilter
   function __construct($error500_page = '')
   {
     if(!$error500_page)
-      $error500_page = dirname(__FILE__) . '/../../template/server_error.html';
+      $error500_page = dirname(__FILE__) . '/../../template/server_error.phtml';
 
     $this->error_page = $error500_page;
   }
