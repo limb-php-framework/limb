@@ -1170,7 +1170,7 @@ class lmbActiveRecord extends lmbObject
       $field = $this->_composed_of[$property]['field'];
     else
       $field = $property;
-    
+
     // for BC
     if(isset($this->_composed_of[$property]['getter']))
     {
@@ -2216,9 +2216,10 @@ class lmbActiveRecord extends lmbObject
 
     $this->set($property, $this->_loadAggregatedObject($property, $obj));
   }
+
   /**
-   *  Exports object data with lazy properties resolved
-   *  @return array
+   * Exports object data with lazy properties resolved.
+   * @return array
    */
   function export()
   {
@@ -2227,19 +2228,54 @@ class lmbActiveRecord extends lmbObject
 
     return parent :: export();
   }
+
   /**
-   *  Plain export of object data(lazy properties not included if not loaded)
-   *  @see lmbObject::export()
-   *  @return array
+   * Exports specified $fields.
+   * @param array $fields Fields names
+   * @return array
+   */
+  function exportFields($fields) {
+    $exported = array();
+    foreach($fields as $name)
+      if(isset($this->$name))
+        $exported[$name] = $this->$name;
+      else
+        throw new lmbNoSuchPropertyException("There is no property '{$name}'.");
+
+    return $exported;
+  }
+
+  /**
+   * Export specified $fields to $object properties.
+   * @param array $fields
+   * @param Object $object
+   * @return Object $object
+   */
+  function exportFieldsToObject($fields, $object) {
+    // Leaving only properties that exist
+    $fields = $this->exportFields($fields);
+
+    foreach($fields as $name => $value) {
+      $object->$name = $value;
+    }
+
+    return $object;
+  }
+
+  /**
+   * Plain export of object data(lazy properties not included if not loaded).
+   * @see lmbObject::export()
+   * @return array
    */
   function exportRaw()
   {
     return parent :: export();
   }
+
   /**
-   *  Registers instance listener of specified type
-   *  @param integer call back type
-   *  @param object call back object
+   * Registers instance listener of specified type
+   * @param integer call back type
+   * @param object call back object
    */
   function registerCallback($type, $callback)
   {
