@@ -23,6 +23,7 @@ class lmbMimeType
     'audio/x-aiff' => 'aiff',
     'image/bmp' =>'bmp',
     'application/msword' =>'doc',
+    'application/vnd.ms-office' =>'doc',
     'video/x-flv' =>'flv',
     'image/gif' =>'gif',
     'text/html' =>'html',
