@@ -22,6 +22,38 @@ class LazyTestOneTableObject extends lmbActiveRecord
   protected $_lazy_attributes = array('annotation', 'content');
 }
 
+class OneTableTypedObject extends lmbActiveRecord
+{
+  protected $_db_table_name = 'test_one_table_typed_object';
+
+  protected $_has_many = array('related_parents' => array('field' => 'related_id',  
+                                                          'class' => 'RelatedOneTableTypedObject'));    
+}
+
+class RelatedOneTableTypedObject extends lmbActiveRecord
+{
+  protected $_db_table_name = 'related_test_one_table_typed_object';
+
+  protected $_many_belongs_to = array('primary_parent' => array('field' => 'related_id',
+                                                                'class' => 'OneTableTypedObject'));  
+}
+
+class OneTableTypedObjectChild extends OneTableTypedObject
+{
+  protected $_db_table_name = 'test_one_table_typed_object';
+  
+  protected $_has_many = array('related_objects' => array('field' => 'related_id',  
+                                                          'class' => 'RelatedOneTableTypedObjectChild'));  
+}
+
+class RelatedOneTableTypedObjectChild extends lmbActiveRecord
+{
+  protected $_db_table_name = 'related_test_one_table_typed_object';
+
+  protected $_many_belongs_to = array('primary_object' => array('field' => 'related_id',
+                                                                'class' => 'OneTableTypedObjectChild'));    
+}
+
 class PersonForTest extends lmbActiveRecord
 {
   public $save_count = 0;
