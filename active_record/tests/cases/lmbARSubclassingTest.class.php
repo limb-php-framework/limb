@@ -151,6 +151,34 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
     $this->assertEqual($records[1]->title, $valid_object2->title);
   }
 
+  function testFindingObjectByKind()
+  {
+    $parent = new OneTableTypedObject();
+    $parent->save();
+
+    $related_object  = new RelatedOneTableTypedObject();
+    $related_object->save();
+
+    $child = new OneTableTypedObjectChild();
+    $child->save();
+
+    $related_to_child = new RelatedOneTableTypedObjectChild();
+    $related_to_child->save();
+    
+    $child->addToRelatedObjects($related_to_child);
+    $related_to_child->setPrimaryObject($child);
+
+    $child->save();
+    $related_to_child->save();
+
+    $join = array('primary_object');
+    $sort = array('primary_object.id' => 'ASC');
+    
+    $objects = RelatedOneTableTypedObjectChild::find(array('join' => $join, 'sort' => $sort));
+
+    $this->assertEqual($objects->count(), 1);
+  }
+
   function testTypedRelationFind()
   {
     $course = new CourseForTestForTypedLecture();
