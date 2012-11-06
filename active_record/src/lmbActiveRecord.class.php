@@ -1832,7 +1832,7 @@ class lmbActiveRecord extends lmbObject
 
   protected function _getInheritanceCriteria()
   {
-    return lmbSQLCriteria::like($this->getInheritanceField(), $this->_getInheritancePath() . "%");
+    return lmbSQLCriteria::like($this->getTableName() . '.' . $this->getInheritanceField(), $this->_getInheritancePath() . "%");
   }
 
   protected function _getInheritancePath()
