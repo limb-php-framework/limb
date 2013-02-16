@@ -1,0 +1,24 @@
+# lmbCollectionInterface
+**lmbCollectionInterface** — базовый интерфейс, который реализуют классы-итераторы в Limb3. см. также [Контейнеры данных](./data_containers.md).
+
+lmbCollectionIterface расширяет стардартные [SPL интерфейсы](http://www.php.net/~helly/php/ext/spl/):
+
+    interface lmbCollectionInterface extends Iterator, Countable, ArrayAccess
+    {
+      function sort($params);
+      function getArray();
+      function at($pos);
+      function paginate($offset, $limit);
+      function getOffset();
+      function getLimit();
+      function countPaginated();
+    }
+
+По-сути мы добавили следующие возможности:
+
+* **лимитирование (для постраничной разбивки)** методами paginate($offset, $limit), getOffset(), getLimit() и countPaginated().
+* **сортировка элементов** при помощи метода sort($params).
+* получение массива из итератора (аналог вызова foreach()) при помощи метода getArray(). Обычно этот метод используется в тестах.
+* обращение к произвольному элементу коллекции при помощи метода at($pos). Обычно этим методом удобно пользоваться в тестах.
+
+lmbCollectionInterface используется в пакетах DBAL (lmbDbRecordSet), ACTIVE_RECORD (lmbARRelationCollection).
