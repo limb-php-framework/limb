@@ -1,0 +1,22 @@
+# lmbSQLFieldCriteria
+lmbSQLFieldCriteria creates a simple condition for a db table field.
+
+lmbSQLFieldCriteria accepts field name, value and condition type in constructor:
+
+    $criteria = new lmbSQLFieldCriteria('contract.start_date', $date_str, lmbSQLFieldCriteria:: LESS);
+    $criteria = new lmbSQLFieldCriteria('contract.end_date', $date_str, '>');
+
+Here is the list of available condition types:
+
+* EQUAL = »=»;
+* NOT_EQUAL = »<>»;
+* GREATER = »>»;
+* LESS = » < »;
+* GREATER_EQUAL = » >= »;
+* LESS_EQUAL = » ⇐ »;
+* LIKE = » LIKE »;
+* NOT_LIKE = » NOT LIKE »;
+* IN = » IN »;
+* NOT_IN = » NOT IN »;
+* ISNULL = » IS NULL»;
+* ISNOTNULL = » IS NOT NULL»;
