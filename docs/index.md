@@ -4,7 +4,7 @@ Limb (Library of Interdependent Modules and Blocks) — это [OpenSource](http
 * [Введение](./ru/for_beginners.md)
 * [FAQ](./ru/faq.md)
 * [Документация](./ru.md)
-* [Пример создания простейшего CRUD-приложения](do.cs/ru/tutorials/basic.md)
+* [Пример создания простейшего CRUD-приложения](docs/ru/tutorials/basic.md)
 * [CodeBits](./ru/codebits.md)
 * [Скачать](./ru/how_to_download.md)
 * [Issue tracker](https://github.com/limb-php-framework/limb/issues)
