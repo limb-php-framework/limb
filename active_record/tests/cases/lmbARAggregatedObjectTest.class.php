@@ -26,13 +26,13 @@ class MemberForTest extends lmbActiveRecord
   protected $_composed_of = array('name' => array('class' => 'NameForAggregateTest',
                                                   'mapping' => array('first' => 'first_name',
                                                                      'last' => 'last_name'),
-                                                  'setup_method' => 'setupName'));
+                                                  'setup_method' => array('setupName', 'foobar')));
 
   public $saved_full_name = '';
 
-  function setupName($name_object)
+  function setupName($name_object, $suffix)
   {
-    $this->saved_full_name = $name_object->getFull();
+    $this->saved_full_name = $name_object->getFull() . ' ' . $suffix;
     return $name_object;
   }
 }
@@ -68,20 +68,20 @@ class ExtraForAggregateTest extends lmbObject
 class GeoCoordinate extends lmbObject
 {
   const DELIMITER = ':';
-  
+
   protected $latitude;
-  protected $longitude;  
- 
+  protected $longitude;
+
   function __construct($value = null)
   {
     if (!$value)
       return;
-    
+
     list($_latitude, $_longitude) = @explode(self::DELIMITER, $value);
     $this->latitude = $_latitude;
     $this->longitude = $_longitude;
   }
- 
+
   function getDbValue()
   {
     $return = $this->latitude . self::DELIMITER . $this->longitude;
@@ -96,7 +96,7 @@ class PhotoForTest extends lmbActiveRecord
                                                                       'extension' => 'image_extension')),
 
                                   'extra' => array('class' =>'ExtraForAggregateTest'),
-  
+
                                   'place' => array('field' => 'coords',
                                                    'class' => 'GeoCoordinate',
                                                    'getter' => 'getDbValue'));
@@ -162,7 +162,8 @@ class lmbARAggregatedObjectTest extends lmbARBaseTestCase
 
     $member2 = lmbActiveRecord :: findById('MemberForTest', $member->getId());
     $member2->getName();
-    $this->assertEqual($member2->saved_full_name, $name->getFull());
+    $this->assertNotEqual($member2->saved_full_name, $name->getFull());
+    $this->assertEqual($member2->saved_full_name, $name->getFull() . ' foobar');
   }
 
   function testSetDirtinessOfAggregatedObjectFieldsOnSave()
@@ -251,7 +252,7 @@ class lmbARAggregatedObjectTest extends lmbARBaseTestCase
     $this->assertEqual($member->getName()->getFirst(), $first);
     $this->assertEqual($member->getName()->getLast(), $last);
   }
-  
+
   function testNewObjectReturnsEmptyAggrigatedObjectByGetter()
   {
     $photo = new PhotoForTest();

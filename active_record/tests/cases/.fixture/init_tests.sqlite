@@ -23,6 +23,13 @@ CREATE TABLE "test_one_table_typed_object" (
   "kind" varchar(255) NOT NULL
 );
 
+DROP TABLE "related_test_one_table_typed_object";
+CREATE TABLE "related_test_one_table_typed_object" (
+  "id" INTEGER PRIMARY KEY,
+  "title" varchar(255) default NULL,
+  "related_id" INTEGER,
+  "kind" varchar(255) NOT NULL
+);
 
 DROP TABLE "course_for_typed_test";
 CREATE TABLE "course_for_typed_test" (

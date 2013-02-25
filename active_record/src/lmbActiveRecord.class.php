@@ -1170,7 +1170,7 @@ class lmbActiveRecord extends lmbObject
       $field = $this->_composed_of[$property]['field'];
     else
       $field = $property;
-    
+
     // for BC
     if(isset($this->_composed_of[$property]['getter']))
     {
@@ -1200,7 +1200,16 @@ class lmbActiveRecord extends lmbObject
     if(isset($this->_composed_of[$property]['setup_method']))
     {
       $setup_method =$this->_composed_of[$property]['setup_method'];
-      $object = $this->$setup_method($object);
+      if (!is_array($setup_method))
+      {
+        $object = $this->$setup_method($object);
+      }
+      elseif(count($setup_method))
+      {
+        $method = $setup_method[0];
+        $params = $setup_method[1];
+        $object = $this->$method($object, $params);
+      }
     }
 
     return $object;
