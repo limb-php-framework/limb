@@ -24,6 +24,7 @@ class lmbMimeType
     'image/bmp' =>'bmp',
     'application/msword' =>'doc',
     'application/vnd.ms-office' =>'doc',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
     'video/x-flv' =>'flv',
     'image/gif' =>'gif',
     'text/html' =>'html',
@@ -32,6 +33,7 @@ class lmbMimeType
     'text/javascript' =>'js',
     'video/mpeg' =>'mpeg',
     'audio/mpeg' =>'mp3',
+    'audio/mp3' => 'mp3',
     'video/mpeg' =>'mpg',
     'message/rfc822' =>'msg',
     'application/pdf' =>'pdf',
@@ -43,6 +45,7 @@ class lmbMimeType
     'application/x-shockwave-flash' =>'swf',
     'text/plain' =>'txt',
     'audio/x-wav' =>'wav',
+    'audio/wav' => 'wav',
     'application/vnd.ms-excel' =>'xls',
     'application/x-rar-compressed' =>'rar',
     'application/rar' =>'rar',
@@ -63,7 +66,7 @@ class lmbMimeType
 
     $extension = ltrim(strtolower($extension), '.');
     $mime_type = array_search($extension,self :: $mime_types);
-    
+
     return $mime_type ? $mime_type : null;
   }
 
