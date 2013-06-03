@@ -3,12 +3,17 @@ $limb_dir = dirname(__FILE__);
 
 require_once($limb_dir.'/taskman/taskman.inc.php');
 
+taskman_process_argv($argv);
+
 lmb_cli_init_limb($limb_dir);
+taskman_propsetor('LIMB_DIR', $limb_dir.'/../');
 
 taskman_propsetor('TASKS_MASKS', 'limb/*/cli/*.tasks.php' . PATH_SEPARATOR . 'src/*/cli/*.tasks.php');
+
 if (null === taskman_propor('PROJECT_DIR', null))
-taskman_propsetor('PROJECT_DIR', lmb_get_project_dir());
-taskman_propsetor('LIMB_DIR', $limb_dir.'/../');
+  taskman_propsetor('PROJECT_DIR', lmb_get_project_dir());
+
+lmb_cli_init_project(taskman_prop('PROJECT_DIR'));
 
 lmb_cli_init_tasks();
 taskman_run();
@@ -26,11 +31,11 @@ function lmb_cli_find_project_dir($current_dir)
 {
   if(file_exists($current_dir . '/setup.php'))
   {
-  	ob_start();
-  	register_shutdown_function('lmb_cli_check_limb_instance');
-  	lmb_require($current_dir . '/setup.php');
-  	ob_end_clean();
-  	lmb_cli_check_limb_instance($disable = true);
+    ob_start();
+    register_shutdown_function('lmb_cli_check_limb_instance');
+    lmb_require($current_dir . '/setup.php');
+    ob_end_clean();
+    lmb_cli_check_limb_instance($disable = true);
 
     return $current_dir;
   }
@@ -49,9 +54,9 @@ function lmb_cli_find_project_dir($current_dir)
  */
 function lmb_cli_check_limb_instance($disable = false)
 {
-	static $is_disabled = false;
-	if($disable)
-	  $is_disabled = true;
+  static $is_disabled = false;
+  if($disable)
+    $is_disabled = true;
 
   if($is_disabled || !$error = error_get_last())
     return;
@@ -71,9 +76,14 @@ function lmb_cli_init_limb($limb_dir)
   require_once('limb/core/common.inc.php');
 }
 
+function lmb_cli_init_project($project_dir)
+{
+  set_include_path(get_include_path() . PATH_SEPARATOR . $project_dir);
+}
+
 function lmb_cli_init_tasks()
 {
-	foreach(explode(PATH_SEPARATOR, taskman_prop('TASKS_MASKS')) as $mask)
+  foreach(explode(PATH_SEPARATOR, taskman_prop('TASKS_MASKS')) as $mask)
     lmb_require_glob($mask);
 }
 
