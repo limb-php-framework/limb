@@ -226,7 +226,7 @@ Limb не запрещает вам работать с сессиями чер�
 Файл shop/template/user/login.phtml:
 
     <? $this->title='Login'; ?>
-    {{wrap with="front_page_layout.phtml" into="content"}}
+    {{wrap with="front_page_layout.phtml" into="content_zone"}}
     {{form method="POST" id='login_form'}}
  
       {{include file='form_errors.phtml'/}}
