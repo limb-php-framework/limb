@@ -39,7 +39,7 @@
  
       function doDisplay()
       {
-        $this->cart = $this->_getCart());
+        $this->cart = $this->_getCart();
       }
  
       function doCheckout()
