@@ -1,5 +1,8 @@
 # Русский
 ## Limb PHP Framework
+
+Поиск по документации: http://search.limb-project.com/
+
 Limb (Library of Interdependent Modules and Blocks) — это [OpenSource](http://en.wikipedia.org/wiki/OpenSource) ([LGPL](http://en.wikipedia.org/wiki/LGPL)) фреймворк, ориентированный на быстрое прототипирование и разработку веб-приложений на PHP5. Limb содержит множество относительно независимых компонентов, пригодных для повторного использования. В том числе вместе с другими фреймворками и библиотеками.
 * [Введение](./docs/ru/for_beginners.md)
 * [FAQ](./docs/ru/faq.md)
