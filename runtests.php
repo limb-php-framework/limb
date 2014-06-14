@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 set_include_path(dirname(__FILE__) . '/../' . PATH_SEPARATOR . get_include_path());
+date_default_timezone_set('Europe/Moscow');
 ini_set('memory_limit', '256M');
 
 define('LIMB_PATH', dirname(__FILE__));
