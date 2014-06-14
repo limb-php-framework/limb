@@ -12,13 +12,7 @@ class lmbFileMailer implements lmbBaseMailerInterface
 <head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head>
 <body>
 EOD;
-    $content .= '<p>recipient: '.$recipients.'</p>';
-    $content .= '<p>sender: '.$sender.'</p>';
-    $content .= '<p>subject: '.$subject.'</p>';
-    $content .= '<pre>html: '.$html.'</pre>';
-    $content .= '<pre>text: '.$text.'</pre>';
-    $content .= '<p>charset: '.$charset.'</p>';
-
+    $content .= $html;
     $content .= '</body></html>';
 
     $this->_send($recipients,$content);
@@ -40,6 +34,6 @@ EOD;
     
   protected function _send($recipients, $content)
   {
-    lmbFs::safeWrite(lmb_env_get('LIMB_VAR_DIR').'/mail/'.(pow(2,31) - time()).'_'.$recipients.'_'.microtime(true).'.txt', $content);
+    lmbFs::safeWrite(lmb_env_get('LIMB_VAR_DIR').'/mail/'.(pow(2,31) - time()).'_'.$recipients.'_'.microtime(true).'.html', $content);
   }
 }
