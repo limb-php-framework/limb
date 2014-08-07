@@ -13,7 +13,7 @@ The other tables are optional. The example DB schema contains several other tabl
 
 Table | Description
 ------|------------
-sys_session	| Stores session data. This table is required if you want to keep your session data in DB
+lmb_session	| Stores session data. This table is required if you want to keep your session data in DB
 sys_tree | Stores data about tree structure (materialized path algorithm). This table contains also hierarhies and has no idea how these hierarhies are used. You can remove this table for simple projects e.g. file-based wiki or simple news project.
 sys_object_to_node | Contains information how limb-object's are connected to tree nodes
 sys_service	| Contains list of Services. sys_service and sys_object_to_service tables are required only if some of your limb-objects will be connected to Services.
