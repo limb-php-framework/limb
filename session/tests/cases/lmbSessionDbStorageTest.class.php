@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/session/src/lmbSessionDbStorage.class.php');
 lmb_require('limb/dbal/src/lmbSimpleDb.class.php');
@@ -183,7 +183,8 @@ class lmbSessionDbStorageTest extends UnitTestCase
 
   function testStorageGcUseSettedMaxLifeTime()
   {
-    $driver = new lmbSessionDbStorage($this->conn, $max_life_time = 500);
+    lmb_env_setor('LIMB_SESSION_DB_MAX_LIFE_TIME', 500);
+    $driver = new lmbSessionDbStorage($this->conn);
 
     $this->db->insert('lmb_session',
                           array('session_id' => "whatever",

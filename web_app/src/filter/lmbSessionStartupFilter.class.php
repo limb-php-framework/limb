@@ -29,7 +29,8 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
    */
   function run($filter_chain)
   {
-    $session_in_db = defined('LIMB_SESSION_USE_DB_DRIVER') ? LIMB_SESSION_USE_DB_DRIVER : false;
+    $session_in_db = lmb_env_get('LIMB_SESSION_USE_DB_DRIVER', false);
+
     if($session_in_db)
       $storage =  $this->_createDBSessionStorage();
     else
@@ -53,11 +54,9 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
    */
   protected function _createDBSessionStorage()
   {
-    $lifetime = defined('LIMB_SESSION_DB_MAX_LIFE_TIME') ? LIMB_SESSION_DB_MAX_LIFE_TIME : null;
-
     lmb_require('limb/session/src/lmbSessionDbStorage.class.php');
     $db_connection = lmbToolkit :: instance()->getDefaultDbConnection();
-    return new lmbSessionDbStorage($db_connection, $lifetime);
+    return new lmbSessionDbStorage($db_connection);
   }
 }
 

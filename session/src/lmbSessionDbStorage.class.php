@@ -34,10 +34,11 @@ class lmbSessionDbStorage implements lmbSessionStorage
   /**
    *  Constructor.
    *  @param lmbDbConnection database connection object
-   *  @param integer maximum session life time
    */
-  function __construct($db_connection, $max_life_time = null)
+  function __construct($db_connection)
   {
+    $max_life_time = lmb_env_get('LIMB_SESSION_DB_MAX_LIFE_TIME');
+
     $this->max_life_time = $max_life_time;
 
     $this->db = new lmbSimpleDb($db_connection);
