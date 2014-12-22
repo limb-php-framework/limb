@@ -20,157 +20,195 @@ class lmbMailer implements lmbBaseMailerInterface
   protected $attachments = array();
   protected $images = array();
   protected $replyTo = array();
+  protected $secureList = array('tls' => true, 'ssl' => true);
 
-  public $phpmailer_dir;
   public $use_phpmail;
   public $smtp_host;
   public $smtp_port;
   public $smtp_auth;
   public $smtp_user;
   public $smtp_password;
+  public $smtp_secure;
 
   function __construct($config = array())
   {
-  	$conf = lmbToolkit::instance()->getConf('mail');
-  	            
+    $conf = lmbToolkit::instance()->getConf('mail');
+
     $this->use_phpmail = $conf['use_phpmail'];
     $this->smtp_host = $conf['smtp_host'];
     $this->smtp_port = $conf['smtp_port'];
     $this->smtp_auth = $conf['smtp_auth'];
     $this->smtp_user = $conf['smtp_user'];
     $this->smtp_password = $conf['smtp_password'];
-      
+    $this->smtp_secure = $conf['smtp_secure'];
+
     $this->setConfig($config);
-      
-    $php_mailer_version = lmb_env_get('PHPMAILER_VERSION_NAME', 'phpmailer-5.1');
-    include_once('limb/mail/lib/' .  $php_mailer_version . '/class.phpmailer.php');
+
+    $php_mailer_version = $conf['phpmailer_version_name'];
+    $autoload_path = dirname(__FILE__) . '/../lib/' . $php_mailer_version . '/PHPMailerAutoload.php';
+    if (file_exists($autoload_path))
+    {
+      include_once $autoload_path;
+    }
+    else
+    {
+      include_once 'limb/mail/lib/' . $php_mailer_version . '/class.phpmailer.php';
+    }
   }
 
   public function setConfig($config)
   {
-    foreach($config as $property_name => $property_value)
+    foreach ($config as $property_name => $property_value)
+    {
       $this->$property_name = $property_value;
+    }
   }
 
   protected function _createMailer()
-  {    
+  {
     $mailer = new PHPMailer(true);
     $mailer->set('LE', "\r\n");
 
-    if($this->use_phpmail)
+    if ($this->use_phpmail)
+    {
       return $mailer;
+    }
 
     $mailer->IsSMTP();
     $mailer->Host = $this->smtp_host;
     $mailer->Port = $this->smtp_port;
 
-    if($this->smtp_auth == true)
+    if ($this->smtp_auth == true)
     {
       $mailer->SMTPAuth = true;
       $mailer->Username = $this->smtp_user;
       $mailer->Password = $this->smtp_password;
     }
+
+    if (isset($this->secureList[$this->smtp_secure]))
+    {
+      $mailer->SMTPSecure = $this->smtp_secure;
+    }
+
     return $mailer;
   }
 
   function addAttachment($path, $name = "", $encoding = "base64", $type = "application/octet-stream")
   {
     $this->attachments[] = array(
-      'path' => $path,
-      'name' => $name,
+      'path'     => $path,
+      'name'     => $name,
       'encoding' => $encoding,
-      'type' => $type
+      'type'     => $type
     );
   }
 
-  function embedImage($path, $cid, $name="", $encoding="base64", $type="application/octet-stream")
+  function embedImage($path, $cid, $name = "", $encoding = "base64", $type = "application/octet-stream")
   {
     $this->images[] = array(
-      'path' => $path,
-      'cid' => $cid,
-      'name' => $name,
+      'path'     => $path,
+      'cid'      => $cid,
+      'name'     => $name,
       'encoding' => $encoding,
-      'type' => $type
+      'type'     => $type
     );
   }
 
   function sendPlainMail($recipients, $sender, $subject, $body, $charset = 'utf-8')
   {
-  	try 
-	{
+    try
+    {
       $mailer = $this->_createMailer();
 
       $mailer->IsHTML(false);
       $mailer->CharSet = $charset;
 
-      if(!empty($this->attachments))
+      if (!empty($this->attachments))
+      {
         $this->_addAttachments($mailer);
+      }
 
-      if(!empty($this->images))
+      if (!empty($this->images))
+      {
         $this->_addEmbeddedImages($mailer);
+      }
 
       $this->_addRepliesTo($mailer);
-    
+
       $recipients = $this->processMailRecipients($recipients);
 
-      foreach($recipients as $recipient)
+      foreach ($recipients as $recipient)
+      {
         $mailer->AddAddress($recipient['address'], $recipient['name']);
+      }
 
-      if(!$sender = $this->processMailAddressee($sender))
+      if (!$sender = $this->processMailAddressee($sender))
+      {
         return false;
+      }
 
       $mailer->From = $sender['address'];
       $mailer->FromName = $sender['name'];
       $mailer->Subject = $subject;
-      $mailer->Body    = $body;
+      $mailer->Body = $body;
 
       return $mailer->Send();
-	}
+    }
     catch (phpmailerException $e)
     {
       throw new lmbException($e->getMessage());
     }
   }
 
-  function addReplyTo($replyTo) 
+  function addReplyTo($replyTo)
   {
     $this->replyTo[] = $replyTo;
   }
-  
+
   function sendHtmlMail($recipients, $sender, $subject, $html, $text = null, $charset = 'utf-8')
   {
-  	try
+    try
     {
-	  $mailer = $this->_createMailer();
-	
-	  $mailer->IsHTML(true);
-	  $mailer->CharSet = $charset;
-	
-	  $mailer->Body = $html;
-	
-	  if(!empty($this->attachments))
-	    $this->_addAttachments($mailer);
-	
-	  if(!empty($this->images))
-	    $this->_addEmbeddedImages($mailer);
-	    
-	  $this->_addRepliesTo($mailer);
-	
-	  if(!is_null($text))
-	    $mailer->AltBody = $text;
-	
-	  $recipients = $this->processMailRecipients($recipients);
-	
-	  foreach($recipients as $recipient)
-	    $mailer->AddAddress($recipient['address'], $recipient['name']);
-	
-	  if(!$sender = $this->processMailAddressee($sender))
-	    return false;
-	
-	  $mailer->From = $sender['address'];
-	  $mailer->FromName = $sender['name'];
-	  $mailer->Subject = $subject;
-    
+      $mailer = $this->_createMailer();
+
+      $mailer->IsHTML(true);
+      $mailer->CharSet = $charset;
+
+      $mailer->Body = $html;
+
+      if (!empty($this->attachments))
+      {
+        $this->_addAttachments($mailer);
+      }
+
+      if (!empty($this->images))
+      {
+        $this->_addEmbeddedImages($mailer);
+      }
+
+      $this->_addRepliesTo($mailer);
+
+      if (!is_null($text))
+      {
+        $mailer->AltBody = $text;
+      }
+
+      $recipients = $this->processMailRecipients($recipients);
+
+      foreach ($recipients as $recipient)
+      {
+        $mailer->AddAddress($recipient['address'], $recipient['name']);
+      }
+
+      if (!$sender = $this->processMailAddressee($sender))
+      {
+        return false;
+      }
+
+      $mailer->From = $sender['address'];
+      $mailer->FromName = $sender['name'];
+      $mailer->Subject = $subject;
+
       return $mailer->Send();
     }
     catch (phpmailerException $e)
@@ -181,14 +219,18 @@ class lmbMailer implements lmbBaseMailerInterface
 
   function processMailRecipients($recipients)
   {
-    if(!is_array($recipients) || isset($recipients['name']))
-       $recipients = array($recipients);
+    if (!is_array($recipients) || isset($recipients['name']))
+    {
+      $recipients = array($recipients);
+    }
 
     $result = array();
-    foreach($recipients as $recipient)
+    foreach ($recipients as $recipient)
     {
-      if($recipient = $this->processMailAddressee($recipient))
+      if ($recipient = $this->processMailAddressee($recipient))
+      {
         $result[] = $recipient;
+      }
     }
 
     return $result;
@@ -196,48 +238,64 @@ class lmbMailer implements lmbBaseMailerInterface
 
   function processMailAddressee($adressee)
   {
-    if(is_array($adressee))
+    if (is_array($adressee))
     {
-      if(isset($adressee['address']) && isset($adressee['name']))
+      if (isset($adressee['address']) && isset($adressee['name']))
+      {
         return $adressee;
+      }
 
       return null;
     }
-    elseif(preg_match('~("|\')?([^"\']+)("|\')?\s*<([^>]+)>~u', $adressee, $matches))
+    elseif (preg_match('~("|\')?([^"\']+)("|\')?\s*<([^>]+)>~u', $adressee, $matches))
+    {
       return array('address' => $matches[4], 'name' => $matches[2]);
+    }
     else
+    {
       return array('address' => $adressee, 'name' => '');
+    }
   }
 
   protected function _addAttachments($mailer)
   {
-    foreach($this->attachments as $attachment)
-      $mailer->AddAttachment($attachment['path'],
-                             $attachment['name'],
-                             $attachment['encoding'],
-                             $attachment['type']);
+    foreach ($this->attachments as $attachment)
+    {
+      $mailer->AddAttachment(
+        $attachment['path'],
+        $attachment['name'],
+        $attachment['encoding'],
+        $attachment['type']
+      );
+    }
   }
 
   protected function _addEmbeddedImages($mailer)
   {
     foreach ($this->images as $image)
     {
-      $mailer->AddEmbeddedImage($image['path'],
-                                $image['cid'],
-                                $image['name'],
-                                $image['encoding'],
-                                $image['type']);
+      $mailer->AddEmbeddedImage(
+        $image['path'],
+        $image['cid'],
+        $image['name'],
+        $image['encoding'],
+        $image['type']
+      );
     }
   }
-  
-  protected function _addRepliesTo($mailer) 
+
+  protected function _addRepliesTo($mailer)
   {
     if (!$this->replyTo)
+    {
       return;
-    
+    }
+
     $recipients = $this->processMailRecipients($this->replyTo);
-    
-    foreach($recipients as $recipient)
+
+    foreach ($recipients as $recipient)
+    {
       $mailer->AddReplyTo($recipient['address'], $recipient['name']);
+    }
   }
 }

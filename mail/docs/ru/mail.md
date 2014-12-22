@@ -4,7 +4,7 @@
 ## Пример отправки письма
 
     $mailer = new lmbMailer();
- 
+
     $recipients = array(
       array("name" => "Sam", "address" => "sam@somehost.com"),
       "todd@somehost.com"
@@ -13,13 +13,13 @@
     $subject = 'new movie';
     $text = 'Hello';
     $html = '<h1>Hello</h1>';
- 
+
     $mailer->addAttachment('/www/attachments/movie.flv', $name = "Super movie");
     $mailer->embedImage('/www/images/thumb.png', $cid = mt_rand(), $name=" Thumb for super movie");
- 
+
     //отправка текстового письма
     $mailer->sendPlainMail($recipients, $sender, $subject, $text);
- 
+
     //отправка html письма
     $mailer->sendHtmlMail($recipients, $sender, $subject, $html, $text, $charset = 'cp-1251');
 
@@ -36,13 +36,15 @@ smtp_port	| LIMB_SMTP_PORT | '25'	| порт SMTP сервера
 smtp_auth	| LIMB_SMTP_AUTH | false | использовать ли авторизацию на SMTP сервере
 smtp_user	| LIMB_SMTP_USER | - | имя пользователя SMTP
 smtp_password	| LIMB_SMTP_PASSWORD	| -	| пароль SMTP
+smtp_secure	| LIMB_SMTP_SECURE	| -	| защита соединения ('', 'tls' или 'ssl')
 
 Также при создании объекта lmbMailer можно передать массив c опциями в конструктор. Названия параметров этого массива совпадают с названиями опций конфига. Значения, переданные в конструктор, перекрывают значения взятые из mail.conf.php.
 
     $custom_config = array(
       'smtp_user' => 'user',
-      'smtp_password' => 'password');
- 
+      'smtp_password' => 'password'
+    );
+
     $mailer = new lmbMailer($custom_config);
 
 ## Разница между отправкой с помощью mail() и smtp
@@ -54,7 +56,7 @@ smtp_password	| LIMB_SMTP_PASSWORD	| -	| пароль SMTP
 
     Поздравляем!
     Вы, или ваш тайный доброжелатель, только что купили новенький {#tractor.title} на нашем замечательном сайте vtraktore.ru.
-    По смешной цене "{$#tractor.price}" рублей. 
+    По смешной цене "{$#tractor.price}" рублей.
     Посмотреть на это чудо инженерного гения можно на странице {$#tractor.profile_url}.
 
     <h2>Поздравляем!</h2>
@@ -70,7 +72,7 @@ smtp_password	| LIMB_SMTP_PASSWORD	| -	| пароль SMTP
     $tractor->title = 'Советский турбовинтовой мирный трактор, среднего радиуса действия';
     $tractor->price = 4999999;
     $tractor->profile_url = 'http://lurkmore.ru/Мирный_советский_трактор';
- 
+
     $service = new lmbMailService('tractor_sold');
     $service->set('tractor', $tractor);
     $service->sendMailTo('petya-the-pig@gmail.com');
