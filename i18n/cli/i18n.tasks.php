@@ -20,8 +20,8 @@ function task_i18n_scan($args = array())
   {
     taskman_msg("usage: " . basename(__FILE__) . " folder/for/scan path/to/ts/file.ts folder_for_scan1 folder2 fold3 ...");
     exit(1);
-  } 
-  
+  }
+
   $ts_file = array_shift($args);
 
   $scanner = new lmbI18nScanner($args);
@@ -29,15 +29,6 @@ function task_i18n_scan($args = array())
   $scanner->searchMessages();
   _exclude_existing_messages($ts_file,$scanner);
   _write_new_messages_in_ts_file($ts_file, $scanner);
-}
-
-/**
- *
- * @deprecated 
- */
-function  task_scan($args = array())
-{
-  task_i18n_scan($args);
 }
 
 function _exclude_existing_messages($file,$scanner)
@@ -60,7 +51,7 @@ function _exclude_existing_messages($file,$scanner)
 }
 
 function _write_new_messages_in_ts_file($file,$scanner)
-{  
+{
   $doc = new lmbTSDocument;
   $doc->preserveWhiteSpace = false;
   $error = !$doc->load($file,LIBXML_NONET );

@@ -54,7 +54,7 @@ abstract class lmbSingleFieldRule extends lmbBaseValidationRule
   */
   function error($message, $values = array(), $i18n_params = array())
   {
-    $error = $this->custom_error ? $this->custom_error : lmb_i18n($message, $i18n_params, 'validation');
+    $error = $this->custom_error ?: lmb_i18n($message, $i18n_params, 'validation');
     parent :: error($error, array('Field' => $this->field_name), $values);
   }
 

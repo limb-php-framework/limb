@@ -26,8 +26,8 @@ class OneTableTypedObject extends lmbActiveRecord
 {
   protected $_db_table_name = 'test_one_table_typed_object';
 
-  protected $_has_many = array('related_parents' => array('field' => 'related_id',  
-                                                          'class' => 'RelatedOneTableTypedObject'));    
+  protected $_has_many = array('related_parents' => array('field' => 'related_id',
+                                                          'class' => 'RelatedOneTableTypedObject'));
 }
 
 class RelatedOneTableTypedObject extends lmbActiveRecord
@@ -35,15 +35,15 @@ class RelatedOneTableTypedObject extends lmbActiveRecord
   protected $_db_table_name = 'related_test_one_table_typed_object';
 
   protected $_many_belongs_to = array('primary_parent' => array('field' => 'related_id',
-                                                                'class' => 'OneTableTypedObject'));  
+                                                                'class' => 'OneTableTypedObject'));
 }
 
 class OneTableTypedObjectChild extends OneTableTypedObject
 {
   protected $_db_table_name = 'test_one_table_typed_object';
-  
-  protected $_has_many = array('related_objects' => array('field' => 'related_id',  
-                                                          'class' => 'RelatedOneTableTypedObjectChild'));  
+
+  protected $_has_many = array('related_objects' => array('field' => 'related_id',
+                                                          'class' => 'RelatedOneTableTypedObjectChild'));
 }
 
 class RelatedOneTableTypedObjectChild extends lmbActiveRecord
@@ -51,7 +51,7 @@ class RelatedOneTableTypedObjectChild extends lmbActiveRecord
   protected $_db_table_name = 'related_test_one_table_typed_object';
 
   protected $_many_belongs_to = array('primary_object' => array('field' => 'related_id',
-                                                                'class' => 'OneTableTypedObjectChild'));    
+                                                                'class' => 'OneTableTypedObjectChild'));
 }
 
 class PersonForTest extends lmbActiveRecord
@@ -88,7 +88,7 @@ class ProgramForTest extends lmbActiveRecord
 
   protected $_has_many = array('courses' => array('field' => 'program_id',
                                                   'class' => 'CourseForTest'),
-    
+
                                'cached_lectures' => array('field' => 'program_id',
                                                           'class' => 'LectureForTest'));
 }
@@ -102,17 +102,17 @@ class CourseForTest extends lmbActiveRecord
                                                        'class' => 'LectureForTest'),
                                'foo_lectures' => array('field' => 'course_id',
                                                        'class' => 'LectureForTest',
-                                                        'criteria'=>'lecture_for_test.title like "foo%"'));
+                                                        'criteria'=>"lecture_for_test.title like 'foo%'"));
 
   protected $_many_belongs_to = array('program' => array('field' => 'program_id',
                                                          'class' => 'ProgramForTest',
                                                          'can_be_null' => true));
-  
+
   public $save_calls = 0;
 
-  function save()
+  function save($error_list = null)
   {
-    parent :: save();
+    parent :: save($error_list);
     $this->save_calls++;
   }
 }
@@ -180,7 +180,7 @@ class UserForTest extends lmbActiveRecord
                                                          'foreign_field' => 'group_id',
                                                          'table' => 'user_for_test2group_for_test',
                                                          'class' => 'GroupForTest',
-                                                         'criteria' =>'group_for_test.title="condition"'
+                                                         'criteria' =>"group_for_test.title='condition'"
                                                                 ));
 
   protected $_has_one = array('linked_object' => array('field' => 'linked_object_id',
@@ -196,25 +196,25 @@ class lmbARTestingObjectMother
     $object->set('annotation', 'Annotation ' . rand(0, 1000));
     $object->set('content', 'Content ' . rand(0, 1000));
     $object->set('news_date', date("Y-m-d", time()));
-    $ordr = $ordr ? $ordr : rand(0, 1000);
+    $ordr = $ordr ?: rand(0, 1000);
     $object->set('ordr', $ordr);
     return $object;
   }
-  
+
   function createOneTableObject($ordr = '')
   {
     $object = $this->initOneTableObject($ordr);
     $object->save();
     return $object;
   }
-  
+
   function initPerson()
   {
     $person = new PersonForTest();
     $person->setName('Person_' . rand(0, 1000));
     return $person;
   }
-  
+
   function createPerson()
   {
     $person = $this->initPerson();
@@ -224,33 +224,33 @@ class lmbARTestingObjectMother
     $person->save();
     return $person;
   }
-  
+
   function initSocialSecurity()
   {
     $number = new SocialSecurityForTest();
     $number->setCode(rand(0,1000));
     return $number;
   }
-  
+
   function createSocialSecurity($person)
   {
     $number = $this->initSocialSecurity();
     $number->setPerson($person);
-    return $number; 
+    return $number;
   }
-  
+
   function createCourse($program = null)
   {
     $course = new CourseForTest();
     $course->setTitle('Course_'. rand(0, 100));
-    
+
     if($program)
       $course->setProgram($program);
-    
+
     $course->save();
     return $course;
   }
-  
+
   function createProgram()
   {
     $program = new ProgramForTest();
@@ -262,43 +262,43 @@ class lmbARTestingObjectMother
   function createLecture($course, $alt_course = null, $title = '')
   {
     $lecture = new LectureForTest();
-    $title = $title ? $title : 'Lecture_'. rand(0, 100);
+    $title = $title ?: 'Lecture_'. rand(0, 100);
     $lecture->setTitle($title);
     $lecture->setCourse($course);
-    
+
     if($alt_course)
       $lecture->setAltCourse($alt_course);
-      
+
     $lecture->save();
     return $lecture;
   }
-  
+
   function initUser($linked_object = null)
   {
     $user = new UserForTest();
     $user->setFirstName('User_' . rand(0, 1000));
-    
+
     if($linked_object)
       $user->setLinkedObject($linked_object);
 
     return $user;
   }
-  
+
   function createUser($linked_object = null)
   {
     $user = $this->initUser($linked_object);
     $user->save();
     return $user;
   }
-  
+
   function initGroup($title = '')
   {
     $group = new GroupForTest();
-    $title = $title ? $title : 'Group_' . rand(0, 1000);
+    $title = $title ?: 'Group_' . rand(0, 1000);
     $group->setTitle($title);
     return $group;
   }
-  
+
   function createGroup($title = '')
   {
     $group = $this->initGroup($title);

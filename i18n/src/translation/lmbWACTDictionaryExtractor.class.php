@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/i18n/src/translation/lmbSourceDictionaryExtractor.class.php');
 
@@ -22,7 +22,7 @@ class lmbWACTDictionaryExtractor extends lmbSourceDictionaryExtractor
     {
       foreach($matches[1] as $index => $text)
       {
-        $domain = $matches[3][$index] ? $matches[3][$index] : 'default';
+        $domain = $matches[3][$index] ?: 'default';
 
         if($response)
           $response->write("WACT template: '$text'@$domain\n");

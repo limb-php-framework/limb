@@ -25,11 +25,11 @@ class lmbLog
   protected $level = PHP_INT_MAX;
 
   protected $backtrace_depth = array(
-    LOG_ERR     => 5,
-    LOG_WARNING => 3,
-    LOG_NOTICE  => 3,
-    LOG_INFO    => 3,
-    LOG_DEBUG   => 3,
+    LOG_ERR     => 20,
+    LOG_WARNING => 10,
+    LOG_NOTICE  => 10,
+    LOG_INFO    => 10,
+    LOG_DEBUG   => 10,
   );
 
   function __construct(array $writers = array())
@@ -71,11 +71,11 @@ class lmbLog
 
   /**
    * Write message in log
-   * 
+   *
    * @param string $message log message
    * @param int $level
    * @param array $params log additional params
-   * @param lmbBacktrace $backtrace log backtrace, creating new if not assigned 
+   * @param lmbBacktrace $backtrace log backtrace, creating new if not assigned
    * @param string $entry_title log entry title
    */
   function log($message, $level = LOG_INFO, $params = array(), lmbBacktrace $backtrace = null, $entry_title = null)

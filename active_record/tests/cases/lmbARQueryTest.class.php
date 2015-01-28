@@ -811,7 +811,13 @@ class lmbARQueryTest extends lmbARBaseTestCase
 
   function testGroup()
   {
-  	$course1 = $this->creator->createCourse();
+    if (!lmbToolkit :: instance()->getDefaultDbConnection() instanceof lmbMysqlConnection)
+    {
+      $this->skipIf(true, "lmbARQueryTest testGroup() skipped, mysql connection required");
+      return;
+    }
+
+    $course1 = $this->creator->createCourse();
   	$lecture1 = $this->creator->createLecture($course1);
   	$lecture2 = $this->creator->createLecture($course1);
 

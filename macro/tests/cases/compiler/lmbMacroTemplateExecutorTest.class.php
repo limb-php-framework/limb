@@ -21,7 +21,6 @@ class lmbMacroTemplateExecutorTest extends lmbBaseMacroTest
   function testMissingVarIsEmpty()
   {
     $tpl = new lmbMacroTemplateExecutor($this->_createMacroConfig());
-    $this->assertNoErrors();
     $this->assertIdentical($tpl->junk, '');
   }
 }

@@ -38,7 +38,7 @@ class lmbDateTimeZone
 
   var $default; //System Default Time Zone
 
-  function lmbDateTimeZone($id)
+  function __construct($id)
   {
     global $_DATE_TIMEZONE_DATA;
 
@@ -74,20 +74,20 @@ class lmbDateTimeZone
     }
   }
 
-  function getDefault()
+  static function getDefault()
   {
     global $_DATE_TIMEZONE_DEFAULT;
     return new lmbDateTimeZone($_DATE_TIMEZONE_DEFAULT);
   }
 
-  function setDefault($id)
+  static function setDefault($id)
   {
     global $_DATE_TIMEZONE_DEFAULT;
     if (lmbDateTimeZone::isValidId($id))
       $_DATE_TIMEZONE_DEFAULT = $id;
   }
 
-  function isValidId($id)
+  static function isValidId($id)
   {
     global $_DATE_TIMEZONE_DATA;
     if (isset($_DATE_TIMEZONE_DATA[$id]))
@@ -136,27 +136,19 @@ class lmbDateTimeZone
 
   /**
   * Is the given date/time in DST for this time zone
-  *
-  * Attempts to determine if a given date object represents a date/time
-  * that is in DST for this time zone.  WARNINGS: this basically attempts to
-  * "trick" the system into telling us if we're in DST for a given time zone.
-  * This uses putenv() which may not work in safe mode, and relies on unix time
-  * which is only valid for dates from 1970 to ~2038.  This relies on the
-  * underlying OS calls, so it may not work on Windows or on a system where
-  * zoneinfo is not installed or configured properly.
   */
   function inDaylightTime($date)
   {
     $env_tz = '';
-    if (getenv('TZ'))
-      $env_tz = getenv('TZ');
+    if (date_default_timezone_get())
+      $env_tz = date_default_timezone_get();
 
     if($this->id)
-      putenv('TZ=' . $this->id);
+      date_default_timezone_set($this->id);
     $ltime = localtime($date->getStamp(), true);
 
     if($env_tz)
-      putenv('TZ=' . $env_tz);
+      date_default_timezone_set($env_tz);
 
     return $ltime['tm_isdst'];
   }

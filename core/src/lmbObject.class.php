@@ -166,16 +166,6 @@ class lmbObject implements lmbSetInterface
   }
 
   /**
-   * Alias for getPropertiesNames
-   *
-   * @deprecated
-   */
-  function getAttributesNames()
-  {
-    return $this->getPropertiesNames();
-  }
-
-  /**
    * Removes specified property
    * @param string
    */

@@ -1,7 +1,7 @@
 <?php
     /*
     *  $Id: PHPParser.php 14665 2005-03-23 19:37:50Z npac $
-    *  
+    *
     *  Copyright(c) 2004-2005, SpikeSource Inc. All Rights Reserved.
     *  Licensed under the Open Source License version 2.1
     *  (See http://www.spikesource.com/license.html)
@@ -14,9 +14,9 @@
     }
     require_once __PHPCOVERAGE_HOME . "/parser/Parser.php";
 
-    /** 
-    * Parser for PHP files 
-    * 
+    /**
+    * Parser for PHP files
+    *
     * @author Nimish Pachapurkar (npac@spikesource.com)
     * @version $Revision: 14665 $
     * @package tests_runner
@@ -51,25 +51,25 @@
             T_XOR_EQUAL,
             T_BOOLEAN_AND,
             T_BOOLEAN_OR,
-            T_OBJECT_OPERATOR, 
-            T_DOUBLE_ARROW, 
-            "[", 
+            T_OBJECT_OPERATOR,
+            T_DOUBLE_ARROW,
+            "[",
             "]",
-            T_LOGICAL_OR, 
-            T_LOGICAL_XOR, 
+            T_LOGICAL_OR,
+            T_LOGICAL_XOR,
             T_LOGICAL_AND
         );
 
         /*}}}*/
         /*{{{ protected function processLine() */
 
-        /** 
+        /**
         * Process a line read from the file and determine if it is an
-        * executable line or not. 
+        * executable line or not.
         *
         * This is the work horse function that does most of the parsing.
         * To parse PHP, get_all_tokens() tokenizer function is used.
-        * 
+        *
         * @param $line  Line to be parsed.
         * @access protected
         */
@@ -100,18 +100,18 @@
                     if($pos > 0) {
                         $this->inPHP = true;
                         //echo "Going in PHP\n";
-                        // Remove the part of the line till the PHP opening 
+                        // Remove the part of the line till the PHP opening
                         // tag and recurse
-                        return $this->processLine(trim(substr($line, $pos))); 
+                        return $this->processLine(trim(substr($line, $pos)));
                     }
                 }
             }
-            // If we are already in PHP 
+            // If we are already in PHP
             else if($this->inPHP) {
-                // If we are inside a multi-line comment, that is not ending 
+                // If we are inside a multi-line comment, that is not ending
                 // on the same line
-                if((strpos($line, "/*") !== false && 
-                strpos($line, "*/") === false) || 
+                if((strpos($line, "/*") !== false &&
+                strpos($line, "*/") === false) ||
                 (strpos($line, "/*") > strpos($line, "*/"))) {
                     $this->inComment = true;
                 }
@@ -151,7 +151,8 @@
                     if($tokenCnt == 2) {
                         if($this->isContinuation($token)) {
                             $this->lineType = LINE_TYPE_CONT;
-                            $this->logger->debug("Continuation! Token: $token",
+                            $token_str = is_array($token) ? $token[1] : $token;
+                            $this->logger->debug("Continuation! Token: " . $token_str,
                                 __FILE__, __LINE__);
                             break;
                         }
@@ -170,7 +171,7 @@
                         if($this->lineType != LINE_TYPE_EXEC) {
                             $this->lineType = LINE_TYPE_NOEXEC;
                         }
-                        break; 
+                        break;
 
                     // Everything else by default is executable.
                     default:
@@ -200,9 +201,9 @@
                     case T_CLOSE_TAG:               // ? >
                     case T_OPEN_TAG:                // < ?
                     case T_OPEN_TAG_WITH_ECHO:      // < ? =
-                    case T_CURLY_OPEN:              // 
+                    case T_CURLY_OPEN:              //
                     case T_INLINE_HTML:             // <br/><b>jhsk</b>
-                        //case T_STRING:                  // 
+                        //case T_STRING:                  //
                     case T_EXTENDS:                 // extends
                     case T_STATIC:                  // static
                     case T_STRING_VARNAME:          // string varname?
@@ -230,7 +231,7 @@
                         $this->lineType = LINE_TYPE_NOEXEC;
                         // No need to see any further
                         $seenEnough = true;
-                        break; 
+                        break;
 
                     case T_VARIABLE:                // $foo
                         $seeMore = true;
@@ -245,7 +246,7 @@
                     $this->logger->debug("Status: " . $this->getLineTypeStr($this->lineType) . "\t\tToken type: $tokenType \tText: $text",
                         __FILE__, __LINE__);
                 }
-                if(($this->lineType == LINE_TYPE_EXEC && !$seeMore) 
+                if(($this->lineType == LINE_TYPE_EXEC && !$seeMore)
                     || $seenEnough) {
                         $this->logger->debug("Made a decision! Exiting. Token Type: $tokenType & Text: $text",
                             __FILE__, __LINE__);
@@ -268,7 +269,7 @@
                 // Check if PHP block ends on this line
                 if(($pos = strpos($line, $this->phpFinisher)) !== false) {
                     $this->inPHP = false;
-                    // If line is not executable so far, check for the 
+                    // If line is not executable so far, check for the
                     // remaining part
                     if($this->lineType != LINE_TYPE_EXEC) {
                         return $this->processLine(trim(substr($line, $pos+2)));
@@ -280,9 +281,9 @@
         /*}}}*/
         /*{{{ public function getLineType() */
 
-        /** 
-        * Returns the type of line just read 
-        * 
+        /**
+        * Returns the type of line just read
+        *
         * @return Line type
         * @access public
         */
@@ -292,9 +293,9 @@
         /*}}}*/
         /*{{{ protected function isContinuation() */
 
-        /** 
-        * Check if a line is a continuation of the previous line 
-        * 
+        /**
+        * Check if a line is a continuation of the previous line
+        *
         * @param &$token Second token in a line (after PHP start)
         * @return Boolean True if the line is a continuation; false otherwise
         * @access protected
@@ -313,7 +314,7 @@
                 }
             }
             else {
-                list($tokenType, $text) = $token;               
+                list($tokenType, $text) = $token;
                 switch($tokenType) {
                 case T_CONSTANT_ENCAPSED_STRING:
                 case T_ARRAY:
@@ -348,10 +349,10 @@
         /*}}}*/
         /*{{{ protected function getTokenType() */
 
-        /** 
+        /**
         * Get the token type of a token (if exists) or
         * the token itself.
-        * 
+        *
         * @param $token Token
         * @return Token type or token itself
         * @access protected
@@ -368,9 +369,9 @@
         /*}}}*/
         /*{{{*/
 
-        /** 
-        * Return the type of last non-empty token in a line 
-        * 
+        /**
+        * Return the type of last non-empty token in a line
+        *
         * @param &$tokens Array of tokens for a line
         * @return mixed Last non-empty token type (or token) if exists; false otherwise
         * @access protected

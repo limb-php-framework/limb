@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 class lmbMacroCodeWriterTest extends lmbBaseMacroTest
@@ -108,7 +108,7 @@ class lmbMacroCodeWriterTest extends lmbBaseMacroTest
   function testgenerateTempName()
   {
     $var = $this->writer->generateTempName();
-    $this->assertWantedPattern('/[a-z][a-z0-9]*/i', $var);
+    $this->assertPattern('/[a-z][a-z0-9]*/i', $var);
   }
 
   function testGetSecondTempVariable()
@@ -123,7 +123,7 @@ class lmbMacroCodeWriterTest extends lmbBaseMacroTest
     for($i = 1; $i <= 300; $i++)
     {
       $var = $this->writer->generateTempName();
-      $this->assertWantedPattern('/[a-z][a-z0-9]*/i', $var);
+      $this->assertPattern('/[a-z][a-z0-9]*/i', $var);
     }
   }
 

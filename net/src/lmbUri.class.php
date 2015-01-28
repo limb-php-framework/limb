@@ -116,14 +116,6 @@ class lmbUri extends lmbSet
     }
   }
 
-  /**
-   * @deprecated
-   */
-  function parse($uri)
-  {
-    $this->reset($uri);
-  }
-
   protected function _fixFileProtocol($url)
   {
     $matches = array();

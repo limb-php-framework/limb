@@ -1,0 +1,25 @@
+diff --git a/tests_runner/lib/spikephpcoverage/src/parser/PHPParser.php b/tests_runner/lib/spikephpcoverage/src/parser/PHPParser.php
+
+@@ -151,7 +151,8 @@
+                     if($tokenCnt == 2) {
+                         if($this->isContinuation($token)) {
+                             $this->lineType = LINE_TYPE_CONT;
+-                            $this->logger->debug("Continuation! Token: $token",
++                            $token_str = is_array($token) ? $token[1] : $token;
++                            $this->logger->debug("Continuation! Token: " . $token_str,
+                                 __FILE__, __LINE__);
+                             break;
+                         }
+
+diff --git a/tests_runner/lib/spikephpcoverage/src/CoverageRecorder.php b/tests_runner/lib/spikephpcoverage/src/CoverageRecorder.php
+
+@@ -338,7 +338,6 @@
+
+                 }
+             }
+
+-            array_multisort($altCoverageData, SORT_STRING);
+             return $altCoverageData;
+         }
+
+

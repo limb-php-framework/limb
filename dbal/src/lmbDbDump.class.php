@@ -45,7 +45,7 @@ class lmbDbDump
     else
       $loader = $default_loader;
 
-    $file = ($file) ? $file : $this->file;
+    $file = $file ?: $this->file;
     $this->loader = new $loader($file);
     $this->loader->execute($this->connection);
 

@@ -109,24 +109,6 @@ abstract class lmbFetcher
       return $dataset->current();
   }
 
-  /**
-   * @deprecated
-   * @see fetch()
-   */
-  function getDataSet()
-  {
-    return $this->fetch();
-  }
-
-  /**
-   * @deprecated
-   * @see fetchOne()
-   */
-  function getFirstRecord()
-  {
-    return $this->fetchOne();
-  }
-
   static function extractOrderPairsFromString($order_string)
   {
     $order_items = explode(',', $order_string);

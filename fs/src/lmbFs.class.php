@@ -81,14 +81,6 @@ class lmbFs
     return tempnam(self :: getTmpDir(), $prefix);
   }
 
-  /**
-   * @deprecated
-   */
-  static function generateTempFile($prefix = 'p')
-  {
-    return self :: generateTmpFile($prefix);
-  }
-
   static function dirpath($path)
   {
     $path = self :: normalizePath($path);

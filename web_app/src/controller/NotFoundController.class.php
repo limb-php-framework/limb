@@ -19,7 +19,7 @@ class NotFoundController extends lmbController
 {
   function doDisplay()
   {
-    $this->response->addHeader('HTTP/1.x 404 Not Found');
+    $this->response->setStatus(404);
     $this->setTemplate($this->findTemplateByAlias('not_found'));
   }
 }

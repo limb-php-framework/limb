@@ -20,7 +20,7 @@ class lmbTestGroup extends TestSuite
   function addFixture($fixture)
   {
     $this->_fixtures[] = $fixture;
-    //fixture is setup once added, since fixture may contain some stuff 
+    //fixture is setup once added, since fixture may contain some stuff
     //required even before actual tests execution
     $fixture->setup();
   }

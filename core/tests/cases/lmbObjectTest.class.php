@@ -59,10 +59,10 @@ class lmbObjectTest extends UnitTestCase
     $this->assertTrue($object->has('is_error'));
   }
 
-  function testGetAttributesNames()
+  function testGetPropertiesNames()
   {
     $object = new ObjectTestVersion();
-    $this->assertEqual($object->getAttributesNames(), array('bar', 'protected'));
+    $this->assertEqual($object->getPropertiesNames(), array('bar', 'protected'));
   }
 
   function testSetGet()
@@ -204,13 +204,13 @@ class lmbObjectTest extends UnitTestCase
     $object->import(array('_guarded' => 'no'));
     $this->assertEqual($object->_guarded, 'yeah');
   }
-  
+
   function testImportUseMutators()
   {
     $object = new ObjectTestVersion();
     $object->import(array('bar' => 'foo'));
     $this->assertEqual('foo_set_called', $object->bar);
-    
+
     $object->import(array('bar' => 'raw_foo'), $raw = true);
     $this->assertEqual('raw_foo', $object->bar);
   }

@@ -5,7 +5,7 @@
     <?php
     require_once(dirname(__FILE__) . '/../setup.php');
     require_once('limb/web_app/src/lmbWebApplication.class.php');
- 
+
     $application = new lmbWebApplication();
     $application->process();
     ?>
@@ -19,12 +19,12 @@ index.php по сути подключает настроечный файл set
     <?php
     lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
     lmb_require('limb/classkit/src/lmbHandle.class.php');
- 
+
     class lmbWebApplication extends lmbFilterChain
     {
       function __construct()
       {
-        $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbUncaughtExceptionHandlingFilter'));
+        $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbErrorHandlingFilter'));
         $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbSessionStartupFilter'));
         $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbRequestDispatchingFilter',
                                             array(new lmbHandle('limb/web_app/src/request/lmbRoutesRequestDispatcher'))));
@@ -51,7 +51,7 @@ lmbWebApplication — это **цепочка фильтров**, содержа
 -------|-----------
 lmbResponseTransactionFilter | Отсылает данные (заголовки и контент) браузеру после того, как большинство остальных фильтров отработали. Необходим, так как логика приложения может требовать обнуления промежуточно сформированных данных и передачи совсем другого результата браузеру.
 lmbSessionStartupFilter	| Настраивает драйвер хранилища сессионных данных и стартует сессию
-lmbUncaughtExceptionHandlingFilter | Позволяет обрабатывать ошибки, возникшие в системе и выводить пользователю более «мягкие варианты»
+lmbErrorHandlingFilter | Позволяет обрабатывать ошибки, возникшие в системе и выводить пользователю более «мягкие варианты»
 lmbRequestDispatchingFilter	| В этом фильтре определяется текущий контроллер и действие.
 lmbActionPerformingFilter	| Запускает команду, которая соответствует текущему контроллеру и действию
 lmbViewRenderingFilter | Запускает процесс рендеринга шаблона, который был установлен в результате выполнения действия контроллера

@@ -164,7 +164,7 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
 
     $related_to_child = new RelatedOneTableTypedObjectChild();
     $related_to_child->save();
-    
+
     $child->addToRelatedObjects($related_to_child);
     $related_to_child->setPrimaryObject($child);
 
@@ -173,7 +173,7 @@ class lmbARSubclassingTest extends lmbARBaseTestCase
 
     $join = array('primary_object');
     $sort = array('primary_object.id' => 'ASC');
-    
+
     $objects = RelatedOneTableTypedObjectChild::find(array('join' => $join, 'sort' => $sort));
 
     $this->assertEqual($objects->count(), 1);

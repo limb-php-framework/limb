@@ -51,7 +51,7 @@ class lmbTestTreeNode
       $node = $node->getParent();
     }
     return $parents;
-  }  
+  }
 
   protected function _loadChildren(){}
 
@@ -123,13 +123,13 @@ class lmbTestTreeNode
     }
 
     $this->_prepareTestCase($test);
-    //using getter instead of raw property, since child classes may need lazy loading 
+    //using getter instead of raw property, since child classes may need lazy loading
     $children = $this->getChildren();
     foreach($children as $child)
     {
       if($child->isSkipped())
         continue;
-      $test->addTestCase($child->createTestCase(false));
+      $test->add($child->createTestCase(false));
     }
     return $test;
   }

@@ -1,7 +1,7 @@
 # Пакет DBAL
 Пакет DBAL (Data Base Abstraction Layer) предоставляет объектно-ориентированный доступ к базе данных, абстрагируясь от деталей конкретной реализации базы данных.
 
-В данный момент пакет DBAL поддерживает следующие базы данных: [MySQL](http://www.mysql.com/) 4.1+, [SQLite](http://sqlite.org/), [Oracle](http://www.oracle.com/index.html) (OCI8), [PostgreSQL](http://www.postgresql.org/) 8.2+, [Linter](http://www.linter.ru/ru/main/)
+В данный момент пакет DBAL поддерживает следующие базы данных: [MySQL](http://www.mysql.com/) 4.1+, [Oracle](http://www.oracle.com/index.html) (OCI8), [PostgreSQL](http://www.postgresql.org/) 8.2+,
 
 Некоторые задают нам вопрос по поводу того, почему мы не используем PHP-расширение PDO?
 

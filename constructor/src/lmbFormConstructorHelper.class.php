@@ -43,7 +43,7 @@ class lmbFormConstructorHelper
 
   protected function _createFieldDatetime($column)
   {
-    return ' <? $value = $this->item->get("%%%") ? $this->item->get("%%%") : date(); ?> '.
+    return ' <? $value = $this->item->get("%%%") ?: date(); ?> '.
            ' [[date3Select id="%%%" name="%%%" title="%%%" year_class="date3select" lang="ru" value="[$value]" format="%s" /]]';
   }
 

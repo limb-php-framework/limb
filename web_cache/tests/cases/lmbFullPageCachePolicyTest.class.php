@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/web_cache/src/lmbFullPageCacheRule.class.php');
 lmb_require('limb/web_cache/src/lmbFullPageCachePolicy.class.php');
@@ -43,7 +43,7 @@ class lmbFullPageCachePolicyTest extends UnitTestCase
     $this->policy->addRuleset($r2);
     $this->policy->addRuleset($r3);
 
-    $this->assertReference($r2, $this->policy->findRuleset($request));
+    $this->assertSame($r2, $this->policy->findRuleset($request));
   }
 }
 

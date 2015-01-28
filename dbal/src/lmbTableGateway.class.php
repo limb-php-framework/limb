@@ -232,8 +232,7 @@ class lmbTableGateway
 
   protected function _bindValuesToStatement($stmt, $values)
   {
-    $typeinfo = new lmbDbTypeInfo();
-    $accessors = $typeinfo->getColumnTypeAccessors();
+    $accessors = lmbDbTypeInfo::getColumnTypeAccessors();
 
     foreach($values as $key => $value)
     {

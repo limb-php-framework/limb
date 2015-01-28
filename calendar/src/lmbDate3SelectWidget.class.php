@@ -28,8 +28,8 @@ class lmbDate3SelectWidget extends lmbMacroInputWidget
 
   protected function _initDate3Select()
   {
-    $this->calendar_lib_path = $this->getAttribute('calendar_lib_path') ? $this->getAttribute('calendar_lib_path') : '/shared/calendar/js/';
-    $lang = $this->getAttribute('lang') ? $this->getAttribute('lang') : 'en';
+    $this->calendar_lib_path = $this->getAttribute('calendar_lib_path') ?: '/shared/calendar/js/';
+    $lang = $this->getAttribute('lang') ?: 'en';
     $this->show_default = $this->getBoolAttribute('show_default');
     $this->dw_lang_file = 'lang/calendar-' . $lang . '.js';
 

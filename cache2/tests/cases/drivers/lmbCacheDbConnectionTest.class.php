@@ -36,7 +36,7 @@ class lmbCacheDbConnectionTest extends lmbCacheConnectionTest
 
   function __destruct()
   {
-    if (!$this->_should_skip)
+    if (!$this->shouldSkip())
       lmb_tests_teardown_db();
   }
 }

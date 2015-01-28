@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 Mock :: generate('lmbMacroTokenizerListener', 'MockMacroTokenizerListener');
@@ -103,11 +103,11 @@ class lmbMacroTokenizerTest extends UnitTestCase
   function testSeveralPHPBlocks()
   {
     $this->listener->expectCallCount('characters', 2);
-    $this->listener->expectArgumentsAt(0, 'characters', array('hey'));
-    $this->listener->expectArgumentsAt(1, 'characters', array('foo'));
+    $this->listener->expectAt(0, 'characters', array('hey'));
+    $this->listener->expectAt(1, 'characters', array('foo'));
     $this->listener->expectCallCount('php', 2);
-    $this->listener->expectArgumentsAt(0, 'php', array('<?php $yo = "{{foo/}}";?>'));
-    $this->listener->expectArgumentsAt(1, 'php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->listener->expectAt(0, 'php', array('<?php $yo = "{{foo/}}";?>'));
+    $this->listener->expectAt(1, 'php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
     $this->listener->expectNever('startElement');
     $this->listener->expectNever('endElement');
     $this->listener->expectNever('invalidAttributeSyntax');
@@ -157,20 +157,20 @@ class lmbMacroTokenizerTest extends UnitTestCase
   function testMixedTagsAndPHPBlocks()
   {
     $this->listener->expectCallCount('startElement', 2);
-    $this->listener->expectArgumentsAt(0, 'startElement', array('foo', array()));
-    $this->listener->expectArgumentsAt(1, 'startElement', array('zoo', array()));
+    $this->listener->expectAt(0, 'startElement', array('foo', array()));
+    $this->listener->expectAt(1, 'startElement', array('zoo', array()));
     $this->listener->expectCallCount('characters', 4);
-    $this->listener->expectArgumentsAt(0, 'characters', array('hey'));
-    $this->listener->expectArgumentsAt(1, 'characters', array('baz'));
-    $this->listener->expectArgumentsAt(2, 'characters', array('wow'));
-    $this->listener->expectArgumentsAt(3, 'characters', array('hm..'));
+    $this->listener->expectAt(0, 'characters', array('hey'));
+    $this->listener->expectAt(1, 'characters', array('baz'));
+    $this->listener->expectAt(2, 'characters', array('wow'));
+    $this->listener->expectAt(3, 'characters', array('hm..'));
     $this->listener->expectCallCount('endElement', 2);
-    $this->listener->expectArgumentsAt(0, 'endElement', array('foo'));
-    $this->listener->expectArgumentsAt(1, 'endElement', array('zoo'));
+    $this->listener->expectAt(0, 'endElement', array('foo'));
+    $this->listener->expectAt(1, 'endElement', array('zoo'));
     $this->listener->expectNever('invalidAttributeSyntax');
     $this->listener->expectCallCount('php', 2);
-    $this->listener->expectArgumentsAt(0, 'php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
-    $this->listener->expectArgumentsAt(1, 'php', array('<?php echo 1;?>'));
+    $this->listener->expectAt(0, 'php', array('<?php $var = "{{tag}}{{/tag}}";?>'));
+    $this->listener->expectAt(1, 'php', array('<?php echo 1;?>'));
     $this->parser->parse('{{foo}}hey{{/foo}}baz<?php $var = "{{tag}}{{/tag}}";?>{{zoo}}wow{{/zoo}}hm..<?php echo 1;?>');
   }
 
@@ -223,10 +223,10 @@ class lmbMacroTokenizerTest extends UnitTestCase
 
   function testMismatchedElements()
   {
-    $this->listener->expectArgumentsAt(0, 'startElement', array('b', array()));
-    $this->listener->expectArgumentsAt(1, 'startElement', array('i', array()));
-    $this->listener->expectArgumentsAt(0, 'endElement', array('b'));
-    $this->listener->expectArgumentsAt(1, 'endElement', array('i'));
+    $this->listener->expectAt(0, 'startElement', array('b', array()));
+    $this->listener->expectAt(1, 'startElement', array('i', array()));
+    $this->listener->expectAt(0, 'endElement', array('b'));
+    $this->listener->expectAt(1, 'endElement', array('i'));
     $this->listener->expectCallCount('startElement', 2);
     $this->listener->expectCallCount('endElement', 2);
     $this->listener->expectNever('invalidAttributeSyntax');

@@ -143,7 +143,7 @@ class lmbFetcherTest extends UnitTestCase
     }
     catch(lmbException $e)
     {
-      $this->assertWantedPattern('/Wrong order type/', $e->getMessage());
+      $this->assertPattern('/Wrong order type/', $e->getMessage());
     }
   }
 }

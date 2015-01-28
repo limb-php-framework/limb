@@ -113,7 +113,7 @@
 * [NET](../../net/docs/ru/net.md) — работа с сетевыми протоколами(в основном с HTTP)
 * [SESSION](../../session/docs/ru/session.md) — cредства для работы с PHP сессиями и абстрагирования от источника хранения сессионных данных
 * [TREE](../../tree/docs/ru/tree.md) — организации хранения деревьев в БД
-* [WYSIWYG](../../wysiwyg/docs/ru/wysiwyg.md) — расширенный текстовый редактор для ввода гипертекста (fckeditor, tinymce)
+* [WYSIWYG](../../wysiwyg/docs/ru/wysiwyg.md) — расширенный текстовый редактор для ввода гипертекста (ckeditor)
 
 ## Заключение
 

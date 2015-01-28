@@ -27,17 +27,17 @@ abstract class lmbBaseImageContainerTest extends lmbImageKitTestCase
   function testChangeType()
   {
     $cont = $this->_getContainer();
-    $cont->setOutputType('gif');
-    $cont->save($this->_getOutputImage('gif'));
+    $cont->setOutputType('png');
+    $cont->save($this->_getOutputImage('png'));
 
     list($width, $height, $type) = getimagesize($this->_getInputImage());
-    list($width2, $height2, $type2) = getimagesize($this->_getOutputImage('gif'));
+    list($width2, $height2, $type2) = getimagesize($this->_getOutputImage('png'));
 
     $this->assertEqual($width, $width2);
     $this->assertEqual($height, $height2);
     $this->assertNotEqual($type, $type2);
     $this->assertEqual($type, IMAGETYPE_JPEG);
-    $this->assertEqual($type2, IMAGETYPE_GIF);
+    $this->assertEqual($type2, IMAGETYPE_PNG);
   }
 
   function testGetSize()
