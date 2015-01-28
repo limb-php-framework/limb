@@ -11,7 +11,7 @@ class AdminTreeController extends lmbController
 
     if($this->request->hasPost())
     {
-      $class_name = $this->request->get('class_name') ? $this->request->get('class_name') : 'lmbCmsNode';
+      $class_name = $this->request->get('class_name') ?: 'lmbCmsNode';
       $node = new $class_name();
 
       $this->_importAndSave($node);

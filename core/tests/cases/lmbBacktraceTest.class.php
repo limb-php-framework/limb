@@ -24,7 +24,7 @@ class lmbBacktraceTest extends UnitTestCase
     $backtrace = new lmbBacktrace($trace = debug_backtrace());
     $given = $backtrace->get();
     $this->assertEqual('array', gettype($given));
-    $this->assertIdentical($trace, $given);
+    $this->assertSame($trace, $given);
   }
 
   function testConstruct_Limit()
@@ -71,8 +71,8 @@ class lmbBacktraceTest extends UnitTestCase
   {
     $resource = fopen(__FILE__, 'r');
     $backtrace = $this->_createBacktrace($resource, 1);
-    fclose($resource);
     $this->assertPattern('/RESOURCE\(#[0-9]*\) of type \(stream\)/', $backtrace->toString());
+    fclose($resource);
   }
 
   protected function _createBacktrace($foo, $bar)

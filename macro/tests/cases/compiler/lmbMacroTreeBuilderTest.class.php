@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 Mock::generate('lmbMacroNode', 'MockMacroNode');
@@ -31,14 +31,14 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
   function testPushNodeMakedPushedNodeCurrentCursor()
   {
     $this->assertEqual($this->component->getChildren(), array());
-    $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertSame($this->component, $this->tree_builder->getCursor());
 
     $child_component = new MockMacroNode();
     $child_component->expectOnce('preParse', array($this->compiler));
 
     $this->tree_builder->pushNode($child_component);
 
-    $this->assertReference($child_component, $this->tree_builder->getCursor());
+    $this->assertSame($child_component, $this->tree_builder->getCursor());
     $children = $this->component->getChildren();
     $this->assertReference($children[0], $child_component);
   }
@@ -46,25 +46,25 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
   function testAddNodeDontChangeCursor()
   {
     $this->assertEqual($this->component->getChildren(), array());
-    $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertSame($this->component, $this->tree_builder->getCursor());
 
     $child_component = new MockMacroNode();
     $child_component->expectOnce('preParse');
 
     $this->tree_builder->addNode($child_component);
 
-    $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertSame($this->component, $this->tree_builder->getCursor());
     $children = $this->component->getChildren();
     $this->assertReference($children[0], $child_component);
   }
 
   function testAddlmbMacroTextNode()
   {
-    $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertSame($this->component, $this->tree_builder->getCursor());
 
     $this->tree_builder->addTextNode('text');
 
-    $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertSame($this->component, $this->tree_builder->getCursor());
     $children = $this->component->getChildren();
     $this->assertEqual(sizeof($children), 1);
     $this->assertIsA($children[0], 'lmbMacroTextNode');
@@ -73,15 +73,15 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
 
   function testPopNodeChangeCursorToParent()
   {
-    $this->assertReference($this->component, $this->tree_builder->getCursor());
+    $this->assertSame($this->component, $this->tree_builder->getCursor());
 
     $parent_component = new lmbMacroNode();
     $this->component->setParent($parent_component);
 
-    $this->tree_builder->popNode();    
+    $this->tree_builder->popNode();
 
     $this->assertTrue($this->component->getHasClosingTag());
-    $this->assertReference($parent_component, $this->tree_builder->getCursor());
+    $this->assertSame($parent_component, $this->tree_builder->getCursor());
   }
 
   function testPopExpectedTagWithoutAnyExpected()
@@ -94,7 +94,7 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
     }
     catch(lmbMacroException $e)
     {
-      $this->assertWantedPattern('/Lonely closing tag/', $e->getMessage());
+      $this->assertPattern('/Lonely closing tag/', $e->getMessage());
       $params = $e->getParams();
       $this->assertEqual($params['file'], 'my_file');
       $this->assertEqual($params['line'], 10);
@@ -134,14 +134,14 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
     }
     catch(lmbMacroException $e)
     {
-      $this->assertWantedPattern('/Unexpected closing tag/', $e->getMessage());
+      $this->assertPattern('/Unexpected closing tag/', $e->getMessage());
       $params = $e->getParams();
       $this->assertEqual($params['file'], 'my_file');
       $this->assertEqual($params['line'], 12);
       $this->assertEqual($params['tag'], 'our_tag');
       $this->assertEqual($params['expected_tag'], 'plain_tag');
       $this->assertEqual($params['expected_file'], 'my_file');
-      $this->assertEqual($params['expected_line'], 11);         
+      $this->assertEqual($params['expected_line'], 11);
     }
   }
 
@@ -172,8 +172,8 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
 
     // make sure the tree is: Root --child--> InsertionPoint with cursor
     // at Root and open 'tag'
-    $this->assertReference($this->tree_builder->getCursor(), $root);
-    $this->assertReference($InsertionPoint->getParent(), $root);
+    $this->assertSame($this->tree_builder->getCursor(), $root);
+    $this->assertSame($InsertionPoint->getParent(), $root);
     $this->assertEqual($this->tree_builder->getExpectedTag(), 'tag');
 
     // push InsertionPoint as cursor, and add another node to the tree
@@ -182,8 +182,8 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
     $this->tree_builder->popNode();
 
     // make sure cursor is at InsertionPoint, and new node is child of InsertionPoint
-    $this->assertReference($this->tree_builder->getCursor(), $InsertionPoint);
-    $this->assertReference($child1->getParent(), $InsertionPoint);
+    $this->assertSame($this->tree_builder->getCursor(), $InsertionPoint);
+    $this->assertSame($child1->getParent(), $InsertionPoint);
 
     // now the parser gets '</tag>', and then more content
     // so we pop 'tag' (should restore orig cursor), and add a new node
@@ -192,8 +192,8 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
     $this->tree_builder->popNode();
 
     // the new node should be a child of Root, not InsertionPoint
-    $this->assertReference($this->tree_builder->getCursor(), $root);
-    $this->assertReference($child2->getParent(), $root);
+    $this->assertSame($this->tree_builder->getCursor(), $root);
+    $this->assertSame($child2->getParent(), $root);
   }
 
   function testPushAndPopExpectedTagsWithPushCursor()
@@ -204,7 +204,7 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
 
     // push a new cursor
     $this->tree_builder->pushCursor($new_cursor, new lmbMacroSourceLocation('my_file', 12));
-    $this->assertReference($this->tree_builder->getCursor(), $new_cursor);
+    $this->assertSame($this->tree_builder->getCursor(), $new_cursor);
 
     $this->tree_builder->pushExpectedTag('tag2', new lmbMacroSourceLocation('my_file', 13));
 
@@ -219,7 +219,7 @@ class lmbMacroTreeBuilderTest extends UnitTestCase
 
     // popping the next tag should restore the cursor to the original
     $this->assertEqual($this->tree_builder->popExpectedTag('tag1', new lmbMacroSourceLocation('my_file', 17)), 'tag1');
-    $this->assertReference($this->tree_builder->getCursor(), $this->component);
+    $this->assertSame($this->tree_builder->getCursor(), $this->component);
     $this->assertEqual($this->tree_builder->getExpectedTagCount(), 0);
   }
 }

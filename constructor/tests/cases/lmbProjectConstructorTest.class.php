@@ -20,7 +20,7 @@ class lmbProjectConstructorTest extends lmbConstructorUnitTestCase
   function setUp()
   {
     parent::setUp();
-    $this->project = new lmbProjectConstructor($this->dir_for_test_case, new lmbCliResponse());
+    $this->project = new lmbProjectConstructor($this->dir_for_test_case, new lmbCliOutput());
   }
 
   function testAddTemplate()

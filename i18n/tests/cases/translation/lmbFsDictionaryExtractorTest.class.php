@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
@@ -23,12 +23,12 @@ Mock :: generate('lmbFsRecursiveIterator', 'MockFsRecursiveIterator');
 
 class lmbFsDictionaryExtractorTest extends UnitTestCase
 {
-	
+
 	function skip()
   {
     $this->skipIf(true, 'TODO: replace cli by taskman');
-  }  
-	
+  }
+
   function testLoad()
   {
     $it = new MockFsRecursiveIterator();
@@ -56,7 +56,7 @@ class lmbFsDictionaryExtractorTest extends UnitTestCase
 
     $dictionaries = array();
 
-    $response = new lmbCliResponse();
+    $response = new lmbCliOutput();
     $m1->expectOnce('extractFromFile', array($file_path1, $dictionaries, $response));
     $m2->expectOnce('extractFromFile', array($file_path2, $dictionaries, $response));
 

@@ -19,7 +19,7 @@ class ServerErrorController extends lmbController
 {
   function doDisplay()
   {
-    $this->response->addHeader('HTTP/1.x 500 Server Error');
+    $this->response->setStatus(500);
     $this->resetView();
     $this->setTemplate('server_error.html');
   }

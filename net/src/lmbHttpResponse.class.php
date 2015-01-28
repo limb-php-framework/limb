@@ -19,6 +19,7 @@ class lmbHttpResponse
 {
   protected $response_string = '';
   protected $response_file_path = '';
+  protected $status = null;
   protected $headers = array();
   protected $cookies = array();
   protected $is_redirected = false;
@@ -90,17 +91,12 @@ class lmbHttpResponse
 
   function getStatus()
   {
-    $status = null;
-    foreach($this->headers as $header)
-    {
-      if(preg_match('~^HTTP/1.\d[^\d]+(\d+)[^\d]*~i', $header, $matches))
-        $status = (int)$matches[1];
-    }
+    return $this->status ?: 200;
+  }
 
-    if($status)
-      return $status;
-    else
-      return 200;
+  function setStatus($status)
+  {
+    $this->status = $status;
   }
 
   function getDirective($directive_name)
@@ -161,36 +157,15 @@ class lmbHttpResponse
     return sizeof($this->headers) > 0;
   }
 
-  /**
-   *@deprecated
-   *@see self::isHeadersSent()
-   *@return bool
-   */
-  function headersSent()
-  {
-    return $this->isHeadersSent();
-  }
-
   function isFileSent()
   {
     return !empty($this->response_file_path);
-  }
-
-  /**
-   *@deprecated
-   *@see self::isFileSent()
-   *@return bool
-   */
-  function fileSent()
-  {
-    return $this->isFileSent();
   }
 
   function reload()
   {
     $this->redirect($_SERVER['PHP_SELF']);
   }
-
 
   /**
    * Add header
@@ -200,18 +175,13 @@ class lmbHttpResponse
   {
     $this->_ensureTransactionStarted();
 
-    $this->headers[] = $header;
-  }
+    if(preg_match('~^HTTP/1.\d[^\d]+(\d+)[^\d]*~i', $header, $matches))
+    {
+      $this->setStatus((int)$matches[1]);
+      return;
+    }
 
-  /**
-   * Add header
-   * @deprecated
-   * @see self::addHeader
-   * @param string $header
-   */
-  function header($header)
-  {
-    $this->addHeader($header);
+    $this->headers[] = $header;
   }
 
   function setCookie($name, $value, $expire = 0, $path = '/', $domain = '', $secure = false)
@@ -274,6 +244,9 @@ class lmbHttpResponse
     foreach($this->headers as $header)
       $this->_sendHeader($header);
 
+    if($this->status)
+      $this->_sendStatus();
+
     foreach($this->cookies as $cookie)
       $this->_sendCookie($cookie);
 
@@ -288,6 +261,11 @@ class lmbHttpResponse
   protected function _sendHeader($header)
   {
     header($header);
+  }
+
+  protected function _sendStatus()
+  {
+    http_response_code($this->status);
   }
 
   protected function _sendCookie($cookie)

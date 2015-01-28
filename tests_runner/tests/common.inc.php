@@ -158,11 +158,6 @@ class lmbTestReporter extends SimpleReporter
 {
   protected $output = '';
 
-  function __construct()
-  {
-  	$this->SimpleReporter();
-  }
-
   function paintFail($message)
   {
     parent::paintFail($message);
@@ -178,7 +173,7 @@ class lmbTestReporter extends SimpleReporter
   function paintException($exception)
   {
     parent::paintException($exception);
-    $this->_addToOutput('FORMATED', $message);
+    $this->_addToOutput('FORMATED', $exception);
   }
 
   function paintSkip($message)

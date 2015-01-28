@@ -1,6 +1,6 @@
 # {{macro}} compilation and rendering. How to run {{macro}} template.
 ## Compile time vs run time
-macro is a PHP compiling template engine, which basically means that macro creates PHP code while parsing the template markup. Generated PHP code is cached onto the disk, then it is included and executed. Since generated PHP code is cached, this provides macro a significant speed boost on later invocations for the same template file. Another nice speed bonus is the fact that generated PHP code can also be cached by some decent PHP accelerator(e.g eAccelerator, APC) which makes template execution really blazing fast.
+macro is a PHP compiling template engine, which basically means that macro creates PHP code while parsing the template markup. Generated PHP code is cached onto the disk, then it is included and executed. Since generated PHP code is cached, this provides macro a significant speed boost on later invocations for the same template file. Another nice speed bonus is the fact that generated PHP code can also be cached by some decent PHP accelerator(e.g eAccelerator) which makes template execution really blazing fast.
 
 In other words, macro processes templates in two stages:
 
@@ -40,9 +40,9 @@ Here is a sample macro template:
 
     <body>
     <h1>Newsline</h1>
- 
+
     {{list using="$#news"}}
-    <ul>     
+    <ul>
       {{list:item}}
         <li>[{$item.date}] <b>{$item.title}</b> </li>
       {{/list:item}}
@@ -58,18 +58,18 @@ Here is the code to parse and execute our template:
     set_include_path(dirname(__FILE__) . '/' . PATH_SEPARATOR .
                     '/path/to/limb/' . PATH_SEPARATOR . //if you are using PEAR installation, this line can be omitted
                     get_include_path());
- 
+
     require_once('limb/macro/common.inc.php');
- 
+
     $config = new lmbMacroConfig($cache_dir = dirname(__FILE__ ) . '/cache/', //setting up directory for compiled templates
                                  $is_force_compile = false,
                                  $is_force_scan = false);
- 
+
     $macro = new lmbMacroTemplate('news.phtml', $config);
- 
+
     $test_news = array(array('date' => '2007-01-12', 'title' => 'test news1'),
                               array('date' => '2007-01-13', 'title' => 'test news2'));
- 
+
     $macro->set('news', $test_news);
     echo $macro->render();
 
@@ -95,47 +95,47 @@ Let's take a look at the compiled news.phtml (it's re-formatted PHP a bit here s
     if(!class_exists('MacroTemplateExecutor47662db85cf6e', false))
     {
     require_once('limb/macro/src/compiler/lmbMacroTemplateExecutor.class.php');
-    class MacroTemplateExecutor47662db85cf6e extends lmbMacroTemplateExecutor 
+    class MacroTemplateExecutor47662db85cf6e extends lmbMacroTemplateExecutor
     {
-      function render($args = array()) 
+      function render($args = array())
       {
         if($args) extract($args);
         $this->_init();
          ?>
         <body>
         <h1>Newsline</h1>
-   
+
         <?php $C = 0;$D = $this->news;
         foreach($D as $item) {
           if($C == 0) { ?>
-          <ul>     
+          <ul>
           <?php } ?>
- 
+
           <li>[<?php $F='';
           $G = $item;
-          if((is_array($G) || ($G instanceof ArrayAccess)) && isset($G['date'])) { 
+          if((is_array($G) || ($G instanceof ArrayAccess)) && isset($G['date'])) {
             $F = $G['date'];
-          }else{ 
+          }else{
             $F = '';
           }
           echo $F;
            ?>] <b><?php $H='';
           $I = $item;
-          if((is_array($I) || ($I instanceof ArrayAccess)) && isset($I['title'])) { 
+          if((is_array($I) || ($I instanceof ArrayAccess)) && isset($I['title'])) {
             $H = $I['title'];
-          }else{ 
+          }else{
             $H = '';
           }
           echo htmlspecialchars($H,3);
            ?></b> </li>
             <?php $C++;} ?>
- 
+
           <?php if($C > 0) { ?>
           </ul>
         <?php } ?>
- 
+
         </body>
-        <?php 
+        <?php
         }
       }
     }

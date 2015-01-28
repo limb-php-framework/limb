@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbStatement.interface.php');
 
@@ -27,7 +27,7 @@ class lmbOciStatement implements lmbDbStatement
     $this->sql = $sql;
     $this->connection = $connection;
   }
-  
+
   function setConnection($connection)
   {
     $this->connection = $connection;
@@ -54,6 +54,12 @@ class lmbOciStatement implements lmbDbStatement
   {
     if(!$this->statement || $this->hasChanged)
       $this->_prepareStatement();
+
+    return $this;
+  }
+
+  function getOciStatement()
+  {
     return $this->statement;
   }
 
@@ -126,18 +132,33 @@ class lmbOciStatement implements lmbDbStatement
 
   function setSmallInt($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the small int", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ? null : intval($value);
     $this->hasChanged = true;
   }
 
   function setInteger($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the integer", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ? null : intval($value);
+    $this->hasChanged = true;
+  }
+
+  function setBit($name, $value)
+  {
+    $this->parameters[$name] = is_null($value) ? null : decbin($value);
     $this->hasChanged = true;
   }
 
   function setFloat($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the float", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ? null : floatval($value);
     $this->hasChanged = true;
   }
@@ -148,8 +169,11 @@ class lmbOciStatement implements lmbDbStatement
       $this->parameters[$name] = $value;
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
       $this->parameters[$name] = $value;
-    else
+    else if(!$value)
       $this->parameters[$name] = null;
+    else
+      throw new lmbDbException("Can't convert given value to the double", array('value' => $value));
+
     $this->hasChanged = true;
   }
 
@@ -159,8 +183,11 @@ class lmbOciStatement implements lmbDbStatement
       $this->parameters[$name] = $value;
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
       $this->parameters[$name] = $value;
-    else
+    else if(!$value)
       $this->parameters[$name] = null;
+    else
+      throw new lmbDbException("Can't convert given value to the decimal", array('value' => $value));
+
     $this->hasChanged = true;
   }
 
@@ -206,7 +233,8 @@ class lmbOciStatement implements lmbDbStatement
 
   function setClob($name, $value)
   {
-    throw new lmbDbException(__METHOD__ . ' not implemented');
+    $this->parameters[$name] = is_null($value) ? null : $value;
+    $this->hasChanged = true;
   }
 }
 

@@ -50,7 +50,7 @@ Mock :: generate('LectureForTest', 'MockLectureForTest');
 class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('course_for_test', 'lecture_for_test');
-  
+
   function testHas()
   {
     $lecture = new LectureForTest();
@@ -211,7 +211,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $lecture->setTitle('Physics');
     $lecture->setCourse($course);
     $lecture->save();
-    
+
     $this->db->delete('course_for_test', 'id = '. $course->getId());
 
     $lecture2 = lmbActiveRecord :: findById('LectureForTest', $lecture->getId());
@@ -225,7 +225,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
       $this->assertTrue(true);
     }
   }
-  
+
   function testLoadingNonExistingParent_NOT_ThrowsException_IfSpecialFlagUsedForRelationDefinition()
   {
     $course = $this->_initCourse();
@@ -234,7 +234,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $lecture->setTitle('Physics');
     $lecture->setCourse($course);
     $lecture->save();
-    
+
     $this->db->delete('course_for_test', 'id = '. $course->getId());
 
     $lecture2 = lmbActiveRecord :: findById('LectureIndependentFromCourse', $lecture->getId());
@@ -337,7 +337,9 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
 
     $course->getLectures()->add($lecture);
 
-    $this->assertReference($lecture->getCourse(), $course);
+    $lecture_course = $lecture->getCourse();
+
+    $this->assertReference($lecture_course, $course);
   }
 
   function testDeleteCollection()
@@ -434,24 +436,24 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $error_list = new lmbErrorList();
     $this->assertFalse($course->trySave($error_list));
   }
-  
+
   function testFetchWithRelatedObjects_UsingJoinMethod()
   {
     $course = $this->creator->createCourse();
-    
+
     $alt_course1 = $this->creator->createCourse();
     $alt_course2 = $this->creator->createCourse();
-    
+
     $lecture1 = $this->creator->createLecture($course, $alt_course1);
     $lecture2 = $this->creator->createLecture($course, $alt_course2);
     $lecture3 = $this->creator->createLecture($course, $alt_course1);
-    
+
     $lectures = $course->getLectures()->join('course')->join('alt_course');
     $arr = $lectures->getArray();
-    
+
     //make sure we really eager fetching
     $this->db->delete('course_for_test');
-    
+
     $this->assertIsA($arr[0], 'LectureForTest');
     $this->assertEqual($arr[0]->getTitle(), $lecture1->getTitle());
     $this->assertIsA($arr[0]->getCourse(), 'CourseForTest');
@@ -473,27 +475,27 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $this->assertIsA($arr[2]->getAltCourse(), 'CourseForTest');
     $this->assertEqual($arr[2]->getAltCourse()->getTitle(), $alt_course1->getTitle());
   }
-  
+
   function testFetchFirstWithRelationObjectsUsingAttach_AndThenSave()
   {
     $course1 = $this->creator->createCourse();
     $course2 = $this->creator->createCourse();
-    
+
     $lecture1 = $this->creator->createLecture($course1);
     $lecture2 = $this->creator->createLecture($course2);
     $lecture3 = $this->creator->createLecture($course2);
-    
+
     $course2_loaded = lmbActiveRecord :: findFirst('CourseForTest', array('criteria' => 'course_for_test.id = '. $course2->getId(), 'attach' => 'lectures'));
-    
+
     $course2_loaded->setTitle('Some other title');
-    
+
     $course2_loaded->save();
-    
+
     $course2_loaded2 = lmbActiveRecord :: findFirst('CourseForTest', array('criteria' => 'course_for_test.id = '. $course2->getId(), 'attach' => 'lectures'));
     $lectures = $course2_loaded2->getLectures();
     $this->assertEqual(count($lectures), 2);
   }
-  
+
   function testImportAndSaveNullableRelataions()
   {
     $course = new CourseWithNullableLectures();
@@ -507,7 +509,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $course->setLectures(array($lecture1, $lecture2, $lecture3));
     $course->save();
     $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
-    
+
     $course_arr = $course->export();
     $lect_arr = $course->getLectures()->getIds();
     array_pop($lect_arr);
@@ -516,7 +518,7 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $course->save();
     $this->assertEqual(lmbActiveRecord :: find("LectureForTest")->count(), 3);
   }
-  
+
   function testSwapNullableRelations()
   {
     $course1 = new CourseWithNullableLectures();
@@ -533,15 +535,15 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $lectD->setTitle("Lecture D");
     $course2->setLectures(array($lectC, $lectD));
     $course2->setTitle("Course 2");
-    
+
     $course1->save();
     $course2->save();
     $c1 = $course1->export();
     $c2 = $course2->export();
     $c1['lectures'] = $course2->getLectures()->getIds();
     $c2['lectures'] = $course1->getLectures()->getIds();
-    
-    try 
+
+    try
     {
       $course1->import($c1);
       $course1->save();
@@ -559,45 +561,45 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
     $course->setTitle('Course'. mt_rand());
     return $course;
   }
-  
+
   function testCorrectUsageCrossRelations()
   {
     $program = new ProgramForTest();
     $program->setTitle('Program');
     $program->save();
-    
+
     $course = new CourseForTest();
     $course->setProgram($program);
     $course->save();
-    
+
     $lecture = new LectureForTest();
     $lecture->setCourse($course);
     $lecture->setCachedProgram($program);
     $lecture->save();
-    
+
     try
     {
       $finded_lectures = $program->getCachedLectures()->find(array(
-        'join' => array('course'),  
+        'join' => array('course'),
       ))->getArray();
-    } 
-    catch (lmbException $e) 
-    {
-      $this->assertTrue(false);  
     }
-    
+    catch (lmbException $e)
+    {
+      $this->assertTrue(false);
+    }
+
   }
-  
+
   function testOffsetWithNonIntegerValues()
   {
     $course = $this->creator->createCourse();
-    
+
     $c1 = $this->creator->createLecture($course);
     $c2 = $this->creator->createLecture($course);
     $c3 = $this->creator->createLecture($course);
-	
+
     $this->assertEqual($course->getLectures()->at(0)->getId(), $c1->getId());
-    try 
+    try
     {
       $course->getLectures()->at('foo');
       $this->fail();
@@ -609,4 +611,4 @@ class lmbAROneToManyRelationsTest extends lmbARBaseTestCase
   }
 }
 
- 
+

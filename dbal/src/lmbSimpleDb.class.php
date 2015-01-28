@@ -71,14 +71,6 @@ class lmbSimpleDb
       return $rs->current();
   }
 
-  /**
-   * @deprecated
-   */
-  function getFirstRecordFrom($table_name, $criteria = null, $order = array())
-  {
-    return $this->selectRecord($table_name, $criteria, $order);
-  }
-
   function count($table_name, $criteria = null)
   {
     $rs = $this->select($table_name, $criteria);

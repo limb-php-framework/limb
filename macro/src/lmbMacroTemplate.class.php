@@ -30,11 +30,11 @@ class lmbMacroTemplate
   function __construct($file, $config = array(), lmbMacroTemplateLocatorInterface $locator = null)
   {
     $this->file = $file;
-    if(is_object($config) && $config instanceof lmbMacroConfig) 
+    if(is_object($config) && $config instanceof lmbMacroConfig)
       $this->config = $config;
     else
-      $this->config = new lmbMacroConfig($config);        
-    $this->locator = $locator ? $locator : new lmbMacroTemplateLocatorSimple($this->config);
+      $this->config = new lmbMacroConfig($config);
+    $this->locator = $locator ?: new lmbMacroTemplateLocatorSimple($this->config);
   }
 
   function setVars($vars)
@@ -53,13 +53,13 @@ class lmbMacroTemplate
   }
 
   function render($vars = array())
-  {     
+  {
     if(!$this->executor)
     {
       list($this->compiled_file, $macro_executor_class) = $this->compile($this->file);
 
       include($this->compiled_file);
-      
+
       $this->executor = new $macro_executor_class($this->config);
     }
 
@@ -75,7 +75,7 @@ class lmbMacroTemplate
     ob_end_clean();
     return $out;
   }
-  
+
   function compile($source_file)
   {
     $compiled_file = $this->locator->locateCompiledTemplate($source_file);
@@ -92,7 +92,7 @@ class lmbMacroTemplate
       file_put_contents($compiled_file, file_get_contents($compiled_file) .
                                         "\n\$macro_executor_class='$macro_executor_class';");
     }
-    
+
     return array($compiled_file, $macro_executor_class);
   }
 

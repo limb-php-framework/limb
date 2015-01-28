@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/net/src/lmbUri.class.php');
 lmb_require('limb/web_spider/src/lmbWebSpider.class.php');
@@ -104,8 +104,6 @@ class lmbWebSpiderTest extends UnitTestCase
     $one_more_observer->expectOnce('notify', array(new IsAExpectation('MockUriContentReader')));
 
     $this->spider->crawl($uri);
-
-    $one_more_observer->tally();
   }
 
   function testCrawlCacheHitComplexUrl()
@@ -120,15 +118,15 @@ class lmbWebSpiderTest extends UnitTestCase
     $this->uri_filter->setReturnValueAt(1, 'canPass', true, array($uri_normalized_by_spider));
 
     $this->normalizer->expectCallCount('process', 5);
-    $this->normalizer->expectArgumentsAt(0, 'process', array($uri));
-    $this->normalizer->expectArgumentsAt(1, 'process', array($uri));
-    $this->normalizer->expectArgumentsAt(2, 'process', array($uri_normalized_by_spider));
-    $this->normalizer->expectArgumentsAt(3, 'process', array($uri));
-    $this->normalizer->expectArgumentsAt(4, 'process', array($uri_normalized_by_spider));
+    $this->normalizer->expectAt(0, 'process', array($uri));
+    $this->normalizer->expectAt(1, 'process', array($uri));
+    $this->normalizer->expectAt(2, 'process', array($uri_normalized_by_spider));
+    $this->normalizer->expectAt(3, 'process', array($uri));
+    $this->normalizer->expectAt(4, 'process', array($uri_normalized_by_spider));
 
     $this->reader->expectCallCount('open', 2);
-    $this->reader->expectArgumentsAt(0, 'open', array($uri));
-    $this->reader->expectArgumentsAt(1, 'open', array($uri_normalized_by_spider));
+    $this->reader->expectAt(0, 'open', array($uri));
+    $this->reader->expectAt(1, 'open', array($uri_normalized_by_spider));
 
     $this->reader->expectCallCount('getContent', 2);
     $this->reader->setReturnValueAt(0, 'getContent', $content1 = 'whatever1');

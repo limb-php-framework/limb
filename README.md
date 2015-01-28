@@ -25,6 +25,13 @@ testman — набор средств для организации и запу�
 * [Скачать](https://github.com/limb-php-framework/limb-app-taskman/downloads)
 * [Issue tracker](https://github.com/limb-php-framework/limb-app-taskman/issues)
 
+## Системные требования
+
+* Операционная система: *nix, Windows 98/ME/2000/XP
+* Веб-сервер: Apache 1.3+ (с подключенным модулем mod_rewrite), nginx (в связке с php-fpm)
+* PHP: <= 5.3 (использовать [Limb2014.1](https://github.com/limb-php-framework/limb/tree/Limb2014.1)), PHP 5.5 (использовать [master](https://github.com/limb-php-framework/limb)),
+* Поддерживаемые базы данных: [MySQL](http://www.mysql.com/) 4.1+, [PostgreSQL](http://www.postgresql.org/) 8.2+, [Oracle](http://www.oracle.com/index.html) (OCI8)
+
 #English
 ##Limb PHP Framework
 Limb is an [OpenSource](http://en.wikipedia.org/wiki/OpenSource) ([LGPL](http://en.wikipedia.org/wiki/LGPL)) Library of Interdependent Modules and Blocks mostly aimed for rapid web application prototyping and development with PHP5.
@@ -41,3 +48,9 @@ The easiest way to get almost immediate feedback from core Limb developers is to
 * [Download](./docs/en/how_to_download.md)
 * [All limb projects](https://github.com/limb-php-framework)
 
+## System requirements
+
+* OS: *nix, Windows 98/ME/2000/XP
+* Web-server: Apache 1.3+ (with mod_rewrite), nginx (with php-fpm)
+* PHP: <= 5.3 (use [Limb2014.1](https://github.com/limb-php-framework/limb/tree/Limb2014.1)), PHP 5.5 (use [master](https://github.com/limb-php-framework/limb)),
+* DB Server: [MySQL](http://www.mysql.com/) 4.1+, [PostgreSQL](http://www.postgresql.org/) 8.2+, [Oracle](http://www.oracle.com/index.html) (OCI8)

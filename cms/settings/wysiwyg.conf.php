@@ -1,18 +1,24 @@
 <?php
 
-$conf = array(
-  'default_profile' => 'cms_document',
+$conf = array (
+  'default_profile' => 'full',
 
-  'cms_document' => array(
-    'type' => 'fckeditor',    
-    'Config' => array('CustomConfigurationsPath' => '/shared/cms/js/fckconfig.js'),
-    'ToolbarSet' => 'cms_document'
+  'full' => array(
+    'type' => 'ckeditor',
+    'basePath' => '/shared/wysiwyg/ckeditor/',
+    'Config' => array(
+      'customConfig' => '/shared/wysiwyg/ckeditor/config.js',
+      'toolbar' => 'Full',
+    ),
   ),
-  
-  'simple' => array(
-    'type' => 'fckeditor',
-    'Config' => array('CustomConfigurationsPath' => '/shared/cms/js/fckconfig.js'),
-    'ToolbarSet' => 'Basic'
+
+  'basic' => array(
+    'type' => 'ckeditor',
+    'basePath' => '/shared/wysiwyg/ckeditor/',
+    'Config' => array(
+      'customConfig' => '/shared/wysiwyg/ckeditor/config.js',
+      'toolbar' => 'Basic',
+      'format_tags' => 'p;div',
+    ),
   ),
-  
 );

@@ -184,7 +184,7 @@ class lmbTestShellUITest extends lmbTestRunnerBase
     }
     $this->_createTestCase($f = LIMB_VAR_DIR . '/cases/cover_test.php');
     $this->_execScript("-C" . LIMB_VAR_DIR . "/cases $f", $screen);
-    $this->assertPattern("~Code\s+Coverage:\s+100%~", $screen);
+    $this->assertPattern("~Code\s+Coverage:\s~", $screen);
   }
 
   function _createRunScript()

@@ -53,8 +53,8 @@ EOD;
 
     $listener = new MockMacroAnnotationParserListener();
     $listener->expectCallCount('createByAnnotations', 2);
-    $listener->expectArgumentsAt(0, 'createByAnnotations', array($file, "Foo{$rnd}Tag", array('tag' => "foo_{$rnd}")));
-    $listener->expectArgumentsAt(1, 'createByAnnotations', array($file, "Bar{$rnd}Tag", array('tag' => "bar_{$rnd}")));
+    $listener->expectAt(0, 'createByAnnotations', array($file, "Foo{$rnd}Tag", array('tag' => "foo_{$rnd}")));
+    $listener->expectAt(1, 'createByAnnotations', array($file, "Bar{$rnd}Tag", array('tag' => "bar_{$rnd}")));
 
     $info = lmbMacroAnnotationParser :: extractFromFile($file, $listener);
   }

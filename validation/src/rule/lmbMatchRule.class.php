@@ -56,7 +56,7 @@ class lmbMatchRule extends lmbBaseValidationRule
 
     if(isset($value1) && isset($value2) && strcmp($value1, $value2))
     {
-      $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} does not match {MatchField}.', 'validation');
+      $error = $this->custom_error ?: lmb_i18n('{Field} does not match {MatchField}.', 'validation');
       $this->error($error, array('Field' => $this->field_name, 'MatchField' => $this->reference_field));
     }
   }

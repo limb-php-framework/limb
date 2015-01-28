@@ -23,7 +23,7 @@ class lmbConfigConstructorTest extends lmbConstructorUnitTestCase
 
   function _getProjectConstructor()
   {
-    return new lmbProjectConstructor($this->dir_for_test_case, new lmbCliResponse());
+    return new lmbProjectConstructor($this->dir_for_test_case, new lmbCliOutput());
   }
 
   function _getGeneratedConfigContent($table, $template_path)

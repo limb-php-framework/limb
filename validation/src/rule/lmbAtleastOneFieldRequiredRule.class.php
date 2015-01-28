@@ -42,7 +42,7 @@ class lmbAtleastOneFieldRequiredRule extends lmbBaseValidationRule
   {
     if(!$this->_findAtleastOneField($datasource))
     {
-      $error = $this->custom_error ? $this->custom_error : $this->_generateErrorMessage();
+      $error = $this->custom_error ?: $this->_generateErrorMessage();
       $this->error($error, $this->field_names, array());
     }
   }

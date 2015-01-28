@@ -42,7 +42,7 @@ class lmbMacroFilterParserTest extends UnitTestCase
     }
     catch(Exception $e)
     {
-      $this->assertWantedPattern('/Filter name expected/', $e->getMessage());
+      $this->assertPattern('/Filter name expected/', $e->getMessage());
     }
   }
 
@@ -55,7 +55,7 @@ class lmbMacroFilterParserTest extends UnitTestCase
     }
     catch(Exception $e)
     {
-      $this->assertWantedPattern('/Filter params expected after ":" symbol/', $e->getMessage());
+      $this->assertPattern('/Filter params expected after ":" symbol/', $e->getMessage());
     }
   }
 
@@ -68,7 +68,7 @@ class lmbMacroFilterParserTest extends UnitTestCase
     }
     catch(Exception $e)
     {
-      $this->assertWantedPattern('/Unexpected symbol after filter name/', $e->getMessage());
+      $this->assertPattern('/Unexpected symbol after filter name/', $e->getMessage());
     }
   }
 

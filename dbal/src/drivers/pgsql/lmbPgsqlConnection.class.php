@@ -190,15 +190,13 @@ class lmbPgsqlConnection extends lmbDbBaseConnection
     if(!$id)
       return '';
     $pieces = explode('.', $id);
-    $quoted = '"' . $pieces[0] . '"';
-    if(isset($pieces[1]))
-       $quoted .= '."' . $pieces[1] . '"';
-    return $quoted;
+    $pieces = array_map('pg_escape_identifier', $pieces);
+    return implode('.', $pieces);
   }
 
   function escape($string)
   {
-    return pg_escape_string($string);
+    return pg_escape_literal($string);
   }
 
   function getSequenceValue($table, $colname)

@@ -27,15 +27,15 @@ class lmbDbToolsTest extends UnitTestCase
     $this->conn = $this->tools->getDefaultDbConnection();
     $this->config = array(
       'dsn' => 'mysql://root:test@localhost/hello_from_foo?charset=cp1251',
-      'another_dsn' => 'sqlite://kraynopp:pasha@ksu/kadrs?charset=utf8'
+      'another_dsn' => 'mysql://root:test@localhost/hello_from_foo?charset=cp1251',
     );
     lmbToolkit :: instance()->setConf('db', new lmbSet($this->config));
     $this->tools->setDefaultDbConnection($this->tools->createDbConnection(new lmbDbDSN($this->config['dsn'])));
   }
-  
+
   function tearDown()
   {
-    $this->tools->setDefaultDbConnection($this->conn);    
+    $this->tools->setDefaultDbConnection($this->conn);
   }
 
   function testGetDbDSNByName()
@@ -82,7 +82,7 @@ class lmbDbToolsTest extends UnitTestCase
   {
     $dsn = new lmbDbDSN($this->config['dsn']);
     $another_dsn = new lmbDbDSN($this->config['another_dsn']);
-    
+
     $connection = $this->tools->createDbConnection($dsn);
     $another_connection = $this->tools->createDbConnection($another_dsn);
 
@@ -91,19 +91,19 @@ class lmbDbToolsTest extends UnitTestCase
     $this->tools->setDbConnectionByName('dsn', $another_connection);
 
     $this->assertIdentical($another_connection, $this->tools->getDbConnectionByName('dsn'));
-  }  
-  
+  }
+
   function testGetDbConnectionByDsn()
   {
     $connection = $this->tools->createDbConnection(new lmbDbDSN($this->config['another_dsn']));
     $this->assertIdentical($connection, $this->tools->getDbConnectionByDsn(new lmbDbDSN($this->config['another_dsn'])));
   }
-  
+
   function testSetDbConnectionByDsn()
   {
     $dsn = new lmbDbDSN($this->config['dsn']);
     $another_dsn = new lmbDbDSN($this->config['another_dsn']);
-    
+
     $connection = $this->tools->createDbConnection($dsn);
     $another_connection = $this->tools->createDbConnection($another_dsn);
 
@@ -112,8 +112,8 @@ class lmbDbToolsTest extends UnitTestCase
     $this->tools->setDbConnectionByDsn($dsn, $another_connection);
 
     $this->assertIdentical($another_connection, $this->tools->getDbConnectionByDsn($dsn));
-  }  
-  
+  }
+
   function testGettingConnectionsByNameAndDSNReturnsTheSameConnectionObject()
   {
     $connection_by_name = $this->tools->getDbConnectionByName('another_dsn');
@@ -125,37 +125,37 @@ class lmbDbToolsTest extends UnitTestCase
   {
   	lmb_env_set('LIMB_CACHE_DB_META_IN_FILE', false);
     $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=1');
-    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbMysqlDbInfo');   
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbMysqlDbInfo');
   }
-  
+
   function testGetDbInfo_cache_global_positive()
   {
     lmb_env_set('LIMB_CACHE_DB_META_IN_FILE', true);
     $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=2');
-    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbDbCachedInfo');    
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbDbCachedInfo');
   }
-  
+
   function testGetDbInfo_cache_in_conf_negative()
-  {    
+  {
     lmb_env_remove('LIMB_CACHE_DB_META_IN_FILE');
-    
-    $config = new lmbSet($this->config);    
-    $config['cache_db_info'] = false;    
+
+    $config = new lmbSet($this->config);
+    $config['cache_db_info'] = false;
     lmbToolkit::instance()->setConf('db', $config);
-        
+
     $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=4');
     $this->assertIsA($this->tools->getDbInfo($conn), 'lmbMysqlDbInfo');
   }
-  
+
   function testGetDbInfo_cache_in_conf_positive()
-  {    
+  {
     lmb_env_remove('LIMB_CACHE_DB_META_IN_FILE');
-    
-    $config = new lmbSet($this->config);    
-    $config['cache_db_info'] = true;    
+
+    $config = new lmbSet($this->config);
+    $config['cache_db_info'] = true;
     lmbToolkit::instance()->setConf('db', $config);
-    
+
     $conn = $this->tools->getDbConnectionByDsn('mysql://root:test@localhost/hello_from_foo?charset=cp1251&version=3');
-    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbDbCachedInfo');    
+    $this->assertIsA($this->tools->getDbInfo($conn), 'lmbDbCachedInfo');
   }
 }

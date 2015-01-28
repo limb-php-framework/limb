@@ -13,7 +13,7 @@ require_once(dirname(__FILE__) . '/cases/.setup.php');
 
 $group = new TestSuite();
 foreach(glob(dirname(__FILE__) . '/cases/*Test.class.php') as $file)
-  $group->addTestFile($file);
+  $group->addFile($file);
 
 if(!$res = $group->run(new TextReporter()))
   exit(1);

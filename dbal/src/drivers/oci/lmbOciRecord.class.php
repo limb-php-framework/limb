@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/dbal/src/drivers/lmbDbBaseRecord.class.php');
 
@@ -29,7 +29,7 @@ class lmbOciRecord extends lmbDbBaseRecord
       return $this->properties[$upname];
     elseif(isset($this->properties[$name])) //a quick hack
       return $this->properties[$name];
-    
+
     if(LIMB_UNDEFINED !== $default)
       return $default;
   }
@@ -85,6 +85,12 @@ class lmbOciRecord extends lmbDbBaseRecord
   {
     $value = $this->get($name);
     return is_null($value) ?  null : (int) $value;
+  }
+
+  function getBit($name)
+  {
+    $value = $this->get($name);
+    return is_null($value) ?  null : bindec($value);
   }
 
   function getFloat($name)

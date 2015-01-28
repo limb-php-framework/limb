@@ -14,6 +14,7 @@ require_once(LIMB_PATH . '/tests_runner/src/lmbTestTreeGlobNode.class.php');
 $fork = true;
 $quiet = false;
 $tests = array();
+$cover = false;
 $skipped = array();
 
 function out($msg)
@@ -28,6 +29,7 @@ function process_argv(&$argv, &$defines = array())
 {
   global $quiet;
   global $fork;
+  global $cover;
   global $skipped;
 
   $new_argv = array();
@@ -38,6 +40,11 @@ function process_argv(&$argv, &$defines = array())
     // control arguments
     switch($arg)
     {
+      case '-C':
+      case '--cover':
+        $cover = true;
+        $defines[] = $arg;
+        break;
       case '-D':
         $next_is_def = true;
         break;
@@ -141,6 +148,8 @@ foreach($tests as $test)
     else
     {
       $runner = new lmbTestRunner();
+      if($cover)
+        $runner->useCoverage($test . '/src', '', '');
       if(!$runner->run(new lmbTestTreeFilePathNode($test)))
         $res = false;
     }

@@ -3,7 +3,8 @@ lmbHttpResponse — представляет ответ от системы к �
 
     $response = new lmbHttpResponse();
     $response->start();
-    $response->header('HTTP/1.0 304 Not Modified');
+    $response->addHeader('Expires: Mon, 2 Feb 2015 05:00:00 GMT');
+    $response->setStatus(304);
     $response->write('Some content');
     $response->commit();
 

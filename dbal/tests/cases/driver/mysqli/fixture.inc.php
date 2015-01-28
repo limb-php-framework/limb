@@ -15,7 +15,7 @@ function DriverMysqliSetup($conn)
             id int(11) NOT null auto_increment,
             first varchar(50) NOT null default '',
             last varchar(50) NOT null default '',
-            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDB";
+            PRIMARY KEY (id)) AUTO_INCREMENT=4 ENGINE=InnoDB";
   DriverMysqliExec($conn, $sql);
 
   DriverMysqliExec($conn, 'TRUNCATE `founding_fathers`');
@@ -37,7 +37,7 @@ function DriverMysqliSetup($conn)
             PRIMARY KEY (`primary_column`),
             KEY (`common_column`),
             UNIQUE `unique_column_named_index` (`unique_column`)
-            ) AUTO_INCREMENT=0 TYPE=MEMORY";
+            ) AUTO_INCREMENT=0 ENGINE=MEMORY";
   DriverMysqliExec($conn, $sql);
 
   DriverMysqliExec($conn, 'TRUNCATE `indexes`');
@@ -62,7 +62,7 @@ function DriverMysqliSetup($conn)
             type_date date,
             type_time time,
             type_blob blob,
-            PRIMARY KEY (id)) AUTO_INCREMENT=4 TYPE=InnoDB";
+            PRIMARY KEY (id)) AUTO_INCREMENT=4 ENGINE=InnoDB";
   DriverMysqliExec($conn, $sql);
 
   DriverMysqliExec($conn, 'TRUNCATE `standard_types`');

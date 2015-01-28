@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbQueryStatement.interface.php');
@@ -55,7 +55,7 @@ class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStat
   {
     return new lmbPgsqlRecordSet($this->connection, $this);
   }
-  
+
   function count()
   {
     if(!(preg_match("/^\s*SELECT\s+DISTINCT/is", $this->sql) || preg_match('/\s+GROUP\s+BY\s+/is',$this->sql)) && preg_match("/^\s*SELECT\s+.+\s+FROM\s+/Uis", $this->sql))
@@ -82,7 +82,7 @@ class lmbPgsqlQueryStatement extends lmbPgsqlStatement implements lmbDbQueryStat
     pg_free_result($queryId);
     return $count;
   }
-  
+
 }
 
 

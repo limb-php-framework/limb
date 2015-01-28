@@ -16,7 +16,6 @@ class lmbFsRecursiveIteratorTest extends UnitTestCase
   function lmbFsRecursiveIteratorTest()
   {
     $this->dir = LIMB_VAR_DIR . '/tmp/';
-    parent :: UnitTestCase();
   }
 
   function _createFileSystem()

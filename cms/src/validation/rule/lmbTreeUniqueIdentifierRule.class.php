@@ -24,7 +24,7 @@ class lmbTreeUniqueIdentifierRule extends lmbSingleFieldRule
 
   function check($value)
   {
-    $criteria = lmbSQLCriteria :: equal($this->field_name, $value)->addAnd('parent_id = ' . ($this->parent_id ? $this->parent_id : $this->node->getParent()->getId()));
+    $criteria = lmbSQLCriteria :: equal($this->field_name, $value)->addAnd('parent_id = ' . ($this->parent_id ?: $this->node->getParent()->getId()));
 
     if(!$this->node->isNew())
       $criteria->addAnd('id <> '. $this->node->getId());

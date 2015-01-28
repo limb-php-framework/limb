@@ -11,7 +11,7 @@ require_once(dirname(__FILE__) . '/lmbActiveRecordTest.class.php');//need TestOn
 class lmbARTransactionTest extends lmbARBaseTestCase
 {
   protected $tables_to_cleanup = array('test_one_table_object');
-  
+
   function  testSaveInTransaction()
   {
     $this->conn->beginTransaction();
