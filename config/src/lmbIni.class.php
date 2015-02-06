@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/fs/src/exception/lmbFileNotFoundException.class.php');
 lmb_require('limb/core/src/lmbSet.class.php');
@@ -163,7 +163,9 @@ class lmbIni extends lmbSet
 
   protected function _parseConstants($value)
   {
-    return preg_replace('~\{([^\}]+)\}~e', "constant('\\1')", $value);
+    return preg_replace_callback('~\{([^\}]+)\}~', function ($match) {
+      return constant($match[1]);
+    }, $value);
   }
 
   function getOption($var_name, $group_name = null)

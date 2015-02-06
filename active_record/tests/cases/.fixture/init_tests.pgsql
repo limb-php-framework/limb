@@ -28,6 +28,16 @@ CREATE TABLE test_one_table_typed_object (
   PRIMARY KEY  (id)
 )  ;
 
+DROP TABLE related_test_one_table_typed_object;
+
+CREATE TABLE related_test_one_table_typed_object (
+  "id" SERIAL,
+  "title" text,
+  "related_id" int8 default NULL,
+  "kind" varchar(255) NOT NULL,
+  PRIMARY KEY  (id)
+)  ;
+
 DROP TABLE course_for_typed_test CASCADE;
 
 CREATE TABLE course_for_typed_test (

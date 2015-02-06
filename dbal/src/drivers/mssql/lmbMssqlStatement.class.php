@@ -43,51 +43,50 @@ class lmbMssqlStatement implements lmbDbStatement
 
   function setSmallInt($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the small int", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
   }
 
   function setInteger($name, $value)
   {
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the integer", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
   }
 
   function setFloat($name, $value)
   {
-    $this->parameters[$name] = is_null($value) ?
-    'null' :
-    floatval($value);
+    if($value && !is_numeric($value))
+      throw new lmbDbException("Can't convert given value to the float", array('value' => $value));
+
+    $this->parameters[$name] = is_null($value) ? 'null' : floatval($value);
   }
 
   function setDouble($name, $value)
   {
     if(is_float($value) || is_integer($value))
-    {
       $this->parameters[$name] = $value;
-    }
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
-    {
       $this->parameters[$name] = $value;
-    }
-    else
-    {
+    else if(!$value)
       $this->parameters[$name] = 'null';
-    }
+    else
+      throw new lmbDbException("Can't convert given value to the double", array('value' => $value));
   }
 
   function setDecimal($name, $value)
   {
     if(is_float($value) || is_integer($value))
-    {
       $this->parameters[$name] = $value;
-    }
     else if(is_string($value) && preg_match('/^(|-)\d+(|.\d+)$/', $value))
-    {
       $this->parameters[$name] = $value;
-    }
-    else
-    {
+    else if(!$value)
       $this->parameters[$name] = 'null';
-    }
+    else
+      throw new lmbDbException("Can't convert given value to the decimal", array('value' => $value));
   }
 
   function setBoolean($name, $value)

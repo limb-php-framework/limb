@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/core/src/lmbCollection.class.php');
 
@@ -16,7 +16,7 @@ lmb_require('limb/core/src/lmbCollection.class.php');
  */
 class lmbTreeHelper
 {
-  function sort($rs, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
+  static function sort($rs, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
     $tree_array = self :: _convertRs2Array($rs);
 
@@ -30,7 +30,7 @@ class lmbTreeHelper
     return new lmbCollection($sorted_tree_array);
   }
 
-  function _convertRs2Array($rs)
+  static function _convertRs2Array($rs)
   {
     $tree_array = array();
     foreach($rs as $record)
@@ -39,7 +39,7 @@ class lmbTreeHelper
     return $tree_array;
   }
 
-  function _doSort($tree_array, &$sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
+  static function _doSort($tree_array, &$sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
   {
     $children = array();
 

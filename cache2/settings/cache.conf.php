@@ -3,7 +3,6 @@ $conf = array();
 
 $conf['cache_enabled'] = false;
 
-//$conf['default_cache_dsn'] = "apc:";
 //$conf['default_cache_dsn'] = "memory:";
 //$conf['default_cache_dsn'] = "session:";
 //$conf['default_cache_dsn'] = "memcache://<host>/";

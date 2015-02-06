@@ -130,7 +130,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     $not_found_controller = new lmbRequestDispatchingTestingController('404');
 
-    $this->mock_tools->expectArgumentsAt(1, 'createController', array('404'));
+    $this->mock_tools->expectAt(1, 'createController', array('404'));
     $this->mock_tools->setReturnValueAt(1, 'createController', $not_found_controller, array('404'));
 
     $this->filter->setDefaultControllerName('404');
@@ -227,7 +227,7 @@ class lmbRequestDispatchingFilterTest extends UnitTestCase
 
     if($controller)
     {
-      $this->mock_tools->expectArgumentsAt(0, 'createController', array($controller->getName()));
+      $this->mock_tools->expectAt(0, 'createController', array($controller->getName()));
       $this->mock_tools->setReturnValueAt(0, 'createController', $controller, array($controller->getName()));
     }
   }

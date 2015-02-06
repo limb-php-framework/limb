@@ -75,7 +75,6 @@ LIMB_UNDEFINED уникально и неизменно на протяжени�
 ## Список остальных констант
 
 * **LIMB_ENABLE_MOD_REWRITE** (bool) — использовать настройки для mod_rewrite
-* **LIMB_FCKEDITOR_DIR** — директория FCK Editor. Используется в пакете WYSIWYG.
 * **LIMB_HTTP_GATEWAY_PATH**
 * **LIMB_HTTP_OFFSET_PATH** — путь limb-приложения относительно DOCUMENT_ROOT. Без слешей вначале и конце. Например, если index.php limb-приложения расположен DOCUMENT_ROOT/limb-app/index.php, то LIMB_HTTP_OFFSET_PATH должен быть равен 'limb-app'
 * **LIMB_HTTP_SHARED_PATH** — путь [shared-ресурсов](../../web_app/docs/ru/web_app/app_installation.md) относительно DOCUMENT_ROOT

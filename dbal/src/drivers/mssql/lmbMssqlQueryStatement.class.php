@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2007 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/dbal/src/drivers/lmbDbQueryStatement.interface.php');
@@ -43,7 +43,7 @@ class lmbMssqlQueryStatement extends lmbMssqlStatement implements lmbDbQueryStat
     $column = array();
     $queryId = $this->connection->execute($this->getSQL());
     while(is_array($row = mssql_fetch_row($queryId)))
-      $column[] = is_numeric($row[0]) ? $row[0] : mb_convert_encoding($row[0], 'UTF-8', 'Windows-1251');
+      $column[] = is_numeric($row[0]) ?: mb_convert_encoding($row[0], 'UTF-8', 'Windows-1251');
     mssql_free_result($queryId);
     return $column;
   }

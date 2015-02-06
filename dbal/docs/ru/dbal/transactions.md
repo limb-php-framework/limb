@@ -18,16 +18,16 @@
     <?php
     lmb_require('limb/filter_chain/src/lmbFilterChain.class.php');
     lmb_require('limb/core/src/lmbHandle.class.php');
- 
+
     class MyApplication extends lmbFilterChain
     {
       function __construct()
       {
-        $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbUncaughtExceptionHandlingFilter',
+        $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbErrorHandlingFilter',
                                             array(dirname(__FILE__) . '/../www/500.html')));
-     
+
         $this->registerFilter(new lmbHandle('limb/dbal/src/filter/lmbAutoDbTransactionFilter'));
- 
+
         $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbSessionStartupFilter'));
         $this->registerFilter(new lmbHandle('src/filter/rtRequestDispatchingFilter'));
         $this->registerFilter(new lmbHandle('limb/web_app/src/filter/lmbResponseTransactionFilter'));

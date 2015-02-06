@@ -52,7 +52,7 @@ class lmbRequiredRule extends lmbBaseValidationRule
     $value = $datasource->get($this->field_name);
     if(is_null($value) || (is_string($value) && trim($value) === ''))
     {
-      $error = $this->custom_error ? $this->custom_error : lmb_i18n('{Field} is required', 'validation');
+      $error = $this->custom_error ?: lmb_i18n('{Field} is required', 'validation');
       $this->error($error, array('Field' => $this->field_name));
     }
   }

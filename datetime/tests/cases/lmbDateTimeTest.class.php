@@ -615,7 +615,7 @@ class lmbDateTimeTest extends UnitTestCase
     $this->assertFalse($date1->isEqualDate($date2));
     $this->assertFalse($date2->isEqualDate($date1));
   }
-  
+
   function testRightReturnedClassFromFluentInterface()
   {
     $foo = new FooDateTime();

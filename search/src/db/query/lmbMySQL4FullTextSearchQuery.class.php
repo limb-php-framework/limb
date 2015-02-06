@@ -53,7 +53,7 @@ class lmbMySQL4FullTextSearchQuery extends lmbSelectRawQuery
   function _getQueryWords($words, $use_boolean_mode)
   {
     foreach($words as $key => $word)
-      $words[$key] = mysql_escape_string($word);
+      $words[$key] = mysql_real_escape_string($word);
 
     if($use_boolean_mode)
       return implode('* ', $words) . '*';

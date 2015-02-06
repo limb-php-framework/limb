@@ -110,7 +110,7 @@ class lmbWebAgent {
 
   protected function prepareContent(&$url, $method, $content)
   {
-    $encoding = $this->charset ? $this->charset : 'utf-8';
+    $encoding = $this->charset ?: 'utf-8';
     $query = $this->values->buildQuery($encoding);
     if($method == 'GET')
     {

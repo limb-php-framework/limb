@@ -22,7 +22,7 @@ class UserForTestWithCustomCollection extends lmbActiveRecord
 
 class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
 {
-  protected $tables_to_cleanup = array('user_for_test', 'group_for_test', 'user_for_test2group_for_test', 'test_one_table_object'); 
+  protected $tables_to_cleanup = array('user_for_test', 'group_for_test', 'user_for_test2group_for_test', 'test_one_table_object');
 
   function testMapPropertyToField()
   {
@@ -61,33 +61,33 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
     $this->assertEqual($rs->current()->getTitle(), $group2->getTitle());
     $this->assertEqual($rs->current()->getId(), $group2->getId());
   }
-  
+
   function testSetRelation()
   {
     $user1 = $this->creator->initUser();
     $user2 = $this->creator->initUser();
-      
+
     $group1 = $this->creator->initGroup();
     $group2 = $this->creator->initGroup();
-      
+
     $user1->addToGroups($group1);
     $user1->addToGroups($group2);
     $user2->addToGroups($group1);
     $user2->addToGroups($group2);
-      
+
     $user1->save();
     $user2->save();
     $this->assertEqual($user1->getGroups()->count(), 2);
     $this->assertEqual($user2->getGroups()->count(), 2);
-    
+
     $user1->getGroups()->set(array($group1));
     $user1->save();
     $user2->save();
-     
+
     $this->assertEqual($user1->getGroups()->count(), 1);
     $this->assertEqual($user2->getGroups()->count(), 2);
   }
-  
+
   function testLoadShouldNotMixTables()
   {
     $user1 = $this->creator->initUser();
@@ -95,7 +95,7 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
 
     $group1 = $this->creator->initGroup();
     $group2 = $this->creator->initGroup();
-    
+
     $user1->addToGroups($group1);
     $user1->addToGroups($group2);
     $user1->save();
@@ -120,13 +120,13 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
   {
     $linked_object1 = $this->creator->createOneTableObject();
     $linked_object2 = $this->creator->createOneTableObject();
-    
+
     $user1 = $this->creator->createUser($linked_object1);
     $user2 = $this->creator->createUser($linked_object2);
-    
+
     $group = $this->creator->createGroup();
 
-    $group->setUsers(array($user1, $user2));    
+    $group->setUsers(array($user1, $user2));
 
     $group2 = lmbActiveRecord :: findById('GroupForTest', $group->getId());
     $arr = $group2->getUsers()->join('linked_object')->getArray();
@@ -141,7 +141,7 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
   function testSetingCollectionDirectlyCallsAddToMethod()
   {
     $user = $this->creator->initUser();
-    
+
     $g1 = $this->creator->initGroup();
     $g2 = $this->creator->initGroup();
 
@@ -155,10 +155,10 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
   function testSetFlushesPreviousCollection()
   {
     $user = $this->creator->initUser();
-    
+
     $g1 = $this->creator->initGroup();
     $g2 = $this->creator->initGroup();
-    
+
     $user->addToGroups($g1);
     $user->addToGroups($g2);
 
@@ -171,10 +171,10 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
   function testUpdateRelations()
   {
     $user = $this->creator->initUser();
-    
+
     $group1 = $this->creator->initGroup();
     $group2 = $this->creator->initGroup();
-    
+
     $user->addToGroups($group1);
     $user->addToGroups($group2);
     $user->save();
@@ -197,7 +197,7 @@ class lmbARManyToManyRelationsTest extends lmbARBaseTestCase
 
     $group1 = $this->creator->initGroup();
     $group2 = $this->creator->initGroup();
-    
+
     $user1->addToGroups($group1);
     $user1->addToGroups($group2);
     $user1->save();

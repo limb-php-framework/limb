@@ -28,6 +28,11 @@ class lmbMssqlConnection extends lmbDbBaseConnection
   protected $connectionId;
   protected $transactionCount = 0;
 
+  function getFunctionForSystemSupportCheck()
+  {
+    return 'mssql_connect';
+  }
+
   function getType()
   {
     return 'mssql';
@@ -128,7 +133,7 @@ class lmbMssqlConnection extends lmbDbBaseConnection
     }
     return $result;
   }
-  
+
   function executeStatement($stmt)
   {
     return (bool) $this->execute($stmt->getSQL());

@@ -39,9 +39,9 @@ class lmbCalendarWidget extends lmbMacroInputWidget
   {
     $theme = 'calendar-win2k-1';
     $calendar_lib_path = '/shared/calendar/js/';
-    $lang = $this->getAttribute('lang') ? $this->getAttribute('lang') : 'en';
-    $format = $this->getAttribute('format') ? $this->getAttribute('format') : '%Y-%m-%d';
-    
+    $lang = $this->getAttribute('lang') ?: 'en';
+    $format = $this->getAttribute('format') ?: '%Y-%m-%d';
+
     if($this->getBoolAttribute('stripped'))
     {
       $this->calendar_file = 'calendar_stripped.js';
@@ -52,12 +52,12 @@ class lmbCalendarWidget extends lmbMacroInputWidget
       $this->calendar_file = 'calendar.js';
       $this->calendar_setup_file = 'calendar-setup.js';
     }
-    
+
     $this->calendar_lang_file = 'lang/calendar-' . $lang . '.js';
     $this->calendar_theme_file = $theme.'.css';
     $this->calendar_lib_path = preg_replace('/\/+$/', '/', $calendar_lib_path);
 
-    
+
     $this->setOption('ifFormat', $format);
     $this->setOption('daFormat', $format);
   }
@@ -98,12 +98,12 @@ class lmbCalendarWidget extends lmbMacroInputWidget
   {
     $field_id = $this->getRuntimeId();
     $id = $this->_genId();
-    
+
     if(isset($field_attributes['src']) && $field_attributes['src'])
       $src = $field_attributes['src'];
     else
       $src = $this->calendar_lib_path . 'img.gif';
-    
+
     $out = '<a href="#" id="'. $this->_triggerId($id) . '">' .
         '<img align="middle" border="0" src="' . $src . '" alt="" hspace="3"/></a>';
 

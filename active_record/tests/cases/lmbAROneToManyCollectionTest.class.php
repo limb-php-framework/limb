@@ -602,7 +602,7 @@ class lmbAROneToManyCollectionTest extends lmbARBaseTestCase
 
   protected function _createLecture($title = '')
   {
-    $title = $title ? $title : 'Lecture' . mt_rand();
+    $title = $title ?: 'Lecture' . mt_rand();
 
     $l = new LectureForTest();
     $l->setTitle($title);

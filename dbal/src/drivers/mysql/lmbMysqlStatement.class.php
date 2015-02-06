@@ -48,6 +48,7 @@ class lmbMysqlStatement implements lmbDbStatement
   {
   	if($value && !is_numeric($value))
       throw new lmbDbException("Can't convert given value to the small int", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
   }
 
@@ -55,6 +56,7 @@ class lmbMysqlStatement implements lmbDbStatement
   {
   	if($value && !is_numeric($value))
       throw new lmbDbException("Can't convert given value to the integer", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ?  'null' : intval($value);
   }
 
@@ -62,6 +64,7 @@ class lmbMysqlStatement implements lmbDbStatement
   {
   	if($value && !is_numeric($value))
       throw new lmbDbException("Can't convert given value to the float", array('value' => $value));
+
     $this->parameters[$name] = is_null($value) ? 'null' : floatval($value);
   }
 

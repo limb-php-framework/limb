@@ -117,16 +117,24 @@ class lmbOciConnection extends lmbDbBaseConnection
   function execute($sql)
   {
     $stmt = oci_parse($this->getConnectionId(), $sql);
-    return $this->executeStatement($stmt);
+    $result = oci_execute($stmt, $this->tstate);
+
+    if($result === false)
+      $this->_raiseError($stmt);
+
+    return $stmt;
   }
 
   function executeStatement($stmt)
   {
     $stmt = $stmt->getStatement();
-    $result = oci_execute($stmt, $this->tstate);
+
+    $result = oci_execute($stmt->getOciStatement(), $this->tstate);
     if($result === false)
+    {
       $this->_raiseError($stmt);
-    return $stmt;
+    }
+    return $stmt->getOciStatement();
   }
 
   function beginTransaction()
@@ -160,6 +168,7 @@ class lmbOciConnection extends lmbDbBaseConnection
       case 'SELECT':
         if(stripos($sql, ' FROM ') === false) //a quick hack
           $sql = $sql . ' FROM DUAL';
+        $sql = preg_replace('/JOIN "(\\w+)" AS/ ', 'JOIN "${1}"', $sql);
       case 'SHOW':
       case 'DESCRIBE':
       case 'EXPLAIN':
@@ -203,7 +212,8 @@ class lmbOciConnection extends lmbDbBaseConnection
 
   function getSequenceValue($table, $colname)
   {
-    $seq = substr("{$table}", 0, 26) . "_seq";
+    $table = str_replace(array("'",'"'), "", $table);
+    $seq = substr($table, 0, 26) . "_seq";
     return (int)$this->newStatement("SELECT $seq.CURRVAL FROM DUAL")->getOneValue();
   }
 }

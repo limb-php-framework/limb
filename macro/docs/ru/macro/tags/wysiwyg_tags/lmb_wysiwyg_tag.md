@@ -6,7 +6,7 @@
 
 ## Синтаксис
 
-    {{wysiwyg id='id' name='name' profile='myTinyMCE' [...]/}}
+    {{wysiwyg id='id' name='name' profile='myCKEditor' [...]/}}
 
 ## Содержимое
 Нет.

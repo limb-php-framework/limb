@@ -4,21 +4,32 @@
   *
   *      @desc MIME type detection class
   *   @package KCFinder
-  *   @version {version}
-  *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @version 3.12
+  *    @author Pavel Tzonkov <sunhater@sunhater.com>
+  * @copyright 2010-2014 KCFinder Project
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
+
+namespace kcfinder;
 
 class type_mime {
 
     public function checkFile($file, array $config) {
+        if (!class_exists("finfo"))
+            return "Fileinfo PECL extension is missing.";
+
         if (!isset($config['params']))
             return "Undefined MIME types.";
 
-        $type = file::getMimeType($file, isset($config['mime_magic']) ? $config['mime_magic'] : null);
+        $finfo = strlen($config['mime_magic'])
+            ? new \finfo(FILEINFO_MIME, $config['mime_magic'])
+            : new \finfo(FILEINFO_MIME);
+        if (!$finfo)
+            return "Opening fileinfo database failed.";
+
+        $type = $finfo->file($file);
         $type = substr($type, 0, strrpos($type, ";"));
 
         $mimes = $config['params'];

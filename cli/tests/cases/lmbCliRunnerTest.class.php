@@ -29,7 +29,7 @@ class lmbCliRunnerTest extends UnitTestCase
   function testExecuteFailureNoCommand()
   {
     $input = new lmbCliInput();
-    $output = new lmbCliResponse();
+    $output = new lmbCliOutput();
     $output->setVerbose(false);
 
     $runner = new lmbCliRunner($input, $output);
@@ -49,7 +49,7 @@ class lmbCliRunnerTest extends UnitTestCase
   function testCantMapToCmdObject()
   {
     $input = new lmbCliInput();
-    $output = new lmbCliResponse();
+    $output = new lmbCliOutput();
     $output->setVerbose(false);
 
     $input->read(array('foo.php', 'foo'));
@@ -74,7 +74,7 @@ class lmbCliRunnerTest extends UnitTestCase
   function testPassArgvToExecute()
   {
     $input = new lmbCliInput();
-    $output = new lmbCliResponse();
+    $output = new lmbCliOutput();
 
     $input->read(array('foo.php', '--dry-run', '-c', 'bar'));
 
@@ -100,7 +100,7 @@ class lmbCliRunnerTest extends UnitTestCase
   function testProcessCommandValidateResult_Positive()
   {
     $input = new lmbCliInput();
-    $output = new lmbCliResponse();
+    $output = new lmbCliOutput();
 
     $input->read(array('foo.php', '--required_param'));
 
@@ -124,7 +124,7 @@ class lmbCliRunnerTest extends UnitTestCase
   function testProcessCommandValidateResult_Negative()
   {
     $input = new lmbCliInput();
-    $output = new lmbCliResponse();
+    $output = new lmbCliOutput();
 
     $input->read(array('foo.php', '--required_param'));
 

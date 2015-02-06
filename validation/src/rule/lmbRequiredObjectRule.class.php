@@ -56,7 +56,7 @@ class lmbRequiredObjectRule extends lmbBaseValidationRule
 
     if(!is_object($value) || ($this->class && !($value instanceof $this->class)))
     {
-      $error = $this->custom_error ? $this->custom_error : lmb_i18n('Object {Field} is required', 'validation');
+      $error = $this->custom_error ?: lmb_i18n('Object {Field} is required', 'validation');
       $this->error($error, array('Field' => $this->field_name));
       return;
     }

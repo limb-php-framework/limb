@@ -1442,31 +1442,13 @@ class lmbActiveRecord extends lmbObject
     return ctype_alnum("$name") && !ctype_digit("$name");
   }
 
+  /**
+   * @deprecated
+   * @return string
+   */
   static protected function _getCallingClass()
   {
-    if(function_exists('get_called_class'))
-      return get_called_class();
-
-    //once PHP-5.3 LSB patch is available we'll use get_called_class
-    //currently it's a quite a slow implementation and it doesn't
-    //recognize multiline function calls
-
-    $trace = debug_backtrace();
-    $back = $trace[1];
-    $method = $back['function'];
-    $fp = fopen($back['file'], 'r');
-
-    for($i=0; $i<$back['line']-1; $i++)
-      fgets($fp);
-
-    $line = fgets($fp);
-    fclose($fp);
-
-    if(!preg_match('~(\w+)\s*::\s*' . $method . '\s*\(~', $line, $m))
-      throw new lmbARException("Static calling class not found!(using multiline static method call?)");
-    if($m[1] == 'lmbActiveRecord')
-      throw new lmbARException("Found static class can't be lmbActiveRecord!");
-    return $m[1];
+    return get_called_class();
   }
 
   /**
@@ -1482,7 +1464,7 @@ class lmbActiveRecord extends lmbObject
     if(!self :: _isClass($class_name))
     {
       $conn = $magic_params;
-      $magic_params = $class_name ? $class_name : array();
+      $magic_params = $class_name ?: array();
       $class_name = self :: _getCallingClass();
     }
 
@@ -1518,7 +1500,7 @@ class lmbActiveRecord extends lmbObject
     if(!self :: _isClass($class_name))
     {
       $conn = $magic_params;
-      $magic_params = $class_name ? $class_name : array();
+      $magic_params = $class_name ?: array();
       $class_name = self :: _getCallingClass();
     }
     return self :: findFirst($class_name, $magic_params, $conn);
@@ -1748,7 +1730,7 @@ class lmbActiveRecord extends lmbObject
     if(!self :: _isClass($class_name))
     {
       $conn = $magic_params;
-      $magic_params = $class_name ? $class_name : array();
+      $magic_params = $class_name ?: array();
       $class_name = self :: _getCallingClass();
     }
 

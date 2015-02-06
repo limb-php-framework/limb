@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/filter_chain/src/lmbInterceptingFilter.interface.php');
 lmb_require('limb/web_cache/src/lmbFullPageCacheRuleset.class.php');
@@ -30,7 +30,7 @@ class lmbFullPageCacheFilter implements lmbInterceptingFilter
   function __construct($rules_ini = 'full_page_cache.ini', $cache_dir = null, $user = null)
   {
     $this->rules_ini = $rules_ini;
-	$this->cache_dir = $cache_dir ? $cache_dir : lmbToolkit::instance()->getConf('web_cache')->get('cache_dir');
+	$this->cache_dir = $cache_dir ?: lmbToolkit::instance()->getConf('web_cache')->get('cache_dir');
 
     if(!is_object($user))
       $this->user = new lmbFullPageCacheUser();
@@ -43,7 +43,7 @@ class lmbFullPageCacheFilter implements lmbInterceptingFilter
     $toolkit = lmbToolkit :: instance();
     if ($toolkit->isWebAppDebugEnabled())
 	  return $filter_chain->next();
-		
+
     $request = $toolkit->getRequest();
 
     $this->cache = new lmbFullPageCache($this->_createCacheWriter(),

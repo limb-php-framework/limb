@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 lmb_require('limb/core/src/lmbDelegate.class.php');
@@ -38,7 +38,7 @@ class DelegateTestingStub
     $this->instance_arg2 = $arg2;
   }
 
-  function staticMethod($arg)
+  static function staticMethod($arg)
   {
     self :: $static_arg = $arg;
     self :: $static_called = true;
@@ -182,19 +182,19 @@ class lmbDelegateTest extends UnitTestCase
     $this->assertFalse($s3->instance_called);
     $this->assertNull($s3->instance_arg);
   }
-  
+
   function testEqual()
   {
     $s1 = new DelegateTestingStub();
     $s2 = new DelegateTestingStub();
-    
+
     $d1 = new lmbDelegate($s1, 'instanceMethod');
     $d2 = new lmbDelegate($s2, 'instanceReturningMethod');
     $d3 = new lmbDelegate($s1, 'instanceMethod');
     $d4 = new lmbDelegate($s1, 'instanceReturningMethod');
     $d5 = new lmbDelegate('DelegateTestingStubFunction');
     $d6 = new lmbDelegate('DelegateTestingStubFunction');
-    
+
     $this->assertFalse($d1->equal($d2));
     $this->assertTrue($d1->equal($d3));
     $this->assertFalse($d1->equal($d4));

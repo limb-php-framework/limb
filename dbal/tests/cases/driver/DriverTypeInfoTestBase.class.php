@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 
 abstract class DriverTypeInfoTestBase extends UnitTestCase
@@ -27,7 +27,7 @@ abstract class DriverTypeInfoTestBase extends UnitTestCase
 
   function testGetColumnTypeAccessors()
   {
-    $mapping = $this->typeInfo->getColumnTypeAccessors();
+    $mapping = lmbDbTypeInfo::getColumnTypeAccessors();
     foreach($this->columnList as $columnType)
     {
       $this->assertTrue(isset($mapping[$columnType]));

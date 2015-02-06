@@ -109,14 +109,6 @@ class lmbHttpRequest extends lmbSet
     return $this->__request_method;
   }
 
-  /**
-   * @deprecated
-   */
-  function hasAttribute($name)
-  {
-    return $this->has($name);
-  }
-
   function hasFiles($key = null)
   {
     return $this->_get($this->__files, $key);

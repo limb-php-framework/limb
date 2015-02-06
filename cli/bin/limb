@@ -12,7 +12,7 @@ lmb_require('limb/cli/src/lmbCliOption.class.php');
 lmb_require('limb/cli/src/lmbCliException.class.php');
 lmb_require('limb/cli/src/lmbCliRunner.class.php');
 
-$output = new lmbCliResponse();
+$output = new lmbCliOutput();
 $output->setVerbose(true);
 
 $input = new lmbCliInput('h|help;c|config=');

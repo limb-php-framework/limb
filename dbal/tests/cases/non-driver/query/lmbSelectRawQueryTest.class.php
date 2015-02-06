@@ -95,7 +95,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
 
     $this->assertEqual($sql->toString(), "SELECT 't1' as 'a1','t2' as 'a2' FROM test");
   }
-  
+
   function testAddRawFieldWithAlias()
   {
     $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
@@ -117,7 +117,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
 
     $this->assertEqual($sql->toString(), "SELECT 't2' as 'a2','t4',t1,t3 as a3 FROM test");
   }
-  
+
   function testMixAddingRawAndRegularFieldsWhenFieldsExistInTemplate()
   {
     $sql = new lmbSelectRawQuery("SELECT a \n%fields%,b FROM test", $this->conn);
@@ -129,7 +129,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
 
     $this->assertEqual($sql->toString(), "SELECT a \n,'t2' as 'a2','t4',t1,t3 as a3,b FROM test");
   }
-  
+
   function testAddStarredFieldFromTable()
   {
     $sql = new lmbSelectRawQuery('SELECT %fields% FROM test', $this->conn);
@@ -196,7 +196,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
                        "SELECT * FROM test LEFT JOIN 'article' ON 'article.id'='test.article_id'".
                        " LEFT JOIN 'article' AS 'next_article' ON 'next_article.id'='test.other_article_id'");
   }
-  
+
   function testEmptyCondition()
   {
     $sql = new lmbSelectRawQuery('SELECT * FROM test %where%', $this->conn);
@@ -322,7 +322,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $sql->addOrder(array('t1' => 'ASC', 't2' => 'DESC'));
     $this->assertEqual($sql->toString(), "SELECT * FROM test \nORDER BY 't1' ASC,'t2' DESC");
   }
-  
+
   function testAddOrderWithOrderClause()
   {
     $sql = new lmbSelectRawQuery("SELECT * FROM test ORDER BY\n %order%", $this->conn);
@@ -517,7 +517,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
 
   function testQueryWithoutWhereUsingDefaultConnection()
   {
-    $sql = new lmbSelectRawQuery('SELECT 1=1');
+    $sql = new lmbSelectRawQuery('SELECT 1');
     $rs = $sql->fetch();
     $this->assertEqual($rs->count(), 1);
   }
@@ -530,7 +530,7 @@ class lmbSelectRawQueryTest extends UnitTestCase
     $string = $sql->addTable('test_db_table')->field('id')->where('id=2')->toString();
     $this->assertEqual($string, "SELECT 'id' FROM 'test_db_table'  WHERE id=2    LIMIT 10");
   }
-  
+
   function testThrowExceptionOnActionWIthNotExistingPlaholder()
   {
     $sql = new lmbSelectRawQuery("SELECT * FROM test ", $this->conn);
@@ -548,5 +548,5 @@ class lmbSelectRawQueryTest extends UnitTestCase
       $this->assertTrue(true);
     }
   }
-  
+
 }

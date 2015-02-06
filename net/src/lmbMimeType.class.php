@@ -67,7 +67,7 @@ class lmbMimeType
     $extension = ltrim(strtolower($extension), '.');
     $mime_type = array_search($extension,self :: $mime_types);
 
-    return $mime_type ? $mime_type : null;
+    return $mime_type ?: null;
   }
 
   static function getFileMimeType($file)

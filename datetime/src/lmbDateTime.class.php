@@ -152,7 +152,7 @@ class lmbDateTime extends lmbObject
 
   static function stampToShortIso($stamp)
   {
-    $date = new $class((int)$stamp);
+    $date = new self((int)$stamp);
     return $date->getIsoShortDate();
   }
 
@@ -176,9 +176,9 @@ class lmbDateTime extends lmbObject
     if($this->second < 0 || $this->second > 59) return false;
 
     //dirty hack for checkdate...
-    return checkdate($this->month ? $this->month : 1,
-                     $this->day ? $this->day : 1,
-                     $this->year ? $this->year : 1);
+    return checkdate($this->month ?: 1,
+                     $this->day ?: 1,
+                     $this->year ?: 1);
   }
 
   static function validate($year_or_date=null, $month_or_tz=null, $day=null, $hour=0, $minute=0, $second=0, $tz='')
