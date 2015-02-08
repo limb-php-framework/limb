@@ -22,12 +22,12 @@ lmbSessionDbStorage — класс, который позволяет храни
 
 SQL-код структуры таблицы, где хранятся сессионные данные показан ниже:
 
-    CREATE TABLE `sys_session` (                              
-      `session_id` VARCHAR(50) NOT NULL DEFAULT '',           
-      `session_data` BLOB NOT NULL,                           
-      `last_activity_time` BIGINT(11) UNSIGNED DEFAULT NULL,  
-      PRIMARY KEY  (`session_id`)                            
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 
+    CREATE TABLE `lmb_session` (
+      `session_id` VARCHAR(50) NOT NULL DEFAULT '',
+      `session_data` BLOB NOT NULL,
+      `last_activity_time` BIGINT(11) UNSIGNED DEFAULT NULL,
+      PRIMARY KEY  (`session_id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 lmbSessionDbStorage в методе installStorage() регистрирует в качестве обработчиков сессионных сообщений свои методы, такие как sessionStart(), sessionRead(), sessionWrite() и т.д.
 

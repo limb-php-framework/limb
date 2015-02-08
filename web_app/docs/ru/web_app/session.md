@@ -5,7 +5,7 @@
     $session = lmbToolkit :: instance()->getSession();
     $session->set('my_var', $value); // Поставить значение в сессию
     $var = $session->get('my_var');  // Получить значение из сессии
- 
+
     $session->foo = $value; // Поставить значение в сессию
     $bar = $session->foo;  // Получить значение из сессии
 
@@ -37,7 +37,7 @@ lmbSessionStartupFilter опирается на константу **LIMB_SESSIO
 
 Для хранения сессионных данных в базе данных используется таблице **sys_session** со следующей структурой:
 
-    CREATE TABLE `sys_session` (
+    CREATE TABLE `lmb_session` (
       `session_id` VARCHAR(50) NOT NULL DEFAULT '',
       `session_data` BLOB NOT NULL,
       `last_activity_time` BIGINT(11) UNSIGNED DEFAULT NULL,

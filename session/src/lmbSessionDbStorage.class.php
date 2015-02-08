@@ -2,9 +2,9 @@
 /*
  * Limb PHP Framework
  *
- * @link http://limb-project.com 
+ * @link http://limb-project.com
  * @copyright  Copyright &copy; 2004-2009 BIT(http://bit-creative.com)
- * @license    LGPL http://www.gnu.org/copyleft/lesser.html 
+ * @license    LGPL http://www.gnu.org/copyleft/lesser.html
  */
 lmb_require('limb/session/src/lmbSessionStorage.interface.php');
 lmb_require('limb/dbal/src/criteria/lmbSQLFieldCriteria.class.php');
@@ -34,10 +34,11 @@ class lmbSessionDbStorage implements lmbSessionStorage
   /**
    *  Constructor.
    *  @param lmbDbConnection database connection object
-   *  @param integer maximum session life time
    */
-  function __construct($db_connection, $max_life_time = null)
+  function __construct($db_connection)
   {
+    $max_life_time = lmb_env_get('LIMB_SESSION_DB_MAX_LIFE_TIME');
+
     $this->max_life_time = $max_life_time;
 
     $this->db = new lmbSimpleDb($db_connection);
@@ -108,6 +109,7 @@ class lmbSessionDbStorage implements lmbSessionStorage
     $data = array('last_activity_time' => time(),
                   'session_data' => $value);
 
+    $this->db->begin();
     if($rs->count() > 0)
       $this->db->update('lmb_session', $data, $crit);
     else
@@ -115,6 +117,7 @@ class lmbSessionDbStorage implements lmbSessionStorage
       $data['session_id'] = "{$session_id}";
       $this->db->insert('lmb_session', $data, null);
     }
+    $this->db->commit();
   }
 
   /**
@@ -124,8 +127,10 @@ class lmbSessionDbStorage implements lmbSessionStorage
    */
   function storageDestroy($session_id)
   {
+    $this->db->begin();
     $this->db->delete('lmb_session',
                       new lmbSQLFieldCriteria('session_id', $session_id));
+    $this->db->commit();
   }
 
   /**
@@ -139,8 +144,10 @@ class lmbSessionDbStorage implements lmbSessionStorage
     if($this->max_life_time)
       $max_life_time = $this->max_life_time;
 
+    $this->db->begin();
     $this->db->delete('lmb_session',
                       new lmbSQLFieldCriteria('last_activity_time', time() - $max_life_time, lmbSQLFieldCriteria::LESS));
+    $this->db->commit();
   }
 }
 

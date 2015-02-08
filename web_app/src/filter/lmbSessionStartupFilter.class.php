@@ -27,10 +27,12 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
    * @see lmbInterceptingFilter :: run()
    * @uses LIMB_SESSION_USE_DB_DRIVER
    */
-  function run($filter_chain, $session_in_db = false, $session_in_db_lifetime = null)
+  function run($filter_chain)
   {
+    $session_in_db = lmb_env_get('LIMB_SESSION_USE_DB_DRIVER', false);
+
     if($session_in_db)
-      $storage =  $this->_createDBSessionStorage($session_in_db_lifetime);
+      $storage =  $this->_createDBSessionStorage();
     else
       $storage =  $this->_createNativeSessionStorage();
 
@@ -50,11 +52,11 @@ class lmbSessionStartupFilter implements lmbInterceptingFilter
    * Creates object of {@link lmbSessionDbStorage} class.
    * @see lmbInterceptingFilter :: run()
    */
-  protected function _createDBSessionStorage($lifetime)
+  protected function _createDBSessionStorage()
   {
     lmb_require('limb/session/src/lmbSessionDbStorage.class.php');
     $db_connection = lmbToolkit :: instance()->getDefaultDbConnection();
-    return new lmbSessionDbStorage($db_connection, $lifetime);
+    return new lmbSessionDbStorage($db_connection);
   }
 }
 
