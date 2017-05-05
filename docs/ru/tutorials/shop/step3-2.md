@@ -144,7 +144,7 @@ Limb не запрещает вам работать с сессиями чер�
         if($user = lmbActiveRecord :: findFirst('User', array('criteria' => $criteria)))
         {
           $this->import($user);
-          $this->setIsNew(false);
+          $this->setIsNew(false); //Несуществующий атрибут
           $this->setIsLoggedIn(true);
           return true;
         }
@@ -157,7 +157,7 @@ Limb не запрещает вам работать с сессиями чер�
  
       function logout()
       {
-        $this->removeAll();
+        $this->removeAll(); //Неопределенный метод
         $this->is_logged_in = false;
       }
     }
